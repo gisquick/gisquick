@@ -1,0 +1,23 @@
+{
+  "name": "gislab-web",
+  "version": "1.0.0",
+  "description": "Build tools for developing of the GIS.lab mobile client",
+  "keywords": [],
+  "scripts": {
+    "postinstall": "patch node_modules/angular-ui-layout/src/ui-layout.js < patches/ui-layout.js.patch && cd node_modules/angular-ui-layout && npm install && gulp dist"
+  },
+  "repository": {},
+  "license": "GNU/GPL v3",
+  "dependencies": {
+    "angular-material": "0.11.4",
+    "angular-ui-layout": "1.3.1",
+    "angular-material-data-table": "0.8.11"
+  },
+  "devDependencies": {
+  },
+  "ext": [],
+  "maintainers": [],
+  "dist": {},
+  "directories": {},
+  "readme": "ERROR: No README data found!"
+}

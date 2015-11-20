@@ -1,0 +1,71 @@
+{% load staticfiles %}
+
+<!doctype html>
+<html lang="en" ng-app="gl.web">
+  <head>
+    <meta charset="utf-8">
+
+    <title>GIS.lab web client</title>
+
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700">
+    <link rel="stylesheet" type="text/css" href="{% static "styles/styles.min.css" %}"/>
+
+    <!-- Before body closing tag -->
+    <script src="{% static "js/deps.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/ol3-deps.min.js" %}"></script>
+
+    <script type="text/javascript">
+    // First, checks if it isn't implemented yet.
+    if (!String.prototype.format) {
+      String.prototype.format = function() {
+        var args = arguments;
+        return this.replace(/{(\d+)}/g, function(match, number) {
+          return typeof args[number] != 'undefined'
+            ? args[number]
+            : match
+          ;
+        });
+      };
+    }
+    </script>
+    <script type="text/javascript" src="{% static "js/app.min.js" %}"></script>
+
+    <script type="text/javascript">
+      angular.module('gl.web')
+        .constant('staticRoot', '{% static "" %}')
+        .config(function($mdIconProvider) {
+          $mdIconProvider.defaultIconSet('{% static "styles/icons.svg" %}', 32);
+        })
+        .run(function($q) {
+          window.webgis = {
+            project: $q.when(JSON.parse('{{ project|default:"[]"|escapejs }}'))
+          };
+        });
+    </script>
+  </head>
+
+  <body ng-controller="AppController" class="no-scrollbar">
+    <div layout="column" layout-fill flex class="no-scrollbar">
+      <div class="toolbar-container">
+        <md-toolbar ng-include="'templates/toolbar/toolbar.html'" flex="none">
+        </md-toolbar>
+      </div>
+      <div layout="row" flex>
+        <div class="main-panel" flex="none">
+          <div ng-if="::project" ui-layout="{disableToggle: false, dividerSize: 10}" class="no-scrollbar" ng-controller="LayoutAnimationController">
+            <div ui-layout-container size="50%" min-size="20%" class="no-scrollbar" style="padding-bottom:10px">
+              <div class="full-height" ng-include="'templates/layers_control.html'"></div>
+            </div>
+            <div ui-layout-container size="50%" class="no-scrollbar">
+              <div class="full-height" ng-include="'templates/project_info.html'"></div>
+            </div>
+          </div>
+        </div>
+        <div class="map-container" flex>
+          <div id="map"></div>
+        </div>
+      </div>
+      <div class="bottom-bar"></div>
+    </div>
+  </body>
+</html>

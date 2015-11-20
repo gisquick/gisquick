@@ -1,0 +1,51 @@
+<md-bottom-sheet class="features-panel">
+  <md-tabs md-no-ink md-dynamic-height
+    ng-class="{'tabs-no-header': !showTabsHeader}"
+    md-selected="tool.layerIndex"
+    md-autoselect="false">
+    <md-tab ng-repeat="layer in layers"
+      label="{{ layer.name }}"
+      md-on-select="setActiveLayer(layer)">
+      <md-data-table-container
+        ng-init="layer.page=1"
+        style="height: {{ 36+32*tool.rowsPerPage }}px;">
+        <table md-data-table>
+          <thead>
+            <tr>
+              <th></th>
+              <th ng-repeat="attribute in layer.attributes" name="{{ ::attribute.label }}"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              ng-repeat="feature in layer.features | limitTo: tool.rowsPerPage: (layer.page - 1) * tool.rowsPerPage"
+              ng-class="{'md-selected': selectedFeature === feature}"
+              ng-click="selectFeature(feature)">
+              <td class="icon">
+                <md-icon md-svg-icon="zoom-max" ng-click="zoomToFeature(feature)"></md-icon>
+              </td>
+              <td ng-repeat="attribute in layer.attributes">{{ ::feature.get(attribute.name) }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </md-data-table-container>
+    </md-tab>
+  </md-tabs>
+  <div class="search-settings" layout="row" ng-show="::layers">
+    <md-input-container class="md-block">
+      <label class="md-label md-no-float">Limit:</label>
+      <input ng-model="tool.limit" type="number" min="1" max="50"></input>
+    </md-input-container>
+    <md-input-container class="md-block">
+      <label class="md-label md-no-float">Rows per page:</label>
+      <input ng-model="tool.rowsPerPage" type="number" min="1" max="10"></input>
+    </md-input-container>
+    <md-data-table-pagination
+      md-limit="tool.rowsPerPage"
+      md-page="layers[tool.layerIndex].page"
+      md-total="{{ layers[tool.layerIndex].features.length }}">
+    </md-data-table-pagination>
+  </div>
+  <!-- <div class="md-subheader"><span>NO RESULTS<span></div> -->
+  <div style="height: 80px;"></div>
+</md-bottom-sheet>

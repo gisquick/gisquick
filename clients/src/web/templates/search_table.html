@@ -1,0 +1,91 @@
+<md-bottom-sheet class="features-panel">
+  <md-tabs md-no-ink md-dynamic-height md-selected="tool.layerIndex" class="tabs-no-header">
+    <md-tab ng-repeat="layer in layers"
+      label="{{ layer.name }}"
+      md-on-select="setActiveLayer(layer)">
+      <md-data-table-container
+        class="search-table"
+        style="height: {{ 60+32*tool.rowsPerPage }}px;">
+        <table
+          md-data-table
+          ng-init="layer.page=1"
+          md-progress="progress">
+          <thead>
+            <tr>
+              <th></th>
+              <th ng-repeat="attribute in ::layer.attributes" name="">
+                <div class="filter-row" layout="column">
+                  <label>{{ ::attribute.label }}</label>
+                  <div
+                    layout="row"
+                    ng-class="{active: attribute.comparator && attribute.filterValue}">
+                    <md-input-container>
+                      <md-select ng-model="attribute.comparator" placeholder="Comparator">
+                        <md-option
+                          ng-repeat="comparator in attribute.comparators"
+                          ng-value="comparator">
+                          {{ ::comparator.label }}
+                        </md-option>
+                      </md-select>
+                    </md-input-container>
+                    <md-input-container md-no-float class="md-block" flex>
+                      <input
+                        ng-model="attribute.filterValue"
+                        placeholder="{{ attribute.comparator.format }}">
+                      </input>
+                    </md-input-container>
+                    <md-icon class="filter-clear-button"
+                      md-svg-icon="circle-x-outline"
+                      ng-click="attribute.filterValue='';attribute.comparator=null">
+                    </md-icon>
+                  </div>
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              ng-repeat="feature in layer.features | limitTo: tool.rowsPerPage: (layer.page - 1) * tool.rowsPerPage"
+              ng-click="selectFeature(feature)"
+              ng-class="{'md-selected': selectedFeature === feature}">
+              <td class="icon">
+                <md-icon md-svg-icon="zoom-max" ng-click="zoomToFeature(feature)">
+                </md-icon>
+              </td>
+              <td ng-repeat="attribute in layer.attributes">
+                {{ feature.get(attribute.name) }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </md-data-table-container>
+    </md-tab>/
+  </md-tabs>
+
+  <div class="search-settings" layout="row">
+    <md-input-container class="md-block">
+      <label class="md-label md-no-float">Limit:</label>
+      <input ng-model="tool.limit" type="number" min="1" max="1000"></input>
+    </md-input-container>
+    <md-input-container class="md-block">
+      <label class="md-label md-no-float">Rows per page:</label>
+      <input ng-model="tool.rowsPerPage" type="number" min="1" max="10"></input>
+    </md-input-container>
+    <!-- <span flex></span> -->
+    <md-data-table-pagination
+      md-limit="tool.rowsPerPage"
+      md-page="layers[tool.layerIndex].page"
+      md-total="{{ layers[tool.layerIndex].features.length }}">
+    </md-data-table-pagination>
+    <!-- <span flex></span> -->
+    <div layout="row" flex>
+      <span flex></span>
+      <md-checkbox ng-model="tool.searchInExtent" aria-label="Search on visible area">
+        Search on visible area
+      </md-checkbox>
+      <md-button ng-click="search()">Search</md-button>
+    </div>
+  </div>
+
+  <div style="height: 80px;"></div>
+</md-bottom-sheet>

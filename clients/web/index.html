@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en" ng-app="gl.web">
+  <head>
+    <meta charset="utf-8">
+
+    <title>GIS.lab web client</title>
+
+    <link rel="stylesheet" type="text/css" href="node_modules/openlayers/dist/ol.css"/>
+    <link rel="stylesheet" type="text/css" href="node_modules/angular-material/angular-material.css"/>
+    <link rel="stylesheet" type="text/css" href="node_modules/angular-ui-layout/dist/ui-layout.css"/>
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700"/>
+    <link rel="stylesheet" type="text/css" href="node_modules/angular-material-data-table/dist/md-data-table.css"/>
+    <link rel="stylesheet" type="text/css" href="web/styles/ui.css"/>
+
+    <!-- Before body closing tag -->
+    <script type="text/javascript" src="node_modules/angular/angular.js"></script>
+    <script type="text/javascript" src="node_modules/angular-animate/angular-animate.js"></script>
+    
+    <script type="text/javascript" src="node_modules/angular-material/angular-material.js"></script>
+    <script type="text/javascript" src="node_modules/angular-aria/angular-aria.js"></script>
+    <script type="text/javascript" src="node_modules/angular-ui-layout/dist/ui-layout.js"></script>
+    <script type="text/javascript" src="node_modules/angular-material-data-table/dist/md-data-table.js"></script>
+
+    <script type="text/javascript" src="node_modules/proj4/dist/proj4-src.js"></script>
+    <script type="text/javascript" src="node_modules/crypto-js/crypto-js.js"></script>
+    <script type="text/javascript" src="node_modules/openlayers/build/ol.debug.js"></script>
+
+    <script type="text/javascript">
+    // First, checks if it isn't implemented yet.
+    if (!String.prototype.format) {
+      String.prototype.format = function() {
+        var args = arguments;
+        return this.replace(/{(\d+)}/g, function(match, number) {
+          return typeof args[number] != 'undefined'
+            ? args[number]
+            : match
+          ;
+        });
+      };
+    }
+    </script>
+
+    <script type="text/javascript" src="js/web.module.js"></script>
+    <script type="text/javascript" src="js/app.ctrl.js"></script>
+
+    <script type="text/javascript" src="core/network/network.module.js"></script>
+    <script type="text/javascript" src="core/network/gislab-client.service.js"></script>
+
+    <script type="text/javascript" src="core/map/map.module.js"></script>
+    <script type="text/javascript" src="core/map/map-builder.service.js"></script>
+    <script type="text/javascript" src="core/map/project-provider.service.js"></script>
+
+    <script type="text/javascript" src="core/ui/ui.module.js"></script>
+    <script type="text/javascript" src="core/ui/tree.dir.js"></script>
+    <script type="text/javascript" src="core/ui/accordion.dir.js"></script>
+    <script type="text/javascript" src="core/ui/accordion.ctrl.js"></script>
+
+    <script type="text/javascript" src="core/map-tools/layers-control/layers-control.module.js"></script>
+    <script type="text/javascript" src="core/map-tools/layers-control/layers-control.service.js"></script>
+    <script type="text/javascript" src="core/map-tools/layers-control/layers-control.ctrl.js"></script>
+    <script type="text/javascript" src="core/map-tools/legend/legend.module.js"></script>
+    <script type="text/javascript" src="core/map-tools/legend/legend.ctrl.js"></script>
+    <script type="text/javascript" src="core/map-tools/features/features.module.js"></script>
+    <script type="text/javascript" src="core/map-tools/features/features-viewer.service.js"></script>
+    <script type="text/javascript" src="core/map-tools/features/identification.ctrl.js"></script>
+    <script type="text/javascript" src="core/map-tools/features/search.ctrl.js"></script>
+
+    <script type="text/javascript">
+      QueryStringParam = function(item) {
+        var svalue = location.search.match(new RegExp("[\?\&]" + item + "=([^\&]*)(\&?)","i"));
+        return decodeURIComponent(svalue ? svalue[1] : svalue);
+      }
+      angular.module('gl.web')
+        .constant('staticRoot', '/')
+        .config(function($mdIconProvider) {
+          $mdIconProvider.defaultIconSet('styles/icons.svg', 32);
+        })
+        .config(function(gislabClientProvider) {
+          gislabClientProvider.configure({
+            server: 'https://localhost:8000'
+          });
+        })
+        .run(function($q, gislabClient) {
+          var projectData = $q.defer();
+          window.webgis = {
+            project: projectData.promise
+          };
+          gislabClient.project(QueryStringParam("PROJECT"))
+            .then(function(data) {
+              projectData.resolve(data);
+            });
+        });
+    </script>
+  </head>
+
+  <body ng-controller="AppController" class="no-scrollbar">
+    <div layout="column" layout-fill flex class="no-scrollbar">
+      <div class="toolbar-container">
+        <md-toolbar ng-include="'templates/toolbar/toolbar.html'" flex="none">
+        </md-toolbar>
+      </div>
+      <div layout="row" flex>
+        <div class="main-panel" flex="none">
+          <div ng-if="::project" ui-layout="{disableToggle: false, dividerSize: 10}" class="no-scrollbar" ng-controller="LayoutAnimationController">
+            <div ui-layout-container size="50%" min-size="20%" class="no-scrollbar" style="padding-bottom:10px">
+              <div class="full-height" ng-include="'templates/layers_control.html'"></div>
+            </div>
+            <div ui-layout-container size="50%" class="no-scrollbar">
+              <div class="full-height" ng-include="'templates/project_info.html'"></div>
+            </div>
+          </div>
+        </div>
+        <div class="map-container" flex>
+          <div id="map"></div>
+        </div>
+      </div>
+      <div class="bottom-bar"></div>
+    </div>
+  </body>
+</html>

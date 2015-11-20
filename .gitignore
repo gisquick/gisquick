@@ -1,0 +1,11 @@
+build/
+dist/
+MANIFEST
+/clients/node_modules/
+/server/webgis/viewer/static/
+
+*.pyc
+
+# vim files
+.*.sw*
+.*.un~*

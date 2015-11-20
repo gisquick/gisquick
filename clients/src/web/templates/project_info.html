@@ -1,0 +1,93 @@
+<md-tabs md-stretch-tabs="always" layout-fill>
+  <md-tab label="Legend">
+    <md-content>
+      <div
+        class="legend-container"
+        ng-controller="LegendController">
+        <img
+          ng-repeat="layer in ::project.layers.list"
+          ng-if="layer.visible"
+          class="legend-item"
+          ng-src="{{ layer.legendUrl }}" />
+      </div>
+    </md-content>
+  </md-tab>
+  <md-tab label="Properties">
+    <md-content>
+      <md-list class="properties-list">
+        <md-list-item>
+          <label>Title:</label>
+          <span ng-bind="::project.config.root_title"></span>
+        </md-list-item>
+        <md-list-item>
+          <label>Author:</label>
+          <span ng-bind="::project.config.author"></span>
+        </md-list-item>
+        <md-list-item>
+          <label>E-mail:</label>
+          <span ng-bind="::project.config.email"></span>
+        </md-list-item>
+        <md-list-item>
+          <label>Phone:</label>
+          <span ng-bind="::project.config.phone"></span>
+        </md-list-item>
+        <md-list-item>
+          <label>Organization:</label>
+          <span ng-bind="::project.config.organization"></span>
+        </md-list-item>
+        <md-list-item>
+          <label>Abstract:</label>
+          <span ng-bind="::project.config.abstract"></span>
+        </md-list-item>
+        <md-list-item>
+          <label>Online resource:</label>
+          <a ng-href="{{::project.config.online_resource}}">
+            {{ ::project.config.online_resource }}
+          </a>
+        </md-list-item>
+        <md-list-item>
+          <label>Fees:</label>
+          <span ng-bind="::project.config.fees"></span>
+        </md-list-item>
+        <md-list-item>
+          <label>Access constraints:</label>
+          <span ng-bind="::project.config.access_constrains"></span>
+        </md-list-item>
+        <md-list-item>
+          <label>Keywords list:</label>
+          <span>{{ ::project.config.keyword_list.join(', ') }}</span>
+        </md-list-item>
+        <md-list-item>
+          <label>Publish date:</label>
+          <span ng-bind="::project.config.publish_date"></span>
+        </md-list-item>
+      </md-list>
+    </md-content>
+  </md-tab>
+  <md-tab label="GIS.lab">
+    <md-content>
+      <md-list class="properties-list">
+        <md-list-item>
+          <label>GIS.lab ID:</label>
+          <span ng-bind="::project.config.gislab_unique_id"></span>
+        </md-list-item>
+        <md-list-item>
+          <label>Version:</label>
+          <span ng-bind="::project.config.gislab_version"></span>
+        </md-list-item>
+        <md-list-item>
+          <label>Home page</label>
+          <a ng-href="{{::project.config.gislab_homepage}}">
+            {{ ::project.config.gislab_homepage }}
+          </a>
+        </md-list-item>
+        <md-list-item>
+          <label>Documentation</label>
+          <a ng-href="{{::project.config.gislab_documentation}}">
+            {{ ::project.config.gislab_documentation }}
+          </a>
+        </md-list-item>
+      </md-list>
+    </md-content>
+  </md-tab>
+</md-tabs>

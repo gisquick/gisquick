@@ -126,6 +126,7 @@ Create Python virtual environment for Webgis server:
 ```bash
 $ mkvirtualenv --system-site-packages <name>`
 $ workon <name>`
+$ add2virtualenv <gislab-web-mobile>/server
 
 $ pip install -r server/requirements.txt
 $ pip install django-sslserver
@@ -169,7 +170,6 @@ INSTALLED_APPS = (
 Create database and superuser account
 
 ```bash
-$ export PYTHONPATH=<gislab-web-mobile>/server/
 $ cd <webgis-server-project-directory>
 $ python manage.py migrate
 $ python manage.py createsuperuser
@@ -194,7 +194,6 @@ $ gulp
 #### Run Webgis server:
 
 ```bash
-$ export PYTHONPATH=<gislab-web-mobile>/server/
 $ cd <webgis-server-project-directory>
 $ python manage.py runsslserver
 ```

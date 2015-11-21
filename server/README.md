@@ -1,22 +1,23 @@
-Important:
-==========
-Replace <QGIS-DATA> with directory of published QGIS projects (for example: /home/user/qgis/publish).
-After installing lighttpd server (in next setp), ensure that lighttpd server will have permissions to
-read files in this directory.
+#### Note:
+
+Create directory for published QGIS projects. In the following configuration,
+`/home/user/qgis/publish` location will be used. After installing lighttpd server,
+ensure that lighttpd server have permissions to read files in this directory.
 
 
-Install lighttpd server:
-========================
-sudo apt-get install lighttpd, xvfb
+### Install QGIS Mapserver and lighttpd server:
 
+```bash
+$ sudo apt-get install qgis-server, lighttpd, xvfb
+```
 
-Configure Virtual frame buffer
-------------------------------
+#### Configure Virtual frame buffer
+
 (Info taken from http://www.itopen.it/qgis-server-setup-notes/)
 
 Create file /etc/init.d/xvfb:
----------------------------------------------------------------------------------------------------------------
 
+```bash
 ### BEGIN INIT INFO
 # Provides: Xvfb
 # Required-Start: $local_fs $remote_fs
@@ -51,17 +52,17 @@ case "$1" in
 esac
  
 exit 0
+```
 
----------------------------------------------------------------------------------------------------------------
-
+```bash
 $ chmod +x /etc/init.d/xvfb
 $ update-rc.d xvfb defaults
 $ sudo /etc/init.d/xvfb start
+```
 
+Configure lighttpd server - `/etc/lighttpd/lighttpd.conf`
 
-Configure lighttpd server (/etc/lighttpd/lighttpd.conf)
-========================================================
-
+```
 server.modules = (
     "mod_access",
     "mod_alias",
@@ -109,51 +110,45 @@ fastcgi.server = (
 )
 
 url.rewrite-once = (
-    "^(.*)MAP=(.*)$" => "$1MAP=<QGIS-DATA>/$2",
+    "^(.*)MAP=(.*)$" => "$1MAP=/home/user/qgis/publish/$2",
 )
+```
 
-----------------------------------------------------------------------------------------------------------
-
+```bash
 $ sudo service lighttpd restart
+```
 
 
-Install QGIS server:
-====================
-sudo apt-get install qgis-server
-
-
-
-Configure Webgis server for development
-=======================================
-
-
-$ sudo apt-get install libldap2-dev libsasl2-dev
+### Configure Webgis server for development
 
 Create Python virtual environment for Webgis server:
 
-$ mkvirtualenv --system-site-packages <name>
-$ workon <name>
+```bash
+$ mkvirtualenv --system-site-packages <name>`
+$ workon <name>`
 
-$ cd <gislab-web-mobile>/server
-$ pip install -r requirements.txt
+$ pip install -r server/requirements.txt
 $ pip install django-sslserver
+```
 
-Create Webgis Django project (server instance):
+Create Webgis Django project (server instance). Name of the project must be valid name for Python module.
 
+```bash
 $ django-admin.py startproject --template=webgis/conf/project_template/ <project-name> [<webgis-server-project-directory>]
-Note: Name of the project must be valid name for Python module!
+```
 
 Example:
---------
+
+```bash
 $ mkdir webgis-dev-server
 $ django-admin.py startproject --template=webgis/conf/project_template/ webgisdev webgis-dev-server
+```
 
+Configure `<webgis-server-project-directory>/<project-name>/settings.py` file:
 
-Configure <webgis-server-project-directory>/<project-name>/settings.py file:
-----------------------------------------------------------------------------
-
+```python
 # Set root directory of published QGIS projects
-GISLAB_WEB_PROJECT_ROOT = '<QGIS-DATA>/'
+GISLAB_WEB_PROJECT_ROOT = '/home/user/qgis/publish/'
 
 
 # Add 'sslserver' into the list of INSTALLED_APPS
@@ -169,43 +164,41 @@ INSTALLED_APPS = (
     'webgis.mapcache',
     'webgis.mobile',
 )
-
-------------------------------------------------------------------------------------
+```
 
 Create database and superuser account
 
+```bash
 $ export PYTHONPATH=<gislab-web-mobile>/server/
-
 $ cd <webgis-server-project-directory>
-
 $ python manage.py migrate
 $ python manage.py createsuperuser
+```
 
+#### Build web client application:
 
-Build web client application:
-=============================
-Install Node.js (npm)
-Install 'nodejs' Ubuntu package or install nvm (Node Version Manager) https://github.com/creationix/nvm
+Install Node.js (npm) - install 'nodejs' Ubuntu package or [nvm (Node Version Manager)](https://github.com/creationix/nvm)
 
 Install Gulp
+```bash
 $ npm install -g gulp
+```
 
+```bash
 $ cd <gislab-web-mobile>/clients
 $ npm install
 $ npm install web/
 $ gulp
+```
 
+#### Run Webgis server:
 
-Run Webgis server:
-==================
-
+```bash
 $ export PYTHONPATH=<gislab-web-mobile>/server/
 $ cd <webgis-server-project-directory>
 $ python manage.py runsslserver
+```
 
-Open QGIS project in web browser:
+Open QGIS project in web browser (you will have to confirm security exception).
 
-https://localhost:8000/?PROJECT=<project-path>
-Add security exception in web browser
-
-
+`https://localhost:8000/?PROJECT=<project-path>`

@@ -16,7 +16,8 @@ $ sudo apt-get install --no-install-recommends qgis-server lighttpd
 $ sudo apt-get install --no-install-recommends python-dev virtualenvwrapper
 ```
 
-* install Javascript development packages
+* install Javascript development packages (next time run '$ nvm use v4.2.2' to
+  activate NodeJS)
 ```
 $ curl https://raw.githubusercontent.com/creationix/nvm/v0.29.0/install.sh | bash
 $ . ~/.bashrc
@@ -95,10 +96,10 @@ $ git clone git@github.com:imincik/gislab-web-mobile.git
 ```
 
 ### Django development project
-* create Python virtualenv
+* create Python virtualenv (next time run '$ workon gislab-web' to activate
+  virtualenv)
 ```bash
 $ mkvirtualenv --system-site-packages gislab-web
-$ workon gislab-web
 ```
 
 * install Python dependencies

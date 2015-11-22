@@ -135,12 +135,12 @@ INSTALLED_APPS = (
 )
 ```
 
-* create database (run in 'gislab-web-mobile/dev')
+* create database (run in 'gislab-web-mobile/server/dev')
 ```bash
 $ python ./manage.py migrate
 ```
 
-* create superuser account (run in 'gislab-web-mobile/dev/devproj')
+* create superuser account (run in 'gislab-web-mobile/server/dev/devproj')
 ```bash
 $ python ./manage.py createsuperuser --username admin --email admin@dev.io
 ```
@@ -154,7 +154,7 @@ $ gulp
 ```
 
 ### Run GIS.lab Web
-* run Django development server (run in 'gislab-web-mobile/dev')
+* run Django development server (run in 'gislab-web-mobile/server/dev')
 ```bash
 $ python ./manage.py runsslserver
 ```

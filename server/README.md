@@ -167,7 +167,7 @@ $ python ./manage.py runsslserver
 
 * open 'Empty' GIS.lab Web project
 ```
-https://localhost:8000/?PROJECT=<project-path>
+https://localhost:8000
 ```
 
 * copy published QGIS project to '/tmp/gislab-web' and open it

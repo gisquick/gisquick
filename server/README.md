@@ -3,6 +3,9 @@
 ## Creating development environment
 
 ### Requirements
+**Recommended OS:** Ubuntu 14.04  
+**QGIS version:** 2.8 LTS
+
 * install server requirements
 ```bash
 $ sudo apt-get install --no-install-recommends qgis-server lighttpd
@@ -15,8 +18,10 @@ $ sudo apt-get install --no-install-recommends python-dev virtualenvwrapper
 
 * install Javascript development packages
 ```
-$ sudo apt-get install nodejs npm
-$ npm install -g gulp
+$ curl https://raw.githubusercontent.com/creationix/nvm/v0.29.0/install.sh | bash
+$ . ~/.bashrc
+$ nvm install v4.2.2
+$ npm install gulp
 ```
 
 * create directory for published projects

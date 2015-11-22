@@ -91,7 +91,7 @@ $ git clone git@github.com:imincik/gislab-web-mobile.git
 
 * change to source code directory
 ```bash
-$ cd gislab-web-mobile.
+$ cd gislab-web-mobile
 ```
 
 ### Django development project

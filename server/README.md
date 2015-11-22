@@ -89,22 +89,11 @@ $ curl "http://localhost/cgi-bin/qgis_mapserv.fcgi?SERVICE=WMS&REQUEST=GetCapabi
 $ git clone git@github.com:imincik/gislab-web-mobile.git
 ```
 
-* change to source code directory
-```bash
-$ cd gislab-web-mobile
-```
-
 ### Django development project
-
 * create Python virtualenv
 ```bash
 $ mkvirtualenv --system-site-packages gislab-web
 $ workon gislab-web
-```
-
-* add Python modules on path
-```bash
-$ add2virtualenv server
 ```
 
 * install Python dependencies
@@ -113,9 +102,13 @@ $ pip install -r server/requirements.txt
 $ pip install django-sslserver
 ```
 
-* create Django project
+* add Python modules on path (run in 'gislab-web-mobile' dir)
 ```bash
-$ cd server
+$ add2virtualenv server
+```
+
+* create Django project (run in 'gislab-web-mobile/server')
+```bash
 $ mkdir dev
 $ django-admin.py startproject --template=webgis/conf/project_template/ devproj dev
 ```
@@ -137,30 +130,27 @@ INSTALLED_APPS = (
 )
 ```
 
-* create database
+* create database (run in 'gislab-web-mobile/dev/devproj')
 ```bash
-$ cd devproj
 $ python ./manage.py migrate
 ```
 
-* create superuser account
+* create superuser account (run in 'gislab-web-mobile/dev/devproj')
 ```bash
 $ python ./manage.py createsuperuser --username admin --email admin@dev.io
 ```
 
 ### Javascript client build
-* build web client
+* build web client (run in 'gislab-web-mobile/clients')
 ```bash
-$ cd clients
 $ npm install
 $ npm install web/
 $ gulp
 ```
 
 ### Run GIS.lab Web
-* run Django development server
+* run Django development server (run in 'gislab-web-mobile/dev/devproj')
 ```bash
-$ cd dev/devproj
 $ python ./manage.py runsslserver
 ```
 

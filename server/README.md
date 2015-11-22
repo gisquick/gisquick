@@ -167,10 +167,11 @@ $ python ./manage.py runsslserver
 
 * open 'Empty' GIS.lab Web project
 ```
-https://localhost:8000
+$ firefox https://localhost:8000
 ```
 
-* copy published QGIS project to '/tmp/gislab-web' and open it
+* copy example GIS.lab project to '/tmp/gislab-web' and open it in GIS.lab Web
 ```
-https://localhost:8000/?PROJECT=<USER>/<PROJECT-PATH>
+$ cp -a gis-lab/gislab-project/natural-earth /tmp/gislab-web
+$ firefox https://localhost:8000/?PROJECT=natural-earth/central-europe
 ```

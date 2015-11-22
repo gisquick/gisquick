@@ -12,7 +12,7 @@ DEBUG = True
 
 
 ### GIS.lab Web ###
-GISLAB_WEB_PROJECT_ROOT = '/tmp/qgis/publish/'
+GISLAB_WEB_PROJECT_ROOT = '/tmp/gislab-web'
 GISLAB_WEB_MAPSERVER_URL = 'http://localhost/cgi-bin/qgis_mapserv.fcgi'
 GISLAB_WEB_GUEST_USERNAME = 'guest'
 
@@ -25,10 +25,10 @@ FILE_EXTENSIONS_TABLE = {
 
 ### DATABASE ###
 DATABASES = {
-	'default': {
-		'ENGINE': 'django.db.backends.sqlite3',
-		'NAME': os.path.join(BASE_DIR, 'webgis.sqlite3'),
-	}
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'webgis.sqlite3'),
+    }
 }
 
 

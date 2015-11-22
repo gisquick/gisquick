@@ -107,6 +107,12 @@ $ pip install django-sslserver
 $ add2virtualenv server
 ```
 
+* set environemnt variable (run in 'gislab-web-mobile/server' dir)
+```bash
+$ unset DJANGO_SETTINGS_MODULE
+$ export PYTHONPATH=$(pwd)
+```
+
 * create Django project (run in 'gislab-web-mobile/server')
 ```bash
 $ mkdir dev
@@ -130,7 +136,7 @@ INSTALLED_APPS = (
 )
 ```
 
-* create database (run in 'gislab-web-mobile/dev/devproj')
+* create database (run in 'gislab-web-mobile/dev')
 ```bash
 $ python ./manage.py migrate
 ```
@@ -149,7 +155,7 @@ $ gulp
 ```
 
 ### Run GIS.lab Web
-* run Django development server (run in 'gislab-web-mobile/dev/devproj')
+* run Django development server (run in 'gislab-web-mobile/dev')
 ```bash
 $ python ./manage.py runsslserver
 ```

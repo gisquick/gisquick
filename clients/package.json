@@ -19,9 +19,8 @@
     "gulp-clean": "",
     "gulp-chug": "",
     "gulp-install": "",
-    "gulp-jshint": "",
+    "gulp-jshint": "2.0.0",
     "gulp-fixmyjs": "",
-    "jshint-stylish": "",
     "gulp-ng-annotate": "",
     "gulp-uglify": "",
     "gulp-concat": "",
@@ -34,7 +33,9 @@
     "gulp-svg-ngmaterial": "^2.0.2",
     "gulp-svgmin": "^1.2.0",
     "gulp-svgstore": "^5.0.5",
-    "stream-series": "^0.1.1"
+    "stream-series": "^0.1.1",
+    "jshint": "2.8.0",
+    "jshint-stylish": ""
   },
   "ext": [],
   "maintainers": [],

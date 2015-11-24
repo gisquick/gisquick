@@ -3,27 +3,14 @@ Django settings for GIS.lab Web.
 """
 
 import os
-
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
-### DEBUG ###
+### DEBUG
 DEBUG = True
 
 
-### GIS.lab Web ###
-GISLAB_WEB_PROJECT_ROOT = '/tmp/gislab-web'
-GISLAB_WEB_MAPSERVER_URL = 'http://localhost/cgi-bin/qgis_mapserv.fcgi'
-GISLAB_WEB_GUEST_USERNAME = 'guest'
-
-# Dictionary of <MIME Type>: <File extension> pairs
-FILE_EXTENSIONS_TABLE = {
-    "application/json": "json",
-    "application/geojson": "geojson",
-}
-
-
-### DATABASE ###
+### DATABASE
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -32,7 +19,17 @@ DATABASES = {
 }
 
 
-### INTERNATIONALIZATION ###
+### SECRET KEY
+SECRET_KEY = '{{ secret_key }}'
+
+
+### GIS.LAB WEB CONFIGURATION
+GISLAB_WEB_PROJECT_ROOT = '/tmp/gislab-web'
+GISLAB_WEB_MAPSERVER_URL = 'http://localhost/cgi-bin/qgis_mapserv.fcgi'
+GISLAB_WEB_GUEST_USERNAME = 'guest'
+
+
+### INTERNATIONALIZATION
 LANGUAGES = (
     ('en-us', u'English'),
 )
@@ -43,24 +40,17 @@ USE_L10N = True
 USE_TZ = True
 
 
-### SECRET KEY ###
-SECRET_KEY = '{{ secret_key }}'
-
-### OTHER ###
+### OTHER
 ALLOWED_HOSTS = ['*']
-
-# Enable CORS requests
-CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOW_CREDENTIALS = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 MEDIA_URL = '/media/'
-
 MEDIA_ROOT =  os.path.join(BASE_DIR, 'media/')
 
 
+### SYSTEM CONFIGURATION
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
@@ -70,6 +60,10 @@ MIDDLEWARE_CLASSES = (
     'webgis.libs.middleware.WebgisHeaderMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
 )
+
+# enable CORS requests
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
 
 INSTALLED_APPS = (
     'corsheaders',
@@ -89,11 +83,10 @@ LOGIN_URL = '/login/'
 AUTH_USER_MODEL = 'viewer.GislabUser'
 
 
-
-### CUSTOM SETTINGS ###
+### CUSTOM SETTINGS
 try:
     from settings_custom import *
 except ImportError:
     pass
 
-# vim: set syntax=sh ts=4 sts=4 sw=4 noet
+# vim: set ts=8 sts=4 sw=4 et:

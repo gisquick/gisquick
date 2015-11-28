@@ -16,5 +16,5 @@ urlpatterns = [
     url(r"^user.json$", views.user_json, name="user_json"),
      url(r"^gislab_version.json$", views.gislab_version_json, name="gislab_version_json"),
 
-    url(r"^filter/$", views.filter, name="filter")
+    url(r"^filter/$", views.filterdata, name="filter")
 ]

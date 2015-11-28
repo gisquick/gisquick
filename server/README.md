@@ -175,3 +175,11 @@ $ firefox https://localhost:8000
 $ cp -a gis-lab/gislab-project/natural-earth /tmp/gislab-web
 $ firefox https://localhost:8000/?PROJECT=natural-earth/central-europe
 ```
+
+### Run tests
+
+* from gislab-web-mobile/server/dev
+
+```bash
+python manage.py test webgis.viewer.tests
+```

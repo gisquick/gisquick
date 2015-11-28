@@ -2,6 +2,7 @@
 
 import json
 import hashlib
+import urllib
 
 from django.conf import settings
 from django.shortcuts import render
@@ -18,7 +19,8 @@ from webgis.viewer.client import WebgisClient, LoginRequired
 from webgis.libs.auth.decorators import basic_authentication
 from webgis.libs.utils import secure_url, set_query_parameters
 
-#from owslib.wfs import WebFeatureService
+from django.views.decorators.csrf import csrf_exempt
+from wfsfilter import webgisfilter
 
 class WebClient(WebgisClient):
 
@@ -150,11 +152,53 @@ def projects_json(request):
     projects = webclient.get_user_projects(request, request.user.username)
     return HttpResponse(json.dumps(projects), content_type="application/json")
 
+@csrf_exempt
+def filterdata(request):
+    """Handle filter requrest - using OGC WFS service
 
-def filter(request):
-    url = settings.GISLAB_WEB_MAPSERVER_URL
-    path = settings.GISLAB_WEB_PROJECT_ROOT
-    project = request.GET['PROJECT']
-    print url, project
-    print url + "?MAP=" + path + project + "&service=wms&request=getcapabilities"
-    return HttpResponse('{"Ahoj":"svete"}', content_type="application/json")
+    The request body should look like:
+
+    {
+        'layer': 'Places',
+        'maxfeatures': 1000,
+        'startindex': 0,
+        'bbox': [0, 1, 2, 3],
+        'filters': [{
+            'attribute': 'NAME',
+            'value': 'Prague',
+            'operator': '='
+        }]
+    }
+
+    sent as HTTP POST request
+    """
+
+    if request.method == 'POST':
+        project = request.GET['PROJECT']
+        url = settings.GISLAB_WEB_MAPSERVER_URL
+        params = {
+            'MAP': project + '.qgs'
+        }
+        mapserv = '{}?{}'.format(url, urllib.urlencode(params))
+
+        filter_request = json.loads(request.body)
+
+        layer_name = filter_request['layer']
+        maxfeatures = startindex = bbox = filters = None
+
+        if 'maxfeatures' in filter_request:
+            maxfeatures = filter_request['maxfeatures']
+        if 'startindex' in filter_request:
+            startindex = filter_request['startindex']
+        if 'bbox' in filter_request:
+            bbox = filter_request['bbox']
+        if 'filters' in filter_request:
+            filters = filter_request['filters']
+
+
+        result = webgisfilter(mapserv, layer_name, maxfeatures=maxfeatures,
+                              startindex=startindex, bbox=bbox, filters=filters)
+
+        return HttpResponse(json.dumps(result), content_type="application/json")
+    else:
+        raise Exception('No inputs specified, use POST method')

@@ -38,9 +38,16 @@
 
     GislabClient.prototype._deferredRequest = function(httpParams) {
       var deferredAbort = $q.defer();
-      var requestParams = angular.extend({
-          timeout: deferredAbort.promise
-        }, httpParams);
+      // var requestParams = angular.extend({
+      //     timeout: deferredAbort.promise
+      //   }, httpParams);
+      var requestParams = angular.extend(
+        httpParams,
+        {
+          timeout: deferredAbort.promise,
+          url: '{0}{1}'.format(this.serverUrl, httpParams.url)
+        }
+      );
       var request = $http(requestParams);
       var promise = request.then(
         function(response) {
@@ -77,12 +84,16 @@
       }
     };
 
+    GislabClient.prototype.setServer = function(serverUrl) {
+      this.serverUrl = serverUrl;
+    };
+
     GislabClient.prototype.project = function(project) {
       var url;
       if (project && project !== 'empty') {
-        url = '{0}/project.json?PROJECT={1}'.format(this.serverUrl, encodeURIComponent(project));
+        url = '/project.json?PROJECT={0}'.format(encodeURIComponent(project));
       } else {
-        url = '{0}/project.json?'.format(this.serverUrl);
+        url = '/project.json';
       }
       return this._deferredRequest({
         url: url,
@@ -93,7 +104,7 @@
 
     GislabClient.prototype.userProjects = function() {
       return this._deferredRequest({
-        url: '{0}/projects.json'.format(this.serverUrl),
+        url: '/projects.json',
         method: 'get',
         withCredentials: true
       });

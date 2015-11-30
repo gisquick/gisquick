@@ -20,11 +20,11 @@
     if (projectProvider.map) {
       updateLegendUrls();
       projectProvider.map.getView().on('change:resolution', function() {
-      console.log('Zoom changed...');
-      $timeout(function() {
-        updateLegendUrls();
+        console.log('Zoom changed...');
+        $timeout(function() {
+          updateLegendUrls();
+        });
       });
-    });
     }
   };
 })();

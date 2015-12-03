@@ -17,12 +17,13 @@
       {
         icon: 'icon-layers',
         page: 'templates/tools/layers.html',
-        persistent: true,
+        // persistent doesn't work correctly in 2.0.0 beta, issue already reported
+        // persistent: true,
         disabled: true
       }, {
         icon: 'icon-project',
         page: 'templates/tools/project_info.html',
-        persistent: true,
+        // persistent: true,
         disabled: true
       }, {
         icon: 'icon-zoom-max',
@@ -359,6 +360,7 @@
         }
       }, 150);
     };
+
     ons.ready(function() {
       console.log('ons ready');
       if (!angular.isDefined($scope.$storage.showScaleLine)) {
@@ -366,8 +368,32 @@
         $scope.$storage.showHeader = true;
         $scope.$storage.showZoomControls = true;
       }
-      setImmediate(function() {
+
+      function initializeUI() {
+        $scope.app.navigator.on('postpop', function(evt) {
+          if (evt.leavePage.page === 'templates/settings/project.html' && $scope.currentProject !== $scope.$storage.project) {
+            $scope.loadProjectInProgressBar();
+          }
+          if (evt.leavePage.page === 'templates/settings/server.html') {
+            var server = '{0}:{1}:{2}'.format($scope.$storage.serverUrl, $scope.$storage.username, $scope.$storage.password);
+            if ($scope.currentServer !== server) {
+              if ($scope.currentServer) {
+                gislabMobileClient.logout()
+                  .finally(function() {
+                    $scope.loginAndLoadProjectInProgressBar();
+                  });
+              } else {
+                $scope.loginAndLoadProjectInProgressBar();
+              }
+            }
+          }
+          if (evt.enterPage.page === 'map_container.html' && projectProvider.map && projectProvider.map.getSize()[0] === 0) {
+            projectProvider.map.updateSize();
+          }
+        });
+
         $scope.app.menu._mainPageGestureDetector.enable(false);
+        // deactivate all active tools after left panel is closed
         $scope.app.menu.on('postclose', function() {
           $scope.ui.toolbar.forEach(function(tool) {
             if (tool.page && tool.activated) {
@@ -377,44 +403,22 @@
             }
           });
         });
-      });
-      $scope.app.navigator.on('postpop', function(evt) {
-        if (evt.leavePage.page === 'templates/settings/project.html' && $scope.currentProject !== $scope.$storage.project) {
-          $scope.loadProjectInProgressBar();
-        }
-        if (evt.leavePage.page === 'templates/settings/server.html') {
-          var server = '{0}:{1}:{2}'.format($scope.$storage.serverUrl, $scope.$storage.username, $scope.$storage.password);
-          if ($scope.currentServer !== server) {
-            if ($scope.currentServer) {
-              gislabMobileClient.logout()
-                .finally(function() {
-                  $scope.loginAndLoadProjectInProgressBar();
-                });
-            } else {
-              $scope.loginAndLoadProjectInProgressBar();
-            }
-          }
-        }
-        if (evt.enterPage.page === 'map_container.html' && projectProvider.map && projectProvider.map.getSize()[0] === 0) {
-          projectProvider.map.updateSize();
-        }
-      });
-      // wait for initialization of modal components (progress bar, startup wizard)
-      setImmediate(function() {
+
         $scope.updateScreenSize();
         if ($scope.$storage.mapState && $scope.$storage.mapState.project === $scope.$storage.project) {
           $scope.loginAndLoadProjectInProgressBar($scope.$storage.mapState);
         } else {
           $scope.loginAndLoadProjectInProgressBar();
         }
-      });
+      }
+      // wait for initialization of modal components (progress bar, startup wizard)
+      // setImmediate(initializeUI);
+      $timeout(initializeUI, 100);
     });
 
     // device APIs are available
     function onDeviceReady() {
-      setTimeout(function() {
-        navigator.splashscreen.hide();
-      }, 100);
+      setTimeout(navigator.splashscreen.hide, 100);
       ons.setDefaultDeviceBackButtonListener(function() {
         if (!$scope.exitDialogShown) {
           $scope.exitDialogShown = true;

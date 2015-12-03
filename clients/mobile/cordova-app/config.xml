@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="io.gislab.mobile" version="0.1.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>GIS.lab Mobile</name>
+    <project name="GIS.lab Mobile" />
+    <description>
+        GIS.lab Mobile client.
+    </description>
+    <author email="dancakm@gmail.com">
+        Marcel Dancák
+    </author>
+    <content src="index.html" />
+    <access origin="*" />
+    <allow-navigation href="http://*/*" />
+    <allow-navigation href="https://*/*" />
+    <preference name="Fullscreen" value="false" />
+    <preference name="KeepRunning" value="true" />
+    <preference name="SplashScreen" value="screen" />
+    <preference name="FadeSplashScreen" value="false" />
+    <preference name="ShowSplashScreenSpinner" value="false" />
+    <preference name="SplashScreenDelay" value="8000" />
+    <icon src="res/launcher/hdpi.png" />
+    <icon src="res/launcher/mdpi.png" width="48" height="48" density="mdpi" />
+    <icon src="res/launcher/hdpi.png" width="72" height="72" density="hdpi" />
+    <icon src="res/launcher/xhdpi.png" width="96" height="96" density="xhdpi" />
+    <icon src="res/launcher/xxhdpi.png" width="144" height="144" density="xxhdpi" />
+    <platform name="android">
+        <splash src="res/splash/land-mdpi.png" density="land-mdpi" />
+        <splash src="res/splash/land-hdpi.png" density="land-hdpi" />
+        <splash src="res/splash/land-xhdpi.png" density="land-xhdpi" />
+        <splash src="res/splash/land-xxhdpi.png" density="land-xxhdpi" />
+
+        <splash src="res/splash/port-mdpi.png" density="port-mdpi" />
+        <splash src="res/splash/port-hdpi.png" density="port-hdpi" />
+        <splash src="res/splash/port-xhdpi.png" density="port-xhdpi" />
+        <splash src="res/splash/port-xxhdpi.png" density="port-xxhdpi" />
+    </platform>
+</widget>

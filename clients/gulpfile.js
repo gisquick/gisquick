@@ -21,6 +21,12 @@ var chug = require('gulp-chug');
 var minifyCss = require('gulp-minify-css');
 var templateCache = require('gulp-angular-templatecache');
 var series = require('stream-series');
+var svgmin = require('gulp-svgmin');
+var svgng = require('gulp-svg-ngmaterial');
+var cheerio = require('gulp-cheerio');
+var path = require('path');
+var connect = require('gulp-connect');
+
 
 var TARGET = '../server/webgis/viewer/static/';
 
@@ -54,7 +60,8 @@ var DEPS = [
 ];
 
 var OL3DEPS = [
-  'node_modules/crypto-js/crypto-js.js',
+  'node_modules/crypto-js/core.js',
+  'node_modules/crypto-js/md5.js',
   'node_modules/proj4/dist/proj4.js',
   'node_modules/openlayers/build/ol.min.js'
 ];
@@ -195,31 +202,9 @@ gulp.task('default', ['deps', 'csss', 'uglify'], function() {
 
 });
 
-
-var svgstore = require('gulp-svgstore');
-var svgmin = require('gulp-svgmin');
-var svgng = require('gulp-svg-ngmaterial');
-var cheerio = require('gulp-cheerio');
-var path = require('path');
-
-gulp.task('mobile-icons', function () {
-  return gulp
-    .src('icons/*.svg')
-    .pipe(svgmin(function (file) {
-      var prefix = path.basename(file.relative, path.extname(file.relative));
-      return {
-        plugins: [{
-          cleanupIDs: {
-            prefix: prefix + '-',
-            minify: false
-          }
-        }]
-      }
-    }))
-    .pipe(svgstore())
-    .pipe(gulp.dest('src/mobile/styles/'));
-});
-
+/**
+ * Create SVG sprite file from separated files (compatibile with Angular Material library)
+ */
 gulp.task('web-icons', function () {
   return gulp
     .src('icons/*.svg')
@@ -236,11 +221,14 @@ gulp.task('web-icons', function () {
     //.pipe(gulp.dest('src/web/styles/'));
 });
 
-/**
- * Tasks for development
- */
-var connect = require('gulp-connect');
 
+/*********************************
+ ***** Tasks for development *****
+ *********************************/
+
+/**
+ * Starts development server
+ */
 gulp.task('devserver', function() {
   connect.server({
     root: ['.', 'web/', 'src/web/', 'src/', 'node_modules/gislab-web/'],
@@ -249,6 +237,9 @@ gulp.task('devserver', function() {
   });
 });
 
+/**
+ * Tasks for reloading of development server when source files change
+ */
 gulp.task('dev-js', function () {
   gulp.src(CORE_WEB_LIBS)
     .pipe(connect.reload());
@@ -269,17 +260,14 @@ gulp.task('dev-index', function () {
     .pipe(connect.reload());
 });
 
+/**
+ * Detects changes in source files and triggers reload of development server
+ */
 gulp.task('watch', function () {
   gulp.watch(CORE_WEB_LIBS, ['dev-js']);
   gulp.watch(WEB_TEMPLATES, ['dev-templates']);
   gulp.watch(['src/web/styles/*.css'], ['dev-styles']);
   gulp.watch(['web/index.html'], ['dev-index']);
-});
-
-gulp.task('compile-templates', function () {
-  return gulp.src('src/web/**/*.html')
-    .pipe(templateCache())
-    .pipe(gulp.dest('../static/web/js/'));
 });
 
 /**

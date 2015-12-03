@@ -15,10 +15,8 @@ from webgis.viewer.client import LoginRequired
 @csrf_exempt
 def client_login(request):
     if request.method == 'POST':
-        #data = json.loads(request.body)
-        #print data
-        #form = forms.LoginForm(data)
-        form = forms.LoginForm(request.POST)
+        data = json.loads(request.body)
+        form = forms.LoginForm(data)
         if form.is_valid():
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']

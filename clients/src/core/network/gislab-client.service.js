@@ -3,19 +3,6 @@
 
   angular
     .module('gl.network')
-    .config(['$httpProvider', function($httpProvider) {
-      // Intercept POST requests, convert to standard form encoding
-      $httpProvider.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded; charset=UTF-8";
-      $httpProvider.defaults.transformRequest.unshift(function(data) {
-        var key, result = [];
-        for (key in data) {
-          if (data.hasOwnProperty(key)) {
-            result.push(encodeURIComponent(key) + "=" + encodeURIComponent(data[key]));
-          }
-        }
-        return result.join("&");
-      });
-    }])
     .provider('gislabClient', GislabClientProvider);
 
   function GislabClientProvider() {
@@ -38,9 +25,6 @@
 
     GislabClient.prototype._deferredRequest = function(httpParams) {
       var deferredAbort = $q.defer();
-      // var requestParams = angular.extend({
-      //     timeout: deferredAbort.promise
-      //   }, httpParams);
       var requestParams = angular.extend(
         httpParams,
         {
@@ -123,17 +107,9 @@
         url: url,
         method: 'post',
         withCredentials: true,
-        data: data
+        data: data,
+        headers: {'Content-Type': 'application/json; charset=UTF-8'}
       });
-      /*
-        headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
-        transformRequest: function(obj) {
-          var str = [];
-          for(var p in obj)
-          str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-          return str.join("&");
-        }
-      });*/
     };
 
     return new GislabClient();

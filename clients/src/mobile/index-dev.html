@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en" ng-app="gl.mobile">
+  <head>
+    <meta charset="utf-8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=medium-dpi">
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'"> -->
+
+    <title>GIS.lab mobile client</title>
+
+    <link rel="stylesheet" type="text/css" href="node_modules/openlayers/dist/ol.css"/>
+    <link rel="stylesheet" type="text/css" href="node_modules/onsenui/css/onsenui.css"/>
+    <link rel="stylesheet" type="text/css" href="node_modules/onsenui/css/onsen-css-components.css"/>
+    <!-- <link rel="stylesheet" href="lib/ui-grid/ui-grid.css"> -->
+    <link rel="stylesheet" type="text/css" href="styles/mobile.css"/>
+    <link rel="stylesheet" type="text/css" href="styles/settings.css"/>
+    <link rel="stylesheet" type="text/css" href="styles/tree.css"/>
+    <link rel="stylesheet" type="text/css" href="styles/list.css"/>
+    <link rel="stylesheet" type="text/css" href="styles/toolbar.css"/>
+    <link rel="stylesheet" type="text/css" href="styles/wizard.css"/>
+
+    <script type="text/javascript" src="node_modules/angular/angular.js"></script>
+    <!-- <script type="text/javascript" src="lib/onsen/js/angular/angular-touch.js"></script> -->
+    <script type="text/javascript" src="node_modules/angular-animate/angular-animate.js"></script>
+    <script type="text/javascript" src="node_modules/onsenui/js/onsenui.js"></script>
+    <script type="text/javascript" src="node_modules/onsenui/js/angular-onsenui.js"></script>
+    <!-- <script src="lib/ui-grid/ui-grid.js"></script> -->
+    <script type="text/javascript" src="node_modules/ngstorage/ngStorage.js"></script>
+
+    <script type="text/javascript" src="node_modules/proj4/dist/proj4-src.js"></script>
+    <script type="text/javascript" src="node_modules/crypto-js/crypto-js.js"></script>
+    <script type="text/javascript" src="node_modules/openlayers/build/ol.debug.js"></script>
+
+    <script type="text/javascript">
+    // First, checks if it isn't implemented yet.
+    if (!String.prototype.format) {
+      String.prototype.format = function() {
+        var args = arguments;
+        return this.replace(/{(\d+)}/g, function(match, number) {
+          return typeof args[number] != 'undefined'
+            ? args[number]
+            : match
+          ;
+        });
+      };
+    }
+    </script>
+
+    <script type="text/javascript" src="js/mobile/mobile.module.js"></script>
+    <script type="text/javascript" src="js/mobile/app.ctrl.js"></script>
+    <script type="text/javascript" src="js/mobile/settings/settings.ctrl.js"></script>
+    <script type="text/javascript" src="js/mobile/settings/server-settings.ctrl.js"></script>
+    <script type="text/javascript" src="js/mobile/settings/project-settings.ctrl.js"></script>
+    <script type="text/javascript" src="js/mobile/settings/startup-config.ctrl.js"></script>
+    <script type="text/javascript" src="js/mobile/gislab-client.service.js"></script>
+    <script type="text/javascript" src="js/mobile/open-in-browser.dir.js"></script>
+
+    <script type="text/javascript" src="js/ui/mobile.ui.module.js"></script>
+    <script type="text/javascript" src="js/ui/carousel-tab-slider.dir.js"></script>
+    <script type="text/javascript" src="js/ui/scroll-indicator.dir.js"></script>
+
+    <script type="text/javascript" src="core/map-tools/location/location.module.js"></script>
+    <script type="text/javascript" src="core/map-tools/location/location.service.js"></script>
+
+    <script type="text/javascript" src="core/network/network.module.js"></script>
+    <script type="text/javascript" src="core/network/gislab-client.service.js"></script>
+
+    <script type="text/javascript" src="core/map/map.module.js"></script>
+    <script type="text/javascript" src="core/map/map-builder.service.js"></script>
+    <script type="text/javascript" src="core/map/project-provider.service.js"></script>
+
+    <script type="text/javascript" src="core/ui/ui.module.js"></script>
+    <script type="text/javascript" src="core/ui/tree.dir.js"></script>
+    <script type="text/javascript" src="core/ui/accordion.dir.js"></script>
+    <script type="text/javascript" src="core/ui/accordion.ctrl.js"></script>
+
+    <script type="text/javascript" src="core/map-tools/layers-control/layers-control.module.js"></script>
+    <script type="text/javascript" src="core/map-tools/layers-control/layers-control.service.js"></script>
+    <script type="text/javascript" src="core/map-tools/layers-control/layers-control.ctrl.js"></script>
+    <script type="text/javascript" src="core/map-tools/legend/legend.module.js"></script>
+    <script type="text/javascript" src="core/map-tools/legend/legend.ctrl.js"></script>
+    <script type="text/javascript" src="core/map-tools/features/features.module.js"></script>
+    <script type="text/javascript" src="core/map-tools/features/features-viewer.service.js"></script>
+    <script type="text/javascript" src="core/map-tools/features/identification.ctrl.js"></script>
+    <script type="text/javascript" src="core/map-tools/features/search.ctrl.js"></script>
+
+    <script type="text/javascript" src="core/utils/utils.module.js"></script>
+    <script type="text/javascript" src="core/utils/con-attr.dir.js"></script>
+  </head>
+
+  <body>
+    <ng-include src="'styles/icons.svg'"></ng-include>
+    <ng-include src="'templates/app.html'"></ng-include>
+  </body>
+</html>

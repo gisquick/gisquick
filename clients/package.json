@@ -35,7 +35,8 @@
     "gulp-svgstore": "^5.0.5",
     "stream-series": "^0.1.1",
     "jshint": "2.8.0",
-    "jshint-stylish": ""
+    "jshint-stylish": "",
+    "gulp-if": "^2.0.0"
   },
   "ext": [],
   "maintainers": [],

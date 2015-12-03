@@ -162,7 +162,7 @@ $ gulp
 ### Run GIS.lab Web
 * run Django development server (run in 'gislab-web-mobile/server/dev')
 ```bash
-$ python ./manage.py runsslserver
+$ python ./manage.py runsslserver 0.0.0.0:8000
 ```
 
 * open 'Empty' GIS.lab Web project

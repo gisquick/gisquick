@@ -28,19 +28,6 @@
       } else {
         return $q.when();
       }
-      /*
-      return $http({
-        method: 'POST',
-        url: '{0}/mobile/login/'.format(this.getServerUrl(server)),
-        headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
-        transformRequest: function(obj) {
-          var str = [];
-          for(var p in obj)
-          str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-          return str.join("&");
-        },
-        data: {username: username, password: password},
-      });*/
     };
 
     GislabMobileClient.prototype.logout = function() {

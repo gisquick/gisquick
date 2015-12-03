@@ -182,7 +182,7 @@ ol.source.WebgisImageWMS = function(options) {
   //   resolutions: options.resolutions,
   //   url: options.url
   // });
-  goog.base(this,  /** @type {olx.source.ImageWMSOptions} */ (options));
+  goog.base(this,  /** @type {olx.source.WebgisImageWMSOptions} */ (options));
   this.layersAttributions = goog.isDef(options.layersAttributions) ? options.layersAttributions : {};
   this.layersOrder = goog.isDef(options.layersOrder) ? options.layersOrder : {};
   var legendUrlParams = {

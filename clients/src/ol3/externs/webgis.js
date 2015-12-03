@@ -197,28 +197,28 @@ olx.source.WebgisTileImageOptions.prototype.wrapX;
  * }}
  * @api
  */
-olx.source.ImageWMSOptions;
+olx.source.WebgisImageWMSOptions;
 
 /**
  * List of visible layers.
  * @type {Array.<string>|undefined}
  * @api
  */
-olx.source.ImageWMSOptions.prototype.visibleLayers;
+olx.source.WebgisImageWMSOptions.prototype.visibleLayers;
 
 /**
  * Layers order.
  * @type {Object.<string,*>|undefined}
  * @api
  */
-olx.source.ImageWMSOptions.prototype.layersOrder;
+olx.source.WebgisImageWMSOptions.prototype.layersOrder;
 
 /**
  * Layers attributions.
  * @type {Object.<string,ol.Attribution>|undefined}
  * @api
  */
-olx.source.ImageWMSOptions.prototype.layersAttributions;
+olx.source.WebgisImageWMSOptions.prototype.layersAttributions;
 
 
 /**
@@ -226,7 +226,7 @@ olx.source.ImageWMSOptions.prototype.layersAttributions;
  * @type {Array.<ol.Attribution>|undefined}
  * @api stable
  */
-olx.source.ImageWMSOptions.prototype.attributions;
+olx.source.WebgisImageWMSOptions.prototype.attributions;
 
 /**
  * The `crossOrigin` attribute for loaded images.  Note that you must provide a
@@ -237,7 +237,7 @@ olx.source.ImageWMSOptions.prototype.attributions;
  * @type {null|string|undefined}
  * @api stable
  */
-olx.source.ImageWMSOptions.prototype.crossOrigin;
+olx.source.WebgisImageWMSOptions.prototype.crossOrigin;
 
 /**
  * Use the `ol.Map#pixelRatio` value when requesting the image from the remote
@@ -245,7 +245,7 @@ olx.source.ImageWMSOptions.prototype.crossOrigin;
  * @type {boolean|undefined}
  * @api
  */
-olx.source.ImageWMSOptions.prototype.hidpi;
+olx.source.WebgisImageWMSOptions.prototype.hidpi;
 
 /**
  * The type of the remote WMS server: `mapserver`, `geoserver` or `qgis`. Only
@@ -253,21 +253,21 @@ olx.source.ImageWMSOptions.prototype.hidpi;
  * @type {ol.source.wms.ServerType|string|undefined}
  * @api
  */
-olx.source.ImageWMSOptions.prototype.serverType;
+olx.source.WebgisImageWMSOptions.prototype.serverType;
 
 /**
  * Optional function to load an image given a URL.
- * @type {ol.TileLoadFunctionType|undefined}
+ * @type {ol.ImageLoadFunctionType|undefined}
  * @api
  */
-olx.source.ImageWMSOptions.prototype.imageLoadFunction;
+olx.source.WebgisImageWMSOptions.prototype.imageLoadFunction;
 
 /**
  * Logo.
  * @type {string|olx.LogoOptions|undefined}
  * @api stable
  */
-olx.source.ImageWMSOptions.prototype.logo;
+olx.source.WebgisImageWMSOptions.prototype.logo;
 
 /**
  * WMS request parameters. At least a `LAYERS` param is required. `STYLES` is
@@ -276,14 +276,14 @@ olx.source.ImageWMSOptions.prototype.logo;
  * @type {Object.<string,*>}
  * @api stable
  */
-olx.source.ImageWMSOptions.prototype.params;
+olx.source.WebgisImageWMSOptions.prototype.params;
 
 /**
  * Projection.
  * @type {ol.proj.ProjectionLike}
  * @api
  */
-olx.source.ImageWMSOptions.prototype.projection;
+olx.source.WebgisImageWMSOptions.prototype.projection;
 
 /**
  * Ratio. `1` means image requests are the size of the map viewport, `2` means
@@ -292,21 +292,21 @@ olx.source.ImageWMSOptions.prototype.projection;
  * @type {number|undefined}
  * @api stable
  */
-olx.source.ImageWMSOptions.prototype.ratio;
+olx.source.WebgisImageWMSOptions.prototype.ratio;
 
 /**
  * Resolutions. If specified, requests will be made for these resolutions only.
  * @type {Array.<number>|undefined}
  * @api stable
  */
-olx.source.ImageWMSOptions.prototype.resolutions;
+olx.source.WebgisImageWMSOptions.prototype.resolutions;
 
 /**
  * WMS service URL.
  * @type {string|undefined}
  * @api stable
  */
-olx.source.ImageWMSOptions.prototype.url;
+olx.source.WebgisImageWMSOptions.prototype.url;
 
 var CryptoJS;
 

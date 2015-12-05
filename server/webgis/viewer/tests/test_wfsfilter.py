@@ -11,7 +11,7 @@ class WfsFilterCase(TestCase):
     def setUp(self):
         self.url = 'http://localhost/cgi-bin/qgis_mapserv.fcgi?MAP=/var/www/html/tmp/natural-earth/central-europe.qgs'
 
-    def _test_basic(self):
+    def test_basic(self):
 
         result = webgisfilter(self.url, 'Places')
         self.assertTrue(result, 'WFS Response')
@@ -42,7 +42,7 @@ class WfsFilterCase(TestCase):
 
         self.assertEqual(len(result['features']), 1, "Prague found")
 
-    def _test_filter_equal(self):
+    def test_filter_equal(self):
         
         myfilters = [
         {
@@ -55,7 +55,10 @@ class WfsFilterCase(TestCase):
 
         self.assertTrue(isinstance(fes, PropertyIsEqualTo), "PropertyIsEqualTo")
 
-    def _test_two_filters(self):
+        result = webgisfilter(self.url, 'Places', filters=myfilters)
+        self.assertEqual(len(result['features']), 1, "Prague found")
+
+    def test_two_filters(self):
         myfilters = [
         {
             'attribute': 'NAME',
@@ -72,7 +75,7 @@ class WfsFilterCase(TestCase):
         self.assertTrue(isinstance(fes, And), "And")
 
 
-    def _test_filter_in(self):
+    def test_filter_in(self):
         myfilters = [{
             'attribute': 'NAME',
             'operator': 'IN',
@@ -82,7 +85,7 @@ class WfsFilterCase(TestCase):
         fes = get_filter_fes(myfilters)
         self.assertTrue(isinstance(fes, Or), "Or")
 
-    def _test_filter_greater_lesser(self):
+    def test_filter_greater_lesser(self):
         myfilters = [{
             'attribute': 'POP_MAX',
             'operator': '>',

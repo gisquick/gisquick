@@ -4,10 +4,18 @@ import urllib, urlparse
 import logging
 from owslib.fes import PropertyIsLike, And, Or, PropertyIsEqualTo, \
     PropertyIsNotEqualTo, PropertyIsGreaterThanOrEqualTo, \
-    PropertyIsLessThanOrEqualTo, PropertyIsBetween
+    PropertyIsLessThanOrEqualTo, PropertyIsBetween, FilterRequest
+from owslib.namespaces import Namespaces
 
 from lxml import etree
 
+
+def get_namespaces():
+    n = Namespaces()
+    ns = n.get_namespaces(["ogc"])
+    ns[None] = n.get_namespace("ogc")
+    return ns
+namespaces = get_namespaces()
 
 def webgisfilter(mapserv, layer, maxfeatures=None, startindex=None, bbox=None,
         filters=None):
@@ -35,8 +43,8 @@ def webgisfilter(mapserv, layer, maxfeatures=None, startindex=None, bbox=None,
     mywfs = WebFeatureService(url=mapserv, version='1.0.0')
     fes = None
     if filters:
-        fes = get_filter_fes(filters)
-        fes = etree.tostring(fes.toXML())
+        fes = get_filter_root(get_filter_fes(filters))
+        fes = etree.tostring(fes)
     layer_data = mywfs.getfeature(typename=[layer],
                                   filter=fes,
                                   bbox=bbox,
@@ -62,6 +70,7 @@ def get_filter_fes(filters, logical_operator=And):
     """
 
     conditions = []
+    filter_request = None
 
     for myfilter in filters:
         if myfilter['operator'] == '=':
@@ -93,6 +102,18 @@ def get_filter_fes(filters, logical_operator=And):
             conditions.append(get_filter_fes(new_filters, logical_operator=Or))
 
     if len(conditions) > 1:
-        return logical_operator(conditions)
+        filter_request = logical_operator(conditions)
     else:
-        return conditions[0]
+        filter_request = conditions[0]
+
+    return filter_request
+
+def get_filter_root(condition):
+    """Return given condition enveloped with <ogc:Filter> tag
+
+    :param (owslib.fes.OgcExpression|owslib.fes.BinaryComparisonOpType) condition: 
+    """
+
+    root = etree.Element("{{}}Filter".format(namespaces['ogc']))
+    root.append(condition.toXML())
+    return root

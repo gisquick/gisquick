@@ -74,3 +74,48 @@ $ ANDROID_BUILD=ant cordova build android
 ```bash
 $ adb install -r platforms/android/bin/MainActivity-debug.apk
 ```
+
+
+## Debugging application running on device
+
+### Basic commands for `logcat` (Android SDK tool)
+
+Clear all logs
+
+```bash
+$ adb logcat -c
+```
+
+Simple filter for all logs from web applications (Debug level)
+
+```bash
+$ adb logcat chromium:D *:S
+```
+
+### Debugging in Chrome
+
+Open Chrome web browser page `chrome://inspect/#devices` and select WebView component
+with GIS.lab mobile client application. You should be able to debug application as normal
+web application. (If you get only blank screen, open the page `chrome://appcache-internals/`
+and remove all cached Manifest records)
+
+
+Some useful commands for browser console
+
+Get a reference to the `$scope` object of some controller (e.g. AppController)
+
+```javascript
+var scope = angular.element($('[ng-controller=AppController]')).scope()
+```
+
+Get a reference to the service (e.g. layersControl)
+
+```javascript
+var service = angular.element(document.body).injector().get('layersControl')
+```
+
+Get a reference to the ol3 map
+
+```javascript
+var map = angular.element(document.body).injector().get('projectProvider').map
+```

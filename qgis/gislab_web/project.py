@@ -124,7 +124,7 @@ class ProjectPage(WizardPage):
         else:
             dialog.errors_group.setVisible(False)
 
-    def validate(self):
+    def is_config_valid(self):
         """Checks whether all conditions for publishing project is satisfied,
         generating all warnings/errors displayed to user."""
         messages = []
@@ -239,6 +239,14 @@ class ProjectPage(WizardPage):
             if msg_type == MSG_ERROR:
                 return False
         return True
+
+    def validate(self):
+        if self.is_config_valid():
+            self.plugin.metadata.update(
+                self.get_metadata()
+            )
+            return True
+        return False
 
     def setup_config_page_from_metadata(self, metadata):
         dialog = self.dialog
@@ -402,8 +410,9 @@ class ProjectPage(WizardPage):
         else:
             dialog.max_scale.setCurrentIndex(0)
 
-    def initialize(self, metadata=None):
+    def initialize(self):
         dialog = self.dialog
+        dialog.tabWidget.setCurrentIndex(0)
         title = self.plugin.project.title() or self.plugin.project.readEntry("WMSServiceTitle", "/")[0]
         dialog.project_title.setText(title)
 
@@ -468,7 +477,7 @@ class ProjectPage(WizardPage):
         dialog.google.currentIndexChanged.connect(google_layer_changed)
 
         def scales_changed(index):
-            self.validate()
+            self.is_config_valid()
         dialog.min_scale.currentIndexChanged.connect(scales_changed)
         dialog.max_scale.currentIndexChanged.connect(scales_changed)
 
@@ -589,19 +598,34 @@ class ProjectPage(WizardPage):
 
             layers_model.itemChanged.connect(layer_item_changed)
 
-        if metadata:
+        if self.plugin.last_metadata:
             try:
-                self.setup_config_page_from_metadata(metadata)
+                self.setup_config_page_from_metadata(self.plugin.last_metadata)
             except:
                 QMessageBox.warning(
                     None,
                     'Warning',
                     'Failed to load settings from last published version'
                 )
-        self.validate()
+        self.is_config_valid()
+
+    def get_vector_layers(self):
+        vector_layers = [];
+        layers = self.plugin.layers_list()
+        layers_tree_model = self.dialog.treeView.model()
+        for layer in layers:
+            layer_widget = layers_tree_model.findItems(
+                layer.name(),
+                Qt.MatchExactly | Qt.MatchRecursive
+            )[0]
+            # if layer is checked and vector column is checked as well
+            if layer_widget.checkState() == Qt.Checked and \
+                    layers_tree_model.columnItem(layer_widget, 1).checkState() == Qt.Checked:
+                vector_layers.append(layer)
+        return vector_layers
 
     def get_metadata(self):
-        """Generated project's metadata (dictionary)."""
+        """Generate project's metadata (dictionary)."""
         dialog = self.dialog
         project = self.plugin.project
         map_canvas = self.plugin.iface.mapCanvas()
@@ -898,6 +922,16 @@ class ProjectPage(WizardPage):
             overlays_data = create_overlays_data(self.overlay_layers_tree)
             if overlays_data:
                 metadata['overlays'] = overlays_data.get('layers')
+
+        vector_layers_data = opt_value(self.plugin.metadata, 'vector_layers.layers', {})
+        vector_layers = self.get_vector_layers()
+        new_vector_layers_data = {}
+        for vector_layer in vector_layers:
+            new_vector_layers_data[vector_layer.name()] = vector_layers_data.get(vector_layer.name(), {})
+
+        metadata['vector_layers'] = {
+            'layers': new_vector_layers_data
+        }
 
         composer_templates = []
         for composer in self.plugin.iface.activeComposers():

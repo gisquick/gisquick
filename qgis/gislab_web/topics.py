@@ -17,6 +17,11 @@ from wizard import WizardPage
 class TopicsPage(WizardPage):
 
     def _save_topic(self, topic_item):
+        """Put actual topic configuration into given list item object.
+
+        Args:
+            topic_item (PyQt4.QtGui.QListWidgetItem): topic list item
+        """
         visible_overlays = []
         def collect_visible_overlays(widget):
             if widget.data(0, Qt.UserRole):
@@ -31,61 +36,71 @@ class TopicsPage(WizardPage):
             'visible_overlays': visible_overlays
         })
 
-    def update_topics_layers(self):
-        # hide excluded layer items (it must be done after
-        # attaching of all widgets to the QTreeWidget)
-        def hide_excluded_layers(group_item):
-            for row in range(group_item.rowCount()):
-                item = group_item.child(row, 0)
-                if item.rowCount() > 0:
-                    hide_excluded_layers(item)
-                else:
-                    is_exported_as_vector = group_item.child(row, 1).checkState() == Qt.Checked
-                    is_hidden = group_item.child(row, 3).checkState() == Qt.Checked
-                    if item.checkState() == Qt.Unchecked or is_exported_as_vector or is_hidden:
-                        topic_layer_items = self.dialog.topicLayers.findItems(
-                            item.text(),
-                            Qt.MatchExactly | Qt.MatchRecursive
-                        )
-                        for topic_layer_item in topic_layer_items:
-                            if is_hidden:
-                                topic_layer_item.setDisabled(True)
-                            else:
-                                topic_layer_item.setHidden(True)
+    def _create_topics_list(self, topics):
+        """Builds qt list with topics items from given data.
 
-        def update_available_layers(widget):
-            for index in range(widget.childCount()):
-                child_widget = widget.child(index)
-                if child_widget.childCount() > 0:
-                    update_available_layers(child_widget)
-                    group_empty = True
-                    for child_index in range(child_widget.childCount()):
-                        if not child_widget.child(child_index).isHidden():
-                            group_empty = False
-                            break
-                    child_widget.setHidden(group_empty)
-                else:
-                    layers_model = self.dialog.treeView.model()
-                    layer_item = layers_model.findItems(
-                        child_widget.text(0),
-                        Qt.MatchExactly | Qt.MatchRecursive
-                    )[0]
-                    is_layer_visible = layer_item.checkState() == Qt.Unchecked
-                    is_exported_as_vector = layers_model.columnItem(layer_item, 1).checkState() == Qt.Checked
-                    is_hidden = layers_model.columnItem(layer_item, 3).checkState() == Qt.Checked
-                    child_widget.setHidden(is_exported_as_vector or is_layer_visible)
-                    child_widget.setDisabled(is_hidden)
-
-        update_available_layers(self.dialog.topicLayers.invisibleRootItem())
-
-    def _create_topics_items(self, topics):
+        Args:
+            topics (Dict[str, Any]): topics data (title, abstract, visible_overlays)
+        """
         for topic_data in topics:
             item = QListWidgetItem(topic_data.pop('title'))
             item.setFlags(item.flags() | Qt.ItemIsEditable)
             item.setData(Qt.UserRole, topic_data)
             self.dialog.topicsList.addItem(item)
 
+    def _topic_selection_changed(self, current, previous):
+        """Handles changes of seleced topic items - configure GUI components for
+        current (selected) topic.
+        """
+        dialog = self.dialog
+        if previous is None:
+            dialog.topicWidget.setEnabled(True)
+        else:
+            self._save_topic(previous)
+        if current:
+            # update topic GUI widgets by topic data
+            current_data = current.data(Qt.UserRole) or {}
+            dialog.topicAbstract.setPlainText(current_data.get('abstract', ''))
+            visible_overlays = current_data.get('visible_overlays')
+            def set_visible_overlays(widget):
+                if widget.data(0, Qt.UserRole):
+                    if not widget.isDisabled():
+                        if visible_overlays:
+                            check_state = Qt.Checked if widget.text(0) in visible_overlays else \
+                                          Qt.Unchecked
+                            widget.setCheckState(0, check_state)
+                        else:
+                            widget.setCheckState(0, Qt.Checked)
+                else:
+                    for index in range(widget.childCount()):
+                        set_visible_overlays(widget.child(index))
+            set_visible_overlays(dialog.topicLayers.invisibleRootItem())
+
+
     def initialize(self, metadata=None):
+        self.dialog.topicWidget.setEnabled(False)
+        self.dialog.topicsList.currentItemChanged.connect(self._topic_selection_changed)
+
+        topics = self.plugin.last_metadata.get('topics');
+        if topics:
+            try:
+                self._create_topics_list(topics)
+            except:
+                QMessageBox.warning(
+                    None,
+                    'Warning',
+                    'Failed to load previously configured topics'
+                )
+        else:
+            # create default topic
+            default_topic = {
+                'title': 'Default topic',
+                'abstract': 'Default layers configuration',
+            }
+            self._create_topics_list([default_topic])
+        self.dialog.topicsList.setCurrentRow(0)
+
+    def on_show(self):
         dialog = self.dialog
         def add_topic():
             item = QListWidgetItem("New topic")
@@ -103,81 +118,47 @@ class TopicsPage(WizardPage):
         dialog.addTopic.released.connect(add_topic)
         dialog.removeTopic.released.connect(remove_topic)
 
-        def copy_tree_widget(group_item):
-            new_widget = QTreeWidgetItem()
-            new_widget.setText(0, group_item.text())
-            for row in range(group_item.rowCount()):
-                item = group_item.child(row, 0)
-                if item.rowCount() > 0:
-                    layer_widget = copy_tree_widget(item)
-                else:
-                    layer_widget = QTreeWidgetItem()
-                    layer_widget.setText(0, item.text())
-                    layer_widget.setData(0, Qt.UserRole, item.data(Qt.UserRole))
-                layer_widget.setFlags(
-                      Qt.ItemIsEnabled
-                    | Qt.ItemIsSelectable
-                    | Qt.ItemIsUserCheckable
-                    | Qt.ItemIsTristate
-                )
-                layer_widget.setCheckState(0, Qt.Checked)
-                new_widget.addChild(layer_widget)
-            return new_widget
-
-        dialog.topicLayers.addTopLevelItems(
-            copy_tree_widget(
-                dialog.treeView.model().invisibleRootItem()
-            ).takeChildren()
-        )
-        self.update_topics_layers()
-
-        dialog.topicWidget.setEnabled(False)
-        def topic_changed(current, previous):
-            if previous is None:
-                dialog.topicWidget.setEnabled(True)
+        def create_layers_tree(layer_node):
+            """Builds layers tree widget"""
+            widget = QTreeWidgetItem()
+            widget.setText(0, layer_node.get('title', layer_node['name']))
+            if 'layers' in layer_node:
+                for child_node in layer_node['layers']:
+                    widget.addChild(create_layers_tree(child_node))
             else:
-                self._save_topic(previous)
-            if current:
-                # load topic data to UI
-                current_data = current.data(Qt.UserRole) or {}
-                dialog.topicAbstract.setPlainText(current_data.get('abstract', ''))
-                visible_overlays = current_data.get('visible_overlays')
-                def set_visible_overlays(widget):
-                    if widget.data(0, Qt.UserRole):
-                        if not widget.isDisabled():
-                            if visible_overlays:
-                                check_state = Qt.Checked if widget.text(0) in visible_overlays else Qt.Unchecked
-                                widget.setCheckState(0, check_state)
-                            else:
-                                widget.setCheckState(0, Qt.Checked)
-                    else:
-                        for index in range(widget.childCount()):
-                            set_visible_overlays(widget.child(index))
-                set_visible_overlays(dialog.topicLayers.invisibleRootItem())
+                widget.setData(0, Qt.UserRole, layer_node)
 
-        dialog.topicsList.currentItemChanged.connect(topic_changed)
-        if metadata:
-            try:
-                # load topics from previous version of published project
-                topics = metadata.get('topics') or []
-                self._create_topics_items(topics)
-            except:
-                QMessageBox.warning(
-                    None,
-                    'Warning',
-                    'Failed to load settings from last published version'
-                )
-        else:
-            # create default topic
-            default_topic = {
-                'title': 'Default topic',
-                'abstract': 'Default layers configuration',
-            }
-            self._create_topics_items([default_topic])
-        self.dialog.topicsList.setCurrentRow(0)
+            widget.setFlags(
+                  Qt.ItemIsEnabled
+                | Qt.ItemIsSelectable
+                | Qt.ItemIsUserCheckable
+                | Qt.ItemIsTristate
+            )
+            widget.setCheckState(0, Qt.Checked)
+            widget.setDisabled(layer_node.get('hidden', False))
+            return widget
 
-    def show(self):
-        self.update_topics_layers()
+        # create virtual root layers node and build qt tree widget
+        for index in range(dialog.topicLayers.topLevelItemCount()):
+            dialog.topicLayers.takeTopLevelItem(0)
+        dialog.topicLayers.addTopLevelItems(
+            create_layers_tree(
+                {
+                    'name': 'root',
+                    'layers': self.plugin.metadata['overlays']
+                }
+            ).takeChildren() # without root node widget
+        )
+
+        self._topic_selection_changed(self.dialog.topicsList.currentItem(), None)
+
+
+    def on_return(self):
+        self.plugin.metadata.update(self.get_metadata())
+
+    def validate(self):
+        self.plugin.metadata.update(self.get_metadata())
+        return True
 
     def get_metadata(self):
         """Returns list of topics data (title, abstract, visible layers)"""

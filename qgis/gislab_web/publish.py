@@ -6,6 +6,10 @@
  ***************************************************************************/
 """
 
+import os
+import json
+import codecs
+
 # Import the PyQt and QGIS libraries
 from qgis.core import *
 from PyQt4.QtGui import *
@@ -42,12 +46,12 @@ CSS_STYLE = u"""<style type="text/css">
 
 class PublishPage(WizardPage):
 
-    def __init__(self, plugin, page, metadata=None):
-        super(PublishPage, self).__init__(plugin, page, metadata=metadata)
+    def __init__(self, plugin, page):
+        super(PublishPage, self).__init__(plugin, page)
         self.dialog.setButtonText(QWizard.CommitButton, "Publish")
         page.setCommitPage(True)
 
-    def show(self):
+    def on_show(self):
         """Creates configuration summary of published project."""
 
         def format_template_data(data):
@@ -59,7 +63,7 @@ class PublishPage(WizardPage):
                     data[key] = u', '.join(map(unicode, value))
             return data
 
-        metadata = self.plugin.collect_metadata()
+        metadata = self.plugin.metadata
         data = {
             'DEFAULT_BASE_LAYER': self.dialog.default_baselayer.currentText(),
             'SCALES': self.plugin.resolutions_to_scales(metadata['tile_resolutions']),
@@ -294,6 +298,75 @@ class PublishPage(WizardPage):
         """.format(**format_template_data(data))
         self.dialog.config_summary.setHtml(html)
 
+    def publish_project(self):
+        """Creates files required for publishing current project for GIS.lab Web application."""
+        metadata = self.plugin.metadata
+        project = self.plugin.project
+
+        page_id = 0
+        while page_id < self.dialog.currentId():
+            page = self.dialog.page(page_id)
+            page.handler.before_publish()
+            page_id = page.nextId()
+
+        publish_timestamp = str(metadata['publish_date_unix'])
+        # create metadata file
+        project_filename = os.path.splitext(project.fileName())[0]
+        metadata_filename = "{0}_{1}.meta".format(project_filename, publish_timestamp)
+        with open(metadata_filename, "w") as f:
+            def decimal_default(obj):
+                if isinstance(obj, Decimal):
+                    return float(obj)
+                raise TypeError
+            json.dump(metadata, f, indent=2, default=decimal_default)
+
+        # Create a copy of project's file with unique layer IDs (with publish timestamp)
+        # to solve issue with duplicit layer ID when updating publish project.
+        published_project_filename = "{0}_{1}.qgs".format(project_filename, publish_timestamp)
+        with codecs.open(project.fileName(), 'r', 'utf-8') as fin,\
+                codecs.open(published_project_filename, 'w', 'utf-8') as fout:
+            project_data = fin.read()
+            for layer in self.plugin.layers_list():
+                project_data = project_data.replace(
+                    '"{0}"'.format(layer.id()),
+                    '"{0}_{1}"'.format(layer.id(), publish_timestamp)
+                )
+                project_data = project_data.replace(
+                    '>{0}<'.format(layer.id()),
+                    '>{0}_{1}<'.format(layer.id(), publish_timestamp)
+                )
+            fout.write(project_data)
+
+        # If published project contains SpatiaLite layers, make sure they have filled
+        # statistics info required to load layers by Mapserver. Without this procedure,
+        # newly created layers in DB Manager wouldn't be loaded by Mapserver properly and
+        # GetMap and GetLegendGraphics requests with such layers would cause server error.
+        # The only way to update required statistics info is to create a new SpatiaLite
+        # provider for every published SpatiaLite layer. (This is done automatically
+        # when opening QGIS project file again).
+        overlays_names = []
+        def collect_overlays_names(layer_data):
+            sublayers = layer_data.get('layers')
+            if sublayers:
+                for sublayer_data in sublayers:
+                    collect_overlays_names(sublayer_data)
+            else:
+                overlays_names.append(layer_data['name'])
+
+        for layer_data in metadata['overlays']:
+            collect_overlays_names(layer_data)
+
+        layers_registry = QgsMapLayerRegistry.instance()
+        providers_registry = QgsProviderRegistry.instance()
+        for layer_name in overlays_names:
+            layer = layers_registry.mapLayersByName(layer_name)[0]
+            if layer.dataProvider().name() == "spatialite":
+                provider = providers_registry.provider(
+                    "spatialite",
+                    layer.dataProvider().dataSourceUri()
+                )
+                del provider
+
     def validate(self):
-        self.plugin.publish_project()
+        self.publish_project()
         return True

@@ -356,12 +356,7 @@ class WebGisPlugin:
 
         return overlays_tree(layers_root)
 
-    def collect_metadata(self):
-        """Collects metadata from all dialog's wizard pages.
-
-        Returns:
-            Dict[str, Any]: project's metadata object (JSON serializable)
-        """
+    def _new_metadata(self):
         metadata = {}
         gislab_version_data = {}
         try:
@@ -377,83 +372,31 @@ class WebGisPlugin:
         metadata['gislab_unique_id'] = gislab_version_data.get('GISLAB_UNIQUE_ID', 'unknown')
         metadata['gislab_version'] = gislab_version_data.get('GISLAB_VERSION', 'unknown')
         metadata['gislab_user'] = os.environ['USER']
-        self.metadata = metadata
+        return metadata
 
-        page_id = 0
-        while page_id < self.dialog.currentId():
-            page = self.dialog.page(page_id)
-            self.metadata.update(page.handler.get_metadata() or {})
-            page_id = page.nextId()
-        return self.metadata
-
-    def publish_project(self):
-        """Creates files required for publishing current project for GIS.lab Web application."""
-        if not self.metadata:
-            raise Exception('Project metadata does not exist')
-
-        page_id = 0
-        while page_id < self.dialog.currentId():
-            page = self.dialog.page(page_id)
-            page.handler.before_publish()
-            page_id = page.nextId()
-
-        publish_timestamp = str(self.metadata['publish_date_unix'])
-        # create metadata file
+    def _last_metadata(self):
         project_filename = os.path.splitext(self.project.fileName())[0]
-        metadata_filename = "{0}_{1}.meta".format(project_filename, publish_timestamp)
-        with open(metadata_filename, "w") as f:
-            def decimal_default(obj):
-                if isinstance(obj, Decimal):
-                    return float(obj)
-                raise TypeError
-            json.dump(self.metadata, f, indent=2, default=decimal_default)
+        metadata_pattern = re.compile(
+            re.escape(
+                os.path.basename(project_filename)
+            ) + '_(\d{10})\.meta')
+        matched_metadata_files = []
+        for filename in os.listdir(os.path.dirname(self.project.fileName())):
+            if filename.endswith('.meta'):
+                match = metadata_pattern.match(filename)
+                if match:
+                    matched_metadata_files.append((int(match.group(1)), filename))
 
-        # Create a copy of project's file with unique layer IDs (with publish timestamp)
-        # to solve issue with duplicit layer ID when updating publish project.
-        published_project_filename = "{0}_{1}.qgs".format(project_filename, publish_timestamp)
-        with codecs.open(self.project.fileName(), 'r', 'utf-8') as fin,\
-                codecs.open(published_project_filename, 'w', 'utf-8') as fout:
-            project_data = fin.read()
-            for layer in self.iface.legendInterface().layers():
-                project_data = project_data.replace(
-                    '"{0}"'.format(layer.id()),
-                    '"{0}_{1}"'.format(layer.id(), publish_timestamp)
-                )
-                project_data = project_data.replace(
-                    '>{0}<'.format(layer.id()),
-                    '>{0}_{1}<'.format(layer.id(), publish_timestamp)
-                )
-            fout.write(project_data)
-
-        # If published project contains SpatiaLite layers, make sure they have filled
-        # statistics info required to load layers by Mapserver. Without this procedure,
-        # newly created layers in DB Manager wouldn't be loaded by Mapserver properly and
-        # GetMap and GetLegendGraphics requests with such layers would cause server error.
-        # The only way to update required statistics info is to create a new SpatiaLite
-        # provider for every published SpatiaLite layer. (This is done automatically
-        # when opening QGIS project file again).
-        overlays_names = []
-        def collect_overlays_names(layer_data):
-            sublayers = layer_data.get('layers')
-            if sublayers:
-                for sublayer_data in sublayers:
-                    collect_overlays_names(sublayer_data)
-            else:
-                overlays_names.append(layer_data['name'])
-
-        for layer_data in self.metadata['overlays']:
-            collect_overlays_names(layer_data)
-
-        layers_registry = QgsMapLayerRegistry.instance()
-        providers_registry = QgsProviderRegistry.instance()
-        for layer_name in overlays_names:
-            layer = layers_registry.mapLayersByName(layer_name)[0]
-            if layer.dataProvider().name() == "spatialite":
-                provider = providers_registry.provider(
-                    "spatialite",
-                    layer.dataProvider().dataSourceUri()
-                )
-                del provider
+        if matched_metadata_files:
+            # load last published metadata file
+            metadata_filename = sorted(matched_metadata_files, reverse=True)[0][1]
+            metadata_filename = os.path.join(
+                os.path.dirname(self.project.fileName()),
+                metadata_filename
+            )
+            if os.path.exists(metadata_filename):
+                with codecs.open(metadata_filename, 'r', 'utf-8') as f:
+                    return json.load(f)
 
 
     def show_publish_dialog(self):
@@ -469,44 +412,27 @@ class WebGisPlugin:
                 'Create new QGIS project or open existing one before publishing to GIS.lab Web'
             )
             return
-        project_filename = os.path.splitext(self.project.fileName())[0]
-        current_metadata = None
-        metadata_pattern = re.compile(
-            re.escape(
-                os.path.basename(project_filename)
-            ) + '_(\d{10})\.meta')
-        matched_metadata_files = []
-        for filename in os.listdir(os.path.dirname(self.project.fileName())):
-            if filename.endswith('.meta'):
-                match = metadata_pattern.match(filename)
-                if match:
-                    matched_metadata_files.append((int(match.group(1)), filename))
-        if matched_metadata_files:
-            # load last published metadata file
-            metadata_filename = sorted(matched_metadata_files, reverse=True)[0][1]
-            metadata_filename = os.path.join(
-                os.path.dirname(self.project.fileName()),
-                metadata_filename
-            )
-            if os.path.exists(metadata_filename):
-                with open(metadata_filename, "r") as f:
-                    current_metadata = json.load(f)
+
+        self.metadata = self._new_metadata()
+        self.last_metadata = self._last_metadata() or {}
+
 
         dialog_filename = os.path.join(self.plugin_dir, "publish_dialog.ui")
         dialog = PyQt4.uic.loadUi(dialog_filename)
         self.dialog = dialog
-        dialog.tabWidget.setCurrentIndex(0)
 
-        ProjectPage(self, dialog.wizard_page1, current_metadata)
-        TopicsPage(self, dialog.wizard_page2, current_metadata)
-        vector_layers_page = VectorLayersPage(self, dialog.wizard_page3, current_metadata)
+        # wrap qt wizard pages (pure GUI defined in qt creator/designer) with wrapper
+        # classes which containes application logic
+        ProjectPage(self, dialog.wizard_page1)
+        TopicsPage(self, dialog.wizard_page2)
+        vector_layers_page = VectorLayersPage(self, dialog.wizard_page3)
         # skip page vector layers page when it is not needed
         def after_topics_page():
-            return 2 if vector_layers_page.get_vector_layers() else 3
+            return 2 if len(self.metadata['vector_layers']['layers']) else 3
         dialog.wizard_page2.nextId = after_topics_page
 
-        PublishPage(self, dialog.wizard_page4, current_metadata)
-        ConfirmationPage(self, dialog.wizard_page5, current_metadata)
+        PublishPage(self, dialog.wizard_page4)
+        ConfirmationPage(self, dialog.wizard_page5)
 
         dialog.show()
         dialog.exec_()

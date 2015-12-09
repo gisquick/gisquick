@@ -12,33 +12,32 @@ class WizardPage(object):
     Args:
         plugin (webgisplugin.WebGisPlugin): reference to webgis plugin
         page (PyQt4.QtGui.QWizardPage): GUI of the wizard page
-        metadata (Dict[str, Any]): optional metadata from previously published project
     """
-    def __init__(self, plugin, page, metadata=None):
+    def __init__(self, plugin, page):
         self.plugin = plugin
         self.dialog = plugin.dialog
-        self.loaded_metadata = metadata
         self.initialized = False
         page.initializePage = self._initialize_page
         page.validatePage = self.validate
+        page.cleanupPage = self.on_return
         page.handler = self
 
     def _initialize_page(self):
         if not self.initialized:
-            self.initialize(self.loaded_metadata)
+            self.initialize()
             self.initialized = True
-        self.show()
+        self.on_show()
 
-    def initialize(self, metadata=None):
-        """Method will be called for page initialization (before displayed for the first time).
-
-        Args:
-            metadata (Dict[str, Any]): optional metadata from previously published project
-        """
+    def initialize(self):
+        """Method will be called for page initialization (before displayed for the first time)."""
         pass
 
-    def show(self):
-        """Method will be called each time this page is displayed in dialog."""
+    def on_show(self):
+        """Method will be called each time this page is displayed (from previous page)."""
+        pass
+
+    def on_return(self):
+        """Method will be called on return to a previous page."""
         pass
 
     def validate(self):
@@ -51,12 +50,4 @@ class WizardPage(object):
 
     def before_publish(self):
         """Method called right before publishing project."""
-        pass
-
-    def get_metadata(self):
-        """Returns project's metadata from this wizard page.
-
-        Returns:
-            Dict[str, Any]: 
-        """
         pass

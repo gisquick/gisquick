@@ -13,6 +13,7 @@ from qgis.core import *
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
+from utils import opt_value
 from wizard import WizardPage
 from publish import CSS_STYLE
 
@@ -22,20 +23,21 @@ GISLAB_WEB_URL = 'https://web.gis.lab'
 
 class ConfirmationPage(WizardPage):
 
-    def __init__(self, plugin, page, metadata=None):
-        super(ConfirmationPage, self).__init__(plugin, page, metadata=metadata)
+    def __init__(self, plugin, page):
+        super(ConfirmationPage, self).__init__(plugin, page)
         page.setButtonText(QWizard.CancelButton, "Close")
         #page.setButtonText(QWizard.FinishButton, "Ok")
 
-    def show(self):
+    def on_show(self):
         datasources = []
-        if self.plugin.metadata.get('vector_layers'):
+        vector_data_file = opt_value(self.plugin.metadata, 'vector_layers.filename')
+        if vector_data_file:
             datasources.append(
                 os.path.join(
                     os.path.dirname(
                         self.plugin.project.fileName()
                     ),
-                    self.plugin.metadata['vector_layers']['filename']
+                    vector_data_file
                 )
             )
         def collect_layers_datasources(layer_node):

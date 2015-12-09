@@ -13,6 +13,7 @@ from qgis.core import *
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
+from utils import opt_value
 from wizard import WizardPage
 
 
@@ -25,33 +26,47 @@ class VectorLayersPage(WizardPage):
             timestamp
         )
 
-    def get_vector_layers(self, node=None):
-        if node is None:
-            node = self.plugin.get_project_layers()
-        layers = []
-        for child in node.children:
-            layers.extend(self.get_vector_layers(child))
-        if node.layer:
-            layer = node.layer
-            layers_model = self.dialog.treeView.model()
-            layer_widget = layers_model.findItems(
-                layer.name(),
-                Qt.MatchExactly | Qt.MatchRecursive
-            )[0]
-            if layer_widget.checkState() == Qt.Checked and \
-                    layers_model.columnItem(layer_widget, 1).checkState() == Qt.Checked:
-                layers.append(layer)
-        return layers
+    def initialize(self):
+        # import vector layers configuration from lastly published
+        # metadata if exists
+        last_vector_config = opt_value(
+            self.plugin.last_metadata,
+            'vector_layers.layers',
+            {}
+        )
+        current_vector_config = self.plugin.metadata['vector_layers']['layers']
+        for layer_name, layer_config in last_vector_config.iteritems():
+            if not current_vector_config.get(layer_name):
+                current_vector_config[layer_name] = layer_config
 
-    def initialize(self, metadata=None):
-        vector_layers = [
-            layer for layer in self.plugin.iface.legendInterface().layers()
-                if layer.type() == QgsMapLayer.VectorLayer
+    def get_vector_layers(self):
+        vector_layers_names = opt_value(
+            self.plugin.metadata,
+            'vector_layers.layers',
+            {}
+        ).keys()
+        return [
+            layer for layer in self.plugin.layers_list()
+                if layer.name() in vector_layers_names
         ]
-        last_config_layers = metadata.get('vector_layers', {}).get('layers', {}) if metadata else {}
-        layout = QVBoxLayout()
+
+    def on_show(self):
+        vector_layers = self.get_vector_layers()
+        layout = self.dialog.vectorLayers.widget().layout()
+        if layout:
+            for i in range(layout.count()):
+                item = layout.itemAt(i)
+                widget = item.widget()
+                if (widget):
+                    widget.deleteLater()
+                else:
+                    layout.removeItem(item)
+        else:
+            layout = QVBoxLayout()
+
         for layer in vector_layers:
             layer_name = layer.name()
+            layer_data = self.plugin.metadata['vector_layers']['layers'].get(layer_name, {})
             row_layout = QHBoxLayout()
             row_layout.setObjectName(layer_name)
             row_layout.setContentsMargins(0, 0, 0, 0)
@@ -73,12 +88,11 @@ class VectorLayersPage(WizardPage):
                 title_attribute.addItem(display, name)
                 description_attribute.addItem(display, name)
 
-            if layer_name in last_config_layers:
                 previous_title_index = title_attribute.findData(
-                    last_config_layers[layer_name]['title_attribute']
+                    layer_data.get('title_attribute')
                 )
                 previous_description_index = description_attribute.findData(
-                    last_config_layers[layer_name]['description_attribute']
+                    layer_data.get('description_attribute')
                 )
                 title_attribute.setCurrentIndex(
                     previous_title_index if previous_title_index > -1 else 0
@@ -91,6 +105,7 @@ class VectorLayersPage(WizardPage):
             #checkbox_layout = QVBoxLayout()
             #checkbox_layout.setAlignment(Qt.AlignHCenter)
             #checkbox_layout.addWidget(selected_only)
+            selected_only.setEnabled(layer.selectedFeatureCount() > 0)
 
             label = QLabel(layer_name)
             row_layout.addWidget(label)
@@ -105,19 +120,6 @@ class VectorLayersPage(WizardPage):
 
         layout.addItem(QSpacerItem(10, 10, QSizePolicy.Minimum, QSizePolicy.Expanding))
         self.dialog.vectorLayers.widget().setLayout(layout)
-
-    def show(self):
-        all_vector_layers = [
-            layer for layer in self.plugin.iface.legendInterface().layers()
-                if layer.type() == QgsMapLayer.VectorLayer
-        ]
-        exported_vector_layers = self.get_vector_layers()
-        for layer in all_vector_layers:
-            layer_widget = self.dialog.vectorLayers.findChild(QWidget, layer.name())
-            is_geojson_layer = layer in exported_vector_layers
-            layer_widget.setVisible(is_geojson_layer)
-            if is_geojson_layer and layer.selectedFeatureCount() == 0:
-                layer_widget.findChild(QCheckBox).setEnabled(False)
 
     def get_metadata(self):
         vector_layers_info = {}
@@ -137,6 +139,14 @@ class VectorLayersPage(WizardPage):
                     'layers': vector_layers_info
                 }
             }
+        return {'vector_layers': None}
+
+    def on_return(self):
+        self.plugin.metadata.update(self.get_metadata())
+
+    def validate(self):
+        self.plugin.metadata.update(self.get_metadata())
+        return True
 
     def before_publish(self):
         vector_layers = self.get_vector_layers()
@@ -154,12 +164,9 @@ class VectorLayersPage(WizardPage):
                 "GeoJSON"
             )
             for layer in vector_layers:
-                layer_widget = self.dialog.vectorLayers.findChild(QWidget, layer.name())
-                title_combo = layer_widget.findChild(QComboBox, 'title')
-                description_combo = layer_widget.findChild(QComboBox, 'description')
-                title_attribute = title_combo.itemData(title_combo.currentIndex())
-                description_attribute = description_combo.itemData(description_combo.currentIndex())
-                selected_features_only = layer_widget.findChild(QCheckBox).isChecked()
+                layer_metadata = self.plugin.metadata['vector_layers']['layers'][layer.name()]
+                title_attribute = layer_metadata.get('title_attribute')
+                description_attribute = layer_metadata.get('description_attribute')
 
                 transform = None
                 if layer.crs() != map_canvas.mapRenderer().destinationCrs():
@@ -167,9 +174,12 @@ class VectorLayersPage(WizardPage):
                         layer.crs(),
                         map_canvas.mapRenderer().destinationCrs()
                     )
-                # QgsVectorLayer.selectedFeaturesIterator is available since 2.6 version,
-                #  so it is better to convert QgsFeatureIterator to generator and use
-                # for-loop to iterate features
+
+                layer_widget = self.dialog.vectorLayers.findChild(QWidget, layer.name())
+                selected_features_only = layer_widget.findChild(QCheckBox).isChecked()
+                # QgsVectorLayer.selectedFeaturesIterator is available since version
+                # 2.6, so it is better to convert QgsFeatureIterator to generator
+                # and use for-loop to iterate features
                 if selected_features_only:
                     features = layer.selectedFeatures()
                 else:

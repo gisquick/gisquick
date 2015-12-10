@@ -78,7 +78,7 @@ def opt_value(data, param_name, default_value=''):
     obj = data
     value = default_value
     for param in param_name.split('.'):
-        if param in obj:
+        if obj and param in obj:
             value = obj[param]
             obj = value
         else:

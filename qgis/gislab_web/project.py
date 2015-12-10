@@ -8,7 +8,6 @@
 
 import os
 import re
-import time
 import types
 import datetime
 from decimal import Decimal
@@ -106,7 +105,11 @@ MSG_WARNING = "Warning"
 class ProjectPage(WizardPage):
 
     def _show_messages(self, messages):
-        """Display messages in dialog window."""
+        """Display messages in dialog window.
+
+        Args:
+            messages (List[Tuple[str, str]]): list of messages (composed of message type and text)
+        """
         dialog = self.dialog
         table = dialog.info_table
         if messages:
@@ -124,20 +127,14 @@ class ProjectPage(WizardPage):
         else:
             dialog.errors_group.setVisible(False)
 
-    def is_config_valid(self):
-        """Checks whether all conditions for publishing project is satisfied,
-        generating all warnings/errors displayed to user."""
+    def is_project_valid(self):
+        """Checks whether all conditions for publishing project is satisfied
+        and shows list of encountered warnings/errors."""
         messages = []
         if self.plugin.project.isDirty():
             messages.append((
                 MSG_ERROR,
                 u"Project has been modified. Save it before continue (Project > Save)."
-            ))
-
-        if not self.dialog.project_title.text():
-            messages.append((
-                MSG_ERROR,
-                u"Project title is required. Enter project title in 'Project' tab."
             ))
 
         crs_transformation, ok = self.plugin.project.readBoolEntry(
@@ -165,8 +162,28 @@ class ProjectPage(WizardPage):
                 u"Project contains layers with the same names."
             ))
 
+        self._show_messages(messages)
+        return len(filter(lambda msg: msg[0] == MSG_ERROR, messages)) == 0
+
+    def is_page_config_valid(self):
+        """Checks project configuration on this page and shows list of
+        encountered warnings/errors."""
+        messages = []
+
+        if not self.dialog.project_title.text():
+            messages.append((
+                MSG_ERROR,
+                u"Project title is required. Enter project title in 'Project' tab."
+            ))
+
         min_resolution = self.dialog.min_scale.itemData(self.dialog.min_scale.currentIndex())
         max_resolution = self.dialog.max_scale.itemData(self.dialog.max_scale.currentIndex())
+        if min_resolution > max_resolution:
+            messages.append((
+                MSG_ERROR,
+                u"Invalid map scales range."
+            ))
+
         def publish_resolutions(resolutions, min_resolution=min_resolution, max_resolution=max_resolution):
             return filter(
                 lambda res: res >= min_resolution and res <= max_resolution,
@@ -194,37 +211,25 @@ class ProjectPage(WizardPage):
 
         file_datasources = set()
         dbname_pattern = re.compile("dbname='([^']+)'")
-        if self.dialog.treeView.model():
-            overlay_layers = [
-                layer for layer in self.plugin.layers_list()
-                    if self.plugin.is_overlay_layer_for_publish(layer)
-            ]
-            for layer in overlay_layers:
-                layer_widget = self.dialog.treeView.model().findItems(
-                    layer.name(),
-                    Qt.MatchExactly | Qt.MatchRecursive
-                )
-                if layer_widget:
-                    layer_widget = layer_widget[0]
-                    if layer_widget.checkState() == Qt.Checked:
-                        # try to parse filename from layer's source string
-                        # (SpatiaLite vector layer)
-                        match = dbname_pattern.search(layer.source())
-                        if match:
-                            dbname = match.group(1)
-                            if os.path.exists(dbname):
-                                file_datasources.add(dbname)
-                        else:
-                            # try layer's source string without parsing
-                            # (image raster layer)
-                            if os.path.exists(layer.source()):
-                                file_datasources.add(layer.source())
-                        if layer.crs().authid().startswith('USER:'):
-                            messages.append((
-                                MSG_ERROR,
-                                u"Overlay layer '{0}' is using custom coordinate system " \
-                                "which is currently not supported.".format(layer.name())
-                            ))
+
+        for layer in self.get_published_layers():
+            match = dbname_pattern.search(layer.source())
+            if match:
+                dbname = match.group(1)
+                if os.path.exists(dbname):
+                    file_datasources.add(dbname)
+            else:
+                # try layer's source string without parsing
+                # (image raster layer)
+                if os.path.exists(layer.source()):
+                    file_datasources.add(layer.source())
+            if layer.crs().authid().startswith('USER:'):
+                messages.append((
+                    MSG_ERROR,
+                    u"Overlay layer '{0}' is using custom coordinate system " \
+                    "which is currently not supported.".format(layer.name())
+                ))
+
         project_dir = os.path.dirname(self.plugin.project.fileName())+os.path.sep
         for file_datasource in file_datasources:
             if not file_datasource.startswith(project_dir):
@@ -235,20 +240,22 @@ class ProjectPage(WizardPage):
                 ))
 
         self._show_messages(messages)
-        for msg_type, msg_text in messages:
-            if msg_type == MSG_ERROR:
-                return False
-        return True
+        return len(filter(lambda msg: msg[0] == MSG_ERROR, messages)) == 0
 
     def validate(self):
-        if self.is_config_valid():
+        if self.project_valid and self.is_page_config_valid():
             self.plugin.metadata.update(
                 self.get_metadata()
             )
             return True
         return False
 
-    def setup_config_page_from_metadata(self, metadata):
+    def setup_page(self, metadata):
+        """Setup page (GUI components) from already existing metadata.
+
+        Args:
+            metadata (Dict[str, Any]): metadata object
+        """
         dialog = self.dialog
         title = metadata.get('title')
         if title:
@@ -269,17 +276,11 @@ class ProjectPage(WizardPage):
 
         authentication = metadata.get('authentication')
         if authentication:
-            # backward compatibility
-            if type(authentication) is dict:
-                if authentication.get('allow_anonymous') and \
-                        not authentication.get('require_superuser'):
-                    dialog.authentication.setCurrentIndex(0)
-                if not authentication.get('allow_anonymous'):
-                    dialog.authentication.setCurrentIndex(1)
-            else:
-                auth_index = AUTHENTICATION_OPTIONS.index(authentication) \
-                             if authentication in AUTHENTICATION_OPTIONS else 1
-                dialog.authentication.setCurrentIndex(auth_index)
+            try:
+                auth_index = AUTHENTICATION_OPTIONS.index(authentication)
+            except ValueError:
+                auth_index = 1
+            dialog.authentication.setCurrentIndex(auth_index)
         project_extent = list(metadata['extent'])
         extent_buffer = metadata.get('extent_buffer', 0)
         if extent_buffer != 0:
@@ -334,6 +335,7 @@ class ProjectPage(WizardPage):
             layer_data['name'] for layer_data in overlays_data
                 if layer_data.get('export_to_drawings')
         ]
+        # Recursively setup layer widgets from prevoius info about layers types
         def load_layers_settings(group_item):
             for index in range(group_item.rowCount()):
                 child_item = group_item.child(index)
@@ -416,6 +418,10 @@ class ProjectPage(WizardPage):
         title = self.plugin.project.title() or self.plugin.project.readEntry("WMSServiceTitle", "/")[0]
         dialog.project_title.setText(title)
 
+        self.project_valid = self.is_project_valid()
+        if not self.project_valid:
+            return
+
         map_canvas = self.plugin.iface.mapCanvas()
         self.base_layers_tree = self.plugin.get_project_base_layers()
         self.overlay_layers_tree = self.plugin.get_project_layers()
@@ -477,7 +483,7 @@ class ProjectPage(WizardPage):
         dialog.google.currentIndexChanged.connect(google_layer_changed)
 
         def scales_changed(index):
-            self.is_config_valid()
+            self.is_page_config_valid()
         dialog.min_scale.currentIndexChanged.connect(scales_changed)
         dialog.max_scale.currentIndexChanged.connect(scales_changed)
 
@@ -600,16 +606,25 @@ class ProjectPage(WizardPage):
 
         if self.plugin.last_metadata:
             try:
-                self.setup_config_page_from_metadata(self.plugin.last_metadata)
+                self.setup_page(self.plugin.last_metadata)
             except:
                 QMessageBox.warning(
                     None,
                     'Warning',
                     'Failed to load settings from last published version'
                 )
-        self.is_config_valid()
 
-    def get_vector_layers(self):
+    def get_published_layers(self, **layer_filter):
+        """Returns array of qgis layers selected for publishing, optionally filtered by
+        additional arguments.
+
+        Args:
+            **layer_filter (bool): additional filters (possible arguments: 'vector' - for
+                layers exported in vector format, and 'hidden' - for hidden layers)
+
+        Returns:
+            List[qgis.core.QgsVectorLayer]: array of published qgis layers
+        """
         vector_layers = [];
         layers = self.plugin.layers_list()
         layers_tree_model = self.dialog.treeView.model()
@@ -618,9 +633,17 @@ class ProjectPage(WizardPage):
                 layer.name(),
                 Qt.MatchExactly | Qt.MatchRecursive
             )[0]
-            # if layer is checked and vector column is checked as well
-            if layer_widget.checkState() == Qt.Checked and \
-                    layers_tree_model.columnItem(layer_widget, 1).checkState() == Qt.Checked:
+            # if layer is checked for publishing
+            if layer_widget.checkState() == Qt.Checked:
+                # check additional filters
+                if 'vector' in layer_filter:
+                    state = Qt.Checked if layer_filter['vector'] else Qt.Unchecked
+                    if layers_tree_model.columnItem(layer_widget, 1).checkState() != state:
+                        continue
+                if 'hidden' in layer_filter:
+                    state = Qt.Checked if layer_filter['hidden'] else Qt.Unchecked
+                    if layers_tree_model.columnItem(layer_widget, 3).checkState() != state:
+                        continue
                 vector_layers.append(layer)
         return vector_layers
 
@@ -643,12 +666,12 @@ class ProjectPage(WizardPage):
             'access_constrains': project.readEntry("WMSAccessConstraints", "/")[0],
             'keyword_list':project_keyword_list if project_keyword_list != [u''] else [],
             'authentication': AUTHENTICATION_OPTIONS[dialog.authentication.currentIndex()],
-            'use_mapcache': dialog.use_mapcache.isChecked(),
-            'publish_date_unix': int(time.time()),
-            'publish_date': time.ctime(),
+            'use_mapcache': dialog.use_mapcache.isChecked()
         }
+        metadata['expiration'] = ""
         if self.dialog.enable_expiration.isChecked():
             metadata['expiration'] = self.dialog.expiration.date().toString("dd.MM.yyyy")
+
         renderer_context = map_canvas.mapRenderer().rendererContext()
         selection_color = renderer_context.selectionColor()
         canvas_color = map_canvas.canvasColor()
@@ -924,7 +947,7 @@ class ProjectPage(WizardPage):
                 metadata['overlays'] = overlays_data.get('layers')
 
         vector_layers_data = opt_value(self.plugin.metadata, 'vector_layers.layers', {})
-        vector_layers = self.get_vector_layers()
+        vector_layers = self.get_published_layers(vector=True)
         new_vector_layers_data = {}
         for vector_layer in vector_layers:
             new_vector_layers_data[vector_layer.name()] = vector_layers_data.get(vector_layer.name(), {})
@@ -955,6 +978,7 @@ class ProjectPage(WizardPage):
             })
         metadata['composer_templates'] = composer_templates
 
+        metadata['message'] = None
         message_text = dialog.message_text.toPlainText()
         if message_text:
             metadata['message'] = {

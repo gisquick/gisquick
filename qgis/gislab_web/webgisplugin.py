@@ -8,6 +8,7 @@
 
 import os
 import re
+import time
 import json
 import codecs
 import subprocess
@@ -42,7 +43,6 @@ class Node(object):
     layer = None
     parent = None
     children = None
-    isBaseLayerNode = False
 
     """
     Args:
@@ -357,6 +357,11 @@ class WebGisPlugin:
         return overlays_tree(layers_root)
 
     def _new_metadata(self):
+        """Create a new metadata object with initial data.
+
+        Returns:
+            Dict[str, Any]: new metadata object
+        """
         metadata = {}
         gislab_version_data = {}
         try:
@@ -372,9 +377,16 @@ class WebGisPlugin:
         metadata['gislab_unique_id'] = gislab_version_data.get('GISLAB_UNIQUE_ID', 'unknown')
         metadata['gislab_version'] = gislab_version_data.get('GISLAB_VERSION', 'unknown')
         metadata['gislab_user'] = os.environ['USER']
+        metadata['publish_date_unix'] = int(time.time())
+        metadata['publish_date'] = time.ctime()
         return metadata
 
     def _last_metadata(self):
+        """Try to load metadata from last published version of this project.
+
+        Returns:
+            Dict[str, Any]: parsed metadata
+        """
         project_filename = os.path.splitext(self.project.fileName())[0]
         metadata_pattern = re.compile(
             re.escape(
@@ -400,7 +412,12 @@ class WebGisPlugin:
 
 
     def show_publish_dialog(self):
-        """Display dialog window for publishing current project."""
+        """Display dialog window for publishing current project.
+
+        During a configuration process (wizard setup), plugin will hold actual metadata
+        object in 'WebGisPlugin.metadata' property. If metadata from previous publishing
+        still exist, they will be loaded and stored in 'WebGisPlugin.last_metadata' property.
+        """
 
         if self.dialog and self.dialog.isVisible():
             return
@@ -415,7 +432,6 @@ class WebGisPlugin:
 
         self.metadata = self._new_metadata()
         self.last_metadata = self._last_metadata() or {}
-
 
         dialog_filename = os.path.join(self.plugin_dir, "publish_dialog.ui")
         dialog = PyQt4.uic.loadUi(dialog_filename)

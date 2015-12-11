@@ -3,9 +3,12 @@ dist/
 MANIFEST
 /clients/node_modules/
 /server/webgis/viewer/static/
+dev/
 
 *.pyc
 
 # vim files
 .*.sw*
 .*.un~*
+
+.vagrant

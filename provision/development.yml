@@ -1,0 +1,208 @@
+---
+# Build GIS.lab Web development environment.
+
+- hosts: all
+  sudo: yes
+
+  vars:
+    packages:
+      - lighttpd
+      - mc
+      - python-dev
+      - qgis-server
+      - virtualenvwrapper
+
+    proxy_env:
+      http_proxy: "{{ lookup('env','ANSIBLE_APT_PROXY') }}"
+
+    nvm_version: 0.29.0
+    node_version: 4.2.2
+
+
+  handlers:
+    - name: service lighttpd restart
+      service:
+        name: lighttpd
+        state: restarted
+
+
+  tasks:
+    ### BASIC OS
+    - name: Add UbuntuGIS repository
+      apt_repository:
+        repo: 'ppa:ubuntugis/ubuntugis-unstable'
+
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+      environment: proxy_env
+
+    - name: Upgrade system
+      apt:
+        upgrade: full
+        force: yes
+      environment: proxy_env
+
+    - name: Install packages
+      apt:
+        pkg: "{{ packages }}"
+        force: yes
+        install_recommends: no
+        state: latest
+      environment: proxy_env
+
+
+    # locale
+    - name: Generate locale
+      locale_gen:
+        name: en_US.UTF-8
+        state: present
+
+
+    ### DEPENDENCIES
+    # mapserver
+    - name: Install QGIS Mapserver configuration
+      template:
+        src: templates/mapserver/lighttpd.conf.j2
+        dest: /etc/lighttpd/lighttpd.conf
+      notify:
+        - service lighttpd restart
+
+    # Javascript
+    - name: Install NVM
+      shell: >
+        curl https://raw.githubusercontent.com/creationix/nvm/v{{ nvm_version }}/install.sh
+        | bash
+      args:
+        creates: /home/vagrant/.nvm/nvm.sh
+      sudo_user: vagrant
+
+    - name: Install NodeJS
+      shell: >
+        export NVM_DIR="$HOME/.nvm"
+        &&
+        . "$NVM_DIR/nvm.sh"
+        &&
+        nvm install v{{ node_version }}
+      sudo_user: vagrant
+
+    - name: Install NodeJS dependencies
+      shell: >
+        export NVM_DIR="$HOME/.nvm"
+        &&
+        . "$NVM_DIR/nvm.sh"
+        &&
+        nvm use v{{ node_version }}
+        &&
+        npm install --cache=$HOME/.cache/npm -g gulp
+      sudo_user: vagrant
+
+    # Python
+    - name: Install GIS.lab Web Python requirements
+      pip:
+        virtualenv: /home/vagrant/.virtualenvs/gislab-web
+        requirements: /vagrant/server/requirements.txt
+        virtualenv_site_packages: yes
+        extra_args: "--download-cache=/home/vagrant/.cache/pip"
+        state: present
+      sudo_user: vagrant
+
+    - name: Install Django sslserver
+      pip:
+        name: django-sslserver
+        virtualenv: /home/vagrant/.virtualenvs/gislab-web
+        virtualenv_site_packages: yes
+        state: present
+      sudo_user: vagrant
+
+    - name: Add additional directories on Python path
+      shell: >
+        export WORKON_HOME="$HOME/.virtualenvs"
+        &&
+        source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
+        &&
+        workon gislab-web
+        &&
+        add2virtualenv server
+      args:
+        chdir: /vagrant
+        executable: /bin/bash
+      sudo_user: vagrant
+
+    # Django project
+    - name: Re-create Django project directory (remove /vagrant/dev dir on problems)
+      file:
+        path: /vagrant/dev
+        state: directory
+      sudo_user: vagrant
+
+    - name: Create Django project
+      shell: >
+        export WORKON_HOME="$HOME/.virtualenvs"
+        &&
+        source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
+        &&
+        workon gislab-web
+        &&
+        django-admin.py startproject
+        --template=server/webgis/conf/project_template/
+        devproj
+        dev
+      args:
+        chdir: /vagrant
+        executable: /bin/bash
+        creates: /vagrant/dev/devproj/settings.py
+      sudo_user: vagrant
+
+    - name: Install custom Django project configuration
+      template:
+        src: templates/django/settings_custom.py.j2
+        dest: /vagrant/dev/devproj/settings_custom.py
+      sudo_user: vagrant
+
+    - name: Build Django project database
+      django_manage:
+        command: migrate
+        app_path: /vagrant/dev
+        settings: devproj.settings
+        virtualenv: /home/vagrant/.virtualenvs/gislab-web
+      sudo_user: vagrant
+
+    # TODO: createsuperuser
+    # echo "from django.contrib.auth.models import User;
+    #       User.objects.create_superuser('admin', 'admin@example.com', 'pass')"
+    #       | python ./manage.py shell
+
+    # TODO: this is not idempotent: Reversed (or previously applied) patch detected!
+    # TODO: split this to multiple tasks
+#    - name: Build Javascript client
+#      shell: >
+#        export NVM_DIR="$HOME/.nvm"
+#        &&
+#        . "$NVM_DIR/nvm.sh"
+#        &&
+#        nvm use v{{ node_version }}
+#        &&
+#        {{ item }}
+#      with_items:
+#        - npm install --cache=$HOME/.cache/npm
+#        - npm install --cache=$HOME/.cache/npm web/
+#        - gulp
+#      args:
+#        chdir: /vagrant/clients
+#      sudo_user: vagrant
+
+
+    - name: Done.
+            Run 'vagrant ssh' to log on to server and run
+            'cd /vagrant/dev
+            &&
+            workon gislab-web
+            &&
+            python ./manage.py runsslserver 0.0.0.0:8000'
+            to launch development server.
+            Than launch 'https://localhost:8000' in your browser.
+      shell: echo
+
+# vim: set ts=8 sts=2 sw=2 et:

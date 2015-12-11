@@ -1,0 +1,18 @@
+---
+# Perform GIS.lab Web tests
+
+- hosts: all
+  sudo: yes
+
+
+  tasks:
+    # Mapserver
+    - name: Test WMS GetCapabilies request without project
+      shell: >
+        curl
+        "http://localhost:90/cgi-bin/qgis_mapserv.fcgi?SERVICE=WMS&REQUEST=GetCapabilities"
+        | grep 'WMS_Capabilities .* version="1.3.0"'
+      ignore_errors: yes
+      changed_when: False
+
+# vim: set ts=8 sts=2 sw=2 et:

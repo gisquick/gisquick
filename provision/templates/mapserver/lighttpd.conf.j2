@@ -1,0 +1,45 @@
+server.modules += (
+    "mod_fastcgi",
+    "mod_alias",
+    "mod_rewrite",
+)
+
+server.port                     = 90
+server.use-ipv6                 = "disable"
+server.document-root            = "/var/www"
+server.pid-file                 = "/var/run/lighttpd.pid"
+server.username                 = "www-data"
+server.groupname                = "www-data"
+server.upload-dirs              = ( "/var/cache/lighttpd/uploads" )
+
+index-file.names                = ( "index.html" )
+static-file.exclude-extensions  = ( ".php", ".pl", ".fcgi" )
+
+
+alias.url = ( "/cgi-bin/" => "/usr/lib/cgi-bin/" )
+
+fastcgi.server = (
+    "/cgi-bin/" => ((
+        "bin-path" => "/usr/lib/cgi-bin/qgis_mapserv.fcgi",
+        "socket" => "/tmp/qgs_mapserv.socket",
+        "max-procs" => 1,
+        "check-local" => "disable"
+    ))
+)
+
+# TODO: replace this rewrite with Django
+url.rewrite-once = (
+    "^(.*[?&])(?i)MAP=(.*)$" => "$1MAP=/tmp/gislab/publish/$2",
+)
+
+
+# logging
+server.errorlog-use-syslog      = "enable"
+
+server.modules                  += ( "mod_accesslog" )
+accesslog.use-syslog            = "enable"
+
+
+# includes
+include_shell "/usr/share/lighttpd/create-mime.assign.pl"
+include_shell "/usr/share/lighttpd/include-conf-enabled.pl"

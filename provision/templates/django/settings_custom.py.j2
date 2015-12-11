@@ -1,0 +1,24 @@
+import os
+
+GISLAB_WEB_PROJECT_ROOT = '/vagrant/dev/publish'
+GISLAB_WEB_MAPSERVER_URL = 'http://localhost:90/cgi-bin/qgis_mapserv.fcgi'
+
+# TODO: look for some better way how to add 'sslserver' to list
+INSTALLED_APPS = (
+    'sslserver',
+    'corsheaders',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.staticfiles',
+    'webgis.mapcache',
+    'webgis.viewer',
+    'webgis.mobile'
+)
+
+
+# create publish directory
+if not os.path.exists(GISLAB_WEB_PROJECT_ROOT):
+    os.mkdir(GISLAB_WEB_PROJECT_ROOT, 0755)
+
+# vim: set ts=8 sts=4 sw=4 et:

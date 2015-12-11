@@ -8,12 +8,14 @@
 
 * install server requirements
 ```bash
-$ sudo apt-get install --no-install-recommends qgis-server lighttpd
+$ sudo apt-get install --no-install-recommends \
+    qgis-server lighttpd
 ```
 
 * install Python development packages
 ```
-$ sudo apt-get install --no-install-recommends python-dev virtualenvwrapper
+$ sudo apt-get install --no-install-recommends \
+    python-dev python-lxml virtualenvwrapper
 ```
 
 * install Javascript development packages (next time run '$ nvm use v4.2.2' to
@@ -39,7 +41,7 @@ server.modules += (
     "mod_rewrite",
 )
 
-server.port                     = 80
+server.port                     = 90
 server.use-ipv6                 = "disable"
 server.document-root            = "/var/www"
 server.pid-file                 = "/var/run/lighttpd.pid"

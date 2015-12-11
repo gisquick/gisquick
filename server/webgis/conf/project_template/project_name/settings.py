@@ -25,7 +25,7 @@ SECRET_KEY = '{{ secret_key }}'
 
 ### GIS.LAB WEB CONFIGURATION
 GISLAB_WEB_PROJECT_ROOT = '/tmp/gislab-web'
-GISLAB_WEB_MAPSERVER_URL = 'http://localhost/cgi-bin/qgis_mapserv.fcgi'
+GISLAB_WEB_MAPSERVER_URL = 'http://localhost:90/cgi-bin/qgis_mapserv.fcgi'
 GISLAB_WEB_GUEST_USERNAME = 'guest'
 
 

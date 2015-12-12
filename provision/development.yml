@@ -6,19 +6,19 @@
 
   vars:
     packages:
+      - g++
+      - libxml2-dev
+      - libxslt-dev
       - lighttpd
       - mc
       - python-dev
       - qgis-server
+      - openjdk-7-jre
       - virtualenvwrapper
-      - libxml2-dev
-      - libxslt-dev
-      - python-lxml
-      - openjdk-7-jdk
-      - g++
+      - zlib1g-dev
 
     proxy_env:
-      http_proxy: "{{ lookup('env','ANSIBLE_APT_PROXY') }}"
+      http_proxy: "{{ lookup('env','APT_PROXY') }}"
 
     nvm_version: 0.29.0
     node_version: 4.2.2
@@ -32,6 +32,13 @@
 
 
   tasks:
+    - name: Create development directory (remove /vagrant/dev dir on problems)
+      file:
+        path: /vagrant/dev
+        state: directory
+      sudo_user: vagrant
+
+
     ### BASIC OS
     - name: Add UbuntuGIS repository
       apt_repository:
@@ -56,7 +63,6 @@
         install_recommends: no
         state: latest
       environment: proxy_env
-
 
     # locale
     - name: Generate locale
@@ -100,7 +106,7 @@
         &&
         nvm use v{{ node_version }}
         &&
-        npm install --cache=$HOME/.cache/npm -g gulp
+        npm install --cache-min 36000 -g gulp
       sudo_user: vagrant
 
     # Python
@@ -136,12 +142,6 @@
       sudo_user: vagrant
 
     # Django project
-    - name: Re-create Django project directory (remove /vagrant/dev dir on problems)
-      file:
-        path: /vagrant/dev
-        state: directory
-      sudo_user: vagrant
-
     - name: Create Django project
       shell: >
         export WORKON_HOME="$HOME/.virtualenvs"
@@ -179,26 +179,47 @@
     #       User.objects.create_superuser('admin', 'admin@example.com', 'pass')"
     #       | python ./manage.py shell
 
-    # TODO: this is not idempotent: Reversed (or previously applied) patch detected!
-    # TODO: split this to multiple tasks
-#    - name: Build Javascript client
-#      shell: >
-#        export NVM_DIR="$HOME/.nvm"
-#        &&
-#        . "$NVM_DIR/nvm.sh"
-#        &&
-#        nvm use v{{ node_version }}
-#        &&
-#        {{ item }}
-#      with_items:
-#        - npm install --cache=$HOME/.cache/npm
-#        - npm install --cache=$HOME/.cache/npm web/
-#        - gulp
-#      args:
-#        chdir: /vagrant/clients
-#      sudo_user: vagrant
+    - name: Clean Node modules directory
+      file:
+        path: /vagrant/clients/node_modules
+        state: absent
+
+    - name: Install Javascript client dependencies
+      shell: >
+        export NVM_DIR="$HOME/.nvm"
+        &&
+        . "$NVM_DIR/nvm.sh"
+        &&
+        nvm use v{{ node_version }}
+        &&
+        {{ item }}
+      with_items:
+        - npm install --cache-min 36000
+        - npm install --cache-min 36000
+      args:
+        chdir: /vagrant/clients
+      sudo_user: vagrant
+
+    # TODO: this is not idempotent probably for multiple reasons
+    - name: Build Javascript client
+      shell: >
+        export NVM_DIR="$HOME/.nvm"
+        &&
+        . "$NVM_DIR/nvm.sh"
+        &&
+        nvm use v{{ node_version }}
+        &&
+        gulp
+      args:
+        chdir: /vagrant/clients
+      sudo_user: vagrant
+
+    # run handlers
+    - meta: flush_handlers
 
 
+    # TODO: this message is invisible for user, because of tests running
+    # afterwards
     - name: Done.
             Run 'vagrant ssh' to log on to server and run
             'cd /vagrant/dev
@@ -208,6 +229,7 @@
             python ./manage.py runsslserver 0.0.0.0:8000'
             to launch development server.
             Than launch 'https://localhost:8000' in your browser.
+            Save published QGIS project to 'dev/publish' directory.
       shell: echo
 
 # vim: set ts=8 sts=2 sw=2 et:

@@ -1,6 +1,11 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+# Set APT_PROXY environment variable before provisioning to speed up packages
+# installation using Apt proxy.
+# Example:
+#   $ export APT_PROXY=http://192.168.99.118:3142
+
 Vagrant.require_version ">= 1.7.0"
 
 BOX = "trusty-canonical-32"
@@ -35,7 +40,7 @@ Vagrant.configure(2) do |config|
         ansible.playbook = "provision/test.yml"
         ansible.verbose = "vv"
       end
-#
+
 #      # packaging
 #      server.vm.provision "packaging", type: "ansible" do |ansible|
 #        ansible.playbook = "provision/packaging.yml"

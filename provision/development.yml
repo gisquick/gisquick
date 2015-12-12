@@ -11,6 +11,11 @@
       - python-dev
       - qgis-server
       - virtualenvwrapper
+      - libxml2-dev
+      - libxslt-dev
+      - python-lxml
+      - openjdk-7-jdk
+      - g++
 
     proxy_env:
       http_proxy: "{{ lookup('env','ANSIBLE_APT_PROXY') }}"

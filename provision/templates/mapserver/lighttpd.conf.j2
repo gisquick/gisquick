@@ -34,10 +34,10 @@ url.rewrite-once = (
 
 
 # logging
-server.errorlog-use-syslog      = "enable"
+server.errorlog                 = "/var/log/lighttpd/error.log"
 
 server.modules                  += ( "mod_accesslog" )
-accesslog.use-syslog            = "enable"
+accesslog.filename              = "/var/log/lighttpd/access.log"
 
 
 # includes

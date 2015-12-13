@@ -29,7 +29,7 @@ fastcgi.server = (
 
 # TODO: replace this rewrite with Django
 url.rewrite-once = (
-    "^(.*[?&])(?i)MAP=(.*)$" => "$1MAP=/tmp/gislab/publish/$2",
+    "^(.*[?&])(?i)MAP=(.*)$" => "$1MAP=/vagrant/dev/publish/$2",
 )
 
 

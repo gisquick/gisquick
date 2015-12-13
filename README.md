@@ -19,7 +19,7 @@ Source code layout
 Development environment
 -----------------------
 **Dependencies:**  
-* Linix or Mac
+* Linux or Mac
 * Git
 * VirtualBox
 * Ansible
@@ -30,4 +30,34 @@ Development environment
 * start Vagrant in source code root directory
 ```
 $ vagrant up
+```
+
+* log in to Vagrant virtual server
+```
+$ vagrant ssh
+```
+
+* download example QGIS project to '/vagrant/dev/publish' directory
+```
+$ mkdir -p /vagrant/dev/publish/user/natural-earth
+
+$ cd /vagrant/dev/publish/user/natural-earth
+
+$ wget https://raw.githubusercontent.com/imincik/gis-lab/master/gislab-project/natural-earth/natural-earth.sqlite
+$ wget https://raw.githubusercontent.com/imincik/gis-lab/master/gislab-project/natural-earth/central-europe.qgs
+$ wget https://raw.githubusercontent.com/imincik/gis-lab/master/gislab-project/natural-earth/central-europe.meta
+```
+
+* launch Django development server
+```
+$ cd /vagrant/dev
+  &&
+  workon gislab-web
+  &&
+  python ./manage.py runsslserver 0.0.0.0:8000
+```
+
+* launch example project in GIS.lab Web interface (execute on host machine)
+```
+$ firefox https://localhost:8000?PROJECT=natural-earth/central-europe
 ```

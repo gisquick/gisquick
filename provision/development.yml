@@ -7,13 +7,14 @@
   vars:
     packages:
       - g++
+      - htop
       - libxml2-dev
       - libxslt-dev
       - lighttpd
       - mc
       - python-dev
       - qgis-server
-      - openjdk-7-jre
+      - openjdk-7-jdk
       - virtualenvwrapper
       - zlib1g-dev
 
@@ -32,7 +33,7 @@
 
 
   tasks:
-    - name: Create development directory (remove /vagrant/dev dir on problems)
+    - name: Create development directory (remove /vagrant/dev for cleanup)
       file:
         path: /vagrant/dev
         state: directory
@@ -98,7 +99,7 @@
         nvm install v{{ node_version }}
       sudo_user: vagrant
 
-    - name: Install NodeJS dependencies
+    - name: Install Gulp
       shell: >
         export NVM_DIR="$HOME/.nvm"
         &&
@@ -106,7 +107,7 @@
         &&
         nvm use v{{ node_version }}
         &&
-        npm install --cache-min 36000 -g gulp
+        npm install -g gulp
       sudo_user: vagrant
 
     # Python
@@ -127,7 +128,7 @@
         state: present
       sudo_user: vagrant
 
-    - name: Add additional directories on Python path
+    - name: Add source code on Python path
       shell: >
         export WORKON_HOME="$HOME/.virtualenvs"
         &&
@@ -141,7 +142,8 @@
         executable: /bin/bash
       sudo_user: vagrant
 
-    # Django project
+
+    ### DJANGO SERVER
     - name: Create Django project
       shell: >
         export WORKON_HOME="$HOME/.virtualenvs"
@@ -179,12 +181,22 @@
     #       User.objects.create_superuser('admin', 'admin@example.com', 'pass')"
     #       | python ./manage.py shell
 
-    - name: Clean Node modules directory
-      file:
-        path: /vagrant/clients/node_modules
-        state: absent
 
-    - name: Install Javascript client dependencies
+    ### WEB CLIENT
+    - name: Prune local Node modules for GIS.lab Web client
+      shell: >
+        export NVM_DIR="$HOME/.nvm"
+        &&
+        . "$NVM_DIR/nvm.sh"
+        &&
+        nvm use v{{ node_version }}
+        &&
+        npm prune
+      args:
+        chdir: /vagrant/clients
+      sudo_user: vagrant
+
+    - name: Install local Node modules for GIS.lab Web client
       shell: >
         export NVM_DIR="$HOME/.nvm"
         &&
@@ -194,14 +206,13 @@
         &&
         {{ item }}
       with_items:
-        - npm install --cache-min 36000
-        - npm install --cache-min 36000
+        - npm install
+        - npm install web/
       args:
         chdir: /vagrant/clients
       sudo_user: vagrant
 
-    # TODO: this is not idempotent probably for multiple reasons
-    - name: Build Javascript client
+    - name: Build GIS.lab Web JS
       shell: >
         export NVM_DIR="$HOME/.nvm"
         &&
@@ -214,22 +225,8 @@
         chdir: /vagrant/clients
       sudo_user: vagrant
 
+
     # run handlers
     - meta: flush_handlers
-
-
-    # TODO: this message is invisible for user, because of tests running
-    # afterwards
-    - name: Done.
-            Run 'vagrant ssh' to log on to server and run
-            'cd /vagrant/dev
-            &&
-            workon gislab-web
-            &&
-            python ./manage.py runsslserver 0.0.0.0:8000'
-            to launch development server.
-            Than launch 'https://localhost:8000' in your browser.
-            Save published QGIS project to 'dev/publish' directory.
-      shell: echo
 
 # vim: set ts=8 sts=2 sw=2 et:

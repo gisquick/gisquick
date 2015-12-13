@@ -59,5 +59,21 @@ $ cd /vagrant/dev
 
 * launch example project in GIS.lab Web interface (execute on host machine)
 ```
-$ firefox https://localhost:8000?PROJECT=natural-earth/central-europe
+$ firefox https://localhost:8000?PROJECT=user/natural-earth/central-europe
 ```
+
+**Other commands:**  
+* run Django server tests (run in '/vagrant/dev' dir)
+```
+$ python ./manage.py test webgis.viewer.tests
+```
+
+
+**Other information:**
+* QGIS Mapserver is also forwarded to host machine on port 8090
+* QGIS Mapserver logs can be found in '/var/log/lighttpd' directory
+
+
+License
+-------
+GNU GPL 2.0 and higher versions.

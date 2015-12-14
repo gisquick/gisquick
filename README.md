@@ -27,7 +27,9 @@ Development environment
 **Creating development environment:**  
 * clone source code with Git
 
-* start Vagrant in source code root directory
+* start Vagrant in source code root directory  
+  *Note: to speed up provisioning using Apt proxy server, set APT_PROXY variable
+  before running this command (ex.: export APT_PROXY=http://192.168.99.118:3142)*
 ```
 $ vagrant up
 ```
@@ -72,6 +74,41 @@ $ python ./manage.py test webgis.viewer.tests
 **Other information:**
 * QGIS Mapserver is also forwarded to host machine on port 8090
 * QGIS Mapserver logs can be found in '/var/log/lighttpd' directory
+
+
+Configuration
+-------------
+Configuration is done by Django project settings file. Good practise is to place
+*settings_custom.py* file to the same directory where *settings.py* to override
+default values.
+
+
+Packaging
+---------
+* GIS.lab Web QGIS plugin
+```
+$ cd /vagrant/qgis/gislab_web
+  &&
+  make clean
+  &&
+  make compile
+  &&
+  make zip
+```
+
+* GIS.lab Web
+```
+$ cd /vagrant/server
+  &&
+  python ./setup.py sdist
+```
+
+* GIS.lab Mobile
+```
+$ cd /vagrant/clients/mobile/cordova-app
+  &&
+  cordova build android
+```
 
 
 License

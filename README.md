@@ -85,6 +85,8 @@ default values.
 
 Packaging
 ---------
+*TODO: add instructions how to clean environment before build*
+
 * GIS.lab Web QGIS plugin
 ```
 $ cd /vagrant/qgis/gislab_web
@@ -105,7 +107,13 @@ $ cd /vagrant/server
 
 * GIS.lab Mobile
 ```
-$ cd /vagrant/clients/mobile/cordova-app
+$ nvm use <NODE-VERSION>
+  &&
+  export ANDROID_HOME=/home/vagrant/android-sdk-linux
+         PATH=$PATH:/home/vagrant/android-sdk-linux/tools:/home/vagrant/android-sdk-linux/platform-tools
+         ANDROID_BUILD=ant
+  &&
+  cd /vagrant/clients/mobile/cordova-app
   &&
   cordova build android
 ```

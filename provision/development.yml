@@ -79,18 +79,24 @@
     - name: Add UbuntuGIS repository
       apt_repository:
         repo: 'ppa:ubuntugis/ubuntugis-unstable'
+      tags:
+        - basic-os
 
     - name: Update apt cache
       apt:
         update_cache: yes
         cache_valid_time: 3600
       environment: proxy_env
+      tags:
+        - basic-os
 
     - name: Upgrade system
       apt:
         upgrade: full
         force: yes
       environment: proxy_env
+      tags:
+        - basic-os
 
     - name: Install packages
       apt:
@@ -99,12 +105,16 @@
         install_recommends: no
         state: latest
       environment: proxy_env
+      tags:
+        - basic-os
 
     # locale
     - name: Generate locale
       locale_gen:
         name: en_US.UTF-8
         state: present
+      tags:
+        - basic-os
 
 
     ### DEPENDENCIES
@@ -115,6 +125,8 @@
         dest: /etc/lighttpd/lighttpd.conf
       notify:
         - service lighttpd restart
+      tags:
+        - dep-mapserver
 
     # Python
     - name: Install GIS.lab Web Python requirements
@@ -125,6 +137,8 @@
         extra_args: "--download-cache=/home/vagrant/.cache/pip"
         state: present
       sudo_user: vagrant
+      tags:
+        - dep-python
 
     - name: Install Django sslserver
       pip:
@@ -133,6 +147,8 @@
         virtualenv_site_packages: yes
         state: present
       sudo_user: vagrant
+      tags:
+        - dep-python
 
     - name: Add source code on Python path
       shell: >
@@ -147,6 +163,8 @@
         chdir: /vagrant
         executable: /bin/bash
       sudo_user: vagrant
+      tags:
+        - dep-python
 
     # Javascript
     - name: Install NVM
@@ -156,6 +174,8 @@
       args:
         creates: /home/vagrant/.nvm/nvm.sh
       sudo_user: vagrant
+      tags:
+        - dep-javascript
 
     - name: Install NodeJS
       shell: >
@@ -165,6 +185,8 @@
         &&
         nvm install v{{ node_version }}
       sudo_user: vagrant
+      tags:
+        - dep-javascript
 
     - name: Install Gulp
       shell: >
@@ -176,6 +198,8 @@
         &&
         npm install -g gulp
       sudo_user: vagrant
+      tags:
+        - dep-javascript
 
     - name: Prune local Node modules for GIS.lab Web and Mobile clients
       shell: >
@@ -189,6 +213,8 @@
       args:
         chdir: /vagrant/clients
       sudo_user: vagrant
+      tags:
+        - dep-javascript
 
     - name: Install local Node modules for GIS.lab Web and Mobile clients
       shell: >
@@ -206,6 +232,8 @@
       args:
         chdir: /vagrant/clients
       sudo_user: vagrant
+      tags:
+        - dep-javascript
 
     # Android
     - name: Download Android SDK
@@ -215,6 +243,8 @@
         -O /vagrant/dev/cache/android-sdk_r{{ android_sdk_version }}-linux.tgz
         {{ android_sdk_url_base }}/android-sdk_r{{ android_sdk_version }}-linux.tgz
       sudo_user: vagrant
+      tags:
+        - dep-android
 
     - name: Install Android SDK
       command: >
@@ -224,12 +254,16 @@
       args:
         creates: /home/vagrant/android-sdk-linux/tools/android
       sudo_user: vagrant
+      tags:
+        - dep-android
 
     - name: Install script for non-interactive Android platform, tools and API installation
       template:
         src: templates/android/android-sdk-install.expect.j2
         dest: /home/vagrant/android-sdk-install.expect
       sudo_user: vagrant
+      tags:
+        - dep-android
 
     - name: Install Android platform, tools and API
       command: >
@@ -237,6 +271,8 @@
       args:
         creates: /home/vagrant/android-sdk-linux/platform-tools/adb
       sudo_user: vagrant
+      tags:
+        - dep-android
 
     # Cordova
     - name: Install Cordova
@@ -249,6 +285,8 @@
         &&
         npm install -g cordova@{{ cordova_version }}
       sudo_user: vagrant
+      tags:
+        - dep-cordova
 
     - name: Install Android platform for Cordova
       shell: >
@@ -262,6 +300,8 @@
       args:
         chdir: /vagrant/clients/mobile/cordova-app
       sudo_user: vagrant
+      tags:
+        - dep-cordova
 
     # TODO: consider using "node tasks/plugins.js" for installing dependencies
     # from file
@@ -283,6 +323,8 @@
       args:
         chdir: /vagrant/clients/mobile/cordova-app
       sudo_user: vagrant
+      tags:
+        - dep-cordova
 
     # example data
     - name: Create directory for QGIS projects publishing
@@ -291,6 +333,8 @@
         state: directory
         recurse: yes
       sudo_user: vagrant
+      tags:
+        - example-data
 
     - name: Download example data from GIS.lab
       shell: >
@@ -304,6 +348,8 @@
       args:
         chdir: /vagrant/dev/publish/user/natural-earth
       sudo_user: vagrant
+      tags:
+        - example-data
 
 
     ### DJANGO SERVER
@@ -324,12 +370,16 @@
         executable: /bin/bash
         creates: /vagrant/dev/devproj/settings.py
       sudo_user: vagrant
+      tags:
+        - server-django
 
     - name: Install custom Django project configuration
       template:
         src: templates/django/settings_custom.py.j2
         dest: /vagrant/dev/devproj/settings_custom.py
       sudo_user: vagrant
+      tags:
+        - server-django
 
     - name: Build Django project database
       django_manage:
@@ -338,6 +388,8 @@
         settings: devproj.settings
         virtualenv: /home/vagrant/.virtualenvs/gislab-web
       sudo_user: vagrant
+      tags:
+        - server-django
 
     # TODO: createsuperuser
     # echo "from django.contrib.auth.models import User;
@@ -358,9 +410,7 @@
       args:
         chdir: /vagrant/clients
       sudo_user: vagrant
-
-
-    # run handlers
-    - meta: flush_handlers
+      tags:
+        - client-web
 
 # vim: set ts=8 sts=2 sw=2 et:

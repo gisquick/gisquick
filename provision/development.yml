@@ -6,6 +6,8 @@
 
   vars:
     packages:
+      - ant
+      - expect
       - g++
       - htop
       - libxml2-dev
@@ -13,16 +15,38 @@
       - lighttpd
       - mc
       - python-dev
+      - pyqt4-dev-tools
       - qgis-server
       - openjdk-7-jdk
       - virtualenvwrapper
+      - zip
       - zlib1g-dev
 
     proxy_env:
       http_proxy: "{{ lookup('env','APT_PROXY') }}"
 
+    # node
     nvm_version: 0.29.0
     node_version: 4.2.2
+
+    # android
+    android_sdk_url_base: http://dl.google.com/android
+    android_sdk_version: 24.1.2
+    android_build_tools_version: 22.0.1
+    android_api_version: 22
+    android_root: /home/vagrant/android-sdk-linux
+
+    # cordova
+    cordova_version: 5.1.1
+
+    wget_opts: "
+    --continue
+    --no-verbose
+    --retry-connrefused
+    --waitretry=1
+    --read-timeout=20
+    --timeout=15
+    --tries=0"
 
 
   handlers:
@@ -81,35 +105,6 @@
       notify:
         - service lighttpd restart
 
-    # Javascript
-    - name: Install NVM
-      shell: >
-        curl https://raw.githubusercontent.com/creationix/nvm/v{{ nvm_version }}/install.sh
-        | bash
-      args:
-        creates: /home/vagrant/.nvm/nvm.sh
-      sudo_user: vagrant
-
-    - name: Install NodeJS
-      shell: >
-        export NVM_DIR="$HOME/.nvm"
-        &&
-        . "$NVM_DIR/nvm.sh"
-        &&
-        nvm install v{{ node_version }}
-      sudo_user: vagrant
-
-    - name: Install Gulp
-      shell: >
-        export NVM_DIR="$HOME/.nvm"
-        &&
-        . "$NVM_DIR/nvm.sh"
-        &&
-        nvm use v{{ node_version }}
-        &&
-        npm install -g gulp
-      sudo_user: vagrant
-
     # Python
     - name: Install GIS.lab Web Python requirements
       pip:
@@ -140,6 +135,138 @@
       args:
         chdir: /vagrant
         executable: /bin/bash
+      sudo_user: vagrant
+
+    # Javascript
+    - name: Install NVM
+      shell: >
+        curl https://raw.githubusercontent.com/creationix/nvm/v{{ nvm_version }}/install.sh
+        | bash
+      args:
+        creates: /home/vagrant/.nvm/nvm.sh
+      sudo_user: vagrant
+
+    - name: Install NodeJS
+      shell: >
+        export NVM_DIR="$HOME/.nvm"
+        &&
+        . "$NVM_DIR/nvm.sh"
+        &&
+        nvm install v{{ node_version }}
+      sudo_user: vagrant
+
+    - name: Install Gulp
+      shell: >
+        export NVM_DIR="$HOME/.nvm"
+        &&
+        . "$NVM_DIR/nvm.sh"
+        &&
+        nvm use v{{ node_version }}
+        &&
+        npm install -g gulp
+      sudo_user: vagrant
+
+    - name: Prune local Node modules for GIS.lab Web and Mobile clients
+      shell: >
+        export NVM_DIR="$HOME/.nvm"
+        &&
+        . "$NVM_DIR/nvm.sh"
+        &&
+        nvm use v{{ node_version }}
+        &&
+        npm prune
+      args:
+        chdir: /vagrant/clients
+      sudo_user: vagrant
+
+    - name: Install local Node modules for GIS.lab Web and Mobile clients
+      shell: >
+        export NVM_DIR="$HOME/.nvm"
+        &&
+        . "$NVM_DIR/nvm.sh"
+        &&
+        nvm use v{{ node_version }}
+        &&
+        {{ item }}
+      with_items:
+        - npm install
+        - npm install web
+        - npm install mobile
+      args:
+        chdir: /vagrant/clients
+      sudo_user: vagrant
+
+    # Android
+    - name: Download Android SDK
+      command: >
+        wget {{ wget_opts }} {{ android_sdk_url_base }}/android-sdk_r{{ android_sdk_version }}-linux.tgz
+      sudo_user: vagrant
+
+    - name: Install Android SDK
+      command: >
+        tar -xzf
+        android-sdk_r{{ android_sdk_version }}-linux.tgz
+        -C /home/vagrant
+      args:
+        creates: /home/vagrant/android-sdk-linux/tools/android
+      sudo_user: vagrant
+
+    - name: Install script for non-interactive Android platform, tools and API installation
+      template:
+        src: templates/android/android-sdk-install.expect.j2
+        dest: /home/vagrant/android-sdk-install.expect
+      sudo_user: vagrant
+
+    - name: Install Android platform, tools and API
+      command: >
+        expect /home/vagrant/android-sdk-install.expect
+      args:
+        creates: /home/vagrant/android-sdk-linux/platform-tools/adb
+      sudo_user: vagrant
+
+    # Cordova
+    - name: Install Cordova
+      shell: >
+        export NVM_DIR="$HOME/.nvm"
+        &&
+        . "$NVM_DIR/nvm.sh"
+        &&
+        nvm use v{{ node_version }}
+        &&
+        npm install -g cordova@{{ cordova_version }}
+      sudo_user: vagrant
+
+    - name: Install Android platform for Cordova
+      shell: >
+        export NVM_DIR="$HOME/.nvm"
+        &&
+        . "$NVM_DIR/nvm.sh"
+        &&
+        nvm use v{{ node_version }}
+        &&
+        cordova platform add android || true
+      args:
+        chdir: /vagrant/clients/mobile/cordova-app
+      sudo_user: vagrant
+
+    # TODO: consider using "node tasks/plugins.js" for installing dependencies
+    # from file
+    - name: Install Cordova plugins
+      shell: >
+        export NVM_DIR="$HOME/.nvm"
+        &&
+        . "$NVM_DIR/nvm.sh"
+        &&
+        nvm use v{{ node_version }}
+        &&
+        cordova plugin add "{{ item }}"
+      with_items:
+        - cordova-plugin-device
+        - cordova-plugin-splashscreen
+        - cordova-plugin-geolocation@0.3.6
+        - cordova-plugin-inappbrowser
+      args:
+        chdir: /vagrant/clients/mobile/cordova-app
       sudo_user: vagrant
 
 
@@ -183,35 +310,6 @@
 
 
     ### WEB CLIENT
-    - name: Prune local Node modules for GIS.lab Web client
-      shell: >
-        export NVM_DIR="$HOME/.nvm"
-        &&
-        . "$NVM_DIR/nvm.sh"
-        &&
-        nvm use v{{ node_version }}
-        &&
-        npm prune
-      args:
-        chdir: /vagrant/clients
-      sudo_user: vagrant
-
-    - name: Install local Node modules for GIS.lab Web client
-      shell: >
-        export NVM_DIR="$HOME/.nvm"
-        &&
-        . "$NVM_DIR/nvm.sh"
-        &&
-        nvm use v{{ node_version }}
-        &&
-        {{ item }}
-      with_items:
-        - npm install
-        - npm install web/
-      args:
-        chdir: /vagrant/clients
-      sudo_user: vagrant
-
     - name: Build GIS.lab Web JS
       shell: >
         export NVM_DIR="$HOME/.nvm"

@@ -41,12 +41,6 @@ Vagrant.configure(2) do |config|
         ansible.verbose = "vv"
       end
 
-#      # packaging
-#      server.vm.provision "packaging", type: "ansible" do |ansible|
-#        ansible.playbook = "provision/packaging.yml"
-#        ansible.verbose = "vv"
-#      end
-
       # VirtualBox configuration
       server.vm.provider "virtualbox" do |vb, override|
         vb.customize ["modifyvm", :id, "--memory", "1024"]

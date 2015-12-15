@@ -1,0 +1,13 @@
+#!/usr/bin/expect
+
+set timeout -1;
+spawn {{ android_root }}/tools/android update sdk \
+    --no-ui \
+    --all \
+    --filter platform-tools,build-tools-{{ android_build_tools_version }},android-{{ android_api_version }};
+
+expect {
+    "Do you accept the license" { exp_send "y\r" ; exp_continue }
+    eof
+}
+

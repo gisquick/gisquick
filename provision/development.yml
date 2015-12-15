@@ -39,6 +39,7 @@
 
     # cordova
     cordova_version: 5.1.1
+    cordova_pf_android_version: 4.0.2
 
     # GIS.lab
     gislab_git_dl_url: https://raw.githubusercontent.com/imincik/gis-lab
@@ -61,9 +62,15 @@
 
 
   tasks:
-    - name: Create development directory (remove /vagrant/dev for cleanup)
+    - name: Create development directory
       file:
         path: /vagrant/dev
+        state: directory
+      sudo_user: vagrant
+
+    - name: Create cache directory
+      file:
+        path: /vagrant/dev/cache
         state: directory
       sudo_user: vagrant
 
@@ -203,13 +210,16 @@
     # Android
     - name: Download Android SDK
       command: >
-        wget {{ wget_opts }} {{ android_sdk_url_base }}/android-sdk_r{{ android_sdk_version }}-linux.tgz
+        wget
+        {{ wget_opts }}
+        -O /vagrant/dev/cache/android-sdk_r{{ android_sdk_version }}-linux.tgz
+        {{ android_sdk_url_base }}/android-sdk_r{{ android_sdk_version }}-linux.tgz
       sudo_user: vagrant
 
     - name: Install Android SDK
       command: >
         tar -xzf
-        android-sdk_r{{ android_sdk_version }}-linux.tgz
+        /vagrant/dev/cache/android-sdk_r{{ android_sdk_version }}-linux.tgz
         -C /home/vagrant
       args:
         creates: /home/vagrant/android-sdk-linux/tools/android
@@ -248,13 +258,14 @@
         &&
         nvm use v{{ node_version }}
         &&
-        cordova platform add android || true
+        cordova platform add android@{{ cordova_pf_android_version }} || true
       args:
         chdir: /vagrant/clients/mobile/cordova-app
       sudo_user: vagrant
 
     # TODO: consider using "node tasks/plugins.js" for installing dependencies
     # from file
+    # TODO: specify plugins versions
     - name: Install Cordova plugins
       shell: >
         export NVM_DIR="$HOME/.nvm"

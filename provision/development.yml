@@ -39,6 +39,9 @@
     # cordova
     cordova_version: 5.1.1
 
+    # GIS.lab
+    gislab_git_dl_url: https://raw.githubusercontent.com/imincik/gis-lab
+
     wget_opts: "
     --continue
     --no-verbose
@@ -267,6 +270,27 @@
         - cordova-plugin-inappbrowser
       args:
         chdir: /vagrant/clients/mobile/cordova-app
+      sudo_user: vagrant
+
+    # example data
+    - name: Create directory for QGIS projects publishing
+      file:
+        path: /vagrant/dev/publish/user/natural-earth
+        state: directory
+        recurse: yes
+      sudo_user: vagrant
+
+    - name: Download example data from GIS.lab
+      shell: >
+        wget
+        {{ wget_opts }}
+        {{ gislab_git_dl_url }}/master/gislab-project/natural-earth/{{ item }}
+      with_items:
+        - natural-earth.sqlite
+        - central-europe.qgs
+        - central-europe.meta
+      args:
+        chdir: /vagrant/dev/publish/user/natural-earth
       sudo_user: vagrant
 
 

@@ -13,7 +13,7 @@ Source code layout
                  (Vagrant/Ansible)
 * **dev:**       directory for Django development project created during
                  provisioning
-* **dev/publish:** directory for QGIS projects publishing
+* **dev/publish/user:** directory for QGIS projects publishing (as user 'user')
 
 
 Development environment
@@ -40,17 +40,6 @@ $ vagrant up
 $ vagrant ssh
 ```
 
-* download example QGIS project to '/vagrant/dev/publish' directory
-```
-$ mkdir -p /vagrant/dev/publish/user/natural-earth
-
-$ cd /vagrant/dev/publish/user/natural-earth
-
-$ wget https://raw.githubusercontent.com/imincik/gis-lab/master/gislab-project/natural-earth/natural-earth.sqlite \
-       https://raw.githubusercontent.com/imincik/gis-lab/master/gislab-project/natural-earth/central-europe.qgs \
-       https://raw.githubusercontent.com/imincik/gis-lab/master/gislab-project/natural-earth/central-europe.meta
-```
-
 * launch Django development server
 ```
 $ cd /vagrant/dev \
@@ -60,9 +49,9 @@ $ cd /vagrant/dev \
   python ./manage.py runsslserver 0.0.0.0:8000
 ```
 
-* launch example project in GIS.lab Web interface (execute on host machine)
+* enter URL below to open GIS.lab Web interface in web browser
 ```
-$ firefox https://localhost:8000?PROJECT=user/natural-earth/central-europe
+$ https://localhost:8000?PROJECT=user/natural-earth/central-europe
 ```
 
 **Other commands:**  

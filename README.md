@@ -22,7 +22,7 @@ Development environment
 * Linux or Mac
 * Git
 * VirtualBox
-* Ansible
+* Vagrant
 
 **Creating development environment:**  
 * clone source code with Git
@@ -45,17 +45,17 @@ $ mkdir -p /vagrant/dev/publish/user/natural-earth
 
 $ cd /vagrant/dev/publish/user/natural-earth
 
-$ wget https://raw.githubusercontent.com/imincik/gis-lab/master/gislab-project/natural-earth/natural-earth.sqlite
-$ wget https://raw.githubusercontent.com/imincik/gis-lab/master/gislab-project/natural-earth/central-europe.qgs
-$ wget https://raw.githubusercontent.com/imincik/gis-lab/master/gislab-project/natural-earth/central-europe.meta
+$ wget https://raw.githubusercontent.com/imincik/gis-lab/master/gislab-project/natural-earth/natural-earth.sqlite \
+       https://raw.githubusercontent.com/imincik/gis-lab/master/gislab-project/natural-earth/central-europe.qgs \
+       https://raw.githubusercontent.com/imincik/gis-lab/master/gislab-project/natural-earth/central-europe.meta
 ```
 
 * launch Django development server
 ```
-$ cd /vagrant/dev
-  &&
-  workon gislab-web
-  &&
+$ cd /vagrant/dev \
+  && \
+  workon gislab-web \
+  && \
   python ./manage.py runsslserver 0.0.0.0:8000
 ```
 
@@ -89,35 +89,34 @@ Packaging
 
 * GIS.lab Web QGIS plugin
 ```
-$ cd /vagrant/qgis/gislab_web
-  &&
-  make clean
-  &&
-  make compile
-  &&
+$ cd /vagrant/qgis/gislab_web \
+  && \
+  make clean \
+  && \
+  make compile \
+  && \
   make zip
 ```
 
 * GIS.lab Web
 ```
-$ cd /vagrant/server
-  &&
+$ cd /vagrant/server \
+  && \
   python ./setup.py sdist
 ```
 
 * GIS.lab Mobile
 ```
-$ nvm use <NODE-VERSION>
-  &&
-  export ANDROID_HOME=/home/vagrant/android-sdk-linux
-         PATH=$PATH:/home/vagrant/android-sdk-linux/tools:/home/vagrant/android-sdk-linux/platform-tools
-         ANDROID_BUILD=ant
-  &&
-  cd /vagrant/clients/mobile/cordova-app
-  &&
+$ nvm use <NODE-VERSION> \
+  && \
+  export ANDROID_HOME=/home/vagrant/android-sdk-linux \
+         PATH=$PATH:/home/vagrant/android-sdk-linux/tools:/home/vagrant/android-sdk-linux/platform-tools \
+         ANDROID_BUILD=ant \
+  && \
+  cd /vagrant/clients/mobile/cordova-app \
+  && \
   cordova build android
 ```
-
 
 License
 -------

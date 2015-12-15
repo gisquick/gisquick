@@ -42,7 +42,7 @@ $ vagrant ssh
 
 * run simple development environment in TMUX
 ```
-$ bash /vagrant/utils/tmux-dev.sh
+$ /vagrant/utils/tmux-dev.sh
 ```
 OR
 * launch Django development server manually

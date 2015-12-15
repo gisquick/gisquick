@@ -23,6 +23,7 @@ Development environment
 * Git
 * VirtualBox
 * Vagrant
+* Ansible
 
 **Creating development environment:**  
 * clone source code with Git

@@ -68,10 +68,13 @@
         state: directory
       sudo_user: vagrant
 
-    - name: Create cache directory
+    - name: Create cache directories
       file:
-        path: /vagrant/dev/cache
+        path: /vagrant/dev/cache/{{ item }}
         state: directory
+      with_items:
+        - tar
+        - pip
       sudo_user: vagrant
 
 
@@ -134,7 +137,7 @@
         virtualenv: /home/vagrant/.virtualenvs/gislab-web
         requirements: /vagrant/server/requirements.txt
         virtualenv_site_packages: yes
-        extra_args: "--download-cache=/home/vagrant/.cache/pip"
+        extra_args: "--download-cache=/vagrant/dev/cache/pip"
         state: present
       sudo_user: vagrant
       tags:
@@ -240,7 +243,7 @@
       command: >
         wget
         {{ wget_opts }}
-        -O /vagrant/dev/cache/android-sdk_r{{ android_sdk_version }}-linux.tgz
+        -O /vagrant/dev/cache/tar/android-sdk_r{{ android_sdk_version }}-linux.tgz
         {{ android_sdk_url_base }}/android-sdk_r{{ android_sdk_version }}-linux.tgz
       sudo_user: vagrant
       tags:
@@ -249,7 +252,7 @@
     - name: Install Android SDK
       command: >
         tar -xzf
-        /vagrant/dev/cache/android-sdk_r{{ android_sdk_version }}-linux.tgz
+        /vagrant/dev/cache/tar/android-sdk_r{{ android_sdk_version }}-linux.tgz
         -C /home/vagrant
       args:
         creates: /home/vagrant/android-sdk-linux/tools/android

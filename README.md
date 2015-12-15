@@ -107,9 +107,9 @@ $ cd /vagrant/server \
 
 * GIS.lab Mobile
 ```
-$ nvm use <NODE-VERSION> \
-  && \
-  export ANDROID_HOME=/home/vagrant/android-sdk-linux \
+$ nvm use <NODE-VERSION>
+
+$ export ANDROID_HOME=/home/vagrant/android-sdk-linux \
          PATH=$PATH:/home/vagrant/android-sdk-linux/tools:/home/vagrant/android-sdk-linux/platform-tools \
          ANDROID_BUILD=ant \
   && \

@@ -51,7 +51,7 @@ $ cd /vagrant/dev \
 
 * enter URL below to open GIS.lab Web interface in web browser
 ```
-$ https://localhost:8000?PROJECT=user/natural-earth/central-europe
+https://localhost:8000?PROJECT=user/natural-earth/central-europe
 ```
 
 **Other commands:**  

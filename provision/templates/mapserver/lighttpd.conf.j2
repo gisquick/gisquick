@@ -23,7 +23,15 @@ fastcgi.server = (
         "bin-path" => "/usr/lib/cgi-bin/qgis_mapserv.fcgi",
         "socket" => "/tmp/qgs_mapserv.socket",
         "max-procs" => 1,
-        "check-local" => "disable"
+        "check-local" => "disable",
+        "bin-environment" => (
+            "LC_ALL" => "en_US.UTF-8",
+            "PYTHONIOENCODING" => "UTF-8",
+            "LANG" => "en_US.UTF-8",
+            "QGIS_DEBUG" => "1",
+            "QGIS_SERVER_LOG_LEVEL" => "0",
+            "QGIS_SERVER_LOG_FILE" => "/var/log/lighttpd/qgis-mapserver.log"
+        )
     ))
 )
 

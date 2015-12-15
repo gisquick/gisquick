@@ -18,6 +18,7 @@
       - pyqt4-dev-tools
       - qgis-server
       - openjdk-7-jdk
+      - tmux
       - virtualenvwrapper
       - zip
       - zlib1g-dev

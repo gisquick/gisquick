@@ -48,6 +48,11 @@ $ cd /vagrant/dev \
   && \
   python ./manage.py runsslserver 0.0.0.0:8000
 ```
+OR
+* run simple development environment in TMUX
+```
+$ bash /vagrant/utils/tmux-dev.sh
+```
 
 * enter URL below to open GIS.lab Web interface in web browser
 ```

@@ -88,7 +88,7 @@
 
     - name: Add QGIS UbuntuGIS LTR repository
       apt_repository:
-        repo: 'deb http://qgis.org/ubuntugis-ltr trusty main'
+        repo: 'deb http://qgis.org/ubuntugis-nightly-ltr trusty main'
         state: present
       tags:
         - basic-os

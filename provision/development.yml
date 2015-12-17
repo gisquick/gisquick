@@ -82,6 +82,14 @@
     - name: Add UbuntuGIS repository
       apt_repository:
         repo: 'ppa:ubuntugis/ubuntugis-unstable'
+        state: present
+      tags:
+        - basic-os
+
+    - name: Add QGIS UbuntuGIS LTR repository
+      apt_repository:
+        repo: 'deb http://qgis.org/ubuntugis-ltr trusty main'
+        state: present
       tags:
         - basic-os
 

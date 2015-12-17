@@ -21,6 +21,7 @@
       django_manage:
         command: test
         app_path: /vagrant/dev
+        apps: webgis.viewer
         settings: devproj.settings
         virtualenv: /home/vagrant/.virtualenvs/gislab-web
       sudo_user: vagrant

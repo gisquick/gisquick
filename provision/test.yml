@@ -15,4 +15,14 @@
       ignore_errors: yes
       changed_when: False
 
+
+  # GIS.lab Web
+    - name: Run GIS.lab Web server tests
+      django_manage:
+        command: test
+        app_path: /vagrant/dev
+        settings: devproj.settings
+        virtualenv: /home/vagrant/.virtualenvs/gislab-web
+      sudo_user: vagrant
+
 # vim: set ts=8 sts=2 sw=2 et:

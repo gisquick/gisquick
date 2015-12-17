@@ -47,11 +47,14 @@ def clean_project_name(project):
 
 def get_last_project_version(project):
     full_project = os.path.join(settings.GISLAB_WEB_PROJECT_ROOT, project)
-    print full_project
+    project_dir = os.path.dirname(full_project)
+    if not os.path.exists(project_dir):
+        return None
+
     project = clean_project_name(project)
     project_pattern = re.compile(re.escape(os.path.basename(project))+'_(\d{10})\.qgs')
     matched_project_versions = []
-    for filename in os.listdir(os.path.dirname(full_project)):
+    for filename in os.listdir(project_dir):
         match = project_pattern.match(filename)
         if match:
             matched_project_versions.append((int(match.group(1)), filename))
@@ -171,6 +174,9 @@ class WebgisClient(object):
         if project:
             project = clean_project_name(project)
             ows_project_name = get_last_project_version(project)
+            if not ows_project_name:
+                raise Http404
+
             self.project = project
             self.ows_project = ows_project_name
 

@@ -86,12 +86,20 @@
       tags:
         - basic-os
 
+    - name: Add QGIS UbuntuGIS LTR repository signing key
+      apt_key:
+        url: http://qgis.org/downloads/qgis-2015.gpg.key
+        state: present
+      tags:
+        - basic-os
+
     - name: Add QGIS UbuntuGIS LTR repository
       apt_repository:
         repo: 'deb http://qgis.org/ubuntugis-nightly-ltr trusty main'
         state: present
       tags:
         - basic-os
+
 
     - name: Update apt cache
       apt:

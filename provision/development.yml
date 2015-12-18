@@ -151,11 +151,12 @@
       tags:
         - dep-python
 
-    - name: Install Django sslserver
+    - name: Install GIS.lab Web Python development requirements
       pip:
-        name: django-sslserver
         virtualenv: /home/vagrant/.virtualenvs/gislab-web
+        requirements: /vagrant/server/requirements-dev.txt
         virtualenv_site_packages: yes
+        extra_args: "--download-cache=/vagrant/dev/cache/pip"
         state: present
       sudo_user: vagrant
       tags:

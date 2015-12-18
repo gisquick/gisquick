@@ -40,6 +40,9 @@ url.rewrite-once = (
     "^(.*[?&])(?i)MAP=(.*)$" => "$1MAP=/vagrant/dev/publish/$2",
 )
 
+# Temporary solution to invalid Content Length header
+# from qgis mapserver WFS GetFeature requests
+setenv.add-response-header = ("Content-Length" => "")
 
 # logging
 server.errorlog                 = "/var/log/lighttpd/error.log"

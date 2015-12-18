@@ -53,18 +53,6 @@ class WebClient(WebgisClient):
 
 class ProjectJsonClient(WebClient):
 
-    def get_ows_url(self, request):
-        return request.build_absolute_uri(super(ProjectJsonClient, self).get_ows_url(request))
-
-    def get_mapcache_tile_url(self, request):
-        return request.build_absolute_uri(super(ProjectJsonClient, self).get_mapcache_tile_url(request))
-
-    def get_mapcache_legend_url(self, request):
-        return request.build_absolute_uri(super(ProjectJsonClient, self).get_mapcache_legend_url(request))
-
-    def get_vectorlayers_url(self, request):
-        return request.build_absolute_uri(super(ProjectJsonClient, self).get_vectorlayers_url(request))
-
     def render(self, request, project_data):
         return HttpResponse(json.dumps(project_data), content_type="application/json")
 
@@ -84,7 +72,12 @@ def project_json(request):
     except LoginRequired, e:
         return HttpResponse('Authentication required', status=401)
 
-@basic_authentication(realm="OWS API")
+
+# Authentication must be deactivated until Owslib will support authentication
+# or WFS requests will go directly to mapserver - now they are redirected to
+# ows request, which performs some fixes.
+
+#@basic_authentication(realm="OWS API")
 def ows_request(request):
     return webclient.ows_request(request)
 
@@ -152,7 +145,9 @@ def projects_json(request):
     projects = webclient.get_user_projects(request, request.user.username)
     return HttpResponse(json.dumps(projects), content_type="application/json")
 
+
 @csrf_exempt
+@login_required
 def filterdata(request):
     """Handle filter requrest - using OGC WFS service
 
@@ -172,15 +167,16 @@ def filterdata(request):
 
     sent as HTTP POST request
     """
-
     if request.method == 'POST':
         project = request.GET['PROJECT']
         url = settings.GISLAB_WEB_MAPSERVER_URL
         params = {
             'MAP': project + '.qgs'
         }
-        mapserv = '{}?{}'.format(url, urllib.urlencode(params))
-
+        # Redirect WFS requests temporary to ows view to fix GetCapabilities
+        # response from qgis server 2.8.1+
+        # mapserv = '{}?{}'.format(url, urllib.urlencode(params))
+        mapserv = secure_url(request, set_query_parameters(reverse('viewer:owsrequest'), params))
         filter_request = json.loads(request.body)
 
         layer_name = filter_request['layer']

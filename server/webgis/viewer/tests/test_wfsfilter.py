@@ -9,7 +9,8 @@ class WfsFilterCase(TestCase):
     """Prepared for natural-earth/central-europe project"""
 
     def setUp(self):
-        self.url = 'http://localhost:90/cgi-bin/qgis_mapserv.fcgi?MAP=user/natural-earth/central-europe.qgs'
+        #self.url = 'http://localhost:90/cgi-bin/qgis_mapserv.fcgi?MAP=user/natural-earth/central-europe.qgs'
+        self.url = 'https://localhost:8000/owsrequest/?MAP=user/natural-earth/central-europe.qgs'
 
     def test_basic(self):
 

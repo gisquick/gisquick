@@ -6,13 +6,14 @@ publishing.
 
 Source code layout
 ------------------
-* **clients:**   web and mobile client interfaces
-* **server:**    Django server
-* **qgis:**      QGIS plugin
-* **provision:** development environment provisioning configuration
-                 (Vagrant/Ansible)
-* **dev:**       directory for Django development project created during
-                 provisioning
+* **clients:**    web and mobile client interfaces
+* **server:**     Django server
+* **qgis:**       QGIS plugin
+* **provision:**  development environment provisioning configuration
+                  (Vagrant/Ansible)
+* **dev:**        development directory
+* **dev/django:** directory for Django development project created during
+                  provisioning
 * **dev/publish/user:** directory for QGIS projects publishing (as user 'user')
 
 
@@ -47,7 +48,7 @@ $ /vagrant/utils/tmux-dev.sh
 OR
 * launch Django development server manually
 ```
-$ cd /vagrant/dev \
+$ cd /vagrant/dev/django \
   && \
   workon gislab-web \
   && \
@@ -60,7 +61,7 @@ https://localhost:8000?PROJECT=user/natural-earth/central-europe
 ```
 
 **Other commands:**  
-* run Django server tests (run in '/vagrant/dev' dir)
+* run Django server tests (run in '/vagrant/dev/django' dir)
 ```
 $ python ./manage.py test webgis.viewer.tests
 ```

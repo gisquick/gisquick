@@ -20,7 +20,7 @@
     - name: Run GIS.lab Web server tests
       django_manage:
         command: test
-        app_path: /vagrant/dev
+        app_path: /vagrant/dev/django
         apps: webgis.viewer
         settings: devproj.settings
         virtualenv: /home/vagrant/.virtualenvs/gislab-web

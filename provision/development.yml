@@ -68,13 +68,13 @@
         state: directory
       sudo_user: vagrant
 
-    - name: Create cache directories
+    - name: Create global directories in shared development directory
       file:
-        path: /vagrant/dev/cache/{{ item }}
+        path: /vagrant/dev/{{ item }}
         state: directory
       with_items:
-        - tar
-        - pip
+        - cache/tar
+        - cache/pip
       sudo_user: vagrant
 
 
@@ -84,13 +84,12 @@
         state: directory
       sudo_user: vagrant
 
-    - name: Create directories in local development directory
+    - name: Create global directories in local development directory
       file:
         path: /home/vagrant/dev/{{ item }}
         state: directory
       with_items:
         - apps
-        - node_modules
       sudo_user: vagrant
 
 
@@ -123,7 +122,6 @@
         state: present
       tags:
         - basic-os
-
 
 
     - name: Update apt cache
@@ -212,17 +210,6 @@
         - dep-python
 
     # Javascript
-    - name: Symlink Node modules from local development directory
-      file:
-        src: /home/vagrant/dev/node_modules
-        dest: /vagrant/clients/node_modules
-        state: link
-        force: yes
-      sudo_user: vagrant
-      tags:
-        - dep-javascript
-
-
     - name: Install NVM
       shell: >
         curl https://raw.githubusercontent.com/creationix/nvm/v{{ nvm_version }}/install.sh
@@ -253,6 +240,25 @@
         nvm use v{{ node_version }}
         &&
         npm install -g gulp
+      sudo_user: vagrant
+      tags:
+        - dep-javascript
+
+
+    - name: Create local development directory for Node modules
+      file:
+        path: /home/vagrant/dev/node_modules
+        state: directory
+      sudo_user: vagrant
+      tags:
+        - dep-javascript
+
+    - name: Symlink Node modules from local development directory
+      file:
+        src: /home/vagrant/dev/node_modules
+        dest: /vagrant/clients/node_modules
+        state: link
+        force: yes
       sudo_user: vagrant
       tags:
         - dep-javascript
@@ -409,7 +415,25 @@
 
 
     ### DJANGO SERVER
-    - name: Create Django project
+    - name: Remove Django project directory
+      file:
+        path: /vagrant/dev/django
+        state: absent
+      sudo_user: vagrant
+      tags:
+        - server-django
+
+    - name: Create Django project directory
+      file:
+        path: /vagrant/dev/django/devproj
+        state: directory
+        recurse: yes
+      sudo_user: vagrant
+      tags:
+        - server-django
+
+
+    - name: Create new Django project
       shell: >
         export WORKON_HOME="$HOME/.virtualenvs"
         &&
@@ -420,11 +444,10 @@
         django-admin.py startproject
         --template=server/webgis/conf/project_template/
         devproj
-        dev
+        dev/django
       args:
         chdir: /vagrant
         executable: /bin/bash
-        creates: /vagrant/dev/devproj/settings.py
       sudo_user: vagrant
       tags:
         - server-django
@@ -432,7 +455,7 @@
     - name: Install custom Django project configuration
       template:
         src: templates/django/settings_custom.py.j2
-        dest: /vagrant/dev/devproj/settings_custom.py
+        dest: /vagrant/dev/django/devproj/settings_custom.py
       sudo_user: vagrant
       tags:
         - server-django
@@ -440,17 +463,30 @@
     - name: Build Django project database
       django_manage:
         command: migrate
-        app_path: /vagrant/dev
+        app_path: /vagrant/dev/django
         settings: devproj.settings
         virtualenv: /home/vagrant/.virtualenvs/gislab-web
       sudo_user: vagrant
       tags:
         - server-django
 
-    # TODO: createsuperuser
-    # echo "from django.contrib.auth.models import User;
-    #       User.objects.create_superuser('admin', 'admin@example.com', 'pass')"
-    #       | python ./manage.py shell
+    - name: Create superuser account (username-> admin, password-> admin)
+      shell: >
+        export WORKON_HOME="$HOME/.virtualenvs"
+        &&
+        source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
+        &&
+        workon gislab-web
+        &&
+        echo "from webgis.viewer.models import GislabUser;
+        GislabUser.objects.create_superuser('admin', 'admin@gislab.io', 'admin')"
+        | python ./manage.py shell
+      args:
+        chdir: /vagrant/dev/django
+        executable: /bin/bash
+      sudo_user: vagrant
+      tags:
+        - server-django
 
 
     ### WEB CLIENT

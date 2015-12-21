@@ -23,7 +23,7 @@ if [ $? != 0 ]; then
     tmux send-keys -t development:0.0 'nvm use stable' C-m
     tmux send-keys -t development:0.0 'clear' C-m
 
-    tmux send-keys -t development:0.1 'cd /vagrant/dev' C-m
+    tmux send-keys -t development:0.1 'cd /vagrant/dev/django' C-m
     tmux send-keys -t development:0.1 'workon gislab-web' C-m
     tmux send-keys -t development:0.1 'python ./manage.py runsslserver 0.0.0.0:8000' C-m
 

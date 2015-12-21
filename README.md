@@ -104,8 +104,8 @@ $ cd /vagrant/server \
 ```
 $ nvm use <NODE-VERSION>
 
-$ export ANDROID_HOME=/home/vagrant/android-sdk-linux \
-         PATH=$PATH:/home/vagrant/android-sdk-linux/tools:/home/vagrant/android-sdk-linux/platform-tools \
+$ export ANDROID_HOME=/home/vagrant/dev/apps/android-sdk-linux \
+         PATH=$PATH:/home/vagrant/dev/apps/android-sdk-linux/tools:/home/vagrant/dev/apps/android-sdk-linux/platform-tools \
          ANDROID_BUILD=ant \
   && \
   cd /vagrant/clients/mobile/cordova-app \

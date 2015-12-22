@@ -488,6 +488,24 @@
       tags:
         - server-django
 
+    - name: Create ordinary user account (username-> user, password-> user)
+      shell: >
+        export WORKON_HOME="$HOME/.virtualenvs"
+        &&
+        source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
+        &&
+        workon gislab-web
+        &&
+        echo "from webgis.viewer.models import GislabUser;
+        GislabUser.objects.create_user('user', 'user@gislab.io', 'user')"
+        | python ./manage.py shell
+      args:
+        chdir: /vagrant/dev/django
+        executable: /bin/bash
+      sudo_user: vagrant
+      tags:
+        - server-django
+
 
     ### WEB CLIENT
     - name: Build GIS.lab Web JS

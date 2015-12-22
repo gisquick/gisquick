@@ -4,6 +4,7 @@ import urllib, urlparse
 import logging
 from owslib.fes import PropertyIsLike, And, Or, PropertyIsEqualTo, \
     PropertyIsNotEqualTo, PropertyIsGreaterThanOrEqualTo, \
+    PropertyIsGreaterThan, PropertyIsLessThan, \
     PropertyIsLessThanOrEqualTo, PropertyIsBetween, FilterRequest
 from owslib.namespaces import Namespaces
 
@@ -87,12 +88,24 @@ def get_filter_fes(filters, logical_operator=And):
                         myfilter['attribute'], myfilter['value']))
         elif myfilter['operator'] == '>':
             conditions.append(
+                    PropertyIsGreaterThan(
+                        myfilter['attribute'], myfilter['value']))
+        elif myfilter['operator'] == '>=':
+            conditions.append(
                     PropertyIsGreaterThanOrEqualTo(
                         myfilter['attribute'], myfilter['value']))
         elif myfilter['operator'] == '<':
             conditions.append(
+                    PropertyIsLessThan(
+                        myfilter['attribute'], myfilter['value']))
+        elif myfilter['operator'] == '<=':
+            conditions.append(
                     PropertyIsLessThanOrEqualTo(
                         myfilter['attribute'], myfilter['value']))
+        elif myfilter['operator'] == 'BETWEEN':
+            conditions.append(
+                    PropertyIsBetween(
+                        myfilter['attribute'], *myfilter['value'].split(',')))
         elif myfilter['operator'] == 'IN':
             new_filters = [{
                 'value': value,

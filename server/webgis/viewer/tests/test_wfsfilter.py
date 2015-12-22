@@ -88,7 +88,7 @@ class WfsFilterCase(TestCase):
     def test_filter_greater_lesser(self):
         myfilters = [{
             'attribute': 'POP_MAX',
-            'operator': '>',
+            'operator': '>=',
             'value': 10000
         }]
 
@@ -98,7 +98,7 @@ class WfsFilterCase(TestCase):
 
         myfilters = [{
             'attribute': 'POP_MAX',
-            'operator': '<',
+            'operator': '<=',
             'value': 100000
         }]
 

@@ -1,7 +1,37 @@
-GIS.lab Web and Mobile
-======================
-New generation of GIS.lab Web and Mobile client interfaces for QGIS projects
-publishing.
+GIS.lab Web New Generation (in development)
+===========================================
+New generation of GIS.lab Web infrastructure for publishing QGIS projects in
+Web.
+
+
+Features
+--------
+* publishing projects created in QGIS Desktop via web interface
+* responsive web interface design
+* user console
+* dedicated hybrid Android client interface built on top of the same code base
+  as web inteface with native UI
+* automatic tiles caching
+
+
+Core technologies
+-----------------
+* QGIS Desktop and Mapserver
+* OpenLayers 3
+* AngularJS, Angular UI, Angular Material
+* Onsen
+* Cordova
+* Django
+* Python
+
+
+Typical work flow
+-----------------
+* load, configure and style layers in QGIS Desktop project
+* install QGIS GIS.lab Web plugin to publish QGIS project
+* copy QGIS project with all associated data to GIS.lab Web server
+* open GIS.lab Web User Console and launch published project in web interface
+* optionaly install and use Android client interface
 
 
 Source code layout

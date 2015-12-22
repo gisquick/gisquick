@@ -73,11 +73,7 @@ def project_json(request):
         return HttpResponse('Authentication required', status=401)
 
 
-# Authentication must be deactivated until Owslib will support authentication
-# or WFS requests will go directly to mapserver - now they are redirected to
-# ows request, which performs some fixes.
-
-#@basic_authentication(realm="OWS API")
+@basic_authentication(realm="OWS API")
 def ows_request(request):
     return webclient.ows_request(request)
 
@@ -173,10 +169,7 @@ def filterdata(request):
         params = {
             'MAP': project + '.qgs'
         }
-        # Redirect WFS requests temporary to ows view to fix GetCapabilities
-        # response from qgis server 2.8.1+
-        # mapserv = '{}?{}'.format(url, urllib.urlencode(params))
-        mapserv = secure_url(request, set_query_parameters(reverse('viewer:owsrequest'), params))
+        mapserv = '{}?{}'.format(url, urllib.urlencode(params))
         filter_request = json.loads(request.body)
 
         layer_name = filter_request['layer']

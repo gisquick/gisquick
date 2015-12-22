@@ -359,19 +359,9 @@ class WebgisClient(object):
                 if not data:
                     break
                 resp_content += data
-            # Temporary fix of invalid GetCapabilities response from
-            # qgis server 2.8.1+
-            if 'GetCapabilities' in request.META['QUERY_STRING']:
-                resp_content = resp_content\
-                    .replace("<KeywordList>", "")\
-                    .replace("</KeywordList>", "")\
-                    .replace("<Keyword>", "<Keywords>")\
-                    .replace("</Keyword>", "</Keywords>")
             content_type = resp.info().getheader('Content-Type')
             status = resp.getcode()
-            response = HttpResponse(resp_content, content_type=content_type, status=status)
-            #response['Content-Length'] = len(resp_content)
-            return response
+            return HttpResponse(resp_content, content_type=content_type, status=status)
 
     def mapcache_tile_request(self, request, project_hash, publish, layers_hash=None, z=None, x=None, y=None, format=None):
         params = {key.upper(): request.GET[key] for key in request.GET.iterkeys()}

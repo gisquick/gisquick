@@ -12,8 +12,9 @@ var OL3DEPS = [
   'node_modules/proj4/dist/proj4.js'
 ];
 
+
 /**
- * clena info.son
+ * Clean info.json
  */
 gulp.task('clean-ol3', function() {
   return gulp.src('node_modules/openlayers/build/info.json', { read: false })
@@ -41,7 +42,7 @@ gulp.task('copyol3-src', ['clean-ol3'], function() {
 
 
 /**
- * build ol3 app
+ * Build OpenLayers 3 lib with GIS.lab extensions
  */
 gulp.task('compile-ol3', ['copyol3-src'],
   shell.task(['cd node_modules/openlayers;' +
@@ -50,15 +51,16 @@ gulp.task('compile-ol3', ['copyol3-src'],
 
 
 /**
- * build ol3 in debug mode
+ * Build OpenLayers 3 with GIS.lab extensions in debug mode
  */
 gulp.task('compile-ol3-debug', ['copyol3-src'],
   shell.task(['cd node_modules/openlayers;' +
               'node tasks/build.js build/webgis-debug.json build/ol.debug.js'])
 );
 
+
 /**
- * Compile OpenLayers with custom code
+ * Build minified OpenLayers 3 with dependencies
  */
 gulp.task('build-ol3', ['compile-ol3'], function() {
 
@@ -77,6 +79,10 @@ gulp.task('build-ol3', ['compile-ol3'], function() {
 
 });
 
+
+/**
+ * Build debug version of OpenLayers 3 with dependencies
+ */
 gulp.task('build-ol3-debug', ['compile-ol3-debug'], function() {
 
   // copy openlayers

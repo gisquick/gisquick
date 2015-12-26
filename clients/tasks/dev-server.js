@@ -14,6 +14,9 @@ var Server = {
 };
 
 
+/**
+ * Tasks for reloading of development server when source files change
+ */
 gulp.task('devserver', function() {
   var portArgIndex = process.argv.indexOf('--port');
   if (portArgIndex != -1) {
@@ -48,7 +51,8 @@ gulp.task('watch-server-src', function() {
 });
 
 /**
- * Start development server on http://localhost:8100 with live reloading
+ * Start development server with live reloading, server can be configured
+ * through global variable 'Server'.
  */
 gulp.task('serve', ['devserver', 'watch-server-src']);
 

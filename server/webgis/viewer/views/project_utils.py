@@ -118,7 +118,6 @@ def get_project_layers_info(project_key, publish, project=None):
 
 def get_project(request):
     ows_project = None
-    #raise LoginRequiredException
 
     form = forms.ViewerForm(request.GET)
     if not form.is_valid():
@@ -150,14 +149,8 @@ def get_project(request):
                 raise ProjectExpiredException
 
     # Authentication
-    metadata.authentication = 'owner'
-    if project and type(metadata.authentication) is dict:
-        # backward compatibility
-        allow_anonymous = metadata.authentication.get('allow_anonymous')
-        owner_authentication = False
-    else:
-        allow_anonymous = metadata.authentication == 'all' if project else True
-        owner_authentication = metadata.authentication == 'owner' if project else False
+    allow_anonymous = metadata.authentication == 'all' if project else True
+    owner_authentication = metadata.authentication == 'owner' if project else False
 
     if not request.user.is_authenticated() and allow_anonymous:
         # login as quest and continue
@@ -366,4 +359,3 @@ def get_user_projects(request, username):
                     # metadata file does not exists or not valid
                     pass
     return projects
-    

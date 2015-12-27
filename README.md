@@ -61,7 +61,8 @@ Development environment
 
 * start Vagrant in source code root directory  
   *Note: to speed up provisioning using Apt proxy server, set APT_PROXY variable
-  before running this command (ex.: export APT_PROXY=http://192.168.99.118:3142)*
+  before running this command (ex.: export APT_PROXY=http://192.168.99.118:3142).
+  See [Apt Cacher server](https://github.com/gislab-npo/gislab/wiki/Apt-Cacher-server) instructions for details.*
 ```
 $ vagrant up
 ```

@@ -1,20 +1,20 @@
 from django.conf.urls import url
 
-from webgis.viewer import views
+from webgis.viewer.views import web_client, map, api
 
 
 urlpatterns = [
-    url(r"^$", views.web_client, name="web_client"),
-    url(r"^user/(?P<username>[^/]*)/?$", views.user_projects, name="user_projects"),
-    url(r"^owsrequest/$", views.ows_request, name="owsrequest"),
-    url(r"^tile/(?P<project_hash>[^/]+)/(?P<publish>\d+)/tile/(?P<layers_hash>[^/]+)/(?P<z>\d+)/(?P<x>\d+)/(?P<y>\d+)\.(?P<format>\w+)$", views.tile, name="tile"),
-    url(r"^legend/(?P<project_hash>[^/]+)/(?P<publish>\d+)/legend/(?P<layer_hash>[^/]+)/(?P<zoom>\d+)\.(?P<format>\w+)$", views.legend, name="legend"),
-    url(r"^vector/$", views.vector_layers, name="vectorlayers"),
+    url(r"^$", web_client.map, name="map"),
+    url(r"^user/(?P<username>[^/]*)/?$", web_client.user_projects, name="user_projects"),
 
-    url(r"^project.json$", views.project_json, name="project_json"),
-    url(r"^projects.json$", views.projects_json, name="projects_json"),
-    url(r"^user.json$", views.user_json, name="user_json"),
-    url(r"^gislab_version.json$", views.gislab_version_json, name="gislab_version_json"),
+    url(r"^ows/$", map.ows, name="ows"),
+    url(r"^tile/(?P<project_hash>[^/]+)/(?P<publish>\d+)/tile/(?P<layers_hash>[^/]+)/(?P<z>\d+)/(?P<x>\d+)/(?P<y>\d+)\.(?P<format>\w+)$", map.tile, name="tile"),
+    url(r"^legend/(?P<project_hash>[^/]+)/(?P<publish>\d+)/legend/(?P<layer_hash>[^/]+)/(?P<zoom>\d+)\.(?P<format>\w+)$", map.legend, name="legend"),
+    url(r"^vector/$", map.vector_layers, name="vectorlayers"),
+    url(r"^filter/$", map.filterdata, name="filter"),
 
-    url(r"^filter/$", views.filterdata, name="filter")
+    url(r"^project.json$", api.project_json, name="project_json"),
+    url(r"^projects.json$", api.projects_json, name="projects_json"),
+    url(r"^user.json$", api.user_json, name="user_json"),
+    url(r"^gislab_version.json$", api.gislab_version_json, name="gislab_version_json")
 ]

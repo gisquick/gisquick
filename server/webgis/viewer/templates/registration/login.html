@@ -1,0 +1,124 @@
+{% load i18n staticfiles %}
+
+<html lang="en">
+  <head>
+    <title>GIS.lab web client</title>
+    <link rel="stylesheet" type="text/css" href="{% static "styles/login.min.css" %}"/>
+  </head>
+
+  <body>
+    <div class="container layout-column">
+      <div class="flex" style="position:relative;">
+        <div class="non-field-errors">
+        {% if form.errors and not form.non_field_errors %}
+        <p class="errornote">
+        {% if form.errors.items|length == 1 %}
+          {% trans "Please correct the error below." %}
+        {% else %}
+          {% trans "Please correct the errors below." %}
+        {% endif %}
+        </p>
+        {% endif %}
+
+        {% if form.non_field_errors %}
+        {% for error in form.non_field_errors %}
+        <p class="errornote">
+          {{ error }}
+        </p>
+        {% endfor %}
+        {% endif %}
+        </div>
+      </div>
+      <div class="login-form-container layout-row">
+        <div class="flex"></div>
+
+        <form
+          action=""
+          method="post"
+          class="login-form">
+          {% csrf_token %}
+          <div class="title">GIS.lab Web</div>
+          <md-input-container class="md-default-theme">
+            <label>{% trans "Username" %}</label>
+            <input
+              id="id_username"
+              name="username"
+              class="md-input"
+              onfocus="window.field_focused(event)"
+              onblur="window.field_blured(event)" />
+          </md-input-container>
+          {% if form.username.errors %}
+            {{ form.username.errors }}
+          {% endif %}
+
+          <md-input-container class="md-default-theme">
+            <label>{% trans "Password" %}</label>
+            <input
+              id="id_password"
+              name="password"
+              class="md-input"
+              type="password"
+              onfocus="window.field_focused(event)"
+              onblur="window.field_blured(event)" />
+          </md-input-container>
+          {% if form.password.errors %}
+            {{ form.password.errors }}
+          {% endif %}
+
+          <input
+            type="hidden"
+            name="this_is_the_login_form"
+            value="1" />
+
+          <div class="layout-row">
+            <div class="flex"></div>
+            <button
+              class="md-raised login-button md-button"
+              type="submit">
+              <span>Log in </span>
+            </button>
+            <div class="flex"></div>
+          </div>
+
+        </form>
+        <div class="flex"></div>
+
+      </div>
+      <div class="flex">
+        <footer>
+          © 2015-2016 | 
+          <a href="http://imincik.github.io/gis-lab/" target="_blank">About GIS.lab</a>
+        </footer>
+      </div>
+    </div>
+  <script type="text/javascript">
+    function addClass(elem, className) {
+      if (!elem.className.contains(className)) {
+        elem.className += ' '+className;
+      }
+    }
+    function removeClass(elem, className) {
+      if (elem.className.contains(className)) {
+        elem.className =  elem.className.replace(className, '');
+      }
+    }
+    window.field_focused = function(evt) {
+      addClass(evt.target.parentElement, 'md-input-focused');
+    };
+    window.field_blured = function(evt) {
+      removeClass(evt.target.parentElement, 'md-input-focused');
+      if (evt.target.value) {
+        addClass(evt.target.parentElement, 'md-input-has-value');
+      } else {
+        removeClass(evt.target.parentElement, 'md-input-has-value');
+      }
+    }
+    if (document.getElementById('id_username').value) {
+      addClass(
+        document.getElementById('id_username').parentElement,
+        'md-input-has-value'
+      );
+    } 
+  </script>
+  </body>
+</html>

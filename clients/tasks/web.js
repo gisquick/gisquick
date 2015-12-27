@@ -41,13 +41,21 @@ gulp.task('csss', function() {
     'node_modules/gislab-web/node_modules/angular-material/angular-material.css',
     'node_modules/gislab-web/node_modules/angular-ui-layout/src/ui-layout.css',
     'node_modules/gislab-web/node_modules/angular-material-data-table/dist/md-data-table.css',
-    'src/web/styles/ui.css'
+    'src/web/styles/map/**/*.css'
   ])
     .pipe(minifyCss())
-    .pipe(concat('styles.min.css'))
+    .pipe(concat('map.min.css'))
     .pipe(gulp.dest(TARGET + 'styles'));
 
-  gulp.src('src/web/styles/*.svg')
+  gulp.src('src/web/styles/map/*.svg')
+    .pipe(gulp.dest(TARGET + 'styles'));
+
+  gulp.src([
+    'node_modules/gislab-web/node_modules/angular-material/angular-material.css',
+    'src/web/styles/login/**/*.css'
+  ])
+    .pipe(minifyCss())
+    .pipe(concat('login.min.css'))
     .pipe(gulp.dest(TARGET + 'styles'));
 });
 

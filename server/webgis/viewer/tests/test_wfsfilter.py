@@ -58,6 +58,34 @@ class WfsFilterCase(TestCase):
         result = webgisfilter(self.url, 'Places', filters=myfilters)
         self.assertEqual(len(result['features']), 1, "Prague found")
 
+    def test_filter_max_features(self):
+        myfilters = [{
+            'attribute': 'POP_MAX',
+            'operator': '>=',
+            'value': 100
+        }]
+        result = webgisfilter(
+            self.url, 'Places',
+            maxfeatures=50, filters=myfilters
+        )
+        self.assertEqual(len(result['features']), 50,
+            "161 places found with population bigger then 100")
+
+        last_feature = result['features'][-1]
+
+        result = webgisfilter(
+            self.url, 'Places',
+            maxfeatures=50, startindex=49, filters=myfilters
+        )
+
+        self.assertEqual(len(result['features']), 50,
+            "161 places found with population bigger then 100")
+
+        first_feature = result['features'][0]
+
+        self.assertEqual(first_feature['id'], last_feature['id'])
+
+
     def test_two_filters(self):
         myfilters = [
         {

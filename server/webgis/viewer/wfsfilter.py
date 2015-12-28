@@ -46,6 +46,7 @@ def webgisfilter(mapserv, layer, maxfeatures=None, startindex=None, bbox=None,
     if filters:
         fes = get_filter_root(get_filter_fes(filters))
         fes = etree.tostring(fes)
+
     layer_data = mywfs.getfeature(typename=[layer],
                                   filter=fes,
                                   bbox=bbox,
@@ -56,7 +57,7 @@ def webgisfilter(mapserv, layer, maxfeatures=None, startindex=None, bbox=None,
     data = json.load(layer_data)
 
     for feature in data['features']:
-        feature.pop('geometry') 
+        feature.pop('geometry')
 
     return data
 
@@ -74,44 +75,45 @@ def get_filter_fes(filters, logical_operator=And):
     filter_request = None
 
     for myfilter in filters:
+        value = str(myfilter['value'])
         if myfilter['operator'] == '=':
             conditions.append(
                     PropertyIsEqualTo(
-                        myfilter['attribute'], myfilter['value']))
+                        myfilter['attribute'], value))
         elif myfilter['operator'] == '!=':
             conditions.append(
                     PropertyIsNotEqualTo(
-                        myfilter['attribute'], myfilter['value']))
+                        myfilter['attribute'], value))
         elif myfilter['operator'] == '~':
             conditions.append(
                     PropertyIsLike(
-                        myfilter['attribute'], myfilter['value']))
+                        myfilter['attribute'], value))
         elif myfilter['operator'] == '>':
             conditions.append(
                     PropertyIsGreaterThan(
-                        myfilter['attribute'], myfilter['value']))
+                        myfilter['attribute'], value))
         elif myfilter['operator'] == '>=':
             conditions.append(
                     PropertyIsGreaterThanOrEqualTo(
-                        myfilter['attribute'], myfilter['value']))
+                        myfilter['attribute'], value))
         elif myfilter['operator'] == '<':
             conditions.append(
                     PropertyIsLessThan(
-                        myfilter['attribute'], myfilter['value']))
+                        myfilter['attribute'], value))
         elif myfilter['operator'] == '<=':
             conditions.append(
                     PropertyIsLessThanOrEqualTo(
-                        myfilter['attribute'], myfilter['value']))
+                        myfilter['attribute'], value))
         elif myfilter['operator'] == 'BETWEEN':
             conditions.append(
                     PropertyIsBetween(
-                        myfilter['attribute'], *myfilter['value'].split(',')))
+                        myfilter['attribute'], *value.split(',')))
         elif myfilter['operator'] == 'IN':
             new_filters = [{
                 'value': value,
                 'operator': '=',
                 'attribute': myfilter['attribute']}\
-                        for value in myfilter['value'].split(',')]
+                        for value in value.split(',')]
             conditions.append(get_filter_fes(new_filters, logical_operator=Or))
 
     if len(conditions) > 1:
@@ -124,7 +126,7 @@ def get_filter_fes(filters, logical_operator=And):
 def get_filter_root(condition):
     """Return given condition enveloped with <ogc:Filter> tag
 
-    :param (owslib.fes.OgcExpression|owslib.fes.BinaryComparisonOpType) condition: 
+    :param (owslib.fes.OgcExpression|owslib.fes.BinaryComparisonOpType) condition:
     """
 
     root = etree.Element("{{}}Filter".format(namespaces['ogc']))

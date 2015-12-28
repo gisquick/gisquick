@@ -2,6 +2,7 @@ import os
 import json
 import urllib
 import urllib2
+import contextlib
 
 from django.conf import settings
 from django.http import HttpResponse, Http404

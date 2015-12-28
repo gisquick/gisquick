@@ -10,21 +10,7 @@
     <link rel="stylesheet" type="text/css" href="node_modules/angular-ui-layout/dist/ui-layout.css"/>
     <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700"/>
     <link rel="stylesheet" type="text/css" href="node_modules/angular-material-data-table/dist/md-data-table.css"/>
-    <link rel="stylesheet" type="text/css" href="web/styles/ui.css"/>
-
-    <!-- Before body closing tag -->
-    <script type="text/javascript" src="node_modules/angular/angular.js"></script>
-    <script type="text/javascript" src="node_modules/angular-animate/angular-animate.js"></script>
-    
-    <script type="text/javascript" src="node_modules/angular-material/angular-material.js"></script>
-    <script type="text/javascript" src="node_modules/angular-aria/angular-aria.js"></script>
-    <script type="text/javascript" src="node_modules/angular-ui-layout/dist/ui-layout.js"></script>
-    <script type="text/javascript" src="node_modules/angular-material-data-table/dist/md-data-table.js"></script>
-
-    <script type="text/javascript" src="node_modules/proj4/dist/proj4-src.js"></script>
-    <script type="text/javascript" src="node_modules/crypto-js/crypto-js.js"></script>
-    <script type="text/javascript" src="node_modules/openlayers/build/ol.debug.js"></script>
-
+    <link rel="stylesheet" type="text/css" href="web/styles/map/ui.css"/>
     <script type="text/javascript">
     // First, checks if it isn't implemented yet.
     if (!String.prototype.format) {
@@ -40,11 +26,20 @@
     }
     </script>
 
+    <script type="text/javascript" src="node_modules/angular/angular.js"></script>
+    <script type="text/javascript" src="node_modules/angular-animate/angular-animate.js"></script>
+    <script type="text/javascript" src="node_modules/angular-material/angular-material.js"></script>
+    <script type="text/javascript" src="node_modules/angular-aria/angular-aria.js"></script>
+    <script type="text/javascript" src="node_modules/angular-ui-layout/dist/ui-layout.js"></script>
+    <script type="text/javascript" src="node_modules/angular-material-data-table/dist/md-data-table.js"></script>
+    <script type="text/javascript" src="node_modules/openlayers/build/ol3-deps.debug.js"></script>
+
     <script type="text/javascript" src="js/web.module.js"></script>
     <script type="text/javascript" src="js/app.ctrl.js"></script>
 
     <script type="text/javascript" src="core/network/network.module.js"></script>
     <script type="text/javascript" src="core/network/gislab-client.service.js"></script>
+    <script type="text/javascript" src="core/network/image-src.dir.js"></script>
 
     <script type="text/javascript" src="core/map/map.module.js"></script>
     <script type="text/javascript" src="core/map/map-builder.service.js"></script>
@@ -64,8 +59,10 @@
     <script type="text/javascript" src="core/map-tools/features/features-viewer.service.js"></script>
     <script type="text/javascript" src="core/map-tools/features/identification.ctrl.js"></script>
     <script type="text/javascript" src="core/map-tools/features/search.ctrl.js"></script>
+    <script type="text/javascript" src="core/map-tools/features/wfs-search.ctrl.js"></script>
 
     <script type="text/javascript">
+      var GISLAB_WEB_SERVER = 'https://localhost:8000';
       QueryStringParam = function(item) {
         var svalue = location.search.match(new RegExp("[\?\&]" + item + "=([^\&]*)(\&?)","i"));
         return decodeURIComponent(svalue ? svalue[1] : svalue);
@@ -73,11 +70,11 @@
       angular.module('gl.web')
         .constant('staticRoot', '/')
         .config(function($mdIconProvider) {
-          $mdIconProvider.defaultIconSet('styles/icons.svg', 32);
+          $mdIconProvider.defaultIconSet('styles/map/icons.svg', 32);
         })
         .config(function(gislabClientProvider) {
           gislabClientProvider.configure({
-            server: 'https://localhost:8000'
+            server: GISLAB_WEB_SERVER
           });
         })
         .run(function($q, gislabClient) {
@@ -85,10 +82,22 @@
           window.webgis = {
             project: projectData.promise
           };
-          gislabClient.project(QueryStringParam("PROJECT"))
-            .then(function(data) {
-              projectData.resolve(data);
-            });
+          gislabClient.post(
+            '/mobile/login/',
+            {
+              username: 'user',
+              password: 'user'
+            }
+          ).then(function() {
+            gislabClient.project(QueryStringParam("PROJECT"))
+              .then(function(data) {
+                data.mapcache_url = GISLAB_WEB_SERVER+data.mapcache_url;
+                data.legend_url = GISLAB_WEB_SERVER+data.legend_url;
+                //data.ows_url = GISLAB_WEB_SERVER+data.ows_url;
+                projectData.resolve(data);
+              });
+            })
+
         });
     </script>
   </head>

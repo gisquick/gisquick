@@ -43,7 +43,7 @@ class WfsFilterCase(TestCase):
         self.assertEqual(len(result['features']), 1, "Prague found")
 
     def test_filter_equal(self):
-        
+
         myfilters = [
         {
             'attribute': 'NAME',

@@ -14,7 +14,6 @@
     "proj4": "2.3.12",
     "crypto-js": "",
     "gulp": "",
-    "gulp-shell": "",
     "gulp-rimraf": "",
     "gulp-install": "",
     "gulp-jshint": "2.0.0",

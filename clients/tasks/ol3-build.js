@@ -1,5 +1,4 @@
 var gulp = require('gulp');
-var shell = require('gulp-shell');
 var rimraf = require('gulp-rimraf');
 var gulpif = require('gulp-if');
 var uglify = require('gulp-uglify');
@@ -26,37 +25,41 @@ gulp.task('clean-ol3', function() {
  * copy our source files to openlayer3
  */
 gulp.task('copyol3-src', ['clean-ol3'], function() {
-  gulp.src('src/ol3/webgis.json')
-    .pipe(gulp.dest('node_modules/openlayers/build/'));
-
-  gulp.src('src/ol3/webgis-debug.json')
-    .pipe(gulp.dest('node_modules/openlayers/build/'));
 
   gulp.src('src/ol3/webgis/**/*.js')
     .pipe(gulp.dest('node_modules/openlayers/src/ol/webgis'));
 
   gulp.src('src/ol3/externs/webgis.js')
     .pipe(gulp.dest('node_modules/openlayers/externs/'));
-
 });
 
 
 /**
  * Build OpenLayers 3 lib with GIS.lab extensions
  */
-gulp.task('compile-ol3', ['copyol3-src'],
-  shell.task(['cd node_modules/openlayers;' +
-              'node tasks/build.js build/webgis.json build/ol.min.js'])
-);
+gulp.task('compile-ol3', ['copyol3-src'], function(cb) {
+  var fs = require('fs');
+  var config = require('../src/ol3/webgis.json');
+  var main = require('../node_modules/openlayers/tasks/build.js');
+  function writeOutput(err, output) {
+    fs.writeFile('node_modules/openlayers/build/ol.min.js', output, cb);
+  }
+  main(config, writeOutput);
+});
 
 
 /**
  * Build OpenLayers 3 with GIS.lab extensions in debug mode
  */
-gulp.task('compile-ol3-debug', ['copyol3-src'],
-  shell.task(['cd node_modules/openlayers;' +
-              'node tasks/build.js build/webgis-debug.json build/ol.debug.js'])
-);
+gulp.task('compile-ol3-debug', ['copyol3-src'],function(cb) {
+  var fs = require('fs');
+  var config = require('../src/ol3/webgis-debug.json');
+  var main = require('../node_modules/openlayers/tasks/build.js');
+  function writeOutput(err, output) {
+    fs.writeFile('node_modules/openlayers/build/ol.debug.js', output, cb);
+  }
+  main(config, writeOutput);
+});
 
 
 /**

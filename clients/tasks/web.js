@@ -128,7 +128,7 @@ gulp.task('icons', function() {
       parserOptions: { xmlMode: true }
     }))
     .pipe(svgng({ filename : "icons.svg"}))
-    .pipe(gulp.dest('src/web/styles/'));
+    .pipe(gulp.dest('src/web/styles/map/'));
     //.pipe(gzip({append: true,gzipOptions: { level: 9 }}))
     //.pipe(gulp.dest('src/web/styles/'));
 });

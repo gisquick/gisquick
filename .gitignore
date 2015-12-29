@@ -1,8 +1,8 @@
 build/
 dist/
 MANIFEST
-/clients/node_modules/
-/server/webgis/viewer/static/
+clients/node_modules
+server/webgis/viewer/static/
 dev/
 
 *.pyc

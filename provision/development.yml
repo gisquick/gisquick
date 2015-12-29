@@ -102,23 +102,16 @@
         - basic-os
 
 
-    - name: Add QGIS UbuntuGIS LTR repository signing key
+    - name: Add QGIS repository signing key
       apt_key:
         url: http://qgis.org/downloads/qgis-2015.gpg.key
         state: present
       tags:
         - basic-os
 
-    - name: Add QGIS Release UbuntuGIS LTR repository
+    - name: Add QGIS Master Nightly UbuntuGIS repository
       apt_repository:
-        repo: 'deb http://qgis.org/ubuntugis-ltr trusty main'
-        state: present
-      tags:
-        - basic-os
-
-    - name: Add QGIS Nightly UbuntuGIS LTR repository
-      apt_repository:
-        repo: 'deb http://qgis.org/ubuntugis-nightly-ltr trusty main'
+        repo: 'deb http://qgis.org/ubuntugis-nightly trusty main'
         state: present
       tags:
         - basic-os
@@ -398,7 +391,7 @@
       tags:
         - example-data
 
-    - name: Download example data from GIS.lab
+    - name: Download example data from GIS.lab project
       shell: >
         wget
         {{ wget_opts }}
@@ -413,6 +406,13 @@
       tags:
         - example-data
 
+    - name: Install example QGIS project
+      copy:
+        src: ../qgis/project/natural-earth/
+        dest: /vagrant/dev/publish/user/natural-earth/
+      sudo_user: vagrant
+      tags:
+        - example-data
 
     ### DJANGO SERVER
     - name: Remove Django project directory

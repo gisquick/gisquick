@@ -15,6 +15,14 @@
       ignore_errors: yes
       changed_when: False
 
+    - name: Test WFS GetCapabilies request without project
+      shell: >
+        curl
+        "http://localhost:90/cgi-bin/qgis_mapserv.fcgi?SERVICE=WFS&REQUEST=GetCapabilities"
+        | grep 'WFS_Capabilities .* version="1.0.0"'
+      ignore_errors: yes
+      changed_when: False
+
 
   # GIS.lab Web
     - name: Run GIS.lab Web server tests

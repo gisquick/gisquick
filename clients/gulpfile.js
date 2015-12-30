@@ -49,7 +49,7 @@ gulp.task('build-web', function() {
  *  Requires debug version of OpenLayers 3 library
  *  to be already builded ('build-ol3-debug' task)
  */
-gulp.task('serve-web', function() {
+gulp.task('serve-web', ['build-ol3-debug'], function() {
   require('./tasks/web.js');
   gulp.start('serve');
 });

@@ -13,4 +13,4 @@ for installation run
 for work and deployment:
 
   gulp lint
-  gulp stream
+  gulp serve-web (use port 8100 for app, and switch to http port (not https))

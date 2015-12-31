@@ -430,6 +430,22 @@
     };
 
 
+    /**
+     * @param {object} config layer configuration
+     * @return {ol.layer.Tile}
+     */
+    MapBuilder.createBingLayer = function(config) {
+
+        return new ol.layer.Tile({
+          visible: false,
+          preload: Infinity,
+          source: new ol.source.BingMaps({
+            key: config.apikey,
+            imagerySet: config.style,
+            maxZoom: 19
+          })
+        });
+    };
 
     /**
      * decoreate base layer with aditional attributes

@@ -415,6 +415,23 @@
 
 
     /**
+     * @param {object} config layer configuration
+     * @return {ol.layer.Tile}
+     */
+    MapBuilder.createMapBoxLayer = function(config) {
+        return new ol.layer.Tile({
+          source: new ol.source.XYZ({
+            url: 'http://api.tiles.mapbox.com/v4/' +
+                 config.mapid +
+                 '/{z}/{x}/{y}.png?access_token=' +
+                 config.apikey
+          })
+        });
+    };
+
+
+
+    /**
      * decoreate base layer with aditional attributes
      * @static
      * @function

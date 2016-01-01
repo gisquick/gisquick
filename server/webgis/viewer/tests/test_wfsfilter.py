@@ -28,7 +28,7 @@ class WfsFilterCase(TestCase):
         result = webgisfilter(self.url, 'Places', bbox=bbox)
         self.assertEqual(len(result['features']), 3, '3 features returned bbox')
 
-    def test_filer_prague(self):
+    def test_filter_prague(self):
 
         prague_filter = [
         {

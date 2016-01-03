@@ -72,7 +72,7 @@ $ vagrant up
 $ vagrant ssh
 ```
 
-* run simple development environment in TMUX
+* run simple development environment in TMUX (to quit running session type 'tmux kill-session')
 ```
 $ /vagrant/utils/tmux-dev.sh
 ```

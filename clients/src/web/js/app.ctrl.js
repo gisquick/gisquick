@@ -22,7 +22,6 @@
   }
 
   function AppController($scope, $timeout, $q, projectProvider, $mdBottomSheet) {
-    var bottomSheetPromise = $q.when('');
     $scope.tools = [
       {
         title: 'Zoom to max extent',
@@ -52,39 +51,6 @@
         toggleGroup: '2',
         disabled: true
       }, {
-        name: 'search',
-        title: 'Search features by attributes',
-        icon: 'binocular',
-        toggleGroup: '1',
-        rowsPerPage: 5,
-        limit: 50,
-        template: 'templates/toolbar/search.html',
-        showTable: function() {
-          var tool = this;
-          bottomSheetPromise.finally(function() {
-            bottomSheetPromise = $mdBottomSheet.show({
-              templateUrl: 'templates/search_table.html',
-              disableParentScroll: false,
-              hasBackdrop: false,
-              parent: '.bottom-bar',
-              controller: 'SearchController',
-              locals: {tool: tool}
-            });
-            bottomSheetPromise.catch(function() {
-              bottomSheetPromise = $q.when('');
-              tool.activated = false;
-            });
-          });
-        },
-        activate: function() {
-          if (this.layerIndex) {
-            this.showTable();
-          }
-        },
-        deactivate: function() {
-          $mdBottomSheet.hide();
-        }
-      }, {
         name: 'identification',
         title: 'Identify features by mouse click',
         icon: 'circle-i',
@@ -95,19 +61,23 @@
         markerIcon: 'plus',
         activate: function() {
           var tool = this;
-          bottomSheetPromise.finally(function() {
-            bottomSheetPromise = $mdBottomSheet.show({
-              templateUrl: 'templates/identification_table.html',
-              clickOutsideToClose: false,
-              disableParentScroll: false,
-              parent: '.bottom-bar',
-              controller: 'IdentificationController',
-              locals: {tool: tool}
-            });
-            bottomSheetPromise.catch(function() {
-              bottomSheetPromise = $q.when('');
-              tool.activated = false;
-            });
+          console.log('identification: activated');
+          tool.collapsed = true;
+          var sheetPromise = $mdBottomSheet.show({
+            templateUrl: 'templates/identification_table.html',
+            clickOutsideToClose: false,
+            disableParentScroll: false,
+            parent: '.bottom-bar',
+            controller: 'IdentificationController',
+            locals: {tool: tool}
+          });
+          sheetPromise.then(function() {
+            console.log('dentification: closed');
+            tool.activated = false;
+          });
+          sheetPromise.catch(function() {
+            console.log('dentification: closed by drag')
+            tool.activated = false;
           });
         },
         deactivate: function() {
@@ -120,8 +90,8 @@
         if (this[i].name === name) {
           return this[i];
         }
-      };
-    }
+      }
+    };
     $scope.toggleTool = function(tool) {
       if (angular.isFunction(tool.action)) {
         tool.action();

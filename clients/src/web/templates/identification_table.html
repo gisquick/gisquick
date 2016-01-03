@@ -1,4 +1,4 @@
-<md-bottom-sheet class="features-panel">
+<md-bottom-sheet class="features-panel" ng-class="{collapsed: tool.collapsed}">
   <md-tabs md-no-ink md-dynamic-height
     ng-class="{'tabs-no-header': !showTabsHeader}"
     md-selected="tool.layerIndex"
@@ -9,7 +9,9 @@
       <md-data-table-container
         ng-init="layer.page=1"
         style="height: {{ 36+32*tool.rowsPerPage }}px;">
-        <table md-data-table>
+        <table
+          md-data-table
+          md-progress="progress">
           <thead>
             <tr>
               <th></th>
@@ -41,6 +43,7 @@
       <input ng-model="tool.rowsPerPage" type="number" min="1" max="10"></input>
     </md-input-container>
     <md-data-table-pagination
+      ng-show="layers[tool.layerIndex].features.length > 0"
       md-limit="tool.rowsPerPage"
       md-page="layers[tool.layerIndex].page"
       md-total="{{ layers[tool.layerIndex].features.length }}">

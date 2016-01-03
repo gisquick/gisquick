@@ -164,6 +164,12 @@
                 ng-change="nodeSelected($node)">
               </md-checkbox>
               <p>{{ ::$node.data.title }}</p>
+              <md-button class="md-icon-button" aria-label="Attributes"
+                ng-click="showAttributeTable($node.data)">
+                <md-icon
+                  md-svg-icon="attribute-table">
+                </md-icon>
+              </md-button>
               <md-button class="md-icon-button" aria-label="Info"
                 ng-click="toggleAccordion($accordion)">
                 <md-icon class="accordion-icon"
@@ -189,8 +195,10 @@
             </div>
           </div>
         </script>
-        <div ng-controller="AccordionController">
-          <div ng-repeat="node in rootNodes" gl-check-tree-node="node"></div>
+        <div ng-controller="OverlaysController">
+          <div ng-controller="AccordionController">
+            <div ng-repeat="node in rootNodes" gl-check-tree-node="node"></div>
+          </div>
         </div>
       </md-list>
       </md-content>

@@ -104,7 +104,7 @@ gulp.task('serve', function() {
       'src/web/**/*.html',
       'web/index.html'
     ],
-    css: 'src/web/styles/*.css'
+    css: 'src/web/styles/map/*.css'
   };
   gulp.start('serve');
 });

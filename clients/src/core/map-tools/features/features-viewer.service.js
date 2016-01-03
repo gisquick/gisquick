@@ -22,13 +22,15 @@
       projectProvider.layers.list.forEach(function(layer) {
         if (layer.queryable) {
           var attributes = [];
-          layer.attributes.forEach(function(attr) {
-            attributes.push({
-              name: attr.name,
-              label: attr.alias || attr.name,
-              type: attr.type
+          if (layer.attributes) {
+            layer.attributes.forEach(function(attr) {
+              attributes.push({
+                name: attr.name,
+                label: attr.alias || attr.name,
+                type: attr.type
+              });
             });
-          });
+          }
           this.layersAttributes[layer.name] = attributes;
         }
       }, this);
@@ -129,7 +131,14 @@
         resolution: map.getView().getResolution()
       });
       map.beforeRender(pan, zoom);
-      map.getView().fit(feature.get('boundedBy'), map.getSize());
+      if (feature.getGeometry().getType() === 'Point') {
+        console.log(feature.getGeometry().getCoordinates());
+        map.getView().setCenter(feature.getGeometry().getCoordinates());
+      } else {
+        // ol.extent.buffer could be used
+        var extent = feature.getGeometry().getExtent();
+        map.getView().fit(extent, map.getSize());
+      }
     };
 
     FeaturesViewer.prototype.getFeatureAttributes = function(layername) {

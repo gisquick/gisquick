@@ -94,12 +94,17 @@
       });
     };
 
-    GislabClient.prototype.get = function(url, params) {
-      return this._deferredRequest({
+    GislabClient.prototype.get = function(url, params, http_options) {
+      var httpParams = {
         url: url,
         method: 'get',
+        params: params,
         withCredentials: true
-      });
+      };
+      if (http_options) {
+        httpParams = angular.extend(http_options, httpParams);
+      }
+      return this._deferredRequest(httpParams);
     };
 
     GislabClient.prototype.post = function(url, data) {

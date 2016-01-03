@@ -1,4 +1,4 @@
 (function() {
   'use strict';
-  angular.module('gl.map', []);
+  angular.module('gl.map', ['gl.network']);
 })();

@@ -2,14 +2,11 @@
 
 import json
 
-from django.conf import settings
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 
 from webgis.mobile import forms
-from webgis.viewer.client import LoginRequired
 
 
 @csrf_exempt

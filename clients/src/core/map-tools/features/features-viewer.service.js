@@ -132,7 +132,6 @@
       });
       map.beforeRender(pan, zoom);
       if (feature.getGeometry().getType() === 'Point') {
-        console.log(feature.getGeometry().getCoordinates());
         map.getView().setCenter(feature.getGeometry().getCoordinates());
       } else {
         // ol.extent.buffer could be used

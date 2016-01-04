@@ -303,7 +303,10 @@ ol.View.prototype.getScale = function() {
   var scale = resolution * mpu * 39.37 * dpi;
   return scale;
 };
-goog.exportProperty(ol.View.prototype, 'getScale', ol.View.prototype.getScale);
 
+goog.exportProperty(ol.View.prototype, 'getScale', ol.View.prototype.getScale);
+goog.exportProperty(ol.geom.Polygon, 'fromCircle', ol.geom.Polygon.fromCircle);
+
+goog.exportSymbol('ol.proj.get', ol.proj.get);
 goog.exportSymbol('ol.proj.projections_', ol.proj.projections_);
 goog.exportSymbol('goog.dom.createDom', goog.dom.createDom);

@@ -4,7 +4,7 @@
   "description": "Build tools for developing of the GIS.lab mobile client",
   "keywords": [],
   "scripts": {
-    "postinstall": "patch node_modules/angular-ui-layout/src/ui-layout.js < patches/ui-layout.js.patch && cd node_modules/angular-ui-layout && npm install && gulp dist"
+    "postinstall": "sh postinstall.sh"
   },
   "repository": {},
   "license": "GPL-2.0",

@@ -1,6 +1,7 @@
 var gulp = require('gulp');
 var concat = require('gulp-concat');
 var merge = require('merge-stream');
+var uglify = require('gulp-uglify');
 
 
 var TARGET = '../server/webgis/viewer/static/';
@@ -11,7 +12,6 @@ var TARGET = '../server/webgis/viewer/static/';
  */
 gulp.task('uglify', function() {
   var series = require('stream-series');
-  var uglify = require('gulp-uglify');
   var ngAnnotate = require('gulp-ng-annotate');
   var templateCache = require('gulp-angular-templatecache/');
 
@@ -41,7 +41,7 @@ gulp.task('csss', function() {
     gulp.src([
       'node_modules/openlayers/dist/ol.css',
       'node_modules/gislab-web/node_modules/angular-material/angular-material.css',
-      'node_modules/gislab-web/node_modules/angular-ui-layout/src/ui-layout.css',
+      'node_modules/gislab-web/node_modules/angular-ui-layout/dist/ui-layout.css',
       'node_modules/gislab-web/node_modules/angular-material-data-table/dist/md-data-table.css',
       'src/web/styles/map/**/*.css'
     ])
@@ -68,6 +68,7 @@ gulp.task('csss', function() {
  */
 gulp.task('deps', ['build-ol3'], function() {
 
+  var gulpif = require('gulp-if');
   return merge(
     // copy compiled ol3+deps
     gulp.src('node_modules/openlayers/build/ol3-deps.min.js')
@@ -81,8 +82,16 @@ gulp.task('deps', ['build-ol3'], function() {
       'node_modules/gislab-web/node_modules/angular-aria/angular-aria.min.js',
       'node_modules/gislab-web/node_modules/angular-material/angular-material.min.js',
       'node_modules/gislab-web/node_modules/angular-material-data-table/dist/md-data-table.min.js',
-      'node_modules/gislab-web/node_modules/angular-ui-layout/dist/ui-layout.min.js'
+      'node_modules/gislab-web/node_modules/angular-ui-layout/dist/ui-layout.js'
     ])
+      .pipe(
+        gulpif(
+          function (file) {
+            return !file.path.endsWith("min.js")
+          },
+          uglify()
+        )
+      )
       .pipe(concat('deps.min.js'))
       .pipe(gulp.dest(TARGET + 'js/'))
   );

@@ -1,8 +1,13 @@
-from django.test import TestCase
+import json
+import urllib
+import urllib2
 
-from webgis.viewer.wfsfilter import webgisfilter, get_filter_fes
+from django.test import TestCase
 from owslib.fes import PropertyIsEqualTo, And, Or, PropertyIsLike,\
         PropertyIsLessThanOrEqualTo, PropertyIsGreaterThanOrEqualTo
+
+from webgis.libs.utils import set_query_parameters
+from webgis.viewer.wfsfilter import webgisfilter, get_filter_fes
 
 
 class WfsFilterCase(TestCase):
@@ -133,3 +138,50 @@ class WfsFilterCase(TestCase):
         fes = get_filter_fes(myfilters)
         self.assertTrue(isinstance(fes, PropertyIsLessThanOrEqualTo),
                 "PropertyIsLessThanOrEqualTo")
+
+    def _test_geometry_filter(self):
+        # test is not finished yet and now it's crashing due to bug in QGIS server
+        geometry = (
+          '<Polygon>'
+            '<exterior>'
+              '<LinearRing>'
+                '<posList>'
+                  '1881392.6859162913 6873826.01525614 '
+                  '1881342.6859162913 6873912.61779651 '
+                  '1881242.6859162913 6873912.61779651 '
+                  '1881192.6859162913 6873826.01525614 '
+                  '1881242.6859162913 6873739.41271576 '
+                  '1881342.6859162913 6873739.41271576 '
+                  '1881392.6859162913 6873826.01525614'
+                '</posList>'
+              '</LinearRing>'
+            '</exterior>'
+          '</Polygon>'
+        )
+        spatial_filter = (
+          '<Filter>'
+            '<ogc:Intersects>'
+              '<ogc:PropertyName>geometry</ogc:PropertyName>'
+              '{0}'
+            '</ogc:Intersects>'
+          '</Filter>'
+        ).format(geometry)
+
+        url = set_query_parameters(
+            self.url,
+            {
+                'SERVICE': 'WFS',
+                'VERSION': '1.0.0',
+                'REQUEST': 'GetFeature',
+                'TYPENAME': 'Places,Roads,Other',
+                'OUTPUTFORMAT': 'GeoJSON',
+                'FILTER': spatial_filter
+            }
+        )
+        # print "\nexport QUERY_STRING=\""+urllib.unquote(url)\
+        #     .replace("http://localhost/cgi-bin/qgis_mapserv.fcgi?", "")+"\""
+
+        response = urllib2.urlopen(url).read()
+        data = json.loads(response)
+        features = data['features']
+        #self.assertEqual(len(features), 2)

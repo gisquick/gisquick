@@ -13,7 +13,7 @@
     "openlayers": "3.11.0",
     "proj4": "2.3.12",
     "crypto-js": "",
-    "gulp": "",
+    "gulp": "^3.9.0",
     "gulp-rimraf": "",
     "gulp-install": "",
     "gulp-jshint": "2.0.0",
@@ -22,7 +22,6 @@
     "gulp-concat": "",
     "gulp-watch": "",
     "gulp-minify-css": "",
-    "gulp": "^3.9.0",
     "gulp-angular-templatecache": "^1.8.0",
     "gulp-cheerio": "^0.6.2",
     "gulp-connect": "^2.2.0",
@@ -32,7 +31,8 @@
     "stream-series": "^0.1.1",
     "jshint": "2.8.0",
     "jshint-stylish": "",
-    "gulp-if": "^2.0.0"
+    "gulp-if": "^2.0.0",
+    "merge-stream": "^1.0.0"
   },
   "ext": [],
   "maintainers": [],

@@ -25,14 +25,14 @@ gulp.task('clean-ol3', function() {
  * copy our source files to openlayer3
  */
 gulp.task('copyol3-src', ['clean-ol3'], function() {
-
-  gulp.src('src/ol3/webgis/**/*.js')
-    .pipe(gulp.dest('node_modules/openlayers/src/ol/webgis'));
-
-  gulp.src('src/ol3/externs/webgis.js')
-    .pipe(gulp.dest('node_modules/openlayers/externs/'));
+  var merge = require('merge-stream');
+  return merge(
+    gulp.src('src/ol3/webgis/**/*.js')
+      .pipe(gulp.dest('node_modules/openlayers/src/ol/webgis')),
+    gulp.src('src/ol3/externs/webgis.js')
+      .pipe(gulp.dest('node_modules/openlayers/externs/'))
+  );
 });
-
 
 /**
  * Build OpenLayers 3 lib with GIS.lab extensions
@@ -51,7 +51,7 @@ gulp.task('compile-ol3', ['copyol3-src'], function(cb) {
 /**
  * Build OpenLayers 3 with GIS.lab extensions in debug mode
  */
-gulp.task('compile-ol3-debug', ['copyol3-src'],function(cb) {
+gulp.task('compile-ol3-debug', ['copyol3-src'], function(cb) {
   var fs = require('fs');
   var config = require('../src/ol3/webgis-debug.json');
   var main = require('../node_modules/openlayers/tasks/build.js');
@@ -67,19 +67,18 @@ gulp.task('compile-ol3-debug', ['copyol3-src'],function(cb) {
  */
 gulp.task('build-ol3', ['compile-ol3'], function() {
 
-  // copy openlayers
-  gulp.src(OL3DEPS.concat(['node_modules/openlayers/build/ol.min.js']))
-  .pipe(
-    gulpif(
-      function(file) {
-        return !file.path.endsWith('ol.min.js')
-      },
-      uglify()
+  return gulp
+    .src(OL3DEPS.concat(['node_modules/openlayers/build/ol.min.js']))
+    .pipe(
+      gulpif(
+        function(file) {
+          return !file.path.endsWith('ol.min.js')
+        },
+        uglify()
+      )
     )
-  )
-  .pipe(concat('ol3-deps.min.js'))
-  .pipe(gulp.dest('node_modules/openlayers/build/'));
-
+    .pipe(concat('ol3-deps.min.js'))
+    .pipe(gulp.dest('node_modules/openlayers/build/'));
 });
 
 
@@ -89,8 +88,7 @@ gulp.task('build-ol3', ['compile-ol3'], function() {
 gulp.task('build-ol3-debug', ['compile-ol3-debug'], function() {
 
   // copy openlayers
-  gulp.src(OL3DEPS.concat(['node_modules/openlayers/build/ol.debug.js']))
+  return gulp.src(OL3DEPS.concat(['node_modules/openlayers/build/ol.debug.js']))
     .pipe(concat('ol3-deps.debug.js'))
     .pipe(gulp.dest('node_modules/openlayers/build/'));
-
 });

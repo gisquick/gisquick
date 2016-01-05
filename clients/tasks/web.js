@@ -1,5 +1,6 @@
 var gulp = require('gulp');
 var concat = require('gulp-concat');
+var merge = require('merge-stream');
 
 
 var TARGET = '../server/webgis/viewer/static/';
@@ -14,7 +15,7 @@ gulp.task('uglify', function() {
   var ngAnnotate = require('gulp-ng-annotate');
   var templateCache = require('gulp-angular-templatecache/');
 
-  series(
+  return series(
     gulp.src([
       'src/core/**/*.module.js',
       'src/web/**/*.module.js',
@@ -36,27 +37,29 @@ gulp.task('uglify', function() {
 gulp.task('csss', function() {
   var minifyCss = require('gulp-minify-css');
 
-  gulp.src([
-    'node_modules/openlayers/dist/ol.css',
-    'node_modules/gislab-web/node_modules/angular-material/angular-material.css',
-    'node_modules/gislab-web/node_modules/angular-ui-layout/src/ui-layout.css',
-    'node_modules/gislab-web/node_modules/angular-material-data-table/dist/md-data-table.css',
-    'src/web/styles/map/**/*.css'
-  ])
-    .pipe(minifyCss())
-    .pipe(concat('map.min.css'))
-    .pipe(gulp.dest(TARGET + 'styles'));
+  return merge(
+    gulp.src([
+      'node_modules/openlayers/dist/ol.css',
+      'node_modules/gislab-web/node_modules/angular-material/angular-material.css',
+      'node_modules/gislab-web/node_modules/angular-ui-layout/src/ui-layout.css',
+      'node_modules/gislab-web/node_modules/angular-material-data-table/dist/md-data-table.css',
+      'src/web/styles/map/**/*.css'
+    ])
+      .pipe(minifyCss())
+      .pipe(concat('map.min.css'))
+      .pipe(gulp.dest(TARGET + 'styles')),
 
-  gulp.src('src/web/styles/map/*.svg')
-    .pipe(gulp.dest(TARGET + 'styles'));
+    gulp.src('src/web/styles/map/*.svg')
+      .pipe(gulp.dest(TARGET + 'styles')),
 
-  gulp.src([
-    'node_modules/gislab-web/node_modules/angular-material/angular-material.css',
-    'src/web/styles/login/**/*.css'
-  ])
-    .pipe(minifyCss())
-    .pipe(concat('login.min.css'))
-    .pipe(gulp.dest(TARGET + 'styles'));
+    gulp.src([
+      'node_modules/gislab-web/node_modules/angular-material/angular-material.css',
+      'src/web/styles/login/**/*.css'
+    ])
+      .pipe(minifyCss())
+      .pipe(concat('login.min.css'))
+      .pipe(gulp.dest(TARGET + 'styles'))
+  );
 });
 
 
@@ -65,22 +68,24 @@ gulp.task('csss', function() {
  */
 gulp.task('deps', ['build-ol3'], function() {
 
-  // copy compiled ol3+deps
-  gulp.src('node_modules/openlayers/build/ol3-deps.min.js')
-    .pipe(concat('ol3-deps.min.js'))
-    .pipe(gulp.dest(TARGET + 'js/'));
+  return merge(
+    // copy compiled ol3+deps
+    gulp.src('node_modules/openlayers/build/ol3-deps.min.js')
+      .pipe(concat('ol3-deps.min.js'))
+      .pipe(gulp.dest(TARGET + 'js/')),
 
-  // copy DEPS
-  gulp.src([
-    'node_modules/gislab-web/node_modules/angular/angular.min.js',
-    'node_modules/gislab-web/node_modules/angular-animate/angular-animate.min.js',
-    'node_modules/gislab-web/node_modules/angular-aria/angular-aria.min.js',
-    'node_modules/gislab-web/node_modules/angular-material/angular-material.min.js',
-    'node_modules/gislab-web/node_modules/angular-material-data-table/dist/md-data-table.min.js',
-    'node_modules/gislab-web/node_modules/angular-ui-layout/dist/ui-layout.min.js'
-  ])
-    .pipe(concat('deps.min.js'))
-    .pipe(gulp.dest(TARGET + 'js/'));
+    // copy DEPS
+    gulp.src([
+      'node_modules/gislab-web/node_modules/angular/angular.min.js',
+      'node_modules/gislab-web/node_modules/angular-animate/angular-animate.min.js',
+      'node_modules/gislab-web/node_modules/angular-aria/angular-aria.min.js',
+      'node_modules/gislab-web/node_modules/angular-material/angular-material.min.js',
+      'node_modules/gislab-web/node_modules/angular-material-data-table/dist/md-data-table.min.js',
+      'node_modules/gislab-web/node_modules/angular-ui-layout/dist/ui-layout.min.js'
+    ])
+      .pipe(concat('deps.min.js'))
+      .pipe(gulp.dest(TARGET + 'js/'))
+  );
 });
 
 

@@ -12,7 +12,7 @@ gulp.task('uglify', function() {
   var uglify = require('gulp-uglify');
   var ngAnnotate = require('gulp-ng-annotate');
 
-  gulp.src([
+  return gulp.src([
     'src/core/**/*.module.js',
     'src/mobile/js/**/*.module.js',
     'src/core/**/*.js',
@@ -29,7 +29,7 @@ gulp.task('uglify', function() {
  * Copy html templates into target directory
  */
 gulp.task('templates', function() {
-  gulp.src('src/mobile/templates/**/*.html')
+  return gulp.src('src/mobile/templates/**/*.html')
     .pipe(gulp.dest(TARGET + 'templates/'));
 });
 
@@ -39,20 +39,23 @@ gulp.task('templates', function() {
  * into the target styles directory
  */
 gulp.task('csss', function() {
+  var merge = require('merge-stream');
   var minifyCss = require('gulp-minify-css');
 
-  gulp.src([
-    'node_modules/openlayers/dist/ol.css',
-    'node_modules/gislab-mobile/node_modules/onsenui/css/onsenui.css',
-    'node_modules/gislab-mobile/node_modules/onsenui/css/onsen-css-components.css',
-    'src/mobile/styles/**/*.css'
-  ])
-    .pipe(minifyCss())
-    .pipe(concat('styles.min.css'))
-    .pipe(gulp.dest(TARGET + 'styles'));
+  return merge(
+    gulp.src([
+      'node_modules/openlayers/dist/ol.css',
+      'node_modules/gislab-mobile/node_modules/onsenui/css/onsenui.css',
+      'node_modules/gislab-mobile/node_modules/onsenui/css/onsen-css-components.css',
+      'src/mobile/styles/**/*.css'
+    ])
+      .pipe(minifyCss())
+      .pipe(concat('styles.min.css'))
+      .pipe(gulp.dest(TARGET + 'styles')),
 
-  gulp.src('src/mobile/styles/*.svg')
-    .pipe(gulp.dest(TARGET + 'styles'));
+    gulp.src('src/mobile/styles/*.svg')
+      .pipe(gulp.dest(TARGET + 'styles'))
+  );
 });
 
 
@@ -63,7 +66,7 @@ gulp.task('deps', ['build-ol3'], function() {
   var uglify = require('gulp-uglify');
   var gulpif = require('gulp-if');
 
-  gulp.src([
+  return gulp.src([
     'node_modules/crypto-js/core.js',
     'node_modules/crypto-js/md5.js',
     'node_modules/proj4/dist/proj4.js',
@@ -92,7 +95,7 @@ gulp.task('deps', ['build-ol3'], function() {
  * Copy index.html file into target directory
  */
 gulp.task('index-page', function() {
-  gulp.src('src/mobile/index.html')
+  return gulp.src('src/mobile/index.html')
     .pipe(concat('index.html'))
     .pipe(gulp.dest(TARGET));
 });

@@ -180,6 +180,10 @@
         'startindex': 0,
         'filters': filters
       }
+      if ($scope.tool.searchInExtent) {
+        var size = projectProvider.map.getSize();
+        wfsParams['bbox'] = projectProvider.map.getView().calculateExtent(size);
+      }
       $scope.progress = gislabClient.post(
         '/filter/?PROJECT={0}'.format(projectProvider.config.project),
         wfsParams)

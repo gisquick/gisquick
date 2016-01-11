@@ -684,8 +684,7 @@ class ProjectPage(WizardPage):
             map_settings = map_canvas.mapSettings()
         except:
             map_settings = map_canvas.mapRenderer()
-        renderer_context = map_settings.rendererContext()
-        selection_color = renderer_context.selectionColor()
+        selection_color = map_settings.selectionColor()
         canvas_color = map_canvas.canvasColor()
 
         project_extent = dialog.extent_layer.itemData(dialog.extent_layer.currentIndex())

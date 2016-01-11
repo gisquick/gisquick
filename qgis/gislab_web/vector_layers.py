@@ -151,6 +151,10 @@ class VectorLayersPage(WizardPage):
     def before_publish(self):
         vector_layers = self.get_vector_layers()
         if vector_layers:
+            try:
+                crs_dst = map_canvas.mapSettings().destinationCrs()
+            except:
+                crs_dst = map_canvas.mapRenderer().destinationCrs()
             map_canvas = self.plugin.iface.mapCanvas()
             fields = QgsFields()
             fields.append(QgsField("title", type=QVariant.String))
@@ -160,7 +164,7 @@ class VectorLayersPage(WizardPage):
                 "utf-8",
                 fields,
                 QGis.WKBUnknown,
-                map_canvas.mapRenderer().destinationCrs(),
+                crs_dst,
                 "GeoJSON"
             )
             for layer in vector_layers:
@@ -169,10 +173,10 @@ class VectorLayersPage(WizardPage):
                 description_attribute = layer_metadata.get('description_attribute')
 
                 transform = None
-                if layer.crs() != map_canvas.mapRenderer().destinationCrs():
+                if layer.crs() != crs_dst:
                     transform = QgsCoordinateTransform(
                         layer.crs(),
-                        map_canvas.mapRenderer().destinationCrs()
+                        crs_dst
                     )
 
                 layer_widget = self.dialog.vectorLayers.findChild(QWidget, layer.name())

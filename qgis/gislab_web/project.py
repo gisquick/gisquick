@@ -149,7 +149,11 @@ class ProjectPage(WizardPage):
             ))
 
         map_canvas = self.plugin.iface.mapCanvas()
-        if map_canvas.mapRenderer().destinationCrs().authid().startswith('USER:'):
+        try:
+            crs_dst = map_canvas.mapSettings().destinationCrs()
+        except:
+            crs_dst = map_canvas.mapRenderer().destinationCrs()
+        if crs_dst.authid().startswith('USER:'):
             messages.append((
                 MSG_ERROR,
                 u"Project is using custom coordinate system which is currently not supported."
@@ -487,7 +491,11 @@ class ProjectPage(WizardPage):
         dialog.min_scale.currentIndexChanged.connect(scales_changed)
         dialog.max_scale.currentIndexChanged.connect(scales_changed)
 
-        projection = map_canvas.mapRenderer().destinationCrs().authid()
+        try:
+            map_settings = map_canvas.mapSettings()
+        except:
+            map_settings = map_canvas.mapRenderer()
+        projection = map_settings.destinationCrs().authid()
         dialog.osm.setEnabled(projection == 'EPSG:3857')
         dialog.google.setEnabled(projection == 'EPSG:3857')
 
@@ -501,7 +509,7 @@ class ProjectPage(WizardPage):
             if self.plugin.is_base_layer_for_publish(layer) or \
                     self.plugin.is_overlay_layer_for_publish(layer):
                 extent = list(
-                    map_canvas.mapRenderer().layerExtentToOutputExtent(
+                    map_settings.layerExtentToOutputExtent(
                         layer,
                         layer.extent()
                     ).toRectF().getCoords()
@@ -672,7 +680,11 @@ class ProjectPage(WizardPage):
         if self.dialog.enable_expiration.isChecked():
             metadata['expiration'] = self.dialog.expiration.date().toString("dd.MM.yyyy")
 
-        renderer_context = map_canvas.mapRenderer().rendererContext()
+        try:
+            map_settings = map_canvas.mapSettings()
+        except:
+            map_settings = map_canvas.mapRenderer()
+        renderer_context = map_settings.rendererContext()
         selection_color = renderer_context.selectionColor()
         canvas_color = map_canvas.canvasColor()
 
@@ -685,7 +697,7 @@ class ProjectPage(WizardPage):
                 project_extent[2]+extent_buffer,
                 project_extent[3]+extent_buffer
             ]
-        project_crs = map_canvas.mapRenderer().destinationCrs();
+        project_crs = map_settings.destinationCrs()
         metadata.update({
             'extent': project_extent,
             'extent_buffer': extent_buffer,
@@ -753,13 +765,17 @@ class ProjectPage(WizardPage):
                         'layers': sublayers_data
                     }
             else:
+                try:
+                    map_settings = map_canvas.mapSettings()
+                except:
+                    map_settings = map_canvas.mapRenderer()
                 layer = node.layer
                 source_params = parse_qs(layer.source())
                 layer_data = {
                     'name': layer.name(),
                     'provider_type': layer.providerType(),
                     'visible': layer.name() == default_baselayer,
-                    'extent': map_canvas.mapRenderer().layerExtentToOutputExtent(
+                    'extent': map_settings.layerExtentToOutputExtent(
                         layer,
                         layer.extent()
                     ).toRectF().getCoords(),
@@ -875,7 +891,11 @@ class ProjectPage(WizardPage):
                     return None
 
                 if layer.extent().isFinite() and not layer.extent().isEmpty():
-                    layer_extent = map_canvas.mapRenderer().layerExtentToOutputExtent(
+                    try:
+                        map_settings = map_canvas.mapSettings()
+                    except:
+                        map_settings = map_canvas.mapRenderer()
+                    layer_extent = map_settings.layerExtentToOutputExtent(
                         layer,
                         layer.extent()
                     ).toRectF().getCoords()

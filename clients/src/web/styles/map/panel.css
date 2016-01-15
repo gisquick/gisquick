@@ -1,0 +1,97 @@
+.splitter {
+  height: 3px;
+  width: 100%;
+  background-color: #fff;
+  cursor: row-resize;
+  border-top: 1px solid white;
+  border-bottom: 1px solid white;
+}
+
+.panel-bottom,
+.panel-top {
+  xtransition: 0.45s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
+}
+.no-anim .panel-top,
+.no-anim .panel-bottom {
+  transition: none;
+}
+
+.layers-container {
+  position: relative;
+}
+
+.panel-tool .md-toolbar-tools {
+  height: 36px;
+  padding: 0 3px 0 3px;
+}
+.panel-tool {
+  xtransition: 0.45s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
+}
+.panel-tool.closed {
+  max-height: 0;
+  xtransform: translate3d(0, -100%, 0);
+}
+.panel-collapse-button md-icon {
+  transform: translate(-2px, 0);
+}
+.panel-collapse-button {
+  top: 50%;
+  min-width: 20px;
+  width: 20px;
+  padding: 0;
+  margin: 1px;
+  background-color: #333;
+}
+.panel-collapse-button.md-button:hover {
+  background-color: #666;
+}
+.panel-collapse-button.collapsed {
+  transform: rotate(180deg);
+  transition: 0.45s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
+}
+
+.main-panel {
+  position: absolute;
+  width: 280px;
+  height: 100%;
+  border-right: 2px solid #777;
+  z-index: 51;
+  transition: 0.45s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
+  background-color: white;
+}
+
+.main-panel md-select {
+  font-size: 15px;
+}
+.main-panel .md-subheader {
+  padding: 0;
+  margin: 0;
+  color: white;
+  background-color: #333;
+}
+.md-subheader .md-subheader-inner {
+    height: 20px;
+    padding: 3px;
+    line-height: 20px;
+    margin: 0;
+}
+.md-subheader .md-button.md-icon-button {
+  min-height: 0;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  margin: 0;
+}
+.md-subheader md-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.list-header {
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: 3px;
+  background-color: #ddd;
+  color: #555;
+  padding: 2px 3px 2px 3px;
+}

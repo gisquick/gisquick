@@ -1,6 +1,27 @@
-<md-bottom-sheet class="features-panel" ng-class="{collapsed: tool.collapsed}">
+<md-bottom-sheet
+  class="features-panel identification"
+  ng-class="{collapsed: tool.collapsed}">
+  <div class="tabs-header" ng-show="showTabsHeader">
+    <md-button
+      class="panel-tab"
+      ng-class="{last: $last, selected: $index===tool.layerIndex}"
+      ng-click="tool.layerIndex=$index"
+      ng-repeat="layer in layers">
+      <span ng-bind="layer.name"></span>
+      <!-- <md-icon
+        md-svg-icon="{{ ::$last? 'tab-end' : 'tab-split2' }}">
+      </md-icon> -->
+      <!-- <div class="tab-splitter">
+      </div> -->
+    </md-button>
+    <div class="tab-splitter">
+    </div>
+
+  </div>
+  <div class="header-bg"></div>
   <md-tabs md-no-ink md-dynamic-height
-    ng-class="{'tabs-no-header': !showTabsHeader}"
+    class="tabs-no-header"
+    xng-class="{'tabs-no-header': !showTabsHeader}"
     md-selected="tool.layerIndex"
     md-autoselect="false">
     <md-tab ng-repeat="layer in layers"

@@ -1,0 +1,27 @@
+<md-menu
+  class="app-menu"
+  md-position-mode="target-right target">
+  <md-button
+    aria-label="Open demo menu"
+    class="md-icon-button"
+    ng-click="$mdOpenMenu($event)">
+    <md-icon
+      md-menu-origin
+      md-svg-icon="menu-dots">
+    </md-icon>
+  </md-button>
+  <md-menu-content width="4">
+    <md-menu-item ng-repeat="item in [1, 2, 3]">
+      <md-button ng-click="ctrl.announceClick($index)">
+          <div layout="row">
+            <p flex>Option {{item}}</p>
+            <md-icon
+              md-menu-align-target
+              md-svg-icon="call:portable-wifi-off"
+              style="margin: auto 3px auto 0;">
+            </md-icon>
+          </div>
+      </md-button>
+    </md-menu-item>
+  </md-menu-content>
+</md-menu>

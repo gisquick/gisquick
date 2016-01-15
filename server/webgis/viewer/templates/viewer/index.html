@@ -12,7 +12,7 @@
 
     <!-- Before body closing tag -->
     <script src="{% static "js/deps.min.js" %}"></script>
-    <script type="text/javascript" src="{% static "js/ol3-deps.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/ol3-deps.debug.js" %}"></script>
 
     <script type="text/javascript">
     // First, checks if it isn't implemented yet.
@@ -43,29 +43,13 @@
         });
     </script>
   </head>
-
-  <body ng-controller="AppController" class="no-scrollbar">
-    <div layout="column" layout-fill flex class="no-scrollbar">
-      <div class="toolbar-container">
-        <md-toolbar ng-include="'templates/toolbar/toolbar.html'" flex="none">
-        </md-toolbar>
-      </div>
-      <div layout="row" flex>
-        <div class="main-panel" flex="none">
-          <div ng-if="::project" ui-layout="{disableToggle: false, dividerSize: 10}" class="no-scrollbar" ng-controller="LayoutAnimationController">
-            <div ui-layout-container size="50%" min-size="20%" class="no-scrollbar" style="padding-bottom:10px">
-              <div class="full-height" ng-include="'templates/layers_control.html'"></div>
-            </div>
-            <div ui-layout-container size="50%" class="no-scrollbar">
-              <div class="full-height" ng-include="'templates/project_info.html'"></div>
-            </div>
-          </div>
-        </div>
-        <div class="map-container" flex>
-          <div id="map"></div>
-        </div>
-      </div>
-      <div class="bottom-bar"></div>
+  <body
+    class="no-scrollbar"
+    ng-controller="AppController">
+    <div
+      style="width:100%; height:100%;"
+      ng-include="'templates/app.html'"
+      onload="initializeApp()">
     </div>
   </body>
 </html>

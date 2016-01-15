@@ -1,19 +1,18 @@
-<md-tabs md-stretch-tabs="always" layout-fill>
-  <md-tab label="Legend">
-    <md-content>
-      <div
-        class="legend-container"
-        ng-controller="LegendController">
-        <img
-          ng-repeat="layer in ::project.layers.list"
-          ng-if="layer.visible"
-          class="legend-item"
-          alt=""
-          ng-src="{{ layer.legendUrl }}" />
-      </div>
-    </md-content>
-  </md-tab>
-  <md-tab label="Properties">
+<!-- <md-subheader>Legend</md-subheader> -->
+<md-content>
+  <div
+    class="legend-container"
+    ng-controller="LegendController">
+    <img
+      ng-repeat="layer in ::project.layers.list"
+      ng-if="layer.visible"
+      class="legend-item"
+      alt=""
+      ng-src="{{ layer.legendUrl }}" />
+  </div>
+</md-content>
+
+  <!-- <md-tab label="Properties">
     <md-content>
       <md-list class="properties-list">
         <md-list-item>
@@ -90,5 +89,4 @@
         </md-list-item>
       </md-list>
     </md-content>
-  </md-tab>
-</md-tabs>
+  </md-tab> -->

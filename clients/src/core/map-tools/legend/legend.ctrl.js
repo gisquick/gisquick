@@ -15,16 +15,26 @@
         layer_data.legendUrl = layerSource.getLegendUrl(layer_data.name, view);
         //+'&BBOX='+projectProvider.map.getView().calculateExtent(projectProvider.map.getSize()).join(',')+'&SRS='+projectProvider.map.getView().getProjection().getCode();
       });
-    };
+    }
 
-    if (projectProvider.map) {
-      updateLegendUrls();
-      projectProvider.map.getView().on('change:resolution', function() {
-        console.log('Zoom changed...');
-        $timeout(function() {
-          updateLegendUrls();
+    var zoomListener;
+    $scope.activateLegend = function() {
+      if (projectProvider.map) {
+        updateLegendUrls();
+        zoomListener = projectProvider.map.getView().on('change:resolution', function() {
+          console.log('Zoom changed...');
+          $timeout(function() {
+            updateLegendUrls();
+          });
         });
-      });
+      }
+    }
+
+    $scope.deactivateLegend = function() {
+      if (zoomListener) {
+        projectProvider.map.getView().unByKey(zoomListener);
+        zoomListener = null;
+      }
     }
   };
 })();

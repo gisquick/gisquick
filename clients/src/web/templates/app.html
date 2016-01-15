@@ -1,0 +1,92 @@
+  <div layout="column"
+    style="height:100%;left: {{ ui.mapView.left-280 }}px;"
+    class="main-panel">
+    
+    <div
+      class="fab-menu-toolbar"
+      ng-include="'templates/fab-toolbar.html'">
+    </div>
+
+    <md-button
+      class="panel-collapse-button"
+      ng-class="{collapsed: ui.mapView.left===0}"
+      ng-click="ui.mapView.left=ui.mapView.left? 0 : 280">
+      <md-icon
+        md-svg-src="arrow-left">
+      </md-icon>
+    </md-button>
+
+    <div layout="column" style="display:flex;flex: 1 1 auto;height:100%;">
+      <div
+        class="panel-top panel-tool"
+        style="position:relative;background-color:white; display:flex;flex: 1 1 {{ ui.panelTop.flex }}%;"
+        gl-collapsible ng-model="ui.toolPanelOpen">
+
+        <div gl-collapsible-content style="width:100%;" cclass="fill-flex">
+          <md-subheader>
+            <div layout="row">
+              <span ng-bind="activeTool.title"></span>
+              <span flex></span>
+              <md-button
+                aria-label="Close"
+                class="md-icon-button"
+                ng-click="deactivateTool()">
+                <md-icon md-svg-icon="circle-x-outline"></md-icon>
+              </md-button>
+            </div>
+          </md-subheader>
+          <md-tabs
+            md-dynamic-height
+            class="tabs-no-header"
+            md-selected="activeTool.index">
+            <md-tab
+              ng-repeat="tool in tools"
+              label="{{ ::tool.title }}">
+              <ng-include
+                src="::tool.template">
+              </ng-include>
+            </md-tab>
+          </md-tabs>
+        </div>
+      </div>
+
+      <div gl-splitter class="splitter"></div>
+
+      <div
+        layout="column"
+        class="panel-bottom"
+        style="position: relative;background-color:white; display:flex; flex: 1 1 {{ ui.panelBottom.flex }}%;">
+        <md-subheader>
+          <div layout="row">
+            <span>Content</span>
+            <span flex></span>
+            <!-- <md-button
+              aria-label="Close"
+              class="md-icon-button"
+              ng-show="ui.panelBottom.open"
+              ng-click="ui.panelBottom.collapse()">
+              <md-icon md-svg-icon="arrow-up"></md-icon>
+            </md-button> -->
+          </div>
+        </md-subheader>
+        <div
+          class="fill-flex"
+          ng-if="project"
+          ng-include="'templates/tools/layers_control.html'">
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="map"></div>
+
+  <div
+    class="right-menu-container"
+    ng-include="'templates/menu.html'">
+  </div>
+
+  <div
+    class="bottom-bar"
+    style="left: {{ ui.mapView.left }}px;">
+  </div>

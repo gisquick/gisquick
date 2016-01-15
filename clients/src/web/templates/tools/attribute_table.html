@@ -1,4 +1,5 @@
 <md-bottom-sheet class="features-panel">
+  <div class="header-bg"></div>
   <md-tabs md-no-ink md-dynamic-height md-selected="tool.layerIndex" class="tabs-no-header">
     <md-tab ng-repeat="layer in layers"
       label="{{ layer.name }}"
@@ -36,7 +37,7 @@
                       </input>
                     </md-input-container>
                     <md-icon class="filter-clear-button"
-                      md-svg-icon="circle-x-outline"
+                      md-svg-icon="delete"
                       ng-click="attribute.filterValue='';attribute.comparator=null">
                     </md-icon>
                   </div>
@@ -108,7 +109,7 @@
         class="search-settings inline-flex"
         flex>
         <span flex></span>
-        <md-checkbox ng-model="tool.searchInExtent" aria-label="Filter to visible area">
+        <md-checkbox class="md-primary" ng-model="tool.searchInExtent" aria-label="Filter to visible area">
           Filter to visible area
         </md-checkbox>
         <md-button ng-click="search()">Filter</md-button>

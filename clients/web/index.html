@@ -11,6 +11,9 @@
     <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700"/>
     <link rel="stylesheet" type="text/css" href="node_modules/angular-material-data-table/dist/md-data-table.css"/>
     <link rel="stylesheet" type="text/css" href="web/styles/map/ui.css"/>
+    <link rel="stylesheet" type="text/css" href="web/styles/map/panel.css"/>
+    <link rel="stylesheet" type="text/css" href="web/styles/map/table.css"/>
+    <link rel="stylesheet" type="text/css" href="web/styles/map/olmap.css"/>
     <script type="text/javascript">
     // First, checks if it isn't implemented yet.
     if (!String.prototype.format) {
@@ -48,7 +51,6 @@
     <script type="text/javascript" src="core/ui/ui.module.js"></script>
     <script type="text/javascript" src="core/ui/tree.dir.js"></script>
     <script type="text/javascript" src="core/ui/accordion.dir.js"></script>
-    <script type="text/javascript" src="core/ui/accordion.ctrl.js"></script>
     <script type="text/javascript" src="core/ui/scrollbar-detector.dir.js"></script>
 
     <script type="text/javascript" src="core/map-tools/layers-control/layers-control.module.js"></script>
@@ -101,29 +103,13 @@
         });
     </script>
   </head>
-
-  <body ng-controller="AppController" class="no-scrollbar">
-    <div layout="column" layout-fill flex class="no-scrollbar">
-      <div class="toolbar-container">
-        <md-toolbar ng-include="'templates/toolbar/toolbar.html'" flex="none">
-        </md-toolbar>
-      </div>
-      <div layout="row" flex>
-        <div class="main-panel" flex="none">
-          <div ng-if="::project" ui-layout="{disableToggle: false, dividerSize: 10}" class="no-scrollbar" ng-controller="LayoutAnimationController">
-            <div ui-layout-container size="50%" min-size="20%" class="no-scrollbar" style="padding-bottom:10px">
-              <div class="full-height" ng-include="'templates/layers_control.html'"></div>
-            </div>
-            <div ui-layout-container size="50%" class="no-scrollbar">
-              <div class="full-height" ng-include="'templates/project_info.html'"></div>
-            </div>
-          </div>
-        </div>
-        <div class="map-container" flex>
-          <div id="map"></div>
-        </div>
-      </div>
-      <div class="bottom-bar"></div>
+  <body
+    class="no-scrollbar"
+    ng-controller="AppController">
+    <div
+      style="width:100%; height:100%;"
+      ng-include="'templates/app.html'"
+      onload="initializeApp()">
     </div>
   </body>
 </html>

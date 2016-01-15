@@ -1,69 +1,120 @@
 html {
   overflow-y: hidden!important; 
 }
-.main-panel {
-  position: relative;
-  width: 270px;
-  border-right: 1px solid #ccc;
+.measure-panel label {
+  font-size: 13.5px;
+  color: #777;
 }
-.toolbar-container, md-toolbar {
-  min-height: 36px;
+.measure-panel .field {
+  border-bottom: 1px solid #ccc;
+  height: 28px;
+  font-size: 16px;
 }
-.md-toolbar-tools.md-primary {
-  max-height: 36px;
-  padding-left: 0px;
-  padding-right: 12px;
-  font-size: 15px;
+.measure-form {
+  margin: 5px;
 }
-.md-toolbar-tools.md-primary h3 {
-  font-size: 17px;
+
+.right-menu-container {
+  position: absolute;
+  top: 5px;
+  right: 0px;
 }
-.md-toolbar-tools.md-primary .toolbar-logo {
-  padding-left: 8px;
-  width: 270px;
-  border-right: 1px solid rgba(255, 255, 255, 0.2);
+
+.md-subheader,
+md-tabs-canvas {
+  -webkit-user-select: none;  
+  -moz-user-select: none;    
+  -ms-user-select: none;      
+  user-select: none;
 }
-.md-toolbar-tools.md-primary .md-icon-button {
+
+.app-menu .md-button {
+  background-color: #333;
+  border-radius: 8px;
   width: 36px;
   height: 36px;
-  min-height: 36px;
-  line-height: 36px;
+  line-height: 24px;
 }
-.md-toolbar-tools.md-primary .md-icon-button md-icon {
+.app-menu .md-button:hover {
+  background-color: rgba(33, 33, 33, 0.7);
+}
+
+md-icon {
+  color: #fff;
+}
+
+.gl-tree md-icon {
+  color: #444;
+}
+
+md-tab-item md-icon {
+  color: #777;
+}
+
+md-tab-item.md-tab.md-active md-icon {
+  color: rgb(0, 170, 212);
+}
+
+.identification-panel md-select {
+  margin: 10px 0 4px 0px;
+}
+.bottom-bar {
+  position: absolute;
+  display: flex;
+  bottom: 0;
+  right: 0;
+  transition: 0.45s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
+}
+md-tabs-wrapper {
+  width: 100%;
+}
+.fill-flex {
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 100%;
+  xbackground-color: yellow;
+  xdisplay: flex;
+  xflex: 1 1 100%;
+}
+
+.md-button.md-fab.md-mini,
+.md-fab.md-button {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  line-height: 24px;
+}
+
+md-fab-trigger .md-fab.md-button md-icon {
   width: 24px;
   height: 24px;
 }
-/*
-.md-button.md-default-theme[disabled],
-.md-button.md-default-theme.md-raised[disabled],
-.md-button.md-raised[disabled] md-icon,
-.md-button.md-default-theme.md-fab[disabled],
-.md-button.md-fab[disabled] md-icon,
-.md-button.md-default-theme.md-accent[disabled],
-.md-button.md-accent[disabled] md-icon,
-.md-button.md-default-theme.md-warn[disabled],
-.md-button.md-warn[disabled] md-icon,*/
-.md-toolbar-tools.md-primary .md-button[disabled] md-icon {
-  color: rgba(255, 255, 255, 0.3);
+.md-button.md-fab.md-primary,
+.md-button.md-fab {
+  color: red;
+  background-color: #333;
 }
-.md-toolbar-tools.md-primary .md-icon-button.activated {
-  background-color: rgba(255, 255, 255, 0.0);
-  xborder-bottom: 2px solid rgba(255, 255, 255, 1);
-  xborder-radius: 0;
+.md-button.md-fab.md-primary:hover,
+.md-button.md-fab:hover {
+  background-color: #666!important;
 }
-.md-toolbar-tools.md-primary .md-icon-button md-icon {
-  color: rgba(255, 255, 255, 0.85);
-}
-.md-toolbar-tools.md-primary .md-icon-button.activated md-icon {
-  color: #fcf48e;
+.fab-menu-toolbar .md-fab.active {
+  background-color: rgb(0, 170, 212);
 }
 
-.md-toolbar-tools.md-primary .title {
-  font-size: 17px;
+.fab-menu-toolbar,
+.panel-collapse-button {
   position: absolute;
-  line-height: 36px;
+  z-index: 50;
+  transition: 0.45s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
+}
+.fab-menu-toolbar {
   top: 0;
-  left: 50%;
+  right: -55px;
+}
+.panel-collapse-button {
+  right: -24px;
 }
 
 md-option {
@@ -73,17 +124,7 @@ md-option {
 md-option .md-text {
   font-size: 15px;
 }
-.md-toolbar-tools.md-primary md-select.layers-list {
-  overflow: hidden;
-  opacity: 1;
-  width: 170px;
-  transition: 0.45s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
-}
-.md-toolbar-tools.md-primary md-select.ng-hide {
-  opacity: 0;
-  width: 0;
-  transform: translate(-50%, 0);
-}
+
 .md-toolbar-tools.md-primary md-select:focus:not([disabled]) .md-select-value {
     color: rgba(255, 255, 255, 0.87);
 }
@@ -119,10 +160,6 @@ md-sidenav {
   height: 100%;
 }
 
-md-sidenav.md-locked-open {
-  max-width: 270px;
-  min-width: 270px;
-}
 
 /* fix of tabs labels width */
 md-tab-item {
@@ -134,7 +171,7 @@ md-list-item .md-list-item-inner > md-checkbox {
   margin: 0;
   padding-bottom: 0px;
   height: 26px;
-  line-height: 26px;
+  line-height: 22px;
 }
 
 md-list-item .md-list-item-inner > md-checkbox:first-child {
@@ -195,6 +232,8 @@ md-icon.md-secondary,
 
 .gl-tree-group > md-list-item {
   font-weight: bold;
+  xborder-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
 }
 
 .gl-tree md-list-item, .gl-tree md-list-item .md-list-item-inner {
@@ -202,14 +241,16 @@ md-icon.md-secondary,
   max-height: 26px;
 }
 md-list-item p {
-  font-size: 13px;
+  font-size: 14px;
 }
+
+
 .gl-tree-leaf[depth="1"] .layer-metadata {
-  padding-left: 18px;
+  padding-left: 12px;
 }
 
 .gl-tree-group[depth="2"] md-list-item .indent, .gl-tree-leaf[depth="2"] md-list-item .indent {
-  padding-left: 19px;
+  padding-left: 12px;
 }
 .gl-tree-leaf[depth="2"] .layer-metadata {
   padding-left: 34px;
@@ -224,7 +265,7 @@ md-list-item p {
 }
 
 .layer-metadata {
-  font-size: 12px;
+  font-size: 13px;
   color: #444;
   line-height: 18px;
   vertical-align: top;
@@ -237,19 +278,14 @@ md-list-item p {
 }
 
 .gl-tree-leaf.expanded md-list-item {
-  background-color: #ddd;
+  background-color: rgba(0, 170, 212, 0.15);
 }
 .gl-tree-leaf.expanded .layer-metadata {
-  background-color: #eee;
+  background-color: rgba(0, 170, 212, 0.05);
 }
 
 button::-moz-focus-inner {
   border: 0;
-}
-
-#map {
-  width: 100%;
-  height: 100%;
 }
 
 .legend-container {
@@ -316,30 +352,59 @@ img.legend-item {
   content: "v";
 }
 
-.md-subheader .md-subheader-inner {
-    display: block;
-    padding: 2px 0 12px 5px;
-}
-
 .no-scrollbar {
   overflow: hidden;
 }
 
 .md-subheader, .md-tab {
-  font-size: 13px;
+  font-size: 14px;
+  text-transform: none;
 }
 .md-tab {
   padding: 12px 12px;
 }
 
+/* Checkbox and radio button */
+
+md-radio-group:not([disabled]) .md-primary .md-checked .md-off,
+md-radio-group:not([disabled]) .md-primary.md-checked .md-off,
+md-radio-group.md-primary:not([disabled]) .md-checked .md-off,
+md-radio-group.md-primary.md-checked:not([disabled]) .md-off,
+md-radio-button:not([disabled]) .md-primary .md-checked .md-off,
+md-radio-button:not([disabled]) .md-primary.md-checked .md-off,
+md-radio-button.md-primary:not([disabled]) .md-checked .md-off,
+md-radio-button.md-primary.md-checked:not([disabled]) .md-off  {
+  border-color: rgba(33, 33, 33, 0.87);
+}
+
+md-radio-group:not([disabled]) .md-primary .md-on,
+md-radio-group.md-primary:not([disabled]) .md-on,
+md-radio-button:not([disabled]) .md-primary .md-on,
+md-radio-button.md-primary:not([disabled]) .md-on {
+  background-color: rgba(33, 33, 33, 0.87);
+}
+
+md-checkbox.md-default-theme.md-primary.md-checked:not([disabled]),
+md-checkbox.md-primary.md-checked:not([disabled]) .md-icon {
+  background-color: rgba(33, 33, 33, 0.87);
+}
+
+/* Tabs */
 md-tabs > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {
   color: #aaa;
 }
 
 .md-subheader.md-default-theme, .md-subheader,
 md-tabs > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item.md-active:not([disabled]) {
-  color: rgb(57, 73, 171);
+  color: rgb(0, 170, 212);
+  xcolor: #333;
 }
+
+md-tabs > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-ink-bar {
+  background-color: rgb(0, 170, 212);
+  xbackground-color: #333;
+}
+
 .full-height {
   height: 100%;
 }
@@ -363,12 +428,6 @@ md-tabs > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item
   padding-right: 5px;
 }
 
-.ol-control.ol-zoom {
-  right: 0.5em;
-  left: auto;
-}
-
-
 .accordion-icon {
   transition: 0.45s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
 }
@@ -377,227 +436,11 @@ md-tabs > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item
   transform-origin: 50% 50%;
 }
 
-table[md-data-table] {
-  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
-}
-md-data-table-container {
-  transition: height 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
-}
 
-md-bottom-sheet {
-  left: 270px;
-  padding: 0;
-}
-
-md-bottom-sheet md-data-table-container {
-  overflow-y: hidden;
-  height: 0px;
-}
-
-md-data-table-pagination > div > span.label,  md-data-table-pagination > div > md-select {
+md-tabs.tabs-no-header > md-tabs-wrapper {
   display: none;
 }
-md-bottom-sheet md-data-table-pagination > div {
-  min-height: 36px;
-  padding-left: 30px;
-  border: none;
-}
 
-md-data-table-pagination > div > span {
-    margin-right: 0!important;
-    min-width: 100px;
-    text-align: right;
-}
-
-table[md-data-table] > tbody > tr {
-  height: 32px;
-}
-
-table[md-data-table] > thead:not([md-table-progress]) > tr > th > div {
-  height: 36px;
-}
-.search-table table[md-data-table] > thead > tr > th > div {
-  height: auto;
-}
-.search-table table[md-data-table] > thead > tr > th > div.filter-row {
-  height: 60px;
-  align-items: flex-start;
-}
-.search-table .filter-row .active, .search-table .filter-row .active md-input-container .md-input {
-  color: rgba(255, 64, 129, 0.87);
-}
-.search-table .filter-row .layout-row {
-  width: 100%;
-}
-.search-table md-input-container {
-  padding: 0;
-}
-.search-table md-select {
-  min-width: 100px;
-}
-
-table[md-data-table] > tbody > tr > td,
-table[md-data-table] > tfoot > tr > td,
-table[md-data-table] > thead > tr > th {
-    padding: 0 10px 0 10px!important;
-}
-table td.icon {
-  width: 18px;
-}
-td.icon md-icon {
-  color: #555;
-  width: 18px;
-  height: 18px;
-}
-
-.filter-row .md-input-has-placeholder:not(.md-input-has-value) .md-input,
-.filter-row md-select .md-select-value.md-select-placeholder {
-  color: rgba(0, 0, 0, 0.25);
-  font-weight: 500;
-}
-
-.tabs-no-header md-tabs-wrapper {
-  display: none;
-}
-.search-settings {
-  border-top: 1px solid rgba(0, 0, 0, 0.12);
-  height: 36px;
-}
-.search-settings md-checkbox, 
-.search-settings md-input-container,
-.search-settings button {
-  line-height: 32px;
-  margin: 0 10px 0 10px;
-  font-size: 12.5px;
-  font-weight: 500;
-}
-
-.search-settings md-input-container, .search-settings md-checkbox {
-  padding-top: 1.5px;
-}
-.search-settings md-input-container {
-  flex-direction: row;
-  padding: 4px 0 4px 0;
-}
-.search-settings md-input-container label {
-  font-size: 12.5px;
-  padding: 0 8px 0 0;
-}
-.search-settings md-input-container input {
-  width: 60px;
-  text-align: center;
-}
-.search-settings span {
-  color: rgba(0, 0, 0, 0.6);
-}
-.search-settings button span {
-  color: rgba(0, 0, 0, 0.9);
-}
-.xxx.search-settings {
-  display: inline-flex;
-  flex-direction: row;
-}
-.search-settings md-icon {
-  width: 18px;
-}
-md-data-table-pagination {
-  display: inline-flex;
-}
 .inline-flex {
   display: inline-flex;
-}
-.filter-clear-button {
-  width: 16px;
-  height: 16px;
-}
-.filter-row {
-  min-height: 42px;
-  width: 100%;
-}
-.filter-row label {
-  padding-right: 8px;
-  padding-top: 6px;
-}
-.filter-row md-input-container {
-  padding-bottom: 0px;
-  margin-right: 4px;
-}
-.features-panel .md-subheader {
-  color: gray;
-  padding-left: 12px;
-  line-height: 42px;
-}
-.features-panel md-tabs {
-  height: 100%;
-}
-.features-panel.collapsed md-data-table-container {
-  height: 0px!important;
-}
-md-bottom-sheet.features-panel.collapsed {
-  height: 80px;
-}
-md-data-table-container.horizontal-overflow {
-  padding-bottom: 12px;
-}
-
-.md-dialog-container {
-  top: 50px!important;
-  left: 280px!important;
-  min-width: 400px;
-  width: auto;
-  height: auto!important;
-  border-radius: 5px;
-}
-
-md-dialog {
-  font-size: 14px;
-  border: 2px solid #bbb;
-}
-.md-dialog-container md-toolbar,
-.md-dialog-container .md-toolbar-tools {
-  font-size: 14px;
-  min-height: 50px;
-  max-height: 50px;
-  background-color: #f0f0f0;
-}
-.md-dialog-container md-input-container {
-  padding: 0;
-}
-.md-dialog-container .md-toolbar-tools md-select-value {
-  width: 150px;
-}
-.md-dialog-container md-select {
-  margin: 0;
-}
-md-dialog {
-  max-width: 100%;
-}
-.md-dialog-container md-toolbar:not(.md-menu-toolbar) {
-    color: rgba(0, 0, 0, 0.87);
-}
-.md-dialog-container md-input-container {
-  padding-right: 5px;
-}
-
-.md-dialog-container .md-toolbar-tools,
-.attribute-filter {
-  padding-left: 6px;
-  max-height: 50px;
-  padding-bottom: 8px;
-}
-.md-dialog-container .attribute-filter md-select-value {
-  width: 150px;
-}
-label.md-no-float {
-  font-size: 11.5px;
-}
-
-.bottom-toolbar {
-  padding-left: 6px;
-  max-height: 36px;
-}
-.bottom-toolbar md-checkbox,
-.bottom-toolbar .md-button {
-  margin: 0;
-  line-height: 38px;
 }

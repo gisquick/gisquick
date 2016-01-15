@@ -1,0 +1,13 @@
+<div class="panel-tool identification-panel">
+  <md-select
+    class="layers-list"
+    placeholder="Select layer"
+    ng-model="tool.identificationLayer">
+    <md-option value="">All visible</md-option>
+    <md-option
+      ng-repeat="layer in project.layers.list | filter:{queryable:true, visible:true}"
+      value="{{ layer.name }}">
+      {{layer.title}}
+    </md-option>
+  </md-select>
+</div>

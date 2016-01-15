@@ -84,22 +84,12 @@
       return $sce.trustAsHtml(html.join('\n'));
     }
 
-    $scope.topicDetail = function(topic, fn) {
-      if (!topic.detail) {
-        //var task = $q.defer();
-        console.log('topicDetail: '+topic.title);
-        //$timeout(function() {
-          topic.detail = {
-            abstract: topic.abstract,
-            visibleLayers: visibleLayersHtml(projectProvider.layers.tree, topic)
-          }
-          //task.resolve();
-        //});
-        //return task.promise;
-      } else {
-        //return $q.when();
+    $scope.topics.forEach(function(topic) {
+      topic.detail = {
+        abstract: topic.abstract,
+        visibleLayers: visibleLayersHtml(projectProvider.layers.tree, topic)
       }
-    }
+    });
 
     $scope.loadTopic = function(index) {
       var topic = $scope.topics[index];

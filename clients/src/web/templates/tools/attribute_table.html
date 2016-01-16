@@ -1,12 +1,16 @@
 <md-bottom-sheet class="features-panel">
   <div class="header-bg"></div>
-  <md-tabs md-no-ink md-dynamic-height md-selected="tool.layerIndex" class="tabs-no-header">
+  <md-tabs
+    md-no-ink
+    md-dynamic-height
+    class="tabs-no-header"
+    md-selected="tool.layerIndex">
     <md-tab ng-repeat="layer in layers"
       label="{{ layer.name }}"
       md-on-select="setActiveLayer(layer)">
       <md-data-table-container
         gl-scrollbar-detector
-        class="search-table"
+        class="attribute-table"
         style="height: {{ 60+32*tool.rowsPerPage }}px;">
         <table
           md-data-table
@@ -14,7 +18,7 @@
           md-progress="progress">
           <thead>
             <tr>
-              <th></th>
+              <th class="zoom" width="10"></th>
               <th ng-repeat="attribute in ::layer.attributes" name="">
                 <div class="filter-row" layout="column">
                   <label>{{ ::attribute.label }}</label>
@@ -22,7 +26,9 @@
                     layout="row"
                     ng-class="{active: attribute.comparator && attribute.filterValue}">
                     <md-input-container>
-                      <md-select ng-model="attribute.comparator" placeholder="Comparator">
+                      <md-select
+                        ng-model="attribute.comparator"
+                        placeholder="Comparator">
                         <md-option
                           ng-repeat="comparator in attribute.comparators"
                           ng-value="comparator">
@@ -51,7 +57,9 @@
               xng-click="selectFeature(feature)"
               ng-class="{'md-selected': selectedFeature === feature}">
               <td class="icon">
-                <md-icon md-svg-icon="zoom-max" ng-click="zoomToFeature(feature)">
+                <md-icon
+                  md-svg-icon="zoom-max"
+                  ng-click="zoomToFeature(feature)">
                 </md-icon>
               </td>
               <td ng-repeat="attribute in layer.attributes">
@@ -109,7 +117,10 @@
         class="search-settings inline-flex"
         flex>
         <span flex></span>
-        <md-checkbox class="md-primary" ng-model="tool.searchInExtent" aria-label="Filter to visible area">
+        <md-checkbox
+          class="md-primary"
+          ng-model="tool.searchInExtent"
+          aria-label="Filter to visible area">
           Filter to visible area
         </md-checkbox>
         <md-button ng-click="search()">Filter</md-button>

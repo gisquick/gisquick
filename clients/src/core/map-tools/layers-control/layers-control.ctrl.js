@@ -28,7 +28,7 @@
         console.log('opening attributes table');
         if (!tool.opened) {
           var sheetPromise = $mdBottomSheet.show({
-            templateUrl: 'templates/attribute_table.html',
+            templateUrl: 'templates/tools/attribute_table.html',
             disableParentScroll: false,
             hasBackdrop: false,
             parent: '.bottom-bar',

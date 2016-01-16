@@ -6,7 +6,7 @@
     .controller('IdentificationController', IdentificationController);
 
   function IdentificationController($scope, $timeout, projectProvider, layersControl, gislabClient, featuresViewer, tool, $mdIcon) {
-    console.log('IdentificationController: INIT');
+    // console.log('IdentificationController: INIT');
     $scope.tool = tool;
     $scope.showTabsHeader = false;
     featuresViewer.initialize();
@@ -76,7 +76,6 @@
         var layerFeatures = {};
         features.forEach(function(feature) {
           if (feature instanceof ol.Feature) {
-            console.log(feature);
             var fid = feature.getId();
             var layername = Layers.wfs2project[
               fid.substring(0, fid.lastIndexOf('.'))
@@ -96,16 +95,16 @@
           });
         }
         featuresViewer.setLayersFeatures(layerFeatures);
-        console.log(layerFeatures);
         featuresViewer.setActiveFeaturesLayer(layers[0].name);
-        $scope.showTabsHeader = $scope.tool.identificationLayer? false : true;
+        //$scope.showTabsHeader = $scope.tool.identificationLayer? false : true;
+        $scope.showTabsHeader = true;
         $scope.layers = layers;
       } else {
         featuresViewer.setActiveFeaturesLayer('');
-        $scope.showTabsHeader = true;
+        $scope.showTabsHeader = false;
         $scope.layers = [{
-          name: 'No features',
-          attributes: [],
+          name: '',
+          attributes: [{label: "No features"}],
           features: []
         }];
       }
@@ -159,7 +158,7 @@
     });
 
     $scope.$on("$destroy", function() {
-      console.log('IdentificationController: DESTROY');
+      // console.log('IdentificationController: DESTROY');
       projectProvider.map.unByKey(mapClickListener);
       featuresViewer.setActiveFeaturesLayer('');
       featuresViewer.selectFeature(null);

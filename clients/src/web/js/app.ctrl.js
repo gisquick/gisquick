@@ -4,22 +4,11 @@
   angular
     .module('gl.web')
     .controller('AppController', AppController)
-    .controller('LayoutAnimationController', LayoutAnimationController)
     .factory('staticResource', function(staticRoot) {
       return function(filename) {
         return staticRoot+filename;
       }
     });
-
-  function LayoutAnimationController($scope, $timeout) {
-    $scope.$on('ui.layout.toggle', function(e, container) {
-      var layoutElem = container.element.parent();
-      layoutElem.addClass('ui-layout-animation');
-      $timeout(function() {
-        layoutElem.removeClass('ui-layout-animation');
-      }, 600);
-    });
-  }
 
   function AppController($scope, $timeout, $q, projectProvider, $mdBottomSheet) {
     $scope.ui = {
@@ -100,7 +89,6 @@
         markerIcon: 'plus',
         activate: function() {
           var tool = this;
-          console.log('identification: activated');
           tool.collapsed = true;
           var sheetPromise = $mdBottomSheet.show({
             templateUrl: 'templates/tools/identification_table.html',
@@ -110,13 +98,16 @@
             controller: 'IdentificationController',
             locals: {tool: tool}
           });
+          // when identification's attribute table is closed
+          // by $mdBottomSheet.hide
           sheetPromise.then(function() {
-            console.log('dentification: closed');
-            tool.activated = false;
+            if ($scope.activeTool === tool) {
+              $scope.deactivateTool();
+            }
           });
+          // when identification's attribute table is closed by draging down
           sheetPromise.catch(function() {
-            console.log('dentification: closed by drag')
-            tool.activated = false;
+            $scope.deactivateTool();
           });
         },
         deactivate: function() {

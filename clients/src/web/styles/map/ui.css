@@ -36,7 +36,7 @@ md-tabs-canvas {
   line-height: 24px;
 }
 .app-menu .md-button:hover {
-  background-color: rgba(33, 33, 33, 0.7);
+  background-color: #555!important;
 }
 
 md-icon {
@@ -97,7 +97,7 @@ md-fab-trigger .md-fab.md-button md-icon {
 }
 .md-button.md-fab.md-primary:hover,
 .md-button.md-fab:hover {
-  background-color: #666!important;
+  background-color: #555!important;
 }
 .fab-menu-toolbar .md-fab.active {
   background-color: rgb(0, 170, 212);

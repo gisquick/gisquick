@@ -6,7 +6,7 @@
     .controller('AttributeTableController', AttributeTableController);
 
   function AttributeTableController($scope, projectProvider, gislabClient, featuresViewer, tool) {
-    console.log('AttributeTableController: INIT');
+    // console.log('AttributeTableController: INIT');
     featuresViewer.initialize();
     $scope.tool = tool;
 
@@ -150,7 +150,6 @@
     };
 
     $scope.zoomToFeature = function (feature) {
-      console.log(feature)
       var params = {
         'VERSION': '1.0.0',
         'SERVICE': 'WFS',
@@ -208,7 +207,7 @@
     };
 
     $scope.$on("$destroy", function() {
-      console.log('AttributeTableController: DESTROY');
+      // console.log('AttributeTableController: DESTROY');
       featuresViewer.setActiveFeaturesLayer('');
       featuresViewer.selectFeature(null);
     });

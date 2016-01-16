@@ -35,8 +35,11 @@
           md-progress="progress">
           <thead>
             <tr>
-              <th></th>
-              <th ng-repeat="attribute in layer.attributes" name="{{ ::attribute.label }}"></th>
+              <th class="zoom" width="10"></th>
+              <th
+                ng-repeat="attribute in layer.attributes"
+                name="{{ ::attribute.label }}">
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -45,9 +48,14 @@
               ng-class="{'md-selected': selectedFeature === feature}"
               ng-click="selectFeature(feature)">
               <td class="icon">
-                <md-icon md-svg-icon="zoom-max" ng-click="zoomToFeature(feature)"></md-icon>
+                <md-icon
+                  md-svg-icon="zoom-max"
+                  ng-click="zoomToFeature(feature)">
+                </md-icon>
               </td>
-              <td ng-repeat="attribute in layer.attributes">{{ ::feature.get(attribute.name) }}</td>
+              <td ng-repeat="attribute in layer.attributes">
+                {{ ::feature.get(attribute.name) }}
+              </td>
             </tr>
           </tbody>
         </table>
@@ -70,6 +78,5 @@
       md-total="{{ layers[tool.layerIndex].features.length }}">
     </md-data-table-pagination>
   </div>
-  <!-- <div class="md-subheader"><span>NO RESULTS<span></div> -->
   <div style="height: 80px;"></div>
 </md-bottom-sheet>

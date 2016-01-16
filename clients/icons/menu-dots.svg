@@ -15,7 +15,7 @@
    viewBox="0 0 32 32"
    id="svg2"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="toggle-minus.svg">
+   sodipodi:docname="menu-dots.svg">
   <metadata
      id="metadata10">
     <rdf:RDF>
@@ -24,6 +24,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -38,20 +39,21 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="964"
-     inkscape:window-height="676"
+     inkscape:window-width="1920"
+     inkscape:window-height="1028"
      id="namedview6"
      showgrid="false"
-     inkscape:zoom="7.375"
-     inkscape:cx="0.33898305"
-     inkscape:cy="14.915254"
+     inkscape:zoom="20.85965"
+     inkscape:cx="2.8355395"
+     inkscape:cy="14.067618"
      inkscape:window-x="0"
      inkscape:window-y="25"
-     inkscape:window-maximized="0"
+     inkscape:window-maximized="1"
      inkscape:current-layer="svg2" />
   <path
-     d="M 1,25.374932 V 6.6250684 Q 1,4.3008859 2.650443,2.650443 4.3008859,1 6.6250684,1 H 25.374932 Q 27.699114,1 29.349557,2.650443 31,4.3008859 31,6.6250684 V 25.374932 q 0,2.324182 -1.650443,3.974625 Q 27.699114,31 25.374932,31 H 6.6250684 Q 4.3008859,31 2.650443,29.349557 1,27.699114 1,25.374932 z m 4.9994531,-8.124248 q 0,0.507492 0.3707755,0.879361 0.3707754,0.371869 0.8793613,0.370775 H 24.749316 q 0.507492,0 0.879362,-0.370775 0.371869,-0.370776 0.370775,-0.879361 V 14.75041 q 0,-0.507492 -0.370775,-0.879361 -0.370776,-0.371869 -0.879362,-0.370776 H 7.2495899 q -0.5074921,0 -0.8793613,0.370776 -0.3718692,0.370775 -0.3707755,0.879361 v 2.500274 z"
-     id="path4"
+     id="path3000"
+     style="fill:#444444;fill-opacity:1"
+     d="m 12.85336,4.7729871 6.246426,0 0,5.0000004 -6.246426,0 z M 12.852892,13.5 l 6.294365,0 0,5 -6.294365,0 z m -1.49e-4,8.727013 6.294365,0 0,5 -6.294365,0 z"
      inkscape:connector-curvature="0"
-     style="fill:#444444" />
+     sodipodi:nodetypes="ccccccccccccccc" />
 </svg>

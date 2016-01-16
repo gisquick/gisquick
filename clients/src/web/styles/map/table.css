@@ -136,25 +136,25 @@ table[md-data-table] > thead:not([md-table-progress]) > tr > th > div {
   height: 36px;
 }
 .identification table[md-data-table] > thead:not([md-table-progress]) > tr > th > div {
-  height: 30px;
+  height: 31px;
 }
-.search-table table[md-data-table] > thead > tr > th > div {
+.attribute-table table[md-data-table] > thead > tr > th > div {
   height: auto;
 }
-.search-table table[md-data-table] > thead > tr > th > div.filter-row {
+.attribute-table table[md-data-table] > thead > tr > th > div.filter-row {
   height: 60px;
   align-items: flex-start;
 }
-.search-table .filter-row .active, .search-table .filter-row .active md-input-container .md-input {
+.attribute-table .filter-row .active, .attribute-table .filter-row .active md-input-container .md-input {
   color: rgba(0, 170, 212, 0.87);
 }
-.search-table .filter-row .layout-row {
+.attribute-table .filter-row .layout-row {
   width: 100%;
 }
-.search-table md-input-container {
+.attribute-table md-input-container {
   padding: 0;
 }
-.search-table md-select {
+.attribute-table md-select {
   min-width: 100px;
 }
 
@@ -169,8 +169,9 @@ table[md-data-table] > thead:not([md-table-progress]) > tr > th > div {
 table[md-data-table] > tbody > tr > td,
 table[md-data-table] > tfoot > tr > td,
 table[md-data-table] > thead > tr > th {
-  padding: 0 10px 0 10px!important;
+  padding: 0px 10px 0 10px!important;
 }
+
 table td.icon {
   width: 18px;
 }
@@ -178,6 +179,10 @@ td.icon md-icon {
   color: #444;
   width: 18px;
   height: 18px;
+}
+
+md-progress-linear.md-default-theme, md-progress-linear .md-bar {
+  background-color: rgb(0, 170, 212);
 }
 
 .filter-row .md-input-has-placeholder:not(.md-input-has-value) .md-input,

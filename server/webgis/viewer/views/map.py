@@ -11,7 +11,8 @@ from django.views.decorators.csrf import csrf_exempt
 
 from webgis.viewer.wfsfilter import webgisfilter
 from webgis.libs.utils import set_query_parameters
-from webgis.mapcache import get_tile_response, get_legendgraphic_response, WmsLayer, TileNotFoundException
+from webgis.mapcache import get_tile_response, get_legendgraphic_response, \
+    WmsLayer, TileNotFoundException
 from webgis.viewer.views.project_utils import clean_project_name, get_project_layers_info
 from webgis.libs.auth.decorators import basic_authentication
 
@@ -34,6 +35,9 @@ def ows(request):
             resp_content += data
         content_type = resp.info().getheader('Content-Type')
         status = resp.getcode()
+        # temporary fix of invalid GeoJSON from qgis mapserver
+        if content_type == 'text/plain; charset=utf-8':
+            resp_content = resp_content.replace('}\n  {', '}\n ,{')
         return HttpResponse(resp_content, content_type=content_type, status=status)
 
 

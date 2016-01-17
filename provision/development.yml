@@ -42,7 +42,7 @@
     cordova_pf_android_version: 4.0.2
 
     # GIS.lab
-    gislab_git_dl_url: https://raw.githubusercontent.com/imincik/gis-lab
+  gislab_git_dl_url: https://raw.githubusercontent.com/gislab-npo/gislab
 
     wget_opts: "
     --continue

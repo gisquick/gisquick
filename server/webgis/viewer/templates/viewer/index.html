@@ -34,7 +34,9 @@
       angular.module('gl.web')
         .constant('staticRoot', '{% static "" %}')
         .config(function($mdIconProvider) {
-          $mdIconProvider.defaultIconSet('{% static "styles/icons.svg" %}', 32);
+          $mdIconProvider
+            .defaultIconSet('{% static "styles/icons.svg" %}', 32)
+            .icon('logo', '{% static "styles/logo.svg" %}');
         })
         .run(function($q) {
           window.webgis = {

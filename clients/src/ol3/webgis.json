@@ -47,6 +47,8 @@
     "ol.control.defaults",
     "ol.control.Rotate",
     "ol.control.ScaleLine",
+    "ol.control.MousePosition",
+    "ol.coordinate.createStringXY",
     "ol.extent.getBottomLeft",
     "ol.Collection#extend",
     "ol.geom.Point#getType",

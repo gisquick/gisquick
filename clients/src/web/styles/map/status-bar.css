@@ -1,0 +1,25 @@
+.status-bar {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  min-height: 32px;
+  background-color: #dfdfdf;
+  border-top: 1px solid #777;
+}
+
+.status-bar-content {
+  border-left: 1px solid #777;
+  line-height: 30px;
+  font-size: 14px;
+}
+.status-bar-content label {
+  padding: 0 15px 0 8px;
+}
+
+md-icon.logo {
+  padding-top: 1px;
+  width: 279px;
+  height: 28px;
+  color: #333;
+}

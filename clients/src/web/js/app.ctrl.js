@@ -13,46 +13,7 @@
   function AppController($scope, $timeout, $q, projectProvider, $mdBottomSheet) {
     $scope.ui = {
       toolPanelOpen: true,
-      panelTop: {
-        flex: 0,
-        open: true,
-        collapse: function() {
-          if ($scope.ui.panelTop.open && $scope.ui.panelBottom.open) {
-            $scope.ui.panelTop.expandedFlex = $scope.ui.panelTop.flex;
-            $scope.ui.panelBottom.expandedFlex = $scope.ui.panelBottom.flex;
-          }
-          $scope.ui.panelTop.flex = 5;
-          $scope.ui.panelBottom.flex = 95;
-          $scope.ui.panelTop.open = false;
-          $scope.ui.panelBottom.open = true;
-        },
-        expand: function() {
-          $scope.ui.panelTop.flex = $scope.ui.panelTop.expandedFlex;
-          $scope.ui.panelBottom.flex = $scope.ui.panelBottom.expandedFlex;
-          $scope.ui.panelTop.open = true;
-          $scope.ui.panelBottom.open = true;
-        }
-      },
-      panelBottom: {
-        flex: 100,
-        open: true,
-        collapse: function() {
-          if ($scope.ui.panelTop.open && $scope.ui.panelBottom.open) {
-            $scope.ui.panelTop.expandedFlex = $scope.ui.panelTop.flex;
-            $scope.ui.panelBottom.expandedFlex = $scope.ui.panelBottom.flex;
-          }
-          $scope.ui.panelTop.flex = 95;
-          $scope.ui.panelBottom.flex = 5;
-          $scope.ui.panelTop.open = true;
-          $scope.ui.panelBottom.open = false;
-        },
-        expand: function() {
-          $scope.ui.panelTop.flex = $scope.ui.panelTop.expandedFlex;
-          $scope.ui.panelBottom.flex = $scope.ui.panelBottom.expandedFlex;
-          $scope.ui.panelTop.open = true;
-          $scope.ui.panelBottom.open = true;
-        }
-      },
+
       mapView: {
         left: 280,
         bottom: 0
@@ -147,7 +108,7 @@
       }
       $scope.activeTool = tool;
       $scope.activeTool.activate();
-      $scope.ui.panelTop.flex = 'auto';
+      //$scope.ui.panelTop.flex = 'auto';
       //$scope.ui.toolPanelOpen = true;
       $timeout(function() {
         $scope.ui.toolPanelOpen = true;
@@ -159,7 +120,7 @@
       if ($scope.activeTool) {
         $scope.activeTool.deactivate();
         $scope.activeTool = null;
-        $scope.ui.panelTop.flex = 'auto';
+        //$scope.ui.panelTop.flex = 'auto';
       }
       $scope.ui.toolPanelOpen = false;
     };
@@ -174,11 +135,50 @@
           projectProvider.map.updateSize();
           var size = projectProvider.map.getSize();
           projectProvider.map.getView().fit(projectData.zoom_extent, size);
-          projectProvider.map.addControl(new ol.control.ScaleLine());
+          var scaleLine = new ol.control.ScaleLine({
+            target: 'ol-scale-line-container'
+          });
+          projectProvider.map.addControl(scaleLine);
           $scope.project = projectProvider;
           $scope.activateTool($scope.tools.get('identification'));
         }
       });
+    };
+
+    function setupScaleLabel() {
+      var scalesCache = {};
+      function resolutionToScale(resolution) {
+        var scale = scalesCache[resolution];
+        if (!scale) {
+          var index = projectProvider.config.tile_resolutions.findIndex(
+            function(r) {
+              return Math.abs(r-resolution) < 0.001;
+            }
+          );
+          scale = projectProvider.config.scales[index];
+          scalesCache[resolution] = scale;
+        }
+        return scale;
+      }
+      var zoomListener = projectProvider.map.getView().on(
+        'change:resolution',
+        function(evt) {
+          var resolution = evt.target.get(evt.key);
+          var scale = resolutionToScale(resolution);
+          $timeout(function() {
+            $scope.mapScale = scale;
+          });
+        }
+      );
+      $scope.mapScale = resolutionToScale(projectProvider.map.getView().getResolution());
+    }
+    $scope.initializeStatusBar = function() {
+      setupScaleLabel();
+      var positionControl = new ol.control.MousePosition({
+        coordinateFormat: ol.coordinate.createStringXY(4),
+        target: 'ol-mouse-position-container'
+      });
+      projectProvider.map.addControl(positionControl);
     };
   };
 })();

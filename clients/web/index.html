@@ -12,6 +12,7 @@
     <link rel="stylesheet" type="text/css" href="node_modules/angular-material-data-table/dist/md-data-table.css"/>
     <link rel="stylesheet" type="text/css" href="web/styles/map/ui.css"/>
     <link rel="stylesheet" type="text/css" href="web/styles/map/panel.css"/>
+    <link rel="stylesheet" type="text/css" href="web/styles/map/status-bar.css"/>
     <link rel="stylesheet" type="text/css" href="web/styles/map/table.css"/>
     <link rel="stylesheet" type="text/css" href="web/styles/map/olmap.css"/>
     <script type="text/javascript">
@@ -72,7 +73,9 @@
       angular.module('gl.web')
         .constant('staticRoot', '/')
         .config(function($mdIconProvider) {
-          $mdIconProvider.defaultIconSet('styles/map/icons.svg', 32);
+          $mdIconProvider
+            .defaultIconSet('styles/map/icons.svg', 32)
+            .icon('logo', 'styles/map/logo.svg');
         })
         .config(function(gislabClientProvider) {
           gislabClientProvider.configure({

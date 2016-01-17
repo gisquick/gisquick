@@ -1,6 +1,14 @@
 html {
   overflow-y: hidden!important; 
 }
+.md-whiteframe-top {
+  box-shadow: 0 -1px 8px 0 rgba(0, 0, 0, 0.2), 0 -3px 3px -2px rgba(0, 0, 0, 0.12);
+}
+
+md-select.md-default-theme:focus:not([disabled]), md-select:focus:not([disabled]) .md-select-value {
+  border-bottom-color: rgb(0, 170, 212);
+}
+
 .measure-panel label {
   font-size: 13.5px;
   color: #777;
@@ -111,10 +119,7 @@ md-fab-trigger .md-fab.md-button md-icon {
 }
 .fab-menu-toolbar {
   top: 0;
-  right: -55px;
-}
-.panel-collapse-button {
-  right: -24px;
+  right: -52px;
 }
 
 md-option {

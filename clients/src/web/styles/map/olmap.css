@@ -4,24 +4,51 @@
 }
 
 .ol-control.ol-zoom {
-  right: 0.5em;
+  right: 5px;
   left: auto;
   top: auto;
-  bottom: 50px;
+  bottom: 76px;
 }
 
 .ol-zoom .ol-zoom-in {
-	margin-bottom: 5px;
+  margin-bottom: 5px;
 }
 
 .ol-zoom .ol-zoom-in,
 .ol-zoom .ol-zoom-out {
-	border-radius: 8px;
+  border-radius: 8px;
+}
+
+.ol-attribution {
+  bottom: 35px;
+  right: 5px;
 }
 
 .ol-control button {
-	background-color: #333;
-	width: 36px;
-	height: 36px;
-	border-radius: 8px;
+  background-color: #333;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+}
+
+#ol-scale-line-container {
+  position: absolute;
+  bottom: 36px;
+  width: 150px;
+  height: 30px;
+  transition: 0.45s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
+  overflow: visible;
+}
+
+.ol-scale-line {
+  left: 5px;
+  bottom: 5px;
+  background-color: rgba(33, 33, 33, 0.8);
+}
+#ol-mouse-position-container {
+  xdisplay: inline-block;
+}
+.ol-mouse-position {
+  display: inline-block;
+  position: static;
 }

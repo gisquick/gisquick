@@ -19,10 +19,10 @@
     <div layout="column" style="display:flex;flex: 1 1 auto;height:100%;">
       <div
         class="panel-top panel-tool"
-        style="position:relative;background-color:white; display:flex;flex: 1 1 {{ ui.panelTop.flex }}%;"
+        style="position:relative; display:flex; flex: 1 1 auto;"
         gl-collapsible ng-model="ui.toolPanelOpen">
 
-        <div gl-collapsible-content style="width:100%;" cclass="fill-flex">
+        <div gl-collapsible-content style="width:100%;">
           <md-subheader>
             <div layout="row">
               <span ng-bind="activeTool.title"></span>
@@ -50,12 +50,12 @@
         </div>
       </div>
 
-      <div gl-splitter class="splitter"></div>
+      <!-- <div gl-splitter class="splitter"></div> -->
 
       <div
         layout="column"
         class="panel-bottom"
-        style="position: relative;background-color:white; display:flex; flex: 1 1 {{ ui.panelBottom.flex }}%;">
+        style="position: relative; display:flex; flex: 1 1 100%;">
         <md-subheader>
           <div layout="row">
             <span>Content</span>
@@ -80,6 +80,26 @@
   </div>
 
   <div id="map"></div>
+  <div
+    id="ol-scale-line-container"
+    style="left: {{ ui.mapView.left }}px;">
+  </div>
+  <div
+    layout="row"
+    class="status-bar md-whiteframe-top"
+    ng-if="::project"
+    ng-init="initializeStatusBar()">
+    <md-icon
+      class="logo"
+      md-svg-icon="logo">
+    </md-icon>
+    <div flex id="ol-mouse-position-container"
+      class="status-bar-content">
+      <label>Scale 1: {{ mapScale }}</label>
+      <label>{{ ::project.config.projection.code }}</label>
+      <label>Mouse coordinates:</label>
+    </div>
+  </div>
 
   <div
     class="right-menu-container"

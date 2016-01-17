@@ -91,6 +91,7 @@ md-data-table-pagination {
 }
 md-bottom-sheet.features-panel.collapsed {
   height: 80px;
+  visibility: hidden;
 }
 md-data-table-container.horizontal-overflow {
   padding-bottom: 12px;
@@ -247,24 +248,25 @@ label.md-no-float {
 .tabs-header {
   position: absolute;
   top: -28px;
-  height: 25px;
+  height: 26px;
   background-color: rgb(250, 250, 250);
   color: #333;
   border-left: 2px solid #333;
-  border-top: 3px solid #333;
+  border-top: 2px solid #333;
   border-top-left-radius: 6px;
 }
 .tabs-header .tab-splitter {
   position: absolute;
-  top: -3px;
+  top: -2px;
   right: -12px;
   transform: skewX(25deg);
-  border-top: 3px solid #333;
-  border-right: 4px solid #333;
+  border-top: 2px solid #333;
+  border-right: 3px solid #333;
   width: 15px;
   height: 100%;
   border-top-right-radius: 6px;
   background-color: rgb(250, 250, 250);
+  box-shadow: 3px 3px 3px 0 rgba(0, 0, 0, 0.15), 5px 0px 4px 0 rgba(0, 0, 0, 0.1), 4px -3px 3px -2px rgba(0, 0, 0, 0.08);
 }
 
 .tabs-header .panel-tab {

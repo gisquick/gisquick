@@ -42,10 +42,12 @@
                         placeholder="{{ attribute.comparator.format }}">
                       </input>
                     </md-input-container>
-                    <md-icon class="filter-clear-button"
-                      md-svg-icon="delete"
+                    <md-button
                       ng-click="attribute.filterValue='';attribute.comparator=null">
-                    </md-icon>
+                      <md-icon class="filter-clear-button"
+                        md-svg-icon="delete">
+                      </md-icon>
+                    </md-button>
                   </div>
                 </div>
               </th>
@@ -98,11 +100,15 @@
     </md-tab>
   </md-tabs>
     <div class="search-settings" layout="row">
-      <md-input-container class="md-block">
+      <md-input-container
+        layout="row"
+        class="input-inline-label">
         <label class="md-label md-no-float">Limit:</label>
         <input ng-model="tool.limit" type="number" min="1" max="1000"></input>
       </md-input-container>
-      <md-input-container class="md-block">
+      <md-input-container
+        layout="row"
+        class="input-inline-label">
         <label class="md-label md-no-float">Rows per page:</label>
         <input ng-model="tool.rowsPerPage" type="number" min="1" max="10"></input>
       </md-input-container>

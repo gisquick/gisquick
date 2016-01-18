@@ -29,6 +29,11 @@
   width: 36px;
   height: 36px;
   border-radius: 8px;
+  font-size: 28px;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+}
+.ol-control button:hover {
+  background-color: #555;
 }
 
 #ol-scale-line-container {

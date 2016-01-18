@@ -56,6 +56,12 @@ table[md-data-table] thead label {
   width: 18px;
 }
 
+md-input-container.input-inline-label label {
+    bottom: auto;
+    left: 0;
+    position: relative;
+}
+
 md-data-table-pagination {
   display: inline-flex;
 }
@@ -76,8 +82,17 @@ md-data-table-pagination {
 }
 .filter-row md-input-container {
   padding-bottom: 0px;
-  margin-right: 4px;
+  margin: 0 5px 0 0;
 }
+.filter-row .md-button {
+  min-width: 20px;
+  height: 24px;
+  margin: 0;
+}
+.filter-row .md-button:hover {
+  background-color: transparent;
+}
+
 .features-panel .md-subheader {
   color: gray;
   padding-left: 12px;
@@ -101,17 +116,22 @@ md-data-table-container.horizontal-overflow {
 table[md-data-table] {
   transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
 }
-md-data-table-container {
-  transition: height 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
-}
 
 md-bottom-sheet {
   padding: 0;
 }
 
-md-bottom-sheet md-data-table-container {
+md-data-table-container {
+  transition: height 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
   overflow-y: hidden;
-  height: 0px;
+}
+md-data-table-container.identification-table {
+  min-height: 68px;
+  height: 68px;
+}
+md-data-table-container.attribute-table {
+  min-height: 88px;
+  height: 88px;
 }
 
 md-data-table-pagination > div > span.label,  md-data-table-pagination > div > md-select {
@@ -251,20 +271,20 @@ label.md-no-float {
   height: 26px;
   background-color: rgb(250, 250, 250);
   color: #333;
-  border-left: 2px solid #333;
+  border-left: 1px solid #333;
   border-top: 2px solid #333;
-  border-top-left-radius: 6px;
+  border-top-left-radius: 5px;
 }
 .tabs-header .tab-splitter {
   position: absolute;
   top: -2px;
   right: -12px;
-  transform: skewX(25deg);
+  transform: skewX(20deg);
   border-top: 2px solid #333;
-  border-right: 3px solid #333;
+  border-right: 2px solid #333;
   width: 15px;
   height: 100%;
-  border-top-right-radius: 6px;
+  border-top-right-radius: 5px;
   background-color: rgb(250, 250, 250);
   box-shadow: 3px 3px 3px 0 rgba(0, 0, 0, 0.15), 5px 0px 4px 0 rgba(0, 0, 0, 0.1), 4px -3px 3px -2px rgba(0, 0, 0, 0.08);
 }

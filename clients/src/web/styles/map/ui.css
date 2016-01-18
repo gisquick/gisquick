@@ -36,13 +36,16 @@ md-tabs-canvas {
   user-select: none;
 }
 
-.app-menu .md-button {
+.md-button.map-button {
   background-color: #333;
-  border-radius: 8px;
   width: 36px;
   height: 36px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
   line-height: 24px;
+  padding: 0;
 }
+
 .app-menu .md-button:hover {
   background-color: #555!important;
 }
@@ -92,6 +95,11 @@ md-tabs-wrapper {
   height: 36px;
   border-radius: 8px;
   line-height: 24px;
+}
+
+/* Prevent small expanded icons after page loaded */
+md-fab-speed-dial.md-scale .md-fab-action-item {
+  transform: scale(0.0);
 }
 
 md-fab-trigger .md-fab.md-button md-icon {
@@ -173,7 +181,7 @@ md-tab-item {
 
 md-list-item > md-radio-button,
 md-list-item .md-list-item-inner > md-checkbox {
-  margin: 0;
+  margin: 0!important;
   padding-bottom: 0px;
   height: 26px;
   line-height: 22px;
@@ -203,6 +211,7 @@ md-list-item .md-button.md-icon-button {
   min-height: 26px;
   line-height: 26px;
   margin: 0;
+  padding: 0;
 }
 md-list-item .md-icon-button md-icon {
   width: 12px;
@@ -254,14 +263,16 @@ md-list-item p {
   padding-left: 12px;
 }
 
-.gl-tree-group[depth="2"] md-list-item .indent, .gl-tree-leaf[depth="2"] md-list-item .indent {
+.gl-tree-group[depth="2"] md-list-item .indent,
+.gl-tree-leaf[depth="2"] md-list-item .indent {
   padding-left: 12px;
 }
 .gl-tree-leaf[depth="2"] .layer-metadata {
   padding-left: 34px;
 }
 
-.gl-tree-group[depth="3"] md-list-item .indent, .gl-tree-leaf[depth="3"] md-list-item .indent {
+.gl-tree-group[depth="3"] md-list-item .indent,
+.gl-tree-leaf[depth="3"] md-list-item .indent {
   padding-left: 40px;
 }
 
@@ -448,4 +459,12 @@ md-tabs.tabs-no-header > md-tabs-wrapper {
 
 .inline-flex {
   display: inline-flex;
+}
+
+md-input-container.md-input-focused:not(.md-input-invalid) .md-input {
+  border-color: rgb(0, 170, 212);
+}
+
+md-input-container.md-input-focused:not(.md-input-invalid) label {
+    color: rgb(0, 170, 212);
 }

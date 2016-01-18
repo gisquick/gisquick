@@ -8,11 +8,6 @@
       ng-click="tool.layerIndex=$index"
       ng-repeat="layer in layers">
       <span ng-bind="layer.name"></span>
-      <!-- <md-icon
-        md-svg-icon="{{ ::$last? 'tab-end' : 'tab-split2' }}">
-      </md-icon> -->
-      <!-- <div class="tab-splitter">
-      </div> -->
     </md-button>
     <div class="tab-splitter">
     </div>
@@ -21,13 +16,13 @@
   <div class="header-bg"></div>
   <md-tabs md-no-ink md-dynamic-height
     class="tabs-no-header"
-    xng-class="{'tabs-no-header': !showTabsHeader}"
     md-selected="tool.layerIndex"
     md-autoselect="false">
     <md-tab ng-repeat="layer in layers"
       label="{{ layer.name }}"
       md-on-select="setActiveLayer(layer)">
       <md-data-table-container
+        class="identification-table"
         ng-init="layer.page=1"
         style="height: {{ 36+32*tool.rowsPerPage }}px;">
         <table
@@ -63,11 +58,15 @@
     </md-tab>
   </md-tabs>
   <div class="search-settings" layout="row" ng-show="::layers">
-    <md-input-container class="md-block">
+    <md-input-container
+      layout="row"
+      class="input-inline-label">
       <label class="md-label md-no-float">Limit:</label>
       <input ng-model="tool.limit" type="number" min="1" max="50"></input>
     </md-input-container>
-    <md-input-container class="md-block">
+    <md-input-container
+      layout="row"
+      class="input-inline-label">
       <label class="md-label md-no-float">Rows per page:</label>
       <input ng-model="tool.rowsPerPage" type="number" min="1" max="10"></input>
     </md-input-container>

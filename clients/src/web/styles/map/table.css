@@ -234,7 +234,7 @@ label.md-no-float {
   background-color: #333;
   color: #fff;
 }
-.tabs-header .tab-splitter {
+.tabs-header .tab-end-right {
   position: absolute;
   top: 0;
   right: -10px;
@@ -275,7 +275,7 @@ label.md-no-float {
   border-top: 2px solid #333;
   border-top-left-radius: 5px;
 }
-.tabs-header .tab-splitter {
+.tabs-header .tab-end-right {
   position: absolute;
   top: -2px;
   right: -12px;
@@ -320,7 +320,7 @@ label.md-no-float {
   xborder-bottom: 1px solid #333;
   border-top-left-radius: 6px;
 }
-.tabs-header .tab-splitter {
+.tabs-header .tab-end-right {
   position: absolute;
   top: -3px;
   right: -12px;
@@ -369,3 +369,45 @@ label.md-no-float {
   overflow: hidden!important;
 }
 */
+
+.features-panel .close-button-container {
+  position: absolute;
+  top: -26px;
+  right: 0;
+  background-color: rgb(250, 250, 250);
+  border-right: 1px solid #333;
+  border-top: 2px solid #333;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+}
+.features-panel .close-button-container .close-button {
+  min-width: 30px;
+  width: 30px;
+  min-height: 24px;
+  height: 24px;
+  line-height: 20px;
+  margin: 0;
+  padding: 0 2px 0 0;
+}
+.features-panel .close-button-container .close-button:hover {
+  background-color: transparent;
+}
+.features-panel .close-button md-icon {
+  color: #333;
+  width: 20px;
+  height: 20px;
+}
+
+.tab-end-left {
+  position: absolute;
+  top: -2px;
+  left: -5px;
+  transform: skewX(-20deg);
+  border-top: 2px solid #333;
+  border-left: 2px solid #333;
+  width: 15px;
+  height: 100%;
+  border-top-left-radius: 5px;
+  background-color: rgb(250, 250, 250);
+  box-shadow: -3px 3px 3px 0 rgba(0, 0, 0, 0.15), -5px 0px 4px 0 rgba(0, 0, 0, 0.1), -4px -3px 3px -2px rgba(0, 0, 0, 0.08);
+}

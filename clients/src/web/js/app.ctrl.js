@@ -21,23 +21,6 @@
     };
     $scope.activeTool = {index:  1, deactivate: angular.noop};
     $scope.tools = [
-      // {
-      //   title: 'Zoom to max extent',
-      //   icon: 'zoom-max',
-      //   action: function() {
-      //     var map = projectProvider.map;
-      //     var pan = ol.animation.pan({
-      //       duration: 300,
-      //       source: map.getView().getCenter()
-      //     });
-      //     var zoom = ol.animation.zoom({
-      //       duration: 300,
-      //       resolution: map.getView().getResolution()
-      //     });
-      //     map.beforeRender(pan, zoom);
-      //     map.getView().fit(projectProvider.config.project_extent, map.getSize());
-      //   }
-      // }, 
       {
         name: 'identification',
         title: 'Identification',
@@ -179,6 +162,20 @@
         target: 'ol-mouse-position-container'
       });
       projectProvider.map.addControl(positionControl);
+    };
+
+    $scope.zoomToMaxExtent = function() {
+      var map = projectProvider.map;
+      var pan = ol.animation.pan({
+        duration: 300,
+        source: map.getView().getCenter()
+      });
+      var zoom = ol.animation.zoom({
+        duration: 300,
+        resolution: map.getView().getResolution()
+      });
+      map.beforeRender(pan, zoom);
+      map.getView().fit(projectProvider.config.project_extent, map.getSize());
     };
   };
 })();

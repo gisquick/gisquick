@@ -14,7 +14,7 @@
    id="svg4344"
    version="1.1"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="secondary_menu_icon.svg">
+   sodipodi:docname="north_arrow_icon.svg">
   <defs
      id="defs4346" />
   <sodipodi:namedview
@@ -24,9 +24,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="11.708333"
-     inkscape:cx="26.777931"
-     inkscape:cy="10.316105"
+     inkscape:zoom="10.988411"
+     inkscape:cx="12.83286"
+     inkscape:cy="3.3023888"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -63,36 +63,10 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(0,-1020.3622)">
-    <g
-       id="g3159"
-       transform="matrix(1.33325,0,0,1.3333333,0.001,-350.78734)">
-      <rect
-         style="fill:#1a1a1a;fill-opacity:1;stroke:none;display:inline"
-         id="rect5468"
-         width="4"
-         height="4"
-         x="-1042.3622"
-         y="10"
-         ry="0"
-         transform="matrix(0,-1,1,0,0,0)" />
-      <rect
-         transform="matrix(0,-1,1,0,0,0)"
-         ry="0"
-         y="10"
-         x="-1035.3622"
-         height="4"
-         width="4"
-         id="rect3128"
-         style="fill:#1a1a1a;fill-opacity:1;stroke:none;display:inline" />
-      <rect
-         transform="matrix(0,-1,1,0,0,0)"
-         ry="0"
-         y="10"
-         x="-1049.3622"
-         height="4"
-         width="4"
-         id="rect3130"
-         style="fill:#1a1a1a;fill-opacity:1;stroke:none;display:inline" />
-    </g>
+    <path
+       style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;color:#000000;fill:#1a1a1a;fill-opacity:1;stroke:none;stroke-width:1.98408389;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
+       d="M 16.020806,1020.3622 C 7.1710847,1020.3622 0,1027.5576 0,1036.3621 c 0,8.8046 7.1710847,16.0001 16.020806,16.0001 8.849721,0 15.979194,-7.1955 15.979194,-16.0001 0,-8.8045 -7.129473,-15.9999 -15.979194,-15.9999 z m 0,2.7153 c 7.290505,0 13.23277,5.8856 13.23277,13.2846 0,6.7042 -4.894511,12.1435 -11.235371,13.1175 l 0,-14.9556 5.576073,5.6815 2.704812,-2.6737 -8.905072,-9.107 -1.373212,-1.3785 -1.331599,1.3785 -8.9466842,9.107 2.7048114,2.6737 5.5760728,-5.6815 0,14.9975 c -6.3473469,-0.9625 -11.1937581,-6.4458 -11.1937581,-13.1594 0,-7.399 5.9006523,-13.2846 13.1911571,-13.2846 z"
+       id="path3772"
+       inkscape:connector-curvature="0" />
   </g>
 </svg>

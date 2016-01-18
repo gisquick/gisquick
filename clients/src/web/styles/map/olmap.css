@@ -3,25 +3,43 @@
   height: 100%;
 }
 
+.ol-control {
+  background-color: transparent;
+}
+
 .ol-control.ol-zoom {
   right: 5px;
   left: auto;
   top: auto;
-  bottom: 76px;
+  bottom: 80px;
 }
 
-.ol-zoom .ol-zoom-in {
-  margin-bottom: 5px;
-}
-
-.ol-zoom .ol-zoom-in,
 .ol-zoom .ol-zoom-out {
-  border-radius: 8px;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+.ol-zoom .ol-zoom-in {
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
 }
 
 .ol-attribution {
-  bottom: 35px;
-  right: 5px;
+  bottom: 0px;
+  right: 10px;
+  z-index: 55;
+  background-color: transparent;
+}
+.ol-control.ol-attribution button {
+  width: 24px;
+  height: 24px;
+  background-color: transparent;
+  color: #333;
+  box-shadow: none;
+  font-size: 30px;
+  font-weight: 500;
+}
+.ol-control.ol-attribution button:hover {
+  background-color: transparent;
 }
 
 .ol-control button {
@@ -29,8 +47,12 @@
   width: 36px;
   height: 36px;
   border-radius: 8px;
-  font-size: 28px;
+  font-size: 36px;
+  font-weight: 400;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+}
+.ol-control button:focus {
+  background-color: rgb(0, 170, 212);
 }
 .ol-control button:hover {
   background-color: #555;
@@ -50,10 +72,20 @@
   bottom: 5px;
   background-color: rgba(33, 33, 33, 0.8);
 }
-#ol-mouse-position-container {
-  xdisplay: inline-block;
-}
+
 .ol-mouse-position {
   display: inline-block;
   position: static;
+}
+
+.location-button {
+  position: absolute;
+  bottom: 155px;
+  right: 0px;
+}
+
+.zoom-to-max-button {
+  position: absolute;
+  bottom: 36px;
+  right: 0px;
 }

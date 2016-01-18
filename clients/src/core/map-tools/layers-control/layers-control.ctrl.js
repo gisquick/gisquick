@@ -43,6 +43,9 @@
             tool.opened = false;
           });
         }
+      },
+      deactivate: function() {
+        $mdBottomSheet.hide();
       }
     };
 

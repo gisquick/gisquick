@@ -3,7 +3,6 @@
     <md-button
       class="panel-tab selected"
       ng-show="$index===tool.layerIndex"
-      xng-class="{selected: $index===tool.layerIndex}"
       ng-repeat="layer in layers">
       <span ng-bind="layer.name"></span>
     </md-button>
@@ -11,7 +10,9 @@
   </div>
   <div class="close-button-container md-whiteframe-top">
     <div class="tab-end-left"></div>
-    <md-button class="close-button">
+    <md-button
+      class="close-button"
+      ng-click="tool.deactivate()">
       <md-icon md-svg-icon="circle-x-outline"></md-icon>
     </md-button>
   </div>

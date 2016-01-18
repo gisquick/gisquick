@@ -51,11 +51,12 @@
   font-weight: 400;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
 }
-.ol-control button:focus {
-  background-color: rgb(0, 170, 212);
-}
+
 .ol-control button:hover {
   background-color: #555;
+}
+.ol-control button:focus {
+  background-color: rgb(0, 170, 212);
 }
 
 #ol-scale-line-container {

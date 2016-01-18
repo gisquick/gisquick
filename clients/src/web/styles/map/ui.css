@@ -47,13 +47,13 @@ md-tabs-canvas {
   padding: 0;
 }
 
-.md-button.map-button:focus,
-.md-button.map-button.md-focused:not([disabled]) {
-  background-color: rgb(0, 170, 212);
-}
-
 .md-button.map-button:hover {
   background-color: #666!important;
+}
+
+.md-button.map-button:focus,
+.md-button.map-button.md-focused:not([disabled]) {
+  background-color: rgb(0, 170, 212)!important;
 }
 
 md-icon {

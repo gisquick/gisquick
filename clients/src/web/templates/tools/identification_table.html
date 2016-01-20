@@ -7,7 +7,8 @@
       ng-class="{selected: $index===tool.layerIndex}"
       ng-click="tool.layerIndex=$index"
       ng-repeat="layer in layers">
-      <span ng-bind="layer.name"></span>
+      {{ ::layer.name }}
+      <div class="tab-separator"></div>
     </md-button>
     <div class="tab-end-right"></div>
   </div>

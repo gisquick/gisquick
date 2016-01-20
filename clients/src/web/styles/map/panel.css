@@ -7,10 +7,6 @@
   border-bottom: 1px solid white;
 }
 
-.panel-bottom,
-.panel-top {
-  xtransition: 0.45s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
-}
 .no-anim .panel-top,
 .no-anim .panel-bottom {
   transition: none;
@@ -56,7 +52,7 @@
   position: absolute;
   width: 280px;
   height: 100%;
-  border-right: 1px solid #777;
+  border-right: 1px solid #aaa;
   z-index: 51;
   transition: 0.45s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
   background-color: white;
@@ -77,6 +73,7 @@
     line-height: 20px;
     margin: 0;
 }
+
 .md-subheader .md-button.md-icon-button {
   min-height: 0;
   width: 20px;
@@ -94,7 +91,47 @@
   font-size: 14px;
   font-weight: bold;
   margin-top: 3px;
-  background-color: #ddd;
+  xbackground-color: #ddd;
+  border-bottom: 1px solid #ccc;
   color: #555;
-  padding: 2px 3px 2px 3px;
+  padding: 6px 3px 4px 3px;
+}
+
+ {
+  background-color: rgba(0, 0, 0, 0.6);
+  height: 21px;
+}
+
+
+md-list.gl-tree {
+  padding: 0;
+}
+
+.secondary-tabs md-tabs-canvas,
+.secondary-tabs md-pagination-wrapper {
+  height: 40px;
+}
+.secondary-tabs md-tabs-canvas {
+  margin: 0 4px;
+}
+.secondary-tabs .md-tab {
+  background-color: #a0a0a0;
+  border: 1px solid #888;
+  margin: 8px 0;
+  line-height: 20px;
+  color: white;
+  font-size: 13.5px;
+}
+.secondary-tabs md-pagination-wrapper .md-tab:nth-child(1) {
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+}
+.secondary-tabs md-pagination-wrapper .md-tab:nth-last-child(-n+2) {
+  border-top-right-radius: 6px!important;
+  border-bottom-right-radius: 6px;
+}
+
+.secondary-tabs .md-tab.md-active {
+  background-color: rgb(0, 170, 212);
+  color: #fff;
 }

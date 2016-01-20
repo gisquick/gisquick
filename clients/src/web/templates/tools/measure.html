@@ -1,11 +1,20 @@
 <!-- <md-input-container> -->
-<div class="panel-tool measure-panel">
-  <md-tabs md-stretch-tabs="always" md-dynamic-height="true">
+<div
+  class="panel-tool measure-panel"
+  ng-if="::project">
+  <md-tabs
+    md-no-ink
+    md-stretch-tabs="always"
+    md-center-tabs="true"
+    md-dynamic-height="true"
+    class="text-icon-tabs tabs-3">
     <md-tab>
       <md-tab-label>
         <md-icon
           md-svg-icon="point">
         </md-icon>
+        <label>Coordinates</label>
+        <div class="tab-separator"></div>
       </md-tab-label>
       <md-tab-body>
         <div class="measure-form">
@@ -21,9 +30,16 @@
         <md-icon
           md-svg-icon="line">
         </md-icon>
+        <label>Length</label>
+        <div class="tab-separator"></div>
       </md-tab-label>
       <md-tab-body>
-        <p>Line form</p>
+        <div class="measure-form">
+          <label>Last segment</label>
+          <div class="field .md-whiteframe-1dp"></div>
+          <label>Total length</label>
+          <div class="field .md-whiteframe-1dp"></div>
+        </div>
       </md-tab-body>
     </md-tab>
     <md-tab>
@@ -31,9 +47,15 @@
         <md-icon
           md-svg-icon="polygon">
         </md-icon>
+        <label>Area</label>
       </md-tab-label>
       <md-tab-body>
-        <p>Polygon form</p>
+        <div class="measure-form">
+          <label>Area</label>
+          <div class="field .md-whiteframe-1dp"></div>
+          <label>Perimeter</label>
+          <div class="field .md-whiteframe-1dp"></div>
+        </div>
       </md-tab-body>
     </md-tab>
   </md-tabs>

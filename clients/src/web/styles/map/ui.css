@@ -63,13 +63,49 @@ md-icon {
 .gl-tree md-icon {
   color: #444;
 }
+/*
+.md-tab:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+  border-radius: 2px;
+}
+*/
 
-md-tab-item md-icon {
+.text-icon-tabs .md-tab md-icon {
   color: #777;
+  width: 20px;
+  height: 20px;
+  padding-top: 2px;
 }
 
-md-tab-item.md-tab.md-active md-icon {
+.text-icon-tabs md-tabs-canvas,
+.text-icon-tabs md-pagination-wrapper {
+  height: 43px;
+}
+.text-icon-tabs .md-tab {
+  padding: 0;
+}
+
+.tabs-3 .md-tab {
+  flex: 1 1 33%;
+}
+
+.text-icon-tabs .md-tab.md-active label,
+.text-icon-tabs .md-tab.md-active md-icon {
   color: rgb(0, 170, 212);
+}
+.text-icon-tabs .md-tab label {
+  display: block;
+  font-size: 12px;
+  font-weight: normal;
+}
+
+.tab-separator {
+  position: absolute;
+  background-color: #ddd;
+  width: 1px;
+  height: 60%;
+  top: 20%;
+  right: 0;
 }
 
 .identification-panel md-select {
@@ -165,10 +201,6 @@ md-tabs-canvas, md-pagination-wrapper {
   line-height: 18px;
 }
 
-md-tabs-content-wrapper {
-  top: 38px;
-}
-
 md-backdrop.md-bottom-sheet-backdrop {
   display: none;
   overflow: hidden;
@@ -201,6 +233,8 @@ md-list-item .md-list-item-inner > md-checkbox:first-child {
 .gl-tree md-list-item,
 .gl-tree md-list-item.md-no-proxy {
     padding: 0 5px;
+    padding: 0;
+    xmargin: 0 5px;
 }
 .gl-tree md-list-item .md-no-style {
   padding: 0;
@@ -210,35 +244,39 @@ md-list-item .md-list-item-inner > md-checkbox:first-child {
     margin-right: 0px;
 }
 
-md-list-item .md-button.md-icon-button {
+.gl-tree md-list-item .md-list-item-inner {
+  xborder-bottom: 1px solid #ddd;
+}
+
+.gl-tree-leaf {
+  xborder-bottom: 1px solid #ddd;
+  margin: 0 5px;
+}
+
+md-list-item .md-button.list-item-button {
   right: 0;
   width: 26px;
   height: 26px;
+  min-width: 26px;
   min-height: 26px;
   line-height: 26px;
   margin: 0;
   padding: 0;
+  color: #555;
 }
-md-list-item .md-icon-button md-icon {
+md-list-item .list-item-button md-icon {
   width: 12px;
   height: 12px;
+  xcolor: #555;
 }
 
 md-list-item .toggle-button {
-  max-width: 28px;
-  min-width: 28px;
-  min-height: 26px;
-  max-height: 26px;
   line-height: 26px;
-  margin: 0;
-  padding: 0;
-  margin-left: -9px;
+  font-size: 18px;
+  font-weight: 400;
+  font-family: monospace;
 }
 
-.toggle-button md-icon {
-  width: 12px;
-  height: 12px;
-}
 md-icon.md-secondary,
 .md-secondary-container md-icon {
   width: 12px;
@@ -252,38 +290,62 @@ md-icon.md-secondary,
 
 .gl-tree-group > md-list-item {
   font-weight: bold;
-  xborder-top: 1px solid #ccc;
+  border-top: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
+  background-color: #e5e5e5;
+  padding: 0 5px;
 }
 
+.gl-tree-group > md-list-item p {
+  xtext-align: center;
+}
+
+.gl-tree-leaf > md-list-item {
+  border-bottom: 1px solid #ddd;
+}
+
+.gl-tree-group[depth="1"] md-checkbox.md-default-theme.md-primary.md-checked:not([disabled]),
+.gl-tree-group[depth="1"] md-checkbox.md-primary.md-checked:not([disabled]) .md-icon,
+.gl-tree-leaf[depth="2"] md-checkbox.md-default-theme.md-primary.md-checked:not([disabled]),
+.gl-tree-leaf[depth="2"] md-checkbox.md-primary.md-checked:not([disabled]) .md-icon {
+  background-color: #555;
+}
+/*
+.gl-tree-group[depth="2"] md-checkbox.md-default-theme.md-primary.md-checked:not([disabled]),
+.gl-tree-group[depth="2"] md-checkbox.md-primary.md-checked:not([disabled]) .md-icon,
+.gl-tree-leaf[depth="3"] md-checkbox.md-default-theme.md-primary.md-checked:not([disabled]),
+.gl-tree-leaf[depth="3"] md-checkbox.md-primary.md-checked:not([disabled]) .md-icon {
+  background-color: #733;
+}
+*/
+
+
 .gl-tree md-list-item, .gl-tree md-list-item .md-list-item-inner {
-  min-height: 26px;
-  max-height: 26px;
+  min-height: 30px;
+  max-height: 30px;
 }
 md-list-item p {
   font-size: 14px;
 }
 
-
 .gl-tree-leaf[depth="1"] .layer-metadata {
-  padding-left: 12px;
+  padding-left: 10px;
 }
-
 .gl-tree-group[depth="2"] md-list-item .indent,
-.gl-tree-leaf[depth="2"] md-list-item .indent {
-  padding-left: 12px;
+.gl-tree-leaf[depth="3"] md-list-item .indent {
+  padding-left: 10px;
 }
 .gl-tree-leaf[depth="2"] .layer-metadata {
-  padding-left: 34px;
+  padding-left: 10px;
 }
 
 .gl-tree-group[depth="3"] md-list-item .indent,
-.gl-tree-leaf[depth="3"] md-list-item .indent {
-  padding-left: 40px;
+.gl-tree-leaf[depth="4"] md-list-item .indent {
+  padding-left: 20px;
 }
 
 .gl-tree-leaf[depth="3"] .layer-metadata {
-  padding-left: 55px;
+  padding-left: 20px;
 }
 
 .layer-metadata {
@@ -424,7 +486,6 @@ md-tabs > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item
 
 md-tabs > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-ink-bar {
   background-color: rgb(0, 170, 212);
-  xbackground-color: #333;
 }
 
 .full-height {

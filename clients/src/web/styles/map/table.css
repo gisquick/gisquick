@@ -295,13 +295,14 @@ label.md-no-float {
   height: 26px;
   margin: 0;
   text-transform: none;
-  line-height: 16px;
+  line-height: 20px;
   position: relative;
   font-size: 13px;
   overflow: visible;
-
+  font-weight: 500;
+  display: inline-block;
 }
-.tabs-header .panel-tab:hover {
+.tabs-header .md-button.panel-tab:hover {
   background-color: transparent;
 }
 .tabs-header .panel-tab.selected {
@@ -372,7 +373,7 @@ label.md-no-float {
 
 .features-panel .close-button-container {
   position: absolute;
-  top: -26px;
+  top: -22px;
   right: 0;
   background-color: rgb(250, 250, 250);
   border-right: 1px solid #333;
@@ -383,19 +384,21 @@ label.md-no-float {
 .features-panel .close-button-container .close-button {
   min-width: 30px;
   width: 30px;
-  min-height: 24px;
-  height: 24px;
-  line-height: 20px;
+  min-height: 18px;
+  height: 18px;
+  line-height: 18px;
   margin: 0;
   padding: 0 2px 0 0;
+  vertical-align: top;
 }
 .features-panel .close-button-container .close-button:hover {
   background-color: transparent;
 }
+
 .features-panel .close-button md-icon {
   color: #333;
-  width: 20px;
-  height: 20px;
+  width: 17px;
+  height: 17px;
 }
 
 .tab-end-left {

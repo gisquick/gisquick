@@ -5,11 +5,11 @@
   width: 100%;
   min-height: 32px;
   background-color: #dfdfdf;
-  border-top: 1px solid #777;
+  border-top: 1px solid #aaa;
 }
 
 .status-bar-content {
-  border-left: 1px solid #777;
+  border-left: 1px solid #aaa;
   line-height: 30px;
   font-size: 13.5px;
   color: #333;

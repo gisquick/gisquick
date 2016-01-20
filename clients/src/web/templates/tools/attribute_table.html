@@ -1,11 +1,9 @@
 <md-bottom-sheet class="features-panel md-whiteframe-top">
   <div class="tabs-header md-whiteframe-top">
-    <md-button
-      class="panel-tab selected"
-      ng-show="$index===tool.layerIndex"
-      ng-repeat="layer in layers">
-      <span ng-bind="layer.name"></span>
-    </md-button>
+    <span
+      class="panel-tab selected">
+      {{ layers[tool.layerIndex].name }}
+    </span>
     <div class="tab-end-right"></div>
   </div>
   <div class="close-button-container md-whiteframe-top">

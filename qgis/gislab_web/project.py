@@ -580,9 +580,11 @@ class ProjectPage(WizardPage):
             
             self._update_min_max_scales(resolutions)
 
-            if index > 0 and len(dialog.bing_apikey.text()) < 1:
-                self._show_messages([(MSG_ERROR,
-                                      u"Bing ApiKey must be defined.")])
+            msg = u"Bing ApiKey must be defined."
+            if index == 0:
+                self._remove_messages([(MSG_ERROR, msg)])
+            elif len(dialog.bing_apikey.text()) < 1:
+                self._show_messages([(MSG_ERROR, msg)])
         
         dialog.blank.toggled.connect(blank_toggled)
         dialog.osm.toggled.connect(osm_toggled)

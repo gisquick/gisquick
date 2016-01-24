@@ -46,56 +46,52 @@ DEFAULT_PROJECT_SCALES = (
         500
 )
 
-osm_resolutions = to_decimal_array(
+layer_resolutions = to_decimal_array(
     """156543.03390625,78271.516953125,39135.7584765625,19567.87923828125,9783.939619140625,
     4891.9698095703125,2445.9849047851562,1222.9924523925781,611.4962261962891,305.74811309814453,
     152.87405654907226,76.43702827453613,38.218514137268066,19.109257068634033,9.554628534317017,
     4.777314267158508,2.388657133579254,1.194328566789627,0.5971642833948135"""
 )
+layer_extent = [-16319611.284727, -5615981.3413867, 16319611.284727, 5615981.3413867]
 OSM_LAYER = {
     'name': 'OSM',
     'type': 'OSM',
-    'title': 'Open Street Map',
-    'resolutions': osm_resolutions,
-    'extent': [-16319611.284727, -5615981.3413867, 16319611.284727, 5615981.3413867]
+    'title': 'OpenStreetMap',
+    'resolutions': layer_resolutions,
+    'extent': layer_extent
 }
-
-google_resolutions = to_decimal_array(
-    """156543.03390625,78271.516953125,39135.7584765625,19567.87923828125,
-    9783.939619140625,4891.9698095703125,2445.9849047851562,1222.9924523925781,
-    611.4962261962891,305.74811309814453,152.87405654907226,76.43702827453613,
-    38.218514137268066,19.109257068634033,9.554628534317017,4.777314267158508"""
-)
-google_extent = [-16319611.284727, -5615981.3413867, 16319611.284727, 5615981.3413867]
-GOOGLE_LAYERS = (
+MAPBOX_LAYER = {
+    'name': 'MAPBOX',
+    'type': 'MapBox',
+    'title': 'MapBox',
+    'resolutions': layer_resolutions,
+    'extent': layer_extent
+}
+BING_LAYERS = (
     {
-        'name': 'GROADMAP',
-        'type': 'google',
-        'title': 'Google Roadmap',
-        'resolutions': google_resolutions,
-        'extent': google_extent
+    'name': 'BINGROAD',
+    'type': 'Bing',
+    'title': 'Bing Road',
+    'style': 'Road',
+    'resolutions': layer_resolutions,
+    'extent': layer_extent
     },
     {
-        'name': 'GHYBRID',
-        'type': 'google',
-        'title': 'Google Hybrid',
-        'resolutions': google_resolutions,
-        'extent': google_extent
+    'name': 'BINGAERIAL',
+    'type': 'bing',
+    'title': 'Bing Aerial',
+    'style': 'Aerial',
+    'resolutions': layer_resolutions,
+    'extent': layer_extent
     },
     {
-        'name': 'GSATELLITE',
-        'type': 'google',
-        'title': 'Google Satellite',
-        'resolutions': google_resolutions,
-        'extent': google_extent
-    },
-    {
-        'name': 'GTERRAIN',
-        'type': 'google',
-        'title': 'Google Terrain',
-        'resolutions': google_resolutions,
-        'extent': google_extent
-    },
+    'name': 'BINGAERIALWL',
+    'type': 'bing',
+    'title': 'Bing Aerial with Labels',
+    'style': 'AerialWithLabels',
+    'resolutions': layer_resolutions,
+    'extent': layer_extent
+    }
 )
 
 MSG_ERROR = "Error"
@@ -105,27 +101,59 @@ MSG_WARNING = "Warning"
 class ProjectPage(WizardPage):
 
     def _show_messages(self, messages):
-        """Display messages in dialog window.
+        """Display messages in dialog window (do not ignore existing content if available).
+
+        Args:
+            messages (List[Tuple[str, str]]): list of messages (composed of message type and text)
+        """
+        if not hasattr(self, "_num_errors"):
+            self._num_errors = 0
+        
+        dialog = self.dialog
+        table = dialog.info_table
+        if messages:
+            dialog.errors_group.setVisible(True)
+            red = QColor.fromRgb(255, 0, 0)
+            orange = QColor("#FF7F2A")
+            for index, message in enumerate(messages):
+                row_index = table.rowCount()
+                msg_type, msg_text = message
+                if len(table.findItems(msg_text, Qt.MatchExactly)) < 1:
+                    table.setRowCount(table.rowCount()+1)
+                    item = QTableWidgetItem(msg_type)
+                    if msg_type == MSG_ERROR:
+                        item.setForeground(red)
+                        self._num_errors +=1
+                    else:
+                        item.setForeground(orange)
+                    dialog.info_table.setItem(row_index, 0, item)
+                    dialog.info_table.setItem(row_index, 1, QTableWidgetItem(msg_text))
+        else:
+            dialog.errors_group.setVisible(False)
+
+        if self._num_errors > 0:
+            dialog.button(QWizard.NextButton).setEnabled(False)
+
+    def _remove_messages(self, messages):
+        """Remove messages from dialog window
 
         Args:
             messages (List[Tuple[str, str]]): list of messages (composed of message type and text)
         """
         dialog = self.dialog
         table = dialog.info_table
-        if messages:
-            dialog.errors_group.setVisible(True)
-            rowCount = len(messages)
-            table.setRowCount(rowCount)
-            red = QColor.fromRgb(255, 0, 0)
-            orange = QColor("#FF7F2A")
-            for row_index, message in enumerate(messages):
-                msg_type, msg_text = message
-                item = QTableWidgetItem(msg_type)
-                item.setForeground(red if msg_type == MSG_ERROR else orange)
-                dialog.info_table.setItem(row_index, 0, item)
-                dialog.info_table.setItem(row_index, 1, QTableWidgetItem(msg_text))
-        else:
-            dialog.errors_group.setVisible(False)
+        if not messages:
+            return
+            
+        for index, message in enumerate(messages):
+            msg_type, msg_text = message
+            for item in table.findItems(msg_text, Qt.MatchExactly):
+                table.removeRow(table.row(item))
+                if msg_type == MSG_ERROR:
+                    self._num_errors -= 1
+
+        if self._num_errors < 1:
+            dialog.button(QWizard.NextButton).setEnabled(True)
 
     def is_project_valid(self):
         """Checks whether all conditions for publishing project is satisfied
@@ -182,12 +210,12 @@ class ProjectPage(WizardPage):
 
         min_resolution = self.dialog.min_scale.itemData(self.dialog.min_scale.currentIndex())
         max_resolution = self.dialog.max_scale.itemData(self.dialog.max_scale.currentIndex())
+        msg = u"Invalid map scales range."
         if min_resolution > max_resolution:
-            messages.append((
-                MSG_ERROR,
-                u"Invalid map scales range."
-            ))
-
+            messages.append((MSG_ERROR, msg))
+        else:
+            self._remove_messages([(MSG_ERROR, msg)])
+        
         def publish_resolutions(resolutions, min_resolution=min_resolution, max_resolution=max_resolution):
             return filter(
                 lambda res: res >= min_resolution and res <= max_resolution,
@@ -243,7 +271,8 @@ class ProjectPage(WizardPage):
                     "QGIS project directory. ".format(file_datasource)
                 ))
 
-        self._show_messages(messages)
+        if messages:
+            self._show_messages(messages)
         return len(filter(lambda msg: msg[0] == MSG_ERROR, messages)) == 0
 
     def validate(self):
@@ -313,15 +342,26 @@ class ProjectPage(WizardPage):
 
         if metadata.get('base_layers'):
             for base_layer in extract_layers(metadata['base_layers']):
-                if base_layer['type'] == 'BLANK':
+                if base_layer['type'] == 'Blank':
                     dialog.blank.setChecked(True)
                 elif base_layer['type'] == 'OSM':
                     dialog.osm.setChecked(True)
-                elif base_layer['type'] == 'google':
-                    for index, glayer in enumerate(GOOGLE_LAYERS, 1):
+                elif base_layer['type'] == 'MapBox':
+                    dialog.mapbox.setChecked(True)
+                    if 'mapid' in base_layer:
+                        index = dialog.mapbox_mapid.findText(base_layer['mapid'])
+                        if index >= 0:
+                            dialog.mapbox_mapid.setCurrentIndex(index)
+                    if 'apikey' in base_layer:
+                        dialog.mapbox_apikey.setText(base_layer['apikey'])
+                elif base_layer['type'] == 'Bing':
+                    for index, glayer in enumerate(BING_LAYERS, 1):
                         if glayer['name'] == base_layer['name']:
-                            dialog.google.setCurrentIndex(index);
+                            dialog.bing.setCurrentIndex(index)
                             break
+                    if 'apikey' in base_layer:
+                        dialog.bing_apikey.setText(base_layer['apikey'])
+
                 if base_layer['visible']:
                     dialog.default_baselayer.setCurrentIndex(
                         dialog.default_baselayer.findData(base_layer['name'])
@@ -399,6 +439,7 @@ class ProjectPage(WizardPage):
         for scale, resolution in zip(scales, resolutions):
             dialog.min_scale.addItem('1:{0}'.format(scale), Decimal(resolution))
             dialog.max_scale.addItem('1:{0}'.format(scale), Decimal(resolution))
+
         if old_min_resolution:
             for index, res in enumerate(resolutions):
                 if res <= old_min_resolution:
@@ -440,7 +481,7 @@ class ProjectPage(WizardPage):
 
         def blank_toggled(checked):
             if checked:
-                dialog.default_baselayer.insertItem(0, 'Blank', 'BLANK')
+                dialog.default_baselayer.insertItem(0, 'Blank', 'Blank')
             else:
                 dialog.default_baselayer.removeItem(0)
 
@@ -452,40 +493,104 @@ class ProjectPage(WizardPage):
                 resolutions.update(OSM_LAYER['resolutions'])
             else:
                 dialog.default_baselayer.removeItem(position)
-
-            if dialog.google.currentIndex() > 0:
-                resolutions.update(GOOGLE_LAYERS[0]['resolutions'])
+            if dialog.mapbox.isChecked():
+                resolutions.update(MAPBOX_LAYER['resolutions'])
+            if dialog.bing.currentIndex() > 0:
+                resolutions.update(BING_LAYERS[0]['resolutions'])
+            
             self._update_min_max_scales(resolutions)
 
-        def google_layer_changed(index, project_resolutions=resolutions):
+        def mapbox_toggled(checked, project_resolutions=resolutions):
             resolutions = set(project_resolutions)
+
+            dialog.mapbox_mapid.setEnabled(checked)
+            dialog.mapbox_apikey.setEnabled(checked)
+            
             position = 1 if dialog.blank.isChecked() else 0
             if dialog.osm.isChecked():
                 position += 1
                 resolutions.update(OSM_LAYER['resolutions'])
-
-            google_layers = [dialog.google.itemText(i) for i in range(1, 5)]
-            contains_google_layer = dialog.default_baselayer.itemText(position) in google_layers
-            if index > 0:
-                google_layer = GOOGLE_LAYERS[index-1]
-                if contains_google_layer:
-                    dialog.default_baselayer.setItemText(position, dialog.google.currentText())
-                    dialog.default_baselayer.setItemData(position, google_layer['name'])
-                else:
-                    dialog.default_baselayer.insertItem(
-                        position,
-                        dialog.google.currentText(),
-                        google_layer['name']
-                    )
-                resolutions.update(google_layer['resolutions'])
-            elif contains_google_layer:
+            if checked:
+                dialog.default_baselayer.insertItem(position, MAPBOX_LAYER['title'], MAPBOX_LAYER['name'])
+                resolutions.update(MAPBOX_LAYER['resolutions'])
+            else:
                 dialog.default_baselayer.removeItem(position)
+            if dialog.bing.currentIndex() > 0:
+                resolutions.update(BING_LAYERS[0]['resolutions'])
+            
             self._update_min_max_scales(resolutions)
 
+            if checked:
+                check_mapbox_apikey(dialog.mapbox_apikey.text())
+            else:
+                check_mapbox_apikey(None)
+                
+        def mapbox_apikey_changed(text):
+            check_mapbox_apikey(text)
+
+        def check_mapbox_apikey(text):
+            msg_missing = u"MapBox ApiKey must be defined."
+            msg_invalid = u"Invalid MapBox ApiKey (should start with 'pk.' or 'sk.')."
+            if text is None:
+                self._remove_messages([(MSG_ERROR, msg_missing)])
+            elif len(text) > 0:
+                if text.startswith('pk.') or text.startswith('sk.'):
+                    self._remove_messages([(MSG_ERROR, msg_invalid)])
+                    self._remove_messages([(MSG_ERROR, msg_missing)])
+                else:
+                    self._show_messages([(MSG_ERROR, msg_invalid)])
+            else:
+                self._remove_messages([(MSG_ERROR, msg_invalid)])
+                self._show_messages([(MSG_ERROR, msg_missing)])
+
+        def bing_apikey_changed(text):
+            msg = u"Bing ApiKey must be defined."
+            if len(text) > 0:
+                self._remove_messages([(MSG_ERROR, msg)])
+            else:
+                self._show_messages([(MSG_ERROR, msg)])
+
+        def bing_layer_changed(index, project_resolutions=resolutions):
+            resolutions = set(project_resolutions)
+
+            dialog.bing_apikey.setEnabled(index > 0)
+
+            position = 1 if dialog.blank.isChecked() else 0
+            if dialog.osm.isChecked():
+                position += 1
+                resolutions.update(OSM_LAYER['resolutions'])
+            if dialog.mapbox.isChecked():
+                position += 1
+                resolutions.update(MAPBOX_LAYER['resolutions'])
+            
+            bing_layers = [dialog.bing.itemText(i) for i in range(1, len(BING_LAYERS)+1)]
+            contains_bing_layer = dialog.default_baselayer.itemText(position) in bing_layers
+            if index > 0:
+                bing_layer = BING_LAYERS[index-1]
+                if contains_bing_layer:
+                    dialog.default_baselayer.setItemText(position, dialog.bing.currentText())
+                    dialog.default_baselayer.setItemData(position, bing_layer['name'])
+                else:
+                    dialog.default_baselayer.insertItem(position, dialog.bing.currentText(),
+                                                        bing_layer['name'])
+                resolutions.update(bing_layer['resolutions'])
+                
+            elif contains_bing_layer:
+                dialog.default_baselayer.removeItem(position)
+            
+            self._update_min_max_scales(resolutions)
+
+            if index > 0 and len(dialog.bing_apikey.text()) < 1:
+                self._show_messages([(MSG_ERROR,
+                                      u"Bing ApiKey must be defined.")])
+        
         dialog.blank.toggled.connect(blank_toggled)
         dialog.osm.toggled.connect(osm_toggled)
-        dialog.google.currentIndexChanged.connect(google_layer_changed)
-
+        dialog.mapbox.toggled.connect(mapbox_toggled)
+        dialog.mapbox_apikey.textChanged.connect(mapbox_apikey_changed)
+        dialog.bing.currentIndexChanged.connect(bing_layer_changed)
+        dialog.bing_apikey.textChanged.connect(bing_apikey_changed)
+        
         def scales_changed(index):
             self.is_page_config_valid()
         dialog.min_scale.currentIndexChanged.connect(scales_changed)
@@ -497,7 +602,8 @@ class ProjectPage(WizardPage):
             map_settings = map_canvas.mapRenderer()
         projection = map_settings.destinationCrs().authid()
         dialog.osm.setEnabled(projection == 'EPSG:3857')
-        dialog.google.setEnabled(projection == 'EPSG:3857')
+        dialog.mapbox.setEnabled(projection == 'EPSG:3857')
+        dialog.bing.setEnabled(projection == 'EPSG:3857')
 
         dialog.extent_layer.addItem(
             "All layers",
@@ -720,12 +826,14 @@ class ProjectPage(WizardPage):
 
         special_base_layers = []
         if dialog.blank.isChecked():
-            special_base_layers.append({'title': 'Blank', 'name': 'BLANK', 'type': 'BLANK'})
+            special_base_layers.append({'title': 'Blank', 'name': 'BLANK', 'type': 'Blank'})
         if metadata['projection']['code'].upper() == 'EPSG:3857':
             if dialog.osm.isChecked():
                 special_base_layers.append(dict(OSM_LAYER))
-            if dialog.google.currentIndex() > 0:
-                special_base_layers.append(dict(GOOGLE_LAYERS[dialog.google.currentIndex()-1]))
+            if dialog.mapbox.isChecked():
+                special_base_layers.append(dict(MAPBOX_LAYER))
+            if dialog.bing.currentIndex() > 0:
+                special_base_layers.append(dict(BING_LAYERS[dialog.bing.currentIndex()-1]))
 
         min_resolution = self.dialog.min_scale.itemData(self.dialog.min_scale.currentIndex())
         max_resolution = self.dialog.max_scale.itemData(self.dialog.max_scale.currentIndex())
@@ -857,6 +965,17 @@ class ProjectPage(WizardPage):
 
             if 'extent' not in special_base_layer:
                 special_base_layer['extent'] = metadata['extent']
+
+            if special_base_layer['name'] == 'MAPBOX':
+                mapid = special_base_layer['mapid'] = dialog.mapbox_mapid.currentText()
+                special_base_layer['apikey'] = dialog.mapbox_apikey.text()
+                if mapid.startswith('mapbox.'):
+                    prefix, title = mapid.split('.', 1)
+                    title = ' '.join(map(lambda x: x.title(), title.split('-')))
+                    special_base_layer['title'] += ' {}'.format(title)
+            elif special_base_layer['name'].startswith('BING'):
+                special_base_layer['apikey'] = dialog.mapbox_apikey.text()
+
             base_layers_metadata['layers'].insert(0, special_base_layer)
 
         metadata['base_layers'] = base_layers_metadata.get('layers')

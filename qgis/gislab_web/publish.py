@@ -164,8 +164,20 @@ class PublishPage(WizardPage):
                         <ul>
                             <li><label>Extent:</label> {1}</li>
                             <li><label>Visible scales:</label> {2}</li>
-                            <li><label>Visible resolutions:</label> {3}</li>
-                        </ul>""".format(*template_data)
+                            <li><label>Visible resolutions:</label> {3}</li>"""
+                    if layer_data['name'] == 'MAPBOX':
+                        layer_summary += u"""
+                            <li><label>MapId:</label> {4}</li>
+                            <li><label>ApiKey:</label> {5}</li>"""
+                        template_data.append(layer_data['mapid'])
+                        template_data.append(layer_data['apikey'])
+                    elif layer_data['name'].startswith('BING'):
+                        layer_summary += u"""
+                            <li><label>ApiKey:</label> {4}</li>"""
+                        template_data.append(layer_data['apikey'])
+                    layer_summary += u"""
+                        </ul>"""
+                    layer_summary = layer_summary.format(*template_data)
                 base_layers_summary.append(layer_summary)
 
         for layer_data in metadata['base_layers']:

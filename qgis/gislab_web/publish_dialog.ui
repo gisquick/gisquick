@@ -45,15 +45,15 @@
        </sizepolicy>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
-      <widget class="QWidget" name="tab">
+      <widget class="QWidget" name="tab_baselayer">
        <attribute name="title">
         <string>Base layer</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_6">
         <item>
-         <widget class="QGroupBox" name="groupBox">
+         <widget class="QGroupBox" name="groupBox_baselayer">
           <property name="font">
            <font>
             <pointsize>10</pointsize>
@@ -78,6 +78,12 @@ QGroupBox::title {
           <property name="title">
            <string/>
           </property>
+          <property name="flat">
+           <bool>false</bool>
+          </property>
+          <property name="checkable">
+           <bool>false</bool>
+          </property>
           <layout class="QFormLayout" name="formLayout">
            <property name="fieldGrowthPolicy">
             <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
@@ -95,10 +101,20 @@ QGroupBox::title {
              </property>
             </widget>
            </item>
+           <item row="0" column="1">
+            <widget class="QCheckBox" name="blank">
+             <property name="enabled">
+              <bool>true</bool>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
            <item row="1" column="0">
             <widget class="QLabel" name="label_osm">
              <property name="text">
-              <string>Open Street Map</string>
+              <string>OpenStreetMap</string>
              </property>
             </widget>
            </item>
@@ -110,14 +126,132 @@ QGroupBox::title {
             </widget>
            </item>
            <item row="2" column="0">
-            <widget class="QLabel" name="label_google">
+            <widget class="QLabel" name="label_mapbox">
              <property name="text">
-              <string>Google Map</string>
+              <string>MapBox</string>
              </property>
             </widget>
            </item>
            <item row="2" column="1">
-            <widget class="QComboBox" name="google">
+            <widget class="QCheckBox" name="mapbox">
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0">
+            <widget class="QLabel" name="label_mapbox_mapid">
+             <property name="text">
+              <string>MapBox MapId</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1">
+            <widget class="QComboBox" name="mapbox_mapid">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="editable">
+              <bool>true</bool>
+             </property>
+             <item>
+              <property name="text">
+               <string>mapbox.streets</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>mapbox.light</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>mapbox.dark</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>mapbox.satellite</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>mapbox.streets-satellite</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>mapbox.wheatpaste</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>mapbox.streets-basic</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>mapbox.comic</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>mapbox.outdoors</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>mapbox.run-bike-hike</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>mapbox.pencil</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>mapbox.pirates</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>mapbox.emerald</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>mapbox.high-contrast</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="4" column="0">
+            <widget class="QLabel" name="label_mapbox_apikey">
+             <property name="text">
+              <string>MapBox ApiKey</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="1">
+            <widget class="QLineEdit" name="mapbox_apikey">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="0">
+            <widget class="QLabel" name="label_bing">
+             <property name="text">
+              <string>BingMaps</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="1">
+            <widget class="QComboBox" name="bing">
              <item>
               <property name="text">
                <string>------------</string>
@@ -125,75 +259,82 @@ QGroupBox::title {
              </item>
              <item>
               <property name="text">
-               <string>Roadmap</string>
+               <string>Road</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>Hybrid</string>
+               <string>Aerial</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>Satellite</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>Terrain</string>
+               <string>Aerial with Labels</string>
               </property>
              </item>
             </widget>
            </item>
-           <item row="0" column="1">
-            <widget class="QCheckBox" name="blank">
+           <item row="6" column="0">
+            <widget class="QLabel" name="label_bing_apikey">
              <property name="text">
-              <string/>
+              <string>BingMaps ApiKey</string>
              </property>
             </widget>
            </item>
-           <item row="3" column="0" colspan="2">
-            <widget class="QLabel" name="label_2">
-             <property name="font">
-              <font>
-               <family>Sans Serif</family>
-               <pointsize>9</pointsize>
-               <italic>true</italic>
-              </font>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QLabel { 
-    margin: 0 0px;
-    padding: 2 8 8 0;
- }</string>
-             </property>
-             <property name="text">
-              <string>Open Street Map and Google Maps are available only in WGS 84 / Pseudo Mercator EPSG:3857</string>
+           <item row="6" column="1">
+            <widget class="QLineEdit" name="bing_apikey">
+             <property name="enabled">
+              <bool>false</bool>
              </property>
             </widget>
            </item>
-           <item row="4" column="0">
-            <widget class="QLabel" name="label_5">
+           <item row="8" column="0">
+            <widget class="QLabel" name="label_default_baselayer">
              <property name="text">
               <string>Default layer</string>
              </property>
             </widget>
            </item>
-           <item row="4" column="1">
+           <item row="8" column="1">
             <widget class="QComboBox" name="default_baselayer"/>
+           </item>
+           <item row="9" column="0" colspan="2">
+            <widget class="QLabel" name="info">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="font">
+              <font>
+               <italic>true</italic>
+              </font>
+             </property>
+             <property name="text">
+              <string>Note: OpenSreetMap, MapBox and Bing are available only in WGS 84 / Pseudo Mercator EPSG:3857</string>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="0" colspan="2">
+            <widget class="Line" name="line">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
            </item>
           </layout>
          </widget>
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="tab_3">
+      <widget class="QWidget" name="tab_layers">
        <attribute name="title">
         <string>Layers</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_9">
         <item>
-         <widget class="QGroupBox" name="groupBox_5">
+         <widget class="QGroupBox" name="groupBox_layers">
           <property name="styleSheet">
            <string notr="true">QGroupBox { 
     border: 0px solid gray; 
@@ -259,7 +400,7 @@ QGroupBox::title {
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="tab_2">
+      <widget class="QWidget" name="tab_project">
        <attribute name="title">
         <string>Project</string>
        </attribute>
@@ -293,8 +434,8 @@ QScrollArea &gt; QWidget &gt; QWidget#scrollAreaWidgetContent {
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>727</width>
-             <height>530</height>
+             <width>728</width>
+             <height>486</height>
             </rect>
            </property>
            <property name="styleSheet">
@@ -928,8 +1069,8 @@ QGroupBox::title {
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>98</width>
-         <height>28</height>
+         <width>66</width>
+         <height>16</height>
         </rect>
        </property>
       </widget>
@@ -1020,7 +1161,7 @@ QGroupBox::title {
   <customwidget>
    <class>QWebView</class>
    <extends>QWidget</extends>
-   <header>QtWebKit/QWebView</header>
+   <header>QtWebKitWidgets/QWebView</header>
   </customwidget>
  </customwidgets>
  <resources/>

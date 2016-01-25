@@ -71,23 +71,23 @@ BING_LAYERS = (
     {
     'name': 'BINGROAD',
     'type': 'Bing',
-    'title': 'Bing Road',
+    'title': 'BingMaps Road',
     'style': 'Road',
     'resolutions': layer_resolutions,
     'extent': layer_extent
     },
     {
     'name': 'BINGAERIAL',
-    'type': 'bing',
-    'title': 'Bing Aerial',
+    'type': 'Bing',
+    'title': 'BingMaps Aerial',
     'style': 'Aerial',
     'resolutions': layer_resolutions,
     'extent': layer_extent
     },
     {
     'name': 'BINGAERIALWL',
-    'type': 'bing',
-    'title': 'Bing Aerial with Labels',
+    'type': 'Bing',
+    'title': 'BingMaps Aerial with Labels',
     'style': 'AerialWithLabels',
     'resolutions': layer_resolutions,
     'extent': layer_extent
@@ -355,9 +355,10 @@ class ProjectPage(WizardPage):
                     if 'apikey' in base_layer:
                         dialog.mapbox_apikey.setText(base_layer['apikey'])
                 elif base_layer['type'] == 'Bing':
-                    for index, glayer in enumerate(BING_LAYERS, 1):
+                    dialog.bing.setChecked(True)
+                    for index, glayer in enumerate(BING_LAYERS):
                         if glayer['name'] == base_layer['name']:
-                            dialog.bing.setCurrentIndex(index)
+                            dialog.bing_style.setCurrentIndex(index)
                             break
                     if 'apikey' in base_layer:
                         dialog.bing_apikey.setText(base_layer['apikey'])
@@ -495,10 +496,31 @@ class ProjectPage(WizardPage):
                 dialog.default_baselayer.removeItem(position)
             if dialog.mapbox.isChecked():
                 resolutions.update(MAPBOX_LAYER['resolutions'])
-            if dialog.bing.currentIndex() > 0:
+            if dialog.bing.isChecked():
                 resolutions.update(BING_LAYERS[0]['resolutions'])
             
             self._update_min_max_scales(resolutions)
+
+        def check_apikey(text, provider):
+            msg_missing = u"{0} ApiKey must be defined.".format(provider)
+            msg_invalid = u"Invalid {0} ApiKey (should start with 'pk.' or 'sk.').".format(provider)
+            if text is None:
+                self._remove_messages([(MSG_ERROR, msg_missing)])
+            elif len(text) > 0:
+                if provider == 'MapBox':
+                    if text.startswith('pk.') or text.startswith('sk.'):
+                        self._remove_messages([(MSG_ERROR, msg_invalid)])
+                        self._remove_messages([(MSG_ERROR, msg_missing)])
+                    else:
+                        self._show_messages([(MSG_ERROR, msg_invalid)])
+                else:
+                    self._remove_messages([(MSG_ERROR, msg_missing)])
+            else:
+                self._remove_messages([(MSG_ERROR, msg_invalid)])
+                self._show_messages([(MSG_ERROR, msg_missing)])
+
+        def mapbox_apikey_changed(text):
+            check_apikey(text, 'MapBox')
 
         def mapbox_toggled(checked, project_resolutions=resolutions):
             resolutions = set(project_resolutions)
@@ -515,46 +537,25 @@ class ProjectPage(WizardPage):
                 resolutions.update(MAPBOX_LAYER['resolutions'])
             else:
                 dialog.default_baselayer.removeItem(position)
-            if dialog.bing.currentIndex() > 0:
+            if dialog.bing.isChecked():
                 resolutions.update(BING_LAYERS[0]['resolutions'])
             
             self._update_min_max_scales(resolutions)
 
             if checked:
-                check_mapbox_apikey(dialog.mapbox_apikey.text())
+                check_apikey(dialog.mapbox_apikey.text(), 'MapBox')
             else:
-                check_mapbox_apikey(None)
+                check_apikey(None, 'MapBox')
                 
-        def mapbox_apikey_changed(text):
-            check_mapbox_apikey(text)
-
-        def check_mapbox_apikey(text):
-            msg_missing = u"MapBox ApiKey must be defined."
-            msg_invalid = u"Invalid MapBox ApiKey (should start with 'pk.' or 'sk.')."
-            if text is None:
-                self._remove_messages([(MSG_ERROR, msg_missing)])
-            elif len(text) > 0:
-                if text.startswith('pk.') or text.startswith('sk.'):
-                    self._remove_messages([(MSG_ERROR, msg_invalid)])
-                    self._remove_messages([(MSG_ERROR, msg_missing)])
-                else:
-                    self._show_messages([(MSG_ERROR, msg_invalid)])
-            else:
-                self._remove_messages([(MSG_ERROR, msg_invalid)])
-                self._show_messages([(MSG_ERROR, msg_missing)])
-
         def bing_apikey_changed(text):
-            msg = u"Bing ApiKey must be defined."
-            if len(text) > 0:
-                self._remove_messages([(MSG_ERROR, msg)])
-            else:
-                self._show_messages([(MSG_ERROR, msg)])
+            check_apikey(text, 'BingMaps')
 
-        def bing_layer_changed(index, project_resolutions=resolutions):
+        def bing_toggled(checked, project_resolutions=resolutions):
             resolutions = set(project_resolutions)
 
-            dialog.bing_apikey.setEnabled(index > 0)
-
+            dialog.bing_style.setEnabled(checked)
+            dialog.bing_apikey.setEnabled(checked)
+            
             position = 1 if dialog.blank.isChecked() else 0
             if dialog.osm.isChecked():
                 position += 1
@@ -562,35 +563,36 @@ class ProjectPage(WizardPage):
             if dialog.mapbox.isChecked():
                 position += 1
                 resolutions.update(MAPBOX_LAYER['resolutions'])
-            
-            bing_layers = [dialog.bing.itemText(i) for i in range(1, len(BING_LAYERS)+1)]
-            contains_bing_layer = dialog.default_baselayer.itemText(position) in bing_layers
-            if index > 0:
-                bing_layer = BING_LAYERS[index-1]
-                if contains_bing_layer:
-                    dialog.default_baselayer.setItemText(position, dialog.bing.currentText())
-                    dialog.default_baselayer.setItemData(position, bing_layer['name'])
-                else:
-                    dialog.default_baselayer.insertItem(position, dialog.bing.currentText(),
-                                                        bing_layer['name'])
-                resolutions.update(bing_layer['resolutions'])
-                
-            elif contains_bing_layer:
+            if checked:
+                index = dialog.bing_style.currentIndex()
+                dialog.default_baselayer.insertItem(position, BING_LAYERS[index]['title'], BING_LAYERS[index]['name'])
+                resolutions.update(BING_LAYERS[index]['resolutions'])
+            else:
                 dialog.default_baselayer.removeItem(position)
             
             self._update_min_max_scales(resolutions)
 
-            msg = u"Bing ApiKey must be defined."
-            if index == 0:
-                self._remove_messages([(MSG_ERROR, msg)])
-            elif len(dialog.bing_apikey.text()) < 1:
-                self._show_messages([(MSG_ERROR, msg)])
-        
+            if checked:
+                check_apikey(dialog.bing_apikey.text(), 'BingMaps')
+            else:
+                check_apikey(None, 'BingMaps')
+
+        def bing_layer_changed(index):
+            position = 1 if dialog.blank.isChecked() else 0
+            if dialog.osm.isChecked():
+                position += 1
+            if dialog.mapbox.isChecked():
+                position += 1
+            bing_layer = BING_LAYERS[index]
+            dialog.default_baselayer.setItemText(position, bing_layer['title'])
+            dialog.default_baselayer.setItemData(position, bing_layer['name'])
+                
         dialog.blank.toggled.connect(blank_toggled)
         dialog.osm.toggled.connect(osm_toggled)
         dialog.mapbox.toggled.connect(mapbox_toggled)
         dialog.mapbox_apikey.textChanged.connect(mapbox_apikey_changed)
-        dialog.bing.currentIndexChanged.connect(bing_layer_changed)
+        dialog.bing.toggled.connect(bing_toggled)
+        dialog.bing_style.currentIndexChanged.connect(bing_layer_changed)
         dialog.bing_apikey.textChanged.connect(bing_apikey_changed)
         
         def scales_changed(index):
@@ -834,8 +836,8 @@ class ProjectPage(WizardPage):
                 special_base_layers.append(dict(OSM_LAYER))
             if dialog.mapbox.isChecked():
                 special_base_layers.append(dict(MAPBOX_LAYER))
-            if dialog.bing.currentIndex() > 0:
-                special_base_layers.append(dict(BING_LAYERS[dialog.bing.currentIndex()-1]))
+            if dialog.bing.isChecked() > 0:
+                special_base_layers.append(dict(BING_LAYERS[dialog.bing_style.currentIndex()]))
 
         min_resolution = self.dialog.min_scale.itemData(self.dialog.min_scale.currentIndex())
         max_resolution = self.dialog.max_scale.itemData(self.dialog.max_scale.currentIndex())
@@ -976,7 +978,7 @@ class ProjectPage(WizardPage):
                     title = ' '.join(map(lambda x: x.title(), title.split('-')))
                     special_base_layer['title'] += ' {}'.format(title)
             elif special_base_layer['name'].startswith('BING'):
-                special_base_layer['apikey'] = dialog.mapbox_apikey.text()
+                special_base_layer['apikey'] = dialog.bing_apikey.text()
 
             base_layers_metadata['layers'].insert(0, special_base_layer)
 

@@ -66,7 +66,7 @@
            </font>
           </property>
           <property name="text">
-           <string>Note: OpenSreetMap, MapBox and Bing are available only in WGS 84 / Pseudo Mercator EPSG:3857</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Note: OpenStreetMap, MapBox and BingMaps are available only in WGS 84 / Pseudo Mercator EPSG:3857&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
         </item>
@@ -503,8 +503,8 @@ QGroupBox::title {
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>726</width>
-             <height>486</height>
+             <width>375</width>
+             <height>528</height>
             </rect>
            </property>
            <property name="styleSheet">
@@ -1138,8 +1138,8 @@ QGroupBox::title {
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>762</width>
-         <height>478</height>
+         <width>98</width>
+         <height>28</height>
         </rect>
        </property>
       </widget>
@@ -1176,8 +1176,8 @@ QGroupBox::title {
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_5">
        <item>
-        <widget class="QWebView" name="config_summary">
-         <property name="url">
+        <widget class="QWebView" name="config_summary" native="true">
+         <property name="url" stdset="0">
           <url>
            <string>about:blank</string>
           </url>
@@ -1212,8 +1212,8 @@ QGroupBox::title {
       </property>
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
-        <widget class="QWebView" name="confirmation_info">
-         <property name="url">
+        <widget class="QWebView" name="confirmation_info" native="true">
+         <property name="url" stdset="0">
           <url>
            <string>about:blank</string>
           </url>

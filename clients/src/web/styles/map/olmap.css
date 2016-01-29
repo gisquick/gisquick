@@ -51,7 +51,6 @@
   font-size: 36px;
   font-weight: 400;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
-  border: 1px solid white;
 }
 
 .ol-control button:focus,

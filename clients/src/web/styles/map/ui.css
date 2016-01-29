@@ -64,6 +64,12 @@ md-tabs-canvas {
   border: 1px solid rgb(0, 170, 212);
 }
 
+.md-fab.md-button,
+.md-fab.md-button,
+.md-button.map-button {
+  padding: 0;
+}
+
 md-icon {
   color: #fff;
 }

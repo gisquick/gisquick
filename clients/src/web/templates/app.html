@@ -1,3 +1,4 @@
+<div style="height:100%;">
   <div layout="column"
     style="height:100%;left: {{ ui.mapView.left-280 }}px;"
     class="main-panel md-whiteframe-3dp">
@@ -8,6 +9,7 @@
     </div>
 
     <md-button
+      aria-label="Toggle Panel"
       class="panel-collapse-button"
       ng-class="{collapsed: ui.mapView.left===0}"
       ng-click="ui.mapView.left=ui.mapView.left? 0 : 280">
@@ -16,25 +18,24 @@
       </md-icon>
     </md-button>
 
-    <div layout="column" style="display:flex;flex: 1 1 auto;height:100%;">
-      <div
-        class="panel-top panel-tool"
-        style="position:relative; display:flex; flex: 1 1 auto;"
-        gl-collapsible ng-model="ui.toolPanelOpen">
-
-        <div gl-collapsible-content style="width:100%;">
-          <md-subheader>
-            <div layout="row">
-              <span ng-bind="activeTool.title"></span>
-              <span flex></span>
-              <md-button
-                aria-label="Close"
-                class="md-icon-button"
-                ng-click="deactivateTool()">
-                <md-icon md-svg-icon="circle-x-outline"></md-icon>
-              </md-button>
-            </div>
-          </md-subheader>
+    <div
+      layout="column"
+      style="position:relative;"
+      class="full-height">
+      <div id="tools-panel">
+      </div>
+      <script type="text/ng-template" id="tools_panel.html">
+        <div>
+          <div
+            class="panel-header">
+            {{ activeTool.title }}
+            <md-button
+              aria-label="Close"
+              class="right"
+              ng-click="deactivateTool()">
+              <md-icon md-svg-icon="circle-x-outline"></md-icon>
+            </md-button>
+          </div>
           <md-tabs
             md-dynamic-height
             class="tabs-no-header"
@@ -48,34 +49,82 @@
             </md-tab>
           </md-tabs>
         </div>
-      </div>
-
-      <!-- <div gl-splitter class="splitter"></div> -->
-
+      </script>
       <div
+        id="vertical-panel-container"
+        flex
         layout="column"
-        class="panel-bottom"
-        style="position: relative; display:flex; flex: 1 1 100%;">
-        <md-subheader>
-          <div layout="row">
-            <span>Content</span>
-            <span flex></span>
-            <!-- <md-button
-              aria-label="Close"
-              class="md-icon-button"
-              ng-show="ui.panelBottom.open"
-              ng-click="ui.panelBottom.collapse()">
-              <md-icon md-svg-icon="arrow-up"></md-icon>
-            </md-button> -->
-          </div>
-        </md-subheader>
+        style="position: relative;">
         <div
-          class="fill-flex"
-          ng-if="project"
-          ng-include="'templates/tools/layers_control.html'">
+          layout="column"
+          class="fill-flex">
+
+          <div
+            id="vertical-identification-table-header"
+            class="panel-header secondary hidden">
+            Features
+            <md-button
+              aria-label="Toggle Panel"
+              class="toggle-button left"
+              ng-class="{collapsed: ui.panel.secondaryPanel.collapsed}"
+              ng-click="ui.panel.togglePanel()">
+              <md-icon
+                md-svg-icon="{{ ui.panel.accordionMode? 'arrow-down' : ui.panel.secondaryPanel.collapsed? 'plus' : 'minus' }}">
+              </md-icon>
+            </md-button>
+          </div>
+          <div
+            id="vertical-identification-table"
+            class="vertical-panel hidden">
+          </div>
+
+          <div class="panel-header">
+            Content
+            <md-button
+              aria-label="Toggle Panel"
+              class="toggle-button left"
+              ng-show="ui.panel.contentPanel.collapseEnabled"
+              ng-class="{collapsed: ui.panel.contentPanel.collapsed}"
+              ng-click="ui.panel.toggleContentPanel()">
+              <md-icon
+                md-svg-icon="{{ ui.panel.accordionMode? 'arrow-down' : ui.panel.contentPanel.collapsed? 'plus' : 'minus' }}">
+              </md-icon>
+            </md-button>
+          </div>
+          <div
+            id="content-panel"
+            class="vertical-panel">
+          </div>
+
+          <div
+            id="vertical-attribute-table-header"
+            class="panel-header secondary hidden">
+            {{ ui.panel.secondaryPanel.title }}
+            <md-button
+              aria-label="Toggle Panel"
+              class="toggle-button left"
+              ng-class="{collapsed: ui.panel.secondaryPanel.collapsed}"
+              ng-click="ui.panel.togglePanel()">
+              <md-icon
+                md-svg-icon="{{ ui.panel.accordionMode? 'arrow-down' : ui.panel.secondaryPanel.collapsed? 'plus' : 'minus' }}">
+              </md-icon>
+            </md-button>
+            <md-button
+              aria-label="Close"
+              class="close-button right"
+              ng-click="ui.panel.hidePanel()">
+              <md-icon
+                md-svg-icon="circle-x-outline">
+              </md-icon>
+            </md-button>
+          </div>
+          <div
+            id="vertical-attribute-table"
+            class="vertical-panel hidden"
+            style="xbackground-color: orange;">
+          </div>
         </div>
       </div>
-
     </div>
   </div>
 
@@ -101,11 +150,14 @@
     </div>
   </div>
   <md-button
+    aria-label="Zoom to max extent"
     class="map-button zoom-to-max-button"
     ng-click="zoomToMaxExtent()">
     <md-icon md-svg-icon="zoom-max"></md-icon>
   </md-button>
-  <md-button class="map-button location-button">
+  <md-button
+    aria-label="My Location"
+    class="map-button location-button">
     <md-icon md-svg-icon="location-target"></md-icon>
   </md-button>
 
@@ -118,3 +170,4 @@
     class="bottom-bar"
     style="left: {{ ui.mapView.left }}px;">
   </div>
+</div>

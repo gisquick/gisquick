@@ -61,31 +61,6 @@
 .main-panel md-select {
   font-size: 15px;
 }
-.main-panel .md-subheader {
-  padding: 0;
-  margin: 0;
-  color: white;
-  background-color: #333;
-}
-.md-subheader .md-subheader-inner {
-    height: 20px;
-    padding: 3px;
-    line-height: 20px;
-    margin: 0;
-}
-
-.md-subheader .md-button.md-icon-button {
-  min-height: 0;
-  width: 20px;
-  height: 20px;
-  line-height: 20px;
-  margin: 0;
-  padding: 0;
-}
-.md-subheader md-icon {
-  width: 20px;
-  height: 20px;
-}
 
 .list-header {
   font-size: 14px;
@@ -103,23 +78,18 @@
 }
 
 
-md-list.gl-tree {
-  padding: 0;
-}
-
 .secondary-tabs md-tabs-canvas,
 .secondary-tabs md-pagination-wrapper {
-  height: 40px;
+  height: 42px;
 }
 .secondary-tabs md-tabs-canvas {
   margin: 0 4px;
 }
 .secondary-tabs .md-tab {
-  background-color: #a0a0a0;
-  border: 1px solid #888;
+  color: rgb(0, 170, 212);
+  border: 1px solid rgb(0, 170, 212);
   margin: 8px 0;
-  line-height: 20px;
-  color: white;
+  line-height: 22px;
   font-size: 13.5px;
 }
 .secondary-tabs md-pagination-wrapper .md-tab:nth-child(1) {
@@ -134,4 +104,160 @@ md-list.gl-tree {
 .secondary-tabs .md-tab.md-active {
   background-color: rgb(0, 170, 212);
   color: #fff;
+}
+
+.secondary-header {
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  min-height: 26px;
+  height: 26px;
+  position: relative;
+  font-size: 13.5px;
+  font-weight: bold;
+  text-align: center;
+  xdisplay: inline;
+  xpadding: 2px 5px;
+  margin: 7px 0;
+}
+.secondary-header label {
+  line-height: 26px;
+  vertical-align: top;
+  display: inline;
+}
+.secondary-header .md-button {
+  min-width: 24px;
+  width: 24px;
+  min-height: 24px;
+  height: 24px;
+  margin: 0;
+  padding: 0;
+  line-height: 26px;
+  vertical-align: top;
+  display: inline;
+}
+.secondary-header .md-button md-icon {
+  width: 20px;
+  height: 20px;
+}
+
+md-tabs-wrapper md-icon {
+  color: #aaa;
+}
+
+/*.scroll-wrapper {
+  position: relative;
+  overflow: hidden;
+  xheight: 300px;
+  xborder-top: 26px solid;
+}
+.ps-scrollbar-y-rail {
+  xmargin-top: 26px;
+}
+.ps-scrollbar-y {
+  xmargin-top: 26px;
+  xpadding-top: 26;
+  padding-bottom: -26px;
+}
+.scroller {
+  xwhite-space: pre-line;
+  xheight: 500px;
+  overflow-y: hidden;
+  position: relative;
+}*/
+
+
+.panel-header {
+  margin: 0;
+  padding: 0;
+  background-color: #333;
+  color: #fff;
+  overflow: hidden;
+  font-size: 13.5px;
+  font-weight: bold;
+  line-height: 30px;
+  padding: 0 5px;
+  text-align: center;
+  min-height: 30px;
+  max-height: 30px;
+  transition: all 0.45s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
+  text-transform: uppercase;
+  overflow: hidden;
+  position: relative;
+}
+.panel-header.secondary {
+  background-color: #777;
+  text-transform: none;
+}
+.panel-header.hidden {
+  min-height: 0;
+  max-height: 0;
+}
+
+.panel-header .md-button {
+  min-width: 30px;
+  width: 30px;
+  min-height: 30px;
+  height: 30px;
+  margin: 0;
+  padding: 0;
+  line-height: 30px;
+}
+.panel-header .md-button.left {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.panel-header .md-button.right {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+/*
+.panel-header.secondary .md-button {
+  min-height: 26px;
+  height: 26px;
+  margin: 0;
+  padding: 0;
+  line-height: 26px;
+}
+*/
+.panel-header  md-icon {
+  width: 20px;
+  height: 20px;
+}
+.panel-header .toggle-button md-icon {
+  width: 16px;
+  height: 16px;
+  transition: 0.45s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
+}
+.panel-header .toggle-button.collapsed md-icon {
+  transform: rotate(-90deg);
+}
+
+.vertical-panel {
+  overflow: auto;
+  transition: 0.45s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
+  box-sizing: border-box;
+}
+.vertical-panel:not(.hidden) {
+  border-bottom: 3px solid white;
+}
+
+.list-item-menu-button {
+  position: absolute;
+  right: -3px;
+  top: 2px;
+}
+.list-item-button.list-item-menu-button md-icon {
+  width: 16px;
+  height: 16px;
+  color: #999;
+}
+.scroll-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+.baselayer-container {
+  margin-top: 10px;
 }

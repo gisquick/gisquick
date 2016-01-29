@@ -5,10 +5,11 @@
     .module('gl.features')
     .controller('AttributeTableController', AttributeTableController);
 
-  function AttributeTableController($scope, projectProvider, gislabClient, featuresViewer, tool) {
+  function AttributeTableController($scope, $timeout, projectProvider, gislabClient, featuresViewer, tool) {
     // console.log('AttributeTableController: INIT');
     featuresViewer.initialize();
     $scope.tool = tool;
+    console.log($scope);
 
     var comparators = {
       TEXT: [
@@ -133,23 +134,24 @@
     });
     $scope.layers = layers;
 
-    var activeLayerIndex;
-    $scope.setActiveLayer = function (layer) {
-      if (activeLayerIndex != layer.index) {
-        activeLayerIndex = layer.index;
+    $scope.setActiveLayer = function(layer) {
+      if ($scope.activeLayer !== layer) {
+        $scope.activeLayer = layer;
         if (!layer.features.length) {
           $scope.search();
         }
         featuresViewer.setActiveFeaturesLayer(layer.name);
+        featuresViewer.removeLayerFeatures(layer.name);
+        featuresViewer.selectFeature(null);
       }
     };
 
-    $scope.selectFeature = function (feature) {
+    $scope.selectFeature = function(feature) {
       featuresViewer.selectFeature(feature);
       $scope.selectedFeature = feature;
     };
 
-    $scope.zoomToFeature = function (feature) {
+    $scope.zoomToFeature = function(feature) {
       var params = {
         'VERSION': '1.0.0',
         'SERVICE': 'WFS',
@@ -168,7 +170,7 @@
     }
 
     function fetchFeatures (filters) {
-      var layerName = $scope.layers[$scope.tool.layerIndex].name;
+      var layerName = $scope.activeLayer.name;
       // convert to WFS layer name
       while (layerName.indexOf(' ') != -1) {
         layerName = layerName.replace(' ', '_');
@@ -187,14 +189,13 @@
         '/filter/?PROJECT={0}'.format(projectProvider.config.project),
         wfsParams)
         .then(function (data) {
-          $scope.layers[$scope.tool.layerIndex].features = data.features;
+          $scope.activeLayer.features = data.features;
         });
     };
 
     $scope.search = function() {
-      var layer = $scope.layers[$scope.tool.layerIndex];
       var filters = [];
-      layer.attributes.forEach(function (attribute) {
+      $scope.activeLayer.attributes.forEach(function (attribute) {
         if (attribute.filterValue) {
           filters.push({
             attribute: attribute.name,

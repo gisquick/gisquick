@@ -1,8 +1,9 @@
-<div ng-controller="LayersController" class="full-height">
+<div ng-controller="LayersController">
   <md-tabs
     md-no-ink
+    md-dynamic-height
     md-stretch-tabs="always"
-    class="full-height text-icon-tabs tabs-3"
+    class="text-icon-tabs tabs-3"
     md-selected="1">
     <md-tab>
       <md-tab-label>
@@ -13,75 +14,74 @@
         <div class="tab-separator"></div>
       </md-tab-label>
       <md-tab-body>
-        <md-content>
-          <md-list class="baselayer-container gl-tree"
-            gl-tree-view="baseLayers"
-            gl-tree-id-attribute="name"
-            gl-tree-label-attribute="title"
-            gl-tree-children-attribute="layers"
-            gl-tree-selected-value="getVisibleBaseLayer()"
-            gl-tree-group-tpl="base-layer-group-node.html"
-            gl-tree-leaf-tpl="base-layer-leaf-node.html"
-            gl-tree-view-change-handler="setBaseLayer(value)">
+        <md-list
+          class="baselayer-container gl-tree"
+          gl-tree-view="baseLayers"
+          gl-tree-id-attribute="name"
+          gl-tree-label-attribute="title"
+          gl-tree-children-attribute="layers"
+          gl-tree-selected-value="getVisibleBaseLayer()"
+          gl-tree-group-tpl="base-layer-group-node.html"
+          gl-tree-leaf-tpl="base-layer-leaf-node.html"
+          gl-tree-view-change-handler="setBaseLayer(value)">
 
-            <script type="text/ng-template" id="base-layer-group-node.html">
-              <div
-                class="gl-tree-group"
-                depth="{{ ::$node.treeDepth }}"
-                gl-collapsible>
-                <md-list-item>
-                  <div class="indent"></div>
-                  <md-button
-                    class="toggle-button list-item-button"
-                    aria-label="Toggle"
-                    ng-click="$collapsible.toggle()">
-                    ng-bind="$collapsible.collapsed? '+' : '-'">
-                  </md-button>
-                  <p>{{ ::node.title }}</p>
-                </md-list-item>
-                <div gl-collapsible-content>
-                  <div ng-repeat="node in node.layers" gl-check-tree-node="node"></div>
-                </div>
+          <script type="text/ng-template" id="base-layer-group-node.html">
+            <div
+              class="gl-tree-group"
+              depth="{{ ::$node.treeDepth }}"
+              gl-collapsible>
+              <md-list-item>
+                <div class="indent"></div>
+                <md-button
+                  class="toggle-button list-item-button"
+                  aria-label="Toggle"
+                  ng-click="$collapsible.toggle()">
+                  ng-bind="$collapsible.collapsed? '+' : '-'">
+                </md-button>
+                <p>{{ ::node.title }}</p>
+              </md-list-item>
+              <div gl-collapsible-content>
+                <div ng-repeat="node in node.layers" gl-check-tree-node="node"></div>
               </div>
-            </script>
+            </div>
+          </script>
 
-            <script type="text/ng-template" id="base-layer-leaf-node.html">
-              <div gl-accordion-item depth="{{ ::$node.treeDepth }}"
-                class="gl-tree-leaf" ng-class="{expanded: $accordion.expanded}">
-                <md-list-item class="md-with-secondary radio-button-item">
-                  <div class="indent"></div>
-                  <md-radio-button md-no-ink aria-label="{{ ::node.title }}" ng-value="::node.name">
-                  </md-radio-button>
-                  <p>{{ ::node.title }}</p>
-                  <md-button class="list-item-button" aria-label="Info"
-                    ng-click="$accordion.toggle()">
-                    <md-icon class="accordion-icon"
-                      md-svg-icon="arrow-down">
-                    </md-icon>
-                  </md-button>
-                </md-list-item>
-                <div class="layer-metadata" gl-accordion-content>
-                  <label>Abstract:</label>
-                  <span> {{ ::node.metadata.abstract }}</span><br />
-                  <label>Keywords list:</label>
-                  <span> {{ ::node.metadata.keyword_list }}</span><br />
-                  <label>Maximal scale:</label>
-                  <span> 1: {{ ::node.visibility_scale_min | number : 0 }}</span><br />
-                  <label>Minimal scale:</label>
-                  <span> 1: {{ ::node.visibility_scale_max | number : 0 }}</span><br />
-                </div>
+          <script type="text/ng-template" id="base-layer-leaf-node.html">
+            <div gl-accordion-item depth="{{ ::$node.treeDepth }}"
+              class="gl-tree-leaf" ng-class="{expanded: $accordion.expanded}">
+              <md-list-item class="md-with-secondary radio-button-item">
+                <div class="indent"></div>
+                <md-radio-button md-no-ink aria-label="{{ ::node.title }}" ng-value="::node.name">
+                </md-radio-button>
+                <p>{{ ::node.title }}</p>
+                <md-button class="list-item-button" aria-label="Info"
+                  ng-click="$accordion.toggle()">
+                  <md-icon class="accordion-icon"
+                    md-svg-icon="arrow-down">
+                  </md-icon>
+                </md-button>
+              </md-list-item>
+              <div class="layer-metadata" gl-accordion-content>
+                <label>Abstract:</label>
+                <span> {{ ::node.metadata.abstract }}</span><br />
+                <label>Keywords list:</label>
+                <span> {{ ::node.metadata.keyword_list }}</span><br />
+                <label>Maximal scale:</label>
+                <span> 1: {{ ::node.visibility_scale_min | number : 0 }}</span><br />
+                <label>Minimal scale:</label>
+                <span> 1: {{ ::node.visibility_scale_max | number : 0 }}</span><br />
               </div>
-            </script>
-            <md-radio-group
-              class="md-primary"
-              ng-model="$node.tree.selectedValue"
-              ng-change="nodeSelected($node.tree.selectedValue)">
-              <div gl-accordion>
-                <div ng-repeat="node in rootNodes" gl-tree-node="node"></div>
-              </div>
-            </md-radio-group>
-          </md-list>
-        </md-content>
+            </div>
+          </script>
+          <md-radio-group
+            class="md-primary"
+            ng-model="$node.tree.selectedValue"
+            ng-change="nodeSelected($node.tree.selectedValue)">
+            <div gl-accordion>
+              <div ng-repeat="node in rootNodes" gl-tree-node="node"></div>
+            </div>
+          </md-radio-group>
+        </md-list>
       </md-tab-body>
     </md-tab>
 
@@ -98,8 +98,8 @@
           md-no-ink
           md-no-ink-bar
           md-stretch-tabs="always"
-          md-dynamic-height="true"
-          class="full-height secondary-tabs">
+          md-dynamic-height
+          class="secondary-tabs">
           <md-tab
             label="Topics">
             <md-radio-group
@@ -107,6 +107,8 @@
               ng-model="selectedTopic.index"
               ng-change="loadTopic(selectedTopic.index)">
                 <md-list
+                  style="overflow-y: auto;"
+                  xng-style="{height: ui.panel.contentPanel.height-109+'px'}"
                   class="gl-tree"
                   gl-accordion>
                   <div
@@ -182,17 +184,27 @@
               </script>
 
               <script type="text/ng-template" id="layer-leaf-node.html">
-                <div gl-accordion-item depth="{{ ::$node.treeDepth }}"
-                  class="gl-tree-leaf" ng-class="{expanded: $accordion.expanded}">
+                <div
+                  gl-accordion-item depth="{{ ::$node.treeDepth }}"
+                  class="gl-tree-leaf"
+                  ng-class="{
+                    expanded: $accordion.expanded,
+                    highlighted: lastModified == $node.data
+                  }">
                   <md-list-item>
                     <div class="indent"></div>
-                    <md-checkbox md-no-ink class="md-primary"
+                    <md-checkbox md-no-ink
+                      class="md-primary"
                       ng-model="$node.isChecked"
                       ng-disabled="!$node.parent.isEnabled"
-                      ng-change="nodeSelected($node)">
+                      ng-change="nodeSelected($node)"
+                      ng-click="highlighteItem($event)">
                     </md-checkbox>
                     <p>{{ ::$node.data.title }}</p>
-                    <md-button class="list-item-button" aria-label="Attributes"
+                    <md-button
+                      aria-label="Attributes"
+                      class="list-item-button"
+                      ng-class="{active: attributeTableLayer == $node.data}"
                       ng-click="showAttributeTable($node.data)">
                       <md-icon
                         md-svg-icon="attribute-table">
@@ -245,16 +257,16 @@
           <label>Legend</label>
         </md-tab-label>
         <md-tab-body>
-          <md-content>
-            <div class="legend-container">
-              <img
-                ng-repeat="layer in ::project.layers.list"
-                ng-if="layer.visible"
-                class="legend-item"
-                alt=""
-                ng-src="{{ layer.legendUrl }}" />
-            </div>
-          </md-content>
+          <div
+            class="legend-container"
+            xng-style="{maxHeight: ui.panel.contentPanel.height-69+'px'}">
+            <img
+              ng-repeat="layer in ::project.layers.list"
+              ng-if="layer.visible"
+              class="legend-item"
+              alt=""
+              ng-src="{{ layer.legendUrl }}" />
+          </div>
         </md-tab-body>
       </md-tab>
     </div>

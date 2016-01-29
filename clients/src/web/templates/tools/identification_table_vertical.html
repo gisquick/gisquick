@@ -1,0 +1,67 @@
+<div class="identification-table vertical">
+  <md-tabs
+    md-no-ink
+    md-dynamic-height
+    class="panel-content"
+    md-autoselect="false">
+    <md-tab ng-repeat="layer in tool.layers"
+      label="{{ layer.name }}"
+      ng-init="layer.page = 1;"
+      md-on-select="setActiveLayer(layer);selectFeature(layer.features[layer.page-1])">
+      
+      <!-- <md-subheader class="md-primary">Panel</md-subheader> -->
+      <md-list
+        class="attribute-table"
+        style="padding:0;">
+        
+        <md-list-item
+          ng-repeat="attribute in layer.attributes"
+          class="table-list-item">
+          <p>
+            <b>{{ ::attribute.label }}: </b>
+            {{ layer.features[layer.page-1].get(attribute.name) }}
+          </p>
+        </md-list-item>
+        <md-list-item></md-list-item>
+      </md-list>
+    </md-tab>
+  </md-tabs>
+  </perfect-scrollbar>
+  <div
+    ng-hide="ui.panel.secondaryPanel.collapsed"
+    class="list-table-settings"
+    ng-style="{top: (ui.panel.secondaryPanel.height-6)+'px'}">
+    <div
+      layout="row"
+      class="list-bottom-toolbar">
+      <md-button
+        aria-label="Zoom to feature"
+        class="zoom-to-feature"
+        ng-click="zoomToFeature(activeLayer.features[activeLayer.page-1])">
+        <md-icon
+          md-svg-icon="zoom-to-feature">
+        </md-icon>
+      </md-button>
+      <span flex></span>
+      <md-button
+        aria-label="Previous"
+        ng-disabled="activeLayer.page === 1"
+        ng-click="activeLayer.page=activeLayer.page-1;selectFeature(activeLayer.features[activeLayer.page-1])">
+        <md-icon
+          md-svg-icon="arrow-left">
+        </md-icon>
+      </md-button>
+      <span class="text">{{ activeLayer.page }} of {{ activeLayer.features.length }}</span>
+      <md-button
+        aria-label="Next"
+        ng-disabled="activeLayer.page === activeLayer.features.length"
+        ng-click="activeLayer.page=activeLayer.page+1;selectFeature(activeLayer.features[activeLayer.page-1])">
+        <md-icon
+          md-svg-icon="arrow-right">
+        </md-icon>
+      </md-button>
+      <span flex></span>
+      <span flex></span>
+    </div>
+  </div>
+</div>

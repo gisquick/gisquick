@@ -2,7 +2,7 @@
   class="app-menu"
   md-position-mode="target-right target">
   <md-button
-    aria-label="Open demo menu"
+    aria-label="Application menu"
     class="md-icon-button map-button"
     ng-click="$mdOpenMenu($event)">
     <md-icon
@@ -11,15 +11,14 @@
     </md-icon>
   </md-button>
   <md-menu-content width="4">
-    <md-menu-item ng-repeat="item in [1, 2, 3]">
+    <md-menu-item ng-repeat="item in ['Log out', 'Share', 'Fullscreen', 'Help', 'About']">
       <md-button ng-click="ctrl.announceClick($index)">
           <div layout="row">
-            <p flex>Option {{item}}</p>
-            <md-icon
+            <p flex>{{ item }}</p>
+            <!-- <md-icon
               md-menu-align-target
-              md-svg-icon="call:portable-wifi-off"
               style="margin: auto 3px auto 0;">
-            </md-icon>
+            </md-icon> -->
           </div>
       </md-button>
     </md-menu-item>

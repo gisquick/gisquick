@@ -3,12 +3,13 @@
   height: 100%;
 }
 
+.ol-control:hover,
 .ol-control {
   background-color: transparent;
 }
 
 .ol-control.ol-zoom {
-  right: 5px;
+  right: 3px;
   left: auto;
   top: auto;
   bottom: 80px;
@@ -50,13 +51,15 @@
   font-size: 36px;
   font-weight: 400;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+  border: 1px solid white;
 }
 
+.ol-control button:focus,
 .ol-control button:hover {
   background-color: #555;
 }
 .ol-control button:focus {
-  background-color: rgb(0, 170, 212);
+  border: 1px solid rgb(0, 170, 212);
 }
 
 #ol-scale-line-container {
@@ -89,4 +92,10 @@
   position: absolute;
   bottom: 36px;
   right: 0px;
+}
+
+@media (max-width: 900px) {
+  #ol-scale-line-container {
+    bottom: 5px;
+  }
 }

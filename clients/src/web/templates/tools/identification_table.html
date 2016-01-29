@@ -1,12 +1,13 @@
 <md-bottom-sheet
-  class="features-panel identification md-whiteframe-top"
-  ng-class="{collapsed: tool.collapsed}">
-  <div class="tabs-header md-whiteframe-top" ng-show="showTabsHeader">
+  class="features-panel identification md-whiteframe-top">
+  <div
+    class="tabs-header md-whiteframe-top"
+    ng-show="tool.layers.length > 0">
     <md-button
       class="panel-tab"
       ng-class="{selected: $index===tool.layerIndex}"
       ng-click="tool.layerIndex=$index"
-      ng-repeat="layer in layers">
+      ng-repeat="layer in tool.layers">
       {{ ::layer.name }}
       <div class="tab-separator"></div>
     </md-button>
@@ -22,12 +23,24 @@
   </div>
   <div class="header-bg"></div>
 
-  <md-tabs md-no-ink md-dynamic-height
+  <md-tabs
+    md-no-ink
+    md-dynamic-height
     class="tabs-no-header"
     md-selected="tool.layerIndex"
     md-autoselect="false">
-    <md-tab ng-repeat="layer in layers"
-      label="{{ layer.name }}"
+    <md-tab
+      label="test"
+      ng-if="!tool.layers || tool.layers.length === 0"
+      md-on-select="setActiveLayer('')">
+      <div
+        class="empty-table"
+        style="height: {{ 36+32*tool.rowsPerPage }}px;">
+        No features
+      </div>
+    </md-tab>
+    <md-tab ng-repeat="layer in tool.layers"
+      label="layer"
       md-on-select="setActiveLayer(layer)">
       <md-data-table-container
         class="identification-table"
@@ -52,7 +65,7 @@
               ng-click="selectFeature(feature)">
               <td class="icon">
                 <md-icon
-                  md-svg-icon="zoom-max"
+                  md-svg-icon="zoom-to-feature"
                   ng-click="zoomToFeature(feature)">
                 </md-icon>
               </td>
@@ -65,7 +78,7 @@
       </md-data-table-container>
     </md-tab>
   </md-tabs>
-  <div class="search-settings" layout="row" ng-show="::layers">
+  <div class="search-settings" layout="row" ng-show="::tool.layers">
     <md-input-container
       layout="row"
       class="input-inline-label">
@@ -79,10 +92,10 @@
       <input ng-model="tool.rowsPerPage" type="number" min="1" max="10"></input>
     </md-input-container>
     <md-data-table-pagination
-      ng-show="layers[tool.layerIndex].features.length > 0"
+      ng-show="activeLayer.features.length > 0"
       md-limit="tool.rowsPerPage"
-      md-page="layers[tool.layerIndex].page"
-      md-total="{{ layers[tool.layerIndex].features.length }}">
+      md-page="activeLayer.page"
+      md-total="{{ activeLayer.features.length }}">
     </md-data-table-pagination>
   </div>
   <div style="height: 80px;"></div>

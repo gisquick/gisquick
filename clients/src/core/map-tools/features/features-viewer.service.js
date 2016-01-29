@@ -120,7 +120,7 @@
       }
     };
 
-    FeaturesViewer.prototype.zoomToFeature = function(feature) {
+    FeaturesViewer.prototype.zoomToFeature = function(feature, options) {
       var map = projectProvider.map;
       var pan = ol.animation.pan({
         duration: 300,
@@ -136,7 +136,7 @@
       } else {
         // ol.extent.buffer could be used
         var extent = feature.getGeometry().getExtent();
-        map.getView().fit(extent, map.getSize());
+        map.getView().fit(extent, map.getSize(), options);
       }
     };
 
@@ -184,6 +184,14 @@
         }
       }
     };
+
+    FeaturesViewer.prototype.removeLayerFeatures = function(layername) {
+      var vectorLayer = this.getVectorLayer(layername);
+      if (vectorLayer) {
+        vectorLayer.getSource().clear();
+      }
+    };
+
     return new FeaturesViewer();
   };
 })();

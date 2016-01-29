@@ -1,14 +1,17 @@
 <!-- <md-input-container> -->
 <div
   class="panel-tool measure-panel"
+  ng-controller="MeasureController"
   ng-if="::project">
   <md-tabs
     md-no-ink
     md-stretch-tabs="always"
     md-center-tabs="true"
     md-dynamic-height="true"
+    md-autoselect="false"
     class="text-icon-tabs tabs-3">
-    <md-tab>
+    <md-tab
+      md-on-select="setMeasureType('Coordinates')">
       <md-tab-label>
         <md-icon
           md-svg-icon="point">
@@ -19,13 +22,14 @@
       <md-tab-body>
         <div class="measure-form">
           <label>First coordinate</label>
-          <div class="field .md-whiteframe-1dp">x</div>
+          <div class="field .md-whiteframe-1dp">{{ position[0] }}</div>
           <label>Second coordinate</label>
-          <div class="field .md-whiteframe-1dp">y</div>
+          <div class="field .md-whiteframe-1dp">{{ position[1] }}</div>
         </div>
       </md-tab-body>
     </md-tab>
-    <md-tab>
+    <md-tab
+      md-on-select="setMeasureType('Length')">
       <md-tab-label>
         <md-icon
           md-svg-icon="line">
@@ -36,13 +40,14 @@
       <md-tab-body>
         <div class="measure-form">
           <label>Last segment</label>
-          <div class="field .md-whiteframe-1dp"></div>
+          <div class="field .md-whiteframe-1dp">{{ lengthLastSegment }}</div>
           <label>Total length</label>
-          <div class="field .md-whiteframe-1dp"></div>
+          <div class="field .md-whiteframe-1dp">{{ lengthTotal }}</div>
         </div>
       </md-tab-body>
     </md-tab>
-    <md-tab>
+    <md-tab
+      md-on-select="setMeasureType('Area')">
       <md-tab-label>
         <md-icon
           md-svg-icon="polygon">
@@ -52,9 +57,7 @@
       <md-tab-body>
         <div class="measure-form">
           <label>Area</label>
-          <div class="field .md-whiteframe-1dp"></div>
-          <label>Perimeter</label>
-          <div class="field .md-whiteframe-1dp"></div>
+          <div class="field .md-whiteframe-1dp">{{ area }}</div>
         </div>
       </md-tab-body>
     </md-tab>

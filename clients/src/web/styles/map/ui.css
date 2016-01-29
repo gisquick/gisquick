@@ -19,13 +19,17 @@ md-select.md-default-theme:focus:not([disabled]), md-select:focus:not([disabled]
   font-size: 16px;
 }
 .measure-form {
-  margin: 5px;
+  margin: 10px 5px 5px 5px;
 }
-
+.measure-form .field {
+  text-align: right;
+  padding-right: 10px;
+  font-size: 14px;
+}
 .right-menu-container {
   position: absolute;
-  top: 5px;
-  right: 0px;
+  top: 0;
+  right: 0;
 }
 
 .md-subheader,
@@ -45,15 +49,19 @@ md-tabs-canvas {
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
   line-height: 24px;
   padding: 0;
+  margin: 6px 6px;
 }
 
 .md-button.map-button:hover {
   background-color: #666!important;
 }
 
+.md-fab.md-button:focus,
+.md-fab.md-button.md-focused:not([disabled]),
 .md-button.map-button:focus,
 .md-button.map-button.md-focused:not([disabled]) {
-  background-color: rgb(0, 170, 212)!important;
+  background-color: #555!important;
+  border: 1px solid rgb(0, 170, 212);
 }
 
 md-icon {
@@ -71,7 +79,7 @@ md-icon {
 */
 
 .text-icon-tabs .md-tab md-icon {
-  color: #777;
+  color: #555;
   width: 20px;
   height: 20px;
   padding-top: 2px;
@@ -109,7 +117,7 @@ md-icon {
 }
 
 .identification-panel md-select {
-  margin: 10px 0 4px 0px;
+  margin: 10px 5px 4px 5px;
 }
 .bottom-bar {
   position: absolute;
@@ -121,6 +129,7 @@ md-icon {
 md-tabs-wrapper {
   width: 100%;
 }
+/*
 .fill-flex {
   position: absolute;
   display: block;
@@ -129,8 +138,21 @@ md-tabs-wrapper {
   xbackground-color: yellow;
   xdisplay: flex;
   xflex: 1 1 100%;
+}*/
+/*.fill-flex {
+  position: absolute;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+}*/
+.fill-flex {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  bottom: 0;
+  height: 100%;
 }
-
 .md-button.md-fab.md-mini,
 .md-fab.md-button {
   width: 36px;
@@ -172,10 +194,13 @@ md-fab-trigger .md-fab.md-button md-icon {
   right: -52px;
 }
 
+md-menu-item,
 md-option {
+  min-height: 36px;
   height: 36px;
 }
 
+md-menu-item > .md-button,
 md-option .md-text {
   font-size: 15px;
 }
@@ -253,21 +278,28 @@ md-list-item .md-list-item-inner > md-checkbox:first-child {
   margin: 0 5px;
 }
 
-md-list-item .md-button.list-item-button {
-  right: 0;
-  width: 26px;
-  height: 26px;
-  min-width: 26px;
-  min-height: 26px;
-  line-height: 26px;
+md-list.gl-tree {
+  padding: 0;
+}
+
+.list-item-button {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  min-height: 28px;
+  line-height: 28px;
   margin: 0;
   padding: 0;
-  color: #555;
 }
-md-list-item .list-item-button md-icon {
+
+.list-item-button md-icon {
   width: 12px;
   height: 12px;
-  xcolor: #555;
+  color: #555;
+}
+.list-item-button.active md-icon {
+  xborder: 1px solid rgb(0, 170, 212);
+  color: rgb(0, 170, 212);
 }
 
 md-list-item .toggle-button {
@@ -360,13 +392,23 @@ md-list-item p {
   line-height: 18px;
   vertical-align: top;
 }
-
+.gl-tree-group md-list-item {
+  margin-top: 3px;
+}
+.gl-tree-leaf md-list-item:hover {
+  background-color: #ffffe0;
+}
 .gl-tree-leaf.expanded md-list-item {
   background-color: rgba(0, 170, 212, 0.15);
+}
+.gl-tree-leaf md-list-item:focus,
+.gl-tree-leaf.highlighted md-list-item {
+  border-bottom: 1px solid rgb(0, 170, 212);
 }
 .gl-tree-leaf.expanded .layer-metadata {
   background-color: rgba(0, 170, 212, 0.05);
 }
+
 
 button::-moz-focus-inner {
   border: 0;
@@ -379,62 +421,6 @@ img.legend-item {
   display: block;
 }
 
-.ui-layout-animation div.ui-layout-container, .ui-layout-animation div.ui-splitbar {
-  transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
-}
-
-.ui-layout-row > .ui-splitbar {
-  background: none;
-  background-color: rgba(57, 73, 171, 0.5);
-  border-top: 4px solid white;
-  border-bottom: 4px solid white;
-  box-sizing: border-box;
-  overflow: visible;
-}
-
-.ui-layout-row > .ui-splitbar > a {
-  margin: 0!important;
-  padding-bottom: 2px;
-  background-color: white;
-  max-height: 12px;
-  vertical-align: middle;
-  line-height: 10px;
-}
-.ui-layout-row > .ui-splitbar > a:nth-child(1) {
-  padding-left: 4px;
-  padding-right: 2px;
-  border-top-left-radius: 4px;
-  border-bottom-left-radius: 4px;
-}
-.ui-layout-row > .ui-splitbar > a:nth-child(2) {
-  padding-left: 2px;
-  padding-right: 4px;
-  border-top-right-radius: 4px;
-  border-bottom-right-radius: 4px;
-}
-.ui-splitbar-icon {
-  margin: 0;
-  color: rgba(57, 73, 171, 0.5);
-}
-
-.glyphicon-chevron-down, .glyphicon-chevron-up {
-  display: inline-block;
-  border-top-right-radius: 4px;
-  border-bottom-right-radius: 4px;
-  background-color: white;
-  color: rgba(57, 73, 171, 0.5);
-  width: 6px;
-}
-.glyphicon-chevron-up {
-  transform: scale(3,1) rotate(180deg);
-}
-.glyphicon-chevron-down {
-  margin-left: 9px;
-  transform: scale(3,1);
-}
-.glyphicon-chevron-up::after, .glyphicon-chevron-down::after {
-  content: "v";
-}
 
 .no-scrollbar {
   overflow: hidden;
@@ -475,7 +461,7 @@ md-checkbox.md-primary.md-checked:not([disabled]) .md-icon {
 
 /* Tabs */
 md-tabs > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-tab-item:not([disabled]) {
-  color: #aaa;
+  color: #555;
 }
 
 .md-subheader.md-default-theme, .md-subheader,
@@ -493,7 +479,7 @@ md-tabs > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-ink-bar 
 }
 
 .main-panel md-tabs:not(.md-no-tab-content) {
-  min-height: 50px;
+  xmin-height: 50px;
 }
 .properties-list {
   height: 100%;
@@ -534,4 +520,39 @@ md-input-container.md-input-focused:not(.md-input-invalid) .md-input {
 
 md-input-container.md-input-focused:not(.md-input-invalid) label {
     color: rgb(0, 170, 212);
+}
+
+md-fab-speed-dial .toolbar-menu-icon {
+  transition: opacity 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
+}
+
+md-fab-speed-dial .toolbar-menu-open-icon {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  opacity: 0;
+  transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
+}
+md-fab-speed-dial.md-is-open .toolbar-menu-open-icon {
+  opacity: 1;
+  transform: rotate(180deg);
+}
+md-fab-speed-dial.md-down .toolbar-menu-icon {
+  display: inline-block;
+}
+
+md-fab-speed-dial.ng-animate .toolbar-menu-icon,
+md-fab-speed-dial.md-is-open .toolbar-menu-icon {
+  opacity: 0;
+}
+
+md-select-menu md-option:hover,
+md-menu-content .md-button.md-focused:not([disabled]) {
+  background-color: #ffffe0;
+}
+md-select-menu md-option[selected],
+md-select-menu md-option[selected]:focus {
+  color: rgb(0, 170, 212);
 }

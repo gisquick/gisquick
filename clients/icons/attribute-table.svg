@@ -42,9 +42,9 @@
      inkscape:window-height="1028"
      id="namedview6"
      showgrid="false"
-     inkscape:zoom="10.429825"
-     inkscape:cx="-5.0385095"
-     inkscape:cy="-1.0400304"
+     inkscape:zoom="14.75"
+     inkscape:cx="8.0368516"
+     inkscape:cy="15.433614"
      inkscape:window-x="0"
      inkscape:window-y="25"
      inkscape:window-maximized="1"
@@ -55,42 +55,8 @@
      inkscape:connector-curvature="0"
      style="fill:#444444"
      sodipodi:nodetypes="ssssssssssssssssssssssssss" />
-  <rect
-     style="fill:#400054;fill-opacity:1;stroke:#444444;stroke-width:1.00000012;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-     id="rect2986"
-     width="0.38351554"
-     height="19"
-     x="10.943649"
-     y="6.5" />
-  <rect
-     y="4.25"
-     x="-9.8790102"
-     height="23.5"
-     width="0.38351554"
-     id="rect3756"
-     style="fill:#400054;fill-opacity:1;stroke:#444444;stroke-width:1;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-     transform="matrix(0,-1,1,0,0,0)" />
-  <rect
-     y="4.25"
-     x="-16.191757"
-     height="23.5"
-     width="0.38351554"
-     id="rect3760"
-     style="fill:#400054;fill-opacity:1;stroke:#444444;stroke-width:1;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-     transform="matrix(0,-1,1,0,0,0)" />
-  <rect
-     transform="matrix(0,-1,1,0,0,0)"
-     style="fill:#400054;fill-opacity:1;stroke:#444444;stroke-width:1;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-     id="rect3762"
-     width="0.38351554"
-     height="23.5"
-     x="-22.550159"
-     y="4.25" />
-  <rect
-     y="6.5"
-     x="20.943649"
-     height="19"
-     width="0.38351554"
-     id="rect3764"
-     style="fill:#444444;fill-opacity:1;stroke:#444444;stroke-width:1.00000012;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+  <path
+     style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;color:#000000;fill:#444444;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1.00000012;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
+     d="M 10.78125 6 A 0.50005006 0.50005006 0 0 0 10.4375 6.5 L 10.4375 9 L 4.25 9 A 0.50005 0.50005 0 0 0 3.75 9.5 L 3.75 9.875 A 0.50005 0.50005 0 0 0 3.75 9.96875 A 0.50005 0.50005 0 0 0 4.25 10.375 L 10.4375 10.375 L 10.4375 15.3125 L 4.25 15.3125 A 0.50005 0.50005 0 0 0 3.75 15.8125 L 3.75 16.1875 A 0.50005 0.50005 0 0 0 3.75 16.28125 A 0.50005 0.50005 0 0 0 4.25 16.6875 L 10.4375 16.6875 L 10.4375 21.65625 L 4.25 21.65625 A 0.50005 0.50005 0 0 0 3.75 22.15625 L 3.75 22.5625 A 0.50005 0.50005 0 0 0 3.75 22.65625 A 0.50005 0.50005 0 0 0 4.25 23.0625 L 10.4375 23.0625 L 10.4375 25.5 A 0.50005006 0.50005006 0 0 0 10.9375 26 L 11.3125 26 A 0.50005006 0.50005006 0 0 0 11.8125 25.5 L 11.8125 23.0625 L 20.4375 23.0625 L 20.4375 25.5 A 0.50005006 0.50005006 0 0 0 20.9375 26 L 21.3125 26 A 0.50005006 0.50005006 0 0 0 21.8125 25.5 L 21.8125 23.0625 L 27.75 23.0625 A 0.50005 0.50005 0 0 0 28.25 22.5625 L 28.25 22.15625 A 0.50005 0.50005 0 0 0 27.75 21.65625 L 21.8125 21.65625 L 21.8125 16.6875 L 27.75 16.6875 A 0.50005 0.50005 0 0 0 28.25 16.1875 L 28.25 15.8125 A 0.50005 0.50005 0 0 0 27.75 15.3125 L 21.8125 15.3125 L 21.8125 10.375 L 27.75 10.375 A 0.50005 0.50005 0 0 0 28.25 9.875 L 28.25 9.5 A 0.50005 0.50005 0 0 0 27.75 9 L 21.8125 9 L 21.8125 6.5 A 0.50005006 0.50005006 0 0 0 21.3125 6 L 20.9375 6 A 0.50005006 0.50005006 0 0 0 20.84375 6 A 0.50005006 0.50005006 0 0 0 20.4375 6.5 L 20.4375 9 L 11.8125 9 L 11.8125 6.5 A 0.50005006 0.50005006 0 0 0 11.3125 6 L 10.9375 6 A 0.50005006 0.50005006 0 0 0 10.84375 6 A 0.50005006 0.50005006 0 0 0 10.78125 6 z M 11.8125 10.375 L 20.4375 10.375 L 20.4375 15.3125 L 11.8125 15.3125 L 11.8125 10.375 z M 11.8125 16.6875 L 20.4375 16.6875 L 20.4375 21.65625 L 11.8125 21.65625 L 11.8125 16.6875 z "
+     id="rect2986" />
 </svg>

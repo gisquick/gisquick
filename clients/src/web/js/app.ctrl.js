@@ -10,16 +10,15 @@
       }
     });
 
-  function AppController($scope, $timeout, $q, projectProvider, $mdBottomSheet) {
+  function AppController($scope, $timeout, $q, projectProvider, glPanelService) {
     $scope.ui = {
-      toolPanelOpen: true,
-
       mapView: {
         left: 280,
         bottom: 0
-      }
+      },
+      panel: glPanelService
     };
-    $scope.activeTool = {index:  1, deactivate: angular.noop};
+    $scope.activeTool = {index:  0, deactivate: angular.noop};
     $scope.tools = [
       {
         name: 'identification',
@@ -29,43 +28,77 @@
         index: 0,
         rowsPerPage: 5,
         limit: 10,
+        opened: false,
+        identificationLayer: '',
         template: 'templates/tools/identification.html',
         markerIcon: 'plus',
-        activate: function() {
-          var tool = this;
-          tool.collapsed = true;
-          var sheetPromise = $mdBottomSheet.show({
-            templateUrl: 'templates/tools/identification_table.html',
-            clickOutsideToClose: false,
-            disableParentScroll: false,
-            parent: '.bottom-bar',
-            controller: 'IdentificationController',
-            locals: {tool: tool}
-          });
-          // when identification's attribute table is closed
-          // by $mdBottomSheet.hide
-          sheetPromise.then(function() {
-            if ($scope.activeTool === tool) {
+        showTable: function(layersFeatures) {
+          this.layers = layersFeatures;
+          if (!this.resultsScope) {
+            this.resultsScope = $scope.$new();
+            var tool = this;
+            var panelPromise = glPanelService.showPanel({
+              layout: {
+                vertical: {
+                  templateUrl: 'templates/tools/identification_table_vertical.html',
+                  parent: '#vertical-identification-table',
+                  header: '#vertical-identification-table-header'
+                },
+                horizontal: {
+                  templateUrl: 'templates/tools/identification_table.html',
+                  parent: '.bottom-bar'
+                }
+              },
+              scope: this.resultsScope,
+              controller: 'IdentificationTableController',
+              locals: {tool: tool}
+            });
+            // when identification's attribute table is closed
+            // by calling 'hide' method
+            panelPromise.then(function() {
+              console.log('IDENTIFICATION TABLE CLOSED');
+              if ($scope.activeTool === tool) {
+                $scope.deactivateTool();
+              }
+            });
+            // when identification's attribute table is closed by draging down
+            panelPromise.catch(function() {
               $scope.deactivateTool();
-            }
-          });
-          // when identification's attribute table is closed by draging down
-          sheetPromise.catch(function() {
-            $scope.deactivateTool();
-          });
+            });
+            tool.panelPromise = panelPromise;
+          }
+        },
+        activate: function() {
+          this.resultsScope = null;
+          if (angular.isFunction(this.onActivated)) {
+            this.onActivated();
+          };
         },
         deactivate: function() {
-          $mdBottomSheet.hide();
+          glPanelService.hidePanel();
+          if (angular.isFunction(this.onDeactivated)) {
+            this.onDeactivated();
+          };
         }
       }, {
+        name: 'measure',
         title: 'Measure',
         index: 1,
         tooltip: 'Mesure ...',
         icon: 'ruler',
+        markerIcon: 'plus',
         disabled: true,
         template: 'templates/tools/measure.html',
-        activate: angular.noop,
-        deactivate: angular.noop
+        activate: function() {
+          if (angular.isFunction(this.onActivated)) {
+            this.onActivated();
+          };
+        },
+        deactivate: function() {
+          if (angular.isFunction(this.onDeactivated)) {
+            this.onDeactivated();
+          };
+        }
       }, {
         name: 'print',
         index: 2,
@@ -86,16 +119,15 @@
     };
 
     $scope.activateTool = function(tool) {
+      console.log('activateTool: '+tool.name);
       if ($scope.activeTool) {
         $scope.activeTool.deactivate();
       }
       $scope.activeTool = tool;
       $scope.activeTool.activate();
-      //$scope.ui.panelTop.flex = 'auto';
-      //$scope.ui.toolPanelOpen = true;
       $timeout(function() {
-        $scope.ui.toolPanelOpen = true;
-      }, 650);
+        glPanelService.showToolsPanel();// TODO: add delay param
+      }, 700);
     };
 
     $scope.deactivateTool = function() {
@@ -105,7 +137,7 @@
         $scope.activeTool = null;
         //$scope.ui.panelTop.flex = 'auto';
       }
-      $scope.ui.toolPanelOpen = false;
+      glPanelService.hideToolsPanel();
     };
 
     $scope.initializeApp = function() {
@@ -123,7 +155,23 @@
           });
           projectProvider.map.addControl(scaleLine);
           $scope.project = projectProvider;
-          $scope.activateTool($scope.tools.get('identification'));
+
+          glPanelService.initializePanel(angular.element(
+            document.getElementById('vertical-panel-container')
+          ));
+          glPanelService.loadToolsPanel({
+            templateUrl: 'tools_panel.html',
+            parent: '#tools-panel',
+            scope: $scope.$new()
+          });
+          glPanelService.showContentPanel({
+            templateUrl: 'templates/tools/layers_control.html',
+            parent: '#content-panel',
+            scope: $scope
+          });
+          $timeout(function() {
+            $scope.activateTool($scope.tools.get('identification'));
+          }, 2500);
         }
       });
     };

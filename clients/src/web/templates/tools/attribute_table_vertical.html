@@ -1,0 +1,123 @@
+<div
+  class="attribute-table vertical">
+  <md-tabs
+    md-no-ink
+    md-dynamic-height
+    class="tabs-no-header"
+    md-selected="tool.layerIndex">
+    <md-tab ng-repeat="layer in layers"
+      label="{{ layer.name }}"
+      md-on-select="setActiveLayer(layer)"
+      ng-init="layer.page = 1">
+      <md-list
+        class="attribute-table">
+        <div
+          class="table-row"
+          ng-repeat="attribute in ::layer.attributes">
+          <md-list-item
+            class="table-list-item">
+            <p>
+              <b>{{ ::attribute.label }}: </b>
+              {{ layer.features[layer.page-1].properties[attribute.name] }}
+            </p>
+            <md-menu
+              class="list-menu"
+              md-position-mode="target-right target">
+              <md-button
+                aria-label="Column menu"
+                class="list-item-button list-item-menu-button"
+                ng-click="$mdOpenMenu($event)">
+                <md-icon
+                  md-menu-origin
+                  md-svg-icon="menu-dots">
+                </md-icon>
+              </md-button>
+              <md-menu-content width="4">
+                <md-menu-item>
+                  <md-button ng-click="attribute._filter=true">
+                    Filter
+                  </md-button>
+                </md-menu-item>
+              </md-menu-content>
+            </md-menu>
+          </md-list-item>
+          <md-list-item
+            layout="row"
+            class="list-filter filter-row"
+            ng-class="{
+              visible: attribute._filter,
+              active: attribute.comparator && attribute.filterValue
+            }">
+            <md-input-container>
+              <md-select
+                ng-model="attribute.comparator"
+                placeholder="Comparator">
+                <md-option
+                  ng-repeat="comparator in attribute.comparators"
+                  ng-value="comparator">
+                  {{ ::comparator.label }}
+                </md-option>
+              </md-select>
+            </md-input-container>
+            <md-input-container md-no-float class="md-block" flex>
+              <input
+                ng-model="attribute.filterValue"
+                placeholder="{{ attribute.comparator.format }}">
+              </input>
+            </md-input-container>
+            <md-button
+              aria-label="Remove Filter"
+              class="list-item-button"
+              ng-click="attribute.filterValue=attribute.comparator=null;attribute._filter=false">
+              <md-icon
+                md-svg-icon="delete">
+              </md-icon>
+            </md-button>
+          </md-list-item>
+        </div>
+        <md-list-item></md-list-item>
+      </md-list>
+    </md-tab>
+  </md-tabs>
+  <div
+    ng-hide="ui.panel.secondaryPanel.collapsed"
+    class="list-table-settings"
+    ng-style="{bottom: '3px'}">
+    <div
+      layout="row"
+      class="list-bottom-toolbar">
+      <md-button
+        aria-label="Zoom to feature"
+        class="zoom-to-feature"
+        ng-click="zoomToFeature(activeLayer.features[activeLayer.page])">
+        <md-icon
+          md-svg-icon="zoom-to-feature">
+        </md-icon>
+      </md-button>
+      <span flex></span>
+      <md-button
+        aria-label="Previous"
+        ng-disabled="activeLayer.page === 1"
+        ng-click="activeLayer.page=activeLayer.page-1">
+        <md-icon
+          md-svg-icon="arrow-left">
+        </md-icon>
+      </md-button>
+      <span>{{ activeLayer.page }} of {{ activeLayer.features.length }}</span>
+      <md-button
+        aria-label="Next"
+        ng-disabled="activeLayer.page === activeLayer.features.length"
+        ng-click="activeLayer.page=activeLayer.page+1">
+        <md-icon
+          md-svg-icon="arrow-right">
+        </md-icon>
+      </md-button>
+      <span flex></span>
+      <md-button
+        class="text-button"
+        ng-click="search();activeLayer.page=1">
+        REFRESH
+      </md-button>
+    </div>
+  </div>
+</div>

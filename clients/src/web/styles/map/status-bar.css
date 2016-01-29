@@ -24,3 +24,10 @@ md-icon.logo {
   height: 28px;
   color: #555;
 }
+
+
+@media (max-width: 900px) {
+  .status-bar {
+    display: none;
+  }
+}

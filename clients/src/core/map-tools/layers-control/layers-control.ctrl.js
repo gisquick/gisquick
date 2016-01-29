@@ -6,12 +6,7 @@
     .controller('LayersController', LayersController)
     .controller('OverlaysController', OverlaysController);
 
-  function OverlaysController($scope, $timeout, $q, projectProvider, mapBuilder, layersControl, $mdBottomSheet) {
-    console.log('--- OverlaysController ---');
-
-    $scope.onpagechange = function(page, limit) {
-      console.log('onpagechange');
-    };
+  function OverlaysController($scope, $timeout, $q, projectProvider, mapBuilder, layersControl, glPanelService) {
 
     var queryableLayersIndexes = {};
     projectProvider.layers.list.forEach(function(layer_data, index) {
@@ -22,37 +17,66 @@
       rowsPerPage: 5,
       limit: 50,
       opened: false,
+      viewScope: null,
       showTable: function(layer) {
         var tool = this;
         layerAttributesTool.layerIndex = queryableLayersIndexes[layer.name];
         console.log('opening attributes table');
         if (!tool.opened) {
-          var sheetPromise = $mdBottomSheet.show({
-            templateUrl: 'templates/tools/attribute_table.html',
-            disableParentScroll: false,
-            hasBackdrop: false,
-            parent: '.bottom-bar',
+          var scope = $scope.$new();
+          scope.ui = {
+            panel: glPanelService
+          };
+          glPanelService.hideToolsPanel();
+          var panelPromise = glPanelService.showPanel({
+            layout: {
+              vertical: {
+                templateUrl: 'templates/tools/attribute_table_vertical.html',
+                parent: '#vertical-attribute-table',
+                header: '#vertical-attribute-table-header'
+              },
+              horizontal: {
+                templateUrl: 'templates/tools/attribute_table.html',
+                parent: '.bottom-bar'
+              }
+            },
             controller: 'AttributeTableController',
+            scope: scope,
             locals: {tool: layerAttributesTool}
           });
           tool.opened = true;
-          sheetPromise.then(function() {
+          panelPromise.then(function() {
+            console.log('ATTRIBUTE TABLE CLOSED');
             tool.opened = false;
+            $scope.attributeTableLayer = null;
           });
-          sheetPromise.catch(function() {
+          panelPromise.catch(function() {
             tool.opened = false;
+            $scope.attributeTableLayer = null;
           });
         }
+        $timeout(function() {
+          if (glPanelService.secondaryPanel) {
+            glPanelService.secondaryPanel.title = layer.name;
+          }
+        }, 700);
       },
       deactivate: function() {
-        $mdBottomSheet.hide();
+        $scope.attributeTableLayer = null;
+        glPanelService.hidePanel();
       }
     };
 
     $scope.showAttributeTable = function(layer) {
       console.log('showAttributeTable');
+      $scope.attributeTableLayer = layer;
       layerAttributesTool.showTable(layer);
     };
+
+    $scope.highlightItem = function($event) {
+      // highlight layer item when clicked on checkbox
+      $event.target.parentNode.parentNode.parentNode.focus();
+    }
   }
 
   function LayersController($scope, $timeout, $sce, $q, projectProvider, mapBuilder, layersControl) {
@@ -115,8 +139,6 @@
     }
 
     $scope.layersVisibilityChanged = function(node) {
-      console.log('layersVisibilityChanged 1');
-      console.log(node);
       //$scope.selectedTopic.index = null;
       var visibleLayers = [];
       projectProvider.layers.list.forEach(function(layer_data) {

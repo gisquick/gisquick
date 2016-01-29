@@ -2,13 +2,14 @@
   <div class="tabs-header md-whiteframe-top">
     <span
       class="panel-tab selected">
-      {{ layers[tool.layerIndex].name }}
+      {{ activeLayer.name }}
     </span>
     <div class="tab-end-right"></div>
   </div>
   <div class="close-button-container md-whiteframe-top">
     <div class="tab-end-left"></div>
     <md-button
+      aria-label="Close"
       class="close-button"
       ng-click="tool.deactivate()">
       <md-icon md-svg-icon="circle-x-outline"></md-icon>
@@ -36,11 +37,12 @@
             <tr>
               <th class="zoom" width="10"></th>
               <th ng-repeat="attribute in ::layer.attributes" name="">
-                <div class="filter-row" layout="column">
+                <div
+                  layout="column"
+                  class="filter-row"
+                  ng-class="{active: attribute.comparator && attribute.filterValue}">
                   <label>{{ ::attribute.label }}</label>
-                  <div
-                    layout="row"
-                    ng-class="{active: attribute.comparator && attribute.filterValue}">
+                  <div layout="row">
                     <md-input-container>
                       <md-select
                         ng-model="attribute.comparator"
@@ -59,6 +61,7 @@
                       </input>
                     </md-input-container>
                     <md-button
+                      aria-label="Remove Filter"
                       ng-click="attribute.filterValue='';attribute.comparator=null">
                       <md-icon class="filter-clear-button"
                         md-svg-icon="delete">
@@ -76,7 +79,7 @@
               ng-class="{'md-selected': selectedFeature === feature}">
               <td class="icon">
                 <md-icon
-                  md-svg-icon="zoom-max"
+                  md-svg-icon="zoom-to-feature"
                   ng-click="zoomToFeature(feature)">
                 </md-icon>
               </td>
@@ -87,32 +90,6 @@
           </tbody>
         </table>
       </md-data-table-container>
-<!--       <div class="search-settings" layout="row">
-        <md-input-container class="md-block">
-          <label class="md-label md-no-float">Rows per page:</label>
-          <input ng-model="tool.rowsPerPage" type="number" min="1" max="10"></input>
-        </md-input-container>
-        <md-button
-          ng-click="layer.page=layer.page-1">
-          <md-icon
-            md-svg-icon="arrow-left">
-          </md-icon>
-        </md-button>
-        <md-button ng-click="onpagechange();">
-          <md-icon
-            md-svg-icon="arrow-right">
-          </md-icon>
-        </md-button>
-        <div layout="row"
-          class="search-settings inline-flex"
-          flex>
-          <span flex></span>
-          <md-checkbox ng-model="tool.searchInExtent" aria-label="Search on visible area">
-            Search on visible area
-          </md-checkbox>
-          <md-button ng-click="search()">Search</md-button>
-        </div>
-      </div> -->
     </md-tab>
   </md-tabs>
     <div class="search-settings" layout="row">
@@ -130,14 +107,16 @@
       </md-input-container>
       <md-data-table-pagination
         md-limit="tool.rowsPerPage"
-        md-page="layers[tool.layerIndex].page"
-        md-total="{{ layers[tool.layerIndex].features.length }}"
+        md-page="activeLayer.page"
+        md-total="{{ activeLayer.features.length }}"
         md-trigger="onpagechange">
       </md-data-table-pagination>
       <span flex></span>
-      <div layout="row"
-        class="search-settings inline-flex"
-        flex>
+      <div
+        flex
+        style="flex: 1 1 auto;"
+        layout="row"
+        class="search-settings inline-flex">
         <span flex></span>
         <md-checkbox
           class="md-primary"
@@ -145,7 +124,7 @@
           aria-label="Filter to visible area">
           Filter to visible area
         </md-checkbox>
-        <md-button ng-click="search()">Filter</md-button>
+        <md-button ng-click="search();activeLayer.page=1">Refresh</md-button>
       </div>
     </div>
   <div style="height: 80px;"></div>

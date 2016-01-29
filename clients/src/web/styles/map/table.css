@@ -48,11 +48,8 @@ table[md-data-table] thead label {
 .search-settings button span {
   color: rgba(0, 0, 0, 0.9);
 }
-.xxx.search-settings {
-  display: inline-flex;
-  flex-direction: row;
-}
 .search-settings md-icon {
+  color: #555;
   width: 18px;
 }
 
@@ -88,9 +85,6 @@ md-data-table-pagination {
   min-width: 20px;
   height: 24px;
   margin: 0;
-}
-.filter-row .md-button:hover {
-  background-color: transparent;
 }
 
 .features-panel .md-subheader {
@@ -152,6 +146,9 @@ md-data-table-pagination > div > span {
 table[md-data-table] > tbody > tr {
   height: 32px;
 }
+table[md-data-table] > tbody > tr:hover {
+  background-color: #ffffe0!important;
+}
 
 table[md-data-table] > thead:not([md-table-progress]) > tr > th > div {
   height: 36px;
@@ -166,7 +163,8 @@ table[md-data-table] > thead:not([md-table-progress]) > tr > th > div {
   height: 60px;
   align-items: flex-start;
 }
-.attribute-table .filter-row .active, .attribute-table .filter-row .active md-input-container .md-input {
+.attribute-table .filter-row.active,
+.attribute-table .filter-row.active md-input-container .md-input {
   color: rgba(0, 170, 212, 0.87);
 }
 .attribute-table .filter-row .layout-row {
@@ -180,6 +178,7 @@ table[md-data-table] > thead:not([md-table-progress]) > tr > th > div {
 }
 
 /*table[md-data-table] > thead:not([md-table-progress]) > tr > th*/
+.identification .empty-table,
 .identification table[md-data-table] > thead > tr > th > div {
   color: #fff;
   line-height: 26px;
@@ -226,6 +225,14 @@ label.md-no-float {
   line-height: 38px;
 }
 
+table[md-data-table] > thead:not([md-table-progress]) > tr > th {
+  font-size: 13px;
+}
+.identification .empty-table {
+  font-size: 13px;
+  font-weight: bold;
+  padding-left: 12px;
+}
 /*
 .tabs-header {
   position: absolute;
@@ -270,7 +277,7 @@ label.md-no-float {
   top: -28px;
   height: 26px;
   background-color: rgb(250, 250, 250);
-  color: #333;
+  color: #555;
   border-left: 1px solid #333;
   border-top: 2px solid #333;
   border-top-left-radius: 5px;
@@ -413,4 +420,124 @@ label.md-no-float {
   border-top-left-radius: 5px;
   background-color: rgb(250, 250, 250);
   box-shadow: -3px 3px 3px 0 rgba(0, 0, 0, 0.15), -5px 0px 4px 0 rgba(0, 0, 0, 0.1), -4px -3px 3px -2px rgba(0, 0, 0, 0.08);
+}
+
+md-list.attribute-table md-list-item {
+  min-height: 32px;
+  height: 32px;
+  font-size: 14px;
+}
+md-list.attribute-table md-list-item.list-item-header {
+  background-color: #ddd;
+  font-weight: bold;
+}
+
+
+.vertical-table-container {
+  position: relative;
+}
+
+.vertical-table-container md-bottom-sheet {
+  position: static;
+  transition: none;
+}
+
+.identification-panel-toggle-button {
+  position: absolute;
+  top: 10;
+  z-index: 50;
+  right: 0;
+}
+
+/*.attribute-table .panel-header,
+.identification-table .panel-header {
+  position: absolute;
+  z-index: 50;
+  top: 0px;
+  width: 100%;
+}*/
+
+.attribute-table .table-row {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 1px;
+}
+.attribute-table .table-list-item {
+  xborder-bottom: 1px solid #eee;
+  padding: 0;
+}
+
+
+.attribute-table.vertical .attribute-table,
+.identification-table.vertical .attribute-table {
+  margin: 6px 5px 0 5px;
+  border-top: 1px solid #eee;
+}
+
+.list-table-settings {
+  position: absolute;
+  xposition: fixed;
+  left: 0;
+  font-size: 13.5px;
+  width: calc(100% - 17px);
+  font-size: 13px;
+  color: #555;
+  margin-right: 17px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-top: 3px solid white;
+  transition: 0.45s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
+}
+.list-table-settings.ng-hide {
+  opacity: 0;
+}
+.list-bottom-toolbar {
+  text-align: center;
+  max-height: 30px;
+  line-height: 30px;
+  border-top: 1px solid #aaa;
+  border-bottom: 1px solid #aaa;
+  margin-left: 17px;
+}
+.list-bottom-toolbar .text {
+  padding: 0 6px;
+}
+.list-bottom-toolbar .md-button {
+  min-width: 36px;
+  min-height: 30px;
+  width: 36px;
+  height: 30px;
+  line-height: 30px;
+  padding: 0 5px;
+  margin: 0;
+}
+.list-bottom-toolbar .md-button.text-button {
+  width: auto;
+}
+.list-bottom-toolbar md-icon {
+  color: #555;
+  width: 16px;
+  height: 16px;
+}
+
+.attribute-table md-list-item.list-filter {
+  min-height: 0;
+  height: 0;
+  overflow: hidden;
+  transition: height 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
+}
+.attribute-table md-list-item.list-filter.visible {
+  height: 32px;
+}
+md-list-item.list-filter .md-select-value {
+  font-size: 13px;
+}
+md-list-item.list-filter md-input-container {
+  font-size: 13px;
+  min-height: 32px;
+  height: 32px;
+  margin: 0 6px 0 0;
+}
+md-list-item.list-filter md-icon {
+  color: #999;
+  width: 14px;
+  height: 14px;
 }

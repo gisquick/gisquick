@@ -30,7 +30,7 @@
         limit: 10,
         opened: false,
         identificationLayer: '',
-        template: 'templates/tools/identification.html',
+        template: 'templates/tools/identification/form.html',
         markerIcon: 'plus',
         showTable: function(layersFeatures) {
           this.layers = layersFeatures;
@@ -40,12 +40,12 @@
             var panelPromise = glPanelService.showPanel({
               layout: {
                 vertical: {
-                  templateUrl: 'templates/tools/identification_table_vertical.html',
+                  templateUrl: 'templates/tools/identification/list_table.html',
                   parent: '#vertical-identification-table',
                   header: '#vertical-identification-table-header'
                 },
                 horizontal: {
-                  templateUrl: 'templates/tools/identification_table.html',
+                  templateUrl: 'templates/tools/identification/table.html',
                   parent: '.bottom-bar'
                 }
               },

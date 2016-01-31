@@ -31,12 +31,12 @@
           var panelPromise = glPanelService.showPanel({
             layout: {
               vertical: {
-                templateUrl: 'templates/tools/attribute_table_vertical.html',
+                templateUrl: 'templates/tools/attribute_table/list_table.html',
                 parent: '#vertical-attribute-table',
                 header: '#vertical-attribute-table-header'
               },
               horizontal: {
-                templateUrl: 'templates/tools/attribute_table.html',
+                templateUrl: 'templates/tools/attribute_table/table.html',
                 parent: '.bottom-bar'
               }
             },

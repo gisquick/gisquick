@@ -362,11 +362,17 @@ class ProjectPage(WizardPage):
                             break
                     if 'apikey' in base_layer:
                         dialog.bing_apikey.setText(base_layer['apikey'])
+                else:
+                    # at least one base layer must be enabled (default is Blank)
+                    dialog.blank.setChecked(True)
 
                 if base_layer['visible']:
                     dialog.default_baselayer.setCurrentIndex(
                         dialog.default_baselayer.findData(base_layer['name'])
                     )
+        else:
+            # at least one base layer must be enabled (default is Blank)
+            dialog.blank.setChecked(True)
 
         overlays_data = extract_layers(metadata['overlays'])
         geojson_overlays = opt_value(metadata, 'vector_layers.layers', {}).keys()
@@ -480,11 +486,19 @@ class ProjectPage(WizardPage):
         resolutions = self.plugin.project_layers_resolutions()
         self._update_min_max_scales(resolutions)
 
+        def check_base_layer_enabled():
+            msg = "At least one base layer must be enabled"
+            if dialog.default_baselayer.count() < 1:
+                self._show_messages([(MSG_ERROR, msg)])
+            else:
+                self._remove_messages([(MSG_ERROR, msg)])
+
         def blank_toggled(checked):
             if checked:
                 dialog.default_baselayer.insertItem(0, 'Blank', 'Blank')
             else:
                 dialog.default_baselayer.removeItem(0)
+            check_base_layer_enabled()
 
         def osm_toggled(checked, project_resolutions=resolutions):
             resolutions = set(project_resolutions)
@@ -500,6 +514,7 @@ class ProjectPage(WizardPage):
                 resolutions.update(BING_LAYERS[0]['resolutions'])
             
             self._update_min_max_scales(resolutions)
+            check_base_layer_enabled()
 
         def check_apikey(text, provider):
             msg_missing = u"{0} ApiKey must be defined.".format(provider)
@@ -546,7 +561,8 @@ class ProjectPage(WizardPage):
                 check_apikey(dialog.mapbox_apikey.text(), 'MapBox')
             else:
                 check_apikey(None, 'MapBox')
-                
+            check_base_layer_enabled()
+
         def bing_apikey_changed(text):
             check_apikey(text, 'BingMaps')
 
@@ -576,6 +592,7 @@ class ProjectPage(WizardPage):
                 check_apikey(dialog.bing_apikey.text(), 'BingMaps')
             else:
                 check_apikey(None, 'BingMaps')
+            check_base_layer_enabled()
 
         def bing_layer_changed(index):
             position = 1 if dialog.blank.isChecked() else 0

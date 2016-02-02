@@ -13,8 +13,8 @@ Web.
 * setting access constraints
 * setting project expiration
 
-![GIS.lab Web QGIS plugin (Base Layers)](doc/screen/gislab-web-qgis-plugin.jpg)
-![GIS.lab Web QGIS plugin (Project)](doc/screen/gislab-web-qgis-plugin2.jpg)
+![GIS.lab Web QGIS plugin (Base Layers)](doc/screen/gislab-web-qgis-plugin.png)
+![GIS.lab Web QGIS plugin (Project)](doc/screen/gislab-web-qgis-plugin2.png)
 
 
 ### GIS.lab Web
@@ -28,8 +28,8 @@ Web.
 * measure
 * print
 
-![GIS.lab Web (Basic UI)](doc/screen/gislab-web.jpg)
-![GIS.lab Web (Attributes)](doc/screen/gislab-web2.jpg)
+![GIS.lab Web (Basic UI)](doc/screen/gislab-web.png)
+![GIS.lab Web (Attributes)](doc/screen/gislab-web2.png)
 
 
 ### GIS.lab Web User Console

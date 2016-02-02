@@ -1,14 +1,11 @@
-GIS.lab Web New Generation (in development)
-===========================================
+# GIS.lab Web New Generation (in development)
 New generation of GIS.lab Web infrastructure for publishing QGIS projects in
 Web.
 
 
-Features
---------
+## Features
 
-GIS.lab QGIS plugin
-...................
+### GIS.lab QGIS plugin
 
 TODO: screenshot
 
@@ -19,24 +16,21 @@ TODO: screenshot
 * setting project expiration
 
 
-GIS.lab Web
-...........
+### GIS.lab Web
 
 TODO: screenshot
 
 * responsive web interface design
 
 
-GIS.lab Web User Console
-........................
+### GIS.lab Web User Console
 
 TODO: screenshot
 
 * projects and OWS services management
 
 
-GIS.lab Mobile
-..............
+### GIS.lab Mobile
 
 TODO: screenshot
 
@@ -44,13 +38,11 @@ TODO: screenshot
   as web inteface with native UI
 
 
-Tiles cache
-...........
+### Tiles cache
 * automatic tiles caching
 
 
-Core technologies
------------------
+## Core technologies
 * QGIS Desktop and Mapserver
 * OpenLayers 3
 * AngularJS, Angular UI, Angular Material
@@ -60,8 +52,7 @@ Core technologies
 * Python
 
 
-Typical work flow
------------------
+## Typical work flow
 * load, configure and style layers in QGIS Desktop project
 * install QGIS GIS.lab Web plugin to publish QGIS project
 * copy QGIS project with all associated data to GIS.lab Web server
@@ -69,8 +60,7 @@ Typical work flow
 * optionaly install and use Android client interface
 
 
-Source code layout
-------------------
+## Source code layout
 * **clients:**    web and mobile client interfaces
 * **server:**     Django server
 * **qgis:**       QGIS plugin
@@ -82,8 +72,7 @@ Source code layout
 * **dev/publish/user:** directory for QGIS projects publishing (as user 'user')
 
 
-Development environment
------------------------
+## Development environment
 **Dependencies:**  
 * Linux or Mac
 * Git
@@ -138,15 +127,13 @@ $ python ./manage.py test webgis.viewer.tests
 * QGIS Mapserver logs can be found in '/var/log/lighttpd' directory
 
 
-Configuration
--------------
+## Configuration
 Configuration is done by Django project settings file. Good practise is to place
 *settings_custom.py* file to the same directory where *settings.py* to override
 default values.
 
 
-Packaging
----------
+## Packaging
 *TODO: add instructions how to clean environment before build*
 
 * GIS.lab Web QGIS plugin
@@ -180,6 +167,5 @@ $ export ANDROID_HOME=/home/vagrant/dev/apps/android-sdk-linux \
   cordova build android
 ```
 
-License
--------
+## License
 GNU GPL 2.0 and higher versions.

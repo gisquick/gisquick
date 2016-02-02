@@ -6,11 +6,46 @@ Web.
 
 Features
 --------
-* publishing projects created in QGIS Desktop via web interface
+
+GIS.lab QGIS plugin
+...................
+
+TODO: screenshot
+
+* building publishing bundle from QGIS Desktop project
+* adding base layers
+* creating topics from layers list
+* setting access constraints
+* setting project expiration
+
+
+GIS.lab Web
+...........
+
+TODO: screenshot
+
 * responsive web interface design
-* user console
+
+
+GIS.lab Web User Console
+........................
+
+TODO: screenshot
+
+* projects and OWS services management
+
+
+GIS.lab Mobile
+..............
+
+TODO: screenshot
+
 * dedicated hybrid Android client interface built on top of the same code base
   as web inteface with native UI
+
+
+Tiles cache
+...........
 * automatic tiles caching
 
 

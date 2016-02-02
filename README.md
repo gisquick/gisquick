@@ -7,20 +7,29 @@ Web.
 
 ### GIS.lab QGIS plugin
 
-TODO: screenshot
-
-* building publishing bundle from QGIS Desktop project
+* building GIS.lab Web bundle from any QGIS Desktop project
 * adding base layers
 * creating topics from layers list
 * setting access constraints
 * setting project expiration
 
+![GIS.lab Web QGIS plugin (Base Layers)](doc/screen/gislab-web-qgis-plugin.jpg)
+![GIS.lab Web QGIS plugin (Project)](doc/screen/gislab-web-qgis-plugin2.jpg)
+
 
 ### GIS.lab Web
 
-TODO: screenshot
+* responsive web design
+* topics
+* base and overlay layers
+* legend
+* identification (WFS)
+* attribute data filter
+* measure
+* print
 
-* responsive web interface design
+![GIS.lab Web (Basic UI)](doc/screen/gislab-web.jpg)
+![GIS.lab Web (Attributes)](doc/screen/gislab-web2.jpg)
 
 
 ### GIS.lab Web User Console
@@ -42,7 +51,15 @@ TODO: screenshot
 * automatic tiles caching
 
 
-## Core technologies
+## Work flow
+* create any project in QGIS Desktop
+* install QGIS GIS.lab Web plugin and run wizard to publish QGIS project
+* copy QGIS project with all associated data to GIS.lab Web server
+* open GIS.lab Web User Console and launch published project in web interface
+* optionaly install and use GIS.lab Mobile (Android) client interface
+
+
+## Technologies
 * QGIS Desktop and Mapserver
 * OpenLayers 3
 * AngularJS, Angular UI, Angular Material
@@ -50,14 +67,6 @@ TODO: screenshot
 * Cordova
 * Django
 * Python
-
-
-## Typical work flow
-* load, configure and style layers in QGIS Desktop project
-* install QGIS GIS.lab Web plugin to publish QGIS project
-* copy QGIS project with all associated data to GIS.lab Web server
-* open GIS.lab Web User Console and launch published project in web interface
-* optionaly install and use Android client interface
 
 
 ## Source code layout

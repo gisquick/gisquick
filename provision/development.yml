@@ -26,6 +26,9 @@
     proxy_env:
       http_proxy: "{{ lookup('env','APT_PROXY') }}"
 
+    synced_folder: /vagrant
+
+
     # QGIS
     qgis_repo: ubuntugis-nightly
 
@@ -39,7 +42,7 @@
     android_sdk_version: 24.1.2
     android_build_tools_version: 22.0.1
     android_api_version: 22
-    android_root: /home/vagrant/dev/apps/android-sdk-linux
+    android_root: /home/{{ ansible_ssh_user }}/dev/apps/android-sdk-linux
 
     # cordova
     cordova_version: 5.1.1
@@ -68,33 +71,33 @@
   tasks:
     - name: Create shared development directory
       file:
-        path: /vagrant/dev
+        path: "{{ synced_folder }}/dev"
         state: directory
-      sudo_user: vagrant
+      sudo_user: "{{ ansible_ssh_user }}"
 
     - name: Create global directories in shared development directory
       file:
-        path: /vagrant/dev/{{ item }}
+        path: "{{ synced_folder }}/dev/{{ item }}"
         state: directory
       with_items:
         - cache/tar
         - cache/pip
-      sudo_user: vagrant
+      sudo_user: "{{ ansible_ssh_user }}"
 
 
     - name: Create local development directory
       file:
-        path: /home/vagrant/dev
+        path: /home/{{ ansible_ssh_user }}/dev
         state: directory
-      sudo_user: vagrant
+      sudo_user: "{{ ansible_ssh_user }}"
 
     - name: Create global directories in local development directory
       file:
-        path: /home/vagrant/dev/{{ item }}
+        path: /home/{{ ansible_ssh_user }}/dev/{{ item }}
         state: directory
       with_items:
         - apps
-      sudo_user: vagrant
+      sudo_user: "{{ ansible_ssh_user }}"
 
 
     ### BASIC OS
@@ -170,23 +173,23 @@
     # Python
     - name: Install GIS.lab Web Python requirements
       pip:
-        virtualenv: /home/vagrant/.virtualenvs/gislab-web
-        requirements: /vagrant/server/requirements.txt
+        virtualenv: /home/{{ ansible_ssh_user }}/.virtualenvs/gislab-web
+        requirements: "{{ synced_folder }}/server/requirements.txt"
         virtualenv_site_packages: yes
-        extra_args: "--download-cache=/vagrant/dev/cache/pip"
+        extra_args: "--download-cache={{ synced_folder }}/dev/cache/pip"
         state: present
-      sudo_user: vagrant
+      sudo_user: "{{ ansible_ssh_user }}"
       tags:
         - dep-python
 
     - name: Install GIS.lab Web Python development requirements
       pip:
-        virtualenv: /home/vagrant/.virtualenvs/gislab-web
-        requirements: /vagrant/server/requirements-dev.txt
+        virtualenv: /home/{{ ansible_ssh_user }}/.virtualenvs/gislab-web
+        requirements: "{{ synced_folder }}/server/requirements-dev.txt"
         virtualenv_site_packages: yes
-        extra_args: "--download-cache=/vagrant/dev/cache/pip"
+        extra_args: "--download-cache={{ synced_folder }}/dev/cache/pip"
         state: present
-      sudo_user: vagrant
+      sudo_user: "{{ ansible_ssh_user }}"
       tags:
         - dep-python
 
@@ -200,9 +203,9 @@
         &&
         add2virtualenv server
       args:
-        chdir: /vagrant
+        chdir: "{{ synced_folder }}"
         executable: /bin/bash
-      sudo_user: vagrant
+      sudo_user: "{{ ansible_ssh_user }}"
       tags:
         - dep-python
 
@@ -212,8 +215,8 @@
         curl {{ nvm_url }}/v{{ nvm_version }}/install.sh
         | bash
       args:
-        creates: /home/vagrant/.nvm/nvm.sh
-      sudo_user: vagrant
+        creates: /home/{{ ansible_ssh_user }}/.nvm/nvm.sh
+      sudo_user: "{{ ansible_ssh_user }}"
       tags:
         - dep-javascript
 
@@ -224,7 +227,7 @@
         . "$NVM_DIR/nvm.sh"
         &&
         nvm install v{{ node_version }}
-      sudo_user: vagrant
+      sudo_user: "{{ ansible_ssh_user }}"
       tags:
         - dep-javascript
 
@@ -237,26 +240,26 @@
         nvm use v{{ node_version }}
         &&
         npm install -g gulp
-      sudo_user: vagrant
+      sudo_user: "{{ ansible_ssh_user }}"
       tags:
         - dep-javascript
 
 
     - name: Create local development directory for Node modules
       file:
-        path: /home/vagrant/dev/node_modules
+        path: /home/{{ ansible_ssh_user }}/dev/node_modules
         state: directory
-      sudo_user: vagrant
+      sudo_user: "{{ ansible_ssh_user }}"
       tags:
         - dep-javascript
 
     - name: Symlink Node modules from local development directory
       file:
-        src: /home/vagrant/dev/node_modules
-        dest: /vagrant/clients/node_modules
+        src: /home/{{ ansible_ssh_user }}/dev/node_modules
+        dest: "{{ synced_folder }}/clients/node_modules"
         state: link
         force: yes
-      sudo_user: vagrant
+      sudo_user: "{{ ansible_ssh_user }}"
       tags:
         - dep-javascript
 
@@ -270,8 +273,8 @@
         &&
         npm prune
       args:
-        chdir: /vagrant/clients
-      sudo_user: vagrant
+        chdir: "{{ synced_folder }}/clients"
+      sudo_user: "{{ ansible_ssh_user }}"
       tags:
         - dep-javascript
 
@@ -289,8 +292,8 @@
         - npm install web
         - npm install mobile
       args:
-        chdir: /vagrant/clients
-      sudo_user: vagrant
+        chdir: "{{ synced_folder }}/clients"
+      sudo_user: "{{ ansible_ssh_user }}"
       tags:
         - dep-javascript
 
@@ -299,37 +302,37 @@
       command: >
         wget
         {{ wget_opts }}
-        -O /vagrant/dev/cache/tar/android-sdk_r{{ android_sdk_version }}-linux.tgz
+        -O {{ synced_folder }}/dev/cache/tar/android-sdk_r{{ android_sdk_version }}-linux.tgz
         {{ android_sdk_url }}/android-sdk_r{{ android_sdk_version }}-linux.tgz
-      sudo_user: vagrant
+      sudo_user: "{{ ansible_ssh_user }}"
       tags:
         - dep-android
 
     - name: Install Android SDK
       command: >
         tar -xzf
-        /vagrant/dev/cache/tar/android-sdk_r{{ android_sdk_version }}-linux.tgz
-        -C /home/vagrant/dev/apps
+        {{ synced_folder }}/dev/cache/tar/android-sdk_r{{ android_sdk_version }}-linux.tgz
+        -C /home/{{ ansible_ssh_user }}/dev/apps
       args:
         creates: "{{ android_root }}/tools/android"
-      sudo_user: vagrant
+      sudo_user: "{{ ansible_ssh_user }}"
       tags:
         - dep-android
 
     - name: Install script for non-interactive Android platform, tools and API installation
       template:
         src: templates/android/android-sdk-install.expect.j2
-        dest: /home/vagrant/dev/apps/android-sdk-install.expect
-      sudo_user: vagrant
+        dest: /home/{{ ansible_ssh_user }}/dev/apps/android-sdk-install.expect
+      sudo_user: "{{ ansible_ssh_user }}"
       tags:
         - dep-android
 
     - name: Install Android platform, tools and API
       command: >
-        expect /home/vagrant/dev/apps/android-sdk-install.expect
+        expect /home/{{ ansible_ssh_user }}/dev/apps/android-sdk-install.expect
       args:
         creates: "{{ android_root }}/platform-tools/adb"
-      sudo_user: vagrant
+      sudo_user: "{{ ansible_ssh_user }}"
       tags:
         - dep-android
 
@@ -343,7 +346,7 @@
         nvm use v{{ node_version }}
         &&
         npm install -g cordova@{{ cordova_version }}
-      sudo_user: vagrant
+      sudo_user: "{{ ansible_ssh_user }}"
       tags:
         - dep-cordova
 
@@ -357,8 +360,8 @@
         &&
         cordova platform add android@{{ cordova_pf_android_version }} || true
       args:
-        chdir: /vagrant/clients/mobile/cordova-app
-      sudo_user: vagrant
+        chdir: "{{ synced_folder }}/clients/mobile/cordova-app"
+      sudo_user: "{{ ansible_ssh_user }}"
       tags:
         - dep-cordova
 
@@ -380,44 +383,44 @@
         - cordova-plugin-geolocation@0.3.6
         - cordova-plugin-inappbrowser
       args:
-        chdir: /vagrant/clients/mobile/cordova-app
-      sudo_user: vagrant
+        chdir: "{{ synced_folder }}/clients/mobile/cordova-app"
+      sudo_user: "{{ ansible_ssh_user }}"
       tags:
         - dep-cordova
 
     # example data
     - name: Create directory for QGIS projects publishing
       file:
-        path: /vagrant/dev/publish/user/natural-earth
+        path: "{{ synced_folder }}/dev/publish/user/natural-earth"
         state: directory
         recurse: yes
-      sudo_user: vagrant
+      sudo_user: "{{ ansible_ssh_user }}"
       tags:
         - example-data
 
     - name: Install example QGIS project
       copy:
         src: ../qgis/project/natural-earth/
-        dest: /vagrant/dev/publish/user/natural-earth/
-      sudo_user: vagrant
+        dest: "{{ synced_folder }}/dev/publish/user/natural-earth/"
+      sudo_user: "{{ ansible_ssh_user }}"
       tags:
         - example-data
 
     ### DJANGO SERVER
     - name: Remove Django project directory
       file:
-        path: /vagrant/dev/django
+        path: "{{ synced_folder }}/dev/django"
         state: absent
-      sudo_user: vagrant
+      sudo_user: "{{ ansible_ssh_user }}"
       tags:
         - server-django
 
     - name: Create Django project directory
       file:
-        path: /vagrant/dev/django/devproj
+        path: "{{ synced_folder }}/dev/django/devproj"
         state: directory
         recurse: yes
-      sudo_user: vagrant
+      sudo_user: "{{ ansible_ssh_user }}"
       tags:
         - server-django
 
@@ -435,27 +438,27 @@
         devproj
         dev/django
       args:
-        chdir: /vagrant
+        chdir: "{{ synced_folder }}"
         executable: /bin/bash
-      sudo_user: vagrant
+      sudo_user: "{{ ansible_ssh_user }}"
       tags:
         - server-django
 
     - name: Install custom Django project configuration
       template:
         src: templates/django/settings_custom.py.j2
-        dest: /vagrant/dev/django/devproj/settings_custom.py
-      sudo_user: vagrant
+        dest: "{{ synced_folder }}/dev/django/devproj/settings_custom.py"
+      sudo_user: "{{ ansible_ssh_user }}"
       tags:
         - server-django
 
     - name: Build Django project database
       django_manage:
         command: migrate
-        app_path: /vagrant/dev/django
+        app_path: "{{ synced_folder }}/dev/django"
         settings: devproj.settings
-        virtualenv: /home/vagrant/.virtualenvs/gislab-web
-      sudo_user: vagrant
+        virtualenv: /home/{{ ansible_ssh_user }}/.virtualenvs/gislab-web
+      sudo_user: "{{ ansible_ssh_user }}"
       tags:
         - server-django
 
@@ -471,9 +474,9 @@
         GislabUser.objects.create_superuser('admin', 'admin@gislab.io', 'admin')"
         | python ./manage.py shell
       args:
-        chdir: /vagrant/dev/django
+        chdir: "{{ synced_folder }}/dev/django"
         executable: /bin/bash
-      sudo_user: vagrant
+      sudo_user: "{{ ansible_ssh_user }}"
       tags:
         - server-django
 
@@ -489,9 +492,9 @@
         GislabUser.objects.create_user('user', 'user@gislab.io', 'user')"
         | python ./manage.py shell
       args:
-        chdir: /vagrant/dev/django
+        chdir: "{{ synced_folder }}/dev/django"
         executable: /bin/bash
-      sudo_user: vagrant
+      sudo_user: "{{ ansible_ssh_user }}"
       tags:
         - server-django
 
@@ -507,8 +510,8 @@
         &&
         gulp
       args:
-        chdir: /vagrant/clients
-      sudo_user: vagrant
+        chdir: "{{ synced_folder }}/clients"
+      sudo_user: "{{ ansible_ssh_user }}"
       tags:
         - client-web
 

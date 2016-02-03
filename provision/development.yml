@@ -395,21 +395,6 @@
       tags:
         - example-data
 
-    - name: Download example data from GIS.lab project
-      shell: >
-        wget
-        {{ wget_opts }}
-        {{ gislab_git_dl_url }}/master/gislab-project/natural-earth/{{ item }}
-      with_items:
-        - natural-earth.sqlite
-        - central-europe.qgs
-        - central-europe.meta
-      args:
-        chdir: /vagrant/dev/publish/user/natural-earth
-      sudo_user: vagrant
-      tags:
-        - example-data
-
     - name: Install example QGIS project
       copy:
         src: ../qgis/project/natural-earth/

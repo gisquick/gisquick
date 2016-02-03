@@ -24,8 +24,8 @@ Web.
 * base and overlay layers
 * legend
 * identification (WFS)
-* attribute data filter
-* measure
+* attribute table data filtering (WFS)
+* measurement - coordinates, length, area
 * print
 
 ![GIS.lab Web (Basic UI)](doc/screen/gislab-web.png)
@@ -48,7 +48,7 @@ TODO: screenshot
 
 
 ### Tiles cache
-* automatic tiles caching
+* built-in automatic tiles caching
 
 
 ## Work flow

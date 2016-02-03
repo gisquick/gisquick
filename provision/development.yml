@@ -26,12 +26,16 @@
     proxy_env:
       http_proxy: "{{ lookup('env','APT_PROXY') }}"
 
+    # QGIS
+    qgis_repo: ubuntugis-nightly
+
     # node
+    nvm_url: https://raw.githubusercontent.com/creationix/nvm
     nvm_version: 0.29.0
     node_version: 4.2.2
 
     # android
-    android_sdk_url_base: http://dl.google.com/android
+    android_sdk_url: http://dl.google.com/android
     android_sdk_version: 24.1.2
     android_build_tools_version: 22.0.1
     android_api_version: 22
@@ -111,7 +115,7 @@
 
     - name: Add QGIS Master Nightly UbuntuGIS repository
       apt_repository:
-        repo: 'deb http://qgis.org/ubuntugis-nightly trusty main'
+        repo: 'deb http://qgis.org/{{ qgis_repo }} trusty main'
         state: present
       tags:
         - basic-os
@@ -205,7 +209,7 @@
     # Javascript
     - name: Install NVM
       shell: >
-        curl https://raw.githubusercontent.com/creationix/nvm/v{{ nvm_version }}/install.sh
+        curl {{ nvm_url }}/v{{ nvm_version }}/install.sh
         | bash
       args:
         creates: /home/vagrant/.nvm/nvm.sh
@@ -296,7 +300,7 @@
         wget
         {{ wget_opts }}
         -O /vagrant/dev/cache/tar/android-sdk_r{{ android_sdk_version }}-linux.tgz
-        {{ android_sdk_url_base }}/android-sdk_r{{ android_sdk_version }}-linux.tgz
+        {{ android_sdk_url }}/android-sdk_r{{ android_sdk_version }}-linux.tgz
       sudo_user: vagrant
       tags:
         - dep-android

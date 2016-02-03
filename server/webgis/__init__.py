@@ -1,1 +1,1 @@
-VERSION = ('dev',)
+VERSION = "dev"

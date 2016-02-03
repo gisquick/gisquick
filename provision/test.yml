@@ -31,7 +31,7 @@
         app_path: /vagrant/dev/django
         apps: webgis.viewer
         settings: devproj.settings
-        virtualenv: /home/vagrant/.virtualenvs/gislab-web
-      sudo_user: vagrant
+        virtualenv: /home/{{ ansible_ssh_user }}/.virtualenvs/gislab-web
+      sudo_user: "{{ ansible_ssh_user }}"
 
 # vim: set ts=8 sts=2 sw=2 et:

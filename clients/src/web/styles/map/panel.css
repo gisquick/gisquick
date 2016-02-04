@@ -37,7 +37,7 @@
   width: 20px;
   padding: 0;
   margin: 0;
-  background-color: #333;
+  background-color: rgba(45, 45, 45, 0.6);
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
 }
 .panel-collapse-button.md-button:hover {
@@ -260,4 +260,33 @@ md-tabs-wrapper md-icon {
 }
 .baselayer-container {
   margin-top: 10px;
+}
+
+.panel-tool md-select {
+  margin: 10px 0 2px 0;
+}
+
+.panel-tool md-select-value {
+  padding: 0;
+}
+
+.panel-tool md-input-container {
+  margin: 18px 4px 0 0;
+  padding: 8px 0px 2px 0px;
+  height: 36px;
+}
+
+.panel-tool md-input-container md-select {
+  margin: 0;
+}
+
+.panel-tool {
+  padding: 5px;
+}
+.panel-tool md-input-container input {
+  height: 29px;
+  padding: 0;
+}
+.panel-tool .md-button {
+  margin: 6px 0 0 0;
 }

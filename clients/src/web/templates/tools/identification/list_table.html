@@ -1,15 +1,23 @@
-<div class="identification-table vertical">
+<div
+  class="identification-table vertical"
+  ng-init="tool.config.featureAutoselect=true">
   <md-tabs
     md-no-ink
     md-dynamic-height
     class="panel-content"
+    md-selected="tool.data.activeLayerIndex"
     md-autoselect="false">
-    <md-tab ng-repeat="layer in tool.layers"
-      label="{{ layer.name }}"
-      ng-init="layer.page = 1;"
-      md-on-select="setActiveLayer(layer);selectFeature(layer.features[layer.page-1])">
-      
-      <!-- <md-subheader class="md-primary">Panel</md-subheader> -->
+    <md-tab ng-repeat="layer in tool.data.layers"
+      ng-disabled="layer.features.length === 0"
+      md-on-select="setActiveLayer(layer);">
+      <md-tab-label>
+        <span
+          class="tab-label"
+          ng-class="{hidden: layer.features.length === 0}">
+          {{ layer.features.length === 0? '' :  layer.name}}
+        </span>
+      </md-tab-label>
+      <md-tab-body>
       <md-list
         class="attribute-table"
         style="padding:0;">
@@ -24,11 +32,19 @@
         </md-list-item>
         <md-list-item></md-list-item>
       </md-list>
+      </md-tab-body>
+    </md-tab>
+    <md-tab>
+      <md-tab-label>
+        <span class="tab-label hidden"></span>
+      </md-tab-label>
+      <md-tab-body>
+        <div class="empty-list-table">No features</div>
+      </md-tab-body>
     </md-tab>
   </md-tabs>
-  </perfect-scrollbar>
   <div
-    ng-hide="ui.panel.secondaryPanel.collapsed"
+    ng-hide="ui.panel.secondaryPanel.collapsed || !tool.data.activeLayer"
     class="list-table-settings"
     ng-style="{top: (ui.panel.secondaryPanel.height-6)+'px'}">
     <div
@@ -37,7 +53,7 @@
       <md-button
         aria-label="Zoom to feature"
         class="zoom-to-feature"
-        ng-click="zoomToFeature(activeLayer.features[activeLayer.page-1])">
+        ng-click="zoomToFeature(tool.data.activeLayer.selectedFeature)">
         <md-icon
           md-svg-icon="zoom-to-feature">
         </md-icon>
@@ -45,17 +61,25 @@
       <span flex></span>
       <md-button
         aria-label="Previous"
-        ng-disabled="activeLayer.page === 1"
-        ng-click="activeLayer.page=activeLayer.page-1;selectFeature(activeLayer.features[activeLayer.page-1])">
+        ng-disabled="tool.data.activeLayer.page === 1"
+        ng-click="
+          tool.data.activeLayer.page=tool.data.activeLayer.page-1;
+          selectFeature(tool.data.activeLayer.features[tool.data.activeLayer.page-1])
+        ">
         <md-icon
           md-svg-icon="arrow-left">
         </md-icon>
       </md-button>
-      <span class="text">{{ activeLayer.page }} of {{ activeLayer.features.length }}</span>
+      <span class="text">
+        {{ tool.data.activeLayer.page }} of {{ tool.data.activeLayer.features.length }}
+      </span>
       <md-button
         aria-label="Next"
-        ng-disabled="activeLayer.page === activeLayer.features.length"
-        ng-click="activeLayer.page=activeLayer.page+1;selectFeature(activeLayer.features[activeLayer.page-1])">
+        ng-disabled="tool.data.activeLayer.page === tool.data.activeLayer.features.length"
+        ng-click="
+          tool.data.activeLayer.page=tool.data.activeLayer.page+1;
+          selectFeature(tool.data.activeLayer.features[tool.data.activeLayer.page-1])
+        ">
         <md-icon
           md-svg-icon="arrow-right">
         </md-icon>

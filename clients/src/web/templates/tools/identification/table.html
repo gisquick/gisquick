@@ -1,14 +1,17 @@
 <md-bottom-sheet
-  class="features-panel identification md-whiteframe-top">
+  class="features-panel identification md-whiteframe-top"
+  ng-init="tool.config.featureAutoselect=false">
   <div
     class="tabs-header md-whiteframe-top"
-    ng-show="tool.layers.length > 0">
+    ng-show="tool.data.activeLayer">
     <md-button
       class="panel-tab"
-      ng-class="{selected: $index===tool.layerIndex}"
-      ng-click="tool.layerIndex=$index"
-      ng-repeat="layer in tool.layers">
-      {{ ::layer.name }}
+      ng-class="{selected: tool.data.activeLayer===layer}"
+      ng-click="tool.data.activeLayerIndex=$index"
+      ng-show="layer.features.length>0"
+      xng-repeat="layer in tool.data.layers | filter:{features:[]}"
+      ng-repeat="layer in tool.data.layers">
+      {{ layer.name }}
       <div class="tab-separator"></div>
     </md-button>
     <div class="tab-end-right"></div>
@@ -25,30 +28,20 @@
 
   <md-tabs
     md-no-ink
-    md-dynamic-height
+    ng-style="{minHeight: 36+32*tool.config.rowsPerPage+'px'}"
     class="tabs-no-header"
-    md-selected="tool.layerIndex"
+    md-selected="tool.data.activeLayerIndex"
     md-autoselect="false">
     <md-tab
-      label="test"
-      ng-if="!tool.layers || tool.layers.length === 0"
-      md-on-select="setActiveLayer('')">
-      <div
-        class="empty-table"
-        style="height: {{ 36+32*tool.rowsPerPage }}px;">
-        No features
-      </div>
-    </md-tab>
-    <md-tab ng-repeat="layer in tool.layers"
-      label="layer"
-      md-on-select="setActiveLayer(layer)">
+      ng-repeat="layer in ::tool.data.layers"
+      ng-disabled="layer.features.length === 0"
+      md-on-select="setActiveLayer(layer)"
+      label="layer">
       <md-data-table-container
-        class="identification-table"
-        ng-init="layer.page=1"
-        style="height: {{ 36+32*tool.rowsPerPage }}px;">
+        class="identification-table">
         <table
           md-data-table
-          md-progress="progress">
+          md-progress="tool.progress">
           <thead>
             <tr>
               <th class="zoom" width="10"></th>
@@ -60,8 +53,8 @@
           </thead>
           <tbody>
             <tr
-              ng-repeat="feature in layer.features | limitTo: tool.rowsPerPage: (layer.page - 1) * tool.rowsPerPage"
-              ng-class="{'md-selected': selectedFeature === feature}"
+              ng-repeat="feature in layer.features | limitTo: tool.config.rowsPerPage: (layer.page - 1) * tool.config.rowsPerPage"
+              ng-class="{'md-selected': layer.selectedFeature === feature}"
               ng-click="selectFeature(feature)">
               <td class="icon">
                 <md-icon
@@ -77,8 +70,28 @@
         </table>
       </md-data-table-container>
     </md-tab>
+    <md-tab
+      label="empty">
+      <md-data-table-container
+        class="identification-table">
+        <table
+          md-data-table
+          md-progress="tool.progress">
+          <thead>
+            <tr>
+              <th name="No features"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </md-data-table-container>
+    </md-tab>
   </md-tabs>
-  <div class="search-settings" layout="row" ng-show="::tool.layers">
+  <div class="search-settings" layout="row" zng-show="::tool.data.activeLayer">
     <md-input-container
       layout="row"
       class="input-inline-label">
@@ -89,13 +102,13 @@
       layout="row"
       class="input-inline-label">
       <label class="md-label md-no-float">Rows per page:</label>
-      <input ng-model="tool.rowsPerPage" type="number" min="1" max="10"></input>
+      <input ng-model="tool.config.rowsPerPage" type="number" min="1" max="10"></input>
     </md-input-container>
     <md-data-table-pagination
-      ng-show="activeLayer.features.length > 0"
-      md-limit="tool.rowsPerPage"
-      md-page="activeLayer.page"
-      md-total="{{ activeLayer.features.length }}">
+      ng-show="tool.data.activeLayer.features.length > 0"
+      md-limit="tool.config.rowsPerPage"
+      md-page="tool.data.activeLayer.page"
+      md-total="{{ tool.data.activeLayer.features.length }}">
     </md-data-table-pagination>
   </div>
   <div style="height: 80px;"></div>

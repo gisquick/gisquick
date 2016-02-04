@@ -19,7 +19,7 @@ md-select.md-default-theme:focus:not([disabled]), md-select:focus:not([disabled]
   font-size: 16px;
 }
 .measure-form {
-  margin: 10px 5px 5px 5px;
+  margin: 10px 0 2px 0;
 }
 .measure-form .field {
   text-align: right;
@@ -41,7 +41,7 @@ md-tabs-canvas {
 }
 
 .md-button.map-button {
-  background-color: #333;
+  background-color: rgba(45, 45, 45, 0.6);
   min-width: 36px;
   width: 36px;
   height: 36px;
@@ -122,9 +122,6 @@ md-icon {
   right: 0;
 }
 
-.identification-panel md-select {
-  margin: 10px 5px 4px 5px;
-}
 .bottom-bar {
   position: absolute;
   display: flex;
@@ -167,10 +164,6 @@ md-tabs-wrapper {
   line-height: 24px;
 }
 
-/* Prevent small expanded icons after page loaded */
-md-fab-speed-dial.md-scale .md-fab-action-item {
-  transform: scale(0.0);
-}
 
 md-fab-trigger .md-fab.md-button md-icon {
   width: 24px;
@@ -178,7 +171,6 @@ md-fab-trigger .md-fab.md-button md-icon {
 }
 .md-button.md-fab.md-primary,
 .md-button.md-fab {
-  color: red;
   background-color: #333;
 }
 .md-button.md-fab.md-primary:hover,

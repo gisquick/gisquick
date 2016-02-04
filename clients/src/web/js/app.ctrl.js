@@ -23,17 +23,37 @@
       {
         name: 'identification',
         title: 'Identification',
+        index: 0,
         tooltip: 'Identify features by mouse click',
         icon: 'circle-i',
-        index: 0,
-        rowsPerPage: 5,
-        limit: 10,
-        opened: false,
-        identificationLayer: '',
         template: 'templates/tools/identification/form.html',
-        markerIcon: 'plus',
+        config: {
+          markerIcon: 'plus',
+          identificationLayer: '',
+          rowsPerPage: 5,
+          limit: 10,
+          featureAutoselect: false
+        },
+        data: {
+          /**
+          Data structure for all queryable layers with matched features data.
+          Attributes:
+            name: 'layername'
+            attributes: []
+            features: []
+            selectedFeature: null
+            page: 1
+          */
+          layers: [],
+          activeLayer: null,
+          activeLayerIndex: null
+        },
+        events: {
+          featuresChanged: angular.noop,
+          toolActivated: angular.noop,
+          toolDeactivated: angular.noop
+        },
         showTable: function(layersFeatures) {
-          this.layers = layersFeatures;
           if (!this.resultsScope) {
             this.resultsScope = $scope.$new();
             var tool = this;
@@ -66,19 +86,17 @@
               $scope.deactivateTool();
             });
             tool.panelPromise = panelPromise;
+          } else {
+            this.events.featuresChanged();
           }
         },
         activate: function() {
           this.resultsScope = null;
-          if (angular.isFunction(this.onActivated)) {
-            this.onActivated();
-          };
+          this.events.toolActivated();
         },
         deactivate: function() {
           glPanelService.hidePanel();
-          if (angular.isFunction(this.onDeactivated)) {
-            this.onDeactivated();
-          };
+          this.events.toolDeactivated();
         }
       }, {
         name: 'measure',
@@ -87,7 +105,6 @@
         tooltip: 'Mesure ...',
         icon: 'ruler',
         markerIcon: 'plus',
-        disabled: true,
         template: 'templates/tools/measure.html',
         activate: function() {
           if (angular.isFunction(this.onActivated)) {
@@ -105,7 +122,12 @@
         title: 'Print',
         tooltip: 'Print output creation',
         icon: 'printer',
-        disabled: true,
+        template: 'templates/tools/print.html',
+        config: {
+          dpi: 96,
+          format: 'png',
+          rotation: 0
+        },
         activate: angular.noop,
         deactivate: angular.noop
       }

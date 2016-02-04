@@ -19,16 +19,15 @@
 
   <md-tabs
     md-no-ink
-    md-dynamic-height
     class="tabs-no-header"
-    md-selected="tool.layerIndex">
+    md-selected="tool.layerIndex"
+    ng-style="{minHeight: 61+32*tool.rowsPerPage+'px'}">
     <md-tab ng-repeat="layer in layers"
       label="{{ layer.name }}"
       md-on-select="setActiveLayer(layer)">
       <md-data-table-container
         gl-scrollbar-detector
-        class="attribute-table"
-        style="height: {{ 60+32*tool.rowsPerPage }}px;">
+        class="attribute-table">
         <table
           md-data-table
           ng-init="layer.page=1"
@@ -114,9 +113,9 @@
       <span flex></span>
       <div
         flex
-        style="flex: 1 1 auto;"
         layout="row"
-        class="search-settings inline-flex">
+        style="flex: 1 1 auto;"
+        class="inline-flex">
         <span flex></span>
         <md-checkbox
           class="md-primary"

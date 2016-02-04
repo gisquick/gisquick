@@ -10,14 +10,25 @@
     var tool = $scope.tool;
     var mapClickListener;
 
-    $scope.tool.onActivated = function() {
+    $scope.tool.events.toolActivated = function() {
       featuresViewer.initialize();
-      featuresViewer.setActiveFeaturesLayer('');
-      $scope.layers = [{name: '', features: []}];
+      if (tool.data.layers.length === 0) {
+        // prepare data model for all queryable layers
+        projectProvider.layers.list.forEach(function(layer) {
+          if (layer.queryable) {
+            tool.data.layers.push({
+              name: layer.name,
+              attributes: featuresViewer.getLayerAttributes(layer.name),
+              features: []
+            });
+          }
+        });
+      }
 
+      // create point marker overlay
       if (!tool._markerOverlay) {
         var markerElem = angular.element('<div style="width: 12px; height: 12px;">');
-        $mdIcon(tool.markerIcon).then(function(elem) {
+        $mdIcon(tool.config.markerIcon).then(function(elem) {
           var iconElem = angular.element(elem);
           iconElem.css('fill', '#f00000');
           markerElem.append(iconElem);
@@ -30,7 +41,11 @@
       }
       tool._markerOverlay.setPosition(undefined);
 
+      // register click events listener on map with
+      // WFS GetFeature features identification
       mapClickListener = projectProvider.map.on('singleclick', function(evt) {
+        featuresViewer.removeAllFeatures();
+
         var coords = projectProvider.map.getCoordinateFromPixel(evt.pixel);
         var pixelRadius = 8;
         var radius = Math.abs(projectProvider.map.getCoordinateFromPixel([
@@ -52,8 +67,8 @@
           "</Filter>"
         ].join("");
 
-        var layerName = $scope.tool.identificationLayer?
-          Layers.project2wfs[$scope.tool.identificationLayer] :
+        var layerName = $scope.tool.config.identificationLayer?
+          Layers.project2wfs[$scope.tool.config.identificationLayer] :
           layersControl.getVisibleLayers(projectProvider.map).map(wfsLayerName).join(",");
         var params = {
           'VERSION': '1.0.0',
@@ -63,7 +78,7 @@
           'TYPENAME': layerName,
           'FILTER': filter
         }
-        $scope.progress = gislabClient.get(projectProvider.config.ows_url, params)
+        tool.progress = gislabClient.get(projectProvider.config.ows_url, params)
           .then(function(data) {
             var parser = new ol.format.GeoJSON();
             var features = parser.readFeatures(data);
@@ -93,7 +108,7 @@
       Layers.project2wfs[layer.name] = wfsName;
     });
     /*
-    $scope.$watch('tool.layerIndex', function(value) {
+    $scope.$watch('tool.data.activeLayerIndex', function(value) {
       if (angular.isDefined(value) && $scope.layers) {
         if (value < $scope.layers.length) {
           featuresViewer.setActiveFeaturesLayer($scope.layers[value].name);
@@ -104,45 +119,35 @@
     });*/
 
     function setFeatures (features) {
-      // clear prevoius selection
-
+      // organize features by layer name
+      var layersFeatures = {};
       if (features.length > 0) {
-        // organize features by layer name
-        var layerFeatures = {};
         features.forEach(function(feature) {
           if (feature instanceof ol.Feature) {
             var fid = feature.getId();
             var layername = Layers.wfs2project[
               fid.substring(0, fid.lastIndexOf('.'))
             ];
-            if (!layerFeatures.hasOwnProperty(layername)) {
-              layerFeatures[layername] = [];
+            if (!layersFeatures.hasOwnProperty(layername)) {
+              layersFeatures[layername] = [];
             }
-            layerFeatures[layername].push(feature);
+            layersFeatures[layername].push(feature);
           }
         });
-        var layers = [];
-        for (var layername in layerFeatures) {
-          layers.push({
-            name: layername,
-            attributes: featuresViewer.getLayerAttributes(layername),
-            features: layerFeatures[layername]
-          });
-        }
-        featuresViewer.setLayersFeatures(layerFeatures);
-        featuresViewer.setActiveFeaturesLayer(layers[0].name);
-        tool.showTable(layers);
-      } else {
-        featuresViewer.setActiveFeaturesLayer('');
-        tool.showTable([]);
+        featuresViewer.setLayersFeatures(layersFeatures);
       }
+      tool.data.layers.forEach(function(layer) {
+        layer.features = layersFeatures[layer.name] || [];
+        layer.selectedFeature = null;
+        layer.page = 1;
+      });
+      tool.showTable();
     }
 
-    $scope.tool.onDeactivated = function() {
+    $scope.tool.events.toolDeactivated = function() {
       // console.log('IdentificationController: DESTROY');
       projectProvider.map.unByKey(mapClickListener);
-      featuresViewer.setActiveFeaturesLayer('');
-      featuresViewer.selectFeature(null);
+      featuresViewer.removeAllFeatures();
       if (tool._markerOverlay) {
         tool._markerOverlay.setPosition(undefined);
       }

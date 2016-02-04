@@ -14,6 +14,7 @@ table[md-data-table] thead label {
 .search-settings {
   border-top: 1px solid rgba(0, 0, 0, 0.12);
   height: 36px;
+  box-sizing: content-box;
 }
 .search-settings md-checkbox, 
 .search-settings md-input-container,
@@ -92,9 +93,6 @@ md-data-table-pagination {
   padding-left: 12px;
   line-height: 42px;
 }
-.features-panel md-tabs {
-  height: 100%;
-}
 .features-panel.collapsed md-data-table-container {
   height: 0px!important;
 }
@@ -107,10 +105,6 @@ md-data-table-container.horizontal-overflow {
 }
 
 
-table[md-data-table] {
-  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
-}
-
 md-bottom-sheet {
   padding: 0;
 }
@@ -118,14 +112,6 @@ md-bottom-sheet {
 md-data-table-container {
   transition: height 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
   overflow-y: hidden;
-}
-md-data-table-container.identification-table {
-  min-height: 68px;
-  height: 68px;
-}
-md-data-table-container.attribute-table {
-  min-height: 88px;
-  height: 88px;
 }
 
 md-data-table-pagination > div > span.label,  md-data-table-pagination > div > md-select {
@@ -178,7 +164,6 @@ table[md-data-table] > thead:not([md-table-progress]) > tr > th > div {
 }
 
 /*table[md-data-table] > thead:not([md-table-progress]) > tr > th*/
-.identification .empty-table,
 .identification table[md-data-table] > thead > tr > th > div {
   color: #fff;
   line-height: 26px;
@@ -228,50 +213,7 @@ label.md-no-float {
 table[md-data-table] > thead:not([md-table-progress]) > tr > th {
   font-size: 13px;
 }
-.identification .empty-table {
-  font-size: 13px;
-  font-weight: bold;
-  padding-left: 12px;
-}
-/*
-.tabs-header {
-  position: absolute;
-  top: -27px;
-  height: 26px;
-  background-color: #333;
-  color: #fff;
-}
-.tabs-header .tab-end-right {
-  position: absolute;
-  top: 0;
-  right: -10px;
-  transform: skewX(25deg);
-  border-right: 1px solid #fff;
-  width: 15px;
-  height: 100%;
-  border-top-right-radius: 6px;
-  background-color: #333;
-}
 
-.tabs-header .panel-tab {
-  padding: 2px 10px 2px 12px;
-  min-height: 26px;
-  height: 26px;
-  margin: 0;
-  text-transform: none;
-  line-height: 18px;
-  position: relative;
-  font-size: 13px;
-  overflow: visible;
-
-}
-.tabs-header .panel-tab:hover {
-  background-color: transparent;
-}
-.tabs-header .panel-tab.selected {
-  color: rgb(0, 170, 212);
-}
-*/
 .tabs-header {
   position: absolute;
   top: -28px;
@@ -315,68 +257,12 @@ table[md-data-table] > thead:not([md-table-progress]) > tr > th {
 .tabs-header .panel-tab.selected {
   color: rgb(0, 170, 212);
 }
-
-/*
-.tabs-header {
-  position: absolute;
-  top: -33px;
-  height: 30px;
-  background-color: rgb(250, 250, 250);
-  color: #333;
-  border-left: 2px solid #333;
-  border-top: 3px solid #333;
-  xborder-bottom: 1px solid #333;
-  border-top-left-radius: 6px;
+.panel-tab.md-button {
+  transition: opacity 0.5s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
 }
-.tabs-header .tab-end-right {
-  position: absolute;
-  top: -3px;
-  right: -12px;
-  transform: skewX(25deg);
-  border-top: 3px solid #333;
-  border-right: 4px solid #333;
-  xborder-bottom: 1px solid #333;
-  width: 15px;
-  height: 100%;
-  border-top-right-radius: 6px;
-  background-color: rgb(250, 250, 250);
+.panel-tab.md-button.ng-hide {
+  opacity: 0;
 }
-
-.tabs-header .panel-tab {
-  padding: 2px 6px 2px 6px;
-  min-height: 26px;
-  height: 26px;
-  margin: 0;
-  text-transform: none;
-  line-height: 16px;
-  position: relative;
-  font-size: 13px;
-  overflow: visible;
-  visibility: hidden;
-
-}
-.tabs-header .panel-tab:hover {
-  background-color: transparent;
-}
-.tabs-header .panel-tab.selected {
-  color: rgb(0, 170, 212);
-}
-
-
-.features-panel md-tabs {
-  overflow: visible;
-}
-.features-panel md-tabs-canvas {
-  position: absolute;
-  top: -41px;
-  left: 2px;
-  width: 100%;
-}
-
-.features-panel md-tabs-content-wrapper {
-  overflow: hidden!important;
-}
-*/
 
 .features-panel .close-button-container {
   position: absolute;
@@ -540,4 +426,49 @@ md-list-item.list-filter md-icon {
   color: #999;
   width: 14px;
   height: 14px;
+}
+
+.features-panel md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {
+  min-height: 68px;
+}
+
+.features-panel md-tabs-content-wrapper {
+  top: 0;
+}
+
+.features-panel md-tabs {
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
+  overflow: hidden;
+}
+
+.features-panel md-tab-content {
+  overflow: hidden;
+}
+/*md-data-table-container.attribute-table {
+  min-height: 88px;
+  height: 88px;
+}*/
+
+
+.identification-table.vertical .md-tab {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.identification-table.vertical .tab-label {
+  transition: opacity 1.0s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
+}
+.identification-table.vertical .tab-label:not(.hidden) {
+  padding-left: 12px;
+  padding-right: 12px;
+  opacity: 1;
+}
+
+.identification-table.vertical .tab-label.hidden {
+  opacity: 0;
+}
+
+.identification-table.vertical .empty-list-table {
+  margin: 5px 0;
+  text-align: center;
 }

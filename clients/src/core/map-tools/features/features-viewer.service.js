@@ -153,7 +153,7 @@
     };
 
     FeaturesViewer.prototype.setActiveFeaturesLayer = function(layername) {
-      console.log('setActiveFeaturesLayer: '+layername);
+      // console.log('setActiveFeaturesLayer: '+layername);
       var vectorLayer = this.getVectorLayer(layername);
       for (var lname in this.featuresLayers) {
         this.featuresLayers[lname].setVisible(lname === layername);
@@ -167,13 +167,10 @@
     };
 
     FeaturesViewer.prototype.setLayersFeatures = function(layersFeatures) {
-      console.log('FeaturesViewer.setLayersFeatures');
+      // console.log('FeaturesViewer.setLayersFeatures');
       // clear prevoius selection
       if (this.selectControl) {
         this.selectControl.getFeatures().clear();
-      }
-      for (var layername in this.featuresLayers) {
-        //this.featuresLayers[layername].getSource().clear();
       }
 
       if (layersFeatures) {
@@ -191,6 +188,16 @@
         vectorLayer.getSource().clear();
       }
     };
+
+    FeaturesViewer.prototype.removeAllFeatures = function(layername) {
+      // console.log('## removeAllFeatures ##');
+      for (var layername in this.featuresLayers) {
+        this.featuresLayers[layername].getSource().clear();
+      }
+      for (var layername in this.selectionControls) {
+        this.selectionControls[layername].getFeatures().clear();
+      }
+    }
 
     return new FeaturesViewer();
   };

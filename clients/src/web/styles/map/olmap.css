@@ -44,7 +44,7 @@
 }
 
 .ol-control button {
-  background-color: #333;
+  background-color: rgba(45, 45, 45, 0.6);
   width: 36px;
   height: 36px;
   border-radius: 8px;
@@ -73,7 +73,7 @@
 .ol-scale-line {
   left: 5px;
   bottom: 5px;
-  background-color: rgba(33, 33, 33, 0.8);
+  background-color: rgba(90, 90, 90, 0.9);
 }
 
 .ol-mouse-position {

@@ -102,19 +102,27 @@
         name: 'measure',
         title: 'Measure',
         index: 1,
-        tooltip: 'Mesure ...',
         icon: 'ruler',
-        markerIcon: 'plus',
+        tooltip: 'Mesure coordinates, length and area',
         template: 'templates/tools/measure.html',
+        config: {},
+        data: {
+          position: [],
+          length: {
+            total: 0,
+            lastSegment: 0
+          },
+          area: 0
+        },
+        events: {
+          toolActivated: angular.noop,
+          toolDeactivated: angular.noop
+        },
         activate: function() {
-          if (angular.isFunction(this.onActivated)) {
-            this.onActivated();
-          };
+          this.events.toolActivated();
         },
         deactivate: function() {
-          if (angular.isFunction(this.onDeactivated)) {
-            this.onDeactivated();
-          };
+          this.events.toolDeactivated();
         }
       }, {
         name: 'print',
@@ -157,7 +165,6 @@
       if ($scope.activeTool) {
         $scope.activeTool.deactivate();
         $scope.activeTool = null;
-        //$scope.ui.panelTop.flex = 'auto';
       }
       glPanelService.hideToolsPanel();
     };

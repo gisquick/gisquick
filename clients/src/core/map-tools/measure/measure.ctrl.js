@@ -8,14 +8,12 @@
   function MeasureController($scope, $timeout, projectProvider) {
     console.log('MeasureController: INIT');
     var tool = $scope.tool;
-    console.log(tool);
-    //$scope.tool = tool;
     
     var measureTools = {
       Coordinates: {
         geometryType: 'Point',
         drawstart: function(evt) {
-          $scope.position = evt.feature.getGeometry().getCoordinates();
+          tool.data.position = evt.feature.getGeometry().getCoordinates();
           $scope.$apply();
         },
         drawend: angular.noop
@@ -35,8 +33,8 @@
         moveHandler: function(evt) {
           var geom = this.feature.getGeometry();
           this._lengthTotal = geom.getLength();
-          $scope.lengthLastSegment = this.formatLength(this._lengthTotal - this._partialLength);
-          $scope.lengthTotal = this.formatLength(this._lengthTotal);
+          tool.data.length.lastSegment = this.formatLength(this._lengthTotal - this._partialLength);
+          tool.data.length.total = this.formatLength(this._lengthTotal);
           $scope.$apply();
         },
         drawstart: function(evt) {
@@ -62,7 +60,7 @@
         },
         moveHandler: function(evt) {
           var geom = this.feature.getGeometry();
-          $scope.area = this.formatArea(geom.getArea());
+          tool.data.area = this.formatArea(geom.getArea());
           $scope.$apply();
         },
         drawstart: function(evt) {
@@ -115,14 +113,14 @@
       });
     }
 
-    tool.onActivated = function() {
-      tool.active = true;
+    tool.events.toolActivated = function() {
+      tool.config.active = true;
       initializeMeasurement();
       projectProvider.map.addLayer(measureLayer);
     };
 
-    tool.onDeactivated = function() {
-      tool.active = false;
+    tool.events.toolDeactivated = function() {
+      tool.config.active = false;
       projectProvider.map.removeLayer(measureLayer);
       if (drawTool) {
         projectProvider.map.removeInteraction(drawTool);
@@ -131,7 +129,7 @@
 
     $scope.setMeasureType = function(type) {
       measureTool = measureTools[type];
-      if (tool.active) {
+      if (tool.config.active) {
         initializeMeasurement();
       }
     };

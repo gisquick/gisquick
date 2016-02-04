@@ -22,9 +22,9 @@
       <md-tab-body>
         <div class="measure-form">
           <label>First coordinate</label>
-          <div class="field .md-whiteframe-1dp">{{ position[0] }}</div>
+          <div class="field .md-whiteframe-1dp">{{ tool.data.position[0] }}</div>
           <label>Second coordinate</label>
-          <div class="field .md-whiteframe-1dp">{{ position[1] }}</div>
+          <div class="field .md-whiteframe-1dp">{{ tool.data.position[1] }}</div>
         </div>
       </md-tab-body>
     </md-tab>
@@ -40,9 +40,9 @@
       <md-tab-body>
         <div class="measure-form">
           <label>Last segment</label>
-          <div class="field .md-whiteframe-1dp">{{ lengthLastSegment }}</div>
+          <div class="field .md-whiteframe-1dp">{{ tool.data.length.lastSegment }}</div>
           <label>Total length</label>
-          <div class="field .md-whiteframe-1dp">{{ lengthTotal }}</div>
+          <div class="field .md-whiteframe-1dp">{{ tool.data.length.total }}</div>
         </div>
       </md-tab-body>
     </md-tab>
@@ -57,7 +57,7 @@
       <md-tab-body>
         <div class="measure-form">
           <label>Area</label>
-          <div class="field .md-whiteframe-1dp">{{ area }}</div>
+          <div class="field .md-whiteframe-1dp">{{ tool.data.area }}</div>
         </div>
       </md-tab-body>
     </md-tab>

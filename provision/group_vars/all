@@ -1,0 +1,8 @@
+GISLAB_MOBILE: yes
+
+proxy_env:
+  http_proxy: "{{ lookup('env','APT_PROXY') }}"
+
+synced_folder: /vagrant
+
+# vim: set ts=8 sts=2 sw=2 et:

@@ -1,0 +1,9 @@
+---
+# QGIS MAPSERVER
+
+- name: service lighttpd restart
+  service:
+    name: lighttpd
+    state: restarted
+
+# vim: set ts=8 sts=2 sw=2 et:

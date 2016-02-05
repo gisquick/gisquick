@@ -1,0 +1,49 @@
+---
+# BASIC SYSTEM CONFIGURATION
+
+### BASIC
+- name: Generate locale
+  locale_gen:
+    name: en_US.UTF-8
+    state: present
+
+
+### REPOSITORIES
+- name: Add UbuntuGIS repository
+  apt_repository:
+    repo: 'ppa:ubuntugis/ubuntugis-unstable'
+    state: present
+
+- name: Add QGIS repository signing key
+  apt_key:
+    url: http://qgis.org/downloads/qgis-2015.gpg.key
+    state: present
+
+- name: Add QGIS repository
+  apt_repository:
+    repo: 'deb http://qgis.org/{{ qgis_repo }} trusty main'
+    state: present
+
+
+### PACKAGES
+- name: Update apt cache
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+  environment: proxy_env
+
+- name: Upgrade system
+  apt:
+    upgrade: full
+    force: yes
+  environment: proxy_env
+
+- name: Install packages
+  apt:
+    pkg: "{{ packages }}"
+    force: yes
+    install_recommends: no
+    state: latest
+  environment: proxy_env
+
+# vim: set ts=8 sts=2 sw=2 et:

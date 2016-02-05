@@ -1,0 +1,11 @@
+---
+
+packages:
+  - htop
+  - mc
+  - tmux
+
+# QGIS
+qgis_repo: ubuntugis-nightly
+
+# vim: set ts=8 sts=2 sw=2 et:

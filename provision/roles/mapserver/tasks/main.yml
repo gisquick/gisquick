@@ -28,7 +28,7 @@
 
 - name: Install QGIS Mapserver configuration
   template:
-    src: mapserver/lighttpd.conf.j2
+    src: lighttpd/lighttpd.conf.j2
     dest: /etc/lighttpd/lighttpd.conf
   notify:
     - service lighttpd restart

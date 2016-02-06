@@ -137,7 +137,7 @@
   tags:
     - dep-javascript
 
-- name: Prune local Node modules for GIS.lab Web and Mobile clients
+- name: Prune local Node modules for GIS.lab Web clients
   shell: >
     export NVM_DIR="$HOME/.nvm"
     &&
@@ -152,7 +152,7 @@
   tags:
     - dep-javascript
 
-- name: Install local Node modules for GIS.lab Web and Mobile clients
+- name: Install local Node modules for GIS.lab Web clients
   shell: >
     export NVM_DIR="$HOME/.nvm"
     &&

@@ -1,4 +1,5 @@
 ---
+# QGIS MAPSERVER
 
 - name: Install packages
   apt:
@@ -7,6 +8,22 @@
     install_recommends: no
     state: latest
   environment: proxy_env
+
+
+- name: Configure Xvfb service
+  template:
+    src: init/xvfb.conf.j2
+    dest: /etc/init/xvfb.conf
+  notify:
+    - service xvfb restart
+
+- name: Register Xvfb service
+  file:
+    src: /lib/init/upstart-job
+    dest: /etc/init.d/xvfb
+    state: link
+  notify:
+    - service xvfb restart
 
 
 - name: Install QGIS Mapserver configuration

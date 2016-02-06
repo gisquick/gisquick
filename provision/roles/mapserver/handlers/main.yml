@@ -1,5 +1,9 @@
 ---
-# QGIS MAPSERVER
+
+- name: service xvfb restart
+  service:
+    name: xvfb
+    state: restarted
 
 - name: service lighttpd restart
   service:

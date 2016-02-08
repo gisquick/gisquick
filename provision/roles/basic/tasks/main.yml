@@ -1,6 +1,13 @@
 ---
 # BASIC SYSTEM CONFIGURATION
 
+### SANITY CHECKS
+- name: Check Ansible version (< 2)
+  assert:
+    that:
+      - ansible_version.major < 2
+
+
 ### BASIC
 - name: Generate locale
   locale_gen:

@@ -5,7 +5,7 @@ import logging
 from owslib.fes import PropertyIsLike, And, Or, PropertyIsEqualTo, \
     PropertyIsNotEqualTo, PropertyIsGreaterThanOrEqualTo, \
     PropertyIsGreaterThan, PropertyIsLessThan, \
-    PropertyIsLessThanOrEqualTo, PropertyIsBetween, FilterRequest
+    PropertyIsLessThanOrEqualTo, PropertyIsBetween, FilterRequest, BBox
 from owslib.namespaces import Namespaces
 
 from lxml import etree
@@ -44,8 +44,17 @@ def webgisfilter(mapserv, layer, maxfeatures=None, startindex=None, bbox=None,
     mywfs = WebFeatureService(url=mapserv, version='1.0.0')
     fes = None
     if filters:
+        if bbox:
+            filters.append({ 'operator':'BBOX', 'value': bbox})
         fes = get_filter_root(get_filter_fes(filters))
         fes = etree.tostring(fes)
+
+    if bbox and not filters:
+        fes = None
+    elif not bbox and filters:
+        bbox = None
+    elif bbox and filters:
+        bbox = None
 
     layer_data = mywfs.getfeature(typename=[layer],
                                   filter=fes,
@@ -108,6 +117,9 @@ def get_filter_fes(filters, logical_operator=And):
             conditions.append(
                     PropertyIsBetween(
                         myfilter['attribute'], *value.split(',')))
+        elif myfilter['operator'] == 'BBOX':
+            bbox_filter = BBox(myfilter['value'], 'EPSG:3857')
+            conditions.append(bbox_filter)
         elif myfilter['operator'] == 'IN':
             new_filters = [{
                 'value': value,

@@ -26,15 +26,15 @@ Vagrant.configure(2) do |config|
     config.vm.define "gislab-web" do |server|
 
       # port forwarding
+      config.vm.network "forwarded_port", guest: 90, host: 8090
       config.vm.network "forwarded_port", guest: 8000, host: 8000
       config.vm.network "forwarded_port", guest: 8100, host: 8100
       config.vm.network "forwarded_port", guest: 8200, host: 8200
       config.vm.network "forwarded_port", guest: 35729, host: 35729
-      config.vm.network "forwarded_port", guest: 90, host: 8090
 
-      # development
+      # deployment
       server.vm.provision "install", type: "ansible" do |ansible|
-        ansible.playbook = "provision/development.yml"
+        ansible.playbook = "provision/deployment.yml"
         ansible.verbose = "vv"
       end
 

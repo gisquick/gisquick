@@ -1,4 +1,4 @@
-GISLAB_MOBILE: yes
+GISLAB_CLIENT_MOBILE: no
 
 proxy_env:
   http_proxy: "{{ lookup('env','APT_PROXY') }}"

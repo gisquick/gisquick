@@ -8,7 +8,7 @@
     - { role: mapserver, tags: ['mapserver'] }
     - { role: gislab-web-dev, tags: ['gislab-web-dev'] }
     - { role: gislab-web-qgis-dev, tags: ['gislab-web-qgis-dev'] }
-    - { role: gislab-mobile-dev, tags: ['gislab-mobile-dev'], when: GISLAB_MOBILE }
+    - { role: gislab-mobile-dev, tags: ['gislab-mobile-dev'], when: GISLAB_CLIENT_MOBILE }
     - { role: example-data, tags: ['example-data'] }
 
 # vim: set ts=8 sts=2 sw=2 et:

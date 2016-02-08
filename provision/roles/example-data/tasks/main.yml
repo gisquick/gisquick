@@ -1,17 +1,10 @@
 ---
 # EXAMPLE DATA INSTALLATION
 
-- name: Create directory for QGIS projects publishing
-  file:
-    path: "{{ synced_folder }}/dev/publish/user/natural-earth"
-    state: directory
-    recurse: yes
-  sudo_user: "{{ ansible_ssh_user }}"
-
 - name: Install example QGIS project
   copy:
-    src: ../qgis/project/natural-earth/
-    dest: "{{ synced_folder }}/dev/publish/user/natural-earth/"
+    src: ../qgis/project/
+    dest: "{{ synced_folder }}/dev/publish/{{ ansible_ssh_user }}"
   sudo_user: "{{ ansible_ssh_user }}"
 
 # vim: set ts=8 sts=2 sw=2 et:

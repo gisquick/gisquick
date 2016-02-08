@@ -10,38 +10,6 @@
   environment: proxy_env
 
 
-### DIRECTORIES
-- name: Create shared development directory
-  file:
-    path: "{{ synced_folder }}/dev"
-    state: directory
-  sudo_user: "{{ ansible_ssh_user }}"
-
-- name: Create global directories in shared development directory
-  file:
-    path: "{{ synced_folder }}/dev/{{ item }}"
-    state: directory
-  with_items:
-    - cache/tar
-    - cache/pip
-  sudo_user: "{{ ansible_ssh_user }}"
-
-
-- name: Create local development directory
-  file:
-    path: /home/{{ ansible_ssh_user }}/dev
-    state: directory
-  sudo_user: "{{ ansible_ssh_user }}"
-
-- name: Create global directories in local development directory
-  file:
-    path: /home/{{ ansible_ssh_user }}/dev/{{ item }}
-    state: directory
-  with_items:
-    - apps
-  sudo_user: "{{ ansible_ssh_user }}"
-
-
 ### DEPENDENCIES
 # Python
 - name: Install GIS.lab Web Python requirements
@@ -172,17 +140,9 @@
 
 
 ### SERVER
-- name: Remove Django project directory
+- name: Create GIS.lab Web project directory
   file:
-    path: "{{ synced_folder }}/dev/django"
-    state: absent
-  sudo_user: "{{ ansible_ssh_user }}"
-  tags:
-    - server-django
-
-- name: Create Django project directory
-  file:
-    path: "{{ synced_folder }}/dev/django/devproj"
+    path: "/home/{{ ansible_ssh_user }}/deploy/www/devproj"
     state: directory
     recurse: yes
   sudo_user: "{{ ansible_ssh_user }}"
@@ -190,7 +150,7 @@
     - server-django
 
 
-- name: Create new Django project
+- name: Create GIS.lab Web project
   shell: >
     export WORKON_HOME="$HOME/.virtualenvs"
     &&
@@ -199,35 +159,34 @@
     workon gislab-web
     &&
     django-admin.py startproject
-    --template=server/webgis/conf/project_template/
+    --template={{ synced_folder }}/server/webgis/conf/project_template/
     devproj
-    dev/django
+    /home/{{ ansible_ssh_user }}/deploy/www
   args:
-    chdir: "{{ synced_folder }}"
     executable: /bin/bash
   sudo_user: "{{ ansible_ssh_user }}"
   tags:
     - server-django
 
-- name: Install custom Django project configuration
+- name: Install custom GIS.lab Web project configuration
   template:
     src: django/settings_custom.py.j2
-    dest: "{{ synced_folder }}/dev/django/devproj/settings_custom.py"
+    dest: "/home/{{ ansible_ssh_user }}/deploy/www/devproj/settings_custom.py"
   sudo_user: "{{ ansible_ssh_user }}"
   tags:
     - server-django
 
-- name: Build Django project database
+- name: Build GIS.lab Web project database
   django_manage:
     command: migrate
-    app_path: "{{ synced_folder }}/dev/django"
+    app_path: "/home/{{ ansible_ssh_user }}/deploy/www"
     settings: devproj.settings
     virtualenv: /home/{{ ansible_ssh_user }}/.virtualenvs/gislab-web
   sudo_user: "{{ ansible_ssh_user }}"
   tags:
     - server-django
 
-- name: Create superuser account (username-> admin, password-> admin)
+- name: Create superuser account (u-> admin, p-> admin)
   shell: >
     export WORKON_HOME="$HOME/.virtualenvs"
     &&
@@ -239,13 +198,13 @@
     GislabUser.objects.create_superuser('admin', 'admin@gislab.io', 'admin')"
     | python ./manage.py shell
   args:
-    chdir: "{{ synced_folder }}/dev/django"
+    chdir: "/home/{{ ansible_ssh_user }}/deploy/www"
     executable: /bin/bash
   sudo_user: "{{ ansible_ssh_user }}"
   tags:
     - server-django
 
-- name: Create ordinary user account (username-> user, password-> user)
+- name: Create ordinary user account (u-> {{ ansible_ssh_user }}, p -> {{ ansible_ssh_user }})
   shell: >
     export WORKON_HOME="$HOME/.virtualenvs"
     &&
@@ -254,10 +213,10 @@
     workon gislab-web
     &&
     echo "from webgis.viewer.models import GislabUser;
-    GislabUser.objects.create_user('user', 'user@gislab.io', 'user')"
+    GislabUser.objects.create_user('{{ ansible_ssh_user }}', 'user@gislab.io', '{{ ansible_ssh_user }}')"
     | python ./manage.py shell
   args:
-    chdir: "{{ synced_folder }}/dev/django"
+    chdir: "/home/{{ ansible_ssh_user }}/deploy/www"
     executable: /bin/bash
   sudo_user: "{{ ansible_ssh_user }}"
   tags:

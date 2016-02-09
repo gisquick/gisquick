@@ -6,6 +6,7 @@ packages:
   - libxslt-dev
   - openjdk-7-jre
   - python-dev
+  - python-pip
   - virtualenvwrapper
   - zlib1g-dev
 

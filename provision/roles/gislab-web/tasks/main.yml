@@ -139,7 +139,7 @@
     - dep-javascript
 
 
-### SERVER
+### DJANGO SERVER
 - name: Create GIS.lab Web project directory
   file:
     path: "/home/{{ ansible_ssh_user }}/deploy/www/devproj"

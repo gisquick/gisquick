@@ -6,4 +6,5 @@ include MANIFEST.in
 include requirements.txt
 recursive-include webgis/conf/project_template *
 recursive-include webgis/viewer/static *
+recursive-include webgis/viewer/media *
 recursive-include webgis/viewer/templates *

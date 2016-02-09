@@ -1,0 +1,10 @@
+---
+# EXAMPLE DATA INSTALLATION
+
+- name: Install example QGIS project
+  copy:
+    src: ../qgis/project/
+    dest: "{{ synced_folder }}/dev/publish/{{ ansible_ssh_user }}"
+  sudo_user: "{{ ansible_ssh_user }}"
+
+# vim: set ts=8 sts=2 sw=2 et:

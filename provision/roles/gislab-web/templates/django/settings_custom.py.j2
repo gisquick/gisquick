@@ -3,9 +3,4 @@ import os
 GISLAB_WEB_PROJECT_ROOT = '/vagrant/dev/publish'
 GISLAB_WEB_MAPSERVER_URL = 'http://localhost:90/cgi-bin/qgis_mapserv.fcgi'
 
-
-# create publish directory
-if not os.path.exists(GISLAB_WEB_PROJECT_ROOT):
-    os.mkdir(GISLAB_WEB_PROJECT_ROOT, 0755)
-
 # vim: set ts=8 sts=4 sw=4 et:

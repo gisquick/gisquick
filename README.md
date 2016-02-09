@@ -51,14 +51,6 @@ TODO: screenshot
 * built-in automatic tiles caching
 
 
-## Work flow
-* create any project in QGIS Desktop
-* install QGIS GIS.lab Web plugin and run wizard to publish QGIS project
-* copy QGIS project with all associated data to GIS.lab Web server
-* open GIS.lab Web User Console and launch published project in web interface
-* optionaly install and use GIS.lab Mobile (Android) client interface
-
-
 ## Technologies
 * QGIS Desktop and Mapserver
 * OpenLayers 3
@@ -78,7 +70,7 @@ TODO: screenshot
 * **dev:**        development directory
 * **dev/django:** directory for Django development project created during
                   provisioning
-* **dev/publish/user:** directory for QGIS projects publishing (as user 'user')
+* **dev/publish:** directory for QGIS projects publishing
 
 
 ## Development environment
@@ -91,41 +83,42 @@ TODO: screenshot
 
 **Creating development environment:**  
 * clone source code with Git
+```
+$ git clone https://github.com/gislab-npo/gislab-web.git
+```
 
-* start Vagrant in source code root directory  
+* optionaly enable GIS.lab Mobile by adding configuration variable to
+  'provision/host_vars/gislab-web' file
+```
+GISLAB_CLIENT_MOBILE: yes
+```
+
+* start development environment (run in source code root directory)  
   *Note: to speed up provisioning using Apt proxy server, set APT_PROXY variable
-  before running this command (ex.: export APT_PROXY=http://192.168.99.118:3142).
+  before running this command ($ export APT_PROXY=http://192.168.99.118:3142).
   See [Apt Cacher server](https://github.com/gislab-npo/gislab/wiki/Apt-Cacher-server) instructions for details.*
 ```
 $ vagrant up
 ```
 
-* log in to Vagrant virtual server
+* log in to virtual machine (run in source code root directory)
 ```
 $ vagrant ssh
 ```
 
-* run simple development environment in TMUX (to quit running session type 'tmux kill-session')
+* start development services (run in virtual machine;
+  to quit type '$ tmux kill-session')
 ```
 $ /vagrant/utils/tmux-dev.sh
 ```
-OR
-* launch Django development server manually
-```
-$ cd /vagrant/dev/django \
-  && \
-  workon gislab-web \
-  && \
-  python ./manage.py runsslserver 0.0.0.0:8000
-```
 
-* enter URL below to open GIS.lab Web interface in web browser
+* enter URL below in web browser to launch GIS.lab Web
 ```
-https://localhost:8000?PROJECT=user/natural-earth/central-europe
+https://localhost:8000?PROJECT=vagrant/natural-earth/central-europe
 ```
 
 **Other commands:**  
-* run Django server tests (run in '/vagrant/dev/django' dir)
+* run server tests (run in '/vagrant/dev/django' dir)
 ```
 $ python ./manage.py test webgis.viewer.tests
 ```
@@ -136,10 +129,22 @@ $ python ./manage.py test webgis.viewer.tests
 * QGIS Mapserver logs can be found in '/var/log/lighttpd' directory
 
 
-## Configuration
-Configuration is done by Django project settings file. Good practise is to place
-*settings_custom.py* file to the same directory where *settings.py* to override
-default values.
+**Work flow:**
+* install QGIS GIS.lab Web plugin
+```
+$ ln -s $(pwd)/qgis/gislab_web  ~/.qgis2/python/plugins/gislab_web
+```
+
+* create project in QGIS Desktop
+
+* run QGIS GIS.lab Web plugin wizard from 'Web > GIS.lab Web' to publish QGIS
+  project
+
+* copy published QGIS project with all associated data to 'dev/publish'
+  directory
+
+* open GIS.lab Web User Console and launch published project in GIS.lab Web
+  interface
 
 
 ## Packaging
@@ -177,4 +182,4 @@ $ export ANDROID_HOME=/home/vagrant/dev/apps/android-sdk-linux \
 ```
 
 ## License
-GNU GPL 2.0 and higher versions.
+GNU General Public License version 2 or later.

@@ -50,6 +50,6 @@ ANSIBLE_SSH_ARGS='\
     -o ForwardAgent=yes \
     -o ControlMaster=auto \
     -o ControlPersist=60s' \
-$ansible_cmd $tags provision/development.yml
+$ansible_cmd $tags provision/deployment.yml
 
 # vim: set ts=8 sts=4 sw=4 et:

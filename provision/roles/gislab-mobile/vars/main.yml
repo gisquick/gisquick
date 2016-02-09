@@ -1,0 +1,28 @@
+---
+
+packages:
+  - ant
+  - expect
+  - openjdk-7-jdk
+
+# android
+android_sdk_url: http://dl.google.com/android
+android_sdk_version: 24.1.2
+android_build_tools_version: 22.0.1
+android_api_version: 22
+android_root: /home/{{ ansible_ssh_user }}/dev/apps/android-sdk-linux
+
+# cordova
+cordova_version: 5.1.1
+cordova_pf_android_version: 4.0.2
+
+wget_opts: "
+--continue
+--no-verbose
+--retry-connrefused
+--waitretry=1
+--read-timeout=20
+--timeout=15
+--tries=0"
+
+# vim: set ts=8 sts=2 sw=2 et:

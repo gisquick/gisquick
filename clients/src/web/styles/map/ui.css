@@ -9,22 +9,34 @@ md-select.md-default-theme:focus:not([disabled]), md-select:focus:not([disabled]
   border-bottom-color: rgb(0, 170, 212);
 }
 
-.measure-panel label {
+.measure-form label {
   font-size: 13.5px;
   color: #777;
+  margin-top: 5px;
+  margin-bottom: 4px;
 }
-.measure-panel .field {
+.measure-form .field {
   border-bottom: 1px solid #ccc;
   height: 28px;
   font-size: 16px;
+  line-height: 26px;
+  margin: 4px 0;
+}
+.measure-form .field:first-child {
+  margin-right: 4px;
+}
+.measure-form label:nth-child(2),
+.measure-form .field:last-child {
+  margin-left: 4px;
 }
 .measure-form {
-  margin: 10px 0 2px 0;
+  margin: 10px 4px 2px 4px;
 }
 .measure-form .field {
-  text-align: right;
-  padding-right: 10px;
   font-size: 14px;
+}
+.measure-form .list-item-menu-button {
+  right: 0px;
 }
 .right-menu-container {
   position: absolute;
@@ -32,6 +44,50 @@ md-select.md-default-theme:focus:not([disabled]), md-select:focus:not([disabled]
   right: 0;
 }
 
+md-menu-item.menu-group-item md-divider {
+  position: absolute;
+  top: 10px;
+  padding: 0;
+  left: 5px;
+  width: calc(100% - 10px);
+  z-index: 50;
+}
+
+md-menu-item.menu-group-item {
+  min-height: 20px;
+  line-height: 20px;
+  height: 20px;
+  color: #777;
+  font-size: 13px;
+  position: relative;
+  width: 100%;
+}
+
+md-menu-item.menu-group-item .group-item-title {
+  background-color: white;
+  padding: 0 10px;
+  width: auto;
+  z-index: 50;
+}
+
+md-menu-content {
+  max-height: 100%;
+}
+
+md-menu-item md-icon {
+  color: #777;
+  fill: #777;
+  width: 24px;
+  padding: 5px 5px;
+  stroke-width: 3px;
+  stroke: white;
+  position: absolute;
+  z-index: 51;
+}
+
+md-menu-item .md-button[role=menuitemradio] {
+  padding-left: 32px;
+}
 .md-subheader,
 md-tabs-canvas {
   -webkit-user-select: none;  
@@ -547,10 +603,15 @@ md-fab-speed-dial.md-is-open .toolbar-menu-icon {
 }
 
 md-select-menu md-option:hover,
+md-menu-content .md-button:not([disabled]):hover,
 md-menu-content .md-button.md-focused:not([disabled]) {
   background-color: #ffffe0;
 }
 md-select-menu md-option[selected],
 md-select-menu md-option[selected]:focus {
   color: rgb(0, 170, 212);
+}
+
+.panel-tool.identification-form {
+  padding: 5px;
 }

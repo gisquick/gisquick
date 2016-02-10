@@ -254,8 +254,9 @@ def get_project(request):
             'publish_date_unix': int(metadata.publish_date_unix),
             'expiration_date': metadata.expiration,
             'selection_color': metadata.selection_color[:-2], #strip alpha channel,
+            'position_precision': metadata.position_precision,
             'topics': metadata.topics,
-            'vector_layers': metadata.vector_layers is not None
+            'vector_layers': metadata.vector_layers is not None,
         })
         if metadata.message:
             valid_until = datetime.datetime.strptime(metadata.message['valid_until'], "%d.%m.%Y").date()

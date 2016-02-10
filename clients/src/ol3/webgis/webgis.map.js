@@ -306,7 +306,9 @@ ol.View.prototype.getScale = function() {
 
 goog.exportProperty(ol.View.prototype, 'getScale', ol.View.prototype.getScale);
 goog.exportProperty(ol.geom.Polygon, 'fromCircle', ol.geom.Polygon.fromCircle);
+goog.exportProperty(ol.geom.Polygon.prototype, 'getFlatCoordinates', ol.geom.Polygon.prototype.getFlatCoordinates);
 
 goog.exportSymbol('ol.proj.get', ol.proj.get);
 goog.exportSymbol('ol.proj.projections_', ol.proj.projections_);
+goog.exportSymbol('ol.geom.flat.length.linearRing', ol.geom.flat.length.linearRing);
 goog.exportSymbol('goog.dom.createDom', goog.dom.createDom);

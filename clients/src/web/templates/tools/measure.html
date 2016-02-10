@@ -16,15 +16,58 @@
         <md-icon
           md-svg-icon="point">
         </md-icon>
-        <label>Coordinates</label>
+        <label>Location</label>
         <div class="tab-separator"></div>
       </md-tab-label>
       <md-tab-body>
         <div class="measure-form">
-          <label>First coordinate</label>
-          <div class="field .md-whiteframe-1dp">{{ tool.data.position[0] }}</div>
-          <label>Second coordinate</label>
-          <div class="field .md-whiteframe-1dp">{{ tool.data.position[1] }}</div>
+          <div layout="row">
+            <label flex="50">1st coordinate</label>
+            <label flex="50">2nd coordinate</label>
+            <md-menu
+              class="list-menu"
+              md-position-mode="target-right target">
+              <md-button
+                aria-label="Column menu"
+                class="list-item-button list-item-menu-button"
+                ng-click="$mdOpenMenu($event)">
+                <md-icon
+                  md-menu-origin
+                  md-svg-icon="menu-dots">
+                </md-icon>
+              </md-button>
+              <md-menu-content width="4">
+                <md-menu-item class="menu-group-item">
+                  <md-divider></md-divider>
+                  <div layout="row">
+                    <span flex></span>
+                    <span flex="none" class="group-item-title">Coordinate systems</span>
+                    <span flex></span>
+                  </div>
+                </md-menu-item>
+                <md-menu-item
+                  ng-repeat="unit in ::tool.config.positionUnits"
+                  type="radio"
+                  ng-value="$index"
+                  ng-model="tool.config.position.unitsIndex"
+                  ng-change="tool.events.unitsChanged(unit)">
+                  <md-button>{{ ::unit.title }}</md-button>
+                </md-menu-item>
+              </md-menu-content>
+            </md-menu>
+          </div>
+          <div layout="row">
+            <div
+              flex="50"
+              class="field .md-whiteframe-1dp">
+              {{ tool.data.position[0] }}
+            </div>
+            <div
+              flex="50"
+              class="field .md-whiteframe-1dp">
+              {{ tool.data.position[1] }}
+            </div>
+          </div>
         </div>
       </md-tab-body>
     </md-tab>
@@ -34,15 +77,58 @@
         <md-icon
           md-svg-icon="line">
         </md-icon>
-        <label>Length</label>
+        <label>Distance</label>
         <div class="tab-separator"></div>
       </md-tab-label>
       <md-tab-body>
         <div class="measure-form">
-          <label>Last segment</label>
-          <div class="field .md-whiteframe-1dp">{{ tool.data.length.lastSegment }}</div>
-          <label>Total length</label>
-          <div class="field .md-whiteframe-1dp">{{ tool.data.length.total }}</div>
+          <div layout="row">
+            <label flex="50">Last segment</label>
+            <label flex="50">Total length</label>
+            <md-menu
+              class="list-menu"
+              md-position-mode="target-right target">
+              <md-button
+                aria-label="Column menu"
+                class="list-item-button list-item-menu-button"
+                ng-click="$mdOpenMenu($event)">
+                <md-icon
+                  md-menu-origin
+                  md-svg-icon="menu-dots">
+                </md-icon>
+              </md-button>
+              <md-menu-content width="4">
+                <md-menu-item class="menu-group-item">
+                  <md-divider></md-divider>
+                  <div layout="row">
+                    <span flex></span>
+                    <span flex="none" class="group-item-title">Length units</span>
+                    <span flex></span>
+                  </div>
+                </md-menu-item>
+                <md-menu-item
+                  ng-repeat="unit in ::tool.config.lengthUnits"
+                  type="radio"
+                  ng-value="$index"
+                  ng-model="tool.config.length.unitsIndex"
+                  ng-change="tool.events.unitsChanged(unit)">
+                  <md-button>{{ ::unit.title }}</md-button>
+                </md-menu-item>
+              </md-menu-content>
+            </md-menu>
+          </div>
+          <div layout="row">
+            <div
+              flex="50"
+              class="field .md-whiteframe-1dp">
+              {{ tool.data.length.lastSegment }}
+            </div>
+            <div
+              flex="50"
+              class="field .md-whiteframe-1dp">
+              {{ tool.data.length.total }}
+            </div>
+          </div>
         </div>
       </md-tab-body>
     </md-tab>
@@ -56,8 +142,77 @@
       </md-tab-label>
       <md-tab-body>
         <div class="measure-form">
-          <label>Area</label>
-          <div class="field .md-whiteframe-1dp">{{ tool.data.area }}</div>
+          <div layout="row">
+            <label flex="50">Perimeter</label>
+            <label flex="50">Area</label>
+            <md-menu
+              class="list-menu"
+              md-position-mode="target-right target">
+              <md-button
+                aria-label="Column menu"
+                class="list-item-button list-item-menu-button"
+                ng-click="$mdOpenMenu($event)">
+                <md-icon
+                  md-menu-origin
+                  md-svg-icon="menu-dots">
+                </md-icon>
+              </md-button>
+              <md-menu-content width="4">
+                <md-menu-item class="menu-group-item">
+                  <md-divider></md-divider>
+                  <div layout="row">
+                    <span flex></span>
+                    <span flex="none" class="group-item-title">Perimeter units</span>
+                    <span flex></span>
+                  </div>
+                </md-menu-item>
+                <md-menu-item
+                  ng-repeat="unit in ::tool.config.lengthUnits"
+                  type="radio"
+                  ng-value="$index"
+                  ng-model="tool.config.area.perimeterUnitsIndex"
+                  ng-change="tool.events.unitsChanged(unit)">
+                  <md-button>{{ ::unit.title }}</md-button>
+                </md-menu-item>
+                <md-menu-item class="menu-group-item">
+                  <md-divider></md-divider>
+                  <div layout="row">
+                    <span flex></span>
+                    <span flex="none" class="group-item-title">Area units</span>
+                    <span flex></span>
+                  </div>
+                </md-menu-item>
+                <md-menu-item
+                  ng-repeat="unit in ::tool.config.areaUnits"
+                  type="radio"
+                  ng-value="$index"
+                  ng-model="tool.config.area.areaUnitsIndex"
+                  ng-change="tool.events.unitsChanged(unit)">
+                  <md-button>{{ ::unit.title }}</md-button>
+                </md-menu-item>
+
+<!--                 <md-divider></md-divider>
+                <md-menu-item>
+                  <md-button ng-click="">
+                    Delete all
+                  </md-button>
+                </md-menu-item> -->
+
+              </md-menu-content>
+            </md-menu>
+          </div>
+          <div layout="row">
+            <div
+              flex="50"
+              class="field .md-whiteframe-1dp">
+              {{ tool.data.perimeter }}
+            </div>
+            <div
+              flex="50"
+              class="field .md-whiteframe-1dp">
+              {{ tool.data.area }}
+            </div>
+          </div>
         </div>
       </md-tab-body>
     </md-tab>

@@ -1,4 +1,5 @@
-<md-bottom-sheet class="features-panel md-whiteframe-top">
+<md-bottom-sheet
+  class="features-panel attribute-table md-whiteframe-top">
   <div class="tabs-header md-whiteframe-top">
     <span
       class="panel-tab selected">
@@ -19,9 +20,10 @@
 
   <md-tabs
     md-no-ink
+    md-no-pagination
     class="tabs-no-header"
     md-selected="tool.layerIndex"
-    ng-style="{minHeight: 61+32*tool.rowsPerPage+'px'}">
+    ng-style="{minHeight: 61+32*(tool.rowsPerPage||1)+'px'}">
     <md-tab ng-repeat="layer in layers"
       label="{{ layer.name }}"
       md-on-select="setActiveLayer(layer)">
@@ -74,7 +76,6 @@
           <tbody>
             <tr
               ng-repeat="feature in layer.features | limitTo: tool.rowsPerPage: (layer.page - 1) * tool.rowsPerPage"
-              xng-click="selectFeature(feature)"
               ng-class="{'md-selected': selectedFeature === feature}">
               <td class="icon">
                 <md-icon

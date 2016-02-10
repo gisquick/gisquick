@@ -28,7 +28,8 @@
 
   <md-tabs
     md-no-ink
-    ng-style="{minHeight: 36+32*tool.config.rowsPerPage+'px'}"
+    md-no-pagination
+    ng-style="{minHeight: 31+32*(tool.config.rowsPerPage||1)+'px'}"
     class="tabs-no-header"
     md-selected="tool.data.activeLayerIndex"
     md-autoselect="false">

@@ -55,9 +55,9 @@ table[md-data-table] thead label {
 }
 
 md-input-container.input-inline-label label {
-    bottom: auto;
-    left: 0;
-    position: relative;
+  bottom: auto;
+  left: 0;
+  position: relative;
 }
 
 md-data-table-pagination {
@@ -86,6 +86,9 @@ md-data-table-pagination {
   min-width: 20px;
   height: 24px;
   margin: 0;
+}
+.filter-row .md-select-value {
+  line-height: 24px;
 }
 
 .features-panel .md-subheader {
@@ -428,10 +431,6 @@ md-list-item.list-filter md-icon {
   height: 14px;
 }
 
-.features-panel md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {
-  min-height: 68px;
-}
-
 .features-panel md-tabs-content-wrapper {
   top: 0;
 }
@@ -444,10 +443,7 @@ md-list-item.list-filter md-icon {
 .features-panel md-tab-content {
   overflow: hidden;
 }
-/*md-data-table-container.attribute-table {
-  min-height: 88px;
-  height: 88px;
-}*/
+
 
 
 .identification-table.vertical .md-tab {

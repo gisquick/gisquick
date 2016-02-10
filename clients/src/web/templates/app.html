@@ -33,10 +33,11 @@
               aria-label="Close"
               class="right"
               ng-click="deactivateTool()">
-              <md-icon md-svg-icon="circle-x-outline"></md-icon>
+              <md-icon md-svg-icon="x"></md-icon>
             </md-button>
           </div>
           <md-tabs
+            md-no-pagination
             md-dynamic-height
             class="tabs-no-header"
             md-selected="activeTool.index">
@@ -114,7 +115,7 @@
               class="close-button right"
               ng-click="ui.panel.hidePanel()">
               <md-icon
-                md-svg-icon="circle-x-outline">
+                md-svg-icon="x">
               </md-icon>
             </md-button>
           </div>

@@ -135,10 +135,6 @@
   vertical-align: top;
   display: inline;
 }
-.secondary-header .md-button md-icon {
-  width: 20px;
-  height: 20px;
-}
 
 md-tabs-wrapper md-icon {
   color: #aaa;
@@ -223,12 +219,10 @@ md-tabs-wrapper md-icon {
 }
 */
 .panel-header  md-icon {
-  width: 20px;
-  height: 20px;
-}
-.panel-header .toggle-button md-icon {
   width: 16px;
   height: 16px;
+}
+.panel-header .toggle-button md-icon {
   transition: 0.45s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
 }
 .panel-header .toggle-button.collapsed md-icon {
@@ -263,11 +257,14 @@ md-tabs-wrapper md-icon {
 }
 
 .panel-tool md-select {
-  margin: 10px 0 2px 0;
+  margin: 8px 0 2px 0;
+  height: 30px;
+  line-height: 26px;
 }
 
 .panel-tool md-select-value {
   padding: 0;
+  height: 28px;
 }
 
 .panel-tool md-input-container {
@@ -280,9 +277,6 @@ md-tabs-wrapper md-icon {
   margin: 0;
 }
 
-.panel-tool {
-  padding: 5px;
-}
 .panel-tool md-input-container input {
   height: 29px;
   padding: 0;

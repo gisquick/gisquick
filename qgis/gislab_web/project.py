@@ -108,7 +108,7 @@ class ProjectPage(WizardPage):
         """
         if not hasattr(self, "_num_errors"):
             self._num_errors = 0
-        
+
         dialog = self.dialog
         table = dialog.info_table
         if messages:
@@ -144,7 +144,7 @@ class ProjectPage(WizardPage):
         table = dialog.info_table
         if not messages:
             return
-            
+
         for index, message in enumerate(messages):
             msg_type, msg_text = message
             for item in table.findItems(msg_text, Qt.MatchExactly):
@@ -162,7 +162,7 @@ class ProjectPage(WizardPage):
         if self.plugin.project.isDirty():
             messages.append((
                 MSG_ERROR,
-                u"Project has been modified. Save it before continue (Project > Save)."
+                u"Project has been modified. Save it before trying to continue."
             ))
 
         crs_transformation, ok = self.plugin.project.readBoolEntry(
@@ -172,8 +172,8 @@ class ProjectPage(WizardPage):
         if not ok or not crs_transformation:
             messages.append((
                 MSG_WARNING,
-                u"'On the fly' CRS transformation is disabled. Enable it when using " \
-                "layers with different CRSs ('Project > Project Properties > CRS')."
+                u"'On-the-fly' CRS transformation is disabled. Enable it when using " \
+                "layers with different CRSs."
             ))
 
         map_canvas = self.plugin.iface.mapCanvas()
@@ -184,14 +184,15 @@ class ProjectPage(WizardPage):
         if crs_dst.authid().startswith('USER:'):
             messages.append((
                 MSG_ERROR,
-                u"Project is using custom coordinate system which is currently not supported."
+                u"Project is using custom CRS which is currently not supported."
             ))
 
         all_layers = [layer.name() for layer in self.plugin.layers_list()]
         if len(all_layers) != len(set(all_layers)):
             messages.append((
                 MSG_ERROR,
-                u"Project contains layers with the same names."
+                u"Project contains layers with the same names. Rename one " \
+                "before trying to continue."
             ))
 
         self._show_messages(messages)
@@ -205,7 +206,8 @@ class ProjectPage(WizardPage):
         if not self.dialog.project_title.text():
             messages.append((
                 MSG_ERROR,
-                u"Project title is required. Enter project title in 'Project' tab."
+                u"Project title is missing. Enter project name before trying " \
+                "to continue."
             ))
 
         min_resolution = self.dialog.min_scale.itemData(self.dialog.min_scale.currentIndex())
@@ -215,7 +217,7 @@ class ProjectPage(WizardPage):
             messages.append((MSG_ERROR, msg))
         else:
             self._remove_messages([(MSG_ERROR, msg)])
-        
+
         def publish_resolutions(resolutions, min_resolution=min_resolution, max_resolution=max_resolution):
             return filter(
                 lambda res: res >= min_resolution and res <= max_resolution,
@@ -230,7 +232,7 @@ class ProjectPage(WizardPage):
             if layer.crs().authid().startswith('USER:'):
                 messages.append((
                     MSG_ERROR,
-                    u"Base layer '{0}' is using custom coordinate system " \
+                    u"Base layer '{0}' is using custom CRS " \
                     "which is currently not supported.".format(layer.name())
                 ))
             resolutions = self.plugin.wmsc_layer_resolutions(layer)
@@ -258,7 +260,7 @@ class ProjectPage(WizardPage):
             if layer.crs().authid().startswith('USER:'):
                 messages.append((
                     MSG_ERROR,
-                    u"Overlay layer '{0}' is using custom coordinate system " \
+                    u"Overlay layer '{0}' is using custom CRS " \
                     "which is currently not supported.".format(layer.name())
                 ))
 
@@ -267,8 +269,8 @@ class ProjectPage(WizardPage):
             if not file_datasource.startswith(project_dir):
                 messages.append((
                     MSG_ERROR,
-                    u"Project data file '{0}' is located outside of the" \
-                    "QGIS project directory. ".format(file_datasource)
+                    u"Data file '{0}' is located outside of the QGIS project "
+                    "directory. ".format(os.path.basename(file_datasource))
                 ))
 
         if messages:
@@ -512,7 +514,7 @@ class ProjectPage(WizardPage):
                 resolutions.update(MAPBOX_LAYER['resolutions'])
             if dialog.bing.isChecked():
                 resolutions.update(BING_LAYERS[0]['resolutions'])
-            
+
             self._update_min_max_scales(resolutions)
             check_base_layer_enabled()
 

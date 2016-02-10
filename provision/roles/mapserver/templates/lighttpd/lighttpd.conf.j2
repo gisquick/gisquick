@@ -25,6 +25,7 @@ fastcgi.server = (
         "max-procs" => 1,
         "check-local" => "disable",
         "bin-environment" => (
+            "DISPLAY" => ":99",
             "LC_ALL" => "en_US.UTF-8",
             "PYTHONIOENCODING" => "UTF-8",
             "LANG" => "en_US.UTF-8",

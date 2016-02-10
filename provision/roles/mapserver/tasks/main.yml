@@ -1,0 +1,38 @@
+---
+# QGIS MAPSERVER
+
+- name: Install packages
+  apt:
+    pkg: "{{ packages }}"
+    force: yes
+    install_recommends: no
+    state: latest
+  environment: proxy_env
+
+
+- name: Configure Xvfb service
+  template:
+    src: init/xvfb.conf.j2
+    dest: /etc/init/xvfb.conf
+  notify:
+    - service xvfb restart
+
+- name: Register Xvfb service
+  file:
+    src: /lib/init/upstart-job
+    dest: /etc/init.d/xvfb
+    state: link
+  notify:
+    - service xvfb restart
+
+
+- name: Install QGIS Mapserver configuration
+  template:
+    src: lighttpd/lighttpd.conf.j2
+    dest: /etc/lighttpd/lighttpd.conf
+  notify:
+    - service lighttpd restart
+
+- meta: flush_handlers
+
+# vim: set ts=8 sts=2 sw=2 et:

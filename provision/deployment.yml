@@ -1,0 +1,18 @@
+---
+
+- hosts: all
+  sudo: yes
+
+  roles:
+    - { role: basic, tags: ['basic'] }
+    - { role: mapserver, tags: ['mapserver'] }
+    - { role: gislab-web, tags: ['gislab-web'] }
+    - { role: gislab-web-qgis, tags: ['gislab-web-qgis'] }
+    - {
+        role: gislab-mobile,
+        tags: ['gislab-mobile'],
+        when: GISLAB_CLIENT_MOBILE
+    }
+    - { role: example-data, tags: ['example-data'] }
+
+# vim: set ts=8 sts=2 sw=2 et:

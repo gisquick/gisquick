@@ -28,6 +28,7 @@
   xtransform: translate3d(0, -100%, 0);
 }
 .panel-collapse-button md-icon {
+  color: #fff;
   transform: translate(-2px, 0);
 }
 .panel-collapse-button {
@@ -219,6 +220,7 @@ md-tabs-wrapper md-icon {
 }
 */
 .panel-header  md-icon {
+  color: #fff;
   width: 16px;
   height: 16px;
 }

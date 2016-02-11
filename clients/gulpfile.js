@@ -49,7 +49,7 @@ gulp.task('build-web', function() {
  *  Requires debug version of OpenLayers 3 library
  *  to be already builded ('build-ol3-debug' task)
  */
-gulp.task('serve-web', ['build-ol3-debug'], function() {
+gulp.task('serve-web', function() {
   require('./tasks/web.js');
   gulp.start('serve');
 });
@@ -91,4 +91,4 @@ gulp.task('icons-mobile', function() {
 /**
  * Default gulp task
  */
-gulp.task('default', ['build-web']);
+gulp.task('default', ['build-web', 'build-ol3-debug']);

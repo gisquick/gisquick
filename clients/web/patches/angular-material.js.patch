@@ -1,0 +1,15 @@
+--- node_modules/angular-material/angular-material.js	2016-02-11 09:46:13.884957904 +0100
++++ node_modules/angular-material/angular-material.gislab.js	2016-02-11 09:53:18.276978150 +0100
+@@ -23872,11 +23872,11 @@
+     elements.dummies = elements.canvas.getElementsByTagName('md-dummy-tab');
+     elements.inkBar  = elements.paging.getElementsByTagName('md-ink-bar')[ 0 ];
+ 
+     // gather tab content elements
+     elements.contentsWrapper = $element[ 0 ].getElementsByTagName('md-tabs-content-wrapper')[ 0 ];
+-    elements.contents        = elements.contentsWrapper.getElementsByTagName('md-tab-content');
++    elements.contents        = elements.contentsWrapper.children;
+ 
+     return elements;
+   }
+ 
+   /**

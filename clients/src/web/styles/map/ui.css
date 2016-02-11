@@ -126,10 +126,6 @@ md-tabs-canvas {
   padding: 0;
 }
 
-md-icon {
-  color: #fff;
-}
-
 .gl-tree md-icon {
   color: #444;
 }
@@ -225,6 +221,12 @@ md-fab-trigger .md-fab.md-button md-icon {
   width: 24px;
   height: 24px;
 }
+
+.map-button.md-button md-icon,
+.md-fab.md-button.md-raised md-icon {
+  color: #fff;
+}
+
 .md-button.md-fab.md-primary,
 .md-button.md-fab {
   background-color: #333;

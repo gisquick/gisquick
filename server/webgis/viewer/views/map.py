@@ -35,9 +35,6 @@ def ows(request):
             resp_content += data
         content_type = resp.info().getheader('Content-Type')
         status = resp.getcode()
-        # temporary fix of invalid GeoJSON from qgis mapserver
-        if content_type == 'text/plain; charset=utf-8':
-            resp_content = resp_content.replace('}\n  {', '}\n ,{')
         return HttpResponse(resp_content, content_type=content_type, status=status)
 
 

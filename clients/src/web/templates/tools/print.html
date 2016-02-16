@@ -1,0 +1,67 @@
+<div
+  class="panel-tool print-form"
+  ng-controller="PrintController">
+
+  <div layout="row">
+    <md-input-container flex>
+      <label class="md-label md-no-float">Layout</label>
+      <md-select
+        ng-model="tool.config.layout"
+        md-on-close="tool.events.layoutChanged(tool.config.layout)"
+        placeholder="Select layout">
+        <md-option
+          ng-repeat="composer in tool.config.layouts"
+          ng-value="composer">
+          {{ composer.name }}
+        </md-option>
+      </md-select>
+    </md-input-container>
+
+    <!-- Print menu -->
+    <md-menu
+      md-position-mode="target-right target">
+      <md-button
+        aria-label="Column menu"
+        class="menu-button"
+        ng-click="$mdOpenMenu($event)">
+        <md-icon
+          md-menu-origin
+          md-svg-icon="menu-dots">
+        </md-icon>
+      </md-button>
+      <md-menu-content width="4">
+        <md-menu-item class="menu-group-item">
+          <md-divider></md-divider>
+          <div layout="row">
+            <span flex></span>
+            <span flex="none" class="group-item-title">Output format</span>
+            <span flex></span>
+          </div>
+        </md-menu-item>
+        <md-menu-item
+          ng-repeat="format in ['pdf', 'png']"
+          type="radio"
+          ng-value="format"
+          ng-model="tool.config.format">
+          <md-button>{{ ::format }}</md-button>
+        </md-menu-item>
+
+        <md-menu-item class="menu-group-item">
+          <md-divider></md-divider>
+          <div layout="row">
+            <span flex></span>
+            <span flex="none" class="group-item-title">Print quality</span>
+            <span flex></span>
+          </div>
+        </md-menu-item>
+        <md-menu-item
+          ng-repeat="dpi in [96, 150, 300]"
+          type="radio"
+          ng-value="dpi"
+          ng-model="tool.config.dpi">
+          <md-button>{{ ::dpi }} dpi</md-button>
+        </md-menu-item>
+      </md-menu-content>
+    </md-menu>
+  </div>
+</div>

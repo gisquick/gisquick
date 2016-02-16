@@ -1129,6 +1129,8 @@ class ProjectPage(WizardPage):
                 'height': composition.paperHeight(),
                 'map': {
                     'name': 'map0',
+                    'x': map_composer.x(),
+                    'y': map_composer.y(),
                     'width': map_rect.width(),
                     'height': map_rect.height()
                 },

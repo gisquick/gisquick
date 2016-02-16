@@ -6,6 +6,7 @@
   min-height: 32px;
   background-color: #dfdfdf;
   border-top: 1px solid #aaa;
+  z-index: 50;
 }
 
 .status-bar-content {

@@ -1,0 +1,98 @@
+<div
+  ng-style="{paddingLeft: ui.mapView.left+'px'}"
+  class="print-preview"
+  layout="row"
+  layout-fill>
+  <div class="print-preview-bg" flex></div>
+  <div layout="column">
+    <div
+      flex
+      class="print-preview-bg preview-toolbar-container">
+      <!-- Print preview toolbar -->
+      <div
+        layout="row"
+        class="preview-toolbar">
+        <span flex>Print Preview</span>
+        <md-button
+          aria-label="Print"
+          ng-disabled="!tool.config.layout"
+          ng-click="print()">
+          <md-icon md-svg-icon="printer"></md-icon>
+        </md-button>
+        <md-button
+          aria-label="Download"
+          ng-disabled="!tool.config.layout"
+          ng-click="download()">
+          <md-icon md-svg-icon="download"></md-icon>
+        </md-button>
+      </div>
+    </div>
+    <!-- Container for print layouts templates -->
+    <print-layout
+      ng-repeat="layout in ::tool.config.layouts"
+      class="print-template-container"
+      ng-show="tool.config.layout===layout">
+
+      <!-- SVG mask for map element in print layout template image
+           for Firefox and CSS clipping polygon for Chrome (Webkit) -->
+      <style>
+        .print-mask-{{ ::$index }} {
+          mask: url(#print-mask-{{ ::$index }});
+          -webkit-clip-path: polygon(
+            0% 0%,
+            100% 0%,
+            100% 100%,
+            0% 100%,
+            0 {{ 100*layout.map.y/layout.height }}%,
+            {{ 100*layout.map.x/layout.width }}% {{ 100*layout.map.y/layout.height }}%,
+            {{ 100*layout.map.x/layout.width }}% {{ 100*(layout.map.y+layout.map.height)/layout.height }}%,
+            {{ 100*(layout.map.x+layout.map.width)/layout.width }}% {{ 100*(layout.map.y+layout.map.height)/layout.height }}%,
+            {{ 100*(layout.map.x+layout.map.width)/layout.width }}% {{ 100*layout.map.y/layout.height }}%,
+            0% {{ 100*layout.map.y/layout.height }}%,
+            0% 0%
+          );
+        }
+      </style>
+      <svg id="print-mask-svg-{{ ::$index }}" width="1" height="1" style="position: absolute;">
+        <defs>
+          <mask
+            id="print-mask-{{ ::$index }}"
+            maskUnits="objectBoundingBox"
+            maskContentUnits="objectBoundingBox">
+            <rect x="0" y="0" width="1" height="1" fill="#fff"></rect>
+            <rect
+              ng-attr-x="{{ layout.map.x/layout.width }}"
+              ng-attr-y="{{ layout.map.y/layout.height }}"
+              ng-attr-width="{{ layout.map.width/layout.width }}"
+              ng-attr-height="{{ layout.map.height/layout.height }}"
+              fill="#000">
+            </rect>
+          </mask>
+        </defs>
+      </svg>
+      <!-- Print template image -->
+      <img
+        ng-style="{
+          width: tool.config.previewWidth,
+          height: tool.config.previewHeight
+        }"
+        class="print-mask-{{ ::$index }} print-area-image"
+        draggable="false"
+        ng-src="{{ ::layout.templateUrl }}">
+      </img>
+      <!-- Map area element (border) -->
+      <div
+        class="print-preview-map"
+        style="position: absolute;"
+        ng-style="::{
+          left: (100*layout.map.x/layout.width)+'%',
+          top: (100*layout.map.y/layout.height)+'%',
+          right: (100*(1-(layout.map.x+layout.map.width)/layout.width))+'%',
+          bottom: (100*(1-(layout.map.y+layout.map.height)/layout.height))+'%'
+        }">
+      </div>
+      </print-layout>
+      <div class="print-preview-bg" flex></div>
+    </div>
+  <div class="print-preview-bg" flex></div>
+</div>

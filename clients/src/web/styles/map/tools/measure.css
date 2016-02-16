@@ -1,0 +1,29 @@
+.measure-form label {
+  font-size: 13.5px;
+  color: #777;
+  margin-top: 5px;
+  margin-bottom: 4px;
+}
+.measure-form .field {
+  border-bottom: 1px solid #ccc;
+  height: 28px;
+  font-size: 16px;
+  line-height: 26px;
+  margin: 4px 0;
+}
+.measure-form .field:first-child {
+  margin-right: 4px;
+}
+.measure-form label:nth-child(2),
+.measure-form .field:last-child {
+  margin-left: 4px;
+}
+.measure-form {
+  margin: 10px 4px 2px 4px;
+}
+.measure-form .field {
+  font-size: 14px;
+}
+.measure-form .list-item-menu-button {
+  right: 0px;
+}

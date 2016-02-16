@@ -218,15 +218,40 @@
           title: 'Print',
           tooltip: 'Print output creation',
           icon: 'printer',
-          // template: 'templates/tools/print.html',
+          template: 'templates/tools/print.html',
+          previewTemplate: 'templates/tools/print_preview.html',
           config: {
+            layouts: undefined, // define in initialization function
             dpi: 96,
             format: 'png',
-            rotation: 0
+            rotation: 0,
+            title: projectProvider.config.root_title,
+            author: 'User',
+            contact:
+              '<div style="position:absolute;bottom:0;right:0;font-family:Liberation Sans;">\
+                <span>{0}<br />{1}</span>\
+              </div>'.format(projectProvider.config.organization, projectProvider.config.email)
           },
-          initialize: angular.noop,
-          activate: angular.noop,
-          deactivate: angular.noop
+          events: {
+            toolActivated: angular.noop,
+            toolDeactivated: angular.noop,
+            layoutChanged: angular.noop
+          },
+          initialize: function() {
+            // sort layouts by height
+            var layouts = projectProvider.config.print_composers.sort(function(a, b) {
+              return a.height > b.height;
+            });
+            this.config.layouts = layouts;
+            // select default layout
+            this.config.layout = layouts[0];
+          },
+          activate: function() {
+            this.events.toolActivated();
+          },
+          deactivate: function() {
+            this.events.toolDeactivated();
+          }
         }
       ];
       $scope.tools.forEach(function(tool) {

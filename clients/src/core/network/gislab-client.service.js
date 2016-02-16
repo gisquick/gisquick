@@ -117,6 +117,17 @@
       });
     };
 
+    GislabClient.prototype.encodeUrl = function(url, params) {
+      var query = [];
+      for (name in params) {
+        var value = params[name];
+        if (angular.isDefined(value)) {
+          query.push('{0}={1}'.format(name, encodeURIComponent(value)));
+        }
+      }
+      return this.serverUrl+url+'&'+query.join('&');
+    }
+
     return new GislabClient();
   };
 })();

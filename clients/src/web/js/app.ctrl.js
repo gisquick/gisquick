@@ -269,6 +269,22 @@
       webgis.project.then(function(projectData) {
         $scope.title = webgis.project.root_title;
         console.log(projectData);
+
+        projectData.rotateOptions = {
+          target: 'map-rotate-reset',
+          label: document.getElementById('map-rotate-reset').children[0]
+        };
+        projectData.zoomOptions = {
+          target: 'map-zoom-buttons',
+          zoomInLabel: document.getElementById('map-zoom-buttons').children[0],
+          zoomOutLabel: document.getElementById('map-zoom-buttons').children[1]
+        };
+        projectData.attributionOptions = {
+          target: document.getElementById('map-attributions'),
+          collapsible: true,
+          label: '©'
+        };
+
         projectProvider.load(projectData);
         if (projectProvider.map) {
           projectProvider.map.setTarget('map');

@@ -130,10 +130,46 @@
   </div>
 
   <div id="map"></div>
+
   <div
     id="ol-scale-line-container"
     style="left: {{ ui.mapView.left }}px;">
   </div>
+
+  <!-- Map Control Buttons -->
+  <div
+    id="map-rotate-reset"
+    class="map-button">
+    <md-icon
+      md-svg-icon="north-arrow">
+    </md-icon>
+  </div>
+  <md-button
+    aria-label="My Location"
+    class="map-button location-button">
+    <md-icon md-svg-icon="location-target"></md-icon>
+  </md-button>
+  <div
+    id="map-zoom-buttons">
+    <md-icon
+      md-svg-icon="plus">
+    </md-icon>
+    <md-icon
+      md-svg-icon="minus">
+    </md-icon>
+  </div>
+  <md-button
+    aria-label="Zoom to max extent"
+    class="map-button zoom-to-max-button"
+    ng-click="zoomToMaxExtent()">
+    <md-icon md-svg-icon="zoom-max"></md-icon>
+  </md-button>
+  <div
+    id="map-attributions"
+    class="map-attributions-button">
+  </div>
+
+  <!-- Status Bar -->
   <div
     layout="row"
     class="status-bar md-whiteframe-top"
@@ -150,25 +186,14 @@
       <label>Mouse coordinates:</label>
     </div>
   </div>
-  <md-button
-    aria-label="Zoom to max extent"
-    class="map-button zoom-to-max-button"
-    ng-click="zoomToMaxExtent()">
-    <md-icon md-svg-icon="zoom-max"></md-icon>
-  </md-button>
-  <md-button
-    aria-label="My Location"
-    class="map-button location-button">
-    <md-icon md-svg-icon="location-target"></md-icon>
-  </md-button>
-
-  <div
-    class="right-menu-container"
-    ng-include="'templates/menu.html'">
-  </div>
 
   <div
     class="bottom-bar"
     style="left: {{ ui.mapView.left }}px;">
+  </div>
+
+  <div
+    class="right-menu-container"
+    ng-include="'templates/menu.html'">
   </div>
 </div>

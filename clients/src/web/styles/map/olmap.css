@@ -9,9 +9,13 @@
 }
 
 .ol-control.ol-zoom {
+  position: static;
+}
+
+#map-zoom-buttons {
+  position: absolute;
+  z-index: 100;
   right: 3px;
-  left: auto;
-  top: auto;
   bottom: 80px;
 }
 
@@ -48,8 +52,6 @@
   width: 36px;
   height: 36px;
   border-radius: 8px;
-  font-size: 36px;
-  font-weight: 400;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
 }
 
@@ -79,6 +81,23 @@
 .ol-mouse-position {
   display: inline-block;
   position: static;
+}
+
+#map-rotate-reset {
+  position: absolute;
+  z-index: 100;
+  top: auto;
+  bottom: 200px;
+  right: 3px;
+}
+#map-rotate-reset .ol-rotate {
+  position: static;
+}
+
+.ol-control md-icon {
+  color: #fff;
+  width: 24px;
+  height: 24px;
 }
 
 .location-button {

@@ -40,21 +40,31 @@
         });
 
       var controls = ol.control.defaults({
-        attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
-          collapsible: true,
-          label: '©',
-        }),
-        rotate: false
-      }).extend([
-        new ol.control.Rotate({
-          label: goog.dom.createDom('span', 'icon-compass')
-        })
-      ]);
+        attributionOptions: /** @type {olx.control.AttributionOptions} */
+          (config.attributionOptions || {}),
+        rotateOptions: /** @type {olx.control.RotateOptions} */
+          (config.rotateOptions || {}),
+        zoomOptions: /** @type {olx.control.ZoomOptions} */
+          (config.zoomOptions || {})
+      });
 
+      // Enable map rotation with Ctrl+Shift
+      ol.events.condition.custom = function(mapBrowserEvent) {
+        var browserEvent = mapBrowserEvent.originalEvent;
+        return (browserEvent.ctrlKey && browserEvent.shiftKey);
+      };
+      var interactions = ol.interaction.defaults().extend(
+        [
+          new ol.interaction.DragRotate({
+            condition: ol.events.condition.custom
+          })
+        ]
+      );
       var map = new ol.Map({
         layers: layers,
         view: view,
         controls: controls,
+        interactions: interactions,
         renderer: 'canvas'
       });
 

@@ -79,7 +79,7 @@ md-menu-item md-icon {
   fill: #777;
   width: 24px;
   padding: 5px 5px;
-  stroke-width: 3px;
+  stroke-width: 1px;
   stroke: white;
   position: absolute;
   z-index: 51;

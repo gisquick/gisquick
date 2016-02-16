@@ -14,7 +14,7 @@
    id="svg4344"
    version="1.1"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="zoo_to_max_2.svg">
+   sodipodi:docname="zoom-max.svg">
   <defs
      id="defs4346" />
   <sodipodi:namedview
@@ -25,7 +25,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="5.3333334"
-     inkscape:cx="8.0481497"
+     inkscape:cx="-21.95185"
      inkscape:cy="-1.6394115"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -64,7 +64,7 @@
      id="layer1"
      transform="translate(0,-1020.3622)">
     <path
-       style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;color:#000000;fill:#1a1a1a;fill-opacity:1;stroke:none;stroke-width:2.71758533;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
+       style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;color:#000000;fill:#444444;fill-opacity:1;stroke:none;stroke-width:2.71758532999999991;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
        d="m 0,1020.3622 0,1.7917 0,10.125 3.625,0 0,-8.2916 8.375,0 0,-3.6251 -10.2083333,0 -1.7916667,0 z m 20,0 0,3.6251 8.375,0 0,8.2916 3.625,0 0,-10.125 0,-1.7917 -1.791667,0 -10.208333,0 z m -20,20.0417 0,10.125 0,1.8333 1.7916667,0 10.2083333,0 0,-3.6249 -8.375,0 0,-8.3334 -3.625,0 z m 28.375,0 0,8.3334 -8.375,0 0,3.6249 10.208333,0 1.791667,0 0,-1.8333 0,-10.125 -3.625,0 z"
        id="path3034"
        inkscape:connector-curvature="0" />

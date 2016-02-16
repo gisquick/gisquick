@@ -14,7 +14,7 @@
    id="svg4344"
    version="1.1"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="main_menu_icon.svg">
+   sodipodi:docname="menu.svg">
   <defs
      id="defs4346" />
   <sodipodi:namedview
@@ -25,7 +25,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="8.6756757"
-     inkscape:cx="19.186916"
+     inkscape:cx="0.74454845"
      inkscape:cy="14.331776"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -65,9 +65,10 @@
      transform="translate(0,-1020.3622)">
     <g
        id="g3132"
-       transform="matrix(1.25,0,0,1.3333333,1,-350.78734)">
+       transform="matrix(1.25,0,0,1.3333333,1,-350.78734)"
+       style="fill:#444444;fill-opacity:1">
       <rect
-         style="fill:#1a1a1a;fill-opacity:1;stroke:none;display:inline"
+         style="fill:#444444;fill-opacity:1;stroke:none;display:inline"
          id="rect5468"
          width="4"
          height="24"
@@ -83,7 +84,7 @@
          height="24"
          width="4"
          id="rect3128"
-         style="fill:#1a1a1a;fill-opacity:1;stroke:none;display:inline" />
+         style="fill:#444444;fill-opacity:1;stroke:none;display:inline" />
       <rect
          transform="matrix(0,-1,1,0,0,0)"
          ry="0"
@@ -92,7 +93,7 @@
          height="24"
          width="4"
          id="rect3130"
-         style="fill:#1a1a1a;fill-opacity:1;stroke:none;display:inline" />
+         style="fill:#444444;fill-opacity:1;stroke:none;display:inline" />
     </g>
   </g>
 </svg>

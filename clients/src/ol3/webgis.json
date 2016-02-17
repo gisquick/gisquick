@@ -25,8 +25,6 @@
     "ol.style.Stroke",
     "ol.style.Fill",
     "ol.style.Circle",
-    "ol.interaction.defaults",
-    "ol.interaction.DragRotate",
     "ol.interaction.DragZoom",
     "ol.interaction.Select",
     "ol.interaction.Select#setMap",

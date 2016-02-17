@@ -48,26 +48,12 @@
           (config.zoomOptions || {})
       });
 
-      // Enable map rotation with Ctrl+Shift
-      ol.events.condition.custom = function(mapBrowserEvent) {
-        var browserEvent = mapBrowserEvent.originalEvent;
-        return (browserEvent.ctrlKey && browserEvent.shiftKey);
-      };
-      var interactions = ol.interaction.defaults().extend(
-        [
-          new ol.interaction.DragRotate({
-            condition: ol.events.condition.custom
-          })
-        ]
-      );
       var map = new ol.Map({
         layers: layers,
         view: view,
         controls: controls,
-        interactions: interactions,
         renderer: 'canvas'
       });
-
       return map;
     };
 

@@ -117,15 +117,13 @@
 
         evt.pixel[0] = x;
         evt.pixel[1] = y;
-        if (evt.pointerEvent) {
-          evt.pointerEvent.clientX = x
-          evt.pointerEvent.clientY = y;
+        if (evt.getPointerEvent) {
+          var pointerEvent = evt.getPointerEvent();
+          pointerEvent.clientX = x
+          pointerEvent.clientY = y;
         }
-        evt.browserEvent.clientX = x;
-        evt.browserEvent.clientY = y;
         evt.coordinate = projectProvider.map.getCoordinateFromPixel(evt.pixel);
       }
-
       var zoomInteraction = projectProvider.map.getInteractionByClass(ol.interaction.DragZoom);
       if (zoomInteraction) {
         zoomInteraction._handleEvent_ = zoomInteraction.handleEvent;

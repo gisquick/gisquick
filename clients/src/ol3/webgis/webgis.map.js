@@ -313,6 +313,9 @@ ol.View.prototype.getScale = function() {
   return scale;
 };
 
+ol.MapBrowserPointerEvent.prototype.getPointerEvent = function() {
+  return this.pointerEvent;
+};
 
 goog.exportProperty(ol.Map.prototype, 'getLayer', ol.Map.prototype.getLayer);
 goog.exportProperty(ol.Map.prototype, 'getControlByClass', ol.Map.prototype.getControlByClass);
@@ -320,8 +323,22 @@ goog.exportProperty(ol.Map.prototype, 'getInteractionByClass', ol.Map.prototype.
 goog.exportProperty(ol.View.prototype, 'getScale', ol.View.prototype.getScale);
 goog.exportProperty(ol.geom.Polygon, 'fromCircle', ol.geom.Polygon.fromCircle);
 goog.exportProperty(ol.geom.Polygon.prototype, 'getFlatCoordinates', ol.geom.Polygon.prototype.getFlatCoordinates);
+goog.exportProperty(ol.MapBrowserPointerEvent.prototype, 'getPointerEvent', ol.MapBrowserPointerEvent.prototype.getPointerEvent);
 
 goog.exportSymbol('ol.proj.get', ol.proj.get);
 goog.exportSymbol('ol.proj.projections_', ol.proj.projections_);
 goog.exportSymbol('ol.geom.flat.length.linearRing', ol.geom.flat.length.linearRing);
 goog.exportSymbol('goog.dom.createDom', goog.dom.createDom);
+
+
+
+// Define Ctrl+Shift condition test
+ol.events.condition.ctrlShiftKeysOnly = function(mapBrowserEvent) {
+  var browserEvent = mapBrowserEvent.originalEvent;
+  return (browserEvent.ctrlKey && browserEvent.shiftKey);
+};
+
+// Alt+Shift is not usable to use on Linux, so replace it with Ctrl+Shift
+if (navigator.platform.contains("Linux")) {
+  ol.events.condition.altShiftKeysOnly = ol.events.condition.ctrlShiftKeysOnly;
+}

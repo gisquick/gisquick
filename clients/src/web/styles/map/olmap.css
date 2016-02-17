@@ -117,3 +117,7 @@
     bottom: 5px;
   }
 }
+
+.ol-dragzoom {
+  border-color: rgb(0, 170, 212);
+}

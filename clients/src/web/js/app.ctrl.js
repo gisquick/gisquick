@@ -150,16 +150,9 @@
                 title: 'Ares (a)'
               }
             ],
-            position: {
-              unitsIndex: 0
-            },
-            length: {
-              unitsIndex: 0
-            },
-            area: {
-              perimeterUnitsIndex: 0,
-              areaUnitsIndex: 0
-            }
+            positionUnitsIndex: 0,
+            lengthUnitsIndex: 0,
+            areaUnitsIndex: 0
           },
           data: {
             position: [],

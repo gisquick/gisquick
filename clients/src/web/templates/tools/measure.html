@@ -25,11 +25,10 @@
             <label flex="50">1st coordinate</label>
             <label flex="50">2nd coordinate</label>
             <md-menu
-              class="list-menu"
               md-position-mode="target-right target">
               <md-button
                 aria-label="Column menu"
-                class="list-item-button list-item-menu-button"
+                class="menu-button"
                 ng-click="$mdOpenMenu($event)">
                 <md-icon
                   md-menu-origin
@@ -49,7 +48,7 @@
                   ng-repeat="unit in ::tool.config.positionUnits"
                   type="radio"
                   ng-value="$index"
-                  ng-model="tool.config.position.unitsIndex"
+                  ng-model="tool.config.positionUnitsIndex"
                   ng-change="tool.events.unitsChanged(unit)">
                   <md-button>{{ ::unit.title }}</md-button>
                 </md-menu-item>
@@ -86,11 +85,10 @@
             <label flex="50">Last segment</label>
             <label flex="50">Total length</label>
             <md-menu
-              class="list-menu"
               md-position-mode="target-right target">
               <md-button
                 aria-label="Column menu"
-                class="list-item-button list-item-menu-button"
+                class="menu-button"
                 ng-click="$mdOpenMenu($event)">
                 <md-icon
                   md-menu-origin
@@ -110,7 +108,7 @@
                   ng-repeat="unit in ::tool.config.lengthUnits"
                   type="radio"
                   ng-value="$index"
-                  ng-model="tool.config.length.unitsIndex"
+                  ng-model="tool.config.lengthUnitsIndex"
                   ng-change="tool.events.unitsChanged(unit)">
                   <md-button>{{ ::unit.title }}</md-button>
                 </md-menu-item>
@@ -146,11 +144,10 @@
             <label flex="50">Perimeter</label>
             <label flex="50">Area</label>
             <md-menu
-              class="list-menu"
               md-position-mode="target-right target">
               <md-button
                 aria-label="Column menu"
-                class="list-item-button list-item-menu-button"
+                class="menu-button"
                 ng-click="$mdOpenMenu($event)">
                 <md-icon
                   md-menu-origin
@@ -158,22 +155,6 @@
                 </md-icon>
               </md-button>
               <md-menu-content width="4">
-                <md-menu-item class="menu-group-item">
-                  <md-divider></md-divider>
-                  <div layout="row">
-                    <span flex></span>
-                    <span flex="none" class="group-item-title">Perimeter units</span>
-                    <span flex></span>
-                  </div>
-                </md-menu-item>
-                <md-menu-item
-                  ng-repeat="unit in ::tool.config.lengthUnits"
-                  type="radio"
-                  ng-value="$index"
-                  ng-model="tool.config.area.perimeterUnitsIndex"
-                  ng-change="tool.events.unitsChanged(unit)">
-                  <md-button>{{ ::unit.title }}</md-button>
-                </md-menu-item>
                 <md-menu-item class="menu-group-item">
                   <md-divider></md-divider>
                   <div layout="row">
@@ -186,7 +167,24 @@
                   ng-repeat="unit in ::tool.config.areaUnits"
                   type="radio"
                   ng-value="$index"
-                  ng-model="tool.config.area.areaUnitsIndex"
+                  ng-model="tool.config.areaUnitsIndex"
+                  ng-change="tool.events.unitsChanged(unit)">
+                  <md-button>{{ ::unit.title }}</md-button>
+                </md-menu-item>
+
+                <md-menu-item class="menu-group-item">
+                  <md-divider></md-divider>
+                  <div layout="row">
+                    <span flex></span>
+                    <span flex="none" class="group-item-title">Perimeter units</span>
+                    <span flex></span>
+                  </div>
+                </md-menu-item>
+                <md-menu-item
+                  ng-repeat="unit in ::tool.config.lengthUnits"
+                  type="radio"
+                  ng-value="$index"
+                  ng-model="tool.config.lengthUnitsIndex"
                   ng-change="tool.events.unitsChanged(unit)">
                   <md-button>{{ ::unit.title }}</md-button>
                 </md-menu-item>

@@ -117,7 +117,7 @@
             return;
 
           var coords;
-          var units = tool.config.positionUnits[tool.config.position.unitsIndex];
+          var units = tool.config.positionUnits[tool.config.positionUnitsIndex];
           if (units.projection.getCode() === 'EPSG:4326') {
             coords = ol.proj.toLonLat(this._position, this.mapProjection);
             if (units.name === 'EPSG:4326_HDMS') {
@@ -162,7 +162,7 @@
           $scope.$apply();
         },
         updateValue: function() {
-          var units = tool.config.lengthUnits[tool.config.length.unitsIndex];
+          var units = tool.config.lengthUnits[tool.config.lengthUnitsIndex];
           tool.data.length.lastSegment = this._lengthTotal?
             formatLength(this._lengthTotal - this._partialLength, units) : '';
           tool.data.length.total = this._lengthTotal? formatLength(this._lengthTotal, units) : '';
@@ -206,8 +206,8 @@
           $scope.$apply();
         },
         updateValue: function() {
-          var areaUnits = tool.config.areaUnits[tool.config.area.areaUnitsIndex];
-          var lengthUnits = tool.config.lengthUnits[tool.config.area.perimeterUnitsIndex];
+          var areaUnits = tool.config.areaUnits[tool.config.areaUnitsIndex];
+          var lengthUnits = tool.config.lengthUnits[tool.config.lengthUnitsIndex];
           tool.data.area = this._area > 0? formatArea(this._area, areaUnits) : '';
           tool.data.perimeter = this._perimeter? formatLength(this._perimeter, lengthUnits) : '';
         },

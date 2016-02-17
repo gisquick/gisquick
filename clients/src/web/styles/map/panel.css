@@ -270,7 +270,7 @@ md-tabs-wrapper md-icon {
 }
 
 .panel-tool md-input-container {
-  margin: 18px 4px 0 0;
+  margin: 16px 4px 0 0;
   padding: 8px 0px 2px 0px;
   height: 36px;
 }
@@ -284,5 +284,22 @@ md-tabs-wrapper md-icon {
   padding: 0;
 }
 .panel-tool .md-button {
-  margin: 6px 0 0 0;
+  margin: 0;
 }
+
+.panel-tool .menu-button {
+  position: absolute;
+  right: 0;
+  top: 0;
+  min-width: 30px;
+  min-height: 30px;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  padding: 0;
+}
+.panel-tool .menu-button md-icon {
+  width: 20px;
+  height: 20px;
+}
+

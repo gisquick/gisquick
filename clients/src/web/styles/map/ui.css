@@ -151,6 +151,7 @@ md-tabs-canvas {
   display: flex;
   bottom: 0;
   right: 0;
+  z-index: 120;
   transition: 0.45s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
 }
 md-tabs-wrapper {

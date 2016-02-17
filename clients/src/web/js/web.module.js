@@ -13,6 +13,7 @@
       'gl.legend',
       'gl.layersControl',
       'gl.features',
-      'gl.measure'
+      'gl.measure',
+      'gl.print'
     ]);
 })();

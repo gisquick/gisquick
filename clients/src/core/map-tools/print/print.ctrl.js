@@ -107,7 +107,6 @@
 
     // projectProvider.map.getView().setRotation(tool.config.rotation*Math.PI/180);
 
-    var dragListenerKey, dragZoomKey;
     /** Setup scale transformation on all required map mouse events
     used in map controls - when map canvas is resized and scaled down
     to fit print layout area into device screen size. */
@@ -118,46 +117,31 @@
 
         evt.pixel[0] = x;
         evt.pixel[1] = y;
-        // evt.pointerEvent.clientX = x
-        // evt.pointerEvent.clientY = y;
-        // evt.pointerEvent.screenX = x;
-        // evt.pointerEvent.screenY = y;
-        // evt.browserEvent.clientX = x;
-        // evt.browserEvent.clientY = y;
-        // evt.browserEvent.screenX = x;
-        // evt.browserEvent.screenY = y;
+        if (evt.pointerEvent) {
+          evt.pointerEvent.clientX = x
+          evt.pointerEvent.clientY = y;
+        }
+        evt.browserEvent.clientX = x;
+        evt.browserEvent.clientY = y;
         evt.coordinate = projectProvider.map.getCoordinateFromPixel(evt.pixel);
       }
-      // projectProvider.map.on('pointermove', transformEvent);
-      // projectProvider.map.on('dblclick', transformEvent);
-      // projectProvider.map.on('click', transformEvent);
-      // projectProvider.map.on('singleclick', transformEvent);
-      dragListenerKey = projectProvider.map.on('pointerdrag', transformEvent);
 
-      function boxStart(evt) {
-        // console.log('boxStart');
-        var pixel = evt.target.startPixel_;
-        pixel[0] = pixel[0] * tool.config._previewScale;
-        pixel[1] = pixel[1] * tool.config._previewScale;
-        evt.coordinate = projectProvider.map.getCoordinateFromPixel(pixel);
+      var zoomInteraction = projectProvider.map.getInteractionByClass(ol.interaction.DragZoom);
+      if (zoomInteraction) {
+        zoomInteraction._handleEvent_ = zoomInteraction.handleEvent;
+        zoomInteraction.handleEvent = function(evt) {
+          transformEvent(evt);
+          return zoomInteraction._handleEvent_(evt);
+        };
       }
-      dragZoomKey = projectProvider.map.getInteractionByClass(ol.interaction.DragZoom).on('boxstart', boxStart);
-
-      var wheelInteraction = projectProvider.map.getInteractionByClass(ol.interaction.MouseWheelZoom);
-      wheelInteraction._handleEvent = wheelInteraction.handleEvent;//.bind(wheelInteraction);
-      wheelInteraction.handleEvent = function(evt) {
-        // console.log('handleEvent');
-        transformEvent(evt);
-        return wheelInteraction._handleEvent(evt);
-      };
     }
 
     /** Remove all registred event listener used for map mouse events transformation */
     function removeMapEventsTransform() {
-      projectProvider.map.unByKey(dragListenerKey);
-      projectProvider.map.getInteractionByClass(ol.interaction.DragZoom).unByKey(dragZoomKey);
-      var wheelInteraction = projectProvider.map.getInteractionByClass(ol.interaction.MouseWheelZoom);
-      wheelInteraction.handleEvent = wheelInteraction._handleEvent;
+      var zoomInteraction = projectProvider.map.getInteractionByClass(ol.interaction.DragZoom);
+      if (zoomInteraction._handleEvent_) {
+        zoomInteraction.handleEvent = zoomInteraction._handleEvent_;
+      }
     }
 
     function initializePrintPreview() {

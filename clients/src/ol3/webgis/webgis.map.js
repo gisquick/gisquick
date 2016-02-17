@@ -281,7 +281,6 @@ ol.Map.prototype.getLayer = function(name) {
   });
   return layer;
 };
-goog.exportProperty(ol.Map.prototype, 'getLayer', ol.Map.prototype.getLayer);
 
 ol.Map.prototype.getControlByClass = function(clazz) {
   var control;
@@ -293,7 +292,17 @@ ol.Map.prototype.getControlByClass = function(clazz) {
   });
   return control;
 };
-goog.exportProperty(ol.Map.prototype, 'getControlByClass', ol.Map.prototype.getControlByClass);
+
+ol.Map.prototype.getInteractionByClass = function(clazz) {
+  var interaction;
+  this.getInteractions().getArray().some(function(obj) {
+    if (obj instanceof clazz) {
+      interaction = obj;
+      return true;
+    }
+  });
+  return interaction;
+};
 
 ol.View.prototype.getScale = function() {
   var resolution = this.getResolution();
@@ -304,6 +313,10 @@ ol.View.prototype.getScale = function() {
   return scale;
 };
 
+
+goog.exportProperty(ol.Map.prototype, 'getLayer', ol.Map.prototype.getLayer);
+goog.exportProperty(ol.Map.prototype, 'getControlByClass', ol.Map.prototype.getControlByClass);
+goog.exportProperty(ol.Map.prototype, 'getInteractionByClass', ol.Map.prototype.getInteractionByClass);
 goog.exportProperty(ol.View.prototype, 'getScale', ol.View.prototype.getScale);
 goog.exportProperty(ol.geom.Polygon, 'fromCircle', ol.geom.Polygon.fromCircle);
 goog.exportProperty(ol.geom.Polygon.prototype, 'getFlatCoordinates', ol.geom.Polygon.prototype.getFlatCoordinates);

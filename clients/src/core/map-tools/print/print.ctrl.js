@@ -32,36 +32,33 @@
       return params;
     }
 
+    function mmToPx(value) {
+      return parseInt((96 * value)/25.4);
+    }
+
     function getPrintParameters() {
       var layout = tool.config.layout;
-      var templateImageElem = tool._previewElem.find('print-layout').splice(0).find(function(elem) {
+      var layoutElem = tool._previewElem.find('print-layout').splice(0).find(function(elem) {
         return elem.clientWidth > 0;
       });
 
-      var width = templateImageElem.clientWidth;
-      var height = templateImageElem.clientHeight;
-      var left = templateImageElem.offsetLeft + (layout.map.x/layout.width)*width;
-      var top = templateImageElem.offsetTop + (layout.map.y/layout.height)*height;
-      var right = left+(layout.map.width/layout.width)*width;
-      var bottom = top+(layout.map.height/layout.height)*height;
+      var width = mmToPx(layout.map.width);
+      var height = mmToPx(layout.map.height);
+      var left = layoutElem.offsetLeft*tool.config._previewScale + mmToPx(layout.map.x);
+      var top = layoutElem.offsetTop*tool.config._previewScale + mmToPx(layout.map.y);
 
-      left = left * tool.config._previewScale;
-      right = right * tool.config._previewScale;
-      top = top * tool.config._previewScale;
-      bottom = bottom * tool.config._previewScale;
-
-      console.log([width, height]);
-      console.log([left, top, right, bottom]);
-
-      var leftTop = projectProvider.map.getCoordinateFromPixel([left, top]);
-      var rightBottom = projectProvider.map.getCoordinateFromPixel([right, bottom]);
+      var center = projectProvider.map.getCoordinateFromPixel(
+        [left + width/2, top + height/2]
+      );
+      var resolution = projectProvider.map.getView().getResolution();
       var extent = [
-        leftTop[0],
-        leftTop[1],
-        rightBottom[0],
-        rightBottom[1]
+        center[0] - resolution * width / 2,
+        center[1] - resolution * height / 2,
+        center[0] + resolution * width / 2,
+        center[1] + resolution * height / 2
       ];
-
+      // rotation angle in degrees
+      tool.config.rotation = projectProvider.map.getView().getRotation()*180/Math.PI;
       return createPrintParameters(
         layout,
         layersControl.getVisibleLayers(projectProvider.map),
@@ -70,8 +67,8 @@
     }
 
     function setupPrintLayout(printLayout) {
-      var width = parseInt((96 * printLayout.width)/25.4);
-      var height = parseInt((96 * printLayout.height)/25.4);
+      var width = mmToPx(printLayout.width);
+      var height = mmToPx(printLayout.height);
       var mapSize = projectProvider.map.getSize();
       // compute real map size
       mapSize[0] = mapSize[0]/tool.config._previewScale;
@@ -102,10 +99,6 @@
         projectProvider.map.updateSize();
       }, 200);
     }
-
-    tool.events.layoutChanged = setupPrintLayout;
-
-    // projectProvider.map.getView().setRotation(tool.config.rotation*Math.PI/180);
 
     /** Setup scale transformation on all required map mouse events
     used in map controls - when map canvas is resized and scaled down
@@ -162,6 +155,8 @@
           angular.element(document.body).append(tool._previewElem);
         });
     }
+
+    tool.events.layoutChanged = setupPrintLayout;
 
     tool.events.toolActivated = function() {
       if (tool._previewElem) {

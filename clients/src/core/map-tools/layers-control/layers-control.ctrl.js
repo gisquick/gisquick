@@ -6,7 +6,7 @@
     .controller('LayersController', LayersController)
     .controller('OverlaysController', OverlaysController);
 
-  function OverlaysController($scope, $timeout, $q, projectProvider, mapBuilder, layersControl, glPanelService) {
+  function OverlaysController($scope, $timeout, $q, projectProvider, mapBuilder, layersControl, glPanelManager) {
 
     var queryableLayersIndexes = {};
     projectProvider.layers.list.forEach(function(layer_data, index) {
@@ -25,10 +25,10 @@
         if (!tool.opened) {
           var scope = $scope.$new();
           scope.ui = {
-            panel: glPanelService
+            panel: glPanelManager
           };
-          glPanelService.hideToolsPanel();
-          var panelPromise = glPanelService.showPanel({
+          glPanelManager.hideToolsPanel();
+          var panelPromise = glPanelManager.showPanel({
             layout: {
               vertical: {
                 templateUrl: 'templates/tools/attribute_table/list_table.html',
@@ -56,14 +56,14 @@
           });
         }
         $timeout(function() {
-          if (glPanelService.secondaryPanel) {
-            glPanelService.secondaryPanel.title = layer.name;
+          if (glPanelManager.secondaryPanel) {
+            glPanelManager.secondaryPanel.title = layer.name;
           }
         }, 700);
       },
       deactivate: function() {
         $scope.attributeTableLayer = null;
-        glPanelService.hidePanel();
+        glPanelManager.hidePanel();
       }
     };
 

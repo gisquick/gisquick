@@ -3,10 +3,11 @@
   left: 0;
   bottom: 0;
   width: 100%;
-  min-height: 32px;
+  height: 32px;
   background-color: #dfdfdf;
   border-top: 1px solid #aaa;
   z-index: 50;
+  transition: 0.45s all cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
 }
 
 .status-bar-content {
@@ -24,11 +25,4 @@ md-icon.logo {
   width: 279px;
   height: 28px;
   color: #555;
-}
-
-
-@media (max-width: 900px) {
-  .status-bar {
-    display: none;
-  }
 }

@@ -3,7 +3,7 @@
 
   angular
     .module('gl.web')
-    .factory('glPanelService', glPanelService);
+    .factory('glPanelManager', glPanelManager);
 
 
   function collapseElement(animateCss, elem) {
@@ -44,12 +44,23 @@
   }
 
 
-  function glPanelService($mdBottomSheet, $mdCompiler, $animateCss, $q, $$interimElement, $timeout, $animate) {
+  function glPanelManager($mdBottomSheet, $animateCss, $q, $$interimElement, $timeout, $animate) {
 
-    function PanelService() {}
+    function PanelManager() {
+      this.mapView = {
+        left: 0,
+        top: 0,
+        bottom: 0
+      }
+    }
 
-    PanelService.prototype.initializePanel = function(element) {
-      this.panelElement = element;
+    PanelManager.prototype.initialize = function(options) {
+      this.panelElement = this._ngElement(options.mainPanel);
+      this.statusBar = {
+        element: this._ngElement(options.statusBar),
+        hidden: false
+      };
+      this.mapView.bottom = this.statusBar.element[0].clientHeight;
       var panel = this;
       window.addEventListener("resize", function(evt) {
         $timeout(panel.updateLayout());
@@ -57,7 +68,38 @@
       panel.updateLayout();
     }
 
-    PanelService.prototype.updateLayout = function() {
+    PanelManager.prototype._ngElement = function(element) {
+      var id = element.replace('#', '');
+      return angular.element(document.getElementById(id));
+    }
+
+    PanelManager.prototype.toggleMainPanel = function() {
+      this.mapView.left = this.mapView.left === 0? 280 : 0;
+    };
+
+    PanelManager.prototype.hideStatusBar = function() {
+      this.statusBar.element.css('transform', 'translate(0, 100%)');
+      this.mapView.bottom = 0;
+      this.statusBar.hidden = true;
+    };
+
+    PanelManager.prototype.showStatusBar = function() {
+      this.statusBar.element.css('transform', 'translate(0, 0)');
+      this.mapView.bottom = this.statusBar.element[0].clientHeight;
+      this.statusBar.hidden = false;
+    }
+
+    PanelManager.prototype.updateLayout = function() {
+      if (!this.statusBar.hidden) {
+        if (this.mapView.bottom > 0 && window.innerWidth < 900) {
+          this.statusBar.element.css('transform', 'translate(0, 100%)');
+          this.mapView.bottom = 0;
+        }
+        if (this.mapView.bottom === 0 && window.innerWidth >= 900) {
+          this.statusBar.element.css('transform', 'translate(0, 0)');
+          this.mapView.bottom = this.statusBar.element[0].clientHeight;
+        }
+      }
       if (!this.contentPanel) {
         return;
       }
@@ -100,7 +142,7 @@
       }
     }
 
-    PanelService.prototype.loadToolsPanel = function(options) {
+    PanelManager.prototype.loadToolsPanel = function(options) {
       var toolsPanel = $$interimElement();
       var panel = this;
       options.onShow = function(scope, element, options) {
@@ -112,7 +154,7 @@
       return toolsPanel.show(options);
     };
 
-    // PanelService.prototype.loadToolsPanel = function(options) {
+    // PanelManager.prototype.loadToolsPanel = function(options) {
     //   $mdCompiler.compile(options)
     //     .then(function(compileData) {
     //       // attach controller and scope to element
@@ -124,7 +166,7 @@
     //     }.bind(this));
     // }
 
-    PanelService.prototype.showToolsPanel = function() {
+    PanelManager.prototype.showToolsPanel = function() {
       console.log('showToolsPanel');
       if (this.toolsPanel.collapsed) {
         this.toolsPanel.collapsed = false;
@@ -132,7 +174,7 @@
         this.updateLayout();
       }
     };
-    PanelService.prototype.hideToolsPanel = function() {
+    PanelManager.prototype.hideToolsPanel = function() {
       if (!this.toolsPanel.collapsed) {
         this.toolsPanel.collapsed = true;
         collapseElement($animateCss, this.toolsPanel.element);
@@ -140,7 +182,7 @@
       }
     };
 
-    PanelService.prototype.showContentPanel = function(options) {
+    PanelManager.prototype.showContentPanel = function(options) {
       var panel = this;
       var contentPanel = $$interimElement();
       contentPanel.collapsed = false;
@@ -155,9 +197,8 @@
       return contentPanel.show(options);
     };
     
-    PanelService.prototype._openPanel = function(options) {
+    PanelManager.prototype._openPanel = function(options) {
       options.scope = options.scope;
-      //options.skipHide = true;
 
       var layout = options.layout;
       this.portraitMode = window.innerHeight > window.innerWidth;
@@ -194,10 +235,7 @@
           }.bind(this)
         });
         if (options.header) {
-          this.secondaryPanel.headerElement = angular.element(
-            document.getElementById(options.header.replace('#', ''))
-          );
-          console.log(this.secondaryPanel.headerElement);
+          this.secondaryPanel.headerElement = this._ngElement(options.header);
           this.secondaryPanel.headerElement.removeClass("hidden");
         }
         return this.secondaryPanel.show(options);
@@ -212,7 +250,7 @@
       }
     };
 
-    PanelService.prototype.showPanel = function(options) {
+    PanelManager.prototype.showPanel = function(options) {
       console.log('showPanel');
       if (this.secondaryPanel) {
         return this.secondaryPanel.hide().then(function() {
@@ -224,7 +262,7 @@
       }
     };
 
-    PanelService.prototype.hidePanel = function(options) {
+    PanelManager.prototype.hidePanel = function(options) {
       if (this.portraitMode) {
         if (this.secondaryPanel) {
           this.secondaryPanel.collapsed = true;
@@ -241,7 +279,7 @@
       }
     };
 
-    PanelService.prototype.togglePanel = function(options) {
+    PanelManager.prototype.togglePanel = function(options) {
       // console.log('togglePanel');
       var panelElement = this.secondaryPanel.element;
       this.secondaryPanel.collapsed = !this.secondaryPanel.collapsed;
@@ -254,7 +292,7 @@
       this.updateLayout();
     };
 
-    PanelService.prototype.toggleContentPanel = function(options) {
+    PanelManager.prototype.toggleContentPanel = function(options) {
       // console.log('toggleContentPanel');
       this.contentPanel.collapsed = !this.contentPanel.collapsed;
       if (this.contentPanel.collapsed && this.secondaryPanel && this.secondaryPanel.collapsed) {
@@ -266,6 +304,6 @@
       this.updateLayout();
     };
 
-    return new PanelService();
+    return new PanelManager();
   };
 })();

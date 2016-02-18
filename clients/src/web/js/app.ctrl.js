@@ -10,13 +10,9 @@
       }
     });
 
-  function AppController($scope, $timeout, $q, projectProvider, glPanelService) {
+  function AppController($scope, $timeout, $q, projectProvider, glPanelManager) {
     $scope.ui = {
-      mapView: {
-        left: 280,
-        bottom: 0
-      },
-      panel: glPanelService
+      manager: glPanelManager
     };
     $scope.activeTool = {index:  0, deactivate: angular.noop};
 
@@ -59,7 +55,7 @@
             if (!this.resultsScope) {
               this.resultsScope = $scope.$new();
               var tool = this;
-              var panelPromise = glPanelService.showPanel({
+              var panelPromise = glPanelManager.showPanel({
                 layout: {
                   vertical: {
                     templateUrl: 'templates/tools/identification/list_table.html',
@@ -98,7 +94,7 @@
             this.events.toolActivated();
           },
           deactivate: function() {
-            glPanelService.hidePanel();
+            glPanelManager.hidePanel();
             this.events.toolDeactivated();
           }
         }, {
@@ -240,9 +236,11 @@
             this.config.layout = layouts[0];
           },
           activate: function() {
+            glPanelManager.hideStatusBar();
             this.events.toolActivated();
           },
           deactivate: function() {
+            glPanelManager.showStatusBar();
             this.events.toolDeactivated();
           }
         }
@@ -267,10 +265,10 @@
       $scope.activeTool = tool;
       $scope.activeTool.activate();
       $timeout(function() {
-        glPanelService.showToolsPanel();// TODO: add delay param
+        glPanelManager.showToolsPanel();// TODO: add delay param
       }, 700);
-      if ($scope.ui.mapView.left === 0) {
-        $scope.ui.mapView.left = 280;
+      if (glPanelManager.mapView.left === 0) {
+        glPanelManager.toggleMainPanel();
       }
     };
 
@@ -280,7 +278,7 @@
         $scope.activeTool.deactivate();
         $scope.activeTool = null;
       }
-      glPanelService.hideToolsPanel();
+      glPanelManager.hideToolsPanel();
     };
 
     $scope.initializeApp = function() {
@@ -316,15 +314,16 @@
           $scope.project = projectProvider;
 
           initializeTools();
-          glPanelService.initializePanel(angular.element(
-            document.getElementById('vertical-panel-container')
-          ));
-          glPanelService.loadToolsPanel({
+          glPanelManager.initialize({
+            mainPanel: '#vertical-panel-container',
+            statusBar: '#map-status-bar'
+          });
+          glPanelManager.loadToolsPanel({
             templateUrl: 'tools_panel.html',
             parent: '#tools-panel',
             scope: $scope.$new()
           });
-          glPanelService.showContentPanel({
+          glPanelManager.showContentPanel({
             templateUrl: 'templates/tools/layers_control.html',
             parent: '#content-panel',
             scope: $scope

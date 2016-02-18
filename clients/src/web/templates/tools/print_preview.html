@@ -1,31 +1,30 @@
 <div
-  ng-style="{paddingLeft: ui.mapView.left+'px'}"
+  ng-style="{paddingLeft: ui.manager.mapView.left+'px'}"
   class="print-preview"
   layout="row"
   layout-fill>
   <div class="print-preview-bg" flex></div>
   <div layout="column">
+    <div flex
+      class="print-preview-bg">
+    </div>
+    <!-- Print preview toolbar -->
     <div
-      flex
-      class="print-preview-bg preview-toolbar-container">
-      <!-- Print preview toolbar -->
-      <div
-        layout="row"
-        class="preview-toolbar">
-        <span flex>Print Preview</span>
-        <md-button
-          aria-label="Print"
-          ng-disabled="!tool.config.layout"
-          ng-click="print()">
-          <md-icon md-svg-icon="printer"></md-icon>
-        </md-button>
-        <md-button
-          aria-label="Download"
-          ng-disabled="!tool.config.layout"
-          ng-click="download()">
-          <md-icon md-svg-icon="download"></md-icon>
-        </md-button>
-      </div>
+      layout="row"
+      class="preview-toolbar">
+      <span flex>Print Preview</span>
+      <md-button
+        aria-label="Print"
+        ng-disabled="!tool.config.layout"
+        ng-click="print()">
+        <md-icon md-svg-icon="printer"></md-icon>
+      </md-button>
+      <md-button
+        aria-label="Download"
+        ng-disabled="!tool.config.layout"
+        ng-click="download()">
+        <md-icon md-svg-icon="download"></md-icon>
+      </md-button>
     </div>
     <!-- Container for print layouts templates -->
     <print-layout

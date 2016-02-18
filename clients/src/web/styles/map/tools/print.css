@@ -1,6 +1,7 @@
 
 .print-area-image {
   border: 2px solid;
+  border-top: none;
   opacity: 0.8;
   box-sizing: content-box;
 }
@@ -8,7 +9,6 @@
 .print-form {
   margin: 5px 5px;
 }
-
 
 .print-preview {
   width: 100%;
@@ -19,6 +19,7 @@
   pointer-events: none;
   transition: 0.45s padding cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
 }
+
 .print-preview-bg {
   background-color: rgba(0, 0, 0, 0.5);
 }
@@ -33,28 +34,21 @@
 }
 
 .print-preview .preview-toolbar {
-  position: absolute;
-  bottom: 0px;
-  left: 0;
-  right: 0;
   color: white;
   font-weight: bold;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(33, 33, 33, 0.95);
   height: 32px;
-}
-
-.print-preview .preview-toolbar-container {
-  position: relative;
-  max-height: 20%;
-  min-height: 32px!important;
   line-height: 36px;
 }
 
 .print-preview .preview-toolbar .md-button {
-  min-width: 32px;
-  margin: 0;
-  pointer-events: auto;
+  min-width: 36px;
+  min-height: 32px;
+  width: 36px;
   height: 32px;
+  margin: 0;
+  padding: 0;
+  pointer-events: auto;
 }
 
 .print-preview md-icon {
@@ -65,8 +59,4 @@
 
 .print-preview .preview-toolbar > span {
   padding: 0 10px;
-}
-
-#map {
-  xtransition: 1.45s all cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
 }

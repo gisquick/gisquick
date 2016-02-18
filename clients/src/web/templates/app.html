@@ -1,6 +1,6 @@
 <div style="height:100%;">
   <div layout="column"
-    style="height:100%;left: {{ ui.mapView.left-280 }}px;"
+    style="height:100%;left: {{ ui.manager.mapView.left-280 }}px;"
     class="main-panel md-whiteframe-3dp">
     
     <div
@@ -11,8 +11,8 @@
     <md-button
       aria-label="Toggle Panel"
       class="panel-collapse-button"
-      ng-class="{collapsed: ui.mapView.left===0}"
-      ng-click="ui.mapView.left=ui.mapView.left? 0 : 280">
+      ng-class="{collapsed: ui.manager.mapView.left===0}"
+      ng-click="ui.manager.toggleMainPanel()">
       <md-icon
         md-svg-src="arrow-left">
       </md-icon>
@@ -70,7 +70,10 @@
               ng-class="{collapsed: ui.panel.secondaryPanel.collapsed}"
               ng-click="ui.panel.togglePanel()">
               <md-icon
-                md-svg-icon="{{ ui.panel.accordionMode? 'arrow-down' : ui.panel.secondaryPanel.collapsed? 'plus' : 'minus' }}">
+                md-svg-icon="{{
+                  ui.panel.accordionMode?
+                    'arrow-down' : ui.panel.secondaryPanel.collapsed? 'plus' : 'minus'
+                }}">
               </md-icon>
             </md-button>
           </div>
@@ -88,7 +91,10 @@
               ng-class="{collapsed: ui.panel.contentPanel.collapsed}"
               ng-click="ui.panel.toggleContentPanel()">
               <md-icon
-                md-svg-icon="{{ ui.panel.accordionMode? 'arrow-down' : ui.panel.contentPanel.collapsed? 'plus' : 'minus' }}">
+                md-svg-icon="{{
+                  ui.panel.accordionMode?
+                    'arrow-down' : ui.panel.contentPanel.collapsed? 'plus' : 'minus'
+                }}">
               </md-icon>
             </md-button>
           </div>
@@ -107,7 +113,10 @@
               ng-class="{collapsed: ui.panel.secondaryPanel.collapsed}"
               ng-click="ui.panel.togglePanel()">
               <md-icon
-                md-svg-icon="{{ ui.panel.accordionMode? 'arrow-down' : ui.panel.secondaryPanel.collapsed? 'plus' : 'minus' }}">
+                md-svg-icon="{{
+                  ui.panel.accordionMode?
+                    'arrow-down' : ui.panel.secondaryPanel.collapsed? 'plus' : 'minus'
+                }}">
               </md-icon>
             </md-button>
             <md-button
@@ -121,8 +130,7 @@
           </div>
           <div
             id="vertical-attribute-table"
-            class="vertical-panel hidden"
-            style="xbackground-color: orange;">
+            class="vertical-panel hidden">
           </div>
         </div>
       </div>
@@ -133,7 +141,10 @@
 
   <div
     id="ol-scale-line-container"
-    style="left: {{ ui.mapView.left }}px;">
+    ng-style="{
+      left: ui.manager.mapView.left+'px',
+      bottom: ui.manager.mapView.bottom+'px'
+    }">
   </div>
 
   <!-- Map Control Buttons -->
@@ -171,16 +182,20 @@
 
   <!-- Status Bar -->
   <div
+    id="map-status-bar"
     layout="row"
-    class="status-bar md-whiteframe-top"
-    ng-if="::project"
-    ng-init="initializeStatusBar()">
-    <md-icon
-      class="logo"
-      md-svg-icon="logo">
-    </md-icon>
-    <div flex id="ol-mouse-position-container"
-      class="status-bar-content">
+    class="status-bar md-whiteframe-top">
+    <div>
+      <md-icon
+        class="logo"
+        md-svg-icon="logo">
+      </md-icon>
+    </div>
+    <div flex
+      id="ol-mouse-position-container"
+      class="status-bar-content"
+      ng-if="::project"
+      ng-init="initializeStatusBar()">
       <label>Scale 1: {{ mapScale }}</label>
       <label>{{ ::project.config.projection.code }}</label>
       <label>Mouse coordinates:</label>
@@ -189,7 +204,9 @@
 
   <div
     class="bottom-bar"
-    style="left: {{ ui.mapView.left }}px;">
+    ng-style="{
+      left: ui.manager.mapView.left+'px'
+    }">
   </div>
 
   <div

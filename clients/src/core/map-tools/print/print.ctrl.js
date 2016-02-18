@@ -76,8 +76,7 @@
       var mapElem = angular.element(projectProvider.map.getTargetElement());
       if (height > mapSize[1]) {
         // scale print layout preview image and map to fit screen size
-        var percScale = (height/mapSize[1])*100;
-        percScale = percScale + 10;
+        var percScale = ((height+50)/mapSize[1])*100;
         mapElem.css('width', percScale+'%');
         mapElem.css('height', percScale+'%');
         mapElem.css('transform-origin', 'top left');

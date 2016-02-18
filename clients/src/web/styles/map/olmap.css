@@ -69,6 +69,7 @@
   height: 30px;
   transition: 0.45s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
   overflow: visible;
+  margin-bottom: 2px;
 }
 
 .ol-scale-line {

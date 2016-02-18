@@ -25,7 +25,7 @@
         if (!tool.opened) {
           var scope = $scope.$new();
           scope.ui = {
-            panel: glPanelManager
+            manager: glPanelManager
           };
           glPanelManager.hideToolsPanel();
           var panelPromise = glPanelManager.showPanel({

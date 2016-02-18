@@ -67,12 +67,12 @@
             <md-button
               aria-label="Toggle Panel"
               class="toggle-button left"
-              ng-class="{collapsed: ui.panel.secondaryPanel.collapsed}"
-              ng-click="ui.panel.togglePanel()">
+              ng-class="{collapsed: ui.manager.secondaryPanel.collapsed}"
+              ng-click="ui.manager.togglePanel()">
               <md-icon
                 md-svg-icon="{{
-                  ui.panel.accordionMode?
-                    'arrow-down' : ui.panel.secondaryPanel.collapsed? 'plus' : 'minus'
+                  ui.manager.accordionMode?
+                    'arrow-down' : ui.manager.secondaryPanel.collapsed? 'plus' : 'minus'
                 }}">
               </md-icon>
             </md-button>
@@ -87,13 +87,13 @@
             <md-button
               aria-label="Toggle Panel"
               class="toggle-button left"
-              ng-show="ui.panel.contentPanel.collapseEnabled"
-              ng-class="{collapsed: ui.panel.contentPanel.collapsed}"
-              ng-click="ui.panel.toggleContentPanel()">
+              ng-show="ui.manager.contentPanel.collapseEnabled"
+              ng-class="{collapsed: ui.manager.contentPanel.collapsed}"
+              ng-click="ui.manager.toggleContentPanel()">
               <md-icon
                 md-svg-icon="{{
-                  ui.panel.accordionMode?
-                    'arrow-down' : ui.panel.contentPanel.collapsed? 'plus' : 'minus'
+                  ui.manager.accordionMode?
+                    'arrow-down' : ui.manager.contentPanel.collapsed? 'plus' : 'minus'
                 }}">
               </md-icon>
             </md-button>
@@ -106,23 +106,23 @@
           <div
             id="vertical-attribute-table-header"
             class="panel-header secondary hidden">
-            {{ ui.panel.secondaryPanel.title }}
+            {{ ui.manager.secondaryPanel.title }}
             <md-button
               aria-label="Toggle Panel"
               class="toggle-button left"
-              ng-class="{collapsed: ui.panel.secondaryPanel.collapsed}"
-              ng-click="ui.panel.togglePanel()">
+              ng-class="{collapsed: ui.manager.secondaryPanel.collapsed}"
+              ng-click="ui.manager.togglePanel()">
               <md-icon
                 md-svg-icon="{{
-                  ui.panel.accordionMode?
-                    'arrow-down' : ui.panel.secondaryPanel.collapsed? 'plus' : 'minus'
+                  ui.manager.accordionMode?
+                    'arrow-down' : ui.manager.secondaryPanel.collapsed? 'plus' : 'minus'
                 }}">
               </md-icon>
             </md-button>
             <md-button
               aria-label="Close"
               class="close-button right"
-              ng-click="ui.panel.hidePanel()">
+              ng-click="ui.manager.hidePanel()">
               <md-icon
                 md-svg-icon="x">
               </md-icon>

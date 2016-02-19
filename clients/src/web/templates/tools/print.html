@@ -2,20 +2,44 @@
   class="panel-tool print-form"
   ng-controller="PrintController">
 
-  <div layout="row">
-    <md-input-container flex>
+  <div layout="column">
+    <md-input-container>
       <label class="md-label md-no-float">Layout</label>
       <md-select
-        ng-model="tool.config.layout"
-        md-on-close="tool.events.layoutChanged(tool.config.layout)"
+        ng-model="tool.data.selectedLayoutIndex"
         placeholder="Select layout">
         <md-option
           ng-repeat="composer in tool.config.layouts"
-          ng-value="composer">
+          ng-value="$index">
           {{ composer.name }}
         </md-option>
       </md-select>
     </md-input-container>
+
+    <!-- Labels -->
+    <md-tabs
+      md-no-ink
+      md-no-pagination
+      md-dynamic-height
+      class="tabs-no-header"
+      md-selected="tool.data.selectedLayoutIndex">
+      <md-tab
+        ng-repeat="layout in tool.config.layouts"
+        label="layout"
+        md-on-select="tool.events.layoutChanged(layout)">
+        <div layout="column">
+          <md-input-container
+            ng-repeat="label in tool.data[layout.name].labels"
+            class="text-field"
+            flex>
+            <label class="md-label md-no-float">{{ ::label.title }}</label>
+            <input
+              ng-model="label.value">
+            </input>
+          </md-input-container>
+        </div>
+      </md-tab>
+    </md-tabs>
 
     <!-- Print menu -->
     <md-menu

@@ -258,6 +258,10 @@ md-tabs-wrapper md-icon {
   margin-top: 10px;
 }
 
+.panel-tool .md-menu {
+  padding: 0;
+}
+
 .panel-tool md-select {
   margin: 8px 0 2px 0;
   height: 30px;
@@ -272,7 +276,17 @@ md-tabs-wrapper md-icon {
 .panel-tool md-input-container {
   margin: 16px 4px 0 0;
   padding: 8px 0px 2px 0px;
-  height: 36px;
+  height: 32px;
+  min-height: 32px;
+  max-height: 32px;
+}
+
+.panel-tool md-input-container.text-field {
+  min-height: 32px;
+  max-height: 32px;
+  height: 32px;
+  padding-top: 4px;
+  font-size: 14px;
 }
 
 .panel-tool md-input-container md-select {
@@ -280,7 +294,7 @@ md-tabs-wrapper md-icon {
 }
 
 .panel-tool md-input-container input {
-  height: 29px;
+  height: 28px;
   padding: 0;
 }
 .panel-tool .md-button {

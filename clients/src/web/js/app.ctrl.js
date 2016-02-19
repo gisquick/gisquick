@@ -221,6 +221,7 @@
                 <span>{0}<br />{1}</span>\
               </div>'.format(projectProvider.config.organization, projectProvider.config.email)
           },
+          data: {},
           events: {
             toolActivated: angular.noop,
             toolDeactivated: angular.noop,
@@ -234,6 +235,18 @@
             this.config.layouts = layouts;
             // select default layout
             this.config.layout = layouts[0];
+            this.config.layouts.forEach(function(layout) {
+              var labelsData = [];
+              layout.labels.forEach(function(label) {
+                if (!label.startsWith('gislab_')) {
+                  labelsData.push({
+                    title: label,
+                    value: ''
+                  });
+                }
+              });
+              this.data[layout.name] = {labels: labelsData};
+            }, this);
           },
           activate: function() {
             glPanelManager.hideStatusBar();

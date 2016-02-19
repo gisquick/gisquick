@@ -1,11 +1,4 @@
 
-.print-area-image {
-  border: 2px solid;
-  border-top: none;
-  opacity: 0.8;
-  box-sizing: content-box;
-}
-
 .print-form {
   margin: 5px 5px;
 }
@@ -27,6 +20,10 @@
 .print-template-container {
   display: flex;
   position: relative;
+  border: 2px solid;
+  border-top: none;
+  opacity: 0.8;
+  box-sizing: content-box;
 }
 
 .print-preview-map {

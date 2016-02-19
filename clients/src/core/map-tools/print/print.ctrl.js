@@ -28,6 +28,12 @@
         'gislab_copyrights': tool.config.copyrights
         // gislab_copyrights: String.format('<div style="background-color:rgba(255,255,255,0.3);position:absolute;bottom:0;right:0;padding-left:8px;padding-right:8px;font-family:Liberation Sans;">{0}</div>', Ext.util.Format.htmlEncode(attributions.join(', ')))
       };
+      var labels = tool.data[config.layout.name].labels;
+      labels.forEach(function(label) {
+        if (label.value) {
+          params[label.title] = label.value;
+        }
+      });
       angular.extend(params, options);
       return params;
     }
@@ -67,6 +73,7 @@
     }
 
     function setupPrintLayout(printLayout) {
+      tool.config.layout = printLayout;
       var width = mmToPx(printLayout.width);
       var height = mmToPx(printLayout.height);
       var mapSize = projectProvider.map.getSize();
@@ -74,9 +81,12 @@
       mapSize[0] = mapSize[0]/tool.config._previewScale;
       mapSize[1] = mapSize[1]/tool.config._previewScale;
       var mapElem = angular.element(projectProvider.map.getTargetElement());
-      if (height > mapSize[1]) {
+      if (width > mapSize[0] || height > mapSize[1]) {
         // scale print layout preview image and map to fit screen size
-        var percScale = ((height+50)/mapSize[1])*100;
+        var percScale = Math.max(
+          ((width+10)/mapSize[0])*100,
+          ((height+50)/mapSize[1])*100
+        );
         mapElem.css('width', percScale+'%');
         mapElem.css('height', percScale+'%');
         mapElem.css('transform-origin', 'top left');
@@ -168,15 +178,24 @@
       if (tool.config.layout) {
         setupPrintLayout(tool.config.layout);
       }
+      window.addEventListener("resize", function(evt) {
+        if (tool.config.layout) {
+          setupPrintLayout(tool.config.layout);
+        }
+      });
     };
 
     tool.events.toolDeactivated = function() {
       tool._previewElem.css('display', 'none');
       removeMapEventsTransform();
+
+      // set small virtual layout to reset map scale mode
+      var layout = tool.config.layout;
       setupPrintLayout({
         width: 1,
         height: 1
       });
+      tool.config.layout = layout;
     };
 
     $scope.print = function() {

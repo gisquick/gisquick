@@ -1,15 +1,19 @@
 <div
+  layout="column"
   class="panel-tool identification-form"
   ng-controller="IdentificationController">
-  <md-select
-    class="layers-list"
-    placeholder="Select layer"
-    ng-model="tool.config.identificationLayer">
-    <md-option value="">All visible layers</md-option>
-    <md-option
-      ng-repeat="layer in project.layers.list | filter:{queryable:true, visible:true}"
-      value="{{ layer.name }}">
-      {{layer.title}}
-    </md-option>
-  </md-select>
+
+  <md-input-container>
+    <label class="md-label md-no-float">Layer</label>
+    <md-select
+      placeholder="Select layer"
+      ng-model="tool.config.identificationLayer">
+      <md-option value="">All visible layers</md-option>
+      <md-option
+        ng-repeat="layer in project.layers.list | filter:{queryable:true, visible:true}"
+        value="{{ layer.name }}">
+        {{layer.title}}
+      </md-option>
+    </md-select>
+  </md-input-container>
 </div>

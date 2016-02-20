@@ -293,8 +293,8 @@ table[md-data-table] > thead:not([md-table-progress]) > tr > th {
 
 .features-panel .close-button md-icon {
   color: #333;
-  width: 17px;
-  height: 17px;
+  width: 16px;
+  height: 16px;
 }
 
 .tab-end-left {

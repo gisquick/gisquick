@@ -72,14 +72,60 @@
       );
     }
 
+    function hideToast() {
+      tool.config.toast = false;
+    }
+    function showToast() {
+      if (!tool.config.toast) {
+        tool.config.toast = true;
+        $timeout(hideToast, 3500);
+      }
+    }
+
+    var animationLock = false;
+    function scaleMap(percScale) {
+      var startScale = tool.config._previewScale*100;
+      console.log('scaleMap: {0} -> {1}'.format(startScale, percScale));
+      if (startScale === percScale) {
+        return;
+      }
+      animationLock = true;
+      var mapElem = angular.element(projectProvider.map.getTargetElement());
+      mapElem.css('transform-origin', 'top left');
+
+      var i;
+      for (i = 1; i <= 5; i++) {
+        var scale = startScale+(percScale-startScale)*i/5;
+        $timeout(function(scale) {
+          mapElem.css('width', scale+'%');
+          mapElem.css('height', scale+'%');
+          mapElem.css('transform', 'scale({0}, {0})'.format(100/scale));
+
+          tool.config._previewScale = scale/100;
+          projectProvider.map.setSize([
+            window.innerWidth*scale/100,
+            window.innerHeight*scale/100,
+          ]);
+          if (scale === percScale) {
+            animationLock = false;
+          }
+        }, i*40, true, scale);
+      }
+    }
+
     function setupPrintLayout(printLayout) {
+      console.log('SETUP PRINT LAYOUT');
       tool.config.layout = printLayout;
       var width = mmToPx(printLayout.width);
       var height = mmToPx(printLayout.height);
       var mapSize = projectProvider.map.getSize();
+      console.log('Map size: '+mapSize);
+      console.log('Scale: '+tool.config._previewScale);
       // compute real map size
       mapSize[0] = mapSize[0]/tool.config._previewScale;
       mapSize[1] = mapSize[1]/tool.config._previewScale;
+      console.log('Calculated size: '+mapSize);
+
       var mapElem = angular.element(projectProvider.map.getTargetElement());
       if (width > mapSize[0] || height > mapSize[1]) {
         // scale print layout preview image and map to fit screen size
@@ -87,26 +133,28 @@
           ((width+10)/mapSize[0])*100,
           ((height+50)/mapSize[1])*100
         );
-        mapElem.css('width', percScale+'%');
-        mapElem.css('height', percScale+'%');
-        mapElem.css('transform-origin', 'top left');
-        mapElem.css('transform', 'scale({0}, {0})'.format(100/percScale));
+
+        // mapElem.css('width', percScale+'%');
+        // mapElem.css('height', percScale+'%');
+        // mapElem.css('transform-origin', 'top left');
+        // mapElem.css('transform', 'scale({0}, {0})'.format(100/percScale));
+        // tool.config.previewWidth = parseInt(width*(100/percScale))+'px';
+        // tool.config.previewHeight = parseInt(height*(100/percScale))+'px';
+        // tool.config._previewScale = percScale/100;
+        // $timeout(function() {
+        //   projectProvider.map.updateSize();
+        // }, 200);
+
         tool.config.previewWidth = parseInt(width*(100/percScale))+'px';
         tool.config.previewHeight = parseInt(height*(100/percScale))+'px';
+        scaleMap(percScale);
 
-        tool.config._previewScale = percScale/100;
+        showToast();
       } else {
-        mapElem.css('width', '100%');
-        mapElem.css('height', '100%');
-        mapElem.css('transform', 'scale(1, 1)');
         tool.config.previewWidth = width+'px';
         tool.config.previewHeight = height+'px';
-
-        tool.config._previewScale = 1.0;
+        scaleMap(100);
       }
-      $timeout(function() {
-        projectProvider.map.updateSize();
-      }, 200);
     }
 
     /** Setup scale transformation on all required map mouse events
@@ -165,37 +213,37 @@
         });
     }
 
-    tool.events.layoutChanged = setupPrintLayout;
+    function resizeHandler() {
+      if (!animationLock) {
+        setupPrintLayout(tool.config.layout);
+      }
+    }
 
     tool.events.toolActivated = function() {
+      tool.events.layoutChanged = setupPrintLayout;
       if (tool._previewElem) {
         tool._previewElem.css('display', '');
       } else {
-        initializePrintPreview();
+        // initializePrintPreview();
+        $timeout(initializePrintPreview, 450);
       }
       setupMapEventsTransform();
       tool.config._previewScale = 1;
       if (tool.config.layout) {
         setupPrintLayout(tool.config.layout);
       }
-      window.addEventListener("resize", function(evt) {
-        if (tool.config.layout) {
-          setupPrintLayout(tool.config.layout);
-        }
-      });
+      window.addEventListener("resize", resizeHandler);
     };
 
     tool.events.toolDeactivated = function() {
+      tool.events.layoutChanged = angular.noop;
       tool._previewElem.css('display', 'none');
       removeMapEventsTransform();
 
-      // set small virtual layout to reset map scale mode
-      var layout = tool.config.layout;
-      setupPrintLayout({
-        width: 1,
-        height: 1
-      });
-      tool.config.layout = layout;
+      // reset map scale
+      scaleMap(100);
+      tool.config._previewScale = 1;
+      window.removeEventListener("resize", resizeHandler);
     };
 
     $scope.print = function() {
@@ -217,8 +265,11 @@
 
     $scope.download = function() {
       var printParams = getPrintParameters();
+      tool.config.showProgressBar = true;
+      // TODO: handle errors
       gislabClient.get(projectProvider.config.ows_url, printParams, {responseType: 'blob'})
         .then(function(data) {
+          tool.config.showProgressBar = false;
           var link = document.createElement("a");
           link.download = "{0}.{1}".format(tool.config.layout.name, tool.config.format);
           link.href = URL.createObjectURL(data);

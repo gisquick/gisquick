@@ -26,7 +26,8 @@
       <md-tab
         ng-repeat="layout in tool.config.layouts"
         label="layout"
-        md-on-select="tool.events.layoutChanged(layout)">
+        md-on-select="tool.events.layoutChanged(layout)"
+        md-autoselect="false">
         <div layout="column">
           <md-input-container
             ng-repeat="label in tool.data[layout.name].labels"

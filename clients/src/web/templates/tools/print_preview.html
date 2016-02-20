@@ -12,7 +12,8 @@
     <div
       layout="row"
       class="preview-toolbar">
-      <span flex>Print Preview</span>
+      <span flex>Scale 1: {{ mapScale }}</span>
+      <span class="title">Print Preview</span>
       <md-button
         aria-label="Print"
         ng-disabled="!tool.config.layout"
@@ -25,6 +26,16 @@
         ng-click="download()">
         <md-icon md-svg-icon="download"></md-icon>
       </md-button>
+      <md-progress-linear
+        ng-if="tool.config.showProgressBar"
+        class="print-progress-bar"
+        md-mode="indeterminate">
+      </md-progress-linear>
+      <div
+        class="toast-message fade"
+        ng-if="tool.config.toast">
+        The map was scaled down to fit current layout on the screen.
+      </div>
     </div>
     <!-- Container for print layouts templates -->
     <print-layout

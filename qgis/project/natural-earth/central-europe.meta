@@ -423,6 +423,8 @@
     {
       "width": 420.0, 
       "map": {
+        "x": 10.0,
+        "y": 20.0,
         "width": 399.0, 
         "name": "map0", 
         "height": 265.0
@@ -434,12 +436,14 @@
         "gislab_contact", 
         "Title"
       ], 
-      "name": "A3", 
+      "name": "A3 Landscape", 
       "height": 297.0
     }, 
     {
       "width": 297.0, 
       "map": {
+        "x": 10.0,
+        "y": 20.0,
         "width": 276.0, 
         "name": "map0", 
         "height": 178.0
@@ -451,8 +455,27 @@
         "gislab_contact", 
         "Title"
       ], 
-      "name": "A4", 
+      "name": "A4 Landscape", 
       "height": 210.0
+    }, 
+    {
+      "width": 210.0, 
+      "map": {
+        "y": 20.0, 
+        "x": 10.0, 
+        "height": 263.4997, 
+        "name": "map0", 
+        "width": 189.92499999999998
+      }, 
+      "labels": [
+        "gislab_project", 
+        "gislab_author", 
+        "gislab_copyrights", 
+        "gislab_contact", 
+        "Title"
+      ], 
+      "name": "A4 Portrait", 
+      "height": 297.0
     }
   ], 
   "access_constrains": "Public", 

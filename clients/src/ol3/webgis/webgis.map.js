@@ -339,6 +339,6 @@ ol.events.condition.ctrlShiftKeysOnly = function(mapBrowserEvent) {
 };
 
 // Alt+Shift is not usable to use on Linux, so replace it with Ctrl+Shift
-if (navigator.platform.contains("Linux")) {
+if (navigator.platform.indexOf("Linux") !== -1) {
   ol.events.condition.altShiftKeysOnly = ol.events.condition.ctrlShiftKeysOnly;
 }

@@ -106,8 +106,7 @@ $ vagrant up
 $ vagrant ssh
 ```
 
-* start development services (run in virtual machine;
-  to quit type '$ tmux kill-session')
+* start development services (run in virtual machine)
 ```
 $ /vagrant/utils/tmux-dev.sh
 ```
@@ -115,6 +114,12 @@ $ /vagrant/utils/tmux-dev.sh
 * enter URL below in web browser to launch GIS.lab Web
 ```
 https://localhost:8000?PROJECT=vagrant/natural-earth/central-europe
+```
+
+* to quit type 
+```
+$ tmux kill-session
+$ vagrant halt
 ```
 
 **Other commands:**  
@@ -129,7 +134,7 @@ $ python ./manage.py test webgis.viewer.tests
 * QGIS Mapserver logs can be found in '/var/log/lighttpd' directory
 
 
-**Work flow:**
+**Workflow:**
 * install QGIS GIS.lab Web plugin
 ```
 $ ln -s $(pwd)/qgis/gislab_web  ~/.qgis2/python/plugins/gislab_web

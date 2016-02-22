@@ -7,9 +7,27 @@
 
   function PrintController($scope, $timeout, $compile, $templateCache, $http, projectProvider, layersControl, gislabClient) {
     var tool = $scope.tool;
+    var copyrightsTemplate = '<div style="\
+      background-color:rgba(255,255,255,0.75);\
+      position:absolute;\
+      bottom:0;\
+      right:0;\
+      padding-left:8px;\
+      padding-right:8px;\
+      font-family:Liberation Sans;">{0}</div>';
 
     function createPrintParameters(layout, layers, extent, options) {
       var config = tool.config;
+      var opacities = [];
+      layers.forEach(function(layer) {
+        var opacity = ['Places', 'Roads'].indexOf(layer) !== -1? 255 : 0.6*255;
+        opacities.push(Math.round(opacity).toFixed());
+      });
+      var overlaysLayer = projectProvider.map.getLayer('qgislayer');
+      var copyrights = overlaysLayer.getSource().getAttributions().map(function(attribution) {
+        return attribution.getHTML().replace('<a ', '<span ').replace('</a>', '</span>');
+      }).join('');
+
       var params = {
         'SERVICE': 'WMS',
         'REQUEST': 'GetPrint',
@@ -18,6 +36,7 @@
         'FORMAT': config.format,
         'SRS': projectProvider.config.projection.code,
         'LAYERS': layers.join(','),
+        'OPACITIES': opacities.join(','),
         'map0:EXTENT': extent.join(','),
         'map0:SCALE': $scope.mapScale,
         'map0:ROTATION': config.rotation,
@@ -25,8 +44,7 @@
         'gislab_project': tool.config.title,
         'gislab_author': tool.config.author,
         'gislab_contact': tool.config.contact,
-        'gislab_copyrights': tool.config.copyrights
-        // gislab_copyrights: String.format('<div style="background-color:rgba(255,255,255,0.3);position:absolute;bottom:0;right:0;padding-left:8px;padding-right:8px;font-family:Liberation Sans;">{0}</div>', Ext.util.Format.htmlEncode(attributions.join(', ')))
+        'gislab_copyrights': copyrightsTemplate.format(copyrights)
       };
       var labels = tool.data[config.layout.name].labels;
       labels.forEach(function(label) {
@@ -145,8 +163,8 @@
         //   projectProvider.map.updateSize();
         // }, 200);
 
-        tool.config.previewWidth = parseInt(width*(100/percScale))+'px';
-        tool.config.previewHeight = parseInt(height*(100/percScale))+'px';
+        tool.config.previewWidth = (width*(100/percScale))+'px';
+        tool.config.previewHeight = (height*(100/percScale))+'px';
         scaleMap(percScale);
 
         showToast();
@@ -199,7 +217,7 @@
           layout,
           [], // empty map
           extent,
-          {'DPI': 96, 'FORMAT': 'png', 'map0:SCALE': '1'}
+          {'DPI': 96, 'FORMAT': 'png', 'map0:SCALE': '1000'}
         );
         layout.templateUrl = gislabClient.encodeUrl(projectProvider.config.ows_url, params);
       });

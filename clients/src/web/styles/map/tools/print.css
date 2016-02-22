@@ -70,16 +70,16 @@
 md-progress-linear.print-progress-bar {
   position: absolute;
   left: 0;
-  bottom: -6px;
-  height: 3px;
+  bottom: -5px;
+  height: 4px;
   z-index: 100;
-  opacity: 0.75;
+  opacity: 1;
   margin: 0 2px;
   width: calc(100% - 4px);
 }
 
 md-progress-linear.print-progress-bar .md-container {
-  height: 3px;
+  height: 4px;
 }
 
 .toast-message {
@@ -88,10 +88,24 @@ md-progress-linear.print-progress-bar .md-container {
   right: 0;
   top: 0;
   bottom: 0;
-  background-color: orange;
+  background-color: rgb(0, 170, 212);
   margin: 2px 2px 0 2px;
   text-align: center;
+  line-height: 32px;
   border-bottom: 1px solid #aaa;
+}
+
+.toast-icon {
+  position: absolute;
+  left: 5px;
+  top: 0;
+  bottom: 0;
+}
+
+md-icon.toast-icon {
+  width: 20px;
+  height: 20px;
+  color: #fff;
 }
 
 /* The starting CSS styles for the enter animation */

@@ -12,7 +12,7 @@
     <div
       layout="row"
       class="preview-toolbar">
-      <span flex>Scale 1: {{ mapScale }}</span>
+      <span flex>Scale 1: {{ mapScale.toLocaleString() }}</span>
       <span class="title">Print Preview</span>
       <md-button
         aria-label="Print"
@@ -34,6 +34,10 @@
       <div
         class="toast-message fade"
         ng-if="tool.config.toast">
+        <md-icon
+          class="toast-icon"
+          md-svg-icon="circle-i-outline">
+        </md-icon>
         The map was scaled down to fit current layout on the screen.
       </div>
     </div>

@@ -113,18 +113,18 @@
           <prop k="style" v="solid"/>
         </layer>
       </symbol>
-      <ComposerPicture resizeMode="0" pictureRotation="0" pictureWidth="35.7233" file="../../../../qgis/project/natural-earth/gislab_logo.svg" pictureHeight="11.077" mapId="-1" anchorPoint="0">
-        <ComposerItem pagey="8" page="1" id="" lastValidViewScaleFactor="-1" positionMode="0" positionLock="false" x="10" y="8" visibility="1" zValue="11" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="35.837" outlineWidth="0.3" excludeFromExports="0" uuid="{e5770419-05da-4ac5-9020-5f52a13bac0a}" height="11.077" itemRotation="0" frame="false" pagex="10">
+      <ComposerPicture resizeMode="0" pictureRotation="0" pictureWidth="11" file="./compass.svg" pictureHeight="11" mapId="0" anchorPoint="4">
+        <ComposerItem pagey="20.925" page="1" id="" lastValidViewScaleFactor="2.13948" positionMode="0" positionLock="false" x="273.8" y="20.925" visibility="1" zValue="21" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="11" outlineWidth="0.3" excludeFromExports="0" uuid="{ed88b99c-d1c8-4ff5-b039-4f3ee3ff19dc}" height="11" itemRotation="0" frame="false" pagex="273.8">
           <FrameColor alpha="255" red="0" blue="0" green="0"/>
-          <BackgroundColor alpha="255" red="255" blue="255" green="255"/>
+          <BackgroundColor alpha="150" red="255" blue="255" green="255"/>
           <dataDefinedSource expr="" field="" active="false" useExpr="true"/>
           <customproperties/>
         </ComposerItem>
       </ComposerPicture>
-      <ComposerPicture resizeMode="1" pictureRotation="0" pictureWidth="10" file="./compass.svg" pictureHeight="10" mapId="0" anchorPoint="4">
-        <ComposerItem pagey="21" page="1" id="" lastValidViewScaleFactor="6.46253" positionMode="0" positionLock="false" x="275" y="21" visibility="1" zValue="10" background="true" transparency="30" frameJoinStyle="miter" blendMode="0" width="10" outlineWidth="0.3" excludeFromExports="0" uuid="{bc952acd-4a7b-4133-b5a7-52ffafa0b0ce}" height="10" itemRotation="0" frame="false" pagex="275">
+      <ComposerPicture resizeMode="0" pictureRotation="0" pictureWidth="35.7233" file="../../../../qgis/project/natural-earth/gislab_logo.svg" pictureHeight="11.077" mapId="-1" anchorPoint="0">
+        <ComposerItem pagey="8" page="1" id="" lastValidViewScaleFactor="-1" positionMode="0" positionLock="false" x="10" y="8" visibility="1" zValue="10" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="35.837" outlineWidth="0.3" excludeFromExports="0" uuid="{e5770419-05da-4ac5-9020-5f52a13bac0a}" height="11.077" itemRotation="0" frame="false" pagex="10">
           <FrameColor alpha="255" red="0" blue="0" green="0"/>
-          <BackgroundColor alpha="0" red="255" blue="255" green="255"/>
+          <BackgroundColor alpha="255" red="255" blue="255" green="255"/>
           <dataDefinedSource expr="" field="" active="false" useExpr="true"/>
           <customproperties/>
         </ComposerItem>
@@ -132,7 +132,7 @@
       <ComposerLabel valign="32" marginX="0" marginY="0" labelText="Project title" htmlState="0" halign="1">
         <LabelFont description="Liberation Sans,9,-1,5,50,0,0,0,0,0" style=""/>
         <FontColor red="0" blue="0" green="0"/>
-        <ComposerItem pagey="14.532" page="1" id="gislab_project" lastValidViewScaleFactor="3.01482" positionMode="0" positionLock="false" x="53" y="14.532" visibility="1" zValue="8" background="true" transparency="0" frameJoinStyle="miter" blendMode="0" width="200" outlineWidth="0.3" excludeFromExports="0" uuid="{7fb54636-e41b-4fdc-abe9-d9b8496919f2}" height="4.646" itemRotation="0" frame="false" pagex="53">
+        <ComposerItem pagey="14.532" page="1" id="gislab_project" lastValidViewScaleFactor="3.01482" positionMode="0" positionLock="false" x="53" y="14.532" visibility="1" zValue="8" background="true" transparency="0" frameJoinStyle="miter" blendMode="0" width="157" outlineWidth="0.3" excludeFromExports="0" uuid="{7fb54636-e41b-4fdc-abe9-d9b8496919f2}" height="4.646" itemRotation="0" frame="false" pagex="53">
           <FrameColor alpha="255" red="0" blue="0" green="0"/>
           <BackgroundColor alpha="255" red="255" blue="255" green="255"/>
           <customproperties/>
@@ -150,7 +150,7 @@
       <ComposerLabel valign="64" marginX="0" marginY="0" labelText="&lt;div style=&quot;background-color:rgba(255,255,255,0.3);position:absolute;bottom:0;right:0;padding-left:8px;padding-right:8px;font-family:Liberation Sans;&quot;>copyrights&lt;/div>" htmlState="2" halign="2">
         <LabelFont description="Cadastra Cn,5,-1,5,50,0,0,0,0,0" style=""/>
         <FontColor red="0" blue="0" green="0"/>
-        <ComposerItem pagey="159" page="1" id="gislab_copyrights" lastValidViewScaleFactor="3.06018" positionMode="0" positionLock="false" x="10.2" y="159" visibility="1" zValue="6" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="275.6" outlineWidth="0.3" excludeFromExports="0" uuid="{e0e03c66-7fc5-46dd-973d-6396868ce178}" height="38.5747" itemRotation="0" frame="false" pagex="10.2">
+        <ComposerItem pagey="171" page="1" id="gislab_copyrights" lastValidViewScaleFactor="3.06018" positionMode="0" positionLock="false" x="110" y="171" visibility="1" zValue="6" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="175.8" outlineWidth="0.3" excludeFromExports="0" uuid="{e0e03c66-7fc5-46dd-973d-6396868ce178}" height="26.5747" itemRotation="0" frame="false" pagex="110">
           <FrameColor alpha="255" red="0" blue="0" green="0"/>
           <BackgroundColor alpha="100" red="255" blue="255" green="255"/>
           <customproperties/>
@@ -159,7 +159,7 @@
       <ComposerLabel valign="64" marginX="0" marginY="0" labelText="&lt;div style=&quot;position:absolute;bottom:0;right:0;font-family:Liberation Sans;&quot;>&lt;span>Organization&lt;br />e-mail&lt;/span>&lt;/div>" htmlState="2" halign="2">
         <LabelFont description="Liberation Sans,8,-1,5,50,0,0,0,0,0" style=""/>
         <FontColor red="0" blue="0" green="0"/>
-        <ComposerItem pagey="7" page="1" id="gislab_contact" lastValidViewScaleFactor="3.06018" positionMode="0" positionLock="true" x="225.456" y="7" visibility="1" zValue="5" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="60.6942" outlineWidth="0.3" excludeFromExports="0" uuid="{61cd3d21-fa58-40dd-928c-f464114b6415}" height="12.5" itemRotation="0" frame="false" pagex="225.456">
+        <ComposerItem pagey="7" page="1" id="gislab_contact" lastValidViewScaleFactor="3.06018" positionMode="0" positionLock="false" x="230" y="7" visibility="1" zValue="5" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="56.1502" outlineWidth="0.3" excludeFromExports="0" uuid="{61cd3d21-fa58-40dd-928c-f464114b6415}" height="12.5" itemRotation="0" frame="false" pagex="230">
           <FrameColor alpha="255" red="0" blue="0" green="0"/>
           <BackgroundColor alpha="0" red="255" blue="255" green="255"/>
           <customproperties/>
@@ -168,7 +168,7 @@
       <ComposerLabel valign="32" marginX="0" marginY="0" labelText="Title" htmlState="0" halign="1">
         <LabelFont description="Liberation Sans,11,-1,5,75,0,0,0,0,0" style=""/>
         <FontColor red="0" blue="0" green="0"/>
-        <ComposerItem pagey="9" page="1" id="Title" lastValidViewScaleFactor="3.01482" positionMode="0" positionLock="false" x="53" y="9" visibility="1" zValue="4" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="200" outlineWidth="0.3" excludeFromExports="0" uuid="{d07b202b-c0a2-4253-a78f-bc558307be51}" height="5.532" itemRotation="0" frame="false" pagex="53">
+        <ComposerItem pagey="9" page="1" id="Title" lastValidViewScaleFactor="3.01482" positionMode="0" positionLock="false" x="53" y="9" visibility="1" zValue="4" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="157" outlineWidth="0.3" excludeFromExports="0" uuid="{d07b202b-c0a2-4253-a78f-bc558307be51}" height="5.532" itemRotation="0" frame="false" pagex="53">
           <FrameColor alpha="255" red="0" blue="0" green="0"/>
           <BackgroundColor alpha="0" red="255" blue="255" green="255"/>
           <customproperties/>
@@ -189,7 +189,7 @@
       <ComposerLabel valign="32" marginX="0" marginY="0" labelText="$CURRENT_DATE(dd.MM.yyyy)" htmlState="0" halign="2">
         <LabelFont description="Liberation Sans,8,-1,5,50,0,0,0,0,0" style=""/>
         <FontColor red="0" blue="0" green="0"/>
-        <ComposerItem pagey="198.5" page="1" id="" lastValidViewScaleFactor="12.0593" positionMode="0" positionLock="false" x="271.33" y="198.5" visibility="1" zValue="2" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="14.82" outlineWidth="0.3" excludeFromExports="0" uuid="{d1c53bd6-c190-46e9-a8b5-20e8f327c0fe}" height="3.4" itemRotation="0" frame="false" pagex="271.33">
+        <ComposerItem pagey="198.5" page="1" id="" lastValidViewScaleFactor="12.0593" positionMode="0" positionLock="false" x="270" y="198.5" visibility="1" zValue="2" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="16.15" outlineWidth="0.3" excludeFromExports="0" uuid="{d1c53bd6-c190-46e9-a8b5-20e8f327c0fe}" height="3.4" itemRotation="0" frame="false" pagex="270">
           <FrameColor alpha="255" red="0" blue="0" green="0"/>
           <BackgroundColor alpha="255" red="255" blue="255" green="255"/>
           <customproperties/>
@@ -264,7 +264,7 @@
           </symbol>
         </ComposerMapOverview>
         <AtlasMap scalingMode="2" atlasDriven="0" margin="0.10000000000000001"/>
-        <ComposerItem pagey="20" page="1" id="" lastValidViewScaleFactor="2.67542" positionMode="0" positionLock="false" x="10" y="20" visibility="1" zValue="1" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="276" outlineWidth="0.15" excludeFromExports="0" uuid="{b07f26e3-ebc0-459f-8032-9e829e5422e4}" height="178" itemRotation="0" frame="true" pagex="10">
+        <ComposerItem pagey="20" page="1" id="" lastValidViewScaleFactor="5.36496" positionMode="0" positionLock="false" x="10" y="20" visibility="1" zValue="1" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="276" outlineWidth="0.15" excludeFromExports="0" uuid="{b07f26e3-ebc0-459f-8032-9e829e5422e4}" height="178" itemRotation="0" frame="true" pagex="10">
           <FrameColor alpha="255" red="0" blue="0" green="0"/>
           <BackgroundColor alpha="255" red="255" blue="255" green="255"/>
           <customproperties/>
@@ -290,8 +290,16 @@
           <prop k="style" v="solid"/>
         </layer>
       </symbol>
-      <ComposerPicture resizeMode="0" pictureRotation="0" pictureWidth="10.9329" file="../../../system/roles/service-client/files/static/system/qgis/composer_templates/north-arrow.svg" pictureHeight="11" mapId="0" anchorPoint="4">
-        <ComposerItem pagey="20" page="1" id="" lastValidViewScaleFactor="2.13948" positionMode="0" positionLock="false" x="398" y="20" visibility="1" zValue="10" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="11" outlineWidth="0.3" excludeFromExports="0" uuid="{8617737e-0ab6-4983-9f94-333ebb9c3199}" height="11" itemRotation="0" frame="false" pagex="398">
+      <ComposerPicture resizeMode="0" pictureRotation="0" pictureWidth="35.7233" file="../../../../qgis/project/natural-earth/gislab_logo.svg" pictureHeight="11.077" mapId="-1" anchorPoint="0">
+        <ComposerItem pagey="7.80529" page="1" id="" lastValidViewScaleFactor="-1" positionMode="0" positionLock="false" x="10" y="7.80529" visibility="1" zValue="22" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="35.837" outlineWidth="0.3" excludeFromExports="0" uuid="{fdbb7056-4849-4c7f-8093-8f858c6fb83f}" height="11.077" itemRotation="0" frame="false" pagex="10">
+          <FrameColor alpha="255" red="0" blue="0" green="0"/>
+          <BackgroundColor alpha="255" red="255" blue="255" green="255"/>
+          <dataDefinedSource expr="" field="" active="false" useExpr="true"/>
+          <customproperties/>
+        </ComposerItem>
+      </ComposerPicture>
+      <ComposerPicture resizeMode="0" pictureRotation="0" pictureWidth="11" file="./compass.svg" pictureHeight="11" mapId="0" anchorPoint="4">
+        <ComposerItem pagey="21" page="1" id="" lastValidViewScaleFactor="2.13948" positionMode="0" positionLock="false" x="397" y="21" visibility="1" zValue="10" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="11" outlineWidth="0.3" excludeFromExports="0" uuid="{8617737e-0ab6-4983-9f94-333ebb9c3199}" height="11" itemRotation="0" frame="false" pagex="397">
           <FrameColor alpha="255" red="0" blue="0" green="0"/>
           <BackgroundColor alpha="150" red="255" blue="255" green="255"/>
           <dataDefinedSource expr="" field="" active="false" useExpr="true"/>
@@ -323,7 +331,7 @@
       <ComposerLabel valign="32" marginX="0" marginY="0" labelText="Project title" htmlState="0" halign="1">
         <LabelFont description="Liberation Sans,9,-1,5,50,0,0,0,0,0" style=""/>
         <FontColor red="0" blue="0" green="0"/>
-        <ComposerItem pagey="14.5317" page="1" id="gislab_project" lastValidViewScaleFactor="2.17167" positionMode="0" positionLock="false" x="10" y="14.5317" visibility="1" zValue="8" background="true" transparency="0" frameJoinStyle="miter" blendMode="0" width="330" outlineWidth="0.3" excludeFromExports="0" uuid="{3645a122-55fe-41d4-8830-44cc63606107}" height="4.6459" itemRotation="0" frame="false" pagex="10">
+        <ComposerItem pagey="14.5317" page="1" id="gislab_project" lastValidViewScaleFactor="2.17167" positionMode="0" positionLock="false" x="60" y="14.5317" visibility="1" zValue="8" background="true" transparency="0" frameJoinStyle="miter" blendMode="0" width="240" outlineWidth="0.3" excludeFromExports="0" uuid="{3645a122-55fe-41d4-8830-44cc63606107}" height="4.6459" itemRotation="0" frame="false" pagex="60">
           <FrameColor alpha="255" red="0" blue="0" green="0"/>
           <BackgroundColor alpha="255" red="255" blue="255" green="255"/>
           <customproperties/>
@@ -332,7 +340,7 @@
       <ComposerLabel valign="32" marginX="0" marginY="0" labelText="Author&#xa;" htmlState="0" halign="2">
         <LabelFont description="Liberation Sans,8,-1,5,50,0,0,0,0,0" style=""/>
         <FontColor red="0" blue="0" green="0"/>
-        <ComposerItem pagey="285" page="1" id="gislab_author" lastValidViewScaleFactor="34.2318" positionMode="0" positionLock="false" x="303.33" y="285" visibility="1" zValue="7" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="86.7889" outlineWidth="0.3" excludeFromExports="0" uuid="{1fd535f0-1a47-4c2f-9452-fae5b2dcddc9}" height="3.4" itemRotation="0" frame="false" pagex="303.33">
+        <ComposerItem pagey="285.5" page="1" id="gislab_author" lastValidViewScaleFactor="34.2318" positionMode="0" positionLock="false" x="303.33" y="285.5" visibility="1" zValue="7" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="86.789" outlineWidth="0.3" excludeFromExports="0" uuid="{1fd535f0-1a47-4c2f-9452-fae5b2dcddc9}" height="3.4" itemRotation="0" frame="false" pagex="303.33">
           <FrameColor alpha="255" red="0" blue="0" green="0"/>
           <BackgroundColor alpha="255" red="255" blue="255" green="255"/>
           <customproperties/>
@@ -341,7 +349,7 @@
       <ComposerLabel valign="64" marginX="0" marginY="0" labelText="&lt;div style=&quot;background-color:rgba(255,255,255,0.3);position:absolute;bottom:0;right:0;padding-left:8px;padding-right:8px;font-family:Liberation Sans;&quot;>copyrights&lt;/div>" htmlState="2" halign="2">
         <LabelFont description="Cadastra Cn,5,-1,5,50,0,0,0,0,0" style=""/>
         <FontColor red="0" blue="0" green="0"/>
-        <ComposerItem pagey="246" page="1" id="gislab_copyrights" lastValidViewScaleFactor="2.17167" positionMode="0" positionLock="false" x="10.2" y="246" visibility="1" zValue="6" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="398.6" outlineWidth="0.3" excludeFromExports="0" uuid="{fcdb898d-1160-433d-ab79-39bf358d3269}" height="38.5747" itemRotation="0" frame="false" pagex="10.2">
+        <ComposerItem pagey="246" page="1" id="gislab_copyrights" lastValidViewScaleFactor="2.17167" positionMode="0" positionLock="false" x="10" y="246" visibility="1" zValue="6" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="398.8" outlineWidth="0.3" excludeFromExports="0" uuid="{fcdb898d-1160-433d-ab79-39bf358d3269}" height="38.5747" itemRotation="0" frame="false" pagex="10">
           <FrameColor alpha="255" red="0" blue="0" green="0"/>
           <BackgroundColor alpha="100" red="255" blue="255" green="255"/>
           <customproperties/>
@@ -350,7 +358,7 @@
       <ComposerLabel valign="32" marginX="0" marginY="0" labelText="&lt;div style=&quot;position:absolute;bottom:0;right:0;font-family:Liberation Sans;&quot;>&lt;span>Organization&lt;br />e-mail&lt;/span>&lt;/div>" htmlState="2" halign="2">
         <LabelFont description="Liberation Sans,8,-1,5,50,0,0,0,0,0" style=""/>
         <FontColor red="0" blue="0" green="0"/>
-        <ComposerItem pagey="7" page="1" id="gislab_contact" lastValidViewScaleFactor="2.17167" positionMode="0" positionLock="true" x="348.2" y="7" visibility="1" zValue="5" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="60.6942" outlineWidth="0.3" excludeFromExports="0" uuid="{61edcf25-402d-46ff-be76-d3f6783ef22e}" height="12.5" itemRotation="0" frame="false" pagex="348.2">
+        <ComposerItem pagey="7" page="1" id="gislab_contact" lastValidViewScaleFactor="2.17167" positionMode="0" positionLock="false" x="348.2" y="7" visibility="1" zValue="5" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="60.6942" outlineWidth="0.3" excludeFromExports="0" uuid="{61edcf25-402d-46ff-be76-d3f6783ef22e}" height="12.5" itemRotation="0" frame="false" pagex="348.2">
           <FrameColor alpha="255" red="0" blue="0" green="0"/>
           <BackgroundColor alpha="0" red="255" blue="255" green="255"/>
           <customproperties/>
@@ -359,7 +367,7 @@
       <ComposerLabel valign="32" marginX="0" marginY="0" labelText="Title" htmlState="0" halign="1">
         <LabelFont description="Liberation Sans,11,-1,5,75,0,0,0,0,0" style=""/>
         <FontColor red="0" blue="0" green="0"/>
-        <ComposerItem pagey="9" page="1" id="Title" lastValidViewScaleFactor="2.13948" positionMode="0" positionLock="false" x="10" y="9" visibility="1" zValue="4" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="330" outlineWidth="0.3" excludeFromExports="0" uuid="{1b3679b8-18b8-4c48-9f78-07d317a8a1a4}" height="5.53172" itemRotation="0" frame="false" pagex="10">
+        <ComposerItem pagey="9" page="1" id="Title" lastValidViewScaleFactor="2.13948" positionMode="0" positionLock="false" x="60" y="9" visibility="1" zValue="4" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="240" outlineWidth="0.3" excludeFromExports="0" uuid="{1b3679b8-18b8-4c48-9f78-07d317a8a1a4}" height="5.53172" itemRotation="0" frame="false" pagex="60">
           <FrameColor alpha="255" red="0" blue="0" green="0"/>
           <BackgroundColor alpha="0" red="255" blue="255" green="255"/>
           <customproperties/>
@@ -371,7 +379,7 @@
         <fillColor2 alpha="255" red="255" blue="255" green="255"/>
         <strokeColor alpha="255" red="0" blue="0" green="0"/>
         <textColor alpha="255" red="0" blue="0" green="0"/>
-        <ComposerItem pagey="285" page="1" id="" lastValidViewScaleFactor="2.13948" positionMode="0" positionLock="false" x="10" y="285" visibility="1" zValue="3" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="23.92" outlineWidth="0.3" excludeFromExports="0" uuid="{60cdd379-630c-4314-bba7-b85fdfa9901d}" height="4.8666" itemRotation="0" frame="false" pagex="10">
+        <ComposerItem pagey="285.5" page="1" id="" lastValidViewScaleFactor="2.13948" positionMode="0" positionLock="false" x="10" y="285.5" visibility="1" zValue="3" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="23.92" outlineWidth="0.3" excludeFromExports="0" uuid="{60cdd379-630c-4314-bba7-b85fdfa9901d}" height="4.867" itemRotation="0" frame="false" pagex="10">
           <FrameColor alpha="255" red="0" blue="0" green="0"/>
           <BackgroundColor alpha="255" red="255" blue="255" green="255"/>
           <customproperties/>
@@ -380,7 +388,7 @@
       <ComposerLabel valign="32" marginX="0" marginY="0" labelText="$CURRENT_DATE(dd.MM.yyyy)" htmlState="0" halign="2">
         <LabelFont description="Liberation Sans,8,-1,5,50,0,0,0,0,0" style=""/>
         <FontColor red="0" blue="0" green="0"/>
-        <ComposerItem pagey="285" page="1" id="" lastValidViewScaleFactor="6.3591" positionMode="0" positionLock="false" x="394.33" y="285" visibility="1" zValue="2" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="14.82" outlineWidth="0.3" excludeFromExports="0" uuid="{d0e89da2-4acc-49b3-b065-098c2a5ca326}" height="3.4" itemRotation="0" frame="false" pagex="394.33">
+        <ComposerItem pagey="285.5" page="1" id="" lastValidViewScaleFactor="6.3591" positionMode="0" positionLock="false" x="392.4" y="285.5" visibility="1" zValue="2" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="16.7509" outlineWidth="0.3" excludeFromExports="0" uuid="{d0e89da2-4acc-49b3-b065-098c2a5ca326}" height="3.4" itemRotation="0" frame="false" pagex="392.4">
           <FrameColor alpha="255" red="0" blue="0" green="0"/>
           <BackgroundColor alpha="255" red="255" blue="255" green="255"/>
           <customproperties/>
@@ -455,7 +463,7 @@
           </symbol>
         </ComposerMapOverview>
         <AtlasMap scalingMode="2" atlasDriven="0" margin="0.10000000000000001"/>
-        <ComposerItem pagey="20" page="1" id="" lastValidViewScaleFactor="1.39914" positionMode="0" positionLock="false" x="10" y="20" visibility="1" zValue="1" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="399" outlineWidth="0.15" excludeFromExports="0" uuid="{ee7a4633-50a9-4074-b559-6ea859d20274}" height="265" itemRotation="0" frame="true" pagex="10">
+        <ComposerItem pagey="20" page="1" id="" lastValidViewScaleFactor="2.6035" positionMode="0" positionLock="false" x="10" y="20" visibility="1" zValue="1" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="399" outlineWidth="0.15" excludeFromExports="0" uuid="{ee7a4633-50a9-4074-b559-6ea859d20274}" height="265" itemRotation="0" frame="true" pagex="10">
           <FrameColor alpha="255" red="0" blue="0" green="0"/>
           <BackgroundColor alpha="255" red="255" blue="255" green="255"/>
           <customproperties/>
@@ -481,18 +489,18 @@
           <prop k="style" v="solid"/>
         </layer>
       </symbol>
-      <ComposerPicture resizeMode="0" pictureRotation="0" pictureWidth="35.7233" file="../../../../qgis/project/natural-earth/gislab_logo.svg" pictureHeight="11.077" mapId="-1" anchorPoint="0">
-        <ComposerItem pagey="8" page="1" id="" lastValidViewScaleFactor="-1" positionMode="0" positionLock="false" x="10" y="8" visibility="1" zValue="11" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="35.837" outlineWidth="0.3" excludeFromExports="0" uuid="{65cdf673-73bf-4592-9ebe-31bf15389152}" height="11.077" itemRotation="0" frame="false" pagex="10">
+      <ComposerPicture resizeMode="0" pictureRotation="0" pictureWidth="11" file="./compass.svg" pictureHeight="11" mapId="0" anchorPoint="4">
+        <ComposerItem pagey="21" page="1" id="" lastValidViewScaleFactor="2.13948" positionMode="0" positionLock="false" x="187.766" y="21" visibility="1" zValue="21" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="11" outlineWidth="0.3" excludeFromExports="0" uuid="{f2a87151-7f16-4e30-805d-7d8ee6dd8188}" height="11" itemRotation="0" frame="false" pagex="187.766">
           <FrameColor alpha="255" red="0" blue="0" green="0"/>
-          <BackgroundColor alpha="255" red="255" blue="255" green="255"/>
+          <BackgroundColor alpha="150" red="255" blue="255" green="255"/>
           <dataDefinedSource expr="" field="" active="false" useExpr="true"/>
           <customproperties/>
         </ComposerItem>
       </ComposerPicture>
-      <ComposerPicture resizeMode="1" pictureRotation="0" pictureWidth="10" file="./compass.svg" pictureHeight="10" mapId="0" anchorPoint="4">
-        <ComposerItem pagey="21" page="1" id="" lastValidViewScaleFactor="6.46253" positionMode="0" positionLock="false" x="188" y="21" visibility="1" zValue="10" background="true" transparency="30" frameJoinStyle="miter" blendMode="0" width="10" outlineWidth="0.3" excludeFromExports="0" uuid="{4967b5e8-6b76-450e-bbef-1f34e5539fe5}" height="10" itemRotation="0" frame="false" pagex="188">
+      <ComposerPicture resizeMode="0" pictureRotation="0" pictureWidth="35.7233" file="../../../../qgis/project/natural-earth/gislab_logo.svg" pictureHeight="11.077" mapId="-1" anchorPoint="0">
+        <ComposerItem pagey="8" page="1" id="" lastValidViewScaleFactor="-1" positionMode="0" positionLock="false" x="10" y="8" visibility="1" zValue="10" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="35.837" outlineWidth="0.3" excludeFromExports="0" uuid="{65cdf673-73bf-4592-9ebe-31bf15389152}" height="11.077" itemRotation="0" frame="false" pagex="10">
           <FrameColor alpha="255" red="0" blue="0" green="0"/>
-          <BackgroundColor alpha="0" red="255" blue="255" green="255"/>
+          <BackgroundColor alpha="255" red="255" blue="255" green="255"/>
           <dataDefinedSource expr="" field="" active="false" useExpr="true"/>
           <customproperties/>
         </ComposerItem>
@@ -500,7 +508,7 @@
       <ComposerLabel valign="32" marginX="0" marginY="0" labelText="Project title" htmlState="0" halign="1">
         <LabelFont description="Liberation Sans,9,-1,5,50,0,0,0,0,0" style=""/>
         <FontColor red="0" blue="0" green="0"/>
-        <ComposerItem pagey="14.532" page="1" id="gislab_project" lastValidViewScaleFactor="3.01482" positionMode="0" positionLock="false" x="53" y="14.532" visibility="1" zValue="8" background="true" transparency="0" frameJoinStyle="miter" blendMode="0" width="83.7447" outlineWidth="0.3" excludeFromExports="0" uuid="{7aa17298-4475-4477-88ed-487ebd723434}" height="4.646" itemRotation="0" frame="false" pagex="53">
+        <ComposerItem pagey="14.532" page="1" id="gislab_project" lastValidViewScaleFactor="3.01482" positionMode="0" positionLock="false" x="53" y="14.532" visibility="1" zValue="8" background="true" transparency="0" frameJoinStyle="miter" blendMode="0" width="97" outlineWidth="0.3" excludeFromExports="0" uuid="{7aa17298-4475-4477-88ed-487ebd723434}" height="4.646" itemRotation="0" frame="false" pagex="53">
           <FrameColor alpha="255" red="0" blue="0" green="0"/>
           <BackgroundColor alpha="255" red="255" blue="255" green="255"/>
           <customproperties/>
@@ -527,7 +535,7 @@
       <ComposerLabel valign="64" marginX="0" marginY="0" labelText="&lt;div style=&quot;position:absolute;bottom:0;right:0;font-family:Liberation Sans;&quot;>&lt;span>Organization&lt;br />e-mail&lt;/span>&lt;/div>" htmlState="2" halign="2">
         <LabelFont description="Liberation Sans,8,-1,5,50,0,0,0,0,0" style=""/>
         <FontColor red="0" blue="0" green="0"/>
-        <ComposerItem pagey="7" page="1" id="gislab_contact" lastValidViewScaleFactor="3.06018" positionMode="0" positionLock="false" x="139.456" y="7" visibility="1" zValue="5" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="60.6942" outlineWidth="0.3" excludeFromExports="0" uuid="{ca9b9abc-48a0-4181-a534-b1f6214d8fa4}" height="12.5" itemRotation="0" frame="false" pagex="139.456">
+        <ComposerItem pagey="7" page="1" id="gislab_contact" lastValidViewScaleFactor="3.06018" positionMode="0" positionLock="false" x="150" y="7" visibility="1" zValue="5" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="50.1502" outlineWidth="0.3" excludeFromExports="0" uuid="{ca9b9abc-48a0-4181-a534-b1f6214d8fa4}" height="12.5" itemRotation="0" frame="false" pagex="150">
           <FrameColor alpha="255" red="0" blue="0" green="0"/>
           <BackgroundColor alpha="0" red="255" blue="255" green="255"/>
           <customproperties/>
@@ -536,7 +544,7 @@
       <ComposerLabel valign="32" marginX="0" marginY="0" labelText="Title" htmlState="0" halign="1">
         <LabelFont description="Liberation Sans,11,-1,5,75,0,0,0,0,0" style=""/>
         <FontColor red="0" blue="0" green="0"/>
-        <ComposerItem pagey="9" page="1" id="Title" lastValidViewScaleFactor="3.01482" positionMode="0" positionLock="false" x="53" y="9" visibility="1" zValue="4" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="83.7447" outlineWidth="0.3" excludeFromExports="0" uuid="{d053654e-0afa-4508-af55-c655da805ed2}" height="5.532" itemRotation="0" frame="false" pagex="53">
+        <ComposerItem pagey="9" page="1" id="Title" lastValidViewScaleFactor="3.01482" positionMode="0" positionLock="false" x="53" y="9" visibility="1" zValue="4" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="97" outlineWidth="0.3" excludeFromExports="0" uuid="{d053654e-0afa-4508-af55-c655da805ed2}" height="5.532" itemRotation="0" frame="false" pagex="53">
           <FrameColor alpha="255" red="0" blue="0" green="0"/>
           <BackgroundColor alpha="0" red="255" blue="255" green="255"/>
           <customproperties/>
@@ -557,14 +565,14 @@
       <ComposerLabel valign="32" marginX="0" marginY="0" labelText="$CURRENT_DATE(dd.MM.yyyy)" htmlState="0" halign="2">
         <LabelFont description="Liberation Sans,8,-1,5,50,0,0,0,0,0" style=""/>
         <FontColor red="0" blue="0" green="0"/>
-        <ComposerItem pagey="284.5" page="1" id="" lastValidViewScaleFactor="12.0593" positionMode="0" positionLock="false" x="184.33" y="284.5" visibility="1" zValue="2" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="14.82" outlineWidth="0.3" excludeFromExports="0" uuid="{dfa39ec0-402a-463a-abb3-3f0a635af296}" height="3.4" itemRotation="0" frame="false" pagex="184.33">
+        <ComposerItem pagey="284.5" page="1" id="" lastValidViewScaleFactor="12.0593" positionMode="0" positionLock="false" x="183.109" y="284.5" visibility="1" zValue="2" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="16.0412" outlineWidth="0.3" excludeFromExports="0" uuid="{dfa39ec0-402a-463a-abb3-3f0a635af296}" height="3.4" itemRotation="0" frame="false" pagex="183.109">
           <FrameColor alpha="255" red="0" blue="0" green="0"/>
           <BackgroundColor alpha="255" red="255" blue="255" green="255"/>
           <customproperties/>
         </ComposerItem>
       </ComposerLabel>
       <ComposerMap mapRotation="0" keepLayerSet="false" id="0" previewMode="Render" drawCanvasItems="false">
-        <Extent ymin="244086.99999910659971647" xmin="695113.99999859242234379" ymax="247916.19137855528970249" xmax="697874.00000140757765621"/>
+        <Extent ymin="244086.99999910659971647" xmin="695113.99999859242234379" ymax="247916.19573817093623802" xmax="697874.00000140757765621"/>
         <LayerSet/>
         <Grid/>
         <ComposerMapGrid rightAnnotationDirection="1" gridFramePenColor="0,0,0,255" show="0" bottomAnnotationPosition="1" annotationPrecision="0" showAnnotation="1" topFrameDivisions="0" uuid="{b7b51e90-438f-47a9-8f09-3a53a1c556c0}" leftAnnotationDirection="1" topAnnotationPosition="1" rightAnnotationDisplay="0" offsetX="0" offsetY="0" rightFrameDivisions="0" gridStyle="1" annotationFontColor="0,0,0,255" intervalX="500" gridFrameSideFlags="15" intervalY="500" bottomAnnotationDirection="0" leftAnnotationDisplay="0" leftFrameDivisions="0" frameFillColor1="255,255,255,255" annotationExpression="" frameFillColor2="0,0,0,255" crossLength="1" gridFramePenThickness="0.5" bottomAnnotationDisplay="0" unit="0" topAnnotationDisplay="0" leftAnnotationPosition="1" blendMode="0" gridFrameStyle="0" rightAnnotationPosition="1" gridFrameWidth="2" name="Grid 1" annotationFormat="0" bottomFrameDivisions="0" topAnnotationDirection="0" frameAnnotationDistance="0.6">
@@ -632,7 +640,7 @@
           </symbol>
         </ComposerMapOverview>
         <AtlasMap scalingMode="2" atlasDriven="0" margin="0.10000000000000001"/>
-        <ComposerItem pagey="20" page="1" id="" lastValidViewScaleFactor="2.02484" positionMode="0" positionLock="false" x="10" y="20" visibility="1" zValue="1" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="189.925" outlineWidth="0.15" excludeFromExports="0" uuid="{68c4b51a-1d29-45b0-8e1b-025fc51979dc}" height="263.5" itemRotation="0" frame="true" pagex="10">
+        <ComposerItem pagey="20" page="1" id="" lastValidViewScaleFactor="5.40436" positionMode="0" positionLock="false" x="10" y="20" visibility="1" zValue="1" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="189.925" outlineWidth="0.15" excludeFromExports="0" uuid="{68c4b51a-1d29-45b0-8e1b-025fc51979dc}" height="263.5" itemRotation="0" frame="true" pagex="10">
           <FrameColor alpha="255" red="0" blue="0" green="0"/>
           <BackgroundColor alpha="255" red="255" blue="255" green="255"/>
           <customproperties/>

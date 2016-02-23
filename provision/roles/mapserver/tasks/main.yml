@@ -7,13 +7,15 @@
     force: yes
     install_recommends: no
     state: latest
-  environment: proxy_env
+  environment: "{{ proxy_env }}"
+  become: yes
 
 
 - name: Configure Xvfb service
   template:
     src: init/xvfb.conf.j2
     dest: /etc/init/xvfb.conf
+  become: yes
   notify:
     - service xvfb restart
 
@@ -22,14 +24,21 @@
     src: /lib/init/upstart-job
     dest: /etc/init.d/xvfb
     state: link
+  become: yes
   notify:
     - service xvfb restart
+
+- name: Start Xvfb service
+  service:
+    name: xvfb
+    state: started
 
 
 - name: Install QGIS Mapserver configuration
   template:
     src: lighttpd/lighttpd.conf.j2
     dest: /etc/lighttpd/lighttpd.conf
+  become: yes
   notify:
     - service lighttpd restart
 

@@ -10,7 +10,7 @@ android_sdk_url: http://dl.google.com/android
 android_sdk_version: 24.1.2
 android_build_tools_version: 22.0.1
 android_api_version: 22
-android_root: /home/{{ ansible_ssh_user }}/dev/apps/android-sdk-linux
+android_root: /home/{{ ansible_user }}/dev/apps/android-sdk-linux
 
 # cordova
 cordova_version: 5.1.1

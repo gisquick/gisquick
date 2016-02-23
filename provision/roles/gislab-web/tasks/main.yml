@@ -7,30 +7,29 @@
     force: yes
     install_recommends: no
     state: latest
-  environment: proxy_env
+  environment: "{{ proxy_env }}"
+  become: yes
 
 
 ### DEPENDENCIES
 # Python
 - name: Install GIS.lab Web Python requirements
   pip:
-    virtualenv: /home/{{ ansible_ssh_user }}/.virtualenvs/gislab-web
+    virtualenv: /home/{{ ansible_user }}/.virtualenvs/gislab-web
     requirements: "{{ synced_folder }}/server/requirements.txt"
     virtualenv_site_packages: yes
     extra_args: "--download-cache={{ synced_folder }}/dev/cache/pip"
     state: present
-  sudo_user: "{{ ansible_ssh_user }}"
   tags:
     - dep-python
 
 - name: Install GIS.lab Web Python development requirements
   pip:
-    virtualenv: /home/{{ ansible_ssh_user }}/.virtualenvs/gislab-web
+    virtualenv: /home/{{ ansible_user }}/.virtualenvs/gislab-web
     requirements: "{{ synced_folder }}/server/requirements-dev.txt"
     virtualenv_site_packages: yes
     extra_args: "--download-cache={{ synced_folder }}/dev/cache/pip"
     state: present
-  sudo_user: "{{ ansible_ssh_user }}"
   tags:
     - dep-python
 
@@ -46,7 +45,6 @@
   args:
     chdir: "{{ synced_folder }}"
     executable: /bin/bash
-  sudo_user: "{{ ansible_ssh_user }}"
   tags:
     - dep-python
 
@@ -57,8 +55,7 @@
     curl {{ nvm_url }}/v{{ nvm_version }}/install.sh
     | bash
   args:
-    creates: /home/{{ ansible_ssh_user }}/.nvm/nvm.sh
-  sudo_user: "{{ ansible_ssh_user }}"
+    creates: /home/{{ ansible_user }}/.nvm/nvm.sh
   tags:
     - dep-javascript
 
@@ -69,7 +66,6 @@
     . "$NVM_DIR/nvm.sh"
     &&
     nvm install v{{ node_version }}
-  sudo_user: "{{ ansible_ssh_user }}"
   tags:
     - dep-javascript
 
@@ -82,26 +78,23 @@
     nvm use v{{ node_version }}
     &&
     npm install -g gulp
-  sudo_user: "{{ ansible_ssh_user }}"
   tags:
     - dep-javascript
 
 
 - name: Create local development directory for Node modules
   file:
-    path: /home/{{ ansible_ssh_user }}/dev/node_modules
+    path: /home/{{ ansible_user }}/dev/node_modules
     state: directory
-  sudo_user: "{{ ansible_ssh_user }}"
   tags:
     - dep-javascript
 
 - name: Symlink Node modules from local development directory
   file:
-    src: /home/{{ ansible_ssh_user }}/dev/node_modules
+    src: /home/{{ ansible_user }}/dev/node_modules
     dest: "{{ synced_folder }}/clients/node_modules"
     state: link
     force: yes
-  sudo_user: "{{ ansible_ssh_user }}"
   tags:
     - dep-javascript
 
@@ -116,7 +109,6 @@
     npm prune
   args:
     chdir: "{{ synced_folder }}/clients"
-  sudo_user: "{{ ansible_ssh_user }}"
   tags:
     - dep-javascript
 
@@ -134,7 +126,6 @@
     - npm install web
   args:
     chdir: "{{ synced_folder }}/clients"
-  sudo_user: "{{ ansible_ssh_user }}"
   tags:
     - dep-javascript
 
@@ -142,10 +133,9 @@
 ### DJANGO SERVER
 - name: Create GIS.lab Web project directory
   file:
-    path: "/home/{{ ansible_ssh_user }}/deploy/www/devproj"
+    path: "/home/{{ ansible_user }}/deploy/www/devproj"
     state: directory
     recurse: yes
-  sudo_user: "{{ ansible_ssh_user }}"
   tags:
     - server-django
 
@@ -161,28 +151,25 @@
     django-admin.py startproject
     --template={{ synced_folder }}/server/webgis/conf/project_template/
     devproj
-    /home/{{ ansible_ssh_user }}/deploy/www
+    /home/{{ ansible_user }}/deploy/www
   args:
     executable: /bin/bash
-  sudo_user: "{{ ansible_ssh_user }}"
   tags:
     - server-django
 
 - name: Install custom GIS.lab Web project configuration
   template:
     src: django/settings_custom.py.j2
-    dest: "/home/{{ ansible_ssh_user }}/deploy/www/devproj/settings_custom.py"
-  sudo_user: "{{ ansible_ssh_user }}"
+    dest: "/home/{{ ansible_user }}/deploy/www/devproj/settings_custom.py"
   tags:
     - server-django
 
 - name: Build GIS.lab Web project database
   django_manage:
     command: migrate
-    app_path: "/home/{{ ansible_ssh_user }}/deploy/www"
+    app_path: "/home/{{ ansible_user }}/deploy/www"
     settings: devproj.settings
-    virtualenv: /home/{{ ansible_ssh_user }}/.virtualenvs/gislab-web
-  sudo_user: "{{ ansible_ssh_user }}"
+    virtualenv: /home/{{ ansible_user }}/.virtualenvs/gislab-web
   tags:
     - server-django
 
@@ -198,13 +185,12 @@
     GislabUser.objects.create_superuser('admin', 'admin@gislab.io', 'admin')"
     | python ./manage.py shell
   args:
-    chdir: "/home/{{ ansible_ssh_user }}/deploy/www"
+    chdir: "/home/{{ ansible_user }}/deploy/www"
     executable: /bin/bash
-  sudo_user: "{{ ansible_ssh_user }}"
   tags:
     - server-django
 
-- name: Create ordinary user account (u-> {{ ansible_ssh_user }}, p -> {{ ansible_ssh_user }})
+- name: Create ordinary user account (u-> {{ ansible_user }}, p -> {{ ansible_user }})
   shell: >
     export WORKON_HOME="$HOME/.virtualenvs"
     &&
@@ -213,12 +199,11 @@
     workon gislab-web
     &&
     echo "from webgis.viewer.models import GislabUser;
-    GislabUser.objects.create_user('{{ ansible_ssh_user }}', 'user@gislab.io', '{{ ansible_ssh_user }}')"
+    GislabUser.objects.create_user('{{ ansible_user }}', 'user@gislab.io', '{{ ansible_user }}')"
     | python ./manage.py shell
   args:
-    chdir: "/home/{{ ansible_ssh_user }}/deploy/www"
+    chdir: "/home/{{ ansible_user }}/deploy/www"
     executable: /bin/bash
-  sudo_user: "{{ ansible_ssh_user }}"
   tags:
     - server-django
 
@@ -235,7 +220,6 @@
     gulp
   args:
     chdir: "{{ synced_folder }}/clients"
-  sudo_user: "{{ ansible_ssh_user }}"
   tags:
     - client-web
 

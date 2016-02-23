@@ -2,8 +2,6 @@
 # Perform GIS.lab Web tests
 
 - hosts: all
-  sudo: yes
-
 
   vars:
     mapserver_url: http://localhost:90/cgi-bin/qgis_mapserv.fcgi
@@ -31,10 +29,9 @@
     - name: Run GIS.lab Web server tests
       django_manage:
         command: test
-        app_path: /home/{{ ansible_ssh_user }}/deploy/www
+        app_path: /home/{{ ansible_user }}/deploy/www
         apps: webgis.viewer
         settings: devproj.settings
-        virtualenv: /home/{{ ansible_ssh_user }}/.virtualenvs/gislab-web
-      sudo_user: "{{ ansible_ssh_user }}"
+        virtualenv: /home/{{ ansible_user }}/.virtualenvs/gislab-web
 
 # vim: set ts=8 sts=2 sw=2 et:

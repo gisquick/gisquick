@@ -2,10 +2,10 @@
 # BASIC SYSTEM CONFIGURATION
 
 ### SANITY CHECKS
-- name: Check Ansible version (< 2)
+- name: Check Ansible version (== 2)
   assert:
     that:
-      - ansible_version.major < 2
+      - ansible_version.major == 2
 
 
 ### BASIC
@@ -13,6 +13,7 @@
   locale_gen:
     name: en_US.UTF-8
     state: present
+  become: yes
 
 
 ### REPOSITORIES
@@ -20,16 +21,19 @@
   apt_repository:
     repo: 'ppa:ubuntugis/ubuntugis-unstable'
     state: present
+  become: yes
 
 - name: Add QGIS repository signing key
   apt_key:
     url: http://qgis.org/downloads/qgis-2015.gpg.key
     state: present
+  become: yes
 
 - name: Add QGIS repository
   apt_repository:
     repo: 'deb http://qgis.org/{{ qgis_repo }} trusty main'
     state: present
+  become: yes
 
 
 ### PACKAGES
@@ -37,13 +41,15 @@
   apt:
     update_cache: yes
     cache_valid_time: 3600
-  environment: proxy_env
+  environment: "{{ proxy_env }}"
+  become: yes
 
 - name: Upgrade system
   apt:
     upgrade: full
     force: yes
-  environment: proxy_env
+  environment: "{{ proxy_env }}"
+  become: yes
 
 - name: Install packages
   apt:
@@ -51,7 +57,8 @@
     force: yes
     install_recommends: no
     state: latest
-  environment: proxy_env
+  environment: "{{ proxy_env }}"
+  become: yes
 
 
 ### DIRECTORIES
@@ -63,28 +70,25 @@
   with_items:
     - dev/cache/tar
     - dev/cache/pip
-    - "dev/publish/{{ ansible_ssh_user }}"
-  sudo_user: "{{ ansible_ssh_user }}"
+    - "dev/publish/{{ ansible_user }}"
 
 
 - name: Clean local deployment directories
   file:
-    path: /home/{{ ansible_ssh_user }}/{{ item }}
+    path: /home/{{ ansible_user }}/{{ item }}
     state: absent
   with_items:
     - deploy
-  sudo_user: "{{ ansible_ssh_user }}"
 
 - name: Create local development directories
   file:
-    path: /home/{{ ansible_ssh_user }}/{{ item }}
+    path: /home/{{ ansible_user }}/{{ item }}
     state: directory
     recurse: yes
   with_items:
     - deploy
     - dev/apps
     - dev/node_modules
-  sudo_user: "{{ ansible_ssh_user }}"
 
 
 # vim: set ts=8 sts=2 sw=2 et:

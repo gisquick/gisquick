@@ -1,7 +1,6 @@
 ---
 
 - hosts: all
-  sudo: yes
 
   roles:
     - { role: basic, tags: ['basic'] }

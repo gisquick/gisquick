@@ -7,7 +7,8 @@
     force: yes
     install_recommends: no
     state: latest
-  environment: proxy_env
+  environment: "{{ proxy_env }}"
+  become: yes
 
 
 ### ANDROID
@@ -17,7 +18,6 @@
     {{ wget_opts }}
     -O {{ synced_folder }}/dev/cache/tar/android-sdk_r{{ android_sdk_version }}-linux.tgz
     {{ android_sdk_url }}/android-sdk_r{{ android_sdk_version }}-linux.tgz
-  sudo_user: "{{ ansible_ssh_user }}"
   tags:
     - dep-android
 
@@ -25,27 +25,24 @@
   command: >
     tar -xzf
     {{ synced_folder }}/dev/cache/tar/android-sdk_r{{ android_sdk_version }}-linux.tgz
-    -C /home/{{ ansible_ssh_user }}/dev/apps
+    -C /home/{{ ansible_user }}/dev/apps
   args:
     creates: "{{ android_root }}/tools/android"
-  sudo_user: "{{ ansible_ssh_user }}"
   tags:
     - dep-android
 
 - name: Install script for non-interactive Android platform, tools and API installation
   template:
     src: android/android-sdk-install.expect.j2
-    dest: /home/{{ ansible_ssh_user }}/dev/apps/android-sdk-install.expect
-  sudo_user: "{{ ansible_ssh_user }}"
+    dest: /home/{{ ansible_user }}/dev/apps/android-sdk-install.expect
   tags:
     - dep-android
 
 - name: Install Android platform, tools and API
   command: >
-    expect /home/{{ ansible_ssh_user }}/dev/apps/android-sdk-install.expect
+    expect /home/{{ ansible_user }}/dev/apps/android-sdk-install.expect
   args:
     creates: "{{ android_root }}/platform-tools/adb"
-  sudo_user: "{{ ansible_ssh_user }}"
   tags:
     - dep-android
 
@@ -60,7 +57,6 @@
     nvm use v{{ node_version }}
     &&
     npm install -g cordova@{{ cordova_version }}
-  sudo_user: "{{ ansible_ssh_user }}"
   tags:
     - dep-cordova
 
@@ -75,7 +71,6 @@
     cordova platform add android@{{ cordova_pf_android_version }} || true
   args:
     chdir: "{{ synced_folder }}/clients/mobile/cordova-app"
-  sudo_user: "{{ ansible_ssh_user }}"
   tags:
     - dep-cordova
 
@@ -98,7 +93,6 @@
     - cordova-plugin-inappbrowser
   args:
     chdir: "{{ synced_folder }}/clients/mobile/cordova-app"
-  sudo_user: "{{ ansible_ssh_user }}"
   tags:
     - dep-cordova
 
@@ -117,7 +111,6 @@
     - npm install mobile
   args:
     chdir: "{{ synced_folder }}/clients"
-  sudo_user: "{{ ansible_ssh_user }}"
   tags:
     - dep-javascript
 

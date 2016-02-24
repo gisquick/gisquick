@@ -26,6 +26,11 @@
         ng-click="download()">
         <md-icon md-svg-icon="download"></md-icon>
       </md-button>
+      <md-button
+        aria-label="Close"
+        ng-click="tool.close()">
+        <md-icon md-svg-icon="x"></md-icon>
+      </md-button>
       <md-progress-linear
         ng-if="tool.config.showProgressBar"
         class="print-progress-bar"

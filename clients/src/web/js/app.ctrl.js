@@ -300,6 +300,9 @@
             glPanelManager.showStatusBar();
             this.events.toolDeactivated();
             glPanelManager.un('mapViewResized', this._mapResizeListener);
+          },
+          close: function() {
+            $scope.deactivateTool();
           }
         }
       ];

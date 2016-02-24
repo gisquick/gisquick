@@ -221,8 +221,8 @@ md-tabs-wrapper md-icon {
 */
 .panel-header  md-icon {
   color: #fff;
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
 }
 .panel-header .toggle-button md-icon {
   transition: 0.45s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;

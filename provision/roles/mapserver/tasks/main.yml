@@ -32,6 +32,7 @@
   service:
     name: xvfb
     state: started
+  become: yes
 
 
 - name: Install QGIS Mapserver configuration

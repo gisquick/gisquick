@@ -216,6 +216,7 @@
             rotation: 0,
             title: projectProvider.config.root_title,
             author: 'User',
+            screenSize: [0, 0], // available screen size for print preview
             contact:
               '<div style="position:absolute;bottom:0;right:0;font-family:Liberation Sans;">\
                 <span>{0}<br />{1}</span>\
@@ -248,13 +249,57 @@
               this.data[layout.name] = {labels: labelsData};
             }, this);
           },
+          _moveMap: function(offsetX) {
+            var resolution = projectProvider.map.getView().getResolution();
+            var center = projectProvider.map.getView().getCenter();
+            var mapSize = projectProvider.map.getSize();
+            var pan = ol.animation.pan({
+              duration: 450,
+              source: center,
+              easing: ol.easing.inAndOut
+            });
+
+            projectProvider.map.beforeRender(pan);
+            projectProvider.map.getView().setCenter([
+              center[0]+resolution*offsetX*mapSize[0]/window.innerWidth,
+              center[1]
+            ]);
+          },
+          mapResizeListener: function(mapView) {
+            var currentScale = this.config._previewScale;
+            if (mapView.left !== this.config._left) {
+              if (mapView.left < this.config._left) {
+                var offset = (this.config._left-mapView.left)/2;
+                this._moveMap(offset);
+              }
+            }
+
+            this.config.screenSize[0] = window.innerWidth-mapView.right-mapView.left-100;
+            this.config.screenSize[1] = window.innerHeight-50;
+            this.events.mapResized();
+
+            if (mapView.left > this.config._left) {
+              var offset = (this.config._left-mapView.left)/2;
+              this._moveMap(offset*this.config._previewScale/currentScale);
+            }
+
+            this.config._left = mapView.left;
+          },
           activate: function() {
             glPanelManager.hideStatusBar();
+            var mapView = glPanelManager.mapView;
+            this.config._left = mapView.left;
+            this.config.screenSize[0] = window.innerWidth-mapView.right-mapView.left-100;
+            this.config.screenSize[1] = window.innerHeight-50;
             this.events.toolActivated();
+
+            this._mapResizeListener = this.mapResizeListener.bind(this);
+            glPanelManager.on('mapViewResized', this._mapResizeListener);
           },
           deactivate: function() {
             glPanelManager.showStatusBar();
             this.events.toolDeactivated();
+            glPanelManager.un('mapViewResized', this._mapResizeListener);
           }
         }
       ];

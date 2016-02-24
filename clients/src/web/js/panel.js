@@ -50,7 +50,11 @@
       this.mapView = {
         left: 0,
         top: 0,
-        bottom: 0
+        bottom: 0,
+        right: 0
+      }
+      this.eventListeners = {
+        mapViewResized: []
       }
     }
 
@@ -63,18 +67,40 @@
       this.mapView.bottom = this.statusBar.element[0].clientHeight;
       var panel = this;
       window.addEventListener("resize", function(evt) {
-        $timeout(panel.updateLayout());
+        console.log(evt);
+        $timeout(function() {
+          panel.updateLayout();
+          panel._fireResizeEvent();
+        }, 200); // Chrome needs some time to update window size
       });
       panel.updateLayout();
     }
 
+    PanelManager.prototype.on = function(event, listener) {
+      this.eventListeners[event].push(listener);
+    };
+
+    PanelManager.prototype.un = function(event, listener) {
+      var index = this.eventListeners[event].indexOf(listener);
+      if (index !== -1) {
+        this.eventListeners[event].splice(index, 1);
+      }
+    };
+
+    PanelManager.prototype._fireResizeEvent = function(event, listener) {
+      this.eventListeners['mapViewResized'].forEach(function(listener) {
+        listener(this.mapView);
+      }, this);
+    };
+
     PanelManager.prototype._ngElement = function(element) {
       var id = element.replace('#', '');
       return angular.element(document.getElementById(id));
-    }
+    };
 
     PanelManager.prototype.toggleMainPanel = function() {
       this.mapView.left = this.mapView.left === 0? 280 : 0;
+      this._fireResizeEvent();
     };
 
     PanelManager.prototype.hideStatusBar = function() {
@@ -87,7 +113,7 @@
       this.statusBar.element.css('transform', 'translate(0, 0)');
       this.mapView.bottom = this.statusBar.element[0].clientHeight;
       this.statusBar.hidden = false;
-    }
+    };
 
     PanelManager.prototype.updateLayout = function() {
       if (!this.statusBar.hidden) {
@@ -140,7 +166,7 @@
         //this.secondaryPanel.top = this.secondaryPanel.element[0].offsetTop;
         this.secondaryPanel.height = secondaryPanelHeight;
       }
-    }
+    };
 
     PanelManager.prototype.loadToolsPanel = function(options) {
       var toolsPanel = $$interimElement();

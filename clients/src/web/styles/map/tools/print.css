@@ -26,6 +26,10 @@
   box-sizing: content-box;
 }
 
+.print-area-image {
+  transition: 0.45s all cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
+}
+
 .print-preview-map {
   border: 2px solid rgb(0, 170, 212);
 }

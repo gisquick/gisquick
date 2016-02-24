@@ -7,14 +7,17 @@
 
   function PrintController($scope, $timeout, $compile, $templateCache, $http, projectProvider, layersControl, gislabClient) {
     var tool = $scope.tool;
-    var copyrightsTemplate = '<div style="\
-      background-color:rgba(255,255,255,0.75);\
-      position:absolute;\
-      bottom:0;\
-      right:0;\
-      padding-left:8px;\
-      padding-right:8px;\
-      font-family:Liberation Sans;">{0}</div>';
+    var copyrightsTemplate = [
+      '<div style="',
+        'background-color:rgba(255,255,255,0.75);',
+        'position:absolute;',
+        'bottom:0;',
+        'right:0;',
+        'padding-left:8px;',
+        'padding-right:8px;',
+        'font-family:Liberation Sans;">{0}',
+      '</div>'
+    ].join('');
 
     function createPrintParameters(layout, layers, extent, options) {
       var config = tool.config;
@@ -62,9 +65,8 @@
 
     function getPrintParameters() {
       var layout = tool.config.layout;
-      var layoutElem = tool._previewElem.find('print-layout').splice(0).find(function(elem) {
-        return elem.clientWidth > 0;
-      });
+      var index = tool.config.layouts.indexOf(tool.config.layout);
+      var layoutElem = tool._previewElem.find('print-layout')[index];
 
       var width = mmToPx(layout.map.width);
       var height = mmToPx(layout.map.height);
@@ -100,74 +102,80 @@
       }
     }
 
-    var animationLock = false;
-    function scaleMap(percScale) {
-      var startScale = tool.config._previewScale*100;
-      console.log('scaleMap: {0} -> {1}'.format(startScale, percScale));
-      if (startScale === percScale) {
-        return;
-      }
+    function scaleAnimation(options) {
       animationLock = true;
+      var start = options.start ? options.start : Date.now();
+      var duration = options.duration !== undefined ? options.duration : 450;
+      var easing = options.easing ? options.easing : ol.easing.inAndOut;
+      var startScale = options.from;
+      var endScale = options.to;
       var mapElem = angular.element(projectProvider.map.getTargetElement());
-      mapElem.css('transform-origin', 'top left');
 
-      var i;
-      for (i = 1; i <= 5; i++) {
-        var scale = startScale+(percScale-startScale)*i/5;
-        $timeout(function(scale) {
-          mapElem.css('width', scale+'%');
-          mapElem.css('height', scale+'%');
-          mapElem.css('transform', 'scale({0}, {0})'.format(100/scale));
+      return function(map, frameState) {
+        var t = 1;
+        if (frameState.time < start + duration) {
+          t = easing((frameState.time - start) / duration);
+        }
 
-          tool.config._previewScale = scale/100;
-          projectProvider.map.setSize([
-            window.innerWidth*scale/100,
-            window.innerHeight*scale/100,
-          ]);
-          if (scale === percScale) {
-            animationLock = false;
-          }
-        }, i*40, true, scale);
-      }
+        frameState.animate = false; // ol.Map.setSize will trigger rendering
+        var scale = startScale+(endScale-startScale)*t;
+        projectProvider.map.setSize([
+          window.innerWidth*scale/100,
+          window.innerHeight*scale/100,
+        ]);
+
+        if (t === 1) {
+          setTimeout(function() {
+            mapElem.css('width', scale+'%');
+            mapElem.css('height', scale+'%');
+            mapElem.css('transform', 'scale({0}, {0})'.format(100/scale));
+          }, 50);
+
+          animationLock = false;
+          return false;
+        } else {
+          return true;
+        }
+      };
     }
 
-    function setupPrintLayout(printLayout) {
+    var animationLock = false;
+    function scaleMap(percScale) {
+      var currentScale = tool.config._previewScale*100;
+      if (currentScale === percScale) {
+        return;
+      }
+      if (percScale > 100) {
+        showToast();
+      }
+      var animation = scaleAnimation({
+        from: currentScale,
+        to: percScale,
+        duration: 450
+      });
+      projectProvider.map.beforeRender(animation);
+      projectProvider.map.render();
+      tool.config._previewScale = percScale/100;
+    }
+
+    function setupPrintLayout(printLayout, availableSize) {
       console.log('SETUP PRINT LAYOUT');
+      // console.log(tool.config);
       tool.config.layout = printLayout;
       var width = mmToPx(printLayout.width);
       var height = mmToPx(printLayout.height);
-      var mapSize = projectProvider.map.getSize();
-      console.log('Map size: '+mapSize);
-      console.log('Scale: '+tool.config._previewScale);
-      // compute real map size
-      mapSize[0] = mapSize[0]/tool.config._previewScale;
-      mapSize[1] = mapSize[1]/tool.config._previewScale;
-      console.log('Calculated size: '+mapSize);
+      var screenSize = tool.config.screenSize;
+      // console.log('Scale: '+tool.config._previewScale);
+      // console.log('Available screen size: '+screenSize);
+      // console.log('Template size: '+[width, height]);
 
-      var mapElem = angular.element(projectProvider.map.getTargetElement());
-      if (width > mapSize[0] || height > mapSize[1]) {
+      if (width > screenSize[0] || height > screenSize[1]) {
         // scale print layout preview image and map to fit screen size
-        var percScale = Math.max(
-          ((width+10)/mapSize[0])*100,
-          ((height+50)/mapSize[1])*100
-        );
-
-        // mapElem.css('width', percScale+'%');
-        // mapElem.css('height', percScale+'%');
-        // mapElem.css('transform-origin', 'top left');
-        // mapElem.css('transform', 'scale({0}, {0})'.format(100/percScale));
-        // tool.config.previewWidth = parseInt(width*(100/percScale))+'px';
-        // tool.config.previewHeight = parseInt(height*(100/percScale))+'px';
-        // tool.config._previewScale = percScale/100;
-        // $timeout(function() {
-        //   projectProvider.map.updateSize();
-        // }, 200);
+        var percScale = 100 * Math.max(width/screenSize[0], height/screenSize[1]);
 
         tool.config.previewWidth = (width*(100/percScale))+'px';
         tool.config.previewHeight = (height*(100/percScale))+'px';
         scaleMap(percScale);
-
-        showToast();
       } else {
         tool.config.previewWidth = width+'px';
         tool.config.previewHeight = height+'px';
@@ -231,11 +239,11 @@
         });
     }
 
-    function resizeHandler() {
+    tool.events.mapResized = function resizeHandler() {
       if (!animationLock) {
         setupPrintLayout(tool.config.layout);
       }
-    }
+    };
 
     tool.events.toolActivated = function() {
       tool.events.layoutChanged = setupPrintLayout;
@@ -245,12 +253,13 @@
         // initializePrintPreview();
         $timeout(initializePrintPreview, 450);
       }
+      var mapElem = angular.element(projectProvider.map.getTargetElement());
+      mapElem.css('transform-origin', 'top left');
       setupMapEventsTransform();
       tool.config._previewScale = 1;
       if (tool.config.layout) {
         setupPrintLayout(tool.config.layout);
       }
-      window.addEventListener("resize", resizeHandler);
     };
 
     tool.events.toolDeactivated = function() {
@@ -261,7 +270,6 @@
       // reset map scale
       scaleMap(100);
       tool.config._previewScale = 1;
-      window.removeEventListener("resize", resizeHandler);
     };
 
     $scope.print = function() {

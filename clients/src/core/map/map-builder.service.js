@@ -34,7 +34,7 @@
 
       var view = new ol.View({
           projection: projection,
-          resolutions: config.resolutions,
+          resolutions: config.tile_resolutions,
           extent: extent
         });
 
@@ -196,7 +196,7 @@
 
       layers_data.forEach(createAttributionsAndOrder);
 
-      if (config.mapcache_url) {
+      if (config.use_mapcache) {
         config.type = 'mapcacheoverlay';
       } else {
         config.type = 'imagewmsoverlay';
@@ -395,6 +395,7 @@
     MapBuilder.createImageWMSOveraly = function(config) {
         return new ol.layer.Image({
           source: new ol.source.WebgisImageWMS({
+            resolutions: config.tile_resolutions,
             url: config.ows_url,
             visibleLayers: config.visibleLayers,
             layersAttributions: config.attributions,
@@ -402,7 +403,8 @@
             params: {
               'FORMAT': 'image/png'
             },
-            serverType: 'qgis'
+            serverType: 'qgis',
+            ratio: 1
           }),
           extent: config.project_extent,
         });

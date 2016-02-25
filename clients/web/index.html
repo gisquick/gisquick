@@ -112,7 +112,7 @@
               .then(function(data) {
                 data.mapcache_url = GISLAB_WEB_SERVER+data.mapcache_url;
                 data.legend_url = GISLAB_WEB_SERVER+data.legend_url;
-                //data.ows_url = GISLAB_WEB_SERVER+data.ows_url;
+                data.ows_url = GISLAB_WEB_SERVER+data.ows_url;
                 projectData.resolve(data);
               });
             })

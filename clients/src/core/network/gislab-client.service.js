@@ -25,14 +25,11 @@
 
     GislabClient.prototype._deferredRequest = function(httpParams) {
       var deferredAbort = $q.defer();
-      var requestParams = angular.extend(
-        httpParams,
-        {
-          timeout: deferredAbort.promise,
-          url: '{0}{1}'.format(this.serverUrl, httpParams.url)
-        }
-      );
-      var request = $http(requestParams);
+      if (httpParams.url.indexOf("://") === -1) {
+        httpParams.url = '{0}{1}'.format(this.serverUrl, httpParams.url);
+      }
+      httpParams.timeout = deferredAbort.promise;
+      var request = $http(httpParams);
       var promise = request.then(
         function(response) {
           if (!response.headers('X-GIS.lab-Version')) {
@@ -125,7 +122,10 @@
           query.push('{0}={1}'.format(name, encodeURIComponent(value)));
         }
       }
-      return this.serverUrl+url+'&'+query.join('&');
+      if (url.indexOf("://") === -1) {
+        url = this.serverUrl+url;
+      }
+      return url+'&'+query.join('&');
     }
 
     return new GislabClient();

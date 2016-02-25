@@ -16,8 +16,7 @@
      * @return {ol.Map}
      */
     MapBuilder.prototype.createMap = function(config) {
-
-      if (!config.projection.code in ol.proj.projections_) {
+      if (!(config.projection.code in ol.proj.projections_)) {
         proj4.defs(config.projection.code, config.projection.proj4);
       }
 
@@ -31,7 +30,7 @@
       }
 
       var projection = ol.proj.get(config.projection.code);
-      var extent = projection.getExtent();
+      var extent = projection.getExtent() || config.project_extent;
 
       var view = new ol.View({
           projection: projection,

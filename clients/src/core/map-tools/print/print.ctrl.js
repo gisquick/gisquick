@@ -21,11 +21,6 @@
 
     function createPrintParameters(layout, layers, extent, options) {
       var config = tool.config;
-      var opacities = [];
-      layers.forEach(function(layer) {
-        var opacity = ['Places', 'Roads'].indexOf(layer) !== -1? 255 : 0.6*255;
-        opacities.push(Math.round(opacity).toFixed());
-      });
       var overlaysLayer = projectProvider.map.getLayer('qgislayer');
       var copyrights = overlaysLayer.getSource().getAttributions().map(function(attribution) {
         return attribution.getHTML().replace('<a ', '<span ').replace('</a>', '</span>');
@@ -39,7 +34,6 @@
         'FORMAT': config.format,
         'SRS': projectProvider.config.projection.code,
         'LAYERS': layers.join(','),
-        'OPACITIES': opacities.join(','),
         'map0:EXTENT': extent.join(','),
         'map0:SCALE': $scope.mapScale,
         'map0:ROTATION': config.rotation,

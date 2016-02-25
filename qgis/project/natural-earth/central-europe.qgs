@@ -97,7 +97,7 @@
     </legendgroup>
   </legend>
   <Composer title="A4 Landscape" visible="0">
-    <Composition resizeToContentsMarginLeft="0" snapping="1" showPages="1" guidesVisible="1" resizeToContentsMarginTop="0" alignmentSnap="1" printResolution="400" paperWidth="297" gridVisible="1" snapGridOffsetX="0" smartGuides="1" snapGridOffsetY="0" resizeToContentsMarginRight="0" snapTolerancePixels="10" printAsRaster="0" generateWorldFile="0" paperHeight="210" numPages="1" snapGridResolution="10" resizeToContentsMarginBottom="0">
+    <Composition resizeToContentsMarginLeft="0" snapping="1" showPages="1" guidesVisible="1" resizeToContentsMarginTop="0" alignmentSnap="1" printResolution="400" paperWidth="297" gridVisible="1" snapGridOffsetX="0" smartGuides="1" snapGridOffsetY="0" resizeToContentsMarginRight="0" snapTolerancePixels="10" printAsRaster="1" generateWorldFile="0" paperHeight="210" numPages="1" snapGridResolution="10" resizeToContentsMarginBottom="0">
       <symbol alpha="1" clip_to_extent="1" type="fill" name="">
         <layer pass="0" class="SimpleFill" locked="0">
           <prop k="border_width_map_unit_scale" v="0,0,0,0,0,0"/>
@@ -114,7 +114,7 @@
         </layer>
       </symbol>
       <ComposerPicture resizeMode="0" pictureRotation="0" pictureWidth="11" file="./compass.svg" pictureHeight="11" mapId="0" anchorPoint="4">
-        <ComposerItem pagey="20.925" page="1" id="" lastValidViewScaleFactor="2.13948" positionMode="0" positionLock="false" x="273.8" y="20.925" visibility="1" zValue="21" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="11" outlineWidth="0.3" excludeFromExports="0" uuid="{ed88b99c-d1c8-4ff5-b039-4f3ee3ff19dc}" height="11" itemRotation="0" frame="false" pagex="273.8">
+        <ComposerItem pagey="20.925" page="1" id="" lastValidViewScaleFactor="2.13948" positionMode="0" positionLock="false" x="273.8" y="20.925" visibility="1" zValue="10" background="false" transparency="35" frameJoinStyle="miter" blendMode="0" width="11" outlineWidth="0.3" excludeFromExports="0" uuid="{ed88b99c-d1c8-4ff5-b039-4f3ee3ff19dc}" height="11" itemRotation="0" frame="false" pagex="273.8">
           <FrameColor alpha="255" red="0" blue="0" green="0"/>
           <BackgroundColor alpha="150" red="255" blue="255" green="255"/>
           <dataDefinedSource expr="" field="" active="false" useExpr="true"/>
@@ -122,7 +122,7 @@
         </ComposerItem>
       </ComposerPicture>
       <ComposerPicture resizeMode="0" pictureRotation="0" pictureWidth="35.7233" file="../../../../qgis/project/natural-earth/gislab_logo.svg" pictureHeight="11.077" mapId="-1" anchorPoint="0">
-        <ComposerItem pagey="8" page="1" id="" lastValidViewScaleFactor="-1" positionMode="0" positionLock="false" x="10" y="8" visibility="1" zValue="10" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="35.837" outlineWidth="0.3" excludeFromExports="0" uuid="{e5770419-05da-4ac5-9020-5f52a13bac0a}" height="11.077" itemRotation="0" frame="false" pagex="10">
+        <ComposerItem pagey="8" page="1" id="" lastValidViewScaleFactor="-1" positionMode="0" positionLock="false" x="10" y="8" visibility="1" zValue="9" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="35.837" outlineWidth="0.3" excludeFromExports="0" uuid="{e5770419-05da-4ac5-9020-5f52a13bac0a}" height="11.077" itemRotation="0" frame="false" pagex="10">
           <FrameColor alpha="255" red="0" blue="0" green="0"/>
           <BackgroundColor alpha="255" red="255" blue="255" green="255"/>
           <dataDefinedSource expr="" field="" active="false" useExpr="true"/>
@@ -174,7 +174,7 @@
           <customproperties/>
         </ComposerItem>
       </ComposerLabel>
-      <ComposerScaleBar lineCapStyle="square" style="Numeric" numMapUnitsPerScaleBarUnit="1" segmentSizeMode="0" alignment="0" numSegments="2" segmentMillimeters="3" lineJoinStyle="miter" minBarWidth="50" numUnitsPerSegment="30" units="0" labelBarSpace="0" outlineWidth="1" numSegmentsLeft="0" maxBarWidth="150" height="5" boxContentSpace="0" mapId="0" unitLabel="">
+      <ComposerScaleBar lineCapStyle="square" style="Numeric" numMapUnitsPerScaleBarUnit="1" segmentSizeMode="0" alignment="0" numSegments="2" segmentMillimeters="0.00337979" lineJoinStyle="miter" minBarWidth="50" numUnitsPerSegment="30" units="0" labelBarSpace="0" outlineWidth="1" numSegmentsLeft="0" maxBarWidth="150" height="5" boxContentSpace="0" mapId="0" unitLabel="">
         <scaleBarFont description="Liberation Sans,8,-1,5,50,0,0,0,0,0" style=""/>
         <fillColor alpha="255" red="0" blue="0" green="0"/>
         <fillColor2 alpha="255" red="255" blue="255" green="255"/>
@@ -195,8 +195,8 @@
           <customproperties/>
         </ComposerItem>
       </ComposerLabel>
-      <ComposerMap mapRotation="0" keepLayerSet="false" id="0" previewMode="Render" drawCanvasItems="false">
-        <Extent ymin="244086.99999910659971647" xmin="695113.99999859242234379" ymax="245867.00000092218397185" xmax="697874.00000140757765621"/>
+      <ComposerMap mapRotation="0" keepLayerSet="false" id="0" previewMode="Render" drawCanvasItems="true">
+        <Extent ymin="5760219.30854869727045298" xmin="406459.85654678579885513" ymax="7340199.72210442088544369" xmax="2856317.12700397428125143"/>
         <LayerSet/>
         <Grid/>
         <ComposerMapGrid rightAnnotationDirection="1" gridFramePenColor="0,0,0,255" show="0" bottomAnnotationPosition="1" annotationPrecision="0" showAnnotation="1" topFrameDivisions="0" uuid="{b7b51e90-438f-47a9-8f09-3a53a1c556c0}" leftAnnotationDirection="1" topAnnotationPosition="1" rightAnnotationDisplay="0" offsetX="0" offsetY="0" rightFrameDivisions="0" gridStyle="1" annotationFontColor="0,0,0,255" intervalX="500" gridFrameSideFlags="15" intervalY="500" bottomAnnotationDirection="0" leftAnnotationDisplay="0" leftFrameDivisions="0" frameFillColor1="255,255,255,255" annotationExpression="" frameFillColor2="0,0,0,255" crossLength="1" gridFramePenThickness="0.5" bottomAnnotationDisplay="0" unit="0" topAnnotationDisplay="0" leftAnnotationPosition="1" blendMode="0" gridFrameStyle="0" rightAnnotationPosition="1" gridFrameWidth="2" name="Grid 1" annotationFormat="0" bottomFrameDivisions="0" topAnnotationDirection="0" frameAnnotationDistance="0.6">
@@ -264,7 +264,7 @@
           </symbol>
         </ComposerMapOverview>
         <AtlasMap scalingMode="2" atlasDriven="0" margin="0.10000000000000001"/>
-        <ComposerItem pagey="20" page="1" id="" lastValidViewScaleFactor="5.36496" positionMode="0" positionLock="false" x="10" y="20" visibility="1" zValue="1" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="276" outlineWidth="0.15" excludeFromExports="0" uuid="{b07f26e3-ebc0-459f-8032-9e829e5422e4}" height="178" itemRotation="0" frame="true" pagex="10">
+        <ComposerItem pagey="20" page="1" id="" lastValidViewScaleFactor="3.66434" positionMode="0" positionLock="false" x="10" y="20" visibility="1" zValue="1" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="276" outlineWidth="0.15" excludeFromExports="0" uuid="{b07f26e3-ebc0-459f-8032-9e829e5422e4}" height="178" itemRotation="0" frame="true" pagex="10">
           <FrameColor alpha="255" red="0" blue="0" green="0"/>
           <BackgroundColor alpha="255" red="255" blue="255" green="255"/>
           <customproperties/>
@@ -291,7 +291,7 @@
         </layer>
       </symbol>
       <ComposerPicture resizeMode="0" pictureRotation="0" pictureWidth="35.7233" file="../../../../qgis/project/natural-earth/gislab_logo.svg" pictureHeight="11.077" mapId="-1" anchorPoint="0">
-        <ComposerItem pagey="7.80529" page="1" id="" lastValidViewScaleFactor="-1" positionMode="0" positionLock="false" x="10" y="7.80529" visibility="1" zValue="22" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="35.837" outlineWidth="0.3" excludeFromExports="0" uuid="{fdbb7056-4849-4c7f-8093-8f858c6fb83f}" height="11.077" itemRotation="0" frame="false" pagex="10">
+        <ComposerItem pagey="7.80529" page="1" id="" lastValidViewScaleFactor="-1" positionMode="0" positionLock="false" x="10" y="7.80529" visibility="1" zValue="11" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="35.837" outlineWidth="0.3" excludeFromExports="0" uuid="{fdbb7056-4849-4c7f-8093-8f858c6fb83f}" height="11.077" itemRotation="0" frame="false" pagex="10">
           <FrameColor alpha="255" red="0" blue="0" green="0"/>
           <BackgroundColor alpha="255" red="255" blue="255" green="255"/>
           <dataDefinedSource expr="" field="" active="false" useExpr="true"/>
@@ -299,7 +299,7 @@
         </ComposerItem>
       </ComposerPicture>
       <ComposerPicture resizeMode="0" pictureRotation="0" pictureWidth="11" file="./compass.svg" pictureHeight="11" mapId="0" anchorPoint="4">
-        <ComposerItem pagey="21" page="1" id="" lastValidViewScaleFactor="2.13948" positionMode="0" positionLock="false" x="397" y="21" visibility="1" zValue="10" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="11" outlineWidth="0.3" excludeFromExports="0" uuid="{8617737e-0ab6-4983-9f94-333ebb9c3199}" height="11" itemRotation="0" frame="false" pagex="397">
+        <ComposerItem pagey="21" page="1" id="" lastValidViewScaleFactor="2.13948" positionMode="0" positionLock="false" x="397" y="21" visibility="1" zValue="10" background="false" transparency="35" frameJoinStyle="miter" blendMode="0" width="11" outlineWidth="0.3" excludeFromExports="0" uuid="{8617737e-0ab6-4983-9f94-333ebb9c3199}" height="11" itemRotation="0" frame="false" pagex="397">
           <FrameColor alpha="255" red="0" blue="0" green="0"/>
           <BackgroundColor alpha="150" red="255" blue="255" green="255"/>
           <dataDefinedSource expr="" field="" active="false" useExpr="true"/>
@@ -490,7 +490,7 @@
         </layer>
       </symbol>
       <ComposerPicture resizeMode="0" pictureRotation="0" pictureWidth="11" file="./compass.svg" pictureHeight="11" mapId="0" anchorPoint="4">
-        <ComposerItem pagey="21" page="1" id="" lastValidViewScaleFactor="2.13948" positionMode="0" positionLock="false" x="187.766" y="21" visibility="1" zValue="21" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="11" outlineWidth="0.3" excludeFromExports="0" uuid="{f2a87151-7f16-4e30-805d-7d8ee6dd8188}" height="11" itemRotation="0" frame="false" pagex="187.766">
+        <ComposerItem pagey="21" page="1" id="" lastValidViewScaleFactor="2.13948" positionMode="0" positionLock="false" x="187.766" y="21" visibility="1" zValue="10" background="false" transparency="35" frameJoinStyle="miter" blendMode="0" width="11" outlineWidth="0.3" excludeFromExports="0" uuid="{f2a87151-7f16-4e30-805d-7d8ee6dd8188}" height="11" itemRotation="0" frame="false" pagex="187.766">
           <FrameColor alpha="255" red="0" blue="0" green="0"/>
           <BackgroundColor alpha="150" red="255" blue="255" green="255"/>
           <dataDefinedSource expr="" field="" active="false" useExpr="true"/>
@@ -498,7 +498,7 @@
         </ComposerItem>
       </ComposerPicture>
       <ComposerPicture resizeMode="0" pictureRotation="0" pictureWidth="35.7233" file="../../../../qgis/project/natural-earth/gislab_logo.svg" pictureHeight="11.077" mapId="-1" anchorPoint="0">
-        <ComposerItem pagey="8" page="1" id="" lastValidViewScaleFactor="-1" positionMode="0" positionLock="false" x="10" y="8" visibility="1" zValue="10" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="35.837" outlineWidth="0.3" excludeFromExports="0" uuid="{65cdf673-73bf-4592-9ebe-31bf15389152}" height="11.077" itemRotation="0" frame="false" pagex="10">
+        <ComposerItem pagey="8" page="1" id="" lastValidViewScaleFactor="-1" positionMode="0" positionLock="false" x="10" y="8" visibility="1" zValue="9" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="35.837" outlineWidth="0.3" excludeFromExports="0" uuid="{65cdf673-73bf-4592-9ebe-31bf15389152}" height="11.077" itemRotation="0" frame="false" pagex="10">
           <FrameColor alpha="255" red="0" blue="0" green="0"/>
           <BackgroundColor alpha="255" red="255" blue="255" green="255"/>
           <dataDefinedSource expr="" field="" active="false" useExpr="true"/>
@@ -640,7 +640,7 @@
           </symbol>
         </ComposerMapOverview>
         <AtlasMap scalingMode="2" atlasDriven="0" margin="0.10000000000000001"/>
-        <ComposerItem pagey="20" page="1" id="" lastValidViewScaleFactor="5.40436" positionMode="0" positionLock="false" x="10" y="20" visibility="1" zValue="1" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="189.925" outlineWidth="0.15" excludeFromExports="0" uuid="{68c4b51a-1d29-45b0-8e1b-025fc51979dc}" height="263.5" itemRotation="0" frame="true" pagex="10">
+        <ComposerItem pagey="20" page="1" id="" lastValidViewScaleFactor="2.77329" positionMode="0" positionLock="false" x="10" y="20" visibility="1" zValue="1" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="189.925" outlineWidth="0.15" excludeFromExports="0" uuid="{68c4b51a-1d29-45b0-8e1b-025fc51979dc}" height="263.5" itemRotation="0" frame="true" pagex="10">
           <FrameColor alpha="255" red="0" blue="0" green="0"/>
           <BackgroundColor alpha="255" red="255" blue="255" green="255"/>
           <customproperties/>
@@ -719,7 +719,7 @@
           <symbol alpha="1" clip_to_extent="1" type="fill" name="0">
             <layer pass="0" class="SimpleFill" locked="0">
               <prop k="border_width_map_unit_scale" v="0,0,0,0,0,0"/>
-              <prop k="color" v="179,0,0,255"/>
+              <prop k="color" v="179,0,0,153"/>
               <prop k="joinstyle" v="bevel"/>
               <prop k="offset" v="0,0"/>
               <prop k="offset_map_unit_scale" v="0,0,0,0,0,0"/>
@@ -734,7 +734,7 @@
           <symbol alpha="1" clip_to_extent="1" type="fill" name="1">
             <layer pass="0" class="SimpleFill" locked="0">
               <prop k="border_width_map_unit_scale" v="0,0,0,0,0,0"/>
-              <prop k="color" v="227,74,51,255"/>
+              <prop k="color" v="227,74,51,153"/>
               <prop k="joinstyle" v="bevel"/>
               <prop k="offset" v="0,0"/>
               <prop k="offset_map_unit_scale" v="0,0,0,0,0,0"/>
@@ -749,7 +749,7 @@
           <symbol alpha="1" clip_to_extent="1" type="fill" name="2">
             <layer pass="0" class="SimpleFill" locked="0">
               <prop k="border_width_map_unit_scale" v="0,0,0,0,0,0"/>
-              <prop k="color" v="252,141,89,255"/>
+              <prop k="color" v="252,141,89,153"/>
               <prop k="joinstyle" v="bevel"/>
               <prop k="offset" v="0,0"/>
               <prop k="offset_map_unit_scale" v="0,0,0,0,0,0"/>
@@ -764,7 +764,7 @@
           <symbol alpha="1" clip_to_extent="1" type="fill" name="3">
             <layer pass="0" class="SimpleFill" locked="0">
               <prop k="border_width_map_unit_scale" v="0,0,0,0,0,0"/>
-              <prop k="color" v="253,204,138,255"/>
+              <prop k="color" v="253,204,138,153"/>
               <prop k="joinstyle" v="bevel"/>
               <prop k="offset" v="0,0"/>
               <prop k="offset_map_unit_scale" v="0,0,0,0,0,0"/>
@@ -831,8 +831,10 @@
         <property key="labeling/distInMapUnits" value="false"/>
         <property key="labeling/distMapUnitMaxScale" value="0"/>
         <property key="labeling/distMapUnitMinScale" value="0"/>
+        <property key="labeling/drawLabels" value="true"/>
         <property key="labeling/enabled" value="true"/>
         <property key="labeling/fieldName" value="name"/>
+        <property key="labeling/fitInPolygonOnly" value="false"/>
         <property key="labeling/fontBold" value="true"/>
         <property key="labeling/fontCapitals" value="1"/>
         <property key="labeling/fontFamily" value="Ubuntu"/>
@@ -866,10 +868,14 @@
         <property key="labeling/multilineHeight" value="1"/>
         <property key="labeling/namedStyle" value="Bold"/>
         <property key="labeling/obstacle" value="true"/>
+        <property key="labeling/obstacleFactor" value="1"/>
+        <property key="labeling/obstacleType" value="0"/>
+        <property key="labeling/offsetType" value="0"/>
         <property key="labeling/placeDirectionSymbol" value="0"/>
         <property key="labeling/placement" value="0"/>
         <property key="labeling/placementFlags" value="0"/>
         <property key="labeling/plussign" value="false"/>
+        <property key="labeling/predefinedPositionOrder" value="TR,TL,BR,BL,R,L,TSR,BSR"/>
         <property key="labeling/preserveRotation" value="true"/>
         <property key="labeling/previewBkgrdColor" value="#ffffff"/>
         <property key="labeling/priority" value="5"/>
@@ -947,10 +953,13 @@
         <property key="labeling/wrapChar" value=""/>
         <property key="labeling/xOffset" value="0"/>
         <property key="labeling/yOffset" value="0"/>
+        <property key="labeling/zIndex" value="0"/>
+        <property key="variableNames" value="_fields_"/>
+        <property key="variableValues" value=""/>
       </customproperties>
       <blendMode>0</blendMode>
       <featureBlendMode>0</featureBlendMode>
-      <layerTransparency>60</layerTransparency>
+      <layerTransparency>0</layerTransparency>
       <displayfield>NAME</displayfield>
       <label>0</label>
       <labelattributes>
@@ -973,6 +982,13 @@
         <multilineenabled fieldname="" on=""/>
         <selectedonly on=""/>
       </labelattributes>
+      <SingleCategoryDiagramRenderer diagramType="Pie">
+        <DiagramCategory penColor="#000000" labelPlacementMethod="XHeight" penWidth="0" diagramOrientation="Up" minimumSize="0" barWidth="5" penAlpha="255" maxScaleDenominator="1e+08" backgroundColor="#ffffff" transparency="0" width="15" scaleDependency="Area" backgroundAlpha="255" angleOffset="1440" scaleBasedVisibility="0" enabled="0" height="15" sizeType="MM" minScaleDenominator="0">
+          <fontProperties description="Noto Sans,9,-1,5,50,0,0,0,0,0" style=""/>
+          <attribute field="" color="#000000" label=""/>
+        </DiagramCategory>
+      </SingleCategoryDiagramRenderer>
+      <DiagramLayerSettings yPosColumn="-1" linePlacementFlags="10" placement="0" dist="0" xPosColumn="-1" priority="0" obstacle="0" zIndex="0" showAll="1"/>
       <annotationform>../../../../share/lab1</annotationform>
       <aliases>
         <alias field="NAME" index="2" name="Name"/>
@@ -993,7 +1009,23 @@
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
       <editforminitfilepath>.</editforminitfilepath>
-      <editforminitcode><![CDATA[]]></editforminitcode>
+      <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
+"""
+QGIS forms can have a Python function that is called when the form is
+opened.
+
+Use this function to add extra logic to your forms.
+
+Enter the name of the function in the "Python Init function"
+field.
+An example follows:
+"""
+from PyQt4.QtGui import QWidget
+
+def my_form_open(dialog, layer, feature):
+	geom = feature.geometry()
+	control = dialog.findChild(QWidget, "MyLineEdit")
+]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>tablayout</editorlayout>
       <attributeEditorForm>
@@ -1103,7 +1135,7 @@
           <symbol alpha="1" clip_to_extent="1" type="fill" name="0">
             <layer pass="0" class="SimpleFill" locked="0">
               <prop k="border_width_map_unit_scale" v="0,0,0,0,0,0"/>
-              <prop k="color" v="63,0,125,255"/>
+              <prop k="color" v="63,0,125,153"/>
               <prop k="joinstyle" v="bevel"/>
               <prop k="offset" v="0,0"/>
               <prop k="offset_map_unit_scale" v="0,0,0,0,0,0"/>
@@ -1118,7 +1150,7 @@
           <symbol alpha="1" clip_to_extent="1" type="fill" name="1">
             <layer pass="0" class="SimpleFill" locked="0">
               <prop k="border_width_map_unit_scale" v="0,0,0,0,0,0"/>
-              <prop k="color" v="106,81,163,255"/>
+              <prop k="color" v="106,81,163,152"/>
               <prop k="joinstyle" v="bevel"/>
               <prop k="offset" v="0,0"/>
               <prop k="offset_map_unit_scale" v="0,0,0,0,0,0"/>
@@ -1133,7 +1165,7 @@
           <symbol alpha="1" clip_to_extent="1" type="fill" name="2">
             <layer pass="0" class="SimpleFill" locked="0">
               <prop k="border_width_map_unit_scale" v="0,0,0,0,0,0"/>
-              <prop k="color" v="162,159,203,255"/>
+              <prop k="color" v="162,159,203,153"/>
               <prop k="joinstyle" v="bevel"/>
               <prop k="offset" v="0,0"/>
               <prop k="offset_map_unit_scale" v="0,0,0,0,0,0"/>
@@ -1148,7 +1180,7 @@
           <symbol alpha="1" clip_to_extent="1" type="fill" name="3">
             <layer pass="0" class="SimpleFill" locked="0">
               <prop k="border_width_map_unit_scale" v="0,0,0,0,0,0"/>
-              <prop k="color" v="219,219,235,255"/>
+              <prop k="color" v="219,219,235,153"/>
               <prop k="joinstyle" v="bevel"/>
               <prop k="offset" v="0,0"/>
               <prop k="offset_map_unit_scale" v="0,0,0,0,0,0"/>
@@ -1215,8 +1247,10 @@
         <property key="labeling/distInMapUnits" value="false"/>
         <property key="labeling/distMapUnitMaxScale" value="0"/>
         <property key="labeling/distMapUnitMinScale" value="0"/>
+        <property key="labeling/drawLabels" value="true"/>
         <property key="labeling/enabled" value="true"/>
         <property key="labeling/fieldName" value="name"/>
+        <property key="labeling/fitInPolygonOnly" value="false"/>
         <property key="labeling/fontBold" value="true"/>
         <property key="labeling/fontCapitals" value="1"/>
         <property key="labeling/fontFamily" value="Ubuntu"/>
@@ -1250,10 +1284,14 @@
         <property key="labeling/multilineHeight" value="1"/>
         <property key="labeling/namedStyle" value="Bold"/>
         <property key="labeling/obstacle" value="true"/>
+        <property key="labeling/obstacleFactor" value="1"/>
+        <property key="labeling/obstacleType" value="0"/>
+        <property key="labeling/offsetType" value="0"/>
         <property key="labeling/placeDirectionSymbol" value="0"/>
         <property key="labeling/placement" value="0"/>
         <property key="labeling/placementFlags" value="0"/>
         <property key="labeling/plussign" value="false"/>
+        <property key="labeling/predefinedPositionOrder" value="TR,TL,BR,BL,R,L,TSR,BSR"/>
         <property key="labeling/preserveRotation" value="true"/>
         <property key="labeling/previewBkgrdColor" value="#ffffff"/>
         <property key="labeling/priority" value="5"/>
@@ -1331,10 +1369,13 @@
         <property key="labeling/wrapChar" value=""/>
         <property key="labeling/xOffset" value="0"/>
         <property key="labeling/yOffset" value="0"/>
+        <property key="labeling/zIndex" value="0"/>
+        <property key="variableNames" value="_fields_"/>
+        <property key="variableValues" value=""/>
       </customproperties>
       <blendMode>0</blendMode>
       <featureBlendMode>0</featureBlendMode>
-      <layerTransparency>60</layerTransparency>
+      <layerTransparency>0</layerTransparency>
       <displayfield>NAME</displayfield>
       <label>0</label>
       <labelattributes>
@@ -1357,6 +1398,13 @@
         <multilineenabled fieldname="" on=""/>
         <selectedonly on=""/>
       </labelattributes>
+      <SingleCategoryDiagramRenderer diagramType="Pie">
+        <DiagramCategory penColor="#000000" labelPlacementMethod="XHeight" penWidth="0" diagramOrientation="Up" minimumSize="0" barWidth="5" penAlpha="255" maxScaleDenominator="1e+08" backgroundColor="#ffffff" transparency="0" width="15" scaleDependency="Area" backgroundAlpha="255" angleOffset="1440" scaleBasedVisibility="0" enabled="0" height="15" sizeType="MM" minScaleDenominator="-4.65661e-10">
+          <fontProperties description="Noto Sans,9,-1,5,50,0,0,0,0,0" style=""/>
+          <attribute field="" color="#000000" label=""/>
+        </DiagramCategory>
+      </SingleCategoryDiagramRenderer>
+      <DiagramLayerSettings yPosColumn="-1" linePlacementFlags="10" placement="0" dist="0" xPosColumn="-1" priority="0" obstacle="0" zIndex="0" showAll="1"/>
       <annotationform>../../../../share/lab1</annotationform>
       <aliases>
         <alias field="NAME" index="2" name="Name"/>
@@ -1378,7 +1426,23 @@
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
       <editforminitfilepath>.</editforminitfilepath>
-      <editforminitcode><![CDATA[]]></editforminitcode>
+      <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
+"""
+QGIS forms can have a Python function that is called when the form is
+opened.
+
+Use this function to add extra logic to your forms.
+
+Enter the name of the function in the "Python Init function"
+field.
+An example follows:
+"""
+from PyQt4.QtGui import QWidget
+
+def my_form_open(dialog, layer, feature):
+	geom = feature.geometry()
+	control = dialog.findChild(QWidget, "MyLineEdit")
+]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>tablayout</editorlayout>
       <attributeEditorForm>
@@ -1419,7 +1483,7 @@
         </edittype>
       </edittypes>
     </maplayer>
-    <maplayer minimumScale="-4.65661e-10" maximumScale="1e+08" simplifyDrawingHints="1" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" geometry="Polygon" simplifyMaxScale="1" type="vector" hasScaleBasedVisibilityFlag="0" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
+    <maplayer minimumScale="0" maximumScale="1e+08" simplifyDrawingHints="1" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" geometry="Polygon" simplifyMaxScale="1" type="vector" hasScaleBasedVisibilityFlag="0" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
       <id>countries201512291457166651803245050_1451402410</id>
       <datasource>dbname='./natural-earth.sqlite' table="countries" (geom_3857) sql="NAME" = 'Slovenia'</datasource>
       <shortname></shortname>
@@ -1481,7 +1545,7 @@
           <symbol alpha="1" clip_to_extent="1" type="fill" name="0">
             <layer pass="0" class="SimpleFill" locked="0">
               <prop k="border_width_map_unit_scale" v="0,0,0,0,0,0"/>
-              <prop k="color" v="72,208,95,255"/>
+              <prop k="color" v="72,208,95,153"/>
               <prop k="joinstyle" v="bevel"/>
               <prop k="offset" v="0,0"/>
               <prop k="offset_map_unit_scale" v="0,0,0,0,0,0"/>
@@ -1541,8 +1605,10 @@
         <property key="labeling/distInMapUnits" value="false"/>
         <property key="labeling/distMapUnitMaxScale" value="0"/>
         <property key="labeling/distMapUnitMinScale" value="0"/>
+        <property key="labeling/drawLabels" value="true"/>
         <property key="labeling/enabled" value="true"/>
         <property key="labeling/fieldName" value="name"/>
+        <property key="labeling/fitInPolygonOnly" value="false"/>
         <property key="labeling/fontBold" value="true"/>
         <property key="labeling/fontCapitals" value="1"/>
         <property key="labeling/fontFamily" value="Ubuntu"/>
@@ -1576,10 +1642,14 @@
         <property key="labeling/multilineHeight" value="1"/>
         <property key="labeling/namedStyle" value="Bold"/>
         <property key="labeling/obstacle" value="true"/>
+        <property key="labeling/obstacleFactor" value="1"/>
+        <property key="labeling/obstacleType" value="0"/>
+        <property key="labeling/offsetType" value="0"/>
         <property key="labeling/placeDirectionSymbol" value="0"/>
         <property key="labeling/placement" value="0"/>
         <property key="labeling/placementFlags" value="0"/>
         <property key="labeling/plussign" value="false"/>
+        <property key="labeling/predefinedPositionOrder" value="TR,TL,BR,BL,R,L,TSR,BSR"/>
         <property key="labeling/preserveRotation" value="true"/>
         <property key="labeling/previewBkgrdColor" value="#ffffff"/>
         <property key="labeling/priority" value="5"/>
@@ -1657,10 +1727,13 @@
         <property key="labeling/wrapChar" value=""/>
         <property key="labeling/xOffset" value="0"/>
         <property key="labeling/yOffset" value="0"/>
+        <property key="labeling/zIndex" value="0"/>
+        <property key="variableNames" value="_fields_"/>
+        <property key="variableValues" value=""/>
       </customproperties>
       <blendMode>0</blendMode>
       <featureBlendMode>0</featureBlendMode>
-      <layerTransparency>60</layerTransparency>
+      <layerTransparency>0</layerTransparency>
       <displayfield>NAME</displayfield>
       <label>0</label>
       <labelattributes>
@@ -1683,6 +1756,13 @@
         <multilineenabled fieldname="" on=""/>
         <selectedonly on=""/>
       </labelattributes>
+      <SingleCategoryDiagramRenderer diagramType="Pie">
+        <DiagramCategory penColor="#000000" labelPlacementMethod="XHeight" penWidth="0" diagramOrientation="Up" minimumSize="0" barWidth="5" penAlpha="255" maxScaleDenominator="1e+08" backgroundColor="#ffffff" transparency="0" width="15" scaleDependency="Area" backgroundAlpha="255" angleOffset="1440" scaleBasedVisibility="0" enabled="0" height="15" sizeType="MM" minScaleDenominator="0">
+          <fontProperties description="Noto Sans,9,-1,5,50,0,0,0,0,0" style=""/>
+          <attribute field="" color="#000000" label=""/>
+        </DiagramCategory>
+      </SingleCategoryDiagramRenderer>
+      <DiagramLayerSettings yPosColumn="-1" linePlacementFlags="10" placement="0" dist="0" xPosColumn="-1" priority="0" obstacle="0" zIndex="0" showAll="1"/>
       <annotationform>../../../../share/lab1</annotationform>
       <aliases>
         <alias field="NAME" index="2" name="Name"/>
@@ -1703,7 +1783,23 @@
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
       <editforminitfilepath>.</editforminitfilepath>
-      <editforminitcode><![CDATA[]]></editforminitcode>
+      <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
+"""
+QGIS forms can have a Python function that is called when the form is
+opened.
+
+Use this function to add extra logic to your forms.
+
+Enter the name of the function in the "Python Init function"
+field.
+An example follows:
+"""
+from PyQt4.QtGui import QWidget
+
+def my_form_open(dialog, layer, feature):
+	geom = feature.geometry()
+	control = dialog.findChild(QWidget, "MyLineEdit")
+]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>tablayout</editorlayout>
       <attributeEditorForm>

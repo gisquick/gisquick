@@ -384,10 +384,6 @@ class ProjectPage(WizardPage):
             layer_data['name'] for layer_data in overlays_data
                 if layer_data.get('hidden')
         ]
-        overlays_with_export_to_drawings = [
-            layer_data['name'] for layer_data in overlays_data
-                if layer_data.get('export_to_drawings')
-        ]
         # Recursively setup layer widgets from prevoius info about layers types
         def load_layers_settings(group_item):
             for index in range(group_item.rowCount()):
@@ -399,17 +395,11 @@ class ProjectPage(WizardPage):
                     )
                     layers_model = child_item.model()
                     vector_item = layers_model.columnItem(child_item, 1)
-                    export_item = layers_model.columnItem(child_item, 2)
                     if vector_item.isCheckable():
                         vector_item.setCheckState(
                             Qt.Checked if layer_name in geojson_overlays else Qt.Unchecked
                         )
-                    if export_item.isCheckable():
-                        export_item.setCheckState(
-                            Qt.Checked if layer_name in overlays_with_export_to_drawings else \
-                            Qt.Unchecked
-                        )
-                    layers_model.columnItem(child_item, 3).setCheckState(
+                    layers_model.columnItem(child_item, 2).setCheckState(
                         Qt.Checked if layer_name in hidden_overlays else Qt.Unchecked
                     )
                 else:
@@ -679,15 +669,7 @@ class ProjectPage(WizardPage):
                     | Qt.ItemIsTristate
                 )
                 hidden.setCheckState(Qt.Unchecked)
-                export = QStandardItem()
                 if is_vector_layer:
-                    export.setFlags(
-                          Qt.ItemIsEnabled
-                        | Qt.ItemIsSelectable
-                        | Qt.ItemIsUserCheckable
-                        | Qt.ItemIsTristate
-                    )
-                    export.setCheckState(Qt.Checked)
                     vector.setFlags(
                           Qt.ItemIsEnabled
                         | Qt.ItemIsSelectable
@@ -696,9 +678,8 @@ class ProjectPage(WizardPage):
                     )
                     vector.setCheckState(Qt.Unchecked)
                 else:
-                    export.setFlags(Qt.ItemIsSelectable)
                     vector.setFlags(Qt.ItemIsSelectable)
-                return [layer_item, vector, export, hidden]
+                return [layer_item, vector, hidden]
 
         if self.overlay_layers_tree:
             layers_model = QStandardItemModel()
@@ -712,7 +693,7 @@ class ProjectPage(WizardPage):
                     return self.item(row, column)
             layers_model.columnItem = types.MethodType(columnItem, layers_model)
             layers_model.setHorizontalHeaderLabels(
-                ['Layer', 'Vector', 'Allow drawing', 'Hidden']
+                ['Layer', 'Vector', 'Hidden']
             )
             dialog.treeView.setModel(layers_model)
             layers_root = create_layer_widget(self.overlay_layers_tree)
@@ -728,27 +709,25 @@ class ProjectPage(WizardPage):
                         enabled = item.checkState() == Qt.Checked
                         for index in (1, 2, 3):
                             item.model().columnItem(item, index).setEnabled(enabled)
-                    # Enable/disable checkboxes of 'Allow drawing' and 'Hidden'
+                    # Enable/disable checkboxes of 'Hidden'
                     # columns when 'Vector' column change state
                     elif item.column() == 1 and item.isEnabled():
                         item.model().columnItem(item, 2).setEnabled(item.checkState() == Qt.Unchecked)
-                        item.model().columnItem(item, 3).setEnabled(item.checkState() == Qt.Unchecked)
-                    # Enable/disable checkboxes of 'Allow drawing' and 'Vector' columns
+                    # Enable/disable checkboxes of 'Vector' columns
                     # when 'Hidden' column change state
                     elif item.column() == 3 and item.isEnabled():
                         item.model().columnItem(item, 1).setEnabled(item.checkState() == Qt.Unchecked)
-                        item.model().columnItem(item, 2).setEnabled(item.checkState() == Qt.Unchecked)
 
             layers_model.itemChanged.connect(layer_item_changed)
 
         if self.plugin.last_metadata:
             try:
                 self.setup_page(self.plugin.last_metadata)
-            except:
+            except StandardError as e:
                 QMessageBox.warning(
                     None,
                     'Warning',
-                    'Failed to load settings from last published version'
+                    'Failed to load settings from last published version: {0}'.format(e)
                 )
 
     def get_published_layers(self, **layer_filter):
@@ -1049,8 +1028,7 @@ class ProjectPage(WizardPage):
                     'projection': layer.crs().authid(),
                     'visible': self.plugin.iface.legendInterface().isLayerVisible(layer),
                     'queryable': layer.id() not in non_identifiable_layers,
-                    'hidden': layers_model.columnItem(layer_widget, 3).checkState() == Qt.Checked,
-                    'export_to_drawings': layers_model.columnItem(layer_widget, 2).checkState() == Qt.Checked,
+                    'hidden': layers_model.columnItem(layer_widget, 2).checkState() == Qt.Checked,
                     'drawing_order': overlays_order.index(layer.id()),
                     'metadata': {
                         'title': layer.title(),

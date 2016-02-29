@@ -377,9 +377,7 @@ class ProjectPage(WizardPage):
             dialog.blank.setChecked(True)
 
         overlays_data = extract_layers(metadata['overlays'])
-        geojson_overlays = opt_value(metadata, 'vector_layers.layers', {}).keys()
         project_overlays = [layer_data['name'] for layer_data in overlays_data]
-        project_overlays.extend(geojson_overlays)
         hidden_overlays = [
             layer_data['name'] for layer_data in overlays_data
                 if layer_data.get('hidden')
@@ -394,14 +392,6 @@ class ProjectPage(WizardPage):
                         Qt.Checked if layer_name in project_overlays else Qt.Unchecked
                     )
                     layers_model = child_item.model()
-                    vector_item = layers_model.columnItem(child_item, 1)
-                    if vector_item.isCheckable():
-                        vector_item.setCheckState(
-                            Qt.Checked if layer_name in geojson_overlays else Qt.Unchecked
-                        )
-                    layers_model.columnItem(child_item, 2).setCheckState(
-                        Qt.Checked if layer_name in hidden_overlays else Qt.Unchecked
-                    )
                 else:
                     load_layers_settings(child_item)
         load_layers_settings(dialog.treeView.model().invisibleRootItem())
@@ -661,7 +651,6 @@ class ProjectPage(WizardPage):
                 layer_item.setData(layer, Qt.UserRole)
                 layer_item.setCheckState(Qt.Checked)
                 hidden = QStandardItem()
-                vector = QStandardItem()
                 hidden.setFlags(
                       Qt.ItemIsEnabled
                     | Qt.ItemIsSelectable
@@ -669,17 +658,8 @@ class ProjectPage(WizardPage):
                     | Qt.ItemIsTristate
                 )
                 hidden.setCheckState(Qt.Unchecked)
-                if is_vector_layer:
-                    vector.setFlags(
-                          Qt.ItemIsEnabled
-                        | Qt.ItemIsSelectable
-                        | Qt.ItemIsUserCheckable
-                        | Qt.ItemIsTristate
-                    )
-                    vector.setCheckState(Qt.Unchecked)
-                else:
-                    vector.setFlags(Qt.ItemIsSelectable)
-                return [layer_item, vector, hidden]
+
+                return [layer_item, hidden]
 
         if self.overlay_layers_tree:
             layers_model = QStandardItemModel()
@@ -693,7 +673,7 @@ class ProjectPage(WizardPage):
                     return self.item(row, column)
             layers_model.columnItem = types.MethodType(columnItem, layers_model)
             layers_model.setHorizontalHeaderLabels(
-                ['Layer', 'Vector', 'Hidden']
+                ['Layer', 'Hidden']
             )
             dialog.treeView.setModel(layers_model)
             layers_root = create_layer_widget(self.overlay_layers_tree)
@@ -707,16 +687,7 @@ class ProjectPage(WizardPage):
                     dependent_items = None
                     if item.column() == 0:
                         enabled = item.checkState() == Qt.Checked
-                        for index in (1, 2, 3):
-                            item.model().columnItem(item, index).setEnabled(enabled)
-                    # Enable/disable checkboxes of 'Hidden'
-                    # columns when 'Vector' column change state
-                    elif item.column() == 1 and item.isEnabled():
-                        item.model().columnItem(item, 2).setEnabled(item.checkState() == Qt.Unchecked)
-                    # Enable/disable checkboxes of 'Vector' columns
-                    # when 'Hidden' column change state
-                    elif item.column() == 3 and item.isEnabled():
-                        item.model().columnItem(item, 1).setEnabled(item.checkState() == Qt.Unchecked)
+                        item.model().columnItem(item, 1).setEnabled(enabled)
 
             layers_model.itemChanged.connect(layer_item_changed)
 
@@ -741,7 +712,7 @@ class ProjectPage(WizardPage):
         Returns:
             List[qgis.core.QgsVectorLayer]: array of published qgis layers
         """
-        vector_layers = [];
+        vector_layers = []
         layers = self.plugin.layers_list()
         layers_tree_model = self.dialog.treeView.model()
         for layer in layers:
@@ -752,13 +723,9 @@ class ProjectPage(WizardPage):
             # if layer is checked for publishing
             if layer_widget.checkState() == Qt.Checked:
                 # check additional filters
-                if 'vector' in layer_filter:
-                    state = Qt.Checked if layer_filter['vector'] else Qt.Unchecked
-                    if layers_tree_model.columnItem(layer_widget, 1).checkState() != state:
-                        continue
                 if 'hidden' in layer_filter:
                     state = Qt.Checked if layer_filter['hidden'] else Qt.Unchecked
-                    if layers_tree_model.columnItem(layer_widget, 3).checkState() != state:
+                    if layers_tree_model.columnItem(layer_widget, 1).checkState() != state:
                         continue
                 vector_layers.append(layer)
         return vector_layers
@@ -1028,7 +995,7 @@ class ProjectPage(WizardPage):
                     'projection': layer.crs().authid(),
                     'visible': self.plugin.iface.legendInterface().isLayerVisible(layer),
                     'queryable': layer.id() not in non_identifiable_layers,
-                    'hidden': layers_model.columnItem(layer_widget, 2).checkState() == Qt.Checked,
+                    'hidden': layers_model.columnItem(layer_widget, 1).checkState() == Qt.Checked,
                     'drawing_order': overlays_order.index(layer.id()),
                     'metadata': {
                         'title': layer.title(),
@@ -1084,16 +1051,6 @@ class ProjectPage(WizardPage):
             overlays_data = create_overlays_data(self.overlay_layers_tree)
             if overlays_data:
                 metadata['overlays'] = overlays_data.get('layers')
-
-        vector_layers_data = opt_value(self.plugin.metadata, 'vector_layers.layers', {})
-        vector_layers = self.get_published_layers(vector=True)
-        new_vector_layers_data = {}
-        for vector_layer in vector_layers:
-            new_vector_layers_data[vector_layer.name()] = vector_layers_data.get(vector_layer.name(), {})
-
-        metadata['vector_layers'] = {
-            'layers': new_vector_layers_data
-        }
 
         composer_templates = []
         for composer in self.plugin.iface.activeComposers():

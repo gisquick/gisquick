@@ -31,7 +31,7 @@
   <property name="options">
    <set>QWizard::NoBackButtonOnLastPage|QWizard::NoDefaultButton</set>
   </property>
-  <widget class="QWizardPage" name="wizard_page1">
+  <widget class="QWizardPage" name="wizard_page_project">
    <property name="styleSheet">
     <string notr="true"/>
    </property>
@@ -921,7 +921,7 @@ QGroupBox::title {
     </item>
    </layout>
   </widget>
-  <widget class="QWizardPage" name="wizard_page2">
+  <widget class="QWizardPage" name="wizard_page_topics">
    <layout class="QHBoxLayout" name="horizontalLayout_2">
     <item>
      <widget class="QWidget" name="widget_3" native="true">
@@ -1053,107 +1053,7 @@ QGroupBox::title {
     </item>
    </layout>
   </widget>
-  <widget class="QWizardPage" name="wizard_page3">
-   <layout class="QVBoxLayout" name="verticalLayout_12">
-    <item>
-     <widget class="QWidget" name="header" native="true">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="styleSheet">
-       <string notr="true"/>
-      </property>
-      <layout class="QHBoxLayout" name="horizontalLayout_5">
-       <property name="leftMargin">
-        <number>9</number>
-       </property>
-       <property name="topMargin">
-        <number>2</number>
-       </property>
-       <property name="bottomMargin">
-        <number>2</number>
-       </property>
-       <item>
-        <widget class="QLabel" name="label">
-         <property name="font">
-          <font>
-           <weight>50</weight>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>Layer</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_9">
-         <property name="font">
-          <font>
-           <weight>50</weight>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>Title attribute</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_10">
-         <property name="font">
-          <font>
-           <weight>50</weight>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>Description attribute</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_11">
-         <property name="text">
-          <string>Selected features only</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item>
-     <widget class="QScrollArea" name="vectorLayers">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-        <horstretch>0</horstretch>
-        <verstretch>1</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="styleSheet">
-       <string notr="true"/>
-      </property>
-      <property name="widgetResizable">
-       <bool>true</bool>
-      </property>
-      <widget class="QWidget" name="scrollAreaWidgetContents">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>762</width>
-         <height>468</height>
-        </rect>
-       </property>
-      </widget>
-     </widget>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QWizardPage" name="wizard_page4">
+  <widget class="QWizardPage" name="wizard_page_publish">
    <layout class="QVBoxLayout" name="verticalLayout_4">
     <item>
      <widget class="QGroupBox" name="groupBox_3">
@@ -1214,7 +1114,7 @@ QGroupBox::title {
     </item>
    </layout>
   </widget>
-  <widget class="QWizardPage" name="wizard_page5">
+  <widget class="QWizardPage" name="wizard_page_confirmation">
    <layout class="QVBoxLayout" name="verticalLayout_11">
     <item>
      <widget class="QGroupBox" name="groupBox_info">

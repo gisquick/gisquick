@@ -26,7 +26,6 @@ import resources_rc
 from utils import *
 from project import ProjectPage
 from topics import TopicsPage
-from vector_layers import VectorLayersPage
 from publish import PublishPage
 from confirmation import ConfirmationPage
 
@@ -439,16 +438,10 @@ class WebGisPlugin:
 
         # wrap qt wizard pages (pure GUI defined in qt creator/designer) with wrapper
         # classes which containes application logic
-        ProjectPage(self, dialog.wizard_page1)
-        TopicsPage(self, dialog.wizard_page2)
-        vector_layers_page = VectorLayersPage(self, dialog.wizard_page3)
-        # skip page vector layers page when it is not needed
-        def after_topics_page():
-            return 2 if len(self.metadata['vector_layers']['layers']) else 3
-        dialog.wizard_page2.nextId = after_topics_page
-
-        PublishPage(self, dialog.wizard_page4)
-        ConfirmationPage(self, dialog.wizard_page5)
+        ProjectPage(self, dialog.wizard_page_project)
+        TopicsPage(self, dialog.wizard_page_topics)
+        PublishPage(self, dialog.wizard_page_publish)
+        ConfirmationPage(self, dialog.wizard_page_confirmation)
 
         dialog.show()
         dialog.exec_()

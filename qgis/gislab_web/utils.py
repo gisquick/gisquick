@@ -7,7 +7,7 @@
 """
 
 from decimal import Decimal
-
+from PyQt4.QtGui import QTreeWidgetItem
 
 def to_decimal_array(value):
     """Converts array of numbers or comma-separated string to array of Decimal values.
@@ -84,3 +84,54 @@ def opt_value(data, param_name, default_value=''):
         else:
             return default_value
     return value
+
+def create_formatted_tree(root, data, template_data=None):
+    """Helper function to add items to QTreeWidget
+
+    Args:
+        root: tree root item
+        data: text item to be added (list/dict for multiple items or string for single item)
+        format_format_data: function to format data
+        format_data: data dictionary for formatting
+    """
+    def format_template_data(data):
+        iterator = data.iteritems() if type(data) == dict else enumerate(data)
+        for key, value in iterator:
+            if type(value) in (list, tuple):
+                if value and isinstance(value[0], Decimal):
+                    value = [u'{0:.5f}'.format(v) for v in value]
+                data[key] = u', '.join(map(unicode, value))
+        return data
+
+    def add_item(root, text, template_data):
+        item = QTreeWidgetItem(root)
+        if template_data:
+            if type(template_data) == dict:
+                item.setText(0, text.format(**template_data))
+            else:
+                item.setText(0, text.format(*template_data))
+        else:
+            item.setText(0, text)
+
+        return item
+
+    item = root
+
+    formatted_data = None
+    if template_data:
+        formatted_data = format_template_data(template_data)
+
+    if isinstance(data, list) or isinstance(data, set):
+        for data_item in data:
+            if isinstance(data_item, list):
+                create_formatted_tree(item, data_item, formatted_data)
+            else:
+                item = add_item(root, data_item, formatted_data)
+    elif isinstance(data, dict):
+        for key, key_data in data.iteritems():
+            item = add_item(root, key, formatted_data)
+            create_formatted_tree(item, key_data, formatted_data)
+    else:
+        item = add_item(item, data, formatted_data)
+
+    return item

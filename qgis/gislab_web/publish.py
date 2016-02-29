@@ -19,36 +19,11 @@ from utils import *
 from wizard import WizardPage
 
 
-CSS_STYLE = u"""<style type="text/css">
-    body {
-        background-color: #DDDDDD;
-    }
-    h3 {
-        margin-bottom: 4px;
-        margin-top: 6px;
-        text-decoration: underline;
-    }
-    h4 {
-        margin-bottom: 1px;
-        margin-top: 2px;
-    }
-    div {
-        margin-left: 10px;
-    }
-    ul {
-        margin-top: 0px;
-    }
-    label {
-        font-weight: bold;
-    }
-</style>"""
-
-
 class PublishPage(WizardPage):
 
     def __init__(self, plugin, page):
         super(PublishPage, self).__init__(plugin, page)
-        self.dialog.setButtonText(QWizard.CommitButton, "Publish")
+        self.dialog.setButtonText(QWizard.CommitButton, self.dialog.buttonText(QWizard.NextButton))
         page.setCommitPage(True)
 
     def on_show(self):
@@ -90,21 +65,6 @@ class PublishPage(WizardPage):
                 'use_mapcache'):
             data[param.upper()] = metadata[param]
 
-        def fill_layer_tree(root, data, template_data):
-            item = root
-            for text in data:
-                if isinstance(text, list):
-                    for subtext in text:
-                        subitem = QTreeWidgetItem(item)
-                        subitem.setText(0, subtext.format(
-                            *format_template_data(template_data))
-                        )
-                else:
-                    item = QTreeWidgetItem(root)
-                    item.setText(0, text.format(
-                        *format_template_data(template_data))
-                    )
-
         # collect base layer summary
         def collect_base_layer_summary(root, layer_data):
             sublayers = layer_data.get('layers')
@@ -130,44 +90,36 @@ class PublishPage(WizardPage):
                         )
                     else:
                         scale_visibility = ''
-                    template_data = format_template_data([
-                        layer_data['name'],
-                        layer_data['extent'],
-                        layer_data['projection'],
-                        scale_visibility,
-                        scales,
-                        resolutions,
-                        layer_data.get('provider_type', ''),
-                        opt_value(layer_data, 'attribution.title'),
-                        opt_value(layer_data, 'attribution.url'),
-                        layer_data['metadata']['title'],
-                        layer_data['metadata']['abstract'],
-                        layer_data['metadata']['keyword_list'],
-                    ])
-                    layer_summary = [
-                        "Extent: {1}",
-                        "CRS: {2}",
-                        "Scale based visibility: {3}",
-                        "Visible scales: {4}",
-                        "Visible resolutions: {5}",
-                        "Provider type: {6}",
-                        "Attribution:", ["Title: {7}", "URL: {8}"],
-                        "Metadata:", ["Title: {9}", "Abstract: {10}", "Keyword list: {11}"]
-                    ]
 
-                    item = QTreeWidgetItem(root)
-                    item.setText(0, '{0}'.format(*format_template_data(template_data)))
-                    fill_layer_tree(item, layer_summary, template_data)
+                    create_formatted_tree(root,
+                                          { '{0}': [
+                                              "Extent: {1}",
+                                              "CRS: {2}",
+                                              "Scale based visibility: {3}",
+                                              "Visible scales: {4}",
+                                              "Visible resolutions: {5}",
+                                              "Provider type: {6}",
+                                              "Attribution", ["Title: {7}", "URL: {8}"],
+                                              "Metadata", ["Title: {9}", "Abstract: {10}", "Keyword list: {11}"] ]
+                                          },
+                                          [
+                                              layer_data['name'],
+                                              layer_data['extent'],
+                                              layer_data['projection'],
+                                              scale_visibility,
+                                              scales,
+                                              resolutions,
+                                              layer_data.get('provider_type', ''),
+                                              opt_value(layer_data, 'attribution.title'),
+                                              opt_value(layer_data, 'attribution.url'),
+                                              layer_data['metadata']['title'],
+                                              layer_data['metadata']['abstract'],
+                                              layer_data['metadata']['keyword_list']
+                                          ]
+                    )
 
                 # Special base layers
                 else:
-                    template_data = format_template_data([
-                        layer_data['name'],
-                        layer_data['extent'],
-                        scales,
-                        resolutions,
-                    ])
-
                     layer_summary = [
                         "Extent: {1}",
                         "Visible scales: {2}",
@@ -179,9 +131,15 @@ class PublishPage(WizardPage):
                     elif layer_data['name'].startswith('BING'):
                         layer_summary.append("ApiKey: {}".format(layer_data['apikey']))
 
-                    item = QTreeWidgetItem(root)
-                    item.setText(0, '{0}'.format(*format_template_data(template_data)))
-                    fill_layer_tree(item, layer_summary, template_data)
+                    create_formatted_tree(root,
+                                          { '{0}' : layer_summary },
+                                          [
+                                              layer_data['name'],
+                                              layer_data['extent'],
+                                              scales,
+                                              resolutions,
+                                          ]
+                    )
 
         def collect_overlays_summary(root, layer_data):
             sublayers = layer_data.get('layers')
@@ -198,109 +156,104 @@ class PublishPage(WizardPage):
                     )
                 else:
                     scale_visibility = ''
-                template_data = format_template_data([
-                    layer_data['name'],
-                    layer_data['visible'],
-                    layer_data['queryable'],
-                    layer_data['extent'],
-                    layer_data['projection'],
-                    layer_data.get('geom_type', ''),
-                    scale_visibility,
-                    layer_data.get('labels', False),
-                    layer_data['provider_type'],
-                    ", ".join([
-                        attribute.get('title', attribute['name'])
-                        for attribute in layer_data.get('attributes', [])
-                    ]),
-                    opt_value(layer_data, 'attribution.title'),
-                    opt_value(layer_data, 'attribution.url'),
-                    layer_data['metadata']['title'],
-                    layer_data['metadata']['abstract'],
-                    layer_data['metadata']['keyword_list'],
-                ])
 
-                layer_summary = [
-                    "Visible: {1}",
-                    "Queryable: {2}",
-                    "Extent: {3}",
-                    "CRS: {4}",
-                    "Geometry type: {5}",
-                        "Scale based visibility: {6}",
-                    "Labels: {7}",
-                    "Provider type: {8}",
-                    "Attributes: {9}",
-                    "Attribution:", ["Title: {10}", "URL: {11}"],
-                    "Metadata:", ["Title: {12}", "Abstract: {13}", "Keyword list: {14}"],
-                ]
-
-                item = QTreeWidgetItem(root)
-                item.setText(0, '{0}'.format(*format_template_data(template_data)))
-                fill_layer_tree(item, layer_summary, template_data)
+                create_formatted_tree(root,
+                                      { '{0}' : [
+                                          "Visible: {1}",
+                                          "Queryable: {2}",
+                                          "Extent: {3}",
+                                          "CRS: {4}",
+                                          "Geometry type: {5}",
+                                          "Scale based visibility: {6}",
+                                          "Labels: {7}",
+                                          "Provider type: {8}",
+                                          "Attributes: {9}",
+                                          "Attribution:", ["Title: {10}", "URL: {11}"],
+                                          "Metadata:", ["Title: {12}", "Abstract: {13}", "Keyword list: {14}"] ]
+                                      },
+                                      [
+                                          layer_data['name'],
+                                          layer_data['visible'],
+                                          layer_data['queryable'],
+                                          layer_data['extent'],
+                                          layer_data['projection'],
+                                          layer_data.get('geom_type', ''),
+                                          scale_visibility,
+                                          layer_data.get('labels', False),
+                                          layer_data['provider_type'],
+                                          ", ".join([
+                                              attribute.get('title', attribute['name'])
+                                              for attribute in layer_data.get('attributes', [])
+                                          ]),
+                                          opt_value(layer_data, 'attribution.title'),
+                                          opt_value(layer_data, 'attribution.url'),
+                                          layer_data['metadata']['title'],
+                                          layer_data['metadata']['abstract'],
+                                          layer_data['metadata']['keyword_list']
+                                      ]
+                )
 
         # construct tree item
         tree = self.dialog.config_summary
         tree.setColumnCount(1)
 
         if self.plugin.run_in_gislab:
-            item = QTreeWidgetItem(tree)
-            item.setText(0, "General information")
-            for text in ["GIS.lab user: {GISLAB_USER}",
-                         "GIS.lab ID: {GISLAB_UNIQUE_ID}",
-                         "GIS.lab version: {GISLAB_VERSION}"]:
-                subitem = QTreeWidgetItem(item)
-                subitem.setText(0, text.format(**format_template_data(data)))
+            create_formatted_tree(tree.invisibleRootItem(),
+                                  { "General information" : [
+                                      "GIS.lab user: {GISLAB_USER}",
+                                      "GIS.lab ID: {GISLAB_UNIQUE_ID}",
+                                      "GIS.lab version: {GISLAB_VERSION}" ]
+                                  },
+                                  data
+            )
 
-        item = QTreeWidgetItem(tree)
-        item.setText(0, "Project")
-        for text in [
-                "Title: {TITLE}",
-                "Abstract: {ABSTRACT}",
-                "Contact person: {CONTACT_PERSON}",
-                "Contact mail: {CONTACT_MAIL}",
-                "Contact organization: {CONTACT_ORGANIZATION}",
-                "Extent: {EXTENT}",
-                "Scales: {SCALES}",
-                "Resolutions: {TILE_RESOLUTIONS}",
-                "Projection: {PROJECTION}",
-                "Units: {UNITS}",
-                "Measure ellipsoid: {MEASURE_ELLIPSOID}",
-                "Use cache: {USE_MAPCACHE}",
-                "Authentication: {AUTHENTICATION}",
-                "Expiration date: {EXPIRATION}",
-                "Message text: {MESSAGE_TEXT}",
-                "Message validity: {MESSAGE_VALIDITY}"
-        ]:
-            subitem = QTreeWidgetItem(item)
-            subitem.setText(0, text.format(**format_template_data(data)))
-
-        item = QTreeWidgetItem(tree)
-        item.setText(0, "Base layers (default: {DEFAULT_BASE_LAYER})".format(
-            **format_template_data(data))
+        project_item = create_formatted_tree(tree.invisibleRootItem(),
+                                             { "Project" : [
+                                                 "Title: {TITLE}",
+                                                 "Abstract: {ABSTRACT}",
+                                                 "Contact person: {CONTACT_PERSON}",
+                                                 "Contact mail: {CONTACT_MAIL}",
+                                                 "Contact organization: {CONTACT_ORGANIZATION}",
+                                                 "Extent: {EXTENT}",
+                                                 "Scales: {SCALES}",
+                                                 "Resolutions: {TILE_RESOLUTIONS}",
+                                                 "Projection: {PROJECTION}",
+                                                 "Units: {UNITS}",
+                                                 "Measure ellipsoid: {MEASURE_ELLIPSOID}",
+                                                 "Use cache: {USE_MAPCACHE}",
+                                                 "Authentication: {AUTHENTICATION}",
+                                                 "Expiration date: {EXPIRATION}",
+                                                 "Message text: {MESSAGE_TEXT}",
+                                                 "Message validity: {MESSAGE_VALIDITY}" ]
+                                             },
+                                             data
         )
+
+        item = create_formatted_tree(tree.invisibleRootItem(),
+                                     "Base layers (default: {DEFAULT_BASE_LAYER})",
+                                     data)
         for layer_data in metadata['base_layers']:
             collect_base_layer_summary(item, layer_data)
 
-        item = QTreeWidgetItem(tree)
-        item.setText(0, "Overlay layers")
+        item = create_formatted_tree(tree.invisibleRootItem(),
+                                     "Overlay layers")
         for layer_data in metadata['overlays']:
             collect_overlays_summary(item, layer_data)
 
         print_composers = []
         for composer_data in metadata['composer_templates']:
-            template_data = (
+            print_composers.append('{0} ( {1} x {2}mm )'.format(
                 composer_data['name'],
                 int(round(composer_data['width'])),
                 int(round(composer_data['height']))
+                )
             )
-            print_composers.append('{0} ( {1} x {2}mm )'.format(*template_data))
 
-        item = QTreeWidgetItem(tree)
-        item.setText(0, "Print composers")
-        for text in print_composers:
-            subitem = QTreeWidgetItem(item)
-            subitem.setText(0, text)
-
+        create_formatted_tree(tree.invisibleRootItem(),
+                              { "Print composers" : print_composers }
+        )
         tree.expandToDepth(1)
+        tree.collapseItem(project_item)
 
     def publish_project(self):
         """Creates files required for publishing current project for GIS.lab Web application."""

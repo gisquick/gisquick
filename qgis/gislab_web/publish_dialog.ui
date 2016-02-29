@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>806</width>
-    <height>652</height>
+    <width>800</width>
+    <height>582</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -52,316 +52,7 @@
         <string>Base layer</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_4">
-        <item row="2" column="0">
-         <spacer name="verticalSpacer">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="1" column="0">
-         <layout class="QGridLayout" name="gridLayout_base_layers">
-          <property name="spacing">
-           <number>0</number>
-          </property>
-          <item row="3" column="0">
-           <widget class="QGroupBox" name="mapbox">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="title">
-             <string>MapBox</string>
-            </property>
-            <property name="checkable">
-             <bool>true</bool>
-            </property>
-            <property name="checked">
-             <bool>false</bool>
-            </property>
-            <layout class="QGridLayout" name="gridLayout">
-             <property name="topMargin">
-              <number>20</number>
-             </property>
-             <item row="0" column="0">
-              <widget class="QLabel" name="label_mapbox_mapid">
-               <property name="text">
-                <string>MapId</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="label_mapbox_apikey">
-               <property name="text">
-                <string>ApiKey</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QLineEdit" name="mapbox_apikey">
-               <property name="enabled">
-                <bool>false</bool>
-               </property>
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QComboBox" name="mapbox_mapid">
-               <property name="enabled">
-                <bool>false</bool>
-               </property>
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="editable">
-                <bool>true</bool>
-               </property>
-               <item>
-                <property name="text">
-                 <string>mapbox.streets</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>mapbox.light</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>mapbox.dark</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>mapbox.satellite</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>mapbox.streets-satellite</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>mapbox.wheatpaste</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>mapbox.streets-basic</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>mapbox.comic</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>mapbox.outdoors</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>mapbox.run-bike-hike</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>mapbox.pencil</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>mapbox.pirates</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>mapbox.emerald</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>mapbox.high-contrast</string>
-                </property>
-               </item>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QGroupBox" name="osm">
-            <property name="title">
-             <string>OpenStreetMap</string>
-            </property>
-            <property name="checkable">
-             <bool>true</bool>
-            </property>
-            <property name="checked">
-             <bool>false</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="0">
-           <widget class="QGroupBox" name="bing">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="title">
-             <string>BingMaps</string>
-            </property>
-            <property name="checkable">
-             <bool>true</bool>
-            </property>
-            <property name="checked">
-             <bool>false</bool>
-            </property>
-            <layout class="QGridLayout" name="gridLayout_2">
-             <property name="topMargin">
-              <number>20</number>
-             </property>
-             <item row="0" column="0">
-              <widget class="QLabel" name="label_bing_style">
-               <property name="text">
-                <string>Style</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QComboBox" name="bing_style">
-               <property name="enabled">
-                <bool>false</bool>
-               </property>
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <item>
-                <property name="text">
-                 <string>Road</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Aerial</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Aerial with Labels</string>
-                </property>
-               </item>
-              </widget>
-             </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="label_bingmap_apikey">
-               <property name="text">
-                <string>ApiKey</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QLineEdit" name="bing_apikey">
-               <property name="enabled">
-                <bool>false</bool>
-               </property>
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QGroupBox" name="blank">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="title">
-             <string>Blank</string>
-            </property>
-            <property name="checkable">
-             <bool>true</bool>
-            </property>
-            <property name="checked">
-             <bool>false</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="0">
-           <layout class="QGridLayout" name="gridLayout_default" columnstretch="0,0">
-            <item row="0" column="1">
-             <widget class="QComboBox" name="default_baselayer"/>
-            </item>
-            <item row="0" column="0">
-             <widget class="QLabel" name="label_default_baselayer">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Maximum">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>100</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>Default layer</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </item>
-        <item row="3" column="0">
+        <item row="5" column="0">
          <widget class="QLabel" name="info">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -378,6 +69,350 @@
            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Note: OpenStreetMap, MapBox and BingMaps are available only in WGS 84 / Pseudo Mercator EPSG:3857&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
+        </item>
+        <item row="0" column="0" rowspan="4" alignment="Qt::AlignTop">
+         <widget class="QGroupBox" name="groupBox_baselayer">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QGroupBox {
+    border: 0px solid gray;
+    border-radius: 5px;
+    margin: 0px;
+    text-align: top;
+    padding: 0px;
+ }
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    padding: 1 5;
+}</string>
+          </property>
+          <property name="title">
+           <string/>
+          </property>
+          <property name="flat">
+           <bool>false</bool>
+          </property>
+          <property name="checkable">
+           <bool>false</bool>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_13">
+           <item>
+            <widget class="QGroupBox" name="blank">
+             <property name="title">
+              <string>Blank</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="checked">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="osm">
+             <property name="title">
+              <string>OpenStreeMap</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="checked">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="mapbox">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="title">
+              <string>MapBox</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="checked">
+              <bool>false</bool>
+             </property>
+             <layout class="QGridLayout" name="gridLayout_mapbox">
+              <property name="topMargin">
+               <number>20</number>
+              </property>
+              <property name="bottomMargin">
+               <number>9</number>
+              </property>
+              <item row="0" column="0">
+               <widget class="QLabel" name="label_mapbox_mapid">
+                <property name="text">
+                 <string>MapId</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="label_mapbox_apikey">
+                <property name="text">
+                 <string>ApiKey</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QLineEdit" name="mapbox_apikey">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QComboBox" name="mapbox_mapid">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="editable">
+                 <bool>true</bool>
+                </property>
+                <item>
+                 <property name="text">
+                  <string>mapbox.streets</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>mapbox.light</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>mapbox.dark</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>mapbox.satellite</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>mapbox.streets-satellite</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>mapbox.wheatpaste</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>mapbox.streets-basic</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>mapbox.comic</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>mapbox.outdoors</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>mapbox.run-bike-hike</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>mapbox.pencil</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>mapbox.pirates</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>mapbox.emerald</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>mapbox.high-contrast</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="bing">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>3</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="title">
+              <string>BingMaps</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="checked">
+              <bool>false</bool>
+             </property>
+             <layout class="QGridLayout" name="gridLayout_bing">
+              <property name="topMargin">
+               <number>20</number>
+              </property>
+              <property name="verticalSpacing">
+               <number>6</number>
+              </property>
+              <item row="0" column="0">
+               <widget class="QLabel" name="label_bing_style">
+                <property name="text">
+                 <string>Style</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QComboBox" name="bing_style">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <item>
+                 <property name="text">
+                  <string>Road</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Aerial</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Aerial with Labels</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="label_bingmap_apikey">
+                <property name="text">
+                 <string>ApiKey</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QLineEdit" name="bing_apikey">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <layout class="QGridLayout" name="gridLayout_default" columnstretch="0,0">
+             <item row="0" column="1">
+              <widget class="QComboBox" name="default_baselayer"/>
+             </item>
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_default_baselayer">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Maximum">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>100</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Default layer</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="6" column="0">
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
         </item>
        </layout>
       </widget>
@@ -474,8 +509,8 @@ QGroupBox::title {
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>733</width>
-             <height>549</height>
+             <width>375</width>
+             <height>528</height>
             </rect>
            </property>
            <property name="styleSheet">
@@ -1109,8 +1144,8 @@ QGroupBox::title {
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>80</width>
-         <height>16</height>
+         <width>762</width>
+         <height>468</height>
         </rect>
        </property>
       </widget>
@@ -1182,7 +1217,13 @@ QGroupBox::title {
   <widget class="QWizardPage" name="wizard_page5">
    <layout class="QVBoxLayout" name="verticalLayout_11">
     <item>
-     <widget class="QGroupBox" name="groupBox_7">
+     <widget class="QGroupBox" name="groupBox_info">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>1</verstretch>
+       </sizepolicy>
+      </property>
       <property name="styleSheet">
        <string notr="true">QGroupBox { 
     border: 1px solid gray; 
@@ -1198,17 +1239,119 @@ QGroupBox::title {
 }</string>
       </property>
       <property name="title">
-       <string/>
+       <string>Publish summary</string>
       </property>
-      <layout class="QHBoxLayout" name="horizontalLayout">
+      <layout class="QVBoxLayout" name="verticalLayout_6">
        <item>
-        <widget class="QWebView" name="confirmation_info" native="true">
-         <property name="url" stdset="0">
-          <url>
-           <string>about:blank</string>
-          </url>
+        <widget class="QGroupBox" name="groupBox_files">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>1</verstretch>
+          </sizepolicy>
          </property>
+         <property name="title">
+          <string>Project files</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_6">
+          <item row="0" column="0">
+           <widget class="QTreeWidget" name="tree_project_files">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>1</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>55</height>
+             </size>
+            </property>
+            <property name="rootIsDecorated">
+             <bool>true</bool>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+            <attribute name="headerVisible">
+             <bool>false</bool>
+            </attribute>
+            <column>
+             <property name="text">
+              <string notr="true">1</string>
+             </property>
+            </column>
+           </widget>
+          </item>
+         </layout>
         </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>3</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="title">
+          <string>Data sources</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_14">
+          <item>
+           <widget class="QTreeWidget" name="tree_data_sources">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>1</verstretch>
+             </sizepolicy>
+            </property>
+            <attribute name="headerVisible">
+             <bool>false</bool>
+            </attribute>
+            <column>
+             <property name="text">
+              <string notr="true">1</string>
+             </property>
+            </column>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <layout class="QGridLayout" name="gridLayout_3">
+         <property name="verticalSpacing">
+          <number>6</number>
+         </property>
+         <item row="0" column="1">
+          <widget class="QPushButton" name="button_publish_dir">
+           <property name="maximumSize">
+            <size>
+             <width>100</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Change</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_publish_dir">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>2</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Publish directory: not set</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
       </layout>
      </widget>
@@ -1216,13 +1359,6 @@ QGroupBox::title {
    </layout>
   </widget>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>QWebView</class>
-   <extends>QWidget</extends>
-   <header>QtWebKitWidgets/QWebView</header>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>

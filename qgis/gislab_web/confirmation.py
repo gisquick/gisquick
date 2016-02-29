@@ -75,31 +75,63 @@ class ConfirmationPage(WizardPage):
                 raise StandardError("Copying project files failed: {0}".format(e))
 
         def copy_data_sources():
-            messages = []
+            messages = [] # error messages
+            overwrite = [] # files to overwrite
             project_dir = os.path.dirname(self.plugin.project.fileName())
+            # collect files to be copied
+            publish_files = {}
             for ds in self._datasources.itervalues():
                 for dsfile in ds:
                     if os.path.exists(dsfile) and os.path.isfile(dsfile):
-                        try:
-                            publish_path = os.path.dirname(self._publish_dir + dsfile[len(project_dir):])
-                            if not os.path.exists(os.path.dirname(publish_path)):
-                                os.makedirs(os.path.dirname(publish_path))
-                            if os.path.splitext(dsfile)[1] == '.shp':
-                                # Esri Shapefile (copy all files)
-                                shpname = os.path.splitext(dsfile)[0]
-                                for shpext in ('shp', 'shx', 'dbf', 'sbn', 'sbx',
-                                               'fbn', 'fbx', 'ain', 'aih', 'atx',
-                                               'ixs', 'mxs', 'prj', 'xml', 'cpg'):
-                                    shpfile = '{0}.{1}'.format(shpname, shpext)
-                                    if os.path.exists(shpfile):
-                                        shutil.copy(shpfile, publish_path)
-                            else:
-                                # other formats (we expect one file per datasource)
-                                shutil.copy(dsfile, publish_path)
-                        except (shutil.Error, IOError) as e:
-                            messages.append("Failed to copy data source {0}: {1}".format(dsfile, e))
+                        publish_path = os.path.dirname(self._publish_dir + dsfile[len(project_dir):])
+                        if publish_path not in publish_files:
+                            publish_files[publish_path] = []
+
+                        if os.path.splitext(dsfile)[1] == '.shp':
+                            # Esri Shapefile (copy all files)
+                            shpname = os.path.splitext(dsfile)[0]
+                            for shpext in ('shp', 'shx', 'dbf', 'sbn', 'sbx',
+                                           'fbn', 'fbx', 'ain', 'aih', 'atx',
+                                           'ixs', 'mxs', 'prj', 'xml', 'cpg'):
+                                shpfile = '{0}.{1}'.format(shpname, shpext)
+                                if os.path.exists(shpfile):
+                                    dstfile = os.path.join(publish_path, shpfile)
+                                    if os.path.exists(dstfile):
+                                        overwrite.append(dstfile)
+                                    publish_files[publish_path].append(shpfile)
+                        else:
+                            # other formats (we expect one file per datasource)
+                            dstfile = os.path.join(publish_path, os.path.basename(dsfile))
+                            if os.path.exists(dstfile):
+                                overwrite.append(dstfile)
+                            publish_files[publish_path].append(dsfile)
                     else:
                         messages.append("Unsupported data source: {0} is not a file".format(dsfile))
+
+            if overwrite:
+                response = QMessageBox.question(self.dialog, "Overwrite",
+                                                "Files:\n{0}\nalready exists. Do you want to overwrite them?".format(
+                                                    os.linesep.join(overwrite if len(overwrite) < 6 else overwrite[:5] + ['...'])
+                                                ),
+                                                QMessageBox.Yes, QMessageBox.No)
+                if response == QMessageBox.Yes:
+                    overwrite = None
+
+            # copy collected project files
+            for publish_dir, project_files in publish_files.iteritems():
+                try:
+                    # create dirs if not exists
+                    if not os.path.exists(os.path.dirname(publish_path)):
+                        os.makedirs(os.path.dirname(publish_path))
+                    for dsfile in project_files:
+                        if overwrite:
+                            # skip existing files
+                            dstfile = os.path.join(publish_path, os.path.basename(dsfile))
+                            if dstfile in overwrite:
+                                continue
+                        shutil.copy(dsfile, publish_path)
+                except (shutil.Error, IOError) as e:
+                    messages.append("Failed to copy data source: {0}".format(e))
 
             if messages:
                 raise StandardError("Copying project files failed:\n{0}".format(os.linesep.join(messages)))

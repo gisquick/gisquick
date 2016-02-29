@@ -151,11 +151,11 @@ class VectorLayersPage(WizardPage):
     def before_publish(self):
         vector_layers = self.get_vector_layers()
         if vector_layers:
+            map_canvas = self.plugin.iface.mapCanvas()
             try:
                 crs_dst = map_canvas.mapSettings().destinationCrs()
             except:
                 crs_dst = map_canvas.mapRenderer().destinationCrs()
-            map_canvas = self.plugin.iface.mapCanvas()
             fields = QgsFields()
             fields.append(QgsField("title", type=QVariant.String))
             fields.append(QgsField("description", type=QVariant.String))

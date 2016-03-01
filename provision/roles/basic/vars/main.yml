@@ -6,6 +6,6 @@ packages:
   - tmux
 
 # QGIS
-qgis_repo: ubuntugis-nightly
+qgis_repo: ubuntugis-nightly-release
 
 # vim: set ts=8 sts=2 sw=2 et:

@@ -7,7 +7,7 @@
   background-color: #dfdfdf;
   border-top: 1px solid #aaa;
   z-index: 50;
-  transition: 0.45s all cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
+  transition: 0.45s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
 }
 
 .status-bar-content {
@@ -20,9 +20,12 @@
   padding: 0 15px 0 8px;
 }
 
-md-icon.logo {
+.status-bar > .logo-container {
   padding-top: 1px;
   width: 279px;
+  text-align: center;
+}
+
+.status-bar > .logo-container > img {
   height: 28px;
-  color: #555;
 }

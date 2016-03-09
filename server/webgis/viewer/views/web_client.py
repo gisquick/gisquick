@@ -2,53 +2,84 @@ import json
 
 from django.conf import settings
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import login
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login, logout
+from django.views.decorators.csrf import csrf_exempt
 
 from webgis.viewer import models
+from webgis.viewer import forms
 from webgis.viewer.views.project_utils import get_project, get_user_projects, \
-    LoginRequiredException, AccessDeniedException, InvalidProjectException, \
-    ProjectExpiredException
+    InvalidProjectException
 from webgis.libs.utils import secure_url, set_query_parameters
 
 
+def get_user_data(user):
+    return {
+        'username': user.username,
+        'first_name': user.first_name,
+        'last_name': user.last_name,
+        'is_guest': user.is_guest
+    }
+
+@csrf_exempt
+def client_login(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        form = forms.LoginForm(data)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            if username == "guest":
+                print "login as guest"
+                user = models.GislabUser.get_guest_user()
+            else:
+                user = authenticate(username=username, password=password)
+            if user:
+                try:
+                    login(request, user)
+                except Exception, e:
+                    print e
+                return JsonResponse(get_user_data(user))
+    logout(request)
+    return HttpResponse(status=401)
+
+
+def client_logout(request):
+    logout(request)
+    return HttpResponse(status=200)
+
 def map(request):
+    data = {}
     try:
-        project_data = get_project(request)
-        return render(
-            request,
-            "viewer/index.html",
-            {
-                'user': request.user,
-                'project': json.dumps(project_data)
-            },
-            content_type="text/html"
-        )
-    except LoginRequiredException:
-        # redirect to login page
-        return HttpResponseRedirect(
-            set_query_parameters(
-                reverse('login'),
-                {'next': request.get_full_path()}
-            )
-        )
-    except AccessDeniedException:
-        msg = "You don't have permissions for this project"
-        status = 403
+        if not request.user.is_authenticated():
+            user = models.GislabUser.get_guest_user()
+            if user:
+                login(request, user)
+            else:
+                raise RuntimeError("Anonymous user is not configured")
+        data['user'] = get_user_data(request.user)
+        data['project'] = get_project(request)
+
     except InvalidProjectException:
-        msg = "Error when loading project or project does not exist"
-        status = 404
-    except ProjectExpiredException:
-        msg = "Project has reached expiration date.",
-        status = 410
+        raiseHttp404
     except Exception, e:
-        msg = "Server error"
         #TODO: log exception error
         raise
-        status = 500
-    return HttpResponse(msg, content_type='text/plain',status=status)
+
+    templateData = {
+        'data': data,
+        'jsonData': json.dumps(data)
+    }
+    return render(
+        request,
+        "viewer/index.html",
+        templateData,
+        status=200,
+        content_type="text/html"
+    )
 
 
 @login_required

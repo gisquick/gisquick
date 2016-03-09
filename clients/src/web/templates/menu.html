@@ -11,15 +11,21 @@
     </md-icon>
   </md-button>
   <md-menu-content width="4">
-    <md-menu-item ng-repeat="item in ['Log out', 'Share', 'Fullscreen', 'Help', 'About']">
-      <md-button ng-click="ctrl.announceClick($index)">
-          <div layout="row">
-            <p flex>{{ item }}</p>
-            <!-- <md-icon
-              md-menu-align-target
-              style="margin: auto 3px auto 0;">
-            </md-icon> -->
-          </div>
+    <md-menu-item class="logout-item">
+      <md-button ng-click="newSession()">
+        {{ user.is_guest? 'Login' : 'Logout' }}
+        <p
+          class="user-avatar">
+          <md-icon
+            md-svg-icon="user">
+          </md-icon>
+          {{ user.username }}
+        </p>
+      </md-button>
+    </md-menu-item>
+    <md-menu-item ng-repeat="item in secondaryMenuItems">
+      <md-button ng-click="item.selected()">
+        {{ ::item.title }}
       </md-button>
     </md-menu-item>
   </md-menu-content>

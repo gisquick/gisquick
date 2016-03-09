@@ -1,8 +1,7 @@
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.contrib.auth.decorators import login_required
 
-from webgis.viewer.views.project_utils import get_project, AccessDeniedException,\
-    LoginRequiredException, InvalidProjectException, ProjectExpiredException
+from webgis.viewer.views.project_utils import get_project, InvalidProjectException
 
 
 @login_required
@@ -22,12 +21,9 @@ def user_json(request):
 def project_json(request):
     try:
         project_data = get_project(request)
-        return JsonResponse(project_data)
-    except LoginRequiredException:
-        return HttpResponse(
-            'Authentication required',
-            status=401
-        )
+        return JsonResponse(project_data, status=project_data['status'])
+    except InvalidProjectException:
+        return HttpResponse('Not Found', status=404)
 
 
 @login_required

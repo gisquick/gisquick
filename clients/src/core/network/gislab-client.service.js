@@ -21,6 +21,10 @@
     function GislabClient() {
       this.currentRequest = null;
       this.serverUrl = config.server || '';
+      this.userInfo = {
+        username: "guest",
+        is_guest: true
+      };
     };
 
     GislabClient.prototype._deferredRequest = function(httpParams) {
@@ -67,6 +71,30 @@
 
     GislabClient.prototype.setServer = function(serverUrl) {
       this.serverUrl = serverUrl;
+    };
+
+    GislabClient.prototype.login = function(username, password) {
+      var client = this;
+      var promise = this.post(
+        '/login/',
+        {
+          username: username,
+          password: password
+        }
+      );
+      promise.then(function(data) {
+        client.userInfo = data;
+      }, function(err) {
+        client.userInfo = {};
+      });
+      return promise;
+    };
+
+    GislabClient.prototype.logout = function(project) {
+      var client = this;
+      return this.get('/logout/').then(function() {
+        client.userInfo = {};
+      });
     };
 
     GislabClient.prototype.project = function(project) {

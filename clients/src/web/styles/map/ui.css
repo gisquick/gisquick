@@ -590,3 +590,49 @@ md-select-menu md-option[selected]:focus {
 .panel-tool.identification-form {
   padding: 5px;
 }
+
+md-menu-item .md-button {
+  color: yellow;
+}
+md-menu-item .md-button > span {
+  color: #333;
+}
+
+md-menu-item.logout-item {
+  height: 32px;
+}
+
+md-menu-item .user-avatar {
+  color: #777;
+  display: inline-block;
+  position: absolute;
+  right: 5px;
+  bottom: 3px;
+  text-align: center;
+  font-size: 11px;
+  line-height: 11px;
+  height: 12px;
+  padding: 0px 3px;
+  min-width: 75px;
+}
+
+md-menu-item .user-avatar md-icon > svg {
+  border: 1px solid #ccc;
+  width: 18px;
+  height: 18px;
+  padding: 2px;
+  border-radius: 16px;
+}
+
+md-menu-item .user-avatar md-icon {
+  position: absolute;
+  margin: 0;
+  height: 16px;
+  left: 50%;
+  transform: translate(-50%, -25px);
+  overflow: hidden;
+}
+
+.md-dialog-container {
+  z-index: 500;
+}

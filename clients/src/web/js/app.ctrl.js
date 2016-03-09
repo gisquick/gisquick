@@ -4,17 +4,26 @@
   angular
     .module('gl.web')
     .controller('AppController', AppController)
-    .factory('staticResource', function(staticRoot) {
-      return function(filename) {
-        return staticRoot+filename;
-      }
-    });
 
-  function AppController($scope, $timeout, $q, projectProvider, glPanelManager) {
+  function AppController($scope, $timeout, $q, $mdDialog,
+    projectProvider, glPanelManager, gislabClient, staticResources, projectLoader) {
+    $scope.staticResources = staticResources;
     $scope.ui = {
       manager: glPanelManager
     };
     $scope.activeTool = {index:  0, deactivate: angular.noop};
+
+    $scope.secondaryMenuItems = [
+      {
+        title: 'Share'
+      }, {
+        title: 'Fullscreen'
+      }, {
+        title: 'Help'
+      }, {
+        title: 'About'
+      }
+    ];
 
     function initializeTools() {
       $scope.tools = [
@@ -342,58 +351,65 @@
       glPanelManager.hideToolsPanel();
     };
 
+    function initializeProject(projectData) {
+      $scope.title = projectData.root_title;
+      projectData.rotateOptions = {
+        target: 'map-rotate-reset',
+        label: document.getElementById('map-rotate-reset').children[0]
+      };
+      projectData.zoomOptions = {
+        target: 'map-zoom-buttons',
+        zoomInLabel: document.getElementById('map-zoom-buttons').children[0],
+        zoomOutLabel: document.getElementById('map-zoom-buttons').children[1]
+      };
+      projectData.attributionOptions = {
+        target: document.getElementById('map-attributions'),
+        collapsible: true,
+        label: '©'
+      };
+
+      projectProvider.load(projectData);
+      if (projectProvider.map) {
+        projectProvider.map.setTarget('map');
+        projectProvider.map.updateSize();
+        var size = projectProvider.map.getSize();
+        projectProvider.map.getView().fit(projectData.zoom_extent, size);
+        var scaleLine = new ol.control.ScaleLine({
+          target: 'ol-scale-line-container'
+        });
+        projectProvider.map.addControl(scaleLine);
+        $scope.project = projectProvider;
+
+        initializeTools();
+        glPanelManager.initialize({
+          mainPanel: '#vertical-panel-container',
+          statusBar: '#map-status-bar'
+        });
+        glPanelManager.loadToolsPanel({
+          templateUrl: 'tools_panel.html',
+          parent: '#tools-panel',
+          scope: $scope.$new()
+        });
+        glPanelManager.showContentPanel({
+          templateUrl: 'templates/tools/layers_control.html',
+          parent: '#content-panel',
+          scope: $scope
+        });
+        $timeout(function() {
+          console.log('initializeProject:activateTool');
+          $scope.activateTool($scope.tools.get('identification'));
+        }, 2500);
+      }
+    }
+
     $scope.initializeApp = function() {
-      webgis.project.then(function(projectData) {
-        $scope.title = webgis.project.root_title;
-        console.log(projectData);
-
-        projectData.rotateOptions = {
-          target: 'map-rotate-reset',
-          label: document.getElementById('map-rotate-reset').children[0]
-        };
-        projectData.zoomOptions = {
-          target: 'map-zoom-buttons',
-          zoomInLabel: document.getElementById('map-zoom-buttons').children[0],
-          zoomOutLabel: document.getElementById('map-zoom-buttons').children[1]
-        };
-        projectData.attributionOptions = {
-          target: document.getElementById('map-attributions'),
-          collapsible: true,
-          label: '©'
-        };
-
-        projectProvider.load(projectData);
-        if (projectProvider.map) {
-          projectProvider.map.setTarget('map');
-          projectProvider.map.updateSize();
-          var size = projectProvider.map.getSize();
-          projectProvider.map.getView().fit(projectData.zoom_extent, size);
-          var scaleLine = new ol.control.ScaleLine({
-            target: 'ol-scale-line-container'
-          });
-          projectProvider.map.addControl(scaleLine);
-          $scope.project = projectProvider;
-
-          initializeTools();
-          glPanelManager.initialize({
-            mainPanel: '#vertical-panel-container',
-            statusBar: '#map-status-bar'
-          });
-          glPanelManager.loadToolsPanel({
-            templateUrl: 'tools_panel.html',
-            parent: '#tools-panel',
-            scope: $scope.$new()
-          });
-          glPanelManager.showContentPanel({
-            templateUrl: 'templates/tools/layers_control.html',
-            parent: '#content-panel',
-            scope: $scope
-          });
-          $timeout(function() {
-            $scope.activateTool($scope.tools.get('identification'));
-          }, 2500);
-        }
-      });
+      if (projectLoader.projectData) {
+        initializeProject(projectLoader.projectData);
+      } else {
+        projectLoader.once('projectLoaded', function(projectData) {
+          initializeProject(projectData);
+        });
+      }
     };
 
     function setupScaleLabel() {

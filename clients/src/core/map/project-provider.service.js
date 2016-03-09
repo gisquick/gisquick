@@ -20,7 +20,7 @@
     ProjectProvider.prototype.load = function(config) {
       this.config = config;
       if (this.map) {
-        this.map.dispose();
+        this.map.setTarget();
       }
       this.baseLayers.tree = config.base_layers;
       this.baseLayers.list = mapBuilder.layersTreeToList({layers: this.baseLayers.tree}, true);

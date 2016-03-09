@@ -16,6 +16,7 @@
     <link rel="stylesheet" type="text/css" href="web/styles/map/status-bar.css"/>
     <link rel="stylesheet" type="text/css" href="web/styles/map/table.css"/>
     <link rel="stylesheet" type="text/css" href="web/styles/map/olmap.css"/>
+    <link rel="stylesheet" type="text/css" href="web/styles/map/login.css"/>
     <link rel="stylesheet" type="text/css" href="web/styles/map/tools/measure.css"/>
     <link rel="stylesheet" type="text/css" href="web/styles/map/tools/print.css"/>
 
@@ -48,6 +49,7 @@
 
     <script type="text/javascript" src="js/web.module.js"></script>
     <script type="text/javascript" src="js/app.ctrl.js"></script>
+    <script type="text/javascript" src="js/login.ctrl.js"></script>
     <script type="text/javascript" src="js/panel.js"></script>
 
     <script type="text/javascript" src="core/network/network.module.js"></script>
@@ -80,53 +82,56 @@
 
     <script type="text/javascript">
       var GISLAB_WEB_SERVER = 'https://localhost:8000';
-      QueryStringParam = function(item) {
-        var svalue = location.search.match(new RegExp("[\?\&]" + item + "=([^\&]*)(\&?)","i"));
-        return decodeURIComponent(svalue ? svalue[1] : svalue);
-      }
+      var projectPath = goog.uri.utils.getParamValue(location.search, "PROJECT");
+
       angular.module('gl.web')
-        .constant('staticRoot', '/')
+        .constant('staticResources', {
+          'text-logo': 'styles/map/text_logo.svg',
+          'login-text-logo': 'styles/map/login_text_logo.svg',
+          'image-logo': 'styles/map/image_logo.svg'
+        })
         .config(function($mdIconProvider) {
           $mdIconProvider
             .defaultIconSet('styles/map/icons.svg', 32)
-            .icon('logo', 'styles/map/logo.svg');
         })
         .config(function(gislabClientProvider) {
           gislabClientProvider.configure({
             server: GISLAB_WEB_SERVER
           });
         })
-        .run(function($q, gislabClient) {
-          var projectData = $q.defer();
-          window.webgis = {
-            project: projectData.promise
-          };
-          gislabClient.post(
-            '/mobile/login/',
-            {
-              username: 'vagrant',
-              password: 'vagrant'
+        .run(function($q, gislabClient, projectLoader) {
+          projectLoader.on('projectLoaded', function(projectData) {
+            if (!projectData.ows_url.startsWith(GISLAB_WEB_SERVER)) {
+              projectData.mapcache_url = GISLAB_WEB_SERVER+projectData.mapcache_url;
+              projectData.legend_url = GISLAB_WEB_SERVER+projectData.legend_url;
+              projectData.ows_url = GISLAB_WEB_SERVER+projectData.ows_url;
             }
-          ).then(function() {
-            gislabClient.project(QueryStringParam("PROJECT"))
-              .then(function(data) {
-                data.mapcache_url = GISLAB_WEB_SERVER+data.mapcache_url;
-                data.legend_url = GISLAB_WEB_SERVER+data.legend_url;
-                data.ows_url = GISLAB_WEB_SERVER+data.ows_url;
-                projectData.resolve(data);
-              });
-            })
+          });
 
+          // gislabClient.login('guest', '')
+          gislabClient.login('vagrant', 'vagrant')
+            .then(function() {
+              gislabClient.project(projectPath)
+                .then(function(projectData) {
+                  projectLoader.setProjectData(projectData);
+                });
+              });
         });
+
     </script>
   </head>
   <body
     class="no-scrollbar"
-    ng-controller="AppController">
+    ng-controller="AppLoader">
     <div
-      style="width:100%; height:100%;"
-      ng-include="'templates/app.html'"
-      onload="initializeApp()">
+      ng-if="appInitialized"
+      ng-controller="AppController"
+      style="width:100%; height:100%;">
+      <div
+        style="width:100%; height:100%;"
+        ng-include="'templates/app.html'"
+        onload="initializeApp()">
+      </div>
     </div>
   </body>
 </html>

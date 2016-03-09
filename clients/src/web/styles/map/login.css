@@ -1,0 +1,130 @@
+md-dialog.login-window {
+  background-color: #000;
+  max-width: 100%;
+  max-height: 100%;
+  width: 100%;
+  height: 100%;
+}
+
+md-dialog.login-window md-dialog-content {
+  height: 100%;
+}
+
+.login-window h1, h3 {
+  color: #fff;
+  text-align: center;
+}
+.login-window h1 {
+  margin: 5px 0;
+  font-size: 22px;
+}
+.login-window h3 {
+  margin: 5px 0;
+  font-size: 13px;
+  font-weight: normal;
+  color: #888;
+}
+
+.logo-container .text-logo {
+  width: 85%;
+  margin-bottom: 20px;
+}
+
+.logo-container {
+  text-align: center;
+}
+
+.login-container {
+  height: 100%;
+  max-width: 80%;
+  width: 400px;
+  text-align: center;
+}
+
+.login-form {
+  border: 2px dashed #444;
+  margin: 10px auto;
+  padding: 12px 10px 18px 10px;
+  width: 85%;
+}
+
+.login-container .secondary-buttons-container {
+  width: 85%;
+  margin: 0 auto;
+}
+
+.login-container .link-button {
+  margin: 0;
+  padding: 0 12px;
+  text-transform: none;
+  color: #888;
+}
+
+.login-container .link-button.ng-hide {
+  display: flex!important;
+  visibility: hidden;
+}
+
+.login-container .link-button.left {
+  text-align: left;
+}
+.login-container .link-button.right {
+  text-align: right;
+}
+
+.login-container .link-button:hover:not([disabled]) {
+  background-color: transparent;
+}
+
+.login-form md-input-container {
+  margin-bottom: 0;
+  height: 48px;
+}
+
+.login-form label,
+md-input-container.md-input-has-value:not(.md-input-invalid) label {
+  color: #aaa;
+}
+
+.login-form input {
+  color: #fff;
+}
+
+.login-form md-input-container .md-input[disabled] {
+  color: #888;
+}
+
+.login-form md-input-container .md-input {
+  border-color: #555;
+}
+
+.login-form .md-button {
+  margin: 0;
+  padding: 0;
+  min-height: 32px;
+  height: 32px;
+  background-color: #ccc;
+}
+
+.login-window .error {
+  color: red;
+  margin: 10px 0 0 0;
+  font-size: 16px;
+}
+
+
+.login-window .big-logo-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.login-window .big-logo {
+  position: absolute;
+  xwidth: 300px;
+  xheight: 300px;
+  xwidth: 100%;
+  height: 100%;
+  left: 30%;
+  top: 0;
+  xtransform: translate(50%, 0);
+}

@@ -50,3 +50,8 @@ class ViewerForm(CaseInsensitiveForm):
 	base = forms.CharField(required=False)
 	overlay = forms.CharField(required=False)
 	extent = ExtentField(required=False)
+
+
+class LoginForm(forms.Form):
+    username = forms.CharField(required=True)
+    password = forms.CharField(required=False)

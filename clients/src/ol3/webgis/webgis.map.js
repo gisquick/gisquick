@@ -328,8 +328,8 @@ goog.exportProperty(ol.MapBrowserPointerEvent.prototype, 'getPointerEvent', ol.M
 goog.exportSymbol('ol.proj.get', ol.proj.get);
 goog.exportSymbol('ol.proj.projections_', ol.proj.projections_);
 goog.exportSymbol('ol.geom.flat.length.linearRing', ol.geom.flat.length.linearRing);
-goog.exportSymbol('goog.dom.createDom', goog.dom.createDom);
-
+goog.exportSymbol('goog.uri.utils.getParamValue', goog.uri.utils.getParamValue);
+goog.exportSymbol('goog.uri.utils.appendParams', goog.uri.utils.appendParams);
 
 
 // Define Ctrl+Shift condition test

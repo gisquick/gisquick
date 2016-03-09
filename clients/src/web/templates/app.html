@@ -185,11 +185,8 @@
     id="map-status-bar"
     layout="row"
     class="status-bar md-whiteframe-top">
-    <div>
-      <md-icon
-        class="logo"
-        md-svg-icon="logo">
-      </md-icon>
+    <div class="logo-container">
+      <img ng-src="{{ ::staticResources['text-logo'] }}">
     </div>
     <div flex
       id="ol-mouse-position-container"

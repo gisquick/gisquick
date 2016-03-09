@@ -37,16 +37,7 @@ OSM_SCALES = [
     9028, 4514, 2257
 ]
 
-class LoginRequiredException(Exception):
-    pass
-
-class AccessDeniedException(Exception):
-    pass
-
 class InvalidProjectException(Exception):
-    pass
-
-class ProjectExpiredException(Exception):
     pass
 
 def clean_project_name(project):
@@ -116,6 +107,17 @@ def get_project_layers_info(project_key, publish, project=None):
     return {}
 
 
+def _project_basic_data(metadata):
+    return {
+        'root_title': metadata.title,
+        'authentication': metadata.authentication,
+        'expiration_date': metadata.expiration,
+        'author': metadata.contact_person,
+        'publish_user': metadata.gislab_user,
+        'publish_date': metadata.publish_date,
+        'publish_date_unix': int(metadata.publish_date_unix)
+    }
+
 def get_project(request):
     ows_project = None
 
@@ -146,26 +148,25 @@ def get_project(request):
         if metadata.expiration:
             expiration_date = datetime.datetime.strptime(metadata.expiration, "%d.%m.%Y").date()
             if datetime.date.today() > expiration_date:
-                raise ProjectExpiredException
+                project_data = _project_basic_data(metadata)
+                project_data['status'] = 410
+                return project_data
 
     # Authentication
     allow_anonymous = metadata.authentication == 'all' if project else True
     owner_authentication = metadata.authentication == 'owner' if project else False
 
-    if not request.user.is_authenticated() and allow_anonymous:
-        # login as quest and continue
-        user = models.GislabUser.get_guest_user()
-        if user:
-            login(request, user)
-        else:
-            raise RuntimeError("Anonymous user is not configured")
-
     if not allow_anonymous and (not request.user.is_authenticated() or request.user.is_guest):
-        raise LoginRequiredException
+        project_data = _project_basic_data(metadata)
+        project_data['status'] = 401
+        return project_data
+
     if owner_authentication and not request.user.is_superuser:
         project_owner = project.split('/', 1)[0]
         if project_owner != request.user.username:
-            raise AccessDeniedException
+            project_data = _project_basic_data(metadata)
+            project_data['status'] = 403
+            return project_data
 
     if project:
         ows_url = project_ows_url(ows_project)
@@ -259,7 +260,7 @@ def get_project(request):
             'selection_color': metadata.selection_color[:-2], #strip alpha channel,
             'position_precision': metadata.position_precision,
             'topics': metadata.topics,
-            'vector_layers': metadata.vector_layers is not None,
+            'authentication': metadata.authentication
         })
         if metadata.message:
             valid_until = datetime.datetime.strptime(metadata.message['valid_until'], "%d.%m.%Y").date()
@@ -290,7 +291,8 @@ def get_project(request):
                 'code': 'EPSG:3857',
                 'is_geographic': False
             },
-            'units': 'm'
+            'units': 'm',
+            'authentication': 'all'
         })
         context['zoom_extent'] = form.cleaned_data['EXTENT'] or context['project_extent']
         context['base_layers'] = [OSM_LAYER]
@@ -299,6 +301,7 @@ def get_project(request):
     context['gislab_version'] = webgis.VERSION
     context['gislab_homepage'] = 'http://imincik.github.io/gis-lab'
     context['gislab_documentation'] = 'https://github.com/imincik/gis-lab/wiki'
+    context['status'] = 200
     return context
 
 

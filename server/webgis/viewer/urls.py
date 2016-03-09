@@ -6,6 +6,8 @@ from webgis.viewer.views import web_client, map, api
 urlpatterns = [
     url(r"^$", web_client.map, name="map"),
     url(r"^user/(?P<username>[^/]*)/?$", web_client.user_projects, name="user_projects"),
+    url(r"^login/$", web_client.client_login, name="login"),
+    url(r"^logout/$", web_client.client_logout, name="logout"),
 
     url(r"^ows/$", map.ows, name="ows"),
     url(r"^tile/(?P<project_hash>[^/]+)/(?P<publish>\d+)/tile/(?P<layers_hash>[^/]+)/(?P<z>\d+)/(?P<x>\d+)/(?P<y>\d+)\.(?P<format>\w+)$", map.tile, name="tile"),

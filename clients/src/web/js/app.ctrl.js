@@ -400,6 +400,63 @@
           console.log('initializeProject:activateTool');
           $scope.activateTool($scope.tools.get('identification'));
         }, 2500);
+
+
+        var preventNavigationHistorySave;
+        var saveNavigationState = function() {
+          var extent = projectProvider.map.getView().calculateExtent(projectProvider.map.getSize());
+          if (preventNavigationHistorySave) {
+            preventNavigationHistorySave = false;
+          } else {
+            var state = {
+              center: projectProvider.map.getView().getCenter(),
+              resolution: projectProvider.map.getView().getResolution(),
+              rotation: projectProvider.map.getView().getRotation()
+            };
+            history.pushState(state, "");
+          }
+        };
+        projectProvider.map.on('moveend', saveNavigationState);
+
+        saveNavigationState();
+        window.onpopstate = function(evt) {
+          if (evt.state) {
+            var map = projectProvider.map;
+            var resolutionChanged = map.getView().getResolution() !== evt.state.resolution;
+            var rotationChanged = map.getView().getRotation() !== evt.state.rotation;
+            preventNavigationHistorySave = true;
+
+            var pan = ol.animation.pan({
+              duration: 300,
+              source: map.getView().getCenter()
+            });
+            map.beforeRender(pan);
+
+            if (resolutionChanged) {
+              var zoom = ol.animation.zoom({
+                duration: 300,
+                resolution: map.getView().getResolution()
+              });
+              map.beforeRender(zoom);
+            }
+
+            if (rotationChanged) {
+              var rotation = ol.animation.rotate({
+                duration: 300,
+                rotation: map.getView().getRotation()
+              });
+              map.beforeRender(rotation);
+            }
+
+            map.getView().setCenter(evt.state.center);
+            if (resolutionChanged) {
+              map.getView().setResolution(evt.state.resolution);
+            }
+            if (rotationChanged) {
+              map.getView().setRotation(evt.state.rotation);
+            }
+          }
+        };
       }
     }
 

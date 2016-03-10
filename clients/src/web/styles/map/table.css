@@ -198,6 +198,13 @@ md-progress-linear.md-default-theme, md-progress-linear .md-bar {
   color: rgba(0, 0, 0, 0.25);
   font-weight: 500;
 }
+.filter-row md-input-container {
+  height: 36px;
+}
+.filter-row md-input-container .md-input {
+  line-height: 36px;
+  padding: 6px 2px 0 2px;
+}
 
 label.md-no-float {
   font-size: 11.5px;

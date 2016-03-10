@@ -1,6 +1,9 @@
-<div style="height:100%;">
+<div
+  class="app-container"
+  ng-show="::showApp">
   <div layout="column"
-    style="height:100%;left: {{ ui.manager.mapView.left-280 }}px;"
+    style="height:100%;"
+    ng-style="{left: ui.manager.mapView.left-280+'px'}"
     class="main-panel md-whiteframe-3dp">
     
     <div

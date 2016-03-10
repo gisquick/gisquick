@@ -224,7 +224,7 @@
             format: 'png',
             rotation: 0,
             title: projectProvider.config.root_title,
-            author: 'User',
+            author: gislabClient.userInfo.full_name,
             screenSize: [0, 0], // available screen size for print preview
             contact:
               '<div style="position:absolute;bottom:0;right:0;font-family:Liberation Sans;">\
@@ -353,6 +353,7 @@
 
     function initializeProject(projectData) {
       $scope.title = projectData.root_title;
+      $scope.showApp = true;
       projectData.rotateOptions = {
         target: 'map-rotate-reset',
         label: document.getElementById('map-rotate-reset').children[0]

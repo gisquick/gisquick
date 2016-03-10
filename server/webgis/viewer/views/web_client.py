@@ -21,6 +21,7 @@ def get_user_data(user):
         'username': user.username,
         'first_name': user.first_name,
         'last_name': user.last_name,
+        'full_name': user.get_full_name(),
         'is_guest': user.is_guest
     }
 

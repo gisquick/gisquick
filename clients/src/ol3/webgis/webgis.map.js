@@ -313,17 +313,42 @@ ol.View.prototype.getScale = function() {
   return scale;
 };
 
+ol.Map.prototype.fitAnimated = function(extent, options) {
+  var pan = ol.animation.pan({
+    duration: 300,
+    source: this.getView().getCenter()
+  });
+  var zoom = ol.animation.zoom({
+    duration: 300,
+    resolution: this.getView().getResolution()
+  });
+  this.beforeRender(pan, zoom);
+  this.getView().fit(extent, this.getSize(), options);
+}
+
 ol.MapBrowserPointerEvent.prototype.getPointerEvent = function() {
   return this.pointerEvent;
 };
 
 goog.exportProperty(ol.Map.prototype, 'getLayer', ol.Map.prototype.getLayer);
 goog.exportProperty(ol.Map.prototype, 'getControlByClass', ol.Map.prototype.getControlByClass);
-goog.exportProperty(ol.Map.prototype, 'getInteractionByClass', ol.Map.prototype.getInteractionByClass);
-goog.exportProperty(ol.View.prototype, 'getScale', ol.View.prototype.getScale);
-goog.exportProperty(ol.geom.Polygon, 'fromCircle', ol.geom.Polygon.fromCircle);
-goog.exportProperty(ol.geom.Polygon.prototype, 'getFlatCoordinates', ol.geom.Polygon.prototype.getFlatCoordinates);
-goog.exportProperty(ol.MapBrowserPointerEvent.prototype, 'getPointerEvent', ol.MapBrowserPointerEvent.prototype.getPointerEvent);
+goog.exportProperty(ol.Map.prototype, 'fitAnimated', ol.Map.prototype.fitAnimated);
+
+goog.exportProperty(
+  ol.geom.Polygon,
+  'fromCircle',
+  ol.geom.Polygon.fromCircle
+);
+goog.exportProperty(
+  ol.geom.Polygon.prototype,
+  'getFlatCoordinates',
+  ol.geom.Polygon.prototype.getFlatCoordinates
+);
+goog.exportProperty(
+  ol.MapBrowserPointerEvent.prototype,
+  'getPointerEvent',
+  ol.MapBrowserPointerEvent.prototype.getPointerEvent
+);
 
 goog.exportSymbol('ol.proj.get', ol.proj.get);
 goog.exportSymbol('ol.proj.projections_', ol.proj.projections_);

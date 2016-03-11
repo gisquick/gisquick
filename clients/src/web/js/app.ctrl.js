@@ -39,7 +39,8 @@
             identificationLayer: '',
             rowsPerPage: 5,
             limit: 10,
-            featureAutoselect: false
+            featureAutoselect: false,
+            mapView: glPanelManager.mapView
           },
           data: {
             /**
@@ -373,8 +374,7 @@
       if (projectProvider.map) {
         projectProvider.map.setTarget('map');
         projectProvider.map.updateSize();
-        var size = projectProvider.map.getSize();
-        projectProvider.map.getView().fit(projectData.zoom_extent, size);
+
         var scaleLine = new ol.control.ScaleLine({
           target: 'ol-scale-line-container'
         });
@@ -399,6 +399,13 @@
         $timeout(function() {
           console.log('initializeProject:activateTool');
           $scope.activateTool($scope.tools.get('identification'));
+          projectProvider.map.getView().fit(
+            projectData.zoom_extent,
+            projectProvider.map.getSize(),
+            {
+              padding: [0, 0, glPanelManager.mapView.bottom, glPanelManager.mapView.left]
+            }
+          );
         }, 2500);
 
 
@@ -418,7 +425,6 @@
         };
         projectProvider.map.on('moveend', saveNavigationState);
 
-        saveNavigationState();
         window.onpopstate = function(evt) {
           if (evt.state) {
             var map = projectProvider.map;
@@ -510,16 +516,16 @@
 
     $scope.zoomToMaxExtent = function() {
       var map = projectProvider.map;
-      var pan = ol.animation.pan({
-        duration: 300,
-        source: map.getView().getCenter()
-      });
-      var zoom = ol.animation.zoom({
-        duration: 300,
-        resolution: map.getView().getResolution()
-      });
-      map.beforeRender(pan, zoom);
-      map.getView().fit(projectProvider.config.project_extent, map.getSize());
+      var scale = map.getSize()[0]/map.getTargetElement().getBoundingClientRect().width;
+      var options = {
+        padding: [
+          glPanelManager.mapView.top*scale,
+          glPanelManager.mapView.right*scale,
+          glPanelManager.mapView.bottom*scale,
+          glPanelManager.mapView.left*scale
+        ]
+      };
+      projectProvider.map.fitAnimated(projectProvider.config.project_extent, options);
     };
   };
 })();

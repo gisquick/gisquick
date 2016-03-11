@@ -53,7 +53,10 @@
       <md-button
         aria-label="Zoom to feature"
         class="zoom-to-feature"
-        ng-click="zoomToFeature(tool.data.activeLayer.selectedFeature)">
+        ng-click="zoomToFeature(
+          tool.data.activeLayer.selectedFeature,
+          { padding: [0, 0, tool.config.mapView.bottom, tool.config.mapView.left] }
+        )">
         <md-icon
           md-svg-icon="zoom-to-feature">
         </md-icon>

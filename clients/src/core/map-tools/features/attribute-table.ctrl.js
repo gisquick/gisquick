@@ -151,7 +151,7 @@
       $scope.selectedFeature = feature;
     };
 
-    $scope.zoomToFeature = function(feature) {
+    $scope.zoomToFeature = function(feature, options) {
       var params = {
         'VERSION': '1.0.0',
         'SERVICE': 'WFS',
@@ -165,7 +165,7 @@
           var feature = parser.readFeatures(data)[0];
           //console.log(feature);
           $scope.selectFeature(feature);
-          featuresViewer.zoomToFeature(feature);
+          featuresViewer.zoomToFeature(feature, options);
         });
     }
 

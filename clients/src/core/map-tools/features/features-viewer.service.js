@@ -122,21 +122,24 @@
 
     FeaturesViewer.prototype.zoomToFeature = function(feature, options) {
       var map = projectProvider.map;
-      var pan = ol.animation.pan({
-        duration: 300,
-        source: map.getView().getCenter()
-      });
-      var zoom = ol.animation.zoom({
-        duration: 300,
-        resolution: map.getView().getResolution()
-      });
-      map.beforeRender(pan, zoom);
+      var resolution = map.getView().getResolution();
+      var padding = (options && options.padding)? options.padding : [0, 0, 0, 0];
       if (feature.getGeometry().getType() === 'Point') {
-        map.getView().setCenter(feature.getGeometry().getCoordinates());
+        var pan = ol.animation.pan({
+          duration: 300,
+          source: map.getView().getCenter()
+        });
+        map.beforeRender(pan);
+        var center = feature.getGeometry().getCoordinates();
+        center[0] += (-padding[3]*resolution + padding[1]*resolution)/2;
+        center[1] += (-padding[2]*resolution + padding[0]*resolution)/2;
+        map.getView().setCenter(center);
       } else {
-        // ol.extent.buffer could be used
         var extent = feature.getGeometry().getExtent();
-        map.getView().fit(extent, map.getSize(), options);
+        // add 5% buffer (padding)
+        var buffer = (map.getSize()[0]-padding[1]-padding[3])*0.05*resolution;
+        extent = ol.extent.buffer(extent, buffer);
+        map.fitAnimated(extent, options);
       }
     };
 

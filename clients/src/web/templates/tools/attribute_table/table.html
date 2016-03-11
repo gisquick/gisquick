@@ -80,7 +80,10 @@
               <td class="icon">
                 <md-icon
                   md-svg-icon="zoom-to-feature"
-                  ng-click="zoomToFeature(feature)">
+                  ng-click="zoomToFeature(
+                    feature,
+                    { padding: [0, 0, 96+32*tool.rowsPerPage, tool.config.mapView.left] }
+                  )">
                 </md-icon>
               </td>
               <td ng-repeat="attribute in layer.attributes">

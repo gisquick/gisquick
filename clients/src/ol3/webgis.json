@@ -42,6 +42,7 @@
     "ol.events.condition.never",
     "ol.animation.pan",
     "ol.animation.zoom",
+    "ol.animation.rotate",
     "ol.easing.inAndOut",
     "ol.proj.METERS_PER_UNIT",
 
@@ -58,6 +59,7 @@
     "ol.control.MousePosition",
     "ol.coordinate.createStringXY",
     "ol.coordinate.toStringHDMS",
+    "ol.extent.buffer",
     "ol.extent.getBottomLeft",
     "ol.Collection#extend",
     "ol.geom.Point#getType",

@@ -18,6 +18,9 @@
       limit: 50,
       opened: false,
       viewScope: null,
+      config: {
+        mapView: glPanelManager.mapView
+      },
       showTable: function(layer) {
         var tool = this;
         layerAttributesTool.layerIndex = queryableLayersIndexes[layer.name];

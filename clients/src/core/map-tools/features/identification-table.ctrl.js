@@ -63,12 +63,7 @@
       tool.data.activeLayer.selectedFeature = feature;
     };
 
-    $scope.zoomToFeature = function(feature) {
-      featuresViewer.zoomToFeature(
-        feature,
-        {padding: [100, 100, 100, 200]}
-      );
-    }
+    $scope.zoomToFeature = featuresViewer.zoomToFeature;
 
     $timeout(updateFeaturesTable);
   };

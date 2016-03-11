@@ -229,7 +229,7 @@
           var template = response.data;
           tool._previewElem = angular.element(template);
           $compile(tool._previewElem)($scope);
-          angular.element(document.body).append(tool._previewElem);
+          angular.element(tool.config.previewParentElement).append(tool._previewElem);
         });
     }
 

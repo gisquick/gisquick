@@ -220,6 +220,7 @@
           template: 'templates/tools/print.html',
           previewTemplate: 'templates/tools/print_preview.html',
           config: {
+            previewParentElement: projectProvider.map.getTargetElement().parentElement,
             layouts: undefined, // define in initialization function
             dpi: 96,
             format: 'png',
@@ -474,6 +475,9 @@
           initializeProject(projectData);
         });
       }
+      projectLoader.once('projectClosed', function() {
+        $scope.deactivateTool();
+      });
     };
 
     function setupScaleLabel() {

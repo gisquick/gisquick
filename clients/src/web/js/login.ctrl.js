@@ -10,7 +10,8 @@
 
     function ProjectLoader() {
       this.eventListeners = {
-        projectLoaded: []
+        projectLoaded: [],
+        projectClosed: []
       };
     }
 
@@ -27,8 +28,14 @@
     };
 
     ProjectLoader.prototype.setProjectData = function(data) {
-      this.projectData = data;
-      this._fireEvent('projectLoaded', data);
+      if (data !== null) {
+        this.projectData = data;
+        this._fireEvent('projectLoaded', data);
+      } else {
+        var data = this.projectData
+        this.projectData = null;
+        this._fireEvent('projectClosed', data);
+      }
     };
 
     ProjectLoader.prototype.on = function(event, listener) {
@@ -74,7 +81,7 @@
 
     function closeProject() {
       localStorage.removeItem(projectStorageKey);
-      projectLoader.projectData = null;
+      projectLoader.setProjectData(null);
       $scope.appInitialized = false;
       $timeout(function() {
         $scope.appInitialized = true;

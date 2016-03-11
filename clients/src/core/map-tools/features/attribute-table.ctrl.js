@@ -114,7 +114,7 @@
 
     var layers = [];
     projectProvider.layers.list.forEach(function(layer, index) {
-      if (layer.queryable) {
+      if (layer.attributes) {
         var attributes = [];
         layer.attributes.forEach(function(attr) {
           attributes.push({

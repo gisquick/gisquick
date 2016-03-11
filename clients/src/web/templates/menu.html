@@ -24,7 +24,9 @@
       </md-button>
     </md-menu-item>
     <md-menu-item ng-repeat="item in secondaryMenuItems">
-      <md-button ng-click="item.selected()">
+      <md-button
+        ng-disabled="::!item.perform"
+        ng-click="item.perform()">
         {{ ::item.title }}
       </md-button>
     </md-menu-item>

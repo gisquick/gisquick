@@ -70,6 +70,10 @@ md-menu-item md-icon {
   z-index: 51;
 }
 
+md-menu-item .md-button[disabled] {
+  opacity: 0.5;
+}
+
 md-menu-item .md-button[role=menuitemradio] {
   padding-left: 32px;
 }
@@ -218,8 +222,15 @@ md-fab-trigger .md-fab.md-button md-icon {
 .md-button.md-fab {
   background-color: #333;
 }
-.md-button.md-fab.md-primary:hover,
-.md-button.md-fab:hover {
+
+.md-button.md-fab.md-primary[disabled],
+.md-button.md-fab[disabled] {
+  background-color: #777;
+  border: 1px solid #5c5c5c;
+}
+
+.md-button.md-fab.md-primary:hover:not([disabled]),
+.md-button.md-fab:hover:not([disabled]) {
   background-color: #555!important;
 }
 .fab-menu-toolbar .md-fab.active {

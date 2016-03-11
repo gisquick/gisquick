@@ -217,6 +217,7 @@
           title: 'Print',
           tooltip: 'Print output creation',
           icon: 'printer',
+          disabled: !Boolean(projectProvider.config.print_composers),
           template: 'templates/tools/print.html',
           previewTemplate: 'templates/tools/print_preview.html',
           config: {
@@ -240,6 +241,9 @@
             layoutChanged: angular.noop
           },
           initialize: function() {
+            if (!projectProvider.config.print_composers) {
+              return;
+            }
             // sort layouts by height
             var layouts = projectProvider.config.print_composers.sort(function(a, b) {
               return a.height > b.height;

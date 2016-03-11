@@ -239,10 +239,7 @@ def get_project(request):
             'wms_url': urllib.unquote(secure_url(request, ows_url)),
             'project_extent': metadata.extent,
             'zoom_extent': form.cleaned_data['EXTENT'] or metadata.zoom_extent,
-            # TODO: Don't forget!!!
-            #'print_composers': metadata.composer_templates if not request.user.is_guest else None,
-            # Temporary allow print for guest users, until proper login/logout will be implemented
-            'print_composers': metadata.composer_templates,
+            'print_composers': metadata.composer_templates if not request.user.is_guest else None,
             'root_title': metadata.title,
             'author': metadata.contact_person,
             'email': metadata.contact_mail,

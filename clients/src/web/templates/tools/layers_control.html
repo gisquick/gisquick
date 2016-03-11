@@ -203,6 +203,7 @@
                     <p>{{ ::$node.data.title }}</p>
                     <md-button
                       aria-label="Attributes"
+                      ng-if="::$node.data.attributes"
                       class="list-item-button"
                       ng-class="{active: attributeTableLayer == $node.data}"
                       ng-click="showAttributeTable($node.data)">

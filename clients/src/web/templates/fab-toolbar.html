@@ -14,6 +14,7 @@
     <md-button
       ng-repeat="tool in tools"
       class="md-fab md-raised md-mini"
+      ng-disabled="::tool.disabled"
       ng-class="{active: activeTool===tool}"
       ng-click="activateTool(tool)">
       <md-icon

@@ -162,6 +162,10 @@ table[md-data-table] > thead:not([md-table-progress]) > tr > th > div {
 .attribute-table md-input-container {
   padding: 0;
 }
+
+.filter-row md-input-container {
+  min-width: 80px!important;
+}
 .attribute-table md-select {
   min-width: 100px;
 }

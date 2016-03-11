@@ -29,7 +29,7 @@
   <md-tabs
     md-no-ink
     md-no-pagination
-    ng-style="{minHeight: 31+32*(tool.config.rowsPerPage||1)+'px'}"
+    md-dynamic-height
     class="tabs-no-header"
     md-selected="tool.data.activeLayerIndex"
     md-autoselect="false">
@@ -39,7 +39,9 @@
       md-on-select="setActiveLayer(layer)"
       label="layer">
       <md-data-table-container
-        class="identification-table">
+        gl-scrollbar-detector
+        class="identification-table"
+        ng-style="{minHeight: 31+32*(tool.config.rowsPerPage||1)+'px'}">
         <table
           md-data-table
           md-progress="tool.progress">

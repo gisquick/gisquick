@@ -21,14 +21,15 @@
   <md-tabs
     md-no-ink
     md-no-pagination
+    md-dynamic-height
     class="tabs-no-header"
-    md-selected="tool.layerIndex"
-    ng-style="{minHeight: 61+32*(tool.rowsPerPage||1)+'px'}">
+    md-selected="tool.layerIndex">
     <md-tab ng-repeat="layer in layers"
       label="{{ layer.name }}"
       md-on-select="setActiveLayer(layer)">
       <md-data-table-container
         gl-scrollbar-detector
+        ng-style="{height: 61+32*(tool.rowsPerPage||1)+'px'}"
         class="attribute-table">
         <table
           md-data-table

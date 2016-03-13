@@ -188,7 +188,13 @@ class ConfirmationPage(WizardPage):
             layer = layer_node.data(Qt.UserRole)
             if layer and layer_node.checkState() == Qt.Checked:
                 layer_provider = layer.dataProvider()
-                storage_type = layer_provider.storageType()
+                if isinstance(layer_provider, QgsVectorDataProvider):
+                    storage_type = layer_provider.storageType()
+                elif isinstance(layer_provider, QgsRasterDataProvider):
+                    storage_type = 'Raster'
+                else:
+                    storage_type = 'Other'
+
                 datasource_uri = QgsDataSourceURI( layer_provider.dataSourceUri() )
                 datasource_db = datasource_uri.database()
                 if storage_type not in self._datasources:
@@ -207,7 +213,7 @@ class ConfirmationPage(WizardPage):
                     if datasource_uri.sql():
                         table_item.append(["SQL: {}".format(datasource_uri.sql())])
                 else:
-                    dsfile = datasource_uri.uri().split('|')[0].strip()
+                    dsfile = layer_provider.dataSourceUri().split('|')[0].strip()
                     self._datasources[storage_type].add(dsfile)
 
         collect_layers_datasources(

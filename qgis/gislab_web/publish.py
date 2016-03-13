@@ -285,12 +285,12 @@ class PublishPage(WizardPage):
             project_data = fin.read()
             for layer in self.plugin.layers_list():
                 project_data = project_data.replace(
-                    '"{0}"'.format(layer.id()),
-                    '"{0}_{1}"'.format(layer.id(), publish_timestamp)
+                    u'"{0}"'.format(layer.id()),
+                    u'"{0}_{1}"'.format(layer.id(), publish_timestamp)
                 )
                 project_data = project_data.replace(
-                    '>{0}<'.format(layer.id()),
-                    '>{0}_{1}<'.format(layer.id(), publish_timestamp)
+                    u'>{0}<'.format(layer.id()),
+                    u'>{0}_{1}<'.format(layer.id(), publish_timestamp)
                 )
             fout.write(project_data)
 

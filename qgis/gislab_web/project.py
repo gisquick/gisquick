@@ -716,10 +716,14 @@ class ProjectPage(WizardPage):
         layers = self.plugin.layers_list()
         layers_tree_model = self.dialog.treeView.model()
         for layer in layers:
-            layer_widget = layers_tree_model.findItems(
-                layer.name(),
-                Qt.MatchExactly | Qt.MatchRecursive
-            )[0]
+            try:
+                layer_widget = layers_tree_model.findItems(
+                    layer.name(),
+                    Qt.MatchExactly | Qt.MatchRecursive
+                )[0]
+            except IndexError:
+                continue # skip base layers (user-defined WMS)
+
             # if layer is checked for publishing
             if layer_widget.checkState() == Qt.Checked:
                 # check additional filters

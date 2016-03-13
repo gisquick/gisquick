@@ -107,11 +107,11 @@ def create_formatted_tree(root, data, template_data=None):
         item = QTreeWidgetItem(root)
         if template_data:
             if type(template_data) == dict:
-                item.setText(0, text.format(**template_data))
+                item.setText(0, unicode(text).format(**template_data))
             else:
-                item.setText(0, text.format(*template_data))
+                item.setText(0, unicode(text).format(*template_data))
         else:
-            item.setText(0, text)
+            item.setText(0, unicode(text))
 
         return item
 

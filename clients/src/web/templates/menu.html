@@ -11,6 +11,7 @@
     </md-icon>
   </md-button>
   <md-menu-content width="4">
+
     <md-menu-item class="logout-item">
       <md-button ng-click="newSession()">
         {{ user.is_guest? 'Login' : 'Logout' }}
@@ -23,6 +24,15 @@
         </p>
       </md-button>
     </md-menu-item>
+
+    <md-menu-item class="logout-item">
+      <md-button
+        ng-click="fullScreenTool.toggle()">
+        {{ fullScreenTool.active? 'Exit Full Screen' : 'Full Screen' }}
+        <p class="shortcut">({{ fullScreenTool.active? 'Esc' : 'F11' }})</p>
+      </md-button>
+    </md-menu-item>
+
     <md-menu-item ng-repeat="item in secondaryMenuItems">
       <md-button
         ng-disabled="::!item.perform"

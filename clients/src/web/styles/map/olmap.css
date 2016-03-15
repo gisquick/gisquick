@@ -1,6 +1,7 @@
 #map {
   width: 100%;
   height: 100%;
+  background-color: white;
 }
 
 .ol-control:hover,
@@ -120,4 +121,8 @@
 
 .ol-dragzoom {
   border-color: rgb(0, 170, 212);
+}
+
+.ol-control.ol-full-screen {
+  display: none;
 }

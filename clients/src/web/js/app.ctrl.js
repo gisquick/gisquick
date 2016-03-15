@@ -13,11 +13,57 @@
     };
     $scope.activeTool = {index:  0, deactivate: angular.noop};
 
+    $scope.fullScreenTool = {
+      title: 'Fullscreen',
+      active: false,
+      _fullscreenChange: function (evt) {
+        var tool = this;
+        var fullscreen = document.webkitIsFullScreen || document.mozFullScreen;
+        if (tool.active && !fullscreen) {
+          tool.active = false;
+        }
+      },
+      _keyListener: function(evt) {
+        var tool = this;
+        // handle F11 key to 'replace' default (browser's) full screen mode
+        // with custom full screen
+        if (evt.code === "F11") {
+          evt.preventDefault();
+          evt.stopPropagation();
+          tool.toggle();
+        }
+      },
+      initialize: function() {
+        document.addEventListener("keydown", this._keyListener);
+        document.addEventListener("fullscreenchange", this._fullscreenChange);
+        document.addEventListener("mozfullscreenchange", this._fullscreenChange);
+        document.addEventListener("webkitfullscreenchange", this._fullscreenChange);
+      },
+      destroy: function() {
+        document.removeEventListener("keydown", this._keyListener);
+        document.removeEventListener("fullscreenchange", this._fullscreenChange);
+        document.removeEventListener("mozfullscreenchange", this._fullscreenChange);
+        document.removeEventListener("webkitfullscreenchange", this._fullscreenChange);
+      },
+      toggle: function() {
+        if (this.active) {
+          var fullscreenExitFn = document.mozCancelFullScreen || document.webkitCancelFullScreen;
+          fullscreenExitFn.bind(document)();
+          this.title = 'Full Screen';
+        } else {
+          var elem = document.body;
+          var fullscreenFn = elem.mozRequestFullScreen || elem.webkitRequestFullscreen;
+          fullscreenFn.bind(elem)();
+          this.title = 'Exit Full Screen';
+        }
+        this.active = !this.active;
+      }
+    };
+    $scope.fullScreenTool.initialize();
+
     $scope.secondaryMenuItems = [
       {
         title: 'Share'
-      }, {
-        title: 'Fullscreen'
       }, {
         title: 'Help'
       }, {
@@ -481,6 +527,7 @@
       }
       projectLoader.once('projectClosed', function() {
         $scope.deactivateTool();
+        $scope.fullScreenTool.destroy();
       });
     };
 

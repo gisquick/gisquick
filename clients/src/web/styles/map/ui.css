@@ -259,6 +259,12 @@ md-option .md-text {
   font-size: 15px;
 }
 
+md-menu-item > .md-button .shortcut {
+  color: #999;
+  position: absolute;
+  right: 19px;
+}
+
 .md-toolbar-tools.md-primary md-select:focus:not([disabled]) .md-select-value {
     color: rgba(255, 255, 255, 0.87);
 }
@@ -631,14 +637,13 @@ md-menu-item .user-avatar {
   color: #777;
   display: inline-block;
   position: absolute;
-  right: 5px;
+  right: 15px;
   bottom: 3px;
   text-align: center;
   font-size: 11px;
   line-height: 11px;
   height: 12px;
   padding: 0px 3px;
-  min-width: 75px;
 }
 
 md-menu-item .user-avatar md-icon > svg {

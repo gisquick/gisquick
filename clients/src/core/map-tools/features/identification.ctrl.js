@@ -34,7 +34,7 @@
           markerElem.append(iconElem);
         });
         tool._markerOverlay = new ol.Overlay({
-          element: markerElem,
+          element: markerElem[0],
           positioning: 'center-center'
         });
         projectProvider.map.addOverlay(tool._markerOverlay);

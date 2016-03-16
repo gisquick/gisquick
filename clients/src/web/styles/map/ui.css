@@ -263,6 +263,7 @@ md-menu-item > .md-button .shortcut {
   color: #999;
   position: absolute;
   right: 19px;
+  font-size: 13px;
 }
 
 .md-toolbar-tools.md-primary md-select:focus:not([disabled]) .md-select-value {

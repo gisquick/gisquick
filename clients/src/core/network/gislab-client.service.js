@@ -23,6 +23,7 @@
       this.serverUrl = config.server || '';
       this.userInfo = {
         username: "guest",
+        full_name: "Guest",
         is_guest: true
       };
     };

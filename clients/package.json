@@ -10,7 +10,7 @@
     "url": ""
   },
   "dependencies": {
-    "openlayers": "3.11.0",
+    "openlayers": "3.14.0",
     "proj4": "2.3.12",
     "crypto-js": "",
     "gulp": "^3.9.0",

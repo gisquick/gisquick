@@ -45,9 +45,9 @@
      showgrid="false"
      showguides="true"
      inkscape:guide-bbox="true"
-     inkscape:zoom="10.429825"
-     inkscape:cx="4.1446727"
-     inkscape:cy="15.499973"
+     inkscape:zoom="14.75"
+     inkscape:cx="3.1283629"
+     inkscape:cy="19.577297"
      inkscape:window-x="49"
      inkscape:window-y="105"
      inkscape:window-maximized="0"
@@ -55,7 +55,7 @@
   <path
      id="path6"
      style="fill:#444444;fill-opacity:1"
-     d="m 13.984784,2 0,11.984783 -11.9847838,0 0,4.030434 11.9847838,0 0,11.984783 4.030432,0 0,-11.984783 11.984784,0 0,-4.030434 -11.984784,0 0,-11.984783 z"
+     d="m 14.209104,2.25 0,11.959103 -11.959104,0 0,3.581794 11.959104,0 0,11.959103 3.581793,0 0,-11.959103 11.959103,0 0,-3.581794 -11.959103,0 0,-11.959103 z"
      inkscape:connector-curvature="0"
      sodipodi:nodetypes="ccccccccccccc" />
 </svg>

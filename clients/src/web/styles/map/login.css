@@ -75,6 +75,7 @@ md-dialog.login-window md-dialog-content {
 
 .login-container .link-button:hover:not([disabled]) {
   background-color: transparent;
+  color: #fff;
 }
 
 .login-form md-input-container {

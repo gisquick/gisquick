@@ -113,7 +113,8 @@ md-bottom-sheet {
 }
 
 md-data-table-container {
-  transition: height 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
+  transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
+  transition-property: min-height, height;
   overflow-y: hidden;
 }
 

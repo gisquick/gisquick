@@ -159,13 +159,16 @@ class ConfirmationPage(WizardPage):
         # Publish directory
         if self.plugin.run_in_gislab:
             self.dialog.label_publish_dir.setText(
-                "Publish directory: ~/Publish/{0}".format(os.environ['USER'])
+                "Publish directory: ~/Publish/{0}".format(
+                    os.environ['USER']
+                )
             )
-
-        # Copy all project files to '~/Publish/{5}' folder on GIS.lab
-        # server and visit GIS.lab User page <a
-        # href="{6}/user">{6}/user</a> to launch this project in
-        # GIS.lab Web GISLAB_WEB_URL
+            self.dialog.label_gislab_url.setText(
+                "Visit GIS.lab User page <a href=\"{0}/user\">{0}/user</a>"
+                " to launch this project in GIS.lab Web.".format(
+                    GISLAB_WEB_URL
+                )
+            )
 
         # Data sources
         self._datasources = {}

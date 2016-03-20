@@ -148,6 +148,7 @@ class PublishPage(WizardPage):
                 item.setText(0, layer_data['name'])
                 for sublayer_data in sublayers:
                     collect_overlays_summary(item, sublayer_data)
+                item.setExpanded(True)
             else:
                 if 'visibility_scale_max' in layer_data:
                     scale_visibility = 'Maximum (inclusive): {0}, Minimum (exclusive): {1}'.format(
@@ -234,11 +235,13 @@ class PublishPage(WizardPage):
                                      data)
         for layer_data in metadata['base_layers']:
             collect_base_layer_summary(item, layer_data)
+        item.setExpanded(True)
 
         item = create_formatted_tree(tree.invisibleRootItem(),
                                      "Overlay layers")
         for layer_data in metadata['overlays']:
             collect_overlays_summary(item, layer_data)
+        item.setExpanded(True)
 
         print_composers = []
         for composer_data in metadata['composer_templates']:
@@ -251,9 +254,7 @@ class PublishPage(WizardPage):
 
         create_formatted_tree(tree.invisibleRootItem(),
                               { "Print composers" : print_composers }
-        )
-        tree.expandToDepth(1)
-        tree.collapseItem(project_item)
+        ).setExpanded(True)
 
     def publish_project(self):
         """Creates files required for publishing current project for GIS.lab Web application."""

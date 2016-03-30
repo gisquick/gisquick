@@ -14,6 +14,7 @@
       'gl.layersControl',
       'gl.features',
       'gl.measure',
-      'gl.print'
+      'gl.print',
+      'gl.location'
     ]);
 })();

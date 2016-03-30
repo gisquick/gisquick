@@ -51,6 +51,9 @@ gulp.task('csss', function() {
     gulp.src('src/web/styles/map/*.svg')
       .pipe(gulp.dest(TARGET + 'styles')),
 
+    gulp.src('src/web/styles/map/*.png')
+      .pipe(gulp.dest(TARGET + 'styles')),
+
     gulp.src([
       'node_modules/gislab-web/node_modules/angular-material/angular-material.css',
       'src/web/styles/login/**/*.css'

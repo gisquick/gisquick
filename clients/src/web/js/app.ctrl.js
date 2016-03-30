@@ -5,8 +5,9 @@
     .module('gl.web')
     .controller('AppController', AppController)
 
-  function AppController($scope, $timeout, $q, $mdDialog,
-    projectProvider, glPanelManager, gislabClient, staticResources, projectLoader) {
+  function AppController($scope, $timeout, $q, $mdDialog, $mdToast,
+    projectProvider, glPanelManager, gislabClient, staticResources,
+    projectLoader, locationService) {
     $scope.staticResources = staticResources;
     $scope.ui = {
       manager: glPanelManager
@@ -374,6 +375,96 @@
         for (var i = 0; i < this.length; i++) {
           if (this[i].name === name) {
             return this[i];
+          }
+        }
+      };
+
+      $scope.geolocationTool = {
+        states: {
+          'INACTIVE': 0,
+          'ACTIVE_TRACKING': 2,
+          'ACTIVE': 1
+        },
+        active: false,
+        state: 0,
+        _zoomToLocation: function(geolocation) {
+          console.log('_zoomToLocation');
+          var extent = geolocation.getAccuracyGeometry().getExtent();
+          var width = window.innerWidth-glPanelManager.mapView.left-glPanelManager.mapView.right;
+          var height = window.innerHeight-glPanelManager.mapView.top-glPanelManager.mapView.bottom;
+          var options = {
+            padding: [
+              glPanelManager.mapView.top+height/2.5,
+              glPanelManager.mapView.right+width/2.5,
+              glPanelManager.mapView.bottom+height/2.5,
+              glPanelManager.mapView.left+width/2.5
+            ],
+            minResolution: projectProvider.map.getView().getResolution()
+          };
+          projectProvider.map.fitAnimated(extent, options, 700);
+        },
+        toggle: function() {
+          var tool = this;
+          var states = this.states;
+          this.state = (this.state + 1) % 3;
+
+          this.active = this.state !== 0;
+          switch(this.state) {
+            case states.ACTIVE_TRACKING:
+              tool.lastLocationTime = 0;
+              var pan = projectProvider.map.getInteractionByClass(ol.interaction.DragPan);
+              pan.setActive(false);
+              locationService.startTracking(
+                projectProvider.map,
+                this._zoomToLocation
+              );
+              break;
+            case states.ACTIVE:
+              if (!locationService.lastKnownPosition()) {
+                $mdToast.show({
+                  template: '<md-toast>\
+                    <md-icon class="info" md-svg-icon="circle-i-outline"></md-icon>\
+                    Waiting for location\
+                    <md-icon class="arrow" md-svg-icon="triangle"></md-icon>\
+                    </md-toast>',
+                  parent: '.location-toast',
+                  hideDelay: 4000,
+                  autoWrap: false
+                });
+              }
+              locationService.showPosition(projectProvider.map).then(
+                function(geolocation) {
+                  $mdToast.hide();
+                  tool._zoomToLocation(geolocation);
+                  setTimeout(function() {
+                    projectProvider.map.once('moveend', function() {
+                      console.log('map moved');
+                      if (tool.state === states.ACTIVE) {
+                        tool.state = states.INACTIVE;
+                        tool.active = false;
+                        $scope.$apply();
+                      }
+                    });
+                  }, 800);
+                  tool.lastLocationTime = new Date();
+                  setTimeout(function() {
+                    if (tool.state !== states.ACTIVE_TRACKING && tool.lastLocationTime && new Date()-tool.lastLocationTime > 7000) {
+                      tool.state = states.INACTIVE;
+                      tool.active = false;
+                      locationService.deactivate(projectProvider.map);
+                      $scope.$apply();
+                    }
+                  }, 7500);
+                }, function(error) {
+                  console.log(error);
+                }
+              );
+              break;
+            case states.INACTIVE:
+              locationService.deactivate(projectProvider.map);
+              var pan = projectProvider.map.getInteractionByClass(ol.interaction.DragPan);
+              pan.setActive(true);
+              break;
           }
         }
       };

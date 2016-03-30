@@ -31,11 +31,15 @@
     <script type="text/javascript" src="{% static "js/app.min.js" %}"></script>
 
     <script type="text/javascript">
+      if (!location.search) {
+        location.search = "PROJECT=vagrant/natural-earth/central-europe";
+      }
       angular.module('gl.web')
         .constant('staticResources', {
           'text-logo': 'static/styles/text_logo.svg',
           'login-text-logo': 'static/styles/login_text_logo.svg',
-          'image-logo': 'static/styles/image_logo.svg'
+          'image-logo': 'static/styles/image_logo.svg',
+          'geolocation-tracking': 'static/styles/geolocation_tracking.png'
         })
         .config(function($mdIconProvider) {
           $mdIconProvider

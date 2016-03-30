@@ -313,13 +313,14 @@ ol.View.prototype.getScale = function() {
   return scale;
 };
 
-ol.Map.prototype.fitAnimated = function(extent, options) {
+ol.Map.prototype.fitAnimated = function(extent, options, duration) {
+  duration = duration || 350;
   var pan = ol.animation.pan({
-    duration: 300,
+    duration: duration,
     source: this.getView().getCenter()
   });
   var zoom = ol.animation.zoom({
-    duration: 300,
+    duration: duration,
     resolution: this.getView().getResolution()
   });
   this.beforeRender(pan, zoom);
@@ -332,6 +333,7 @@ ol.MapBrowserPointerEvent.prototype.getPointerEvent = function() {
 
 goog.exportProperty(ol.Map.prototype, 'getLayer', ol.Map.prototype.getLayer);
 goog.exportProperty(ol.Map.prototype, 'getControlByClass', ol.Map.prototype.getControlByClass);
+goog.exportProperty(ol.Map.prototype, 'getInteractionByClass', ol.Map.prototype.getInteractionByClass);
 goog.exportProperty(ol.Map.prototype, 'fitAnimated', ol.Map.prototype.fitAnimated);
 
 goog.exportProperty(

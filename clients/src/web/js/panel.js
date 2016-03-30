@@ -67,7 +67,6 @@
       this.mapView.bottom = this.statusBar.element[0].clientHeight;
       var panel = this;
       window.addEventListener("resize", function(evt) {
-        console.log(evt);
         $timeout(function() {
           panel.updateLayout();
           panel._fireResizeEvent();

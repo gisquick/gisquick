@@ -79,6 +79,8 @@
     <script type="text/javascript" src="core/map-tools/measure/measure.ctrl.js"></script>
     <script type="text/javascript" src="core/map-tools/print/print.module.js"></script>
     <script type="text/javascript" src="core/map-tools/print/print.ctrl.js"></script>
+    <script type="text/javascript" src="core/map-tools/location/location.module.js"></script>
+    <script type="text/javascript" src="core/map-tools/location/location.service.js"></script>
 
     <script type="text/javascript">
       var GISLAB_WEB_SERVER = 'https://localhost:8000';
@@ -88,7 +90,8 @@
         .constant('staticResources', {
           'text-logo': 'styles/map/text_logo.svg',
           'login-text-logo': 'styles/map/login_text_logo.svg',
-          'image-logo': 'styles/map/image_logo.svg'
+          'image-logo': 'styles/map/image_logo.svg',
+          'geolocation-tracking': 'styles/map/geolocation_tracking.png',
         })
         .config(function($mdIconProvider) {
           $mdIconProvider

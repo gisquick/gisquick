@@ -3,32 +3,55 @@
 
   angular
     .module('gl.location')
-    .factory('locationService', [locationService]);
+    .factory('locationService', locationService);
 
-  function locationService() {
+  function locationService($q, staticResources) {
     function LocationService() {
       this.watchID = null;
-      this.autoPan = false;
+      // options = options || {timeout: 20000, enableHighAccuracy: true, frequency: 5000};
+      this.geolocation = new ol.Geolocation({
+        // trackingOptions: options,
+        tracking: false
+      });
+      this.trackingStyle = new ol.style.Style({
+        image: new ol.style.Icon({
+          anchor: [0.5, 0.5],
+          anchorXUnits: 'fraction',
+          anchorYUnits: 'fraction',
+          //opacity: 0.75,
+          rotateWithView: true,
+          src: staticResources['geolocation-tracking']
+        })
+      });
+      this.locationStyle = new ol.style.Style({
+        image: new ol.style.Circle({
+          radius: 8,
+          fill: new ol.style.Fill({
+            color: '#3399CC'
+          }),
+          stroke: new ol.style.Stroke({
+            color: '#fff',
+            width: 2
+          })
+        })
+      });
     };
 
-    LocationService.prototype._successHandler = function(position) {
-      var coordinates = [position.coords.longitude, position.coords.latitude];
-      if (this.map.getView().getProjection().getCode() !== 'EPSG:4326') {
-        coordinates = ol.proj.transform(coordinates, 'EPSG:4326',this.map.getView().getProjection().getCode());
-      }
+    LocationService.prototype._successHandler = function() {
+      var coordinates = this.geolocation.getPosition();
       var location_point = this.locationFeature.getGeometry();
       if (location_point) {
         location_point.setCoordinates(coordinates);
       } else {
         this.locationFeature.setGeometry(new ol.geom.Point(coordinates));
       }
-      if (this.autoPan) {
-        var pan = ol.animation.pan({
-          duration: 300,
-          source: this.map.getView().getCenter()
-        });
-        this.map.beforeRender(pan);
-        this.map.getView().setCenter(coordinates);
+      this.accuracyFeature.setGeometry(this.geolocation.getAccuracyGeometry());
+      if (this.geolocation.getTracking() ) {
+        if (this.trackingCallback) {
+          this.trackingCallback(this.geolocation);
+        }
+        // this.geolocation.set('heading', 30 * Math.PI / 180);
+        this.trackingStyle.getImage().setRotation(this.geolocation.getHeading());
       }
     };
 
@@ -36,60 +59,75 @@
       console.log(error);
     };
 
-    LocationService.prototype.activate = function(map, options) {
-      options = options || {timeout: 20000, enableHighAccuracy: true, frequency: 5000};
-      if (this.watchID !== null) {
-        this.deactivate();
-      }
-
+    LocationService.prototype._activate = function(map) {
       this.map = map;
       var location_layer = map.getLayer('__location_layer');
       if (!location_layer) {
         console.log('creating location layer');
 
-        var style = new ol.style.Style({
-          image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
-            anchor: [0.5, 1.0],
-            anchorXUnits: 'fraction',
-            anchorYUnits: 'fraction',
-            //opacity: 0.75,
-            src: 'images/location.png'
-          }))
-        });
-
-        var location_marker = new ol.Feature({});
-        location_marker.setStyle(style);
+        var positionFeature = new ol.Feature();
+        this.accuracyFeature = new ol.Feature();
         location_layer = new ol.layer.Vector({
           source: new ol.source.Vector({
             features: [
-              location_marker
+              positionFeature,
+              this.accuracyFeature
             ]
           })
         });
         location_layer.set('name', '__location_layer');
         map.addLayer(location_layer);
-        this.locationFeature = location_marker;
+        this.locationFeature = positionFeature;
       }
       location_layer.setVisible(true);
+    };
 
-      navigator.geolocation.getCurrentPosition(this._successHandler.bind(this), this._errorHandler.bind(this), options);
-      this.watchID = navigator.geolocation.watchPosition(this._successHandler.bind(this), this._errorHandler.bind(this), options);
+    LocationService.prototype.startTracking = function(map, callback) {
+      this.trackingCallback = callback;
+      this.geolocation.setProjection(map.getView().getProjection());
+      this.geolocation.setTracking(true);
+      this._activate(map);
+      this.locationFeature.setStyle(this.trackingStyle);
+      this.geolocation.on('error', this._errorHandler, this);
+      this.geolocation.on('change:position', this._successHandler, this);
+    };
+
+    LocationService.prototype.showPosition = function(map) {
+      this.trackingCallback = null;
+      var task = $q.defer();
+      this.geolocation.setProjection(map.getView().getProjection());
+      this.geolocation.once('change:accuracyGeometry', function() {
+        console.log('change:accuracyGeometry');
+        this.accuracyFeature.setGeometry(this.geolocation.getAccuracyGeometry());
+      }, this);
+      this.geolocation.once('change:position', function() {
+        console.log('change:position');
+        this.geolocation.setTracking(false);
+        this._successHandler();
+        task.resolve(this.geolocation);
+      }, this);
+
+      this._activate(map);
+      this.locationFeature.setStyle(this.locationStyle);
+      this.geolocation.setTracking(true);
+      this.geolocation.once('error', function(error) {
+        task.reject(error);
+      }, this);
+      return task.promise;
+    };
+
+    LocationService.prototype.lastKnownPosition = function() {
+      return this.geolocation.getPosition();
     };
 
     LocationService.prototype.deactivate = function(map) {
-      if (this.watchID !== null) {
-        console.log("--------stopping GPS--------");
-        navigator.geolocation.clearWatch(this.watchID);
-        this.watchID = null;
-      }
+      this.geolocation.setTracking(false);
+      this.geolocation.un('error', this._errorHandler);
+      this.geolocation.un('change:position', this._successHandler);
       var location_layer = map.getLayer('__location_layer');
       if (location_layer) {
         location_layer.setVisible(false);
       }
-    };
-
-    LocationService.prototype.setAutoPan = function(autoPan) {
-      this.autoPan = autoPan;
     };
 
     return new LocationService();

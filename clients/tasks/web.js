@@ -42,6 +42,7 @@ gulp.task('csss', function() {
       'node_modules/openlayers/dist/ol.css',
       'node_modules/gislab-web/node_modules/angular-material/angular-material.css',
       'node_modules/gislab-web/node_modules/angular-material-data-table/dist/md-data-table.css',
+      'src/web/styles/*.css',
       'src/web/styles/map/**/*.css'
     ])
       .pipe(minifyCss())
@@ -53,6 +54,9 @@ gulp.task('csss', function() {
 
     gulp.src('src/web/styles/map/*.png')
       .pipe(gulp.dest(TARGET + 'styles')),
+
+    gulp.src('src/web/styles/fonts/*')
+      .pipe(gulp.dest(TARGET + 'styles/fonts')),
 
     gulp.src([
       'node_modules/gislab-web/node_modules/angular-material/angular-material.css',

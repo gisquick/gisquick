@@ -33,11 +33,18 @@
       </md-button>
     </md-menu-item>
 
-    <md-menu-item ng-repeat="item in secondaryMenuItems">
+    <md-menu-item
+      ng-repeat="item in secondaryMenuItems">
       <md-button
         ng-disabled="::!item.perform"
         ng-click="item.perform()">
         {{ ::item.title }}
+        <md-icon
+          ng-if="::item.checkbox"
+          class="menu-right-icon"
+          md-svg-icon="check"
+          ng-show="item.checked">
+        </md-icon>
       </md-button>
     </md-menu-item>
   </md-menu-content>

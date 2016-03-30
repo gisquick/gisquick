@@ -64,7 +64,15 @@
 
     $scope.secondaryMenuItems = [
       {
-        title: 'Share'
+        title: 'Copyrights',
+        checkbox: true,
+        checked: false,
+        perform: function() {
+          var control = projectProvider.map.getControlByClass(ol.control.Attribution);
+          var collapsed = !control.getCollapsed();
+          control.setCollapsed(collapsed);
+          this.checked = !collapsed;
+        }
       }, {
         title: 'Help'
       }, {

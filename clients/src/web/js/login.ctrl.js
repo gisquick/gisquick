@@ -24,7 +24,7 @@
         return listener(data);
       }.bind(this);
       var listeners = this.eventListeners[event].concat([]);
-      listeners.find(listenerCallback);
+      listeners.some(listenerCallback);
     };
 
     ProjectLoader.prototype.setProjectData = function(data) {

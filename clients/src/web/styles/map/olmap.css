@@ -29,20 +29,23 @@
   border-top-right-radius: 8px;
 }
 
+
+.ol-attribution:not(.ol-collapsed) {
+  background-color: transparent;
+}
 .ol-attribution {
-  bottom: 0px;
-  right: 10px;
+  bottom: 36px;
+  right: 48px;
   z-index: 55;
   background-color: transparent;
 }
 .ol-control.ol-attribution button {
+  display: none;
   width: 24px;
   height: 24px;
   background-color: transparent;
   color: #333;
   box-shadow: none;
-  font-size: 30px;
-  font-weight: 500;
 }
 .ol-control.ol-attribution button:hover {
   background-color: transparent;
@@ -105,6 +108,54 @@
   position: absolute;
   bottom: 155px;
   right: 0px;
+}
+.location-toast {
+  position: absolute;
+  bottom: 161px;
+  right: 46px;
+  xbackground-color: red;
+  width: 175px;
+  height: 26px;
+  overflow: visible;
+  transform: translate(60%, 0);
+  opacity: 0;
+  transition: 0.45s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
+  z-index: 99;
+}
+.location-toast md-toast {
+  padding: 0 0 0 10px;
+  min-width: 175px;
+  background-color: rgba(0, 170, 212, 1);
+  color: #fff;
+  height: 26px;
+  line-height: 26px;
+  border-radius: 7px;
+  font-size: 13px;
+  overflow: visible;
+  text-align: center;
+}
+.location-toast.md-toast-open-bottom {
+  transform: translate(0, 0);
+  opacity: 1;
+}
+.location-toast md-icon.info {
+  position: absolute;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  margin: 3px;
+  color: #fff;
+}
+.location-toast md-icon.arrow {
+  width: 8px;
+  height: 8px;
+  position: absolute;
+  right: -6px;
+  top: 12px;
+  color: rgba(0, 170, 212, 1);
+}
+.md-button.location-button.active:not([disabled]) {
+  background-color: rgb(0, 170, 212)!important;
 }
 
 .zoom-to-max-button {

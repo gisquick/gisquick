@@ -29,6 +29,10 @@ md-select:focus:not([disabled]) .md-select-value {
   z-index: 120;
 }
 
+.app-menu .md-button.map-button {
+  border-radius: 18px;
+}
+
 md-menu-item.menu-group-item md-divider {
   position: absolute;
   top: 10px;
@@ -77,6 +81,12 @@ md-menu-item .md-button[disabled] {
 md-menu-item .md-button[role=menuitemradio] {
   padding-left: 32px;
 }
+
+md-menu-item .menu-right-icon {
+  right: 0px;
+  margin-right: 12px!important;
+}
+
 .md-subheader,
 md-tabs-canvas {
   -webkit-user-select: none;  

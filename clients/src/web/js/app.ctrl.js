@@ -635,13 +635,22 @@
       function resolutionToScale(resolution) {
         var scale = scalesCache[resolution];
         if (!scale) {
-          var index = projectProvider.config.tile_resolutions.findIndex(
-            function(r) {
+          // var index = projectProvider.config.tile_resolutions.findIndex(
+          //   function(r) {
+          //     return Math.abs(r-resolution) < 0.001;
+          //   }
+          // );
+          var index;
+          var match = projectProvider.config.tile_resolutions.some(
+            function(r, i) {
+              index = i;
               return Math.abs(r-resolution) < 0.001;
             }
           );
-          scale = projectProvider.config.scales[index];
-          scalesCache[resolution] = scale;
+          if (match) {
+            scale = projectProvider.config.scales[index];
+            scalesCache[resolution] = scale;
+          }
         }
         return scale;
       }

@@ -35,7 +35,7 @@
         'SRS': projectProvider.config.projection.code,
         'LAYERS': layers.join(','),
         'map0:EXTENT': extent.join(','),
-        'map0:SCALE': $scope.mapScale,
+        'map0:SCALE': projectProvider.map.getView().getScale(),
         'map0:ROTATION': config.rotation,
 
         'gislab_project': tool.config.title,

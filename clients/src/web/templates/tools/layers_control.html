@@ -261,7 +261,7 @@
             xng-style="{maxHeight: ui.panel.contentPanel.height-69+'px'}">
             <img
               ng-repeat="layer in ::project.layers.list"
-              ng-if="layer.visible"
+              ng-if="layer.visible && layer.legendUrl"
               class="legend-item"
               alt=""
               ng-src="{{ layer.legendUrl }}" />

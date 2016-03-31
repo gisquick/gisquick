@@ -11,8 +11,15 @@
     function updateLegendUrls () {
       var layerSource = projectProvider.map.getLayer('qgislayer').getSource();
       var view = projectProvider.map.getView();
+      var mapScale = view.getScale();
       $scope.layers.list.forEach(function(layer_data) {
-        layer_data.legendUrl = layerSource.getLegendUrl(layer_data.name, view);
+        if ((!layer_data.visibility_scale_max || mapScale <= layer_data.visibility_scale_max)
+          && (!layer_data.visibility_scale_min || mapScale >= layer_data.visibility_scale_min)) {
+          layer_data.legendUrl = layerSource.getLegendUrl(layer_data.name, view);
+        } else {
+          // hide legend when layer is out of scale visibility range
+          layer_data.legendUrl = '';
+        }
         //+'&BBOX='+projectProvider.map.getView().calculateExtent(projectProvider.map.getSize()).join(',')+'&SRS='+projectProvider.map.getView().getProjection().getCode();
       });
     }

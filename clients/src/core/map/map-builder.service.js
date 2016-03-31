@@ -53,6 +53,17 @@
         controls: controls,
         renderer: 'canvas'
       });
+
+      // define getScale method for map's view object
+      // (using scales from project metadata)
+      var resolutionsToScales = {};
+      var scales = config.tile_resolutions.map(function(res, index) {
+        resolutionsToScales[res] = config.scales[index];
+      });
+      map.getView().getScale = function() {
+        return resolutionsToScales[this.getResolution()];
+      }.bind(map.getView());
+
       return map;
     };
 

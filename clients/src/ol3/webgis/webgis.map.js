@@ -304,15 +304,6 @@ ol.Map.prototype.getInteractionByClass = function(clazz) {
   return interaction;
 };
 
-ol.View.prototype.getScale = function() {
-  var resolution = this.getResolution();
-  var units = this.getProjection().getUnits();
-  var dpi = 25.4 / 0.28;
-  var mpu = ol.proj.METERS_PER_UNIT[units];
-  var scale = resolution * mpu * 39.37 * dpi;
-  return scale;
-};
-
 ol.Map.prototype.fitAnimated = function(extent, options, duration) {
   duration = duration || 350;
   var pan = ol.animation.pan({

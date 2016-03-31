@@ -630,40 +630,15 @@
     };
 
     function setupScaleLabel() {
-      var scalesCache = {};
-      function resolutionToScale(resolution) {
-        var scale = scalesCache[resolution];
-        if (!scale) {
-          // var index = projectProvider.config.tile_resolutions.findIndex(
-          //   function(r) {
-          //     return Math.abs(r-resolution) < 0.001;
-          //   }
-          // );
-          var index;
-          var match = projectProvider.config.tile_resolutions.some(
-            function(r, i) {
-              index = i;
-              return Math.abs(r-resolution) < 0.001;
-            }
-          );
-          if (match) {
-            scale = projectProvider.config.scales[index];
-            scalesCache[resolution] = scale;
-          }
-        }
-        return scale;
-      }
       var zoomListener = projectProvider.map.getView().on(
         'change:resolution',
         function(evt) {
-          var resolution = evt.target.get(evt.key);
-          var scale = resolutionToScale(resolution);
-          $timeout(function() {
-            $scope.mapScale = scale;
-          });
+          var scale = projectProvider.map.getView().getScale();
+          $scope.mapScale = scale;
+          $scope.$apply();
         }
       );
-      $scope.mapScale = resolutionToScale(projectProvider.map.getView().getResolution());
+      $scope.mapScale = projectProvider.map.getView().getScale();
     }
     $scope.initializeStatusBar = function() {
       setupScaleLabel();

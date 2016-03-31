@@ -4,51 +4,18 @@
   background-color: white;
 }
 
-.ol-control:hover,
-.ol-control {
-  background-color: transparent;
-}
 
 .ol-control.ol-zoom {
   position: static;
 }
 
-#map-zoom-buttons {
-  position: absolute;
-  z-index: 100;
-  right: 3px;
-  bottom: 80px;
-}
-
 .ol-zoom .ol-zoom-out {
-  border-bottom-left-radius: 8px;
-  border-bottom-right-radius: 8px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
 }
-.ol-zoom .ol-zoom-in {
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
-}
-
-
-.ol-attribution:not(.ol-collapsed) {
-  background-color: transparent;
-}
-.ol-attribution {
-  bottom: 36px;
-  right: 48px;
-  z-index: 55;
-  background-color: transparent;
-}
-.ol-control.ol-attribution button {
-  display: none;
-  width: 24px;
-  height: 24px;
-  background-color: transparent;
-  color: #333;
-  box-shadow: none;
-}
-.ol-control.ol-attribution button:hover {
-  background-color: transparent;
+.md-button.ol-zoom-in {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 }
 
 .ol-control button {
@@ -67,33 +34,11 @@
   border: 1px solid rgb(0, 170, 212);
 }
 
-#ol-scale-line-container {
-  position: absolute;
-  width: 150px;
-  height: 30px;
-  transition: 0.45s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
-  overflow: visible;
-  margin-bottom: 2px;
-}
-
-.ol-scale-line {
-  left: 5px;
-  bottom: 5px;
-  background-color: rgba(90, 90, 90, 0.9);
-}
-
 .ol-mouse-position {
   display: inline-block;
   position: static;
 }
 
-#map-rotate-reset {
-  position: absolute;
-  z-index: 100;
-  top: auto;
-  bottom: 200px;
-  right: 3px;
-}
 #map-rotate-reset .ol-rotate {
   position: static;
 }
@@ -103,37 +48,35 @@
   width: 24px;
   height: 24px;
 }
-
-.location-button {
-  position: absolute;
-  bottom: 155px;
-  right: 0px;
+.map-button.location-button {
+  position: relative;
+  overflow: visible;
 }
 .location-toast {
   position: absolute;
-  bottom: 161px;
-  right: 46px;
-  xbackground-color: red;
-  width: 175px;
+  top: 0;
+  right: 42px;
   height: 26px;
-  overflow: visible;
+  min-width: 175px;
   transform: translate(60%, 0);
   opacity: 0;
   transition: 0.45s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
   z-index: 99;
-}
-.location-toast md-toast {
-  padding: 0 0 0 10px;
-  min-width: 175px;
+  text-transform: none;
+
+  border-radius: 7px;
   background-color: rgba(0, 170, 212, 1);
   color: #fff;
-  height: 26px;
+}
+
+.location-toast .toast {
+  padding: 0 0 0 10px;
   line-height: 26px;
-  border-radius: 7px;
   font-size: 13px;
   overflow: visible;
   text-align: center;
 }
+
 .location-toast.md-toast-open-bottom {
   transform: translate(0, 0);
   opacity: 1;
@@ -158,18 +101,6 @@
   background-color: rgb(0, 170, 212)!important;
 }
 
-.zoom-to-max-button {
-  position: absolute;
-  bottom: 36px;
-  right: 0px;
-}
-
-@media (max-width: 900px) {
-  #ol-scale-line-container {
-    bottom: 5px;
-  }
-}
-
 .ol-dragzoom {
   border-color: rgb(0, 170, 212);
 }
@@ -177,3 +108,67 @@
 .ol-control.ol-full-screen {
   display: none;
 }
+
+.map-control-container {
+  position: absolute;
+  right: 0;
+  margin: 10px 5px;
+  z-index: 100;
+  transition: 0.45s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
+}
+
+.md-button.map-button.ol-zoom {
+  height: auto;
+  background-color: transparent!important;
+}
+.ol-zoom .md-button {
+  margin: 1px 0px;
+}
+
+.md-button.map-button.ol-zoom:hover {
+  background-color: transparent!important;
+}
+
+.ol-rotate .md-button {
+  margin: 0;
+  background-color: transparent;
+}
+
+#map-bottom-area {
+  position: absolute;
+  right: 0;
+  z-index: 55;
+  transition: 0.45s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
+}
+
+.ol-attribution:not(.ol-collapsed) {
+  background-color: transparent;
+}
+.ol-attribution {
+  bottom: 3px;
+  right: 48px;
+  left: 75px;
+  background-color: transparent;
+}
+.ol-control.ol-attribution button {
+  display: none;
+}
+
+#ol-scale-line-container {
+  width: 150px;
+  height: 30px;
+  overflow: visible;
+}
+
+.ol-scale-line {
+  left: 5px;
+  bottom: 5px;
+  background-color: rgba(90, 90, 90, 0.9);
+}
+
+/*
+@media (max-width: 900px) {
+  #ol-scale-line-container {
+    bottom: 5px;
+  }
+}*/

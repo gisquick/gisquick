@@ -143,50 +143,56 @@
   <div id="map" tabindex="0"></div>
 
   <div
-    id="ol-scale-line-container"
+    id="map-bottom-area"
     ng-style="{
       left: ui.manager.mapView.left+'px',
       bottom: ui.manager.mapView.bottom+'px'
     }">
+    <div id="ol-scale-line-container"></div>
   </div>
 
   <!-- Map Control Buttons -->
   <div
-    id="map-rotate-reset"
-    class="map-button">
-    <md-icon
-      md-svg-icon="north-arrow">
-    </md-icon>
-  </div>
-  <md-button
-    id="location-button"
-    aria-label="My Location"
-    class="map-button location-button"
-    ng-class="{active: geolocationTool.active}"
-    ng-click="geolocationTool.toggle()">
-    <md-icon
-      md-svg-icon="{{ geolocationTool.state===2? 'tracking' : 'target' }}">
-    </md-icon>
-  </md-button>
-  <div class="location-toast"></div>
-  <div
-    id="map-zoom-buttons">
-    <md-icon
-      md-svg-icon="plus">
-    </md-icon>
-    <md-icon
-      md-svg-icon="minus">
-    </md-icon>
-  </div>
-  <md-button
-    aria-label="Zoom to max extent"
-    class="map-button zoom-to-max-button"
-    ng-click="zoomToMaxExtent()">
-    <md-icon md-svg-icon="zoom-max"></md-icon>
-  </md-button>
-  <div
-    id="map-attributions"
-    class="map-attributions-button">
+    class="map-control-container"
+    ng-style="{
+      bottom: ui.manager.mapView.bottom+'px'
+    }">
+    <div
+      id="map-rotate-reset">
+      <md-icon
+        md-svg-icon="north-arrow">
+      </md-icon>
+    </div>
+
+    <md-button
+      id="location-button"
+      aria-label="My Location"
+      class="map-button location-button"
+      ng-class="{active: geolocationTool.active}"
+      ng-click="geolocationTool.toggle()">
+      <md-icon
+        md-svg-icon="{{ geolocationTool.state===2? 'tracking' : 'target' }}">
+      </md-icon>
+      <div class="location-toast"></div>
+    </md-button>
+
+    <div
+      id="map-zoom-buttons">
+      <md-icon
+        md-svg-icon="plus">
+      </md-icon>
+      <md-icon
+        md-svg-icon="minus">
+      </md-icon>
+    </div>
+
+    <md-button
+      aria-label="Zoom to max extent"
+      class="map-button zoom-to-max-button"
+      ng-click="zoomToMaxExtent()">
+      <md-icon md-svg-icon="zoom-max"></md-icon>
+    </md-button>
+
   </div>
 
   <!-- Status Bar -->

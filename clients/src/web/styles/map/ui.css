@@ -21,8 +21,8 @@ md-select:focus:not([disabled]) .md-select-value {
 
 .right-menu-container {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 5px;
+  right: 5px;
 }
 
 .md-select-menu-container {
@@ -104,7 +104,7 @@ md-tabs-canvas {
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
   line-height: 24px;
   padding: 0;
-  margin: 6px 6px;
+  margin: 2px;
   z-index: 100;
 }
 

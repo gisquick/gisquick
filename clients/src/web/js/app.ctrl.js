@@ -396,7 +396,6 @@
         active: false,
         state: 0,
         _zoomToLocation: function(geolocation) {
-          console.log('_zoomToLocation');
           var extent = geolocation.getAccuracyGeometry().getExtent();
           var width = window.innerWidth-glPanelManager.mapView.left-glPanelManager.mapView.right;
           var height = window.innerHeight-glPanelManager.mapView.top-glPanelManager.mapView.bottom;
@@ -430,11 +429,11 @@
             case states.ACTIVE:
               if (!locationService.lastKnownPosition()) {
                 $mdToast.show({
-                  template: '<md-toast>\
+                  template: '<div class="toast">\
                     <md-icon class="info" md-svg-icon="circle-i-outline"></md-icon>\
                     Waiting for location\
                     <md-icon class="arrow" md-svg-icon="triangle"></md-icon>\
-                    </md-toast>',
+                    </div>',
                   parent: '.location-toast',
                   hideDelay: 4000,
                   autoWrap: false
@@ -507,17 +506,17 @@
       $scope.showApp = true;
       projectData.rotateOptions = {
         target: 'map-rotate-reset',
+        className: 'md-button map-button ol-rotate',
         label: document.getElementById('map-rotate-reset').children[0]
       };
       projectData.zoomOptions = {
         target: 'map-zoom-buttons',
+        className: 'md-button map-button ol-zoom',
         zoomInLabel: document.getElementById('map-zoom-buttons').children[0],
         zoomOutLabel: document.getElementById('map-zoom-buttons').children[1]
       };
       projectData.attributionOptions = {
-        target: document.getElementById('map-attributions'),
-        collapsible: true,
-        label: '©'
+        target: document.getElementById('map-bottom-area')
       };
 
       projectProvider.load(projectData);

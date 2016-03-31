@@ -20,33 +20,43 @@
   height: 36px;
   padding: 0 3px 0 3px;
 }
-.panel-tool {
-  xtransition: 0.45s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
-}
 .panel-tool.closed {
   max-height: 0;
-  xtransform: translate3d(0, -100%, 0);
 }
 .panel-collapse-button md-icon {
   color: #fff;
+  width: 18px;
+  height: 26px;
   transform: translate(-2px, 0);
+  background-color: rgba(45, 45, 45, 0.6);
+  padding: 5px 0;
+  margin-right: 12px;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
 }
 .panel-collapse-button {
   top: 50%;
-  right: -20px;
-  min-width: 20px;
-  width: 20px;
+  right: -36px;
+  min-width: 36px;
+  width: 36px;
   padding: 0;
   margin: 0;
-  background-color: rgba(45, 45, 45, 0.6);
-  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
 }
 .panel-collapse-button.md-button:hover {
+  background-color: transparent;
+}
+.panel-collapse-button.md-button.md-focused {
+  background-color: transparent;
+}
+.panel-collapse-button.md-button:hover md-icon {
   background-color: #666;
 }
-.panel-collapse-button.collapsed {
-  transform: rotate(180deg);
-  transition: 0.45s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
+.panel-collapse-button md-icon svg {
+  transition: 1.45s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
+}
+.panel-collapse-button.collapsed md-icon svg {
+  transform: rotateY(180deg);
 }
 
 .main-panel {

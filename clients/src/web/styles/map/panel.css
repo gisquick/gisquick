@@ -317,3 +317,28 @@ md-tabs-wrapper md-icon {
   height: 20px;
 }
 
+
+#content-panel {
+  position: relative;
+}
+
+.layers-control-container {
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.layers-control-container md-tabs {
+  height: 100%;
+}
+
+.layers-control-container md-tab-content > div {
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}

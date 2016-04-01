@@ -852,7 +852,7 @@ class ProjectPage(WizardPage):
                 layer = node.layer
                 source_params = parse_qs(layer.source())
                 layer_data = {
-                    'name': layer.name(),
+                    'name': layer.shortName() or layer.name(),
                     'provider_type': layer.providerType(),
                     'visible': layer.name() == default_baselayer,
                     'extent': map_settings.layerExtentToOutputExtent(
@@ -993,7 +993,7 @@ class ProjectPage(WizardPage):
                 else:
                     layer_extent = project_extent
                 layer_data = {
-                    'name': layer.name(),
+                    'name': layer.shortName() or layer.name(),
                     'provider_type': layer.providerType(),
                     'extent': layer_extent,
                     'projection': layer.crs().authid(),

@@ -314,10 +314,13 @@ class PublishPage(WizardPage):
         for layer_data in metadata['overlays']:
             collect_overlays_names(layer_data)
 
-        layers_registry = QgsMapLayerRegistry.instance()
+        map_layers = QgsMapLayerRegistry.instance().mapLayers()
         providers_registry = QgsProviderRegistry.instance()
         for layer_name in overlays_names:
-            layer = layers_registry.mapLayersByName(layer_name)[0]
+            layer = filter(
+              lambda l: layer_name in (l.name(), l.shortName()),
+              map_layers.values()
+            )[0]
             if layer.dataProvider().name() == "spatialite":
                 provider = providers_registry.provider(
                     "spatialite",

@@ -13,7 +13,8 @@ from webgis.viewer.wfsfilter import webgisfilter
 from webgis.libs.utils import set_query_parameters
 from webgis.mapcache import get_tile_response, get_legendgraphic_response, \
     WmsLayer, TileNotFoundException
-from webgis.viewer.views.project_utils import clean_project_name, get_project_layers_info
+from webgis.viewer.views.project_utils import clean_project_name, \
+    get_project_layers_info, get_last_project_version
 from webgis.libs.auth.decorators import basic_authentication
 
 
@@ -128,7 +129,7 @@ def filterdata(request):
         project = request.GET['PROJECT']
         url = settings.GISLAB_WEB_MAPSERVER_URL
         params = {
-            'MAP': project + '.qgs'
+            'MAP': get_last_project_version(project) + '.qgs'
         }
         mapserv = '{}?{}'.format(url, urllib.urlencode(params))
         filter_request = json.loads(request.body)

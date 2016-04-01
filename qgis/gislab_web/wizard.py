@@ -17,10 +17,13 @@ class WizardPage(object):
         self.plugin = plugin
         self.dialog = plugin.dialog
         self.initialized = False
-        page.initializePage = self._initialize_page
-        page.validatePage = self.validate
-        page.cleanupPage = self.on_return
-        page.handler = self
+        self._page = page
+        self._page.initializePage = self._initialize_page
+        self._page.validatePage = self.validate
+        self._page.cleanupPage = self.on_return
+        if hasattr(self, "is_complete"):
+            self._page.isComplete = self.is_complete
+        self._page.handler = self
 
     def _initialize_page(self):
         if not self.initialized:

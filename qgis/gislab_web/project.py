@@ -106,9 +106,6 @@ class ProjectPage(WizardPage):
         Args:
             messages (List[Tuple[str, str]]): list of messages (composed of message type and text)
         """
-        if not hasattr(self, "_num_errors"):
-            self._num_errors = 0
-
         dialog = self.dialog
         table = dialog.info_table
         if messages:
@@ -119,20 +116,17 @@ class ProjectPage(WizardPage):
                 row_index = table.rowCount()
                 msg_type, msg_text = message
                 if len(table.findItems(msg_text, Qt.MatchExactly)) < 1:
-                    table.setRowCount(table.rowCount()+1)
                     item = QTableWidgetItem(msg_type)
                     if msg_type == MSG_ERROR:
                         item.setForeground(red)
                         self._num_errors +=1
                     else:
                         item.setForeground(orange)
+                    table.insertRow(row_index) # keep order of statements (see completeChanged)
                     dialog.info_table.setItem(row_index, 0, item)
                     dialog.info_table.setItem(row_index, 1, QTableWidgetItem(msg_text))
         else:
             dialog.errors_group.setVisible(False)
-
-        if self._num_errors > 0:
-            dialog.button(QWizard.NextButton).setEnabled(False)
 
     def _remove_messages(self, messages):
         """Remove messages from dialog window
@@ -148,12 +142,9 @@ class ProjectPage(WizardPage):
         for index, message in enumerate(messages):
             msg_type, msg_text = message
             for item in table.findItems(msg_text, Qt.MatchExactly):
-                table.removeRow(table.row(item))
-                if msg_type == MSG_ERROR:
+                if msg_type == MSG_ERROR: # keep order of statements (see completeChanged)
                     self._num_errors -= 1
-
-        if self._num_errors < 1:
-            dialog.button(QWizard.NextButton).setEnabled(True)
+                table.removeRow(table.row(item))
 
     def is_project_valid(self):
         """Checks whether all conditions for publishing project is satisfied
@@ -449,9 +440,12 @@ class ProjectPage(WizardPage):
     def initialize(self):
         dialog = self.dialog
         dialog.tabWidget.setCurrentIndex(0)
+        dialog.info_table.model().rowsInserted.connect(self._page.completeChanged)
+        dialog.info_table.model().rowsRemoved.connect(self._page.completeChanged)
         title = self.plugin.project.title() or self.plugin.project.readEntry("WMSServiceTitle", "/")[0]
         dialog.project_title.setText(title)
 
+        self._num_errors = 0
         self.project_valid = self.is_project_valid()
         if not self.project_valid:
             return
@@ -701,6 +695,9 @@ class ProjectPage(WizardPage):
                     'Failed to load settings from last published version: {0}'.format(e)
                 )
 
+    def is_complete(self):
+        return self.initialized and self.project_valid and self._num_errors < 1
+        
     def get_published_layers(self, **layer_filter):
         """Returns array of qgis layers selected for publishing, optionally filtered by
         additional arguments.

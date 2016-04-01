@@ -634,8 +634,9 @@
         'change:resolution',
         function(evt) {
           var scale = projectProvider.map.getView().getScale();
-          $scope.mapScale = scale;
-          $scope.$apply();
+          $timeout(function() {
+            $scope.mapScale = scale;
+          });
         }
       );
       $scope.mapScale = projectProvider.map.getView().getScale();

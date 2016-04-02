@@ -120,17 +120,10 @@
             list.push(layerData);
           }
 
-          var groupVisible = true;
-
-          var isGroupVisible = function(childData) {
+          layerData.layers.forEach(function(childData) {
             visitNode(list, childData, depth + 1);
-            if (!childData.visible) {
-              groupVisible = false;
-            }
-          };
-
-          layerData.layers.forEach(isGroupVisible);
-          layerData.visible = groupVisible;
+          });
+          layerData.visible = true;
 
         } else if (layerData) {
 

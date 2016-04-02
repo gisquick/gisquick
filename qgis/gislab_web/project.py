@@ -863,7 +863,8 @@ class ProjectPage(WizardPage):
                 layer = node.layer
                 source_params = parse_qs(layer.source())
                 layer_data = {
-                    'name': layer.shortName() or layer.name(),
+                    'name': layer.name(),
+                    'serverName': layer.shortName(),
                     'provider_type': layer.providerType(),
                     'visible': layer.name() == default_baselayer,
                     'extent': map_settings.layerExtentToOutputExtent(
@@ -1004,7 +1005,8 @@ class ProjectPage(WizardPage):
                 else:
                     layer_extent = project_extent
                 layer_data = {
-                    'name': layer.shortName() or layer.name(),
+                    'name': layer.name(),
+                    'serverName': layer.shortName(),
                     'provider_type': layer.providerType(),
                     'extent': layer_extent,
                     'projection': layer.crs().authid(),
@@ -1037,7 +1039,7 @@ class ProjectPage(WizardPage):
 
                     fields = layer.pendingFields()
                     attributes_data = []
-                    excluded_attributes = layer.excludeAttributesWMS()
+                    excluded_attributes = layer.excludeAttributesWFS()
                     for field in fields:
                         if field.name() in excluded_attributes:
                             continue
@@ -1054,7 +1056,10 @@ class ProjectPage(WizardPage):
                             attribute_data['alias'] = alias
                         attributes_data.append(attribute_data)
 
-                    layer_data['attributes'] = attributes_data
+                    if attributes_data:
+                        layer_data['attributes'] = attributes_data
+                    else:
+                        layer_data['queryable'] = False
                     layer_data['pk_attributes'] = [
                         fields.at(index).name() for index in layer.dataProvider().pkAttributeIndexes()
                     ]

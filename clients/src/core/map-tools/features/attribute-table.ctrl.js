@@ -113,8 +113,8 @@
     }
 
     var layers = [];
-    projectProvider.layers.list.forEach(function(layer, index) {
-      if (layer.attributes) {
+    projectProvider.layers.list.forEach(function(layer) {
+      if (layer.attributes && layer.attributes.length) {
         var attributes = [];
         layer.attributes.forEach(function(attr) {
           attributes.push({
@@ -125,8 +125,9 @@
           });
         });
         layers.push({
+          title: layer.title,
           name: layer.name,
-          index: index,
+          index: layers.length,
           attributes: attributes,
           features: []
         });

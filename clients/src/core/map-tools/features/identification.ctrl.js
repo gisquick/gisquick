@@ -17,6 +17,7 @@
         projectProvider.layers.list.forEach(function(layer) {
           if (layer.queryable) {
             tool.data.layers.push({
+              title: layer.title,
               name: layer.name,
               attributes: featuresViewer.getLayerAttributes(layer.name),
               features: []

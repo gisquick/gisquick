@@ -184,6 +184,18 @@ def get_project(request):
         context['tile_resolutions'] = project_tile_resolutions
         context['scales'] = metadata.scales
 
+        # use 'serverName' attribute as layer's name
+        # and 'name' attribute as layer's title
+        def convert_layers_names(layers):
+            for layer in layers:
+                if 'layers' in layer:
+                    convert_layers_names(layer['layers'])
+                elif 'serverName' in layer:
+                    layer['title'] = layer['name']
+                    layer['name'] = layer['serverName']
+
+        convert_layers_names(metadata.base_layers)
+        convert_layers_names(metadata.overlays)
 
         # BASE LAYERS
         baselayers_tree = metadata.base_layers

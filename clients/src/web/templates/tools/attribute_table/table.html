@@ -3,7 +3,7 @@
   <div class="tabs-header md-whiteframe-top">
     <span
       class="panel-tab selected">
-      {{ activeLayer.name }}
+      {{ activeLayer.title }}
     </span>
     <div class="tab-end-right"></div>
   </div>
@@ -25,7 +25,7 @@
     class="tabs-no-header"
     md-selected="tool.layerIndex">
     <md-tab ng-repeat="layer in layers"
-      label="{{ layer.name }}"
+      label="layer"
       md-on-select="setActiveLayer(layer)">
       <md-data-table-container
         gl-scrollbar-detector

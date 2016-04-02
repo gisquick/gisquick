@@ -11,7 +11,7 @@
       ng-show="layer.features.length>0"
       xng-repeat="layer in tool.data.layers | filter:{features:[]}"
       ng-repeat="layer in tool.data.layers">
-      {{ layer.name }}
+      {{ layer.title }}
       <div class="tab-separator"></div>
     </md-button>
     <div class="tab-end-right"></div>

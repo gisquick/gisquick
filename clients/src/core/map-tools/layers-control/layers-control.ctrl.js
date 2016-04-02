@@ -9,7 +9,9 @@
   function OverlaysController($scope, $timeout, $q, projectProvider, mapBuilder, layersControl, glPanelManager) {
 
     var queryableLayersIndexes = {};
-    projectProvider.layers.list.forEach(function(layer_data, index) {
+    projectProvider.layers.list.filter(function(layer_data) {
+      return layer_data.attributes && layer_data.attributes.length;
+    }).forEach(function(layer_data, index) {
       queryableLayersIndexes[layer_data.name] = index;
     });
 
@@ -60,7 +62,7 @@
         }
         $timeout(function() {
           if (glPanelManager.secondaryPanel) {
-            glPanelManager.secondaryPanel.title = layer.name;
+            glPanelManager.secondaryPanel.title = layer.title;
           }
         }, 700);
       },

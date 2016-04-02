@@ -194,13 +194,6 @@ class ProjectPage(WizardPage):
         encountered warnings/errors."""
         messages = []
 
-        if not self.dialog.project_title.text():
-            messages.append((
-                MSG_ERROR,
-                u"Project title is missing. Enter project name before trying " \
-                "to continue."
-            ))
-
         min_resolution = self.dialog.min_scale.itemData(self.dialog.min_scale.currentIndex())
         max_resolution = self.dialog.max_scale.itemData(self.dialog.max_scale.currentIndex())
         msg = u"Invalid map scales range."
@@ -442,13 +435,21 @@ class ProjectPage(WizardPage):
         dialog.tabWidget.setCurrentIndex(0)
         dialog.info_table.model().rowsInserted.connect(self._page.completeChanged)
         dialog.info_table.model().rowsRemoved.connect(self._page.completeChanged)
-        title = self.plugin.project.title() or self.plugin.project.readEntry("WMSServiceTitle", "/")[0]
-        dialog.project_title.setText(title)
 
         self._num_errors = 0
         self.project_valid = self.is_project_valid()
         if not self.project_valid:
             return
+
+        title = self.plugin.project.title() or self.plugin.project.readEntry("WMSServiceTitle", "/")[0]
+        if title:
+            dialog.project_title.setText(title)
+        else:
+            self._show_messages([(
+                MSG_ERROR,
+                u"Project title is missing. Enter project name before trying "
+                "to continue."
+            )])
 
         map_canvas = self.plugin.iface.mapCanvas()
         self.base_layers_tree = self.plugin.get_project_base_layers()
@@ -463,7 +464,7 @@ class ProjectPage(WizardPage):
         self._update_min_max_scales(resolutions)
 
         def check_base_layer_enabled():
-            msg = "At least one base layer must be enabled"
+            msg = "At least one base layer must be enabled."
             if dialog.default_baselayer.count() < 1:
                 self._show_messages([(MSG_ERROR, msg)])
             else:
@@ -694,6 +695,10 @@ class ProjectPage(WizardPage):
                     'Warning',
                     'Failed to load settings from last published version: {0}'.format(e)
                 )
+
+        # at least one base layer must be enabled
+        if dialog.default_baselayer.count() < 1:
+            dialog.blank.setChecked(True)
 
     def is_complete(self):
         return self.initialized and self.project_valid and self._num_errors < 1

@@ -121,9 +121,12 @@ class PublishPage(WizardPage):
                 # Special base layers
                 else:
                     layer_summary = [
-                        "Extent: {1}",
-                        "Visible scales: {2}",
-                        "Visible resolutions: {3}"
+                        "Title: {1}",
+                        "Abstract: {2}",
+                        "Keywords: {3}",
+                        "Extent: {4}",
+                        "Visible scales: {5}",
+                        "Visible resolutions: {6}"
                     ]
                     if layer_data['name'] == 'MAPBOX':
                         layer_summary.append("MapId: {}".format(layer_data['mapid']))
@@ -135,6 +138,9 @@ class PublishPage(WizardPage):
                                           { '{0}' : layer_summary },
                                           [
                                               layer_data['name'],
+                                              layer_data['title'],
+                                              layer_data['abstract'] if layer_data.get('abstract') else '',
+                                              layer_data['keywords'] if layer_data.get('keywords') else '',
                                               layer_data['extent'],
                                               scales,
                                               resolutions,

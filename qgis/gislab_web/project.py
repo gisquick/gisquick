@@ -53,15 +53,24 @@ layer_resolutions = to_decimal_array(
     4.777314267158508,2.388657133579254,1.194328566789627,0.5971642833948135"""
 )
 layer_extent = [-16319611.284727, -5615981.3413867, 16319611.284727, 5615981.3413867]
+BLANK_LAYER = {
+    'name': 'Blank',
+    'type': 'Blank',
+    'title': 'Blank',
+    'abstract': 'Blank base map layer.',
+    'keywords': 'blank; world map',
+}
 OSM_LAYER = {
     'name': 'OSM',
     'type': 'OSM',
     'title': 'OpenStreetMap',
+    'abstract': 'OpenStreetMap (OSM) is a collaborative project to create a free editable map of the world.',
+    'keywords': 'free; collaborative; world map',
     'resolutions': layer_resolutions,
     'extent': layer_extent
 }
 MAPBOX_LAYER = {
-    'name': 'MAPBOX',
+    'name': 'MapBox',
     'type': 'MapBox',
     'title': 'MapBox',
     'resolutions': layer_resolutions,
@@ -69,7 +78,7 @@ MAPBOX_LAYER = {
 }
 BING_LAYERS = (
     {
-    'name': 'BINGROAD',
+    'name': 'BingRoad',
     'type': 'Bing',
     'title': 'BingMaps Road',
     'style': 'Road',
@@ -77,7 +86,7 @@ BING_LAYERS = (
     'extent': layer_extent
     },
     {
-    'name': 'BINGAERIAL',
+    'name': 'BingAerial',
     'type': 'Bing',
     'title': 'BingMaps Aerial',
     'style': 'Aerial',
@@ -85,7 +94,7 @@ BING_LAYERS = (
     'extent': layer_extent
     },
     {
-    'name': 'BINGAERIALWL',
+    'name': 'BingAerialWL',
     'type': 'Bing',
     'title': 'BingMaps Aerial with Labels',
     'style': 'AerialWithLabels',
@@ -472,7 +481,7 @@ class ProjectPage(WizardPage):
 
         def blank_toggled(checked):
             if checked:
-                dialog.default_baselayer.insertItem(0, 'Blank', 'Blank')
+                dialog.default_baselayer.insertItem(0, BLANK_LAYER['title'], BLANK_LAYER['name'])
             else:
                 dialog.default_baselayer.removeItem(0)
             check_base_layer_enabled()
@@ -801,7 +810,7 @@ class ProjectPage(WizardPage):
 
         special_base_layers = []
         if dialog.blank.isChecked():
-            special_base_layers.append({'title': 'Blank', 'name': 'BLANK', 'type': 'Blank'})
+            special_base_layers.append(dict(BLANK_LAYER))
         if metadata['projection']['code'].upper() == 'EPSG:3857':
             if dialog.osm.isChecked():
                 special_base_layers.append(dict(OSM_LAYER))

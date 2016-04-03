@@ -272,7 +272,7 @@
           title: 'Print',
           tooltip: 'Print output creation',
           icon: 'printer',
-          disabled: !Boolean(projectProvider.config.print_composers),
+          disabled: !(projectProvider.config.print_composers && projectProvider.config.print_composers.length),
           template: 'templates/tools/print.html',
           previewTemplate: 'templates/tools/print_preview.html',
           config: {

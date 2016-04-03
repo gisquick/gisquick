@@ -157,6 +157,10 @@
   display: none;
 }
 
+.ol-attribution a[href="http://openlayers.org/"] {
+  display: none;
+}
+
 #ol-scale-line-container {
   width: 150px;
   height: 30px;

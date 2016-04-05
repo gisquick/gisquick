@@ -1,6 +1,10 @@
 html {
   overflow-y: hidden!important; 
 }
+body {
+  width: 100%;
+  height: 100%;
+}
 .app-container {
   height: 100%;
   width: 100%;
@@ -549,9 +553,6 @@ md-tabs > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-ink-bar 
   height: 100%;
 }
 
-.main-panel md-tabs:not(.md-no-tab-content) {
-  xmin-height: 50px;
-}
 .properties-list {
   height: 100%;
   width: 100%;

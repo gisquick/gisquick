@@ -17,7 +17,7 @@
     $scope.fullScreenTool = {
       title: 'Fullscreen',
       active: false,
-      _fullscreenChange: function (evt) {
+      _fullscreenChange: function(evt) {
         var tool = this;
         var fullscreen = document.webkitIsFullScreen || document.mozFullScreen;
         if (tool.active && !fullscreen) {
@@ -35,6 +35,8 @@
         }
       },
       initialize: function() {
+        this._keyListener = this._keyListener.bind(this);
+        this._fullscreenChange = this._fullscreenChange.bind(this);
         document.addEventListener("keydown", this._keyListener);
         document.addEventListener("fullscreenchange", this._fullscreenChange);
         document.addEventListener("mozfullscreenchange", this._fullscreenChange);

@@ -200,12 +200,11 @@
 
       layers_data.forEach(createAttributionsAndOrder);
 
-      if (config.use_mapcache) {
+      if (config.mapcache_url) {
         config.type = 'mapcacheoverlay';
       } else {
         config.type = 'imagewmsoverlay';
       }
-
 
       var createLayer = MapBuilder.getCreateLayerFunction(config.type);
 
@@ -373,7 +372,7 @@
     MapBuilder.createMapCacheOverlay = function(config) {
       return new ol.layer.Tile({
           source: new ol.source.WebgisTileImage({
-            project: config.project,
+            project: config.ows_project,
             tilesUrl: config.mapcache_url,
             legendUrl: config.legend_url,
             owsUrl: config.ows_url,

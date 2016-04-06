@@ -263,9 +263,9 @@ class ProjectPage(WizardPage):
                     "which is currently not supported.".format(layer.name())
                 ))
 
-        project_dir = os.path.dirname(self.plugin.project.fileName())+os.path.sep
+        project_dir = os.path.dirname(os.path.normpath(self.plugin.project.fileName()))+os.path.sep
         for file_datasource in file_datasources:
-            if not file_datasource.startswith(project_dir):
+            if not os.path.normpath(file_datasource).startswith(project_dir):
                 messages.append((
                     MSG_ERROR,
                     u"Data file '{0}' is located outside of the QGIS project "

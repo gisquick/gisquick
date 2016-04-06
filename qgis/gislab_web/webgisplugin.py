@@ -7,6 +7,7 @@
 """
 
 import os
+import sys
 import re
 import time
 import json
@@ -375,7 +376,7 @@ class WebGisPlugin:
             pass
         metadata['gislab_unique_id'] = gislab_version_data.get('GISLAB_UNIQUE_ID', 'unknown')
         metadata['gislab_version'] = gislab_version_data.get('GISLAB_VERSION', 'unknown')
-        metadata['gislab_user'] = os.environ['USER']
+        metadata['gislab_user'] = os.environ['USERNAME'] if sys.platform == 'win32' else os.environ['USER']
         metadata['publish_date_unix'] = int(time.time())
         metadata['publish_date'] = time.ctime()
         return metadata

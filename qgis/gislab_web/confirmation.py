@@ -48,7 +48,7 @@ class ConfirmationPage(WizardPage):
 
     def project_files(self):
         # Project files overview
-        publish_filename = os.path.splitext(self.plugin.project.fileName())[0]
+        publish_filename = os.path.normpath(os.path.splitext(self.plugin.project.fileName())[0])
         publish_timestamp = str(self.plugin.metadata['publish_date_unix'])
         project_filename = "{0}_{1}.qgs".format(
             publish_filename,
@@ -200,6 +200,8 @@ class ConfirmationPage(WizardPage):
 
                 datasource_uri = QgsDataSourceURI( layer_provider.dataSourceUri() )
                 datasource_db = datasource_uri.database()
+                if datasource_db:
+                    datasource_db = os.path.normpath(datasource_db)
                 if storage_type not in self._datasources:
                     self._datasources[storage_type] = dict() if datasource_db else set()
                 if datasource_db:
@@ -217,7 +219,7 @@ class ConfirmationPage(WizardPage):
                         table_item.append(["SQL: {}".format(datasource_uri.sql())])
                 else:
                     dsfile = layer_provider.dataSourceUri().split('|')[0].strip()
-                    self._datasources[storage_type].add(dsfile)
+                    self._datasources[storage_type].add(os.path.normpath(dsfile))
 
         collect_layers_datasources(
             self.dialog.treeView.model().invisibleRootItem()

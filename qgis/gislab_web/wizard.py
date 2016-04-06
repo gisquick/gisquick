@@ -21,8 +21,9 @@ class WizardPage(object):
         self._page.initializePage = self._initialize_page
         self._page.validatePage = self.validate
         self._page.cleanupPage = self.on_return
-        if hasattr(self, "is_complete"):
-            self._page.isComplete = self.is_complete
+### disabled: see #35
+#        if hasattr(self, "is_complete"):
+#            self._page.isComplete = self.is_complete
         self._page.handler = self
 
     def _initialize_page(self):

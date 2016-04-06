@@ -203,6 +203,12 @@ class ProjectPage(WizardPage):
         encountered warnings/errors."""
         messages = []
 
+        msg = u"Project title is missing. Enter project name before trying to continue."
+        if not self.dialog.project_title.text():
+            messages.append((MSG_ERROR, msg))
+        else:
+            self._remove_messages([(MSG_ERROR, msg)])
+
         min_resolution = self.dialog.min_scale.itemData(self.dialog.min_scale.currentIndex())
         max_resolution = self.dialog.max_scale.itemData(self.dialog.max_scale.currentIndex())
         msg = u"Invalid map scales range."

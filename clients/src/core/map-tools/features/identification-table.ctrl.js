@@ -9,6 +9,7 @@
     $scope.tool = tool;
 
     function updateFeaturesTable() {
+      tool.config.singleLayerResult = tool.config.identificationLayer !== '';
       if (tool.data.activeLayer && tool.data.activeLayer.features.length > 0) {
         // stay on the same active layer, just check feature autoselection
         if (tool.config.featureAutoselect) {

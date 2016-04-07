@@ -94,6 +94,7 @@
           config: {
             markerIcon: 'plus',
             identificationLayer: '',
+            singleLayerResult: false,
             rowsPerPage: 5,
             limit: 10,
             featureAutoselect: false,

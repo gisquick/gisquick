@@ -5,6 +5,7 @@
     md-no-ink
     md-dynamic-height
     class="panel-content"
+    ng-class="{'tabs-no-header': tool.config.singleLayerResult}"
     md-selected="tool.data.activeLayerIndex"
     md-autoselect="false">
     <md-tab ng-repeat="layer in tool.data.layers"

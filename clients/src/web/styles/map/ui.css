@@ -334,7 +334,6 @@ md-list-item .md-list-item-inner > md-checkbox:first-child {
 .gl-tree md-list-item.md-no-proxy {
     padding: 0 5px;
     padding: 0;
-    xmargin: 0 5px;
 }
 .gl-tree md-list-item .md-no-style {
   padding: 0;
@@ -346,6 +345,11 @@ md-list-item .md-list-item-inner > md-checkbox:first-child {
 
 .gl-tree md-list-item .md-list-item-inner {
   xborder-bottom: 1px solid #ddd;
+}
+
+.gl-tree md-list-item > md-checkbox,
+.gl-tree md-list-item .md-list-item-inner > md-checkbox {
+  width: 26px;
 }
 
 .gl-tree-leaf {
@@ -403,16 +407,19 @@ md-icon.md-secondary,
   padding: 0 5px;
 }
 
-.gl-tree-group > md-list-item p {
-  xtext-align: center;
-}
-
 .gl-tree-leaf > md-list-item {
   border-bottom: 1px solid #ddd;
 }
 
+.gl-tree-group[depth="1"] > md-list-item {
+  background-color: #bbb;
+}
+.gl-tree-group[depth="2"] > md-list-item {
+  background-color: #e5e5e5;
+}
+
 .gl-tree-group[depth="1"] md-checkbox.md-default-theme.md-primary.md-checked:not([disabled]),
-.gl-tree-group[depth="1"] md-checkbox.md-primary.md-checked:not([disabled]) .md-icon,
+.gl-tree-group[depth="1"] md-checkbox.md-primary.md-checked:not([disabled]) .md-icon {}
 .gl-tree-leaf[depth="2"] md-checkbox.md-default-theme.md-primary.md-checked:not([disabled]),
 .gl-tree-leaf[depth="2"] md-checkbox.md-primary.md-checked:not([disabled]) .md-icon {
   background-color: #555;
@@ -435,24 +442,8 @@ md-list-item p {
   font-size: 14px;
 }
 
-.gl-tree-leaf[depth="1"] .layer-metadata {
-  padding-left: 10px;
-}
-.gl-tree-group[depth="2"] md-list-item .indent,
-.gl-tree-leaf[depth="3"] md-list-item .indent {
-  padding-left: 10px;
-}
-.gl-tree-leaf[depth="2"] .layer-metadata {
-  padding-left: 10px;
-}
-
-.gl-tree-group[depth="3"] md-list-item .indent,
-.gl-tree-leaf[depth="4"] md-list-item .indent {
-  padding-left: 20px;
-}
-
-.gl-tree-leaf[depth="3"] .layer-metadata {
-  padding-left: 20px;
+.gl-tree-leaf .layer-metadata {
+  padding-left: 4px;
 }
 
 .layer-metadata {

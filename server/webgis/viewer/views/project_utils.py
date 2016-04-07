@@ -118,6 +118,28 @@ def _project_basic_data(metadata):
         'publish_date_unix': int(metadata.publish_date_unix)
     }
 
+
+
+def _convert_layers_metadata(layers):
+    """ Returns transformed layers tree.
+
+      - reorder layers - layers first, then groups
+      - set 'serverName' attribute as layer's name and 'name' attribute as layer's title
+
+    """
+    leafs = []
+    groups = []
+    for layer in layers:
+        if 'layers' in layer:
+            groups.append(layer)
+            layer['layers'] = _convert_layers_metadata(layer['layers'])
+        else:
+            if 'serverName' in layer:
+                layer['title'] = layer['name']
+                layer['name'] = layer['serverName']
+            leafs.append(layer)
+    return leafs + groups
+
 def get_project(request):
     ows_project = None
 
@@ -184,21 +206,8 @@ def get_project(request):
         context['tile_resolutions'] = project_tile_resolutions
         context['scales'] = metadata.scales
 
-        # use 'serverName' attribute as layer's name
-        # and 'name' attribute as layer's title
-        def convert_layers_names(layers):
-            for layer in layers:
-                if 'layers' in layer:
-                    convert_layers_names(layer['layers'])
-                elif 'serverName' in layer:
-                    layer['title'] = layer['name']
-                    layer['name'] = layer['serverName']
-
-        convert_layers_names(metadata.base_layers)
-        convert_layers_names(metadata.overlays)
-
         # BASE LAYERS
-        baselayers_tree = metadata.base_layers
+        baselayers_tree = _convert_layers_metadata(metadata.base_layers)
         base = form.cleaned_data['BASE']
         if base:
             # TODO:
@@ -216,7 +225,7 @@ def get_project(request):
         context['base_layers'] = baselayers_tree
 
         # OVERLAYS LAYERS
-        layers_tree = metadata.overlays
+        layers_tree = _convert_layers_metadata(metadata.overlays)
         layers = form.cleaned_data['OVERLAY']
         # override layers tree with LAYERS GET parameter if provided
         if layers:

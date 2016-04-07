@@ -30,7 +30,6 @@
               depth="{{ ::$node.treeDepth }}"
               gl-collapsible>
               <md-list-item>
-                <div class="indent"></div>
                 <md-button
                   class="toggle-button list-item-button"
                   aria-label="Toggle"
@@ -49,7 +48,6 @@
             <div gl-accordion-item depth="{{ ::$node.treeDepth }}"
               class="gl-tree-leaf" ng-class="{expanded: $accordion.expanded}">
               <md-list-item class="md-with-secondary radio-button-item">
-                <div class="indent"></div>
                 <md-radio-button md-no-ink aria-label="{{ ::node.title }}" ng-value="::node.name">
                 </md-radio-button>
                 <p>{{ ::node.title }}</p>
@@ -160,7 +158,6 @@
                   depth="{{ ::$node.treeDepth }}"
                   gl-collapsible>
                   <md-list-item>
-                    <div class="indent"></div>
                     <md-checkbox md-no-ink class="md-primary"
                       ng-model="$node.isChecked"
                       ng-disabled="!$node.parent.isEnabled"
@@ -190,7 +187,6 @@
                     highlighted: lastModified == $node.data
                   }">
                   <md-list-item>
-                    <div class="indent"></div>
                     <md-checkbox md-no-ink
                       class="md-primary"
                       ng-model="$node.isChecked"

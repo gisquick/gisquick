@@ -71,7 +71,7 @@ md-menu-item md-icon {
   color: #777;
   fill: #777;
   width: 24px;
-  padding: 5px 5px;
+  padding: 5px 0;
   stroke-width: 1px;
   stroke: white;
   position: absolute;
@@ -142,6 +142,7 @@ md-tabs-canvas {
 
 .text-icon-tabs .md-tab md-icon {
   color: #555;
+  fill: #555;
   width: 20px;
   height: 20px;
   padding-top: 2px;
@@ -162,6 +163,7 @@ md-tabs-canvas {
 .text-icon-tabs .md-tab.md-active label,
 .text-icon-tabs .md-tab.md-active md-icon {
   color: rgb(0, 170, 212);
+  fill: rgb(0, 170, 212);
 }
 .text-icon-tabs .md-tab label {
   display: block;
@@ -230,6 +232,7 @@ md-fab-trigger .md-fab.md-button md-icon {
 .map-button.md-button md-icon,
 .md-fab.md-button.md-raised md-icon {
   color: #fff;
+  fill: #fff;
 }
 
 .md-button.md-fab.md-primary,
@@ -660,10 +663,100 @@ md-menu-item .user-avatar md-icon > svg {
 md-menu-item .user-avatar md-icon {
   position: absolute;
   margin: 0;
+  padding: 5px;
   height: 16px;
   left: 50%;
   transform: translate(-50%, -25px);
   overflow: hidden;
+}
+
+md-menu-content {
+  overflow: hidden;
+}
+
+md-menu-item .md-button.menu-icon-button {
+}
+
+md-menu-item .menu-icon-button md-icon {
+  position: absolute;
+  right: 0;
+}
+
+md-menu-item .md-button[role="menuitemradio"] {
+  padding-left: 44px;
+}
+
+
+md-menu-item[type="radio"] md-icon {
+  padding-left: 15px;
+}
+
+md-menu-item[type="radio"].submenu-item md-icon {
+  padding-left: 31px;
+}
+
+.menu-item-container {
+  position: relative;
+  overflow: hidden;
+}
+.menu-item-container .md-button.expand-button {
+  position: absolute;
+  right: 8px;
+  top: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 32px;
+  min-height: 32px;
+
+}
+.menu-item-container .expand-button md-icon {
+  width: 12px;
+  height: 12px;
+}
+
+.collapsible-menu-items-container {
+  overflow: hidden;
+  max-height: 0;
+  transition: margin 0s;
+}
+
+.collapsible-menu-items-container.expanded {
+  xborder-top: 1px solid #ccc;
+  xmargin: 0 10px;
+}
+.collapsible-menu-items-container > md-menu-item {
+  margin: 0 10px;
+}
+.collapsible-menu-items-container > md-menu-item:first-child {
+  margin-top: 2px;
+}
+.collapsible-menu-items-container > md-menu-item:last-child {
+  margin-bottom: 2px;
+  border-bottom: 1px solid #ccc;
+}
+
+.collapsible-menu-items-container > md-menu-item .md-button {
+  padding-left: 34px;
+}
+
+.menu-item-container.expanded > md-menu-item .md-button {
+  background-color: #ffffe0;
+}
+
+md-menu-item .secondary-check {
+  position: absolute;
+  left: 18px;
+  border: 1px solid #ccc;
+  width: 9px;
+  height: 9px;
+  margin: 13px 0;
+  padding: 0;
+  border-radius: 6px;
+}
+
+.collapsible-menu-items-container.checked .secondary-check.checked {
+  background-color: #777;
+  border: 1px solid #777;
 }
 
 .md-dialog-container {

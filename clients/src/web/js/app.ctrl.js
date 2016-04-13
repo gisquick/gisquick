@@ -172,51 +172,85 @@
           icon: 'ruler',
           tooltip: 'Mesure coordinates, length and area',
           template: 'templates/tools/measure.html',
+          convertLength: function(value, unit) {
+            return value * 1 / unit.meters;
+          },
+          convertArea: function(value, unit) {
+            return value * 1 / unit.squareMeters;
+          },
           config: {
             positionUnits: undefined, // define in initialization function
-            lengthUnits: [
+            unitsSystems: [
               {
-                name: '',
-                title: 'Automatic'
+                title: 'International - EU',
+                lengthUnits: [
+                  {
+                    title: 'Meters (m)',
+                    label: 'm',
+                    meters: 1,
+                    maxValue: 1000
+                  }, {
+                    title: 'Kilometers (km)',
+                    label: 'km',
+                    meters: 1000
+                  }
+                ],
+                areaUnits: [
+                  {
+                    title: 'Square meters (m²)',
+                    label: 'm²',
+                    squareMeters: 1,
+                    maxValue: 1000000
+                  }, {
+                    title: 'Square kilometers (km²)',
+                    label: 'km²',
+                    squareMeters: 1000000
+                  }, {
+                    title: 'Hectares (ha)',
+                    label: 'ha',
+                    squareMeters: 10000
+                  }
+                ],
+                lengthAutoUnits: ['m', 'km'],
+                areaAutoUnits: ['m²', 'km²']
               }, {
-                name: 'm',
-                label: 'm',
-                title: 'Meters (m)'
-              }, {
-                name: 'km',
-                label: 'km',
-                title: 'Kilometers (km)'
-              }, {
-                name: 'mi',
-                label: 'mi',
-                title: 'Miles (mi)'
-              }
-            ],
-            areaUnits: [
-              {
-                name: '',
-                title: 'Automatic'
-              }, {
-                name: 'm2',
-                label: 'm²',
-                title: 'Square meters (m²)'
-              }, {
-                name: 'km2',
-                label: 'km²',
-                title: 'Square kilometers (km²)'
-              }, {
-                name: 'ha',
-                label: 'ha',
-                title: 'Hectares (ha)'
-              }, {
-                name: 'a',
-                label: 'a',
-                title: 'Ares (a)'
+                title: 'Imperial - UK, US',
+                lengthUnits: [
+                  {
+                    title: 'Yards (yd)',
+                    label: 'yd',
+                    meters: 0.9144,
+                    maxValue: 1760
+                  }, {
+                    title: 'Miles (mi)',
+                    label: 'mi',
+                    meters: 1609.344
+                  }
+                ],
+                areaUnits: [
+                  {
+                    title: 'Square yards (sq. yd.)',
+                    label: 'sq. yd.',
+                    squareMeters: 0.83612736,
+                    maxValue: 4840
+                  }, {
+                    title: 'Acre',
+                    label: 'acre',
+                    squareMeters: 4046.8564224
+                  }
+                ],
+                lengthAutoUnits: ['yd', 'mi'],
+                areaAutoUnits: ['sq. yd.', 'acre']
               }
             ],
             positionUnitsIndex: 0,
-            lengthUnitsIndex: 0,
-            areaUnitsIndex: 0
+            unitsSystemIndex: 0,
+            lengthUnitIndex: 'auto',
+            areaUnitIndex: 'auto',
+            // arrays of selected length/area units - more suitable unit will be selected
+            // from this array depending of 'maxValue' attribute in unit definition
+            lengthUnits: null,
+            areaUnits: null
           },
           data: {
             position: [],

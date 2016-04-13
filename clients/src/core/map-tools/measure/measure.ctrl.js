@@ -5,25 +5,32 @@
     .module('gl.measure')
     .controller('MeasureController', MeasureController);
 
-  function MeasureController($scope, $timeout, projectProvider) {
+  function MeasureController($scope, $timeout, projectProvider, featuresViewer) {
     console.log('MeasureController: INIT');
     var tool = $scope.tool;
-    
-    var unit2unit = {
-      m: {
-        m: 1,
-        km: 0.001,
-        mi: 0.00062137
-      },
-      m2: {
-        m2: 1,
-        km2: 0.000001,
-        ha: 0.0001,
-        a: 0.01
-      }
-    };
 
-    tool.events.unitsChanged = function(units) {
+    function updateUnits() {
+      var unitsSystem = tool.config.unitsSystems[tool.config.unitsSystemIndex];
+
+      if (tool.config.lengthUnitIndex !== 'auto') {
+        tool.config.lengthUnits = [unitsSystem.lengthUnits[tool.config.lengthUnitIndex]];
+      } else {
+        tool.config.lengthUnits = unitsSystem.lengthUnits.filter(function(unit) {
+          return unitsSystem.lengthAutoUnits.indexOf(unit.label) !== -1;
+        });
+      }
+
+      if (tool.config.areaUnitIndex !== 'auto') {
+        tool.config.areaUnits = [unitsSystem.areaUnits[tool.config.areaUnitIndex]];
+      } else {
+        tool.config.areaUnits = unitsSystem.areaUnits.filter(function(unit) {
+          return unitsSystem.areaAutoUnits.indexOf(unit.label) !== -1;
+        });
+      }
+    }
+
+    tool.events.unitsChanged = function() {
+      updateUnits();
       measureTool.updateValue();
     };
 
@@ -55,50 +62,48 @@
       return Math.abs(wgs84Sphere.geodesicArea(coordinates));
     }
 
-    function formatLength(length, units) {
-      var unitsLabel;
-      if (units && units.name) {
-        length = length * unit2unit['m'][units.name];
-        unitsLabel = units.label;
-      } else {
-        if (length > 1000) {
-          return formatLength(length, {name: 'km', label: 'km'});
-        } else {
-          unitsLabel = 'm';
+    function formatValue(value, convertFn, units) {
+      var unit;
+      var unitValue;
+      var unitIndex = 0;
+      while (unitIndex < units.length) {
+        unit = units[unitIndex];
+        unitValue = convertFn(value, unit);
+        if (unit.maxValue && unitValue < unit.maxValue) {
+          break;
         }
+        unitIndex++;
       }
+
       var decimalPlaces;
-      if (length > 100000) {
+      if (unitValue > 100000) {
         decimalPlaces = 0;
-      } else if (length > 10000) {
+      } else if (unitValue > 10000) {
         decimalPlaces = 1;
       } else {
         decimalPlaces = 2;
       }
-      return length.toFixed(decimalPlaces)+' '+unitsLabel;
+      return unitValue.toFixed(decimalPlaces)+' '+unit.label;
     }
 
-    function formatArea(area, units) {
-      var unitsLabel;
-      if (units && units.name) {
-        area = area * unit2unit['m2'][units.name];
-        unitsLabel = units.label;
-      } else {
-        if (area > 1000000) {
-          return formatArea(area, {name: 'km2', label: 'km²'});
-        } else {
-          unitsLabel = 'm²';
-        }
-      }
-      var decimalPlaces;
-      if (area > 100000) {
-        decimalPlaces = 0;
-      } else if (area > 10000) {
-        decimalPlaces = 1;
-      } else {
-        decimalPlaces = 2;
-      }
-      return area.toFixed(decimalPlaces)+' '+unitsLabel;
+    function formatLength(length, unitSystem) {
+      return formatValue(length, tool.convertLength, unitSystem);
+    }
+
+    function formatArea(area, unitSystem) {
+      return formatValue(area, tool.convertArea, unitSystem);
+    }
+
+    function createLabel() {
+      var element = document.createElement('div');
+      element.className = 'measure-label';
+      var overlay = new ol.Overlay({
+        element: element,
+        offset: [-25, -32],
+        positioning: 'center-left'
+      });
+      projectProvider.map.addOverlay(overlay);
+      return overlay;
     }
 
     var mapProjection = projectProvider.map.getView().getProjection();
@@ -106,9 +111,11 @@
       Coordinates: {
         geometryType: 'Point',
         mapProjection: mapProjection,
+        label: null,
         drawstart: function(evt) {
           this.feature = evt.feature;
           this._position = evt.feature.getGeometry().getCoordinates();
+          this.label.setPosition(this._position);
           this.updateValue();
           $scope.$apply();
         },
@@ -125,6 +132,7 @@
               hdms = hdms.replace('N ', 'N;').replace('S ', 'S;');
               coords = hdms.split(";");
               tool.data.position = coords;
+              this.label.getElement().innerHTML = tool.data.position.join(', ');
               return;
             }
             coords.reverse();
@@ -135,6 +143,7 @@
             coords[0].toFixed(units.decimalPlaces)+' '+units.label,
             coords[1].toFixed(units.decimalPlaces)+' '+units.label
           ];
+          this.label.getElement().innerHTML = tool.data.position.join(', ');
         },
         drawend: angular.noop
       },
@@ -142,6 +151,7 @@
         geometryType: 'LineString',
         mapProjection: mapProjection,
         geodesic: mapProjection.isGlobal(),
+        label: null,
         clickHandler: function(evt) {
           this._newSegment = true;
         },
@@ -158,14 +168,19 @@
           var lastSegmentLength = ol.geom.flat.length.lineString(
             geom.getFlatCoordinates(), count>4? count-4 : 0, count, 2
           );*/
+          this.label.setPosition(this.feature.getGeometry().getLastCoordinate());
           this.updateValue();
-          $scope.$apply();
         },
         updateValue: function() {
-          var units = tool.config.lengthUnits[tool.config.lengthUnitsIndex];
-          tool.data.length.lastSegment = this._lengthTotal?
-            formatLength(this._lengthTotal - this._partialLength, units) : '';
-          tool.data.length.total = this._lengthTotal? formatLength(this._lengthTotal, units) : '';
+          if (this._lengthTotal) {
+            tool.data.length.lastSegment =
+              formatLength(this._lengthTotal - this._partialLength, tool.config.lengthUnits);
+            tool.data.length.total = formatLength(this._lengthTotal, tool.config.lengthUnits);
+            this.label.getElement().innerHTML = tool.data.length.total;
+          } else {
+            tool.data.length.lastSegment = '';
+            tool.data.length.total = '';
+          }
         },
         drawstart: function(evt) {
           this._partialLength = 0;
@@ -173,17 +188,32 @@
           this.feature = evt.feature;
           this._moveHandlerKey = projectProvider.map.on('pointermove', this.moveHandler, this);
           this._clickHandlerKey = projectProvider.map.on('click', this.clickHandler, this);
+
+          // optimized angular data-binding updates
+          var lastUpdatedValue;
+          var measureTool = this;
+          this.updateTimer = setInterval(function() {
+            if (measureTool._lengthTotal !== lastUpdatedValue) {
+              $scope.$apply();
+              lastUpdatedValue = measureTool._lengthTotal;
+            }
+          }, 80);
         },
         drawend: function(evt) {
-          console.log('drawend');
           projectProvider.map.unByKey(this._moveHandlerKey);
           projectProvider.map.unByKey(this._clickHandlerKey);
+          clearInterval(this.updateTimer);
+          // create feature's outline
+          this.outlineFeature = this.feature.clone();
+          this.outlineFeature.setStyle(outlineStyle);
+          source.addFeatures([this.outlineFeature]);
         }
       },
       Area: {
         geometryType: 'Polygon',
         mapProjection: mapProjection,
         geodesic: mapProjection.isGlobal(),
+        label: null,
         moveHandler: function(evt) {
           var geom = this.feature.getGeometry();
           var pointsCount = geom.getLinearRing(0).getCoordinates().length;
@@ -202,21 +232,40 @@
               this._area = geom.getArea();
             }
           }
+          this.label.setPosition(this.feature.getGeometry().getLastCoordinate());
           this.updateValue();
-          $scope.$apply();
         },
         updateValue: function() {
-          var areaUnits = tool.config.areaUnits[tool.config.areaUnitsIndex];
-          var lengthUnits = tool.config.lengthUnits[tool.config.lengthUnitsIndex];
-          tool.data.area = this._area > 0? formatArea(this._area, areaUnits) : '';
-          tool.data.perimeter = this._perimeter? formatLength(this._perimeter, lengthUnits) : '';
+          if (this._area > 0) {
+            tool.data.area = formatArea(this._area, tool.config.areaUnits);
+            tool.data.perimeter = formatLength(this._perimeter, tool.config.lengthUnits);
+            this.label.getElement().innerHTML = tool.data.area;
+          } else {
+            tool.data.area = '';
+            tool.data.perimeter = '';
+          }
         },
         drawstart: function(evt) {
           this.feature = evt.feature;
           this._moveHandlerKey = projectProvider.map.on('pointermove', this.moveHandler, this);
+
+          // optimized angular data-binding updates
+          var lastUpdatedValue;
+          var measureTool = this;
+          this.updateTimer = setInterval(function() {
+            if (measureTool._area !== lastUpdatedValue) {
+              $scope.$apply();
+              lastUpdatedValue = measureTool._area;
+            }
+          }, 80);
         },
         drawend: function(evt) {
           projectProvider.map.unByKey(this._moveHandlerKey);
+          clearInterval(this.updateTimer);
+          // create feature's outline
+          this.outlineFeature = this.feature.clone();
+          this.outlineFeature.setStyle(outlineStyle);
+          source.addFeatures([this.outlineFeature]);
         }
       }
     };
@@ -226,23 +275,37 @@
     var measureLayer = new ol.layer.Vector({
       source: source,
       style: new ol.style.Style({
+        zIndex: 100,
         fill: new ol.style.Fill({
           color: 'rgba(255, 255, 255, 0.4)'
         }),
         stroke: new ol.style.Stroke({
-          color: '#ffcc33',
-          width: 3
+          color: 'rgb(250, 188, 0)',
+          width: 4
         }),
         image: new ol.style.Circle({
           radius: 7,
           fill: new ol.style.Fill({
-            color: '#ffcc33'
+            color: 'rgb(250, 188, 0)'
+          }),
+          stroke: new ol.style.Stroke({
+            color: '#ffffff',
+            width: 1.5
           })
         })
       })
     });
+    
+    var outlineStyle = new ol.style.Style({
+      zIndex: 99,
+      stroke: new ol.style.Stroke({
+        color: '#ffffff',
+        width: 5.5
+      })
+    });
 
     function initializeMeasurement() {
+      updateUnits();
       if (drawTool) {
         projectProvider.map.removeInteraction(drawTool);
       }
@@ -253,6 +316,10 @@
       projectProvider.map.addInteraction(drawTool);
       drawTool.on('drawstart', function(evt) {
         source.clear();
+        if (!measureTool.label) {
+          measureTool.label = createLabel();
+        }
+        measureTool.label.getElement().innerHTML = '';
         measureTool.drawstart(evt);
       });
 
@@ -276,14 +343,31 @@
     }
 
     $scope.setMeasureType = function(type) {
+      if (measureTool && measureTool.label) {
+        angular.element(measureTool.label.getElement()).addClass('hidden');
+      }
       measureTool = measureTools[type];
+      if (measureTool.label) {
+        angular.element(measureTool.label.getElement()).removeClass('hidden');
+      }
       source.clear();
       if (tool.config.active) {
         initializeMeasurement();
       }
       if (measureTool.feature) {
-        source.addFeatures([measureTool.feature]);
+        var features = [measureTool.feature];
+        if (measureTool.outlineFeature) {
+          features.push(measureTool.outlineFeature);
+        }
+        source.addFeatures(features);
       }
     };
+
+    $scope.zoomTo = function(options) {
+      if (measureTool.feature) {
+        featuresViewer.zoomToFeature(measureTool.feature, options);
+      }
+    };
+
   }
 })();

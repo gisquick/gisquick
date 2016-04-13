@@ -114,6 +114,12 @@
             this.expandAccordion(accordion);
           }
         };
+
+        $scope.$closeAccordion = function() {
+          if (this.expandedAccordion) {
+            this.collapseAccordion(this.expandedAccordion);
+          }
+        }.bind(this);
       }
     };
   }

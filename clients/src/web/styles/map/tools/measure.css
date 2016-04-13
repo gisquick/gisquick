@@ -31,6 +31,7 @@
 .measure-label {
   padding: 4px 8px;
   border-radius: 4px;
+  min-height: 17px;
 
   font-size: 14px;
   font-weight: bold;

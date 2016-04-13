@@ -43,6 +43,7 @@ gulp.task('csss', function() {
       'node_modules/gislab-web/node_modules/angular-material/angular-material.css',
       'node_modules/gislab-web/node_modules/angular-material-data-table/dist/md-data-table.css',
       'src/web/styles/*.css',
+      'src/web/styles/map/ui.css', // load ui first
       'src/web/styles/map/**/*.css'
     ])
       .pipe(minifyCss())

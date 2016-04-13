@@ -99,7 +99,7 @@
       element.className = 'measure-label';
       var overlay = new ol.Overlay({
         element: element,
-        offset: [-25, -32],
+        offset: [-24, -32],
         positioning: 'center-left'
       });
       projectProvider.map.addOverlay(overlay);
@@ -295,7 +295,7 @@
         })
       })
     });
-    
+
     var outlineStyle = new ol.style.Style({
       zIndex: 99,
       stroke: new ol.style.Stroke({

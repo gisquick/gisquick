@@ -130,3 +130,14 @@ md-input-container.md-input-has-value:not(.md-input-invalid) label {
   top: 0;
   xtransform: translate(50%, 0);
 }
+
+.footer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 10px 0;
+  text-align: center;
+  font-size: 13px;
+  color: #999;
+}

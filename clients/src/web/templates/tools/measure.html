@@ -146,7 +146,7 @@
                   gl-accordion-item
                   class="menu-item-container"
                   ng-class="{
-                    'expanded': $accordion.expanded
+                    expanded: $accordion.expanded
                   }">
                   <md-menu-item
                     type="radio"
@@ -165,16 +165,14 @@
                     class="expand-button no-hover"
                     ng-click="$accordion.toggle()">
                     <md-icon
+                      class="accordion-icon"
                       md-svg-icon="arrow-down">
                     </md-icon>
                   </md-button>
 
                   <div
                     gl-accordion-content
-                    class="collapsible-menu-items-container"
-                    ng-class="{
-                      expanded: $accordion.expanded
-                    }">
+                    class="collapsible-menu-items-container">
                     <md-menu-item
                       ng-if="::unitsSystem.lengthAutoUnits"
                       class="submenu-item"
@@ -291,7 +289,7 @@
                   gl-accordion-item
                   class="menu-item-container"
                   ng-class="{
-                    'expanded': $accordion.expanded
+                    expanded: $accordion.expanded
                   }">
                   <md-menu-item
                     type="radio"
@@ -310,16 +308,14 @@
                     class="expand-button no-hover"
                     ng-click="$accordion.toggle()">
                     <md-icon
+                      class="accordion-icon"
                       md-svg-icon="arrow-down">
                     </md-icon>
                   </md-button>
 
                   <div
                     gl-accordion-content
-                    class="collapsible-menu-items-container"
-                    ng-class="{
-                      expanded: $accordion.expanded
-                    }">
+                    class="collapsible-menu-items-container">
                     <md-menu-item
                       ng-if="::unitsSystem.areaAutoUnits"
                       class="submenu-item"

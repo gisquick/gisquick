@@ -347,6 +347,7 @@
         angular.element(measureTool.label.getElement()).addClass('hidden');
       }
       measureTool = measureTools[type];
+      measureTool.updateValue();
       if (measureTool.label) {
         angular.element(measureTool.label.getElement()).removeClass('hidden');
       }

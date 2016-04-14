@@ -720,10 +720,6 @@ md-menu-item[type="radio"].submenu-item md-icon {
   transition: margin 0s;
 }
 
-.collapsible-menu-items-container.expanded {
-  xborder-top: 1px solid #ccc;
-  xmargin: 0 10px;
-}
 .collapsible-menu-items-container > md-menu-item {
   margin: 0 10px;
 }

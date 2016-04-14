@@ -754,7 +754,7 @@ md-menu-item .secondary-check {
   border-radius: 6px;
 }
 
-.collapsible-menu-items-container.checked .secondary-check.checked {
+.secondary-check.checked {
   background-color: #777;
   border: 1px solid #777;
 }

@@ -170,14 +170,13 @@
                     gl-accordion-content
                     class="collapsible-menu-items-container"
                     ng-class="{
-                      expanded: $accordion.expanded,
-                      checked: tool.config.unitsSystemIndex===$index
+                      expanded: $accordion.expanded
                     }">
                     <md-menu-item
                       ng-if="::unitsSystem.lengthAutoUnits"
                       class="submenu-item"
                       ng-click="
-                        tool.config.unitsSystemIndex=$parent.$index;
+                        tool.config.unitsSystemIndex=$index;
                         tool.config.lengthUnitIndex='auto';
                         tool.events.unitsChanged()
                       ">
@@ -186,7 +185,10 @@
                       </md-button>
                       <div
                         class="secondary-check"
-                        ng-class="{checked: tool.config.lengthUnitIndex==='auto'}">
+                        ng-class="{
+                          checked: tool.config.unitsSystemIndex===$index &&
+                                   tool.config.lengthUnitIndex==='auto'
+                        }">
                       </div>
                     </md-menu-item>
                     <md-menu-item
@@ -200,7 +202,10 @@
                       <md-button>{{ ::unit.title }}</md-button>
                       <div
                         class="secondary-check"
-                        ng-class="{checked: tool.config.lengthUnitIndex===$index}">
+                        ng-class="{
+                          checked: tool.config.unitsSystemIndex===$parent.$index &&
+                                   tool.config.lengthUnitIndex===$index
+                        }">
                       </div>
                     </md-menu-item>
                   </div>
@@ -309,14 +314,13 @@
                     gl-accordion-content
                     class="collapsible-menu-items-container"
                     ng-class="{
-                      expanded: $accordion.expanded,
-                      checked: tool.config.unitsSystemIndex===$index
+                      expanded: $accordion.expanded
                     }">
                     <md-menu-item
                       ng-if="::unitsSystem.areaAutoUnits"
                       class="submenu-item"
                       ng-click="
-                        tool.config.unitsSystemIndex=$parent.$index;
+                        tool.config.unitsSystemIndex=$index;
                         tool.config.areaUnitIndex='auto';
                         tool.events.unitsChanged()
                       ">
@@ -325,7 +329,10 @@
                       </md-button>
                       <div
                         class="secondary-check"
-                        ng-class="{checked: tool.config.areaUnitIndex==='auto'}">
+                        ng-class="{
+                          checked: tool.config.unitsSystemIndex===$index &&
+                                   tool.config.areaUnitIndex==='auto'
+                        }">
                       </div>
                     </md-menu-item>
                     <md-menu-item
@@ -339,7 +346,10 @@
                       <md-button>{{ ::unit.title }}</md-button>
                       <div
                         class="secondary-check"
-                        ng-class="{checked: tool.config.areaUnitIndex===$index}">
+                        ng-class="{
+                          checked: tool.config.unitsSystemIndex===$parent.$index &&
+                                   tool.config.areaUnitIndex===$index
+                        }">
                       </div>
                     </md-menu-item>
                   </div>

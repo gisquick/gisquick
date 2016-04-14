@@ -1,6 +1,7 @@
 import os
 import re
 import json
+import time
 import urllib
 import hashlib
 import datetime
@@ -22,7 +23,23 @@ from webgis.viewer.views.reverse import project_ows_url, project_tile_url, \
     project_legend_url, project_vectorlayers_url
 
 
-OSM_LAYER = {'name': 'OSM', 'type': 'OSM', 'title': 'Open Street Map'}
+OSM_LAYER = {
+    'name': 'OpenStreetMap',
+    'type': 'osm',
+    'metadata': {
+        'abstract': 'OpenStreetMap (OSM) is a collaborative project to create a free editable map of the world.',
+        'keyword_list': 'free, collaborative, world map'
+    }
+}
+
+BLANK_LAYER = {
+    'name': 'Blank Layer',
+    'type': 'blank',
+    'metadata': {
+        'abstract': 'Blank base map layer.',
+        'keyword_list': 'blank'
+    }
+}
 
 OSM_RESOLUTIONS = [
     156543.03390625, 78271.516953125, 39135.7584765625, 19567.87923828125,
@@ -134,9 +151,12 @@ def _convert_layers_metadata(layers):
             groups.append(layer)
             layer['layers'] = _convert_layers_metadata(layer['layers'])
         else:
-            if 'serverName' in layer:
+            if layer.get('serverName'):
                 layer['title'] = layer['name']
                 layer['name'] = layer['serverName']
+            layer_title = layer.get('metadata', {}).get('title')
+            if layer_title:
+                layer['title'] = layer_title
             leafs.append(layer)
     return leafs + groups
 
@@ -216,12 +236,9 @@ def get_project(request):
 
         # ensure that a blank base layer is always used
         if not baselayers_tree:
-            baselayers_tree = [{
-                'name': 'BLANK',
-                'type': 'BLANK',
-                'title': 'Blank Layer',
-                'resolutions': project_tile_resolutions
-            }]
+            blank_layer = dict(BLANK_LAYER)
+            blank_layer['resolutions'] = project_tile_resolutions
+            baselayers_tree = [blank_layer]
         context['base_layers'] = baselayers_tree
 
         # OVERLAYS LAYERS
@@ -370,6 +387,7 @@ def get_user_projects(request, username):
                             authentication = 'all'
                         else:
                             authentication = 'authenticated'
+
                     projects.append({
                         'title': metadata.title,
                         'url': url,
@@ -378,7 +396,9 @@ def get_user_projects(request, username):
                         'cache': metadata.use_mapcache,
                         'authentication': authentication,
                         'publication_time_unix': int(metadata.publish_date_unix),
-                        'expiration_time_unix': int(time.mktime(time.strptime(metadata.expiration, "%d.%m.%Y"))) if metadata.expiration else None
+                        'publication_time': metadata.publish_date,
+                        'expiration_time': metadata.expiration if metadata.expiration else ''
+                        #'expiration_time_unix': int(time.mktime(time.strptime(metadata.expiration, "%d.%m.%Y"))) if metadata.expiration else None
                     })
                 except IOError:
                     # metadata file does not exists or not valid

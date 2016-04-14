@@ -82,7 +82,8 @@ class PublishPage(WizardPage):
                         resolutions
                     )
                 scales = self.plugin.resolutions_to_scales(resolutions)
-                if 'metadata' in layer_data:
+                # Regular QGIS base layers
+                if layer_data['type'] not in ('blank', 'osm', 'mapbox', 'bing'):
                     if 'visibility_scale_max' in layer_data:
                         scale_visibility = 'Maximum (inclusive): {0}, Minimum (exclusive): {1}'.format(
                             layer_data['visibility_scale_max'],
@@ -121,26 +122,25 @@ class PublishPage(WizardPage):
                 # Special base layers
                 else:
                     layer_summary = [
-                        "Title: {1}",
-                        "Abstract: {2}",
-                        "Keywords: {3}",
-                        "Extent: {4}",
-                        "Visible scales: {5}",
-                        "Visible resolutions: {6}"
+                        "Name: {0}",
+                        "Abstract: {1}",
+                        "Keywords: {2}",
+                        "Extent: {3}",
+                        "Visible scales: {4}",
+                        "Visible resolutions: {5}"
                     ]
-                    if layer_data['name'] == 'MAPBOX':
+                    if layer_data['type'] == 'mapbox':
                         layer_summary.append("MapId: {}".format(layer_data['mapid']))
                         layer_summary.append("ApiKey: {}".format(layer_data['apikey']))
-                    elif layer_data['name'].startswith('BING'):
+                    elif layer_data['type'] == 'bing':
                         layer_summary.append("ApiKey: {}".format(layer_data['apikey']))
 
                     create_formatted_tree(root,
                                           { '{0}' : layer_summary },
                                           [
                                               layer_data['name'],
-                                              layer_data['title'],
-                                              layer_data['abstract'] if layer_data.get('abstract') else '',
-                                              layer_data['keywords'] if layer_data.get('keywords') else '',
+                                              opt_value(layer_data, 'metadata.abstract'),
+                                              opt_value(layer_data, 'metadata.keyword_list'),
                                               layer_data['extent'],
                                               scales,
                                               resolutions,

@@ -55,48 +55,49 @@ layer_resolutions = to_decimal_array(
 layer_extent = [-16319611.284727, -5615981.3413867, 16319611.284727, 5615981.3413867]
 BLANK_LAYER = {
     'name': 'Blank',
-    'type': 'Blank',
-    'title': 'Blank',
-    'abstract': 'Blank base map layer.',
-    'keywords': 'blank; world map',
+    'type': 'blank',
+    'metadata': {
+        'abstract': 'Blank base map layer.',
+        'keyword_list': 'blank, world map'
+    }
 }
 OSM_LAYER = {
-    'name': 'OSM',
-    'type': 'OSM',
-    'title': 'OpenStreetMap',
-    'abstract': 'OpenStreetMap (OSM) is a collaborative project to create a free editable map of the world.',
-    'keywords': 'free; collaborative; world map',
+    'name': 'OpenStreetMap',
+    'type': 'osm',
     'resolutions': layer_resolutions,
-    'extent': layer_extent
+    'extent': layer_extent,
+    'metadata': {
+        'abstract': 'OpenStreetMap (OSM) is a collaborative project to create a free editable map of the world.',
+        'keyword_list': 'free, collaborative, world map'
+    }
 }
 MAPBOX_LAYER = {
     'name': 'MapBox',
-    'type': 'MapBox',
-    'title': 'MapBox',
+    'type': 'mapbox',
     'resolutions': layer_resolutions,
     'extent': layer_extent
 }
 BING_LAYERS = (
     {
-    'name': 'BingRoad',
-    'type': 'Bing',
-    'title': 'BingMaps Road',
+    'name': 'BingMaps Road',
+    'serverName': 'BingRoad',
+    'type': 'bing',
     'style': 'Road',
     'resolutions': layer_resolutions,
     'extent': layer_extent
     },
     {
-    'name': 'BingAerial',
-    'type': 'Bing',
-    'title': 'BingMaps Aerial',
+    'name': 'BingMaps Aerial',
+    'serverName': 'BingAerial',
+    'type': 'bing',
     'style': 'Aerial',
     'resolutions': layer_resolutions,
     'extent': layer_extent
     },
     {
-    'name': 'BingAerialWL',
-    'type': 'Bing',
-    'title': 'BingMaps Aerial with Labels',
+    'name': 'BingMaps Aerial with Labels',
+    'serverName': 'BingAerialWL',
+    'type': 'bing',
     'style': 'AerialWithLabels',
     'resolutions': layer_resolutions,
     'extent': layer_extent
@@ -343,11 +344,11 @@ class ProjectPage(WizardPage):
 
         if metadata.get('base_layers'):
             for base_layer in extract_layers(metadata['base_layers']):
-                if base_layer['type'] == 'Blank':
+                if base_layer['type'] == 'blank':
                     dialog.blank.setChecked(True)
-                elif base_layer['type'] == 'OSM':
+                elif base_layer['type'] == 'osm':
                     dialog.osm.setChecked(True)
-                elif base_layer['type'] == 'MapBox':
+                elif base_layer['type'] == 'mapbox':
                     dialog.mapbox.setChecked(True)
                     if 'mapid' in base_layer:
                         index = dialog.mapbox_mapid.findText(base_layer['mapid'])
@@ -355,7 +356,7 @@ class ProjectPage(WizardPage):
                             dialog.mapbox_mapid.setCurrentIndex(index)
                     if 'apikey' in base_layer:
                         dialog.mapbox_apikey.setText(base_layer['apikey'])
-                elif base_layer['type'] == 'Bing':
+                elif base_layer['type'] == 'bing':
                     dialog.bing.setChecked(True)
                     for index, glayer in enumerate(BING_LAYERS):
                         if glayer['name'] == base_layer['name']:
@@ -369,7 +370,7 @@ class ProjectPage(WizardPage):
 
                 if base_layer['visible']:
                     dialog.default_baselayer.setCurrentIndex(
-                        dialog.default_baselayer.findData(base_layer['name'])
+                        dialog.default_baselayer.findText(base_layer['name'])
                     )
         else:
             # at least one base layer must be enabled (default is Blank)
@@ -487,7 +488,7 @@ class ProjectPage(WizardPage):
 
         def blank_toggled(checked):
             if checked:
-                dialog.default_baselayer.insertItem(0, BLANK_LAYER['title'], BLANK_LAYER['name'])
+                dialog.default_baselayer.insertItem(0, BLANK_LAYER['name'])
             else:
                 dialog.default_baselayer.removeItem(0)
             check_base_layer_enabled()
@@ -496,7 +497,7 @@ class ProjectPage(WizardPage):
             resolutions = set(project_resolutions)
             position = 1 if dialog.blank.isChecked() else 0
             if checked:
-                dialog.default_baselayer.insertItem(position, OSM_LAYER['title'], OSM_LAYER['name'])
+                dialog.default_baselayer.insertItem(position, OSM_LAYER['name'])
                 resolutions.update(OSM_LAYER['resolutions'])
             else:
                 dialog.default_baselayer.removeItem(position)
@@ -540,7 +541,7 @@ class ProjectPage(WizardPage):
                 position += 1
                 resolutions.update(OSM_LAYER['resolutions'])
             if checked:
-                dialog.default_baselayer.insertItem(position, MAPBOX_LAYER['title'], MAPBOX_LAYER['name'])
+                dialog.default_baselayer.insertItem(position, MAPBOX_LAYER['name'])
                 resolutions.update(MAPBOX_LAYER['resolutions'])
             else:
                 dialog.default_baselayer.removeItem(position)
@@ -573,7 +574,7 @@ class ProjectPage(WizardPage):
                 resolutions.update(MAPBOX_LAYER['resolutions'])
             if checked:
                 index = dialog.bing_style.currentIndex()
-                dialog.default_baselayer.insertItem(position, BING_LAYERS[index]['title'], BING_LAYERS[index]['name'])
+                dialog.default_baselayer.insertItem(position, BING_LAYERS[index]['name'])
                 resolutions.update(BING_LAYERS[index]['resolutions'])
             else:
                 dialog.default_baselayer.removeItem(position)
@@ -593,8 +594,7 @@ class ProjectPage(WizardPage):
             if dialog.mapbox.isChecked():
                 position += 1
             bing_layer = BING_LAYERS[index]
-            dialog.default_baselayer.setItemText(position, bing_layer['title'])
-            dialog.default_baselayer.setItemData(position, bing_layer['name'])
+            dialog.default_baselayer.setItemText(position, bing_layer['name'])
                 
         dialog.blank.toggled.connect(blank_toggled)
         dialog.osm.toggled.connect(osm_toggled)
@@ -624,7 +624,7 @@ class ProjectPage(WizardPage):
         )
         for layer in self.plugin.layers_list():
             if self.plugin.is_base_layer_for_publish(layer):
-                dialog.default_baselayer.addItem(layer.name(), layer.name())
+                dialog.default_baselayer.addItem(layer.name())
             if self.plugin.is_base_layer_for_publish(layer) or \
                     self.plugin.is_overlay_layer_for_publish(layer):
                 extent = list(
@@ -846,9 +846,7 @@ class ProjectPage(WizardPage):
         metadata['scales'] = self.plugin.resolutions_to_scales(project_tile_resolutions)
 
         # create base layers metadata
-        default_baselayer = self.dialog.default_baselayer.itemData(
-            self.dialog.default_baselayer.currentIndex()
-        )
+        default_baselayer_name = self.dialog.default_baselayer.currentText()
         def base_layers_data(node):
             if node.children:
                 sublayers_data = []
@@ -872,7 +870,7 @@ class ProjectPage(WizardPage):
                     'name': layer.name(),
                     'serverName': layer.shortName(),
                     'provider_type': layer.providerType(),
-                    'visible': layer.name() == default_baselayer,
+                    'visible': layer.name() == default_baselayer_name,
                     'extent': map_settings.layerExtentToOutputExtent(
                         layer,
                         layer.extent()
@@ -911,7 +909,7 @@ class ProjectPage(WizardPage):
                         project_tile_resolutions
                     )
                     layer_data.update({
-                        'type': 'WMSC',
+                        'type': 'wmsc',
                         'min_resolution': min_resolution,
                         'max_resolution': max_resolution,
                         'resolutions': upper_resolutions + layer_resolutions + lower_resolutions,
@@ -922,7 +920,7 @@ class ProjectPage(WizardPage):
                     })
                 else:
                     layer_data.update({
-                        'type': 'WMS',
+                        'type': 'wms',
                         'resolutions': project_tile_resolutions
                     })
                     if layer.hasScaleBasedVisibility():
@@ -944,7 +942,7 @@ class ProjectPage(WizardPage):
 
         # insert special base layers metadata
         for special_base_layer in reversed(special_base_layers):
-            special_base_layer['visible'] = special_base_layer['name'] == default_baselayer
+            special_base_layer['visible'] = special_base_layer['name'] == default_baselayer_name
             if 'resolutions' not in special_base_layer:
                 special_base_layer['resolutions'] = project_tile_resolutions
             else:

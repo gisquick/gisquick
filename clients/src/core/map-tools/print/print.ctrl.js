@@ -285,11 +285,9 @@
 
     $scope.download = function() {
       var printParams = getPrintParameters();
-      tool.config.showProgressBar = true;
       // TODO: handle errors
-      gislabClient.get(projectProvider.config.ows_url, printParams, {responseType: 'blob'})
+      tool.progress = gislabClient.get(projectProvider.config.ows_url, printParams, {responseType: 'blob'})
         .then(function(data) {
-          tool.config.showProgressBar = false;
           var link = document.createElement("a");
           link.download = "{0}.{1}".format(tool.config.layout.name, tool.config.format);
           link.href = URL.createObjectURL(data);

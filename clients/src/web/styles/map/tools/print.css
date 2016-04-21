@@ -71,19 +71,19 @@
   padding: 0 10px;
 }
 
-md-progress-linear.print-progress-bar {
+.print-progress-bar {
   position: absolute;
   left: 0;
+  right: 0;
   bottom: -5px;
   height: 4px;
   z-index: 100;
   opacity: 1;
   margin: 0 2px;
-  width: calc(100% - 4px);
 }
 
-md-progress-linear.print-progress-bar .md-container {
-  height: 4px;
+.print-progress-bar .md-container {
+  height: 3px;
 }
 
 .toast-message {

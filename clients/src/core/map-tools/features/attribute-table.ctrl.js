@@ -9,7 +9,6 @@
     // console.log('AttributeTableController: INIT');
     featuresViewer.initialize();
     $scope.tool = tool;
-    console.log($scope);
 
     var comparators = {
       TEXT: [
@@ -147,11 +146,6 @@
       }
     };
 
-    $scope.selectFeature = function(feature) {
-      featuresViewer.selectFeature(feature);
-      $scope.selectedFeature = feature;
-    };
-
     $scope.zoomToFeature = function(feature, options) {
       var params = {
         'VERSION': '1.0.0',
@@ -163,17 +157,17 @@
       $scope.progress = gislabClient.get(projectProvider.config.ows_url, params)
         .then(function(data) {
           var parser = new ol.format.GeoJSON();
-          var feature = parser.readFeatures(data)[0];
-          //console.log(feature);
-          $scope.selectFeature(feature);
-          featuresViewer.zoomToFeature(feature, options);
+          var geomFeature = parser.readFeatures(data)[0];
+          featuresViewer.selectFeature(geomFeature);
+          featuresViewer.zoomToFeature(geomFeature, options);
+          tool.selectedFeature = feature;
         });
     }
 
     function fetchFeatures (filters) {
       var layerName = $scope.activeLayer.name;
       // convert to WFS layer name
-      while (layerName.indexOf(' ') != -1) {
+      while (layerName.indexOf(' ') !== -1) {
         layerName = layerName.replace(' ', '_');
       }
       var wfsParams = {

@@ -252,6 +252,15 @@
           <label>Legend</label>
         </md-tab-label>
         <md-tab-body>
+          <!-- <md-progress-linear
+            ng-if="showProgressBar"
+            class="legend-progress-bar"
+            md-mode="indeterminate">
+          </md-progress-linear> -->
+          <gl-progress-bar
+            class="legend-progress-bar"
+            promise="legendProgressBar">
+          </gl-progress-bar>
           <div
             class="legend-container"
             xng-style="{maxHeight: ui.panel.contentPanel.height-69+'px'}">
@@ -260,7 +269,8 @@
               ng-if="layer.visible && layer.legendUrl"
               class="legend-item"
               alt=""
-              ng-src="{{ layer.legendUrl }}" />
+              ng-src="{{ layer.legendUrl }}"
+              image-load="imageLoaded(layer)" />
           </div>
         </md-tab-body>
       </md-tab>

@@ -140,7 +140,6 @@
       tool.data.layers.forEach(function(layer) {
         layer.features = layersFeatures[layer.name] || [];
         layer.selectedFeature = null;
-        layer.page = 1;
       });
       tool.showTable();
     }

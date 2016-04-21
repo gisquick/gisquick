@@ -758,3 +758,17 @@ md-menu-item .secondary-check {
 .md-dialog-container {
   z-index: 500;
 }
+
+.md-button.no-hover.md-focused,
+.md-button.no-hover:hover {
+  background-color: transparent;
+}
+
+
+md-progress-linear {
+  transition: opacity 0.5s;
+}
+
+md-progress-linear.ng-hide {
+  opacity: 0;
+}

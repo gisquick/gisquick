@@ -31,11 +31,10 @@
         ng-click="tool.close()">
         <md-icon md-svg-icon="x"></md-icon>
       </md-button>
-      <md-progress-linear
-        ng-if="tool.config.showProgressBar"
-        class="print-progress-bar"
-        md-mode="indeterminate">
-      </md-progress-linear>
+      <gl-progress-bar
+        promise="tool.progress"
+        class="print-progress-bar">
+      </gl-progress-bar>
       <div
         class="toast-message fade"
         ng-if="tool.config.toast">

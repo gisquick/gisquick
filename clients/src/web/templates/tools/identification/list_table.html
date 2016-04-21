@@ -15,7 +15,7 @@
         <span
           class="tab-label"
           ng-class="{hidden: layer.features.length === 0}">
-          {{ layer.features.length === 0? '' :  layer.title}}
+          {{ layer.features.length === 0? '' :  layer.title }}
         </span>
       </md-tab-label>
       <md-tab-body>
@@ -28,7 +28,7 @@
           class="table-list-item">
           <p>
             <b>{{ ::attribute.label }}: </b>
-            {{ layer.features[layer.page-1].get(attribute.name) }}
+            {{ layer.features[layer.features.page-1].get(attribute.name) }}
           </p>
         </md-list-item>
         <md-list-item></md-list-item>
@@ -51,6 +51,10 @@
     <div
       layout="row"
       class="list-bottom-toolbar">
+      <gl-progress-bar
+        promise="tool.progress"
+        class="list-table-progress-bar">
+      </gl-progress-bar>
       <md-button
         aria-label="Zoom to feature"
         class="zoom-to-feature"
@@ -63,31 +67,10 @@
         </md-icon>
       </md-button>
       <span flex></span>
-      <md-button
-        aria-label="Previous"
-        ng-disabled="tool.data.activeLayer.page === 1"
-        ng-click="
-          tool.data.activeLayer.page=tool.data.activeLayer.page-1;
-          selectFeature(tool.data.activeLayer.features[tool.data.activeLayer.page-1])
-        ">
-        <md-icon
-          md-svg-icon="arrow-left">
-        </md-icon>
-      </md-button>
-      <span class="text">
-        {{ tool.data.activeLayer.page }} of {{ tool.data.activeLayer.features.length }}
-      </span>
-      <md-button
-        aria-label="Next"
-        ng-disabled="tool.data.activeLayer.page === tool.data.activeLayer.features.length"
-        ng-click="
-          tool.data.activeLayer.page=tool.data.activeLayer.page+1;
-          selectFeature(tool.data.activeLayer.features[tool.data.activeLayer.page-1])
-        ">
-        <md-icon
-          md-svg-icon="arrow-right">
-        </md-icon>
-      </md-button>
+      <gl-single-page-paginator
+        ng-model="tool.data.activeLayer.features"
+        page-changed="selectFeature(tool.data.activeLayer.features[$page-1])">
+      </gl-single-page-paginator>
       <span flex></span>
       <span flex></span>
     </div>

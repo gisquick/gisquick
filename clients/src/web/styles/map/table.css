@@ -5,41 +5,57 @@
   height: 26px;
   top: 0px;
 }
-table[md-data-table] {
+
+.table-container {
+  overflow-x: auto;
+}
+.table-container.horizontal-overflow {
+  padding-bottom: 12px;
+}
+
+.table-container table {
   background-color: transparent;
+  width: 100%;
+  border-collapse: collapse;
 }
-table[md-data-table] thead label {
+
+.table-container table > thead > tr .header {
   color: #fff;
+  font-size: 13px;
+  line-height: 23px;
+  text-align: left;
 }
+
 .search-settings {
   border-top: 1px solid rgba(0, 0, 0, 0.12);
   height: 36px;
   box-sizing: content-box;
+  font-size: 13px;
+  position: relative;
 }
 .search-settings md-checkbox, 
 .search-settings md-input-container,
 .search-settings button {
-  line-height: 32px;
+  line-height: 36px;
   margin: 0 10px 0 10px;
   font-size: 12.5px;
   font-weight: 500;
   color: white;
 }
 
-.search-settings md-input-container, .search-settings md-checkbox {
-  padding-top: 1.5px;
-}
 .search-settings md-input-container {
   flex-direction: row;
-  padding: 4px 0 4px 0;
+  padding: 0px 0 4px 0;
+  margin-top: 2px;
 }
 .search-settings md-input-container label {
-  font-size: 12.5px;
   padding: 0 8px 0 0;
 }
 .search-settings md-input-container input {
   width: 60px;
   text-align: center;
+  height: 26px;
+  margin-top: 4px;
 }
 
 .search-settings md-input-container.md-input-has-value:not(.md-input-invalid) label,
@@ -103,10 +119,6 @@ md-bottom-sheet.features-panel.collapsed {
   height: 80px;
   visibility: hidden;
 }
-md-data-table-container.horizontal-overflow {
-  padding-bottom: 12px;
-}
-
 
 md-bottom-sheet {
   padding: 0;
@@ -127,31 +139,56 @@ md-bottom-sheet md-data-table-pagination > div {
   border: none;
 }
 
-md-data-table-pagination > div > span {
+.search-settings .pagination-label {
     margin-right: 0!important;
     min-width: 100px;
-    text-align: right;
+    line-height: 36px;
+    text-align: center;
+    display: inline-block;
 }
 
-table[md-data-table] > tbody > tr {
-  height: 32px;
+.md-button.pagination-button {
+  margin: 0;
+  min-width: 36px;
+  width: 36px;
 }
-table[md-data-table] > tbody > tr:hover {
+.md-button.pagination-button md-icon {
+  width: 14px;
+  height: 14px;
+}
+
+.table-container table > tbody > tr {
+  height: 32px;
+  font-size: 13px;
+  outline: none;
+  box-sizing: border-box;
+  border-top: 1px solid #ccc;
+}
+.table-container table > tbody > tr:hover:not(.md-selected) {
   background-color: #ffffe0!important;
 }
 
-table[md-data-table] > thead:not([md-table-progress]) > tr > th > div {
+.table-container table > tbody > tr.md-selected {
+  background-color: rgba(0, 170, 212, 0.15);
+}
+
+.table-container table > tbody > tr > td md-icon{
+  outline: none;
+}
+
+.table-container table > thead > tr > th > div {
   height: 36px;
 }
-.identification table[md-data-table] > thead:not([md-table-progress]) > tr > th > div {
-  height: 31px;
+.identification .table-container table > thead > tr > th {
+  height: 28px;
 }
-.attribute-table table[md-data-table] > thead > tr > th > div {
+.attribute-table .table-container table > thead > tr > th > div {
   height: auto;
 }
-.attribute-table table[md-data-table] > thead > tr > th > div.filter-row {
-  height: 60px;
+.attribute-table .table-container table > thead > tr > th > div.filter-row {
+  height: 56px;
   align-items: flex-start;
+  font-size: 13px;
 }
 .attribute-table .filter-row.active,
 .attribute-table .filter-row.active md-input-container .md-input {
@@ -159,9 +196,6 @@ table[md-data-table] > thead:not([md-table-progress]) > tr > th > div {
 }
 .attribute-table .filter-row .layout-row {
   width: 100%;
-}
-.attribute-table md-input-container {
-  padding: 0;
 }
 
 .filter-row md-input-container {
@@ -171,17 +205,15 @@ table[md-data-table] > thead:not([md-table-progress]) > tr > th > div {
   min-width: 100px;
 }
 
-/*table[md-data-table] > thead:not([md-table-progress]) > tr > th*/
-.identification table[md-data-table] > thead > tr > th > div {
+.identification .table-container table > thead > tr > th {
   color: #fff;
   line-height: 26px;
   vertical-align: middle;
-  display: block;
 }
 
-table[md-data-table] > tbody > tr > td,
-table[md-data-table] > tfoot > tr > td,
-table[md-data-table] > thead > tr > th {
+.table-container table > tbody > tr > td,
+.table-container table > tfoot > tr > td,
+.table-container table > thead > tr > th {
   padding: 0px 10px 0 10px!important;
 }
 
@@ -204,7 +236,9 @@ md-progress-linear.md-default-theme, md-progress-linear .md-bar {
   font-weight: 500;
 }
 .filter-row md-input-container {
-  height: 36px;
+  height: 30px;
+  padding: 0;
+
 }
 .filter-row md-input-container .md-input {
   line-height: 36px;
@@ -223,10 +257,6 @@ label.md-no-float {
 .bottom-toolbar .md-button {
   margin: 0;
   line-height: 38px;
-}
-
-table[md-data-table] > thead:not([md-table-progress]) > tr > th {
-  font-size: 13px;
 }
 
 .tabs-header {
@@ -299,9 +329,6 @@ table[md-data-table] > thead:not([md-table-progress]) > tr > th {
   padding: 0 2px 0 0;
   vertical-align: top;
 }
-.features-panel .close-button-container .close-button:hover {
-  background-color: transparent;
-}
 
 .features-panel .close-button md-icon {
   color: #333;
@@ -363,7 +390,6 @@ md-list.attribute-table md-list-item.list-item-header {
   padding-bottom: 1px;
 }
 .attribute-table .table-list-item {
-  xborder-bottom: 1px solid #eee;
   padding: 0;
 }
 
@@ -376,7 +402,6 @@ md-list.attribute-table md-list-item.list-item-header {
 
 .list-table-settings {
   position: absolute;
-  xposition: fixed;
   left: 0;
   font-size: 13.5px;
   width: calc(100% - 17px);
@@ -392,11 +417,12 @@ md-list.attribute-table md-list-item.list-item-header {
 }
 .list-bottom-toolbar {
   text-align: center;
-  max-height: 30px;
-  line-height: 30px;
+  max-height: 32px;
+  line-height: 32px;
   border-top: 1px solid #aaa;
   border-bottom: 1px solid #aaa;
   margin-left: 17px;
+  position: relative;
 }
 .list-bottom-toolbar .text {
   padding: 0 6px;
@@ -413,10 +439,15 @@ md-list.attribute-table md-list-item.list-item-header {
 .list-bottom-toolbar .md-button.text-button {
   width: auto;
 }
+
 .list-bottom-toolbar md-icon {
   color: #555;
   width: 16px;
   height: 16px;
+}
+.list-bottom-toolbar .button-first,
+.list-bottom-toolbar .button-last {
+  display: none;
 }
 
 .attribute-table md-list-item.list-filter {
@@ -479,4 +510,64 @@ md-list-item.list-filter md-icon {
 .identification-table.vertical .empty-list-table {
   margin: 5px 0;
   text-align: center;
+  font-size: 14px;
+}
+
+.list-table-progress-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -3px;
+  max-height: 3px;
+  overflow: hidden;
+}
+
+.table-progress-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 35px;
+  max-height: 3px;
+  overflow: hidden;
+}
+
+.attribute-table md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {
+    min-height: 60px;
+}
+
+/* Customized tab animation */
+.features-panel md-tab-content:not(.md-active) {
+  pointer-events: none;
+}
+
+.features-panel md-tab-content.md-right:not(.md-active) {
+  -webkit-transform: translateX(30%);
+  transform: translateX(30%);
+}
+
+.features-panel md-tab-content.md-left:not(.md-active) {
+  -webkit-transform: translateX(-30%);
+  transform: translateX(-30%);
+}
+
+.features-panel md-tab-content {
+  transition-property: transform;
+  transition: all 0.55s cubic-bezier(0.35, 0, 0.25, 1);
+}
+
+.features-panel md-tab-content.md-left:not(.md-active) > div,
+.features-panel md-tab-content.md-right:not(.md-active) > div {
+  transition: opacity 0.5s cubic-bezier(0.35, 0, 0.25, 1);
+}
+
+.features-panel md-tab-content > div {
+  transition: opacity 0.5s cubic-bezier(0.35, 0, 0.25, 1);
+  opacity: 1.0;
+}
+.features-panel md-tab-content:not(.md-active) > div {
+  opacity: 0.01;
+}
+
+gl-paginator {
+  margin: 0 6px;
 }

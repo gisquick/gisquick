@@ -333,22 +333,61 @@ md-tabs-wrapper md-icon {
 }
 
 .layers-control-container {
-  height: 100%;
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
+  height: auto;
+  overflow: hidden;
 }
 .layers-control-container md-tabs {
   height: 100%;
+  width: 100%;
 }
 
 .layers-control-container md-tab-content > div {
-  height: 100%;
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
+  width: 100%;
+  height: 100%;
+}
+
+
+.legend-container {
+  position: relative;
+  overflow: auto;
+  height: calc(100% - 5px);
+  xheight: 100%;
+  width: 100%;
+  margin-top: 5px;
+}
+
+.legend-progress-bar {
+  position: absolute;
+  top: 0;
+  left: 6px;
+  right: 6px;
+  width: auto;
+  max-height: 3px;
+  overflow: hidden;
+}
+/*
+.legend-progress-bar {
+  position: absolute;
+  top: auto;
+  bottom: 2px;
+  left: 6px;
+  right: 6px;
+  width: auto;
+  max-height: 3px;
+  overflow: hidden;
+}*/
+
+
+.vertical-panel md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {
+  min-height: 0px;
 }

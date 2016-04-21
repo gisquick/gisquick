@@ -1,4 +1,5 @@
 <md-bottom-sheet
+  ng-cloak
   class="features-panel attribute-table md-whiteframe-top">
   <div class="tabs-header md-whiteframe-top">
     <span
@@ -10,8 +11,9 @@
   <div class="close-button-container md-whiteframe-top">
     <div class="tab-end-left"></div>
     <md-button
+      md-no-ink
       aria-label="Close"
-      class="close-button"
+      class="close-button no-hover"
       ng-click="tool.deactivate()">
       <md-icon md-svg-icon="x"></md-icon>
     </md-button>
@@ -21,29 +23,26 @@
   <md-tabs
     md-no-ink
     md-no-pagination
-    md-dynamic-height
     class="tabs-no-header"
+    ng-style="{
+      minHeight: 61+32*(tool.rowsPerPage||1)+'px'
+    }"
     md-selected="tool.layerIndex">
     <md-tab ng-repeat="layer in layers"
       label="layer"
       md-on-select="setActiveLayer(layer)">
-      <md-data-table-container
+      <div
         gl-scrollbar-detector
-        ng-style="{height: 61+32*(tool.rowsPerPage||1)+'px'}"
-        class="attribute-table">
-        <table
-          md-data-table
-          ng-init="layer.page=1"
-          md-progress="progress">
+        class="attribute-table table-container">
+        <table>
           <thead>
             <tr>
               <th class="zoom" width="10"></th>
-              <th ng-repeat="attribute in ::layer.attributes" name="">
+              <th ng-repeat="attribute in ::layer.attributes">
                 <div
-                  layout="column"
                   class="filter-row"
                   ng-class="{active: attribute.comparator && attribute.filterValue}">
-                  <label>{{ ::attribute.label }}</label>
+                  <div class="header">{{ ::attribute.label }}</div>
                   <div layout="row">
                     <md-input-container>
                       <md-select
@@ -76,8 +75,8 @@
           </thead>
           <tbody>
             <tr
-              ng-repeat="feature in layer.features | limitTo: tool.rowsPerPage: (layer.page - 1) * tool.rowsPerPage"
-              ng-class="{'md-selected': selectedFeature === feature}">
+              ng-repeat="feature in layer.features | limitTo: tool.rowsPerPage: (layer.features.page - 1) * tool.rowsPerPage"
+              ng-class="{'md-selected': tool.selectedFeature === feature}">
               <td class="icon">
                 <md-icon
                   md-svg-icon="zoom-to-feature"
@@ -93,43 +92,50 @@
             </tr>
           </tbody>
         </table>
-      </md-data-table-container>
+      </div>
     </md-tab>
   </md-tabs>
-    <div class="search-settings" layout="row">
-      <md-input-container
-        layout="row"
-        class="input-inline-label">
-        <label class="md-label md-no-float">Limit:</label>
-        <input ng-model="tool.limit" type="number" min="1" max="1000"></input>
-      </md-input-container>
-      <md-input-container
-        layout="row"
-        class="input-inline-label">
-        <label class="md-label md-no-float">Rows per page:</label>
-        <input ng-model="tool.rowsPerPage" type="number" min="1" max="10"></input>
-      </md-input-container>
-      <md-data-table-pagination
-        md-limit="tool.rowsPerPage"
-        md-page="activeLayer.page"
-        md-total="{{ activeLayer.features.length }}"
-        md-trigger="onpagechange">
-      </md-data-table-pagination>
+
+  <div class="search-settings" layout="row">
+    <gl-progress-bar
+      class="table-progress-bar"
+      promise="progress">
+    </gl-progress-bar>
+    <md-input-container
+      layout="row"
+      class="input-inline-label">
+      <label class="md-label md-no-float">Limit:</label>
+      <input ng-model="tool.limit" type="number" min="1" max="1000"></input>
+    </md-input-container>
+    <md-input-container
+      layout="row"
+      class="input-inline-label">
+      <label class="md-label md-no-float">Rows per page:</label>
+      <input ng-model="tool.rowsPerPage" type="number" min="1" max="10"></input>
+    </md-input-container>
+
+    <gl-paginator
+      ng-show="activeLayer.features.length > 0"
+      ng-model="activeLayer.features"
+      gl-rows="tool.rowsPerPage">
+    </gl-paginator>
+
+    <span flex></span>
+    <div
+      flex
+      layout="row"
+      style="flex: 1 1 auto;"
+      class="inline-flex">
       <span flex></span>
-      <div
-        flex
-        layout="row"
-        style="flex: 1 1 auto;"
-        class="inline-flex">
-        <span flex></span>
-        <md-checkbox
-          class="md-primary"
-          ng-model="tool.searchInExtent"
-          aria-label="Filter to visible area">
-          Filter to visible area
-        </md-checkbox>
-        <md-button ng-click="search();activeLayer.page=1">Refresh</md-button>
-      </div>
+      <md-checkbox
+        class="md-primary"
+        ng-model="tool.searchInExtent"
+        aria-label="Filter to visible area">
+        Filter to visible area
+      </md-checkbox>
+      <md-button ng-click="search()">Refresh</md-button>
     </div>
+  </div>
+
   <div style="height: 80px;"></div>
 </md-bottom-sheet>

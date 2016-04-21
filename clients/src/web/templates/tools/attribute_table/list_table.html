@@ -7,8 +7,7 @@
     md-selected="tool.layerIndex">
     <md-tab ng-repeat="layer in layers"
       label="layer"
-      md-on-select="setActiveLayer(layer)"
-      ng-init="layer.page = 1">
+      md-on-select="setActiveLayer(layer)">
       <md-list
         class="attribute-table">
         <div
@@ -18,7 +17,7 @@
             class="table-list-item">
             <p>
               <b>{{ ::attribute.label }}: </b>
-              {{ layer.features[layer.page-1].properties[attribute.name] }}
+              {{ layer.features[layer.features.page-1].properties[attribute.name] }}
             </p>
             <md-menu
               class="list-menu"
@@ -88,11 +87,15 @@
     <div
       layout="row"
       class="list-bottom-toolbar">
+      <gl-progress-bar
+        promise="progress"
+        class="list-table-progress-bar">
+      </gl-progress-bar>
       <md-button
         aria-label="Zoom to feature"
         class="zoom-to-feature"
         ng-click="zoomToFeature(
-          activeLayer.features[activeLayer.page],
+          activeLayer.features[activeLayer.features.page],
           { padding: [0, 0, tool.config.mapView.bottom, tool.config.mapView.left] }
         )">
         <md-icon
@@ -100,27 +103,13 @@
         </md-icon>
       </md-button>
       <span flex></span>
-      <md-button
-        aria-label="Previous"
-        ng-disabled="activeLayer.page === 1"
-        ng-click="activeLayer.page=activeLayer.page-1">
-        <md-icon
-          md-svg-icon="arrow-left">
-        </md-icon>
-      </md-button>
-      <span>{{ activeLayer.page }} of {{ activeLayer.features.length }}</span>
-      <md-button
-        aria-label="Next"
-        ng-disabled="activeLayer.page === activeLayer.features.length"
-        ng-click="activeLayer.page=activeLayer.page+1">
-        <md-icon
-          md-svg-icon="arrow-right">
-        </md-icon>
-      </md-button>
+      <gl-single-page-paginator
+        ng-model="activeLayer.features">
+      </gl-single-page-paginator>
       <span flex></span>
       <md-button
         class="text-button"
-        ng-click="search();activeLayer.page=1">
+        ng-click="search()">
         REFRESH
       </md-button>
     </div>

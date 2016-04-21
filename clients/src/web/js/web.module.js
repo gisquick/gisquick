@@ -6,7 +6,6 @@
     .module('gl.web', [
       'templates',
       'ngMaterial',
-      'md.data.table',
       'gl.network',
       'gl.ui',
       'gl.map',

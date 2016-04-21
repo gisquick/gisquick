@@ -76,7 +76,22 @@
           this.checked = !collapsed;
         }
       }, {
-        title: 'Help'
+        title: 'Help',
+        perform: function() {
+          setTimeout(function() { // run it outside Angular's digest cycle
+            var width = parseInt(window.innerWidth * 0.65);
+            var height = parseInt(window.innerWidth * 0.85);
+            var left = parseInt((window.innerWidth - width) / 2);
+            var windowParams =
+              "left={0},width={1},height={2},resizable=yes,menubar=no,scrollbars=yes,status=no"
+              .format(left, width, height);
+            window.open(
+              projectProvider.config.gislab_documentation,
+              "GIS.lab Web Documentation",
+              windowParams
+            );
+          });
+        }
       }, {
         title: 'About'
       }

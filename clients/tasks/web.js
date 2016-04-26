@@ -41,6 +41,7 @@ gulp.task('csss', function() {
     gulp.src([
       'node_modules/openlayers/dist/ol.css',
       'node_modules/gislab-web/node_modules/angular-material/angular-material.css',
+      'node_modules/gislab-web/node_modules/simple-scrollbar/simple-scrollbar.css',
       'src/web/styles/*.css',
       'src/web/styles/map/ui.css', // load ui first
       'src/web/styles/map/**/*.css'
@@ -87,6 +88,7 @@ gulp.task('deps', ['build-ol3'], function() {
       'node_modules/gislab-web/node_modules/angular-animate/angular-animate.min.js',
       'node_modules/gislab-web/node_modules/angular-aria/angular-aria.min.js',
       'node_modules/gislab-web/node_modules/angular-material/angular-material.gislab.js',
+      'node_modules/gislab-web/node_modules/simple-scrollbar/simple-scrollbar.min.js',
     ])
       .pipe(
         gulpif(

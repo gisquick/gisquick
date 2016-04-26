@@ -6,6 +6,7 @@
     class="tabs-header md-whiteframe-top"
     ng-show="tool.data.activeLayer">
     <md-button
+      md-no-ink
       class="panel-tab"
       ng-class="{selected: tool.data.activeLayer===layer}"
       ng-click="tool.data.activeLayerIndex=$index"
@@ -43,7 +44,7 @@
       md-on-select="setActiveLayer(layer)"
       label="layer">
       <div
-        gl-scrollbar-detector
+        gl-scroller
         class="identification-table table-container">
         <table>
           <thead>

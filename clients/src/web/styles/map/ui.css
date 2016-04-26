@@ -575,6 +575,9 @@ md-tabs > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-ink-bar 
 md-tabs.tabs-no-header > md-tabs-wrapper {
   display: none;
 }
+md-tabs.tabs-no-header > md-tabs-content-wrapper {
+  top: 0;
+}
 
 .inline-flex {
   display: inline-flex;
@@ -771,4 +774,8 @@ md-progress-linear {
 
 md-progress-linear.ng-hide {
   opacity: 0;
+}
+
+md-tab-content {
+  height: 100%;
 }

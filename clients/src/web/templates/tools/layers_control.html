@@ -14,6 +14,7 @@
       </md-tab-label>
       <md-tab-body>
         <md-list
+          gl-scroller
           class="baselayer-container gl-tree"
           gl-tree-view="baseLayers"
           gl-tree-id-attribute="name"
@@ -100,11 +101,10 @@
             label="Topics">
             <md-radio-group
               class="md-primary"
+              gl-scroller
               ng-model="selectedTopic.index"
               ng-change="loadTopic(selectedTopic.index)">
                 <md-list
-                  style="overflow-y: auto;"
-                  xng-style="{height: ui.panel.contentPanel.height-109+'px'}"
                   class="gl-tree"
                   gl-accordion>
                   <div
@@ -142,6 +142,7 @@
           <md-tab
             label="Layers">
             <md-list
+              gl-scroller
               class="layers-container gl-tree"
               gl-check-tree-view="layers"
               gl-tree-id-attribute="name"
@@ -262,8 +263,8 @@
             promise="legendProgressBar">
           </gl-progress-bar>
           <div
-            class="legend-container"
-            xng-style="{maxHeight: ui.panel.contentPanel.height-69+'px'}">
+            gl-scroller
+            class="legend-container">
             <img
               ng-repeat="layer in ::project.layers.list"
               ng-if="layer.visible && layer.legendUrl"

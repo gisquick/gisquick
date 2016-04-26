@@ -9,6 +9,7 @@ packages:
   - python-pip
   - virtualenvwrapper
   - zlib1g-dev
+  - git
 
 # node
 nvm_url: https://raw.githubusercontent.com/creationix/nvm

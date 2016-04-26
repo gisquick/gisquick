@@ -328,10 +328,14 @@ md-tabs-wrapper md-icon {
 }
 
 
+#vertical-attribute-table,
+#vertical-identification-table,
 #content-panel {
   position: relative;
 }
 
+.attribute-table.vertical,
+.identification-table.vertical,
 .layers-control-container {
   position: absolute;
   top: 0;
@@ -341,12 +345,17 @@ md-tabs-wrapper md-icon {
   height: auto;
   overflow: hidden;
 }
+
+.attribute-table.vertical md-tabs,
+.identification-table.vertical md-tabs,
 .layers-control-container md-tabs {
   height: 100%;
   width: 100%;
 }
 
-.layers-control-container md-tab-content > div {
+.attribute-table.vertical md-tab-content > div.ng-scope,
+.identification-table.vertical md-tab-content > div.ng-scope,
+.layers-control-container md-tab-content > div.ng-scope {
   position: absolute;
   top: 0;
   left: 0;
@@ -356,12 +365,9 @@ md-tabs-wrapper md-icon {
   height: 100%;
 }
 
-
 .legend-container {
   position: relative;
-  overflow: auto;
   height: calc(100% - 5px);
-  xheight: 100%;
   width: 100%;
   margin-top: 5px;
 }
@@ -375,18 +381,6 @@ md-tabs-wrapper md-icon {
   max-height: 3px;
   overflow: hidden;
 }
-/*
-.legend-progress-bar {
-  position: absolute;
-  top: auto;
-  bottom: 2px;
-  left: 6px;
-  right: 6px;
-  width: auto;
-  max-height: 3px;
-  overflow: hidden;
-}*/
-
 
 .vertical-panel md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {
   min-height: 0px;

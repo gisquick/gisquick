@@ -3,7 +3,6 @@
   ng-init="tool.config.featureAutoselect=true">
   <md-tabs
     md-no-ink
-    md-dynamic-height
     class="panel-content"
     ng-class="{'tabs-no-header': tool.config.singleLayerResult}"
     md-selected="tool.data.activeLayerIndex"
@@ -20,6 +19,7 @@
       </md-tab-label>
       <md-tab-body>
       <md-list
+        gl-scroller
         class="attribute-table"
         style="padding:0;">
         
@@ -46,8 +46,7 @@
   </md-tabs>
   <div
     ng-hide="ui.manager.secondaryPanel.collapsed || !tool.data.activeLayer"
-    class="list-table-settings"
-    ng-style="{top: (ui.manager.secondaryPanel.height-6)+'px'}">
+    class="list-table-settings">
     <div
       layout="row"
       class="list-bottom-toolbar">

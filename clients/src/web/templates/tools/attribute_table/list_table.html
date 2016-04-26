@@ -2,13 +2,13 @@
   class="attribute-table vertical">
   <md-tabs
     md-no-ink
-    md-dynamic-height
     class="tabs-no-header"
     md-selected="tool.layerIndex">
     <md-tab ng-repeat="layer in layers"
       label="layer"
       md-on-select="setActiveLayer(layer)">
       <md-list
+        gl-scroller
         class="attribute-table">
         <div
           class="table-row"

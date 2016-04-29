@@ -10,8 +10,12 @@
     return {
       scope: false,
       link: function(scope, iElem, iAttrs, ctrl) {
-        var scrollElem = iElem.parent()[0];
-        SimpleScrollbar.initEl(scrollElem);
+        if (SimpleScrollbar.width > 0) {
+          var scrollElem = iElem.parent()[0];
+          SimpleScrollbar.initEl(scrollElem);
+        } else {
+          iElem.css('overflow', 'auto');
+        }
       }
     }
   }

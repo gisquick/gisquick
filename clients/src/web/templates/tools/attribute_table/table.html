@@ -1,142 +1,159 @@
 <md-bottom-sheet
   ng-cloak
-  class="features-panel attribute-table md-whiteframe-top">
-  <div class="tabs-header md-whiteframe-top">
-    <span
-      class="panel-tab selected">
-      {{ activeLayer.title }}
-    </span>
-    <div class="tab-end-right"></div>
-  </div>
-  <div class="close-button-container md-whiteframe-top">
-    <div class="tab-end-left"></div>
-    <md-button
-      md-no-ink
-      aria-label="Close"
-      class="close-button no-hover"
-      ng-click="tool.deactivate()">
-      <md-icon md-svg-icon="x"></md-icon>
-    </md-button>
-  </div>
-  <div class="header-bg"></div>
+  class="features-panel attribute-table">
 
-  <md-tabs
-    md-no-ink
-    md-no-pagination
-    class="tabs-no-header"
+  <div
+    class="static-height-container"
     ng-style="{
-      minHeight: 61+32*(tool.rowsPerPage||1)+'px'
-    }"
-    md-selected="tool.layerIndex">
-    <md-tab ng-repeat="layer in layers"
-      label="layer"
-      md-on-select="setActiveLayer(layer)">
-      <div
-        gl-scroller
-        id="table-scroll"
-        class="attribute-table table-container">
-        <table>
-          <thead>
-            <tr>
-              <th class="zoom" width="10"></th>
-              <th ng-repeat="attribute in ::layer.attributes">
-                <div
-                  class="filter-row"
-                  ng-class="{active: attribute.comparator && attribute.filterValue}">
-                  <div class="header">{{ ::attribute.label }}</div>
-                  <div layout="row">
-                    <md-input-container>
-                      <md-select
-                        ng-model="attribute.comparator"
-                        placeholder="Comparator">
-                        <md-option
-                          ng-repeat="comparator in attribute.comparators"
-                          ng-value="comparator">
-                          {{ ::comparator.label }}
-                        </md-option>
-                      </md-select>
-                    </md-input-container>
-                    <md-input-container md-no-float class="md-block" flex>
-                      <input
-                        ng-model="attribute.filterValue"
-                        placeholder="{{ attribute.comparator.format }}">
-                      </input>
-                    </md-input-container>
-                    <md-button
-                      aria-label="Remove Filter"
-                      ng-click="attribute.filterValue='';attribute.comparator=null">
-                      <md-icon class="filter-clear-button"
-                        md-svg-icon="delete">
-                      </md-icon>
-                    </md-button>
-                  </div>
-                </div>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              ng-repeat="feature in layer.features | limitTo: tool.rowsPerPage: (layer.features.page - 1) * tool.rowsPerPage"
-              ng-class="{'md-selected': tool.selectedFeature === feature}">
-              <td class="icon">
-                <md-icon
-                  md-svg-icon="zoom-to-feature"
-                  ng-click="zoomToFeature(
-                    feature,
-                    { padding: [0, 0, 96+32*tool.rowsPerPage, tool.config.mapView.left] }
-                  )">
-                </md-icon>
-              </td>
-              <td ng-repeat="attribute in layer.attributes">
-                {{ feature.properties[attribute.name] }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      minHeight: 132+32*(tool.rowsPerPage||1)+'px'
+    }">
+    <div layout="column"
+      class="animated-height-container">
+
+      <div class="tabs-header md-whiteframe-top">
+        <span
+          class="panel-tab selected">
+          {{ activeLayer.title }}
+        </span>
+        <div class="tab-end-right"></div>
       </div>
-    </md-tab>
-  </md-tabs>
+      <div class="close-button-container md-whiteframe-top">
+        <div class="tab-end-left"></div>
+        <md-button
+          md-no-ink
+          aria-label="Close"
+          class="close-button no-hover"
+          ng-click="tool.deactivate()">
+          <md-icon md-svg-icon="x"></md-icon>
+        </md-button>
+      </div>
 
-  <div class="search-settings" layout="row">
-    <gl-progress-bar
-      class="table-progress-bar"
-      promise="progress">
-    </gl-progress-bar>
-    <md-input-container
-      layout="row"
-      class="input-inline-label">
-      <label class="md-label md-no-float">Limit:</label>
-      <input ng-model="tool.limit" type="number" min="1" max="1000"></input>
-    </md-input-container>
-    <md-input-container
-      layout="row"
-      class="input-inline-label">
-      <label class="md-label md-no-float">Rows per page:</label>
-      <input ng-model="tool.rowsPerPage" type="number" min="1" max="10"></input>
-    </md-input-container>
+      <md-tabs flex
+        md-no-ink
+        md-no-pagination
+        md-selected="tool.layerIndex">
+        <md-tab ng-repeat="layer in layers"
+          label="x"
+          md-on-select="setActiveLayer(layer)">
+          <div
+            gl-scroller
+            class="attribute-table table-container">
+            <table>
+              <thead>
+                <tr class="header">
+                  <th class="zoom header" width="10"></th>
+                  <th
+                    ng-repeat="attribute in ::layer.attributes"
+                    class="header">
+                    {{ ::attribute.label }}
+                  </th>
+                </tr>
+                <tr class="filter">
+                  <th class="zoom" width="10"></th>
+                  <th
+                    ng-repeat="attribute in ::layer.attributes">
+                    <div
+                      layout="row"
+                      class="filter-row"
+                      ng-class="{active: attribute.comparator && attribute.filterValue}">
+                      <md-input-container>
+                        <md-select
+                          ng-model="attribute.comparator"
+                          placeholder="Comparator">
+                          <md-option
+                            ng-repeat="comparator in attribute.comparators"
+                            ng-value="comparator">
+                            {{ ::comparator.label }}
+                          </md-option>
+                        </md-select>
+                      </md-input-container>
+                      <md-input-container md-no-float class="md-block" flex>
+                        <input
+                          ng-model="attribute.filterValue"
+                          placeholder="{{ attribute.comparator.format }}">
+                        </input>
+                      </md-input-container>
+                      <md-button
+                        aria-label="Remove Filter"
+                        ng-click="attribute.filterValue='';attribute.comparator=null">
+                        <md-icon class="filter-clear-button"
+                          md-svg-icon="delete">
+                        </md-icon>
+                      </md-button>
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  ng-repeat="feature in layer.features | limitTo: tool.rowsPerPage: (layer.features.page - 1) * tool.rowsPerPage"
+                  ng-class="{'md-selected': tool.selectedFeature === feature}">
+                  <td class="icon">
+                    <md-icon
+                      md-svg-icon="zoom-to-feature"
+                      ng-click="zoomToFeature(
+                        feature,
+                        { padding: [0, 0, tool.config.mapView.bottom, tool.config.mapView.left] }
+                      )">
+                    </md-icon>
+                  </td>
+                  <td ng-repeat="attribute in layer.attributes">
+                    {{ feature.properties[attribute.name] }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </md-tab>
+      </md-tabs>
 
-    <gl-paginator
-      ng-show="activeLayer.features.length > 0"
-      ng-model="activeLayer.features"
-      gl-rows="tool.rowsPerPage">
-    </gl-paginator>
+      <div class="search-settings" layout="row">
+        <gl-progress-bar
+          class="table-progress-bar"
+          promise="progress">
+        </gl-progress-bar>
+        <md-input-container
+          layout="row"
+          class="input-inline-label">
+          <label class="md-label md-no-float">Limit:</label>
+          <input ng-model="tool.limit" type="number" min="1" max="1000"></input>
+        </md-input-container>
+        <md-input-container
+          layout="row"
+          class="input-inline-label">
+          <label class="md-label md-no-float">Rows per page:</label>
+          <input
+            type="number"
+            min="1"
+            max="10"
+            ng-model="tool.rowsPerPage"
+            ng-change="ui.manager.panelResized()">
+          </input>
+        </md-input-container>
 
-    <span flex></span>
-    <div
-      flex
-      layout="row"
-      style="flex: 1 1 auto;"
-      class="inline-flex">
-      <span flex></span>
-      <md-checkbox
-        class="md-primary"
-        ng-model="tool.searchInExtent"
-        aria-label="Filter to visible area">
-        Filter to visible area
-      </md-checkbox>
-      <md-button ng-click="search()">Refresh</md-button>
+        <gl-paginator
+          ng-show="activeLayer.features.length > 0"
+          ng-model="activeLayer.features"
+          gl-rows="tool.rowsPerPage">
+        </gl-paginator>
+
+        <span flex></span>
+        <div
+          flex
+          layout="row"
+          style="flex: 1 1 auto;"
+          class="inline-flex">
+          <span flex></span>
+          <md-checkbox
+            class="md-primary"
+            ng-model="tool.searchInExtent"
+            aria-label="Filter to visible area">
+            Filter to visible area
+          </md-checkbox>
+          <md-button ng-click="search()">Refresh</md-button>
+        </div>
+      </div>
     </div>
   </div>
-
   <div style="height: 80px;"></div>
 </md-bottom-sheet>

@@ -1,129 +1,124 @@
 <md-bottom-sheet
   ng-cloak
-  class="features-panel identification md-whiteframe-top"
+  class="features-panel identification-table"
   ng-init="tool.config.featureAutoselect=false">
   <div
-    class="tabs-header md-whiteframe-top"
-    ng-show="tool.data.activeLayer">
-    <md-button
-      md-no-ink
-      class="panel-tab"
-      ng-class="{selected: tool.data.activeLayer===layer}"
-      ng-click="tool.data.activeLayerIndex=$index"
-      ng-show="layer.features.length>0"
-      ng-repeat="layer in tool.data.layers">
-      {{ layer.title }}
-      <div class="tab-separator"></div>
-    </md-button>
-    <div class="tab-end-right"></div>
-  </div>
-  <div class="close-button-container md-whiteframe-top">
-    <div class="tab-end-left"></div>
-    <md-button
-      md-no-ink
-      aria-label="Close"
-      class="close-button no-hover"
-      ng-click="tool.deactivate()">
-      <md-icon md-svg-icon="x"></md-icon>
-    </md-button>
-  </div>
-  <div class="header-bg"></div>
-
-  <md-tabs
-    md-no-ink
-    md-no-pagination
-    class="tabs-no-header"
+    class="static-height-container"
     ng-style="{
-      minHeight: 26+32*(tool.config.rowsPerPage||1)+'px'
-    }"
-    md-selected="tool.data.activeLayerIndex"
-    md-autoselect="false">
-    <md-tab
-      ng-repeat="layer in ::tool.data.layers"
-      ng-disabled="layer.features.length === 0"
-      md-on-select="setActiveLayer(layer)"
-      label="layer">
+      minHeight: 97+32*(tool.config.rowsPerPage||1)+'px'
+    }">
+    <div
+      layout="column"
+      class="animated-height-container">
       <div
-        gl-scroller
-        class="identification-table table-container">
-        <table>
-          <thead>
-            <tr>
-              <th class="zoom header" width="10"></th>
-              <th class="header"
-                ng-repeat="attribute in layer.attributes">
-                {{ ::attribute.label }}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              ng-repeat="feature in layer.features | limitTo: tool.config.rowsPerPage: (layer.features.page - 1) * tool.config.rowsPerPage"
-              ng-class="{'md-selected': layer.selectedFeature === feature}"
-              ng-click="selectFeature(feature)">
-              <td class="icon">
-                <md-icon
-                  md-svg-icon="zoom-to-feature"
-                  ng-click="zoomToFeature(
-                    feature,
-                    { padding: [0, 0, 68+32*tool.config.rowsPerPage, tool.config.mapView.left] }
-                  )">
-                </md-icon>
-              </td>
-              <td ng-repeat="attribute in layer.attributes">
-                {{ ::feature.get(attribute.name) }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        class="close-button-container">
+        <div class="tab-end-left"></div>
+        <md-button
+          md-no-ink
+          aria-label="Close"
+          class="close-button no-hover"
+          ng-click="tool.deactivate()">
+          <md-icon md-svg-icon="x"></md-icon>
+        </md-button>
       </div>
-    </md-tab>
-    <md-tab
-      label="empty">
-      <div
-        class="identification-table table-container">
-        <table>
-          <thead>
-            <tr>
-              <th class="header">No features</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td></td>
-            </tr>
-          </tbody>
-        </table>
+      <md-tabs
+        flex
+        md-no-ink
+        md-selected="tool.data.activeLayerIndex"
+        md-autoselect="false">
+        <md-tab
+          ng-repeat="layer in ::tool.data.layers"
+          ng-disabled="layer.features.length === 0"
+          md-on-select="setActiveLayer(layer)">
+          <md-tab-label>
+            <span
+              class="tab-label"
+              ng-class="{hidden: layer.features.length === 0}">
+              {{ layer.features.length === 0? '' :  layer.title }}
+            </span>
+          </md-tab-label>
+          <md-tab-body>
+            <div
+              gl-scroller
+              class="identification-table table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th class="zoom header" width="10"></th>
+                    <th class="header"
+                      ng-repeat="attribute in layer.attributes">
+                      {{ ::attribute.label }}
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    ng-repeat="feature in layer.features | limitTo: tool.config.rowsPerPage: (layer.features.page - 1) * tool.config.rowsPerPage"
+                    ng-class="{'md-selected': layer.selectedFeature === feature}"
+                    ng-click="selectFeature(feature)">
+                    <td class="icon">
+                      <md-icon
+                        md-svg-icon="zoom-to-feature"
+                        ng-click="zoomToFeature(
+                          feature,
+                          { padding: [0, 0, tool.config.mapView.bottom, tool.config.mapView.left] }
+                        )">
+                      </md-icon>
+                    </td>
+                    <td ng-repeat="attribute in layer.attributes">
+                      {{ ::feature.get(attribute.name) }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </md-tab-body>
+        </md-tab>
+        <md-tab>
+          <md-tab-label>
+            <span class="tab-label hidden">
+            {{ tool.data.activeLayerIndex === tool.data.layers.length? '&nbsp No feaures' : '' }}
+            </span>
+          </md-tab-label>
+          <div
+            class="empty-table-content">
+          </div>
+        </md-tab>
+      </md-tabs>
+
+      <div class="search-settings" layout="row">
+        <gl-progress-bar
+          class="table-progress-bar"
+          promise="tool.progress">
+        </gl-progress-bar>
+        <md-input-container
+          layout="row"
+          class="input-inline-label">
+          <label class="md-label md-no-float">Limit:</label>
+          <input ng-model="tool.config.limit" type="number" min="1" max="1000"></input>
+        </md-input-container>
+        <md-input-container
+          layout="row"
+          class="input-inline-label">
+          <label class="md-label md-no-float">Rows per page:</label>
+          <input
+            type="number"
+            min="1"
+            max="10"
+            ng-model="tool.config.rowsPerPage"
+            ng-change="ui.manager.panelResized()">
+          </input>
+        </md-input-container>
+
+        <gl-paginator
+          ng-show="tool.data.activeLayer.features.length > 0"
+          ng-model="tool.data.activeLayer.features"
+          gl-rows="tool.config.rowsPerPage">
+        </gl-paginator>
+
+        <span flex></span>
       </div>
-    </md-tab>
-  </md-tabs>
-
-  <div class="search-settings" layout="row">
-    <gl-progress-bar
-      class="table-progress-bar"
-      promise="tool.progress">
-    </gl-progress-bar>
-    <md-input-container
-      layout="row"
-      class="input-inline-label">
-      <label class="md-label md-no-float">Limit:</label>
-      <input ng-model="tool.config.limit" type="number" min="1" max="1000"></input>
-    </md-input-container>
-    <md-input-container
-      layout="row"
-      class="input-inline-label">
-      <label class="md-label md-no-float">Rows per page:</label>
-      <input ng-model="tool.config.rowsPerPage" type="number" min="1" max="10"></input>
-    </md-input-container>
-
-    <gl-paginator
-      ng-show="tool.data.activeLayer.features.length > 0"
-      ng-model="tool.data.activeLayer.features"
-      gl-rows="tool.config.rowsPerPage">
-    </gl-paginator>
-
-    <span flex></span>
+    </div>
   </div>
-
-  <div style="height: 80px;"></div>
+  <div style="background-color: red;height: 80px;"></div>
 </md-bottom-sheet>

@@ -36,7 +36,6 @@
   border-bottom-right-radius: 3px;
 }
 .panel-collapse-button {
-  top: 50%;
   right: -36px;
   min-width: 36px;
   width: 36px;
@@ -63,7 +62,7 @@
   position: absolute;
   width: 280px;
   height: 100%;
-  border-right: 1px solid #aaa;
+  border-right: 1px solid #888;
   z-index: 51;
   transition: 0.45s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
   background-color: white;

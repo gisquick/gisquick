@@ -3,7 +3,8 @@
 
   angular
     .module('gl.web')
-    .controller('AppController', AppController)
+    .controller('AppController', AppController);
+
 
   function AppController($scope, $timeout, $q, $mdDialog, $mdToast,
     projectProvider, glPanelManager, gislabClient, staticResources,
@@ -12,6 +13,7 @@
     $scope.ui = {
       manager: glPanelManager
     };
+    $scope.Math = Math;
     $scope.activeTool = {index:  0, deactivate: angular.noop};
 
     $scope.fullScreenTool = {
@@ -98,6 +100,7 @@
     ];
 
     function initializeTools() {
+      console.log(projectProvider);
       $scope.tools = [
         {
           name: 'identification',

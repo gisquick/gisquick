@@ -51,7 +51,9 @@
         left: 0,
         top: 0,
         bottom: 0,
-        right: 0
+        right: 0,
+        width: window.innerWidth,
+        height: window.innerHeight
       }
       this.eventListeners = {
         mapViewResized: []
@@ -62,16 +64,20 @@
       this.panelElement = this._ngElement(options.mainPanel);
       this.statusBar = {
         element: this._ngElement(options.statusBar),
-        hidden: false
+        _hidden: false,  // controlled by hideStatusBar/showStatusBar
+        disabled: false, // controlled by window size (width)
+        visible: true    // visibility (read-only)
       };
       this.mapView.bottom = this.statusBar.element[0].clientHeight;
       var panel = this;
       window.addEventListener("resize", function(evt) {
         $timeout(function() {
+          panel._windowResized();
           panel.updateLayout();
           panel._fireResizeEvent();
         }, 200); // Chrome needs some time to update window size
       });
+      panel._windowResized();
       panel.updateLayout();
     }
 
@@ -102,29 +108,51 @@
       this._fireResizeEvent();
     };
 
+    PanelManager.prototype._calculateBottom = function() {
+        if (this.bottomPanel) {
+          this.mapView.bottom = this.bottomPanel.element.clientHeight-80;
+        } else {
+          if (this.statusBar.visible) {
+            this.mapView.bottom = this.statusBar.element[0].clientHeight;
+          } else {
+            this.mapView.bottom = 0;
+          }
+        }
+    };
+
     PanelManager.prototype.hideStatusBar = function() {
+      this.statusBar._hidden = true;
       this.statusBar.element.css('transform', 'translate(0, 100%)');
-      this.mapView.bottom = 0;
-      this.statusBar.hidden = true;
+      this.statusBar.visible = false;
+      this._calculateBottom();
     };
 
     PanelManager.prototype.showStatusBar = function() {
-      this.statusBar.element.css('transform', 'translate(0, 0)');
-      this.mapView.bottom = this.statusBar.element[0].clientHeight;
-      this.statusBar.hidden = false;
+      this.statusBar._hidden = false;
+      if (!this.statusBar.disabled) {
+        this.statusBar.element.css('transform', 'translate(0, 0)');
+        this.statusBar.visible = true;
+        this._calculateBottom();
+      }
+    };
+
+    PanelManager.prototype._windowResized = function() {
+      this.statusBar.disabled = window.innerWidth < 900;
+      if (this.statusBar.visible && this.statusBar.disabled) {
+        this.statusBar.element.css('transform', 'translate(0, 100%)');
+        this.statusBar.visible = false;
+        this._calculateBottom();
+      }
+      if (!this.statusBar.visible && !this.statusBar.disabled && !this.statusBar._hidden) {
+        this.statusBar.element.css('transform', 'translate(0, 0)');
+        this.statusBar.visible = true;
+        this._calculateBottom();
+      }
+      this.mapView.width = window.innerWidth;
+      this.mapView.height = window.innerHeight;
     };
 
     PanelManager.prototype.updateLayout = function() {
-      if (!this.statusBar.hidden) {
-        if (this.mapView.bottom > 0 && window.innerWidth < 900) {
-          this.statusBar.element.css('transform', 'translate(0, 100%)');
-          this.mapView.bottom = 0;
-        }
-        if (this.mapView.bottom === 0 && window.innerWidth >= 900) {
-          this.statusBar.element.css('transform', 'translate(0, 0)');
-          this.mapView.bottom = this.statusBar.element[0].clientHeight;
-        }
-      }
       if (!this.contentPanel) {
         return;
       }
@@ -221,15 +249,16 @@
       this.contentPanel = contentPanel;
       return contentPanel.show(options);
     };
-    
+
     PanelManager.prototype._openPanel = function(options) {
-      options.scope = options.scope;
+      // options.scope = options.scope;
+      var _this = this;
 
       var layout = options.layout;
-      this.portraitMode = window.innerHeight > window.innerWidth;
-      // this.portraitMode = true;
+      this.verticalMode = window.innerHeight > window.innerWidth || window.innerWidth < 600;
+      // this.verticalMode = true;
 
-      if (this.portraitMode) {
+      if (this.verticalMode) {
         angular.extend(options, layout.vertical);
         this.secondaryPanel = $$interimElement();
         this.secondaryPanel.collapsed = false;
@@ -271,8 +300,30 @@
           clickOutsideToClose: false,
           disableParentScroll: false
         });
-        return $mdBottomSheet.show(options);
+
+        $timeout(function() {
+          _this.bottomPanel = {
+            element: document.querySelector(".bottom-bar md-bottom-sheet")
+          };
+          _this.panelResized();
+        }, 800);
+
+        var promise = $mdBottomSheet.show(options);
+        promise.finally(function() {
+          _this.bottomPanel = null;
+          _this.panelResized();
+        });
+        return promise;
       }
+    };
+
+    PanelManager.prototype.panelResized = function() {
+      var _this = this;
+      $timeout(function() {
+        console.log('panelResized');
+        _this._calculateBottom();
+      }, 10);
+
     };
 
     PanelManager.prototype.showPanel = function(options) {
@@ -288,7 +339,7 @@
     };
 
     PanelManager.prototype.hidePanel = function(options) {
-      if (this.portraitMode) {
+      if (this.verticalMode) {
         if (this.secondaryPanel) {
           this.secondaryPanel.collapsed = true;
           this.updateLayout();

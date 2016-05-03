@@ -1,18 +1,12 @@
-.header-bg {
-  position: absolute;
-  background-color: #333;
-  width: 100%;
-  height: 26px;
-  top: 0px;
-}
-
 .features-panel md-tab-content > div {
   height: 100%;
+  width: 100%;
 }
 .table-container {
   position: relative;
   min-height: 100%;
   height: 100%;
+  width: 100%;
 }
 
 .table-container.horizontal-overflow {
@@ -25,19 +19,27 @@
   border-collapse: collapse;
 }
 
+.bottom-bar .table-container table > thead {
+  height: 28px;
+}
 .table-container table > thead > tr .header {
-  color: #fff;
+  color: #333;
   font-size: 13px;
-  line-height: 23px;
   text-align: left;
+  background-color: #bbb;
 }
 
 .search-settings {
   border-top: 1px solid rgba(0, 0, 0, 0.12);
   height: 36px;
   box-sizing: content-box;
-  font-size: 13px;
+  font-size: 13.5px;
+  background-color: rgb(250, 250, 250);
   position: relative;
+  /*bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 5;*/
 }
 .search-settings md-checkbox, 
 .search-settings md-input-container,
@@ -87,8 +89,16 @@ md-input-container.input-inline-label label {
   height: 16px;
   color: #777;
 }
+
+.bottom-bar .table-container tr.header {
+  height: 28px;
+}
+
+.bottom-bar .table-container tr.filter {
+  padding-bottom: 3px;
+  border-bottom: 1px solid #ccc;
+}
 .filter-row {
-  min-height: 42px;
   width: 100%;
 }
 .filter-row label {
@@ -102,6 +112,7 @@ md-input-container.input-inline-label label {
 }
 .filter-row .md-button {
   min-width: 20px;
+  min-height: 30px;
   height: 24px;
   margin: 0;
 }
@@ -114,6 +125,7 @@ md-input-container.input-inline-label label {
   padding-left: 12px;
   line-height: 42px;
 }
+
 md-bottom-sheet.features-panel.collapsed {
   height: 80px;
   visibility: hidden;
@@ -146,7 +158,7 @@ md-bottom-sheet {
   font-size: 13px;
   outline: none;
   box-sizing: border-box;
-  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
 }
 .table-container table > tbody > tr:hover:not(.md-selected) {
   background-color: #ffffe0!important;
@@ -170,7 +182,7 @@ md-bottom-sheet {
   height: auto;
 }
 .attribute-table .table-container table > thead > tr > th > div.filter-row {
-  height: 56px;
+  height: 34px;
   align-items: flex-start;
   font-size: 13px;
 }
@@ -199,6 +211,7 @@ md-bottom-sheet {
 .table-container table > tfoot > tr > td,
 .table-container table > thead > tr > th {
   padding: 0px 10px 0 10px!important;
+  white-space: nowrap;
 }
 
 table td.icon {
@@ -245,26 +258,73 @@ label.md-no-float {
 
 .tabs-header {
   position: absolute;
-  top: -28px;
+  top: 4px;
   height: 26px;
   background-color: rgb(250, 250, 250);
   color: #555;
-  border-left: 1px solid #333;
-  border-top: 2px solid #333;
-  border-top-left-radius: 5px;
+  border-top: 1px solid #888;
+  z-index: 5;
+  min-width: 80px;
 }
+
+.bottom-bar .static-height-container {
+  position: relative;
+  xheight: 100%;
+  xwidth: 100%;
+}
+.bottom-bar .animated-height-container {
+  min-height: inherit;
+  transition: min-height 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.bottom-bar .attribute-table md-tabs,
+.bottom-bar .identification-table md-tabs {
+  xmin-height: inherit;
+  min-height: 30px;
+}
+.bottom-bar .attribute-table md-tabs-canvas,
+.bottom-bar .identification-table md-tabs-canvas {
+  height: 31px;
+}
+
+.bottom-bar .attribute-table md-pagination-wrapper,
+.bottom-bar .identification-table md-pagination-wrapper {
+  border-top: 1px solid #888;
+  height: 26px;
+  margin-top: 4px;
+  box-shadow: 0 -2px 5px 0 rgba(0, 0, 0, 0.2);
+  background-color: rgb(250, 250, 250);
+  z-index: 3;
+  box-sizing: content-box;
+}
+.bottom-bar .attribute-table md-ink-bar,
+.bottom-bar .identification-table md-ink-bar {
+  display: none;
+}
+
+.bottom-bar .attribute-table md-pagination-wrapper::after,
+.bottom-bar .identification-table md-pagination-wrapper::after,
 .tabs-header .tab-end-right {
   position: absolute;
-  top: -2px;
-  right: -12px;
+  bottom: 0;
+  right: -10px;
   transform: skewX(20deg);
-  border-top: 2px solid #333;
-  border-right: 2px solid #333;
+  border-top: 1px solid #888;
+  border-right: 1px solid #888;
   width: 15px;
-  height: 100%;
+  height: 27px;
+  box-sizing: border-box;
   border-top-right-radius: 5px;
   background-color: rgb(250, 250, 250);
-  box-shadow: 3px 3px 3px 0 rgba(0, 0, 0, 0.15), 5px 0px 4px 0 rgba(0, 0, 0, 0.1), 4px -3px 3px -2px rgba(0, 0, 0, 0.08);
+  box-shadow: 4px 0px 3px 0 rgba(0, 0, 0, 0.12);
+}
+
+.identification-table md-pagination-wrapper {
+  padding-right: 10px;
 }
 
 .tabs-header .panel-tab {
@@ -289,43 +349,48 @@ label.md-no-float {
 
 .features-panel .close-button-container {
   position: absolute;
-  top: -22px;
+  top: -23px;
   right: 0;
-  background-color: rgb(250, 250, 250);
-  border-right: 1px solid #333;
-  border-top: 2px solid #333;
-  border-top-right-radius: 5px;
-  border-top-left-radius: 5px;
+  z-index: 1;
+  box-shadow: 5px -3px 3px 0 rgba(0, 0, 0, 0.12);
+  box-sizing: border-box;
+  height: 20px;
 }
 .features-panel .close-button-container .close-button {
-  min-width: 30px;
-  width: 30px;
+  min-width: 26px;
+  width: 26px;
   min-height: 18px;
-  height: 18px;
   line-height: 18px;
   margin: 0;
-  padding: 0 2px 0 0;
+  padding: 0 4px 0 0;
   vertical-align: top;
+  border-top: 1px solid #888;
+  border-radius: 0;
+  box-sizing: border-box;
+  height: 100%;
+  background-color: rgb(250, 250, 250);
 }
 
 .features-panel .close-button md-icon {
-  color: #333;
+  color: #555;
   width: 16px;
   height: 16px;
 }
 
 .tab-end-left {
   position: absolute;
-  top: -2px;
-  left: -5px;
+  top: 0px;
+  bottom: 0;
+  left: -7px;
+  box-sizing: border-box;
   transform: skewX(-20deg);
-  border-top: 2px solid #333;
-  border-left: 2px solid #333;
-  width: 15px;
-  height: 100%;
+  border-top: 1px solid #888;
+  border-left: 1px solid #888;
+  width: 13px;
   border-top-left-radius: 5px;
   background-color: rgb(250, 250, 250);
-  box-shadow: -3px 3px 3px 0 rgba(0, 0, 0, 0.15), -5px 0px 4px 0 rgba(0, 0, 0, 0.1), -4px -3px 3px -2px rgba(0, 0, 0, 0.08);
+  box-shadow: -3px -2px 3px 0 rgba(0, 0, 0, 0.10);
+  pointer-events: none;
 }
 
 md-list.attribute-table md-list-item {
@@ -455,7 +520,6 @@ md-list-item.list-filter md-icon {
   height: 14px;
 }
 
-.features-panel md-tabs-content-wrapper,
 .attribute-table.vertical md-tabs-content-wrapper {
   top: 0;
 }
@@ -465,7 +529,6 @@ md-list-item.list-filter md-icon {
 }
 
 .features-panel md-tabs {
-  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
   overflow: hidden;
 }
 
@@ -474,8 +537,7 @@ md-list-item.list-filter md-icon {
 }
 
 
-
-.identification-table.vertical .md-tab {
+.identification-table .md-tab {
   padding-left: 0;
   padding-right: 0;
 }
@@ -483,7 +545,7 @@ md-list-item.list-filter md-icon {
 .identification-table.vertical .tab-label {
   transition: opacity 1.0s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
 }
-.identification-table.vertical .tab-label:not(.hidden) {
+.identification-table .tab-label:not(.hidden) {
   padding-left: 12px;
   padding-right: 12px;
   opacity: 1;
@@ -512,13 +574,10 @@ md-list-item.list-filter md-icon {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 35px;
+  top: 0px;
   max-height: 3px;
   overflow: hidden;
-}
-
-.attribute-table md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {
-    min-height: 60px;
+  z-index: 100;
 }
 
 /* Customized tab animation */
@@ -556,4 +615,73 @@ md-list-item.list-filter md-icon {
 
 gl-paginator {
   margin: 0 6px;
+}
+
+
+.bottom-bar .identification-table md-next-button,
+.bottom-bar .identification-table md-prev-button {
+  background: rgb(250, 250, 250);
+  box-shadow: 0px -3px 3px 0 rgba(0, 0, 0, 0.12);
+  transform: none;
+  top: 4px;
+  bottom: 0;
+  height: auto;
+}
+.bottom-bar .identification-table md-prev-button {
+  border: solid #888;
+  border-width: 1px 0 0 0;
+  box-sizing: border-box;
+}
+.bottom-bar .identification-table md-next-button {
+  border: solid #888;
+  border-width: 1px 0 0 0;
+  box-sizing: border-box;
+}
+
+.identification-table md-tabs-wrapper md-prev-button.md-disabled, md-tabs-wrapper md-next-button.md-disabled {
+  opacity: 1;
+}
+.identification-table md-tabs-wrapper md-prev-button.md-disabled md-icon,
+.identification-table md-tabs-wrapper md-next-button.md-disabled md-icon {
+  opacity: 0.25;
+}
+
+.bottom-bar .attribute-table md-tabs-wrapper,
+.bottom-bar .identification-table md-tabs-wrapper {
+  height: 31px;
+}
+
+.bottom-bar .attribute-table md-tabs-content-wrapper,
+.bottom-bar .identification-table md-tabs-content-wrapper {
+  top: 31px;
+  background-color: rgb(250, 250, 250);
+  box-shadow:
+    0 -3px 6px 0 rgba(0, 0, 0, 0.2),
+    0 -2px 3px -2px rgba(0, 0, 0, 0.16);
+  border-top: 1px solid #888;
+}
+
+.bottom-bar .attribute-table md-tab-item,
+.bottom-bar .identification-table md-tab-item {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.bottom-bar .attribute-table md-tab-item {
+  padding-left: 1px;
+  padding-right: 0;
+}
+.bottom-bar .attribute-table md-pagination-wrapper {
+  display: none;
+}
+
+md-bottom-sheet.attribute-table,
+md-bottom-sheet.identification-table {
+  background-color: transparent;
+  border: none;
+}
+
+.bottom-bar .attribute-table .close-button-container,
+.bottom-bar .identification-table .close-button-container {
+  top: 11px;
 }

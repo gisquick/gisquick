@@ -15,7 +15,12 @@
       md-no-ink
       aria-label="Toggle Panel"
       class="panel-collapse-button"
-      ng-class="{collapsed: ui.manager.mapView.left===0}"
+      ng-class="{
+        collapsed: ui.manager.mapView.left===0
+      }"
+      ng-style="{
+        top: Math.max((ui.manager.mapView.height-ui.manager.mapView.bottom)/2, 50)+'px'
+      }"
       ng-click="ui.manager.toggleMainPanel()">
       <md-icon
         md-svg-src="arrow-left">
@@ -147,7 +152,7 @@
     id="map-bottom-area"
     ng-style="{
       left: ui.manager.mapView.left+'px',
-      bottom: ui.manager.mapView.bottom+'px'
+      bottom: ui.manager.statusBar.visible? '36px' : '0'
     }">
     <div id="ol-scale-line-container"></div>
   </div>
@@ -156,7 +161,7 @@
   <div
     class="map-control-container"
     ng-style="{
-      bottom: ui.manager.mapView.bottom+'px'
+      bottom: Math.min(ui.manager.mapView.bottom, ui.manager.mapView.height-280)+'px'
     }">
     <div
       id="map-rotate-reset">

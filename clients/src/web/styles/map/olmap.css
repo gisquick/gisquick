@@ -113,7 +113,7 @@
   position: absolute;
   right: 0;
   margin: 10px 5px;
-  z-index: 100;
+  z-index: 50;
   transition: 0.45s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
 }
 
@@ -140,7 +140,7 @@
 #map-bottom-area {
   position: absolute;
   right: 0;
-  z-index: 55;
+  z-index: 30;
   transition: 0.45s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
 }
 

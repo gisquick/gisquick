@@ -63,7 +63,7 @@
   width: 280px;
   height: 100%;
   border-right: 1px solid #888;
-  z-index: 51;
+  z-index: 60;
   transition: 0.45s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
   background-color: white;
 }

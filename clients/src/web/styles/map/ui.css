@@ -29,10 +29,6 @@ md-select:focus:not([disabled]) .md-select-value {
   right: 5px;
 }
 
-.md-select-menu-container {
-  z-index: 120;
-}
-
 .app-menu .md-button.map-button {
   border-radius: 18px;
 }
@@ -109,7 +105,7 @@ md-tabs-canvas {
   line-height: 24px;
   padding: 0;
   margin: 2px;
-  z-index: 100;
+  z-index: 50;
 }
 
 .md-button.map-button:hover {
@@ -185,7 +181,7 @@ md-tabs-canvas {
   display: flex;
   bottom: 0;
   right: 0;
-  z-index: 120;
+  z-index: 60;
   transition: 0.45s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
 }
 md-tabs-wrapper {

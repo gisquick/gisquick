@@ -8,6 +8,7 @@
       <md-select
         ng-model="tool.data.selectedLayoutIndex"
         placeholder="Select layout">
+        <span gl-parent-scrollbar="vertical"></span>
         <md-option
           ng-repeat="composer in tool.config.layouts"
           ng-value="$index">

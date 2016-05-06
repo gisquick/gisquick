@@ -7,8 +7,12 @@
     <label class="md-label md-no-float">Layer</label>
     <md-select
       placeholder="Select layer"
-      ng-model="tool.config.identificationLayer">
-      <md-option value="">All visible layers</md-option>
+      ng-model="tool.config.identificationLayer"><span ></span>
+      <md-option
+        gl-parent-scrollbar="vertical"
+        value="">
+        All visible layers
+      </md-option>
       <md-option
         ng-repeat="layer in project.layers.list | filter:{queryable:true, visible:true}"
         value="{{ layer.name }}">

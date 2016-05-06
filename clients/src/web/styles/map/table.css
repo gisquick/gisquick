@@ -19,9 +19,6 @@
   border-collapse: collapse;
 }
 
-.bottom-bar .table-container table > thead {
-  height: 28px;
-}
 .table-container table > thead > tr .header {
   color: #333;
   font-size: 13px;
@@ -684,4 +681,8 @@ md-bottom-sheet.identification-table {
 .bottom-bar .attribute-table .close-button-container,
 .bottom-bar .identification-table .close-button-container {
   top: 11px;
+}
+
+.bottom-bar .attribute-table .ss-scroll.horizontal {
+  bottom: 2px;
 }

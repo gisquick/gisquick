@@ -36,7 +36,7 @@
           label="x"
           md-on-select="setActiveLayer(layer)">
           <div
-            gl-scroller
+            gl-scrollbar="horizontal"
             class="attribute-table table-container">
             <table>
               <thead>
@@ -60,6 +60,7 @@
                         <md-select
                           ng-model="attribute.comparator"
                           placeholder="Comparator">
+                          <span gl-parent-scrollbar="vertical"></span>
                           <md-option
                             ng-repeat="comparator in attribute.comparators"
                             ng-value="comparator">

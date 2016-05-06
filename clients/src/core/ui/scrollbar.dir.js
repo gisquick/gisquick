@@ -3,16 +3,16 @@
 
   angular
   .module('gl.ui')
-  .directive('glScroller', glScroller);
+  .directive('glScrollbar', glScrollbar)
+  .directive('glParentScrollbar', glParentScrollbar);
 
 
-  function glScroller() {
+  function glScrollbar() {
     return {
       scope: false,
       link: function(scope, iElem, iAttrs, ctrl) {
         if (SimpleScrollbar.width > 0) {
-          var scrollElem = iElem.parent()[0];
-          SimpleScrollbar.initEl(scrollElem);
+          SimpleScrollbar.initEl(iElem[0], iAttrs.glScrollbar);
         } else {
           iElem.css('overflow', 'auto');
         }
@@ -20,4 +20,16 @@
     }
   }
 
+  function glParentScrollbar() {
+    return {
+      scope: false,
+      link: function(scope, iElem, iAttrs, ctrl) {
+        if (SimpleScrollbar.width > 0) {
+          SimpleScrollbar.initEl(iElem.parent()[0], iAttrs.glParentScrollbar);
+        } else {
+          iElem.parent().css('overflow', 'auto');
+        }
+      }
+    }
+  }
 })();

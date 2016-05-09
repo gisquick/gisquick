@@ -28,13 +28,16 @@ def get_user_data(user):
 @csrf_exempt
 def client_login(request):
     if request.method == 'POST':
-        data = json.loads(request.body)
+        context_type = request.META['CONTENT_TYPE']
+        if context_type.startswith('application/json'):
+            data = json.loads(request.body)
+        else:
+            data = request.POST
         form = forms.LoginForm(data)
         if form.is_valid():
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
             if username == "guest":
-                print "login as guest"
                 user = models.GislabUser.get_guest_user()
             else:
                 user = authenticate(username=username, password=password)

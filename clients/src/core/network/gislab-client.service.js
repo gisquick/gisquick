@@ -76,13 +76,14 @@
 
     GislabClient.prototype.login = function(username, password) {
       var client = this;
-      var promise = this.post(
-        '/login/',
-        {
-          username: username,
-          password: password
-        }
-      );
+      var promise = this._deferredRequest({
+        url: '/login/',
+        method: 'post',
+        withCredentials: true,
+        data: 'username={0}&password={1}'.format(username, password),
+        headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
+      });
+
       promise.then(function(data) {
         client.userInfo = data;
       }, function(err) {

@@ -271,7 +271,8 @@
               class="legend-item"
               alt=""
               ng-src="{{ layer.legendUrl }}"
-              image-load="imageLoaded(layer)" />
+              image-load="imageLoadingFinished(layer)"
+              image-load-error="imageLoadingFinished(layer)" />
           </div>
         </md-tab-body>
       </md-tab>

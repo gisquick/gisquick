@@ -328,8 +328,21 @@
       });
     }
 
+    function hideMeasureLabel() {
+      if (measureTool && measureTool.label) {
+        angular.element(measureTool.label.getElement()).addClass('hidden');
+      }
+    }
+
+    function showMeasureLabel() {
+      if (measureTool.label) {
+        angular.element(measureTool.label.getElement()).removeClass('hidden');
+      }
+    }
+
     tool.events.toolActivated = function() {
       tool.config.active = true;
+      showMeasureLabel();
       initializeMeasurement();
       projectProvider.map.addLayer(measureLayer);
     };
@@ -340,17 +353,14 @@
       if (drawTool) {
         projectProvider.map.removeInteraction(drawTool);
       }
+      hideMeasureLabel();
     }
 
     $scope.setMeasureType = function(type) {
-      if (measureTool && measureTool.label) {
-        angular.element(measureTool.label.getElement()).addClass('hidden');
-      }
+      hideMeasureLabel();
       measureTool = measureTools[type];
+      showMeasureLabel();
       measureTool.updateValue();
-      if (measureTool.label) {
-        angular.element(measureTool.label.getElement()).removeClass('hidden');
-      }
       source.clear();
       if (tool.config.active) {
         initializeMeasurement();

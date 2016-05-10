@@ -280,8 +280,9 @@ label.md-no-float {
 
 .bottom-bar .attribute-table md-tabs,
 .bottom-bar .identification-table md-tabs {
-  xmin-height: inherit;
   min-height: 30px;
+  /* pointer events must be enabled only for tabs content (because of table close button) */
+  pointer-events: none;
 }
 .bottom-bar .attribute-table md-tabs-canvas,
 .bottom-bar .identification-table md-tabs-canvas {
@@ -297,6 +298,7 @@ label.md-no-float {
   background-color: rgb(250, 250, 250);
   z-index: 3;
   box-sizing: content-box;
+  pointer-events: auto;
 }
 .bottom-bar .attribute-table md-ink-bar,
 .bottom-bar .identification-table md-ink-bar {
@@ -348,7 +350,6 @@ label.md-no-float {
   position: absolute;
   top: -23px;
   right: 0;
-  z-index: 1;
   box-shadow: 5px -3px 3px 0 rgba(0, 0, 0, 0.12);
   box-sizing: border-box;
   height: 20px;
@@ -656,6 +657,7 @@ gl-paginator {
     0 -3px 6px 0 rgba(0, 0, 0, 0.2),
     0 -2px 3px -2px rgba(0, 0, 0, 0.16);
   border-top: 1px solid #888;
+  pointer-events: auto;
 }
 
 .bottom-bar .attribute-table md-tab-item,

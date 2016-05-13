@@ -27,7 +27,7 @@
           iElem.append(clone);
         });
       },
-      controller: ['$scope', function($scope) {
+      controller: function($scope) {
         $scope.$node = {
           data: null,
           parent: null,
@@ -42,7 +42,7 @@
         $scope.nodeSelected = function(value) {
           $scope.changeHandler({value: value});
         }
-      }]
+      }
     }
   }
 
@@ -51,7 +51,7 @@
       restrict: 'A',
       scope: true,
       transclude: true,
-      controller: ['$scope', '$compile', '$element','$templateCache', function($scope, $compile, $element, $templateCache) {
+      controller: function($scope, $compile, $element, $templateCache) {
         $scope.buildHtml = function() {
           var templateId = $scope.$node.isGroup? $scope.groupTemplateId : $scope.leafTemplateId;
           var template = $templateCache.get(templateId);
@@ -59,7 +59,7 @@
           $element.append(tElem);
           $compile(tElem)($scope);
         };
-      }],
+      },
       compile: function(tElem, tAttrs) {
         return {
           pre: function(scope, iElem, iAttrs) {
@@ -142,9 +142,9 @@
         });
         if (iAttrs.glVar) {
           $parse(iAttrs.glVar).assign(scope.$parent, scope.treeView);
-        }
+        };
       },
-      controller: ['$scope', function($scope) {
+      controller: function($scope) {
         $scope.$node = {
           data: null,
           parent: null,
@@ -166,7 +166,7 @@
           $scope.changeHandler({node: $node});
         };
         $scope.treeView = new CheckTreeView($scope.idAttribute, $scope.childrenAttribute, $scope.selectAttribute);
-      }]
+      }
     }
   }
 
@@ -174,7 +174,7 @@
     return {
       restrict: 'A',
       scope: true,
-      controller: ['$scope', '$compile', '$element', '$templateCache', function($scope, $compile, $element, $templateCache) {
+      controller: function($scope, $compile, $element, $templateCache) {
         $scope.buildHtml = function() {
           var templateId = $scope.$node.isGroup? $scope.groupTemplateId : $scope.leafTemplateId;
           var template = $templateCache.get(templateId);
@@ -184,7 +184,7 @@
           $compile(tElem)($scope);
 
         };
-      }],
+      },
       compile: function(tElem, tAttrs) {
         return {
           pre: function(scope, iElem, iAttrs) {

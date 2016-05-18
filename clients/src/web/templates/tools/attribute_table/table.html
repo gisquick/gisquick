@@ -1,11 +1,10 @@
 <md-bottom-sheet
-  ng-cloak
   class="features-panel attribute-table">
 
   <div
     class="static-height-container"
     ng-style="{
-      minHeight: 132+32*(tool.rowsPerPage||1)+'px'
+      minHeight: 132+32*(tool.config.rowsPerPage||1)+'px'
     }">
     <div layout="column"
       class="animated-height-container">
@@ -23,15 +22,17 @@
           md-no-ink
           aria-label="Close"
           class="close-button no-hover"
-          ng-click="tool.deactivate()">
+          ng-click="deactivateTool()">
           <md-icon md-svg-icon="x"></md-icon>
         </md-button>
       </div>
 
-      <md-tabs flex
+      <md-tabs
+        flex
+        xng-cloak
         md-no-ink
         md-no-pagination
-        md-selected="tool.layerIndex">
+        md-selected="tool.config.layerIndex">
         <md-tab ng-repeat="layer in layers"
           label="x"
           md-on-select="setActiveLayer(layer)">
@@ -87,7 +88,7 @@
               </thead>
               <tbody>
                 <tr
-                  ng-repeat="feature in layer.features | limitTo: tool.rowsPerPage: (layer.features.page - 1) * tool.rowsPerPage"
+                  ng-repeat="feature in layer.features | limitTo: tool.config.rowsPerPage: (layer.features.page - 1) * tool.config.rowsPerPage"
                   ng-class="{'md-selected': tool.selectedFeature === feature}">
                   <td class="icon">
                     <md-icon
@@ -117,7 +118,7 @@
           layout="row"
           class="input-inline-label">
           <label class="md-label md-no-float">Limit:</label>
-          <input ng-model="tool.limit" type="number" min="1" max="1000"></input>
+          <input ng-model="tool.config.limit" type="number" min="1" max="1000"></input>
         </md-input-container>
         <md-input-container
           layout="row"
@@ -127,7 +128,7 @@
             type="number"
             min="1"
             max="10"
-            ng-model="tool.rowsPerPage"
+            ng-model="tool.config.rowsPerPage"
             ng-change="ui.manager.panelResized()">
           </input>
         </md-input-container>
@@ -135,7 +136,7 @@
         <gl-paginator
           ng-show="activeLayer.features.length > 0"
           ng-model="activeLayer.features"
-          gl-rows="tool.rowsPerPage">
+          gl-rows="tool.config.rowsPerPage">
         </gl-paginator>
 
         <span flex></span>
@@ -156,5 +157,5 @@
       </div>
     </div>
   </div>
-  <div style="height: 80px;"></div>
+  <div style="background-color: rgba(150,150,150, 0.5);height: 80px;"></div>
 </md-bottom-sheet>

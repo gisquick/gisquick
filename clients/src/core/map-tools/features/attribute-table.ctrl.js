@@ -172,7 +172,7 @@
       }
       var wfsParams = {
         'layer': layerName,
-        'maxfeatures': $scope.tool.limit,
+        'maxfeatures': $scope.tool.config.limit,
         'startindex': 0,
         'filters': filters
       }

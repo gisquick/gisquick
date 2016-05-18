@@ -184,8 +184,8 @@ md-tabs-wrapper md-icon {
   padding: 0 5px;
   text-align: center;
   min-height: 30px;
-  max-height: 30px;
-  transition: all 0.45s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
+  height: 30px;
+  xtransition: height 0.45s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
   text-transform: uppercase;
   overflow: hidden;
   position: relative;
@@ -327,8 +327,8 @@ md-tabs-wrapper md-icon {
 }
 
 
-#vertical-attribute-table,
-#vertical-identification-table,
+#secondary-panel-bottom,
+#secondary-panel-top,
 #content-panel {
   position: relative;
 }
@@ -383,4 +383,16 @@ md-tabs-wrapper md-icon {
 
 .vertical-panel md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {
   min-height: 0px;
+}
+
+#tools-panel {
+  overflow: hidden;
+}
+
+/* Disable transition for collapsed tools panel */
+#tools-panel > .collapsed md-tab-content {
+  transition: none;
+}
+#tools-panel > .collapsed md-tabs.md-dynamic-height {
+  transition: none!important;
 }

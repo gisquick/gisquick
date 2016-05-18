@@ -1,5 +1,4 @@
 <md-bottom-sheet
-  ng-cloak
   class="features-panel identification-table"
   ng-init="tool.config.featureAutoselect=false">
   <div
@@ -17,12 +16,14 @@
           md-no-ink
           aria-label="Close"
           class="close-button no-hover"
-          ng-click="tool.deactivate()">
+          ng-click="deactivateTool()">
           <md-icon md-svg-icon="x"></md-icon>
         </md-button>
       </div>
       <md-tabs
+        ng-init="ui.manager.panelResized()"
         flex
+        ng-cloak
         md-no-ink
         md-selected="tool.data.activeLayerIndex"
         md-autoselect="false">
@@ -120,5 +121,5 @@
       </div>
     </div>
   </div>
-  <div style="background-color: red;height: 80px;"></div>
+  <div style="background-color: rgba(100,100,100, 0.5);height: 80px;"></div>
 </md-bottom-sheet>

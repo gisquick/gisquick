@@ -1,6 +1,7 @@
 <div
   class="app-container"
-  ng-show="::showApp">
+  ng-show="::showApp"
+  ng-controller="ToolsController">
   <div layout="column"
     style="height:100%;"
     ng-style="{left: ui.manager.mapView.left-280+'px'}"
@@ -31,13 +32,16 @@
       layout="column"
       style="position:relative;"
       class="full-height">
-      <div id="tools-panel">
+      <div
+        id="tools-panel"
+        ng-class="{hidden: !activeTool.template}">
       </div>
       <script type="text/ng-template" id="tools_panel.html">
         <div>
           <div
+            xng-show="activeTool.template"
             class="panel-header">
-            {{ activeTool.title }}
+            {{ ui.manager.activeToolTitle }}
             <md-button
               aria-label="Close"
               class="right"
@@ -45,16 +49,18 @@
               <md-icon md-svg-icon="x"></md-icon>
             </md-button>
           </div>
+          {{ activeTool }}
           <md-tabs
             md-no-pagination
             md-dynamic-height
             class="tabs-no-header"
-            md-selected="activeTool.index">
+            md-selected="ui.manager.activeToolIndex">
             <md-tab
-              ng-repeat="tool in tools"
-              label="{{ ::tool.title }}">
+              ng-repeat="tool in ::tools | filter:{ui:{primaryPanel:{template:'!!'}}}"
+              ng-init="tool._tabIndex=$index"
+              label="{{ ::tool.ui.primaryPanel.title }}">
               <ng-include
-                src="::tool.template">
+                src="::tool.ui.primaryPanel.template">
               </ng-include>
             </md-tab>
           </md-tabs>
@@ -87,7 +93,7 @@
             </md-button>
           </div>
           <div
-            id="vertical-identification-table"
+            id="secondary-panel-top"
             class="vertical-panel hidden">
           </div>
 
@@ -138,7 +144,7 @@
             </md-button>
           </div>
           <div
-            id="vertical-attribute-table"
+            id="secondary-panel-bottom"
             class="vertical-panel hidden">
           </div>
         </div>

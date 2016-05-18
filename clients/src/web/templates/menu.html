@@ -29,6 +29,7 @@
 
     <md-menu-item class="logout-item">
       <md-button
+        aria-label="Full Screen"
         ng-click="fullScreenTool.toggle()">
         {{ fullScreenTool.active? 'Exit Full Screen' : 'Full Screen' }}
         <p class="shortcut">{{ fullScreenTool.active? 'Esc' : 'F11' }}</p>

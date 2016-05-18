@@ -6,7 +6,7 @@
     .factory('glPanelManager', glPanelManager);
 
 
-  function collapseElement(animateCss, elem) {
+  function collapseElement(animateCss, elem, callback) {
     var height = elem[0].scrollHeight;
     elem.css('maxHeight', height+'px');
     var animator = animateCss(elem, {
@@ -19,12 +19,12 @@
         opacity: 0
       },
       easing: 'ease-out',
-      duration: 0.4
+      duration: 0.45
     });
-    animator.start()
+    animator.start().done(callback || angular.noop);
   }
 
-  function expandElement(animateCss, elem) {
+  function expandElement(animateCss, elem, callback) {
     var height = elem[0].scrollHeight;
     var animator = animateCss(elem, {
       from: {
@@ -36,10 +36,11 @@
         opacity: 1
       },
       easing: 'ease-out',
-      duration: 0.4
+      duration: 0.45
     });
     animator.start().done(function() {
       elem.css('maxHeight', 'none');
+      (callback || angular.noop)();
     });
   }
 
@@ -109,15 +110,24 @@
     };
 
     PanelManager.prototype._calculateBottom = function() {
-        if (this.bottomPanel) {
-          this.mapView.bottom = this.bottomPanel.element.clientHeight-80;
-        } else {
-          if (this.statusBar.visible) {
-            this.mapView.bottom = this.statusBar.element[0].clientHeight;
-          } else {
-            this.mapView.bottom = 0;
+      if (this.secondaryBottomPanel) {
+        if (!this.secondaryBottomPanel.element) {
+          this.secondaryBottomPanel.element = document.querySelector(".bottom-bar md-bottom-sheet");
+        }
+        if (this.secondaryBottomPanel.element) {
+          var height = this.secondaryBottomPanel.element.clientHeight-80;
+          if (height > 0) {
+            this.mapView.bottom = height;
+            return;
           }
         }
+      }
+
+      if (this.statusBar.visible) {
+        this.mapView.bottom = this.statusBar.element[0].clientHeight;
+      } else {
+        this.mapView.bottom = 0;
+      }
     };
 
     PanelManager.prototype.hideStatusBar = function() {
@@ -156,7 +166,7 @@
       if (!this.contentPanel) {
         return;
       }
-      var hasSecondaryPanel = (this.secondaryPanel && this.secondaryPanel.element)? true : false;
+      var hasSecondaryPanel = (this.secondaryLeftPanel && this.secondaryLeftPanel.element)? true : false;
       this.contentPanel.collapseEnabled = hasSecondaryPanel;
       var toolFormHeight = 0;
       if (this.toolsPanel) {
@@ -165,33 +175,33 @@
 
       var containerHeight = this.panelElement[0].clientHeight;
       this.accordionMode = containerHeight < 500;
-      if (this.accordionMode && hasSecondaryPanel && !this.contentPanel.collapsed && !this.secondaryPanel.collapsed) {
+      if (this.accordionMode && hasSecondaryPanel && !this.contentPanel.collapsed && !this.secondaryLeftPanel.collapsed) {
         this.contentPanel.collapsed = true;
       }
 
       //TODO: get headers heights correctly
       var contentPanelHeaderHeight = 30;
-      var secondaryPanelHeaderHeight = 30;
+      var secondaryLeftPanelHeaderHeight = 30;
       var contentPanelHeight = 0;
-      var secondaryPanelHeight = 0;
+      var secondaryLeftPanelHeight = 0;
 
       if (!this.contentPanel.collapsed && !hasSecondaryPanel) {
         contentPanelHeight = containerHeight - contentPanelHeaderHeight;
       }
-      if (!this.contentPanel.collapsed && hasSecondaryPanel && !this.secondaryPanel.collapsed) {
-        contentPanelHeight = (containerHeight - contentPanelHeaderHeight - secondaryPanelHeaderHeight)/2;
-        secondaryPanelHeight = contentPanelHeight;
-      } else if (!this.contentPanel.collapsed && hasSecondaryPanel && this.secondaryPanel.collapsed) {
-        contentPanelHeight = (containerHeight - contentPanelHeaderHeight - secondaryPanelHeaderHeight);
-      } else if (this.contentPanel.collapsed && hasSecondaryPanel && !this.secondaryPanel.collapsed) {
-        secondaryPanelHeight = (containerHeight - contentPanelHeaderHeight - secondaryPanelHeaderHeight);
+      if (!this.contentPanel.collapsed && hasSecondaryPanel && !this.secondaryLeftPanel.collapsed) {
+        contentPanelHeight = (containerHeight - contentPanelHeaderHeight - secondaryLeftPanelHeaderHeight)/2;
+        secondaryLeftPanelHeight = contentPanelHeight;
+      } else if (!this.contentPanel.collapsed && hasSecondaryPanel && this.secondaryLeftPanel.collapsed) {
+        contentPanelHeight = (containerHeight - contentPanelHeaderHeight - secondaryLeftPanelHeaderHeight);
+      } else if (this.contentPanel.collapsed && hasSecondaryPanel && !this.secondaryLeftPanel.collapsed) {
+        secondaryLeftPanelHeight = (containerHeight - contentPanelHeaderHeight - secondaryLeftPanelHeaderHeight);
       }
       this.contentPanel.element.parent().css('flex', '0 0 {0}%'.format(100*contentPanelHeight/containerHeight));
       if (hasSecondaryPanel) {
-        this.secondaryPanel.element.parent().css('flex', '0 0 {0}%'.format(100*secondaryPanelHeight/containerHeight));
-        //this.secondaryPanel.element.parent().css('height', '{0}px'.format(secondaryPanelHeight));
-        //this.secondaryPanel.top = this.secondaryPanel.element[0].offsetTop;
-        this.secondaryPanel.height = secondaryPanelHeight;
+        this.secondaryLeftPanel.element.parent().css('flex', '0 0 {0}%'.format(100*secondaryLeftPanelHeight/containerHeight));
+        //this.secondaryLeftPanel.element.parent().css('height', '{0}px'.format(secondaryLeftPanelHeight));
+        //this.secondaryLeftPanel.top = this.secondaryLeftPanel.element[0].offsetTop;
+        this.secondaryLeftPanel.height = secondaryLeftPanelHeight;
       }
     };
 
@@ -220,17 +230,31 @@
     // }
 
     PanelManager.prototype.showToolsPanel = function() {
-      console.log('showToolsPanel');
-      if (this.toolsPanel.collapsed) {
-        this.toolsPanel.collapsed = false;
-        expandElement($animateCss, this.toolsPanel.element);
-        this.updateLayout();
+      var _this = this;
+      if (_this.toolsPanel.collapsed) {
+        $timeout(function() {
+          _this.toolsPanel.collapsed = false;
+          expandElement(
+            $animateCss,
+            _this.toolsPanel.element,
+            function() {
+              _this.toolsPanel.element.removeClass("collapsed");
+            }
+          );
+          _this.updateLayout();
+        }, 20);
       }
     };
     PanelManager.prototype.hideToolsPanel = function() {
       if (!this.toolsPanel.collapsed) {
         this.toolsPanel.collapsed = true;
-        collapseElement($animateCss, this.toolsPanel.element);
+        collapseElement(
+          $animateCss,
+          this.toolsPanel.element,
+          function() {
+            this.toolsPanel.element.addClass("collapsed");
+          }.bind(this)
+        );
         this.updateLayout();
       }
     };
@@ -253,23 +277,38 @@
     PanelManager.prototype._openPanel = function(options) {
       // options.scope = options.scope;
       var _this = this;
+      var panelLocation;
+      if (options.left && options.bottom) {
+        panelLocation = (window.innerHeight > window.innerWidth || window.innerWidth < 600)?
+          'left' : 'bottom';
+      } else {
+        panelLocation = options.left? 'left' : 'bottom';
+      }
 
-      var layout = options.layout;
-      this.verticalMode = window.innerHeight > window.innerWidth || window.innerWidth < 600;
-      // this.verticalMode = true;
+      // panelLocation = 'left';
+      if (panelLocation === 'left') {
+        options = angular.extend({
+          templateUrl: options[panelLocation].template,
+          parent: options[panelLocation].position === 'top'?
+            '#secondary-panel-top' : '#secondary-panel-bottom'
 
-      if (this.verticalMode) {
-        angular.extend(options, layout.vertical);
-        this.secondaryPanel = $$interimElement();
-        this.secondaryPanel.collapsed = false;
+        }, options);
+        this.secondaryLeftPanel = $$interimElement();
+        this.secondaryLeftPanel.collapsed = false;
+        this.secondaryLeftPanel.location = panelLocation;
         if (this.accordionMode && !this.contentPanel.collapsed) {
           this.contentPanel.collapsed = true;
         }
         angular.extend(options, {
           onShow: function(scope, element, options) {
+            if (options.header) {
+              this.secondaryLeftPanel.headerElement = this._ngElement(options.header);
+              this.secondaryLeftPanel.headerElement.removeClass("hidden");
+            }
+
             //console.log(element.find('md-tabs')[0].scrollHeight);
             options.parent.removeClass('hidden');
-            this.secondaryPanel.element = element;
+            this.secondaryLeftPanel.element = element;
             var promise = $animate.enter(element, options.parent);
             this.updateLayout();
             return promise;
@@ -279,8 +318,6 @@
             console.log('onRemove');
             element.parent().css('flex', '0 0 0');
             options.parent.addClass('hidden');
-            this.secondaryPanel.headerElement.addClass("hidden");
-            this.secondaryPanel = null;
             if (this.contentPanel.collapsed) {
               this.contentPanel.collapsed = false;
             }
@@ -288,29 +325,27 @@
             return element && $animate.leave(element) || $q.when();
           }.bind(this)
         });
-        if (options.header) {
-          this.secondaryPanel.headerElement = this._ngElement(options.header);
-          this.secondaryPanel.headerElement.removeClass("hidden");
-        }
-        return this.secondaryPanel.show(options);
+        // if (options.header) {
+        //   this.secondaryLeftPanel.headerElement = this._ngElement(options.header);
+        //   this.secondaryLeftPanel.headerElement.removeClass("hidden");
+        // }
+        return this.secondaryLeftPanel.show(options);
       } else {
-        angular.extend(options, layout.horizontal);
-        
-        angular.extend(options, {
+        options = angular.extend({
+          parent: ".bottom-bar",
+          templateUrl: options.bottom.template,
           clickOutsideToClose: false,
           disableParentScroll: false
-        });
+        }, options);
 
+        _this.secondaryBottomPanel = {
+          element: null
+        };
         $timeout(function() {
-          _this.bottomPanel = {
-            element: document.querySelector(".bottom-bar md-bottom-sheet")
-          };
           _this.panelResized();
         }, 800);
-
         var promise = $mdBottomSheet.show(options);
         promise.finally(function() {
-          _this.bottomPanel = null;
           _this.panelResized();
         });
         return promise;
@@ -320,17 +355,18 @@
     PanelManager.prototype.panelResized = function() {
       var _this = this;
       $timeout(function() {
-        console.log('panelResized');
         _this._calculateBottom();
       }, 10);
-
     };
 
+
     PanelManager.prototype.showPanel = function(options) {
-      console.log('showPanel');
-      if (this.secondaryPanel) {
-        return this.secondaryPanel.hide().then(function() {
-          //console.log('-- hide complete --');
+      console.log('Open secondary panel');
+      console.log(options);
+
+      if (this.secondaryLeftPanel) {
+        return this.secondaryLeftPanel.hide().then(function() {
+          console.log('-- hide complete --');
           return this._openPanel(options);
         }.bind(this));
       } else {
@@ -338,31 +374,65 @@
       }
     };
 
-    PanelManager.prototype.hidePanel = function(options) {
-      if (this.verticalMode) {
-        if (this.secondaryPanel) {
-          this.secondaryPanel.collapsed = true;
-          this.updateLayout();
-          setTimeout(function() {
-            this.secondaryPanel.hide();
-          }.bind(this), 500);
-          if (this.secondaryPanel.headerElement) {
-            this.secondaryPanel.headerElement.addClass("hidden");
-          }
+    PanelManager.prototype.switchPanel = function(options) {
+      // TODO properly check left or bottom panels
+      if (!this.secondaryLeftPanel && !this.secondaryBottomPanel) {
+        return this._openPanel(options);
+      }
+      if (this.secondaryLeftPanel) {
+        // collapse panel first (for animation)
+        this.secondaryLeftPanel.collapsed = true;
+        this.updateLayout();
+        
+        var hideComplete = $q.defer();
+        var oldPanel = this.secondaryLeftPanel;
+        // wait for collapse animation and then open new panel
+        $timeout(function() {
+          oldPanel.hide();
+          hideComplete.resolve();
+        }, 450);
+        options.resolve = options.resolve || {};
+        options.resolve.hideComplete = function() {
+          return hideComplete.promise;
+        };
+        if (this.secondaryLeftPanel.headerElement) {
+          this.secondaryLeftPanel.headerElement.addClass("hidden");
         }
+        return this._openPanel(options);
       } else {
+        return this._openPanel(options);
+      }
+    };
+
+    PanelManager.prototype.hidePanel = function() {
+      console.log('** hidePanel');
+      if (this.secondaryLeftPanel) {
+        console.log('close left secondary');
+        this.secondaryLeftPanel.collapsed = true;
+        this.updateLayout();
+        var oldPanel = this.secondaryLeftPanel;
+        setTimeout(function() {
+          oldPanel.hide();
+        }.bind(this), 450);
+        if (this.secondaryLeftPanel.headerElement) {
+          this.secondaryLeftPanel.headerElement.addClass("hidden");
+        }
+        this.secondaryLeftPanel = null;
+      } else if (this.secondaryBottomPanel) {
+        console.log('close bottom secondary');
+        this.secondaryBottomPanel = null;
         $mdBottomSheet.hide();
       }
     };
 
     PanelManager.prototype.togglePanel = function(options) {
       // console.log('togglePanel');
-      var panelElement = this.secondaryPanel.element;
-      this.secondaryPanel.collapsed = !this.secondaryPanel.collapsed;
-      if (this.secondaryPanel.collapsed && this.contentPanel.collapsed) {
+      var panelElement = this.secondaryLeftPanel.element;
+      this.secondaryLeftPanel.collapsed = !this.secondaryLeftPanel.collapsed;
+      if (this.secondaryLeftPanel.collapsed && this.contentPanel.collapsed) {
         this.contentPanel.collapsed = false;
       }
-      if (!this.secondaryPanel.collapsed && this.accordionMode && !this.contentPanel.collapsed) {
+      if (!this.secondaryLeftPanel.collapsed && this.accordionMode && !this.contentPanel.collapsed) {
         this.contentPanel.collapsed = true;
       }
       this.updateLayout();
@@ -371,11 +441,11 @@
     PanelManager.prototype.toggleContentPanel = function(options) {
       // console.log('toggleContentPanel');
       this.contentPanel.collapsed = !this.contentPanel.collapsed;
-      if (this.contentPanel.collapsed && this.secondaryPanel && this.secondaryPanel.collapsed) {
-        this.secondaryPanel.collapsed = false;
+      if (this.contentPanel.collapsed && this.secondaryLeftPanel && this.secondaryLeftPanel.collapsed) {
+        this.secondaryLeftPanel.collapsed = false;
       }
-      if (!this.contentPanel.collapsed && this.accordionMode && this.secondaryPanel && !this.secondaryPanel.collapsed) {
-        this.secondaryPanel.collapsed = true;
+      if (!this.contentPanel.collapsed && this.accordionMode && this.secondaryLeftPanel && !this.secondaryLeftPanel.collapsed) {
+        this.secondaryLeftPanel.collapsed = true;
       }
       this.updateLayout();
     };

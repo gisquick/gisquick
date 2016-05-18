@@ -6,75 +6,18 @@
     .controller('LayersController', LayersController)
     .controller('OverlaysController', OverlaysController);
 
-  function OverlaysController($scope, $timeout, $q, projectProvider, mapBuilder, layersControl, glPanelManager) {
+  function OverlaysController($scope, $timeout, $q, projectProvider, mapBuilder, layersControl, toolsManager) {
 
-    var queryableLayersIndexes = {};
-    projectProvider.layers.list.filter(function(layer_data) {
-      return layer_data.attributes && layer_data.attributes.length;
-    }).forEach(function(layer_data, index) {
-      queryableLayersIndexes[layer_data.name] = index;
-    });
-
-    var layerAttributesTool = {
-      rowsPerPage: 5,
-      limit: 50,
-      opened: false,
-      viewScope: null,
-      config: {
-        mapView: glPanelManager.mapView
-      },
-      showTable: function(layer) {
-        var tool = this;
-        layerAttributesTool.layerIndex = queryableLayersIndexes[layer.name];
-        console.log('opening attributes table');
-        if (!tool.opened) {
-          var scope = $scope.$new();
-          scope.ui = {
-            manager: glPanelManager
-          };
-          glPanelManager.hideToolsPanel();
-          var panelPromise = glPanelManager.showPanel({
-            layout: {
-              vertical: {
-                templateUrl: 'templates/tools/attribute_table/list_table.html',
-                parent: '#vertical-attribute-table',
-                header: '#vertical-attribute-table-header'
-              },
-              horizontal: {
-                templateUrl: 'templates/tools/attribute_table/table.html',
-                parent: '.bottom-bar'
-              }
-            },
-            controller: 'AttributeTableController',
-            scope: scope,
-            locals: {tool: layerAttributesTool}
-          });
-          tool.opened = true;
-          panelPromise.then(function() {
-            console.log('ATTRIBUTE TABLE CLOSED');
-            tool.opened = false;
-            $scope.attributeTableLayer = null;
-          });
-          panelPromise.catch(function() {
-            tool.opened = false;
-            $scope.attributeTableLayer = null;
-          });
-        }
-        $timeout(function() {
-          if (glPanelManager.secondaryPanel) {
-            glPanelManager.secondaryPanel.title = layer.title;
-          }
-        }, 700);
-      },
-      deactivate: function() {
-        $scope.attributeTableLayer = null;
-        glPanelManager.hidePanel();
-      }
-    };
-
+    var layerAttributesTool;
     $scope.showAttributeTable = function(layer) {
-      console.log('showAttributeTable');
-      $scope.attributeTableLayer = layer;
+      if (!layerAttributesTool) {
+        layerAttributesTool = toolsManager.get('attribute_table')
+        $scope.tool = layerAttributesTool;
+      }
+
+      if (!toolsManager.activeTool || toolsManager.activeTool.name !== 'attribute_table') {
+        toolsManager.activateTool(layerAttributesTool);
+      }
       layerAttributesTool.showTable(layer);
     };
 
@@ -144,14 +87,13 @@
     }
 
     $scope.layersVisibilityChanged = function(node) {
-      //$scope.selectedTopic.index = null;
+      $scope.selectedTopic.index = null;
       var visibleLayers = [];
       projectProvider.layers.list.forEach(function(layer_data) {
         if (!layer_data.isGroup && layer_data.visible) {
           visibleLayers.push(layer_data.name);
         }
       });
-      console.log(visibleLayers);
       layersControl.setVisibleLayers(projectProvider.map, visibleLayers);
     };
 

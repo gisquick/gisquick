@@ -35,7 +35,9 @@
                   class="toggle-button list-item-button"
                   aria-label="Toggle"
                   ng-click="$collapsible.toggle()">
-                  ng-bind="$collapsible.collapsed? '+' : '-'">
+                  <md-icon
+                    md-svg-icon="{{ $collapsible.collapsed? 'plus' : 'minus' }}">
+                  </md-icon>
                 </md-button>
                 <p>{{ ::node.title }}</p>
               </md-list-item>
@@ -159,21 +161,26 @@
                   depth="{{ ::$node.treeDepth }}"
                   gl-collapsible>
                   <md-list-item>
-                    <md-checkbox md-no-ink class="md-primary"
-                      ng-model="$node.isChecked"
-                      ng-disabled="!$node.parent.isEnabled"
-                      ng-change="nodeSelected($node)">
-                      
-                    </md-checkbox>
-                    <p ng-bind="::node.title"></p>
                     <md-button
                       class="toggle-button list-item-button"
                       aria-label="Toggle"
-                      ng-click="$collapsible.toggle()"
-                      ng-bind="$collapsible.collapsed? '+' : '-'">
+                      ng-click="$collapsible.toggle()">
+                      <md-icon
+                        md-svg-icon="{{ $collapsible.collapsed? 'plus' : 'minus' }}">
+                      </md-icon>
                     </md-button>
+                    <p ng-bind="::node.title"></p>
+                    <md-switch
+                      md-no-ink
+                      aria-label="Visible"
+                      ng-model="$node.isChecked"
+                      ng-disabled="!$node.parent.isEnabled"
+                      ng-change="nodeSelected($node)">
                   </md-list-item>
-                  <div gl-collapsible-content>
+                  <div gl-collapsible-content
+                    ng-class="{
+                      'disabled-content': !$node.isEnabled
+                    }">
                     <div ng-repeat="node in node.layers" gl-check-tree-node="node"></div>
                   </div>
                 </div>
@@ -200,7 +207,7 @@
                       aria-label="Attributes"
                       ng-if="::$node.data.attributes.length>0"
                       class="list-item-button"
-                      ng-class="{active: attributeTableLayer == $node.data}"
+                      ng-class="{active: tool.config.activeLayer == $node.data}"
                       ng-click="showAttributeTable($node.data)">
                       <md-icon
                         md-svg-icon="attribute-table">

@@ -9,6 +9,7 @@
       'gl.network',
       'gl.ui',
       'gl.map',
+      'gl.tools',
       'gl.legend',
       'gl.layersControl',
       'gl.features',

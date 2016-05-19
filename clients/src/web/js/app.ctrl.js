@@ -163,10 +163,6 @@
           initializeProject(projectData);
         });
       }
-      projectLoader.once('projectClosed', function() {
-        $scope.deactivateTool();
-        $scope.fullScreenTool.destroy();
-      });
     };
 
     function setupScaleLabel() {

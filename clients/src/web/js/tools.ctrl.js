@@ -99,9 +99,9 @@
           console.log('show attribute table');
           this.config.activeLayer = layer;
           this.config.layerIndex = this.queryableLayersIndexes[layer.name];
-          // if (glPanelManager.secondaryPanel) {
-          //   glPanelManager.secondaryPanel.title = layer.title;
-          // }
+          if (glPanelManager.secondaryLeftPanel) {
+            glPanelManager.secondaryLeftPanel.title = layer.title;
+          }
         },
         deactivate: function() {
           this.config.activeLayer = null;
@@ -588,8 +588,6 @@
     toolsManager.deactivateTool = $scope.deactivateTool;
 
 
-    console.log('ToolsController');
-    console.log(projectProvider);
     function initialze(projectData) {
       console.log('** Tools Controller: projectLoaded');
       $timeout(function() {
@@ -607,5 +605,10 @@
     } else {
       projectLoader.once('projectLoaded', initialze);
     }
+    projectLoader.once('projectClosed', function() {
+      toolsManager.deactivateTool();
+      toolsManager.tools = [];
+      $scope.fullScreenTool.destroy();
+    });
   };
 })();

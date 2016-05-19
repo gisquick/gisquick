@@ -82,12 +82,12 @@
             <md-button
               aria-label="Toggle Panel"
               class="toggle-button left"
-              ng-class="{collapsed: ui.manager.secondaryPanel.collapsed}"
+              ng-class="{collapsed: ui.manager.secondaryLeftPanel.collapsed}"
               ng-click="ui.manager.togglePanel()">
               <md-icon
                 md-svg-icon="{{
                   ui.manager.accordionMode?
-                    'arrow-down' : ui.manager.secondaryPanel.collapsed? 'plus' : 'minus'
+                    'arrow-down' : ui.manager.secondaryLeftPanel.collapsed? 'plus' : 'minus'
                 }}">
               </md-icon>
             </md-button>
@@ -121,16 +121,16 @@
           <div
             id="vertical-attribute-table-header"
             class="panel-header secondary hidden">
-            {{ ui.manager.secondaryPanel.title }}
+            {{ ui.manager.secondaryLeftPanel.title }}
             <md-button
               aria-label="Toggle Panel"
               class="toggle-button left"
-              ng-class="{collapsed: ui.manager.secondaryPanel.collapsed}"
+              ng-class="{collapsed: ui.manager.secondaryLeftPanel.collapsed}"
               ng-click="ui.manager.togglePanel()">
               <md-icon
                 md-svg-icon="{{
                   ui.manager.accordionMode?
-                    'arrow-down' : ui.manager.secondaryPanel.collapsed? 'plus' : 'minus'
+                    'arrow-down' : ui.manager.secondaryLeftPanel.collapsed? 'plus' : 'minus'
                 }}">
               </md-icon>
             </md-button>

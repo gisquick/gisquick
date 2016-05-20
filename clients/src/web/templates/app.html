@@ -56,7 +56,7 @@
             class="tabs-no-header"
             md-selected="ui.manager.activeToolIndex">
             <md-tab
-              ng-repeat="tool in ::tools | filter:{ui:{primaryPanel:{template:'!!'}}}"
+              ng-repeat="tool in ::tools | filter:{ui:{primaryPanel:{template:'!!'}}} track by tool.name"
               ng-init="tool._tabIndex=$index"
               label="{{ ::tool.ui.primaryPanel.title }}">
               <ng-include

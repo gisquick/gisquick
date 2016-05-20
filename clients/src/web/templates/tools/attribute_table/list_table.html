@@ -4,7 +4,7 @@
     md-no-ink
     class="tabs-no-header"
     md-selected="tool.config.layerIndex">
-    <md-tab ng-repeat="layer in layers"
+    <md-tab ng-repeat="layer in ::layers track by layer.name"
       label="layer"
       md-on-select="setActiveLayer(layer)">
       <md-list

@@ -28,7 +28,7 @@
         md-selected="tool.data.activeLayerIndex"
         md-autoselect="false">
         <md-tab
-          ng-repeat="layer in ::tool.data.layers"
+          ng-repeat="layer in ::tool.data.layers track by layer.name"
           ng-disabled="layer.features.length === 0"
           md-on-select="setActiveLayer(layer)">
           <md-tab-label>

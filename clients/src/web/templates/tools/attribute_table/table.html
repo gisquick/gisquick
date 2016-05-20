@@ -33,7 +33,7 @@
         md-no-ink
         md-no-pagination
         md-selected="tool.config.layerIndex">
-        <md-tab ng-repeat="layer in layers"
+        <md-tab ng-repeat="layer in ::layers track by layer.name"
           label="x"
           md-on-select="setActiveLayer(layer)">
           <div

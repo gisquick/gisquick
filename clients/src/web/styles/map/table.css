@@ -345,13 +345,14 @@ label.md-no-float {
   color: rgb(0, 170, 212);
 }
 
-.features-panel .close-button-container {
+.bottom-bar .features-panel .close-button-container {
   position: absolute;
-  top: -23px;
+  top: 11px;
   right: 0;
   box-shadow: 5px -3px 3px 0 rgba(0, 0, 0, 0.12);
   box-sizing: border-box;
   height: 20px;
+  z-index: 1;
 }
 .features-panel .close-button-container .close-button {
   min-width: 26px;
@@ -682,11 +683,6 @@ md-bottom-sheet.attribute-table,
 md-bottom-sheet.identification-table {
   background-color: transparent;
   border: none;
-}
-
-.bottom-bar .attribute-table .close-button-container,
-.bottom-bar .identification-table .close-button-container {
-  top: 11px;
 }
 
 .bottom-bar .attribute-table .ss-scroll.horizontal {

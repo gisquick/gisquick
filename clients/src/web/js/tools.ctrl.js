@@ -169,7 +169,7 @@
             this.panelResolve.resolve();
             this.panelResolve = null;
           }
-          // this.events.featuresChanged();
+          this.events.featuresChanged();
         }
       });
       toolsManager.addTool({

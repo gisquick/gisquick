@@ -35,7 +35,7 @@
       <ymax>7416708.86478170473128557</ymax>
     </extent>
     <rotation>0</rotation>
-    <projections>0</projections>
+    <projections>1</projections>
     <destinationsrs>
       <spatialrefsys>
         <proj4>+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs</proj4>
@@ -121,7 +121,7 @@
           <customproperties/>
         </ComposerItem>
       </ComposerPicture>
-      <ComposerPicture resizeMode="0" pictureRotation="0" pictureWidth="35.7233" file="../../../../qgis/project/natural-earth/gislab_logo.svg" pictureHeight="11.077" mapId="-1" anchorPoint="0">
+      <ComposerPicture resizeMode="0" pictureRotation="0" pictureWidth="11.0095" file="../../../../qgis/project/natural-earth/gislab_logo.svg" pictureHeight="11.077" mapId="-1" anchorPoint="0">
         <ComposerItem pagey="8" page="1" id="" lastValidViewScaleFactor="-1" positionMode="0" positionLock="false" x="10" y="8" visibility="1" zValue="9" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="35.837" outlineWidth="0.3" excludeFromExports="0" uuid="{e5770419-05da-4ac5-9020-5f52a13bac0a}" height="11.077" itemRotation="0" frame="false" pagex="10">
           <FrameColor alpha="255" red="0" blue="0" green="0"/>
           <BackgroundColor alpha="255" red="255" blue="255" green="255"/>
@@ -290,7 +290,7 @@
           <prop k="style" v="solid"/>
         </layer>
       </symbol>
-      <ComposerPicture resizeMode="0" pictureRotation="0" pictureWidth="35.7233" file="../../../../qgis/project/natural-earth/gislab_logo.svg" pictureHeight="11.077" mapId="-1" anchorPoint="0">
+      <ComposerPicture resizeMode="0" pictureRotation="0" pictureWidth="11.0095" file="../../../../qgis/project/natural-earth/gislab_logo.svg" pictureHeight="11.077" mapId="-1" anchorPoint="0">
         <ComposerItem pagey="7.80529" page="1" id="" lastValidViewScaleFactor="-1" positionMode="0" positionLock="false" x="10" y="7.80529" visibility="1" zValue="11" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="35.837" outlineWidth="0.3" excludeFromExports="0" uuid="{fdbb7056-4849-4c7f-8093-8f858c6fb83f}" height="11.077" itemRotation="0" frame="false" pagex="10">
           <FrameColor alpha="255" red="0" blue="0" green="0"/>
           <BackgroundColor alpha="255" red="255" blue="255" green="255"/>
@@ -497,7 +497,7 @@
           <customproperties/>
         </ComposerItem>
       </ComposerPicture>
-      <ComposerPicture resizeMode="0" pictureRotation="0" pictureWidth="35.7233" file="../../../../qgis/project/natural-earth/gislab_logo.svg" pictureHeight="11.077" mapId="-1" anchorPoint="0">
+      <ComposerPicture resizeMode="0" pictureRotation="0" pictureWidth="11.0095" file="../../../../qgis/project/natural-earth/gislab_logo.svg" pictureHeight="11.077" mapId="-1" anchorPoint="0">
         <ComposerItem pagey="8" page="1" id="" lastValidViewScaleFactor="-1" positionMode="0" positionLock="false" x="10" y="8" visibility="1" zValue="9" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="35.837" outlineWidth="0.3" excludeFromExports="0" uuid="{65cdf673-73bf-4592-9ebe-31bf15389152}" height="11.077" itemRotation="0" frame="false" pagex="10">
           <FrameColor alpha="255" red="0" blue="0" green="0"/>
           <BackgroundColor alpha="255" red="255" blue="255" green="255"/>
@@ -650,7 +650,7 @@
     </Composition>
   </Composer>
   <projectlayers>
-    <maplayer minimumScale="0" maximumScale="1e+08" simplifyDrawingHints="1" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" geometry="Polygon" simplifyMaxScale="1" type="vector" hasScaleBasedVisibilityFlag="0" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
+    <maplayer minimumScale="-4.65661e-10" maximumScale="1e+08" simplifyDrawingHints="1" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" geometry="Polygon" simplifyMaxScale="1" type="vector" hasScaleBasedVisibilityFlag="0" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
       <id>countries201512291455260401321825005_1451402410</id>
       <datasource>dbname='./natural-earth.sqlite' table="countries" (geom_3857) sql="NAME" IN ('Czech Rep.', 'Slovakia', 'Poland', 'Hungary')</datasource>
       <shortname></shortname>
@@ -983,7 +983,7 @@
         <selectedonly on=""/>
       </labelattributes>
       <SingleCategoryDiagramRenderer diagramType="Pie">
-        <DiagramCategory penColor="#000000" labelPlacementMethod="XHeight" penWidth="0" diagramOrientation="Up" minimumSize="0" barWidth="5" penAlpha="255" maxScaleDenominator="1e+08" backgroundColor="#ffffff" transparency="0" width="15" scaleDependency="Area" backgroundAlpha="255" angleOffset="1440" scaleBasedVisibility="0" enabled="0" height="15" sizeType="MM" minScaleDenominator="0">
+        <DiagramCategory penColor="#000000" labelPlacementMethod="XHeight" penWidth="0" diagramOrientation="Up" minimumSize="0" barWidth="5" penAlpha="255" maxScaleDenominator="1e+08" backgroundColor="#ffffff" transparency="0" width="15" scaleDependency="Area" backgroundAlpha="255" angleOffset="1440" scaleBasedVisibility="0" enabled="0" height="15" sizeType="MM" minScaleDenominator="-4.65661e-10">
           <fontProperties description="Noto Sans,9,-1,5,50,0,0,0,0,0" style=""/>
           <attribute field="" color="#000000" label=""/>
         </DiagramCategory>
@@ -1001,9 +1001,13 @@
         <alias field="subregion" index="5" name="Subregion"/>
       </aliases>
       <excludeAttributesWMS>
+        <attribute>geom</attribute>
         <attribute>PK_UID</attribute>
       </excludeAttributesWMS>
-      <excludeAttributesWFS/>
+      <excludeAttributesWFS>
+        <attribute>geom</attribute>
+        <attribute>PK_UID</attribute>
+      </excludeAttributesWFS>
       <attributeactions/>
       <editform>.</editform>
       <editforminit/>
@@ -1066,7 +1070,7 @@ def my_form_open(dialog, layer, feature):
         </edittype>
       </edittypes>
     </maplayer>
-    <maplayer minimumScale="-4.65661e-10" maximumScale="1e+08" simplifyDrawingHints="1" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" geometry="Polygon" simplifyMaxScale="1" type="vector" hasScaleBasedVisibilityFlag="0" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
+    <maplayer minimumScale="0" maximumScale="1e+08" simplifyDrawingHints="1" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" geometry="Polygon" simplifyMaxScale="1" type="vector" hasScaleBasedVisibilityFlag="0" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
       <id>countries20151229145704512360259350_1451402410</id>
       <datasource>dbname='./natural-earth.sqlite' table="countries" (geom_3857) sql="NAME" IN ('Austria','Germany','Liechtenstein','Switzerland')</datasource>
       <shortname></shortname>
@@ -1399,7 +1403,7 @@ def my_form_open(dialog, layer, feature):
         <selectedonly on=""/>
       </labelattributes>
       <SingleCategoryDiagramRenderer diagramType="Pie">
-        <DiagramCategory penColor="#000000" labelPlacementMethod="XHeight" penWidth="0" diagramOrientation="Up" minimumSize="0" barWidth="5" penAlpha="255" maxScaleDenominator="1e+08" backgroundColor="#ffffff" transparency="0" width="15" scaleDependency="Area" backgroundAlpha="255" angleOffset="1440" scaleBasedVisibility="0" enabled="0" height="15" sizeType="MM" minScaleDenominator="-4.65661e-10">
+        <DiagramCategory penColor="#000000" labelPlacementMethod="XHeight" penWidth="0" diagramOrientation="Up" minimumSize="0" barWidth="5" penAlpha="255" maxScaleDenominator="1e+08" backgroundColor="#ffffff" transparency="0" width="15" scaleDependency="Area" backgroundAlpha="255" angleOffset="1440" scaleBasedVisibility="0" enabled="0" height="15" sizeType="MM" minScaleDenominator="0">
           <fontProperties description="Noto Sans,9,-1,5,50,0,0,0,0,0" style=""/>
           <attribute field="" color="#000000" label=""/>
         </DiagramCategory>
@@ -1418,9 +1422,13 @@ def my_form_open(dialog, layer, feature):
         <alias field="subregion" index="5" name="Subregion"/>
       </aliases>
       <excludeAttributesWMS>
+        <attribute>geom</attribute>
         <attribute>PK_UID</attribute>
       </excludeAttributesWMS>
-      <excludeAttributesWFS/>
+      <excludeAttributesWFS>
+        <attribute>geom</attribute>
+        <attribute>PK_UID</attribute>
+      </excludeAttributesWFS>
       <attributeactions/>
       <editform>.</editform>
       <editforminit/>
@@ -1483,7 +1491,7 @@ def my_form_open(dialog, layer, feature):
         </edittype>
       </edittypes>
     </maplayer>
-    <maplayer minimumScale="0" maximumScale="1e+08" simplifyDrawingHints="1" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" geometry="Polygon" simplifyMaxScale="1" type="vector" hasScaleBasedVisibilityFlag="0" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
+    <maplayer minimumScale="-4.65661e-10" maximumScale="1e+08" simplifyDrawingHints="1" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" geometry="Polygon" simplifyMaxScale="1" type="vector" hasScaleBasedVisibilityFlag="0" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
       <id>countries201512291457166651803245050_1451402410</id>
       <datasource>dbname='./natural-earth.sqlite' table="countries" (geom_3857) sql="NAME" = 'Slovenia'</datasource>
       <shortname></shortname>
@@ -1757,7 +1765,7 @@ def my_form_open(dialog, layer, feature):
         <selectedonly on=""/>
       </labelattributes>
       <SingleCategoryDiagramRenderer diagramType="Pie">
-        <DiagramCategory penColor="#000000" labelPlacementMethod="XHeight" penWidth="0" diagramOrientation="Up" minimumSize="0" barWidth="5" penAlpha="255" maxScaleDenominator="1e+08" backgroundColor="#ffffff" transparency="0" width="15" scaleDependency="Area" backgroundAlpha="255" angleOffset="1440" scaleBasedVisibility="0" enabled="0" height="15" sizeType="MM" minScaleDenominator="0">
+        <DiagramCategory penColor="#000000" labelPlacementMethod="XHeight" penWidth="0" diagramOrientation="Up" minimumSize="0" barWidth="5" penAlpha="255" maxScaleDenominator="1e+08" backgroundColor="#ffffff" transparency="0" width="15" scaleDependency="Area" backgroundAlpha="255" angleOffset="1440" scaleBasedVisibility="0" enabled="0" height="15" sizeType="MM" minScaleDenominator="-4.65661e-10">
           <fontProperties description="Noto Sans,9,-1,5,50,0,0,0,0,0" style=""/>
           <attribute field="" color="#000000" label=""/>
         </DiagramCategory>
@@ -1775,9 +1783,13 @@ def my_form_open(dialog, layer, feature):
         <alias field="subregion" index="5" name="Subregion"/>
       </aliases>
       <excludeAttributesWMS>
+        <attribute>geom</attribute>
         <attribute>PK_UID</attribute>
       </excludeAttributesWMS>
-      <excludeAttributesWFS/>
+      <excludeAttributesWFS>
+        <attribute>geom</attribute>
+        <attribute>PK_UID</attribute>
+      </excludeAttributesWFS>
       <attributeactions/>
       <editform>.</editform>
       <editforminit/>
@@ -1840,7 +1852,7 @@ def my_form_open(dialog, layer, feature):
         </edittype>
       </edittypes>
     </maplayer>
-    <maplayer minimumScale="-4.65661e-10" maximumScale="1e+07" simplifyDrawingHints="0" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" geometry="Point" simplifyMaxScale="1" type="vector" hasScaleBasedVisibilityFlag="1" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
+    <maplayer minimumScale="0" maximumScale="1e+07" simplifyDrawingHints="0" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" geometry="Point" simplifyMaxScale="1" type="vector" hasScaleBasedVisibilityFlag="1" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
       <id>places20151229145055933527266987_1451402410</id>
       <datasource>dbname='./natural-earth.sqlite' table="places" (geom_3857) sql=</datasource>
       <shortname></shortname>
@@ -1964,8 +1976,10 @@ def my_form_open(dialog, layer, feature):
         <property key="labeling/distInMapUnits" value="false"/>
         <property key="labeling/distMapUnitMaxScale" value="0"/>
         <property key="labeling/distMapUnitMinScale" value="0"/>
+        <property key="labeling/drawLabels" value="true"/>
         <property key="labeling/enabled" value="true"/>
         <property key="labeling/fieldName" value="name"/>
+        <property key="labeling/fitInPolygonOnly" value="false"/>
         <property key="labeling/fontBold" value="true"/>
         <property key="labeling/fontCapitals" value="0"/>
         <property key="labeling/fontFamily" value="Ubuntu"/>
@@ -1999,10 +2013,14 @@ def my_form_open(dialog, layer, feature):
         <property key="labeling/multilineHeight" value="1"/>
         <property key="labeling/namedStyle" value="Bold Italic"/>
         <property key="labeling/obstacle" value="true"/>
+        <property key="labeling/obstacleFactor" value="1"/>
+        <property key="labeling/obstacleType" value="0"/>
+        <property key="labeling/offsetType" value="0"/>
         <property key="labeling/placeDirectionSymbol" value="0"/>
         <property key="labeling/placement" value="1"/>
         <property key="labeling/placementFlags" value="0"/>
         <property key="labeling/plussign" value="false"/>
+        <property key="labeling/predefinedPositionOrder" value="TR,TL,BR,BL,R,L,TSR,BSR"/>
         <property key="labeling/preserveRotation" value="true"/>
         <property key="labeling/previewBkgrdColor" value="#ffffff"/>
         <property key="labeling/priority" value="5"/>
@@ -2080,6 +2098,9 @@ def my_form_open(dialog, layer, feature):
         <property key="labeling/wrapChar" value=""/>
         <property key="labeling/xOffset" value="1.5"/>
         <property key="labeling/yOffset" value="0"/>
+        <property key="labeling/zIndex" value="0"/>
+        <property key="variableNames" value="_fields_"/>
+        <property key="variableValues" value=""/>
       </customproperties>
       <blendMode>0</blendMode>
       <featureBlendMode>0</featureBlendMode>
@@ -2106,6 +2127,13 @@ def my_form_open(dialog, layer, feature):
         <multilineenabled fieldname="" on=""/>
         <selectedonly on=""/>
       </labelattributes>
+      <SingleCategoryDiagramRenderer diagramType="Pie">
+        <DiagramCategory penColor="#000000" labelPlacementMethod="XHeight" penWidth="0" diagramOrientation="Up" minimumSize="0" barWidth="5" penAlpha="255" maxScaleDenominator="1e+07" backgroundColor="#ffffff" transparency="0" width="15" scaleDependency="Area" backgroundAlpha="255" angleOffset="1440" scaleBasedVisibility="1" enabled="0" height="15" sizeType="MM" minScaleDenominator="0">
+          <fontProperties description="Noto Sans,9,-1,5,50,0,0,0,0,0" style=""/>
+          <attribute field="" color="#000000" label=""/>
+        </DiagramCategory>
+      </SingleCategoryDiagramRenderer>
+      <DiagramLayerSettings yPosColumn="-1" linePlacementFlags="10" placement="0" dist="0" xPosColumn="-1" priority="0" obstacle="0" zIndex="0" showAll="1"/>
       <annotationform>../../../../share/lab1</annotationform>
       <aliases>
         <alias field="ADM0NAME" index="2" name="Country"/>
@@ -2122,6 +2150,7 @@ def my_form_open(dialog, layer, feature):
         <attribute>pop_max</attribute>
         <attribute>adm0_a3</attribute>
         <attribute>gtopo30</attribute>
+        <attribute>geom</attribute>
         <attribute>PK_UID</attribute>
         <attribute>longitude</attribute>
         <attribute>latitude</attribute>
@@ -2132,6 +2161,7 @@ def my_form_open(dialog, layer, feature):
         <attribute>pop_max</attribute>
         <attribute>adm0_a3</attribute>
         <attribute>gtopo30</attribute>
+        <attribute>geom</attribute>
         <attribute>PK_UID</attribute>
         <attribute>longitude</attribute>
         <attribute>latitude</attribute>
@@ -2141,7 +2171,23 @@ def my_form_open(dialog, layer, feature):
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
       <editforminitfilepath>.</editforminitfilepath>
-      <editforminitcode><![CDATA[]]></editforminitcode>
+      <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
+"""
+QGIS forms can have a Python function that is called when the form is
+opened.
+
+Use this function to add extra logic to your forms.
+
+Enter the name of the function in the "Python Init function"
+field.
+An example follows:
+"""
+from PyQt4.QtGui import QWidget
+
+def my_form_open(dialog, layer, feature):
+	geom = feature.geometry()
+	control = dialog.findChild(QWidget, "MyLineEdit")
+]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>tablayout</editorlayout>
       <attributeEditorForm>
@@ -2195,7 +2241,7 @@ def my_form_open(dialog, layer, feature):
         </edittype>
       </edittypes>
     </maplayer>
-    <maplayer minimumScale="0" maximumScale="1e+07" simplifyDrawingHints="1" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" geometry="Line" simplifyMaxScale="1" type="vector" hasScaleBasedVisibilityFlag="1" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
+    <maplayer minimumScale="-4.65661e-10" maximumScale="1e+07" simplifyDrawingHints="1" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" geometry="Line" simplifyMaxScale="1" type="vector" hasScaleBasedVisibilityFlag="1" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
       <id>roads20151229145319510379790035_1451402410</id>
       <datasource>dbname='./natural-earth.sqlite' table="roads" (geom_3857) sql=</datasource>
       <shortname></shortname>
@@ -2302,8 +2348,10 @@ def my_form_open(dialog, layer, feature):
         <property key="labeling/distInMapUnits" value="false"/>
         <property key="labeling/distMapUnitMaxScale" value="0"/>
         <property key="labeling/distMapUnitMinScale" value="0"/>
+        <property key="labeling/drawLabels" value="false"/>
         <property key="labeling/enabled" value="false"/>
         <property key="labeling/fieldName" value=""/>
+        <property key="labeling/fitInPolygonOnly" value="false"/>
         <property key="labeling/fontBold" value="true"/>
         <property key="labeling/fontCapitals" value="0"/>
         <property key="labeling/fontFamily" value="Ubuntu"/>
@@ -2337,10 +2385,14 @@ def my_form_open(dialog, layer, feature):
         <property key="labeling/multilineHeight" value="1"/>
         <property key="labeling/namedStyle" value="Bold Italic"/>
         <property key="labeling/obstacle" value="true"/>
+        <property key="labeling/obstacleFactor" value="1"/>
+        <property key="labeling/obstacleType" value="0"/>
+        <property key="labeling/offsetType" value="0"/>
         <property key="labeling/placeDirectionSymbol" value="0"/>
         <property key="labeling/placement" value="2"/>
         <property key="labeling/placementFlags" value="10"/>
         <property key="labeling/plussign" value="false"/>
+        <property key="labeling/predefinedPositionOrder" value="TR,TL,BR,BL,R,L,TSR,BSR"/>
         <property key="labeling/preserveRotation" value="true"/>
         <property key="labeling/previewBkgrdColor" value="#ffffff"/>
         <property key="labeling/priority" value="5"/>
@@ -2418,6 +2470,9 @@ def my_form_open(dialog, layer, feature):
         <property key="labeling/wrapChar" value=""/>
         <property key="labeling/xOffset" value="0"/>
         <property key="labeling/yOffset" value="0"/>
+        <property key="labeling/zIndex" value="0"/>
+        <property key="variableNames" value="_fields_"/>
+        <property key="variableValues" value=""/>
       </customproperties>
       <blendMode>0</blendMode>
       <featureBlendMode>0</featureBlendMode>
@@ -2444,6 +2499,13 @@ def my_form_open(dialog, layer, feature):
         <multilineenabled fieldname="" on=""/>
         <selectedonly on=""/>
       </labelattributes>
+      <SingleCategoryDiagramRenderer diagramType="Pie">
+        <DiagramCategory penColor="#000000" labelPlacementMethod="XHeight" penWidth="0" diagramOrientation="Up" minimumSize="0" barWidth="5" penAlpha="255" maxScaleDenominator="1e+07" backgroundColor="#ffffff" transparency="0" width="15" scaleDependency="Area" backgroundAlpha="255" angleOffset="1440" scaleBasedVisibility="1" enabled="0" height="15" sizeType="MM" minScaleDenominator="-4.65661e-10">
+          <fontProperties description="Noto Sans,9,-1,5,50,0,0,0,0,0" style=""/>
+          <attribute field="" color="#000000" label=""/>
+        </DiagramCategory>
+      </SingleCategoryDiagramRenderer>
+      <DiagramLayerSettings yPosColumn="-1" linePlacementFlags="10" placement="2" dist="0" xPosColumn="-1" priority="0" obstacle="0" zIndex="0" showAll="1"/>
       <annotationform>../../../../share/lab1</annotationform>
       <aliases>
         <alias field="label" index="3" name="Label"/>
@@ -2453,10 +2515,13 @@ def my_form_open(dialog, layer, feature):
       <excludeAttributesWMS>
         <attribute>local</attribute>
         <attribute>expressway</attribute>
+        <attribute>geom</attribute>
         <attribute>PK_UID</attribute>
       </excludeAttributesWMS>
       <excludeAttributesWFS>
         <attribute>local</attribute>
+        <attribute>expressway</attribute>
+        <attribute>geom</attribute>
         <attribute>PK_UID</attribute>
       </excludeAttributesWFS>
       <attributeactions/>
@@ -2464,7 +2529,23 @@ def my_form_open(dialog, layer, feature):
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
       <editforminitfilepath>.</editforminitfilepath>
-      <editforminitcode><![CDATA[]]></editforminitcode>
+      <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
+"""
+QGIS forms can have a Python function that is called when the form is
+opened.
+
+Use this function to add extra logic to your forms.
+
+Enter the name of the function in the "Python Init function"
+field.
+An example follows:
+"""
+from PyQt4.QtGui import QWidget
+
+def my_form_open(dialog, layer, feature):
+	geom = feature.geometry()
+	control = dialog.findChild(QWidget, "MyLineEdit")
+]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>tablayout</editorlayout>
       <attributeEditorForm>
@@ -2510,7 +2591,7 @@ def my_form_open(dialog, layer, feature):
       <ProjectCRSProj4String type="QString">+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs</ProjectCRSProj4String>
       <ProjectCrs type="QString">EPSG:3857</ProjectCrs>
       <ProjectCRSID type="int">3857</ProjectCRSID>
-      <ProjectionsEnabled type="int">0</ProjectionsEnabled>
+      <ProjectionsEnabled type="int">1</ProjectionsEnabled>
     </SpatialRefSys>
     <WMSExtent type="QStringList">
       <value>286025.96848376304842532</value>
@@ -2653,7 +2734,7 @@ def my_form_open(dialog, layer, feature):
     </WFSLayers>
     <WMSServiceAbstract type="QString">GIS.lab example project</WMSServiceAbstract>
     <Measure>
-      <Ellipsoid type="QString">NONE</Ellipsoid>
+      <Ellipsoid type="QString">WGS84</Ellipsoid>
     </Measure>
     <WFSUrl type="QString"></WFSUrl>
     <WMSServiceCapabilities type="bool">true</WMSServiceCapabilities>

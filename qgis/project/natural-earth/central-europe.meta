@@ -22,9 +22,9 @@
   ], 
   "abstract": "GIS.lab example project", 
   "zoom_extent": [
-    190552.623, 
+    102345.098, 
     5646310.479, 
-    3148547.442, 
+    3236754.968, 
     7416708.865
   ], 
   "fees": "Free", 
@@ -36,6 +36,7 @@
     {
       "layers": [
         {
+          "drawing_order": 0, 
           "attribution": {
             "url": "http://www.naturalearthdata.com", 
             "title": "Made with Natural Earth. Free vector and raster map data @ naturalearthdata.com."
@@ -52,12 +53,11 @@
           ], 
           "geom_type": "POINT", 
           "name": "Places", 
-          "export_to_drawings": true, 
           "pk_attributes": [
             "PK_UID"
           ], 
           "type": "vector", 
-          "drawing_order": 0, 
+          "serverName": "", 
           "attributes": [
             {
               "alias": "Name", 
@@ -73,10 +73,6 @@
               "alias": "Timezone", 
               "type": "TEXT", 
               "name": "timezone"
-            }, 
-            {
-              "type": "TEXT", 
-              "name": "geom"
             }
           ], 
           "hidden": false, 
@@ -90,6 +86,7 @@
           }
         }, 
         {
+          "drawing_order": 1, 
           "attribution": {
             "url": "http://www.naturalearthdata.com", 
             "title": "Made with Natural Earth. Free vector and raster map data @ naturalearthdata.com."
@@ -106,12 +103,11 @@
           ], 
           "geom_type": "LINE", 
           "name": "Roads", 
-          "export_to_drawings": true, 
           "pk_attributes": [
             "PK_UID"
           ], 
           "type": "vector", 
-          "drawing_order": 1, 
+          "serverName": "", 
           "attributes": [
             {
               "alias": "Type", 
@@ -127,10 +123,6 @@
               "alias": "Label", 
               "type": "TEXT", 
               "name": "label"
-            }, 
-            {
-              "type": "TEXT", 
-              "name": "geom"
             }
           ], 
           "hidden": false, 
@@ -149,6 +141,7 @@
     {
       "layers": [
         {
+          "drawing_order": 2, 
           "attribution": {
             "url": "http://www.naturalearthdata.com", 
             "title": "Made with Natural Earth. Free vector and raster map data @ naturalearthdata.com."
@@ -164,11 +157,10 @@
           ], 
           "geom_type": "POLYGON", 
           "name": "Visegrad Four", 
-          "export_to_drawings": true, 
           "pk_attributes": [
             "PK_UID"
           ], 
-          "drawing_order": 2, 
+          "serverName": "", 
           "attributes": [
             {
               "alias": "Abbreviation", 
@@ -194,10 +186,6 @@
               "alias": "Subregion", 
               "type": "TEXT", 
               "name": "subregion"
-            }, 
-            {
-              "type": "TEXT", 
-              "name": "geom"
             }
           ], 
           "hidden": false, 
@@ -211,6 +199,7 @@
           }
         }, 
         {
+          "drawing_order": 3, 
           "attribution": {
             "url": "http://www.naturalearthdata.com", 
             "title": "Made with Natural Earth. Free vector and raster map data @ naturalearthdata.com."
@@ -226,11 +215,10 @@
           ], 
           "geom_type": "POLYGON", 
           "name": "Western Countries", 
-          "export_to_drawings": true, 
           "pk_attributes": [
             "PK_UID"
           ], 
-          "drawing_order": 3, 
+          "serverName": "", 
           "attributes": [
             {
               "alias": "Abbreviation", 
@@ -256,10 +244,6 @@
               "alias": "Subregion", 
               "type": "TEXT", 
               "name": "subregion"
-            }, 
-            {
-              "type": "TEXT", 
-              "name": "geom"
             }
           ], 
           "hidden": false, 
@@ -273,6 +257,7 @@
           }
         }, 
         {
+          "drawing_order": 4, 
           "attribution": {
             "url": "http://www.naturalearthdata.com", 
             "title": "Made with Natural Earth. Free vector and raster map data @ naturalearthdata.com."
@@ -288,11 +273,10 @@
           ], 
           "geom_type": "POLYGON", 
           "name": "Other", 
-          "export_to_drawings": true, 
           "pk_attributes": [
             "PK_UID"
           ], 
-          "drawing_order": 4, 
+          "serverName": "", 
           "attributes": [
             {
               "alias": "Abbreviation", 
@@ -318,10 +302,6 @@
               "alias": "Subregion", 
               "type": "TEXT", 
               "name": "subregion"
-            }, 
-            {
-              "type": "TEXT", 
-              "name": "geom"
             }
           ], 
           "hidden": false, 
@@ -354,11 +334,11 @@
     1.194328566789627, 
     0.5971642833948135
   ], 
-  "gislab_user": "imincik", 
+  "gislab_user": "marcel", 
   "title": "Countries of Central Europe", 
   "authentication": "all", 
   "units": "meters", 
-  "selection_color": "#000000ff", 
+  "selection_color": "#ffff00ff", 
   "contact_phone": "+421 999 123 456", 
   "topics": [
     {
@@ -400,7 +380,7 @@
       "title": "Other Countries"
     }
   ], 
-  "measure_ellipsoid": "NONE", 
+  "measure_ellipsoid": "WGS84", 
   "use_mapcache": true, 
   "keyword_list": [
     "europe"
@@ -423,11 +403,11 @@
     {
       "width": 420.0, 
       "map": {
-        "x": 10.0,
-        "y": 20.0,
-        "width": 399.0, 
+        "y": 20.0, 
+        "x": 10.0, 
+        "height": 265.0, 
         "name": "map0", 
-        "height": 265.0
+        "width": 399.0
       }, 
       "labels": [
         "gislab_project", 
@@ -442,11 +422,11 @@
     {
       "width": 297.0, 
       "map": {
-        "x": 10.0,
-        "y": 20.0,
-        "width": 276.0, 
+        "y": 20.0, 
+        "x": 10.0, 
+        "height": 178.0, 
         "name": "map0", 
-        "height": 178.0
+        "width": 276.0
       }, 
       "labels": [
         "gislab_project", 
@@ -463,9 +443,9 @@
       "map": {
         "y": 20.0, 
         "x": 10.0, 
-        "height": 263.4997, 
+        "height": 263.5, 
         "name": "map0", 
-        "width": 189.92499999999998
+        "width": 189.925
       }, 
       "labels": [
         "gislab_project", 
@@ -479,20 +459,16 @@
     }
   ], 
   "access_constrains": "Public", 
-  "vector_layers": {
-    "layers": {}
-  }, 
-  "gislab_unique_id": "gislab_vagrant", 
-  "publish_date_unix": 1451402410, 
-  "publish_date": "Tue Dec 29 16:20:10 2015", 
+  "gislab_unique_id": "gislab1", 
+  "publish_date_unix": 1463815608, 
+  "publish_date": "Sat May 21 09:26:48 2016", 
   "expiration": "01.01.2099", 
-  "gislab_version": "init-1837-g1c64c56", 
+  "gislab_version": "git:master~ca51c70", 
   "contact_person": "GIS.lab Developers", 
   "extent_buffer": 0.0, 
   "base_layers": [
     {
-      "name": "BLANK", 
-      "title": "Blank", 
+      "name": "Blank", 
       "visible": true, 
       "extent": [
         651496.1919785641, 
@@ -516,12 +492,15 @@
         1.194328566789627, 
         0.5971642833948135
       ], 
-      "type": "BLANK"
+      "type": "blank", 
+      "metadata": {
+        "keyword_list": "blank, world map", 
+        "abstract": "Blank base map layer."
+      }
     }, 
     {
       "max_zoom_level": 18, 
-      "name": "OSM", 
-      "title": "Open Street Map", 
+      "name": "OpenStreetMap", 
       "visible": false, 
       "extent": [
         -16319611.284727, 
@@ -545,8 +524,12 @@
         1.194328566789627, 
         0.5971642833948135
       ], 
-      "type": "OSM", 
-      "min_zoom_level": 5
+      "min_zoom_level": 5, 
+      "type": "osm", 
+      "metadata": {
+        "keyword_list": "free, collaborative, world map", 
+        "abstract": "OpenStreetMap (OSM) is a collaborative project to create a free editable map of the world."
+      }
     }
   ]
 }

@@ -311,9 +311,11 @@
               'FORMAT': config.format,
               'TRANSPARENT': 'false'
             },
-            serverType: 'mapserver'
+            serverType: 'mapserver',
+            ratio: 1.0
           }),
-          extent: config.extent
+          extent: config.extent,
+          visible: config.visible
         });
     };
 
@@ -358,7 +360,8 @@
       var layer = new ol.layer.Tile({
           opacity: config.opacity,
           extent: config.extent,
-          source: source
+          source: source,
+          visible: config.visible
       });
 
       return layer;

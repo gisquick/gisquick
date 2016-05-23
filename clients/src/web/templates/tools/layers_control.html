@@ -42,7 +42,10 @@
                 <p>{{ ::node.title }}</p>
               </md-list-item>
               <div gl-collapsible-content>
-                <div ng-repeat="node in node.layers" gl-check-tree-node="node"></div>
+                <div
+                  ng-repeat="node in ::node.layers track by node.name"
+                  gl-check-tree-node="node">
+                </div>
               </div>
             </div>
           </script>
@@ -78,7 +81,7 @@
             ng-model="$node.tree.selectedValue"
             ng-change="nodeSelected($node.tree.selectedValue)">
             <div gl-accordion>
-              <div ng-repeat="node in rootNodes" gl-tree-node="node"></div>
+              <div ng-repeat="node in ::rootNodes track by node.name" gl-tree-node="node"></div>
             </div>
           </md-radio-group>
         </md-list>
@@ -110,7 +113,7 @@
                   class="gl-tree"
                   gl-accordion>
                   <div
-                    ng-repeat="topic in topics"
+                    ng-repeat="topic in ::topics"
                     gl-accordion-item
                     depth="1"
                     class="gl-tree-leaf"
@@ -181,7 +184,10 @@
                     ng-class="{
                       'disabled-content': !$node.isEnabled
                     }">
-                    <div ng-repeat="node in node.layers" gl-check-tree-node="node"></div>
+                    <div
+                      ng-repeat="node in ::node.layers | filter:{hidden:'!true'} track by node.name"
+                      gl-check-tree-node="node">
+                    </div>
                   </div>
                 </div>
               </script>
@@ -240,7 +246,10 @@
               </script>
               <div ng-controller="OverlaysController">
                 <div gl-accordion>
-                  <div ng-repeat="node in rootNodes" gl-check-tree-node="node"></div>
+                  <div
+                    ng-repeat="node in ::rootNodes | filter:{hidden:'!true'} track by node.name"
+                    gl-check-tree-node="node">
+                  </div>
                 </div>
               </div>
             </md-list>

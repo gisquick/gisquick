@@ -86,16 +86,39 @@
       return name;
     }
 
+
+    var hiddenLayers = [];
+    function collectHiddenLayers(layersGroup) {
+      layersGroup.forEach(function(layer) {
+        if (layer.layers && layer.visible) {
+          collectHiddenLayers(layer.layers);
+        } else if (layer.hidden) {
+          hiddenLayers.push(layer.name);
+        }
+      });
+    }
+    console.log(projectProvider.layers.tree);
     $scope.layersVisibilityChanged = function(node) {
       $scope.selectedTopic.index = null;
-      var visibleLayers = [];
+      // update list of hidden layers when group visibility was changed
+      if (node && node.isGroup) {
+        node.data.visible = node.isEnabled;
+        hiddenLayers = [];
+        collectHiddenLayers(projectProvider.layers.tree);
+      }
+      var visibleLayers = [].concat(hiddenLayers);
       projectProvider.layers.list.forEach(function(layer_data) {
-        if (!layer_data.isGroup && layer_data.visible) {
+        if (layer_data.visible) {
           visibleLayers.push(layer_data.name);
         }
       });
       layersControl.setVisibleLayers(projectProvider.map, visibleLayers);
     };
+
+    collectHiddenLayers(projectProvider.layers.tree);
+    if (hiddenLayers.length > 0) {
+      $scope.layersVisibilityChanged();
+    }
 
     $scope.layers = projectProvider.layers.tree;
     $scope.baseLayers = projectProvider.baseLayers.tree;

@@ -108,14 +108,13 @@
     "ol.source.WebgisTileImage#setVisibleLayers",
     "ol.source.WebgisTileImage#getVisibleLayers",
     "ol.source.WebgisTileImage#getLegendUrl",
-    "ol.source.WebgisTileImage#getGetFeatureInfoUrl",
     "ol.source.WebgisTileImage#getAttributions",
     "ol.source.WebgisImageWMS",
     "ol.source.WebgisImageWMS#setVisibleLayers",
     "ol.source.WebgisImageWMS#getVisibleLayers",
     "ol.source.WebgisImageWMS#getLegendUrl",
-    "ol.source.WebgisImageWMS#getGetFeatureInfoUrl",
-    "ol.source.WebgisImageWMS#getAttributions"
+    "ol.source.WebgisImageWMS#getAttributions",
+    "ol.MapBrowserPointerEvent#getPointerEvent"
   ],
   "compile": {
     "externs": [

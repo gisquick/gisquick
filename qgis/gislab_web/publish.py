@@ -164,6 +164,12 @@ class PublishPage(WizardPage):
                 else:
                     scale_visibility = ''
 
+                if layer_data.get('hidden'):
+                    create_formatted_tree(
+                        root,
+                        { layer_data['name'] : "Hidden: True" }
+                    )
+                    return
                 create_formatted_tree(root,
                                       { '{0}' : [
                                           "Visible: {1}",

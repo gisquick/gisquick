@@ -388,10 +388,13 @@ class ProjectPage(WizardPage):
                 child_item = group_item.child(index)
                 if child_item.data(Qt.UserRole):
                     layer_name = child_item.text()
+
                     child_item.setCheckState(
                         Qt.Checked if layer_name in project_overlays else Qt.Unchecked
                     )
-                    layers_model = child_item.model()
+                    if layer_name in hidden_overlays:
+                        layers_model = child_item.model()
+                        layers_model.columnItem(child_item, 1).setCheckState(Qt.Checked)
                 else:
                     load_layers_settings(child_item)
         load_layers_settings(dialog.treeView.model().invisibleRootItem())
@@ -993,9 +996,16 @@ class ProjectPage(WizardPage):
                     layer.name(),
                     Qt.MatchExactly | Qt.MatchRecursive
                 )[0]
-                if layer_widget.checkState() == Qt.Unchecked or \
-                        layers_model.columnItem(layer_widget, 1).checkState() == Qt.Checked:
+
+                if layer_widget.checkState() == Qt.Unchecked:
                     return None
+
+                if layers_model.columnItem(layer_widget, 1).checkState() == Qt.Checked:
+                    return {
+                        'name': layer.name(),
+                        'serverName': layer.shortName(),
+                        'hidden': True
+                    }
 
                 if layer.extent().isFinite() and not layer.extent().isEmpty():
                     try:
@@ -1024,6 +1034,7 @@ class ProjectPage(WizardPage):
                         'keyword_list': layer.keywordList()
                     }
                 }
+
                 if layer.attribution():
                     layer_data['attribution'] = {
                         'title': layer.attribution(),

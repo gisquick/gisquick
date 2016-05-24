@@ -83,7 +83,6 @@ if DEBUG:
 ROOT_URLCONF = '{{ project_name }}.urls'
 WSGI_APPLICATION = '{{ project_name }}.wsgi.application'
 
-LOGIN_URL = '/login/'
 AUTH_USER_MODEL = 'viewer.GislabUser'
 
 

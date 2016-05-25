@@ -154,7 +154,7 @@
         'OUTPUTFORMAT': 'GeoJSON',
         'FEATUREID': feature.id
       }
-      $scope.progress = gislabClient.get(projectProvider.config.ows_url, params)
+      $scope.progress = gislabClient.get(projectProvider.data.ows_url, params)
         .then(function(data) {
           var parser = new ol.format.GeoJSON();
           var geomFeature = parser.readFeatures(data)[0];
@@ -181,7 +181,7 @@
         wfsParams['bbox'] = projectProvider.map.getView().calculateExtent(size);
       }
       $scope.progress = gislabClient.post(
-        '/filter/?PROJECT={0}'.format(projectProvider.config.project),
+        '/filter/?PROJECT={0}'.format(projectProvider.data.project),
         wfsParams)
         .then(function (data) {
           $scope.activeLayer.features = data.features;

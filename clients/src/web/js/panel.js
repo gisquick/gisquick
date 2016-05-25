@@ -45,9 +45,10 @@
   }
 
 
-  function glPanelManager($mdBottomSheet, $animateCss, $q, $$interimElement, $timeout, $animate) {
+  function glPanelManager($mdBottomSheet, $animateCss, $q, $$interimElement, $timeout, $animate, Observable) {
 
     function PanelManager() {
+      Observable.call(this, ["mapViewResized"]);
       this.mapView = {
         left: 0,
         top: 0,
@@ -56,10 +57,9 @@
         width: window.innerWidth,
         height: window.innerHeight
       }
-      this.eventListeners = {
-        mapViewResized: []
-      }
     }
+
+    PanelManager.prototype = Object.create(Observable.prototype);
 
     PanelManager.prototype.initialize = function(options) {
       this.panelElement = this._ngElement(options.mainPanel);
@@ -75,29 +75,12 @@
         $timeout(function() {
           panel._windowResized();
           panel.updateLayout();
-          panel._fireResizeEvent();
+          panel.dispatchEvent("mapViewResized", panel.mapView);
         }, 200); // Chrome needs some time to update window size
       });
       panel._windowResized();
       panel.updateLayout();
     }
-
-    PanelManager.prototype.on = function(event, listener) {
-      this.eventListeners[event].push(listener);
-    };
-
-    PanelManager.prototype.un = function(event, listener) {
-      var index = this.eventListeners[event].indexOf(listener);
-      if (index !== -1) {
-        this.eventListeners[event].splice(index, 1);
-      }
-    };
-
-    PanelManager.prototype._fireResizeEvent = function(event, listener) {
-      this.eventListeners['mapViewResized'].forEach(function(listener) {
-        listener(this.mapView);
-      }, this);
-    };
 
     PanelManager.prototype._ngElement = function(element) {
       var id = element.replace('#', '');
@@ -106,7 +89,7 @@
 
     PanelManager.prototype.toggleMainPanel = function() {
       this.mapView.left = this.mapView.left === 0? 280 : 0;
-      this._fireResizeEvent();
+      this.dispatchEvent("mapViewResized", this.mapView);
     };
 
     PanelManager.prototype._calculateBottom = function() {
@@ -210,10 +193,14 @@
       var panel = this;
       options.onShow = function(scope, element, options) {
         toolsPanel.element = element;
+        toolsPanel.element.css('maxHeight', '0');
+        toolsPanel.element.addClass("collapsed");
+        toolsPanel.collapsed = true;
+        // panel.hideToolsPanel();
         return $animate.enter(element, options.parent);
       }
       this.toolsPanel = toolsPanel;
-      this.toolsPanel.collapsed = false;
+      // this.toolsPanel.collapsed = true;
       return toolsPanel.show(options);
     };
 

@@ -47,10 +47,10 @@
           $mdIconProvider
             .defaultIconSet('{% static "styles/icons.svg" %}', 32)
         })
-        .run(function($timeout, projectLoader, gislabClient) {
+        .run(function($timeout, projectProvider, gislabClient) {
           var data = JSON.parse('{{ jsonData|default:"{}"|escapejs }}');
           gislabClient.userInfo = data.user;
-          projectLoader.setProjectData(data.project);
+          projectProvider.setProjectData(data.project);
         });
     </script>
   </head>

@@ -7,6 +7,7 @@
       'templates',
       'ngMaterial',
       'gl.network',
+      'gl.utils',
       'gl.ui',
       'gl.map',
       'gl.tools',

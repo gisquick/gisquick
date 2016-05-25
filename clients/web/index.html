@@ -56,6 +56,9 @@
     <script type="text/javascript" src="core/map/map-builder.service.js"></script>
     <script type="text/javascript" src="core/map/project-provider.service.js"></script>
 
+    <script type="text/javascript" src="core/utils/utils.module.js"></script>
+    <script type="text/javascript" src="core/utils/observable.js"></script>
+
     <script type="text/javascript" src="core/ui/ui.module.js"></script>
     <script type="text/javascript" src="core/ui/tree.dir.js"></script>
     <script type="text/javascript" src="core/ui/accordion.dir.js"></script>
@@ -102,8 +105,8 @@
             server: GISLAB_WEB_SERVER
           });
         })
-        .run(function($q, gislabClient, projectLoader) {
-          projectLoader.on('projectLoaded', function(projectData) {
+        .run(function($q, gislabClient, projectProvider) {
+          projectProvider.on('projectDataAvailable', function(projectData) {
             if (!projectData.ows_url.startsWith(GISLAB_WEB_SERVER)) {
               if (projectData.mapcache_url) {
                 projectData.mapcache_url = GISLAB_WEB_SERVER+projectData.mapcache_url;
@@ -118,7 +121,7 @@
             .then(function() {
               gislabClient.project(projectPath)
                 .then(function(projectData) {
-                  projectLoader.setProjectData(projectData);
+                  projectProvider.setProjectData(projectData);
                 });
               });
         });

@@ -28,7 +28,7 @@
   }
 
   function LayersController($scope, $timeout, $sce, $q, projectProvider, mapBuilder, layersControl) {
-    $scope.topics = projectProvider.config.topics;
+    $scope.topics = projectProvider.data.topics;
     $scope.selectedTopic = {};
 
     function visibleLayersHtml(layersTreeModel, topic) {

@@ -77,9 +77,10 @@
           'REQUEST': 'GetFeature',
           'OUTPUTFORMAT': 'GeoJSON',
           'TYPENAME': layerName,
+          'MAXFEATURES': $scope.tool.config.limit,
           'FILTER': filter
         }
-        tool.progress = gislabClient.get(projectProvider.config.ows_url, params)
+        tool.progress = gislabClient.get(projectProvider.data.ows_url, params)
           .then(function(data) {
             var parser = new ol.format.GeoJSON();
             var features = parser.readFeatures(data);

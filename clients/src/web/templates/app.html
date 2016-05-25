@@ -201,7 +201,7 @@
     <md-button
       aria-label="Zoom to max extent"
       class="map-button zoom-to-max-button"
-      ng-click="zoomToMaxExtent()">
+      ng-click="zoomToInitialExtent()">
       <md-icon md-svg-icon="zoom-max"></md-icon>
     </md-button>
 
@@ -217,9 +217,7 @@
     </div>
     <div flex
       id="ol-mouse-position-container"
-      class="status-bar-content"
-      ng-if="::project"
-      ng-init="initializeStatusBar()">
+      class="status-bar-content">
       <label>Scale 1: {{ mapScale }}</label>
       <label>{{ ::project.config.projection.code }}</label>
       <label>Coordinates:</label>

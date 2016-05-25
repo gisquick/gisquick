@@ -3,62 +3,9 @@
 
   angular
     .module('gl.web')
-    .controller('AppLoader', AppLoader)
-    .factory('projectLoader', [projectLoader]);
+    .controller('AppLoader', AppLoader);
 
-  function projectLoader(gislabClient) {
-
-    function ProjectLoader() {
-      this.eventListeners = {
-        projectLoaded: [],
-        projectClosed: []
-      };
-    }
-
-    ProjectLoader.prototype._fireEvent = function(event, data) {
-      var listenerCallback = function(listener) {
-        if (listener._oneTimeListener) {
-          var index = this.eventListeners[event].indexOf(listener);
-          this.eventListeners[event].splice(index, 1);
-        }
-        return listener(data);
-      }.bind(this);
-      var listeners = this.eventListeners[event].concat([]);
-      listeners.some(listenerCallback);
-    };
-
-    ProjectLoader.prototype.setProjectData = function(data) {
-      if (data !== null) {
-        this.projectData = data;
-        this._fireEvent('projectLoaded', data);
-      } else {
-        var data = this.projectData
-        this.projectData = null;
-        this._fireEvent('projectClosed', data);
-      }
-    };
-
-    ProjectLoader.prototype.on = function(event, listener) {
-      this.eventListeners[event].push(listener);
-      listener._oneTimeListener = false;
-    };
-
-    ProjectLoader.prototype.un = function(event, listener) {
-      var index = this.eventListeners[event].indexOf(listener);
-      if (index !== -1) {
-        this.eventListeners[event].splice(index, 1);
-      }
-    };
-
-    ProjectLoader.prototype.once = function(event, listener) {
-      this.eventListeners[event].push(listener);
-      listener._oneTimeListener = true;
-    };
-
-    return new ProjectLoader();
-  }
-
-  function AppLoader($scope, $timeout, $q, $mdDialog, projectProvider, gislabClient, staticResources, projectLoader) {
+  function AppLoader($scope, $timeout, $q, $mdDialog, projectProvider, gislabClient, staticResources) {
     $scope.staticResources = staticResources;
     var projectPath = goog.uri.utils.getParamValue(location.search, "PROJECT");
     var projectStorageKey = 'gislab.project.path={0}'.format(projectPath);
@@ -81,7 +28,7 @@
 
     function closeProject() {
       localStorage.removeItem(projectStorageKey);
-      projectLoader.setProjectData(null);
+      projectProvider.setProjectData(null);
       $scope.appInitialized = false;
       $timeout(function() {
         $scope.appInitialized = true;
@@ -131,12 +78,12 @@
         }
       }
       if (project.status > 400 || !activeProject || !activeProject.loginWindowConfirmed) {
-        // stop 'projectLoaded' event and temporary store
+        // stop 'projectDataAvailable' event and temporary store
         // project's data for later - can be used for continue
         // from login window (by certain conditions)
         heldProjectData = project;
         heldProjectUser = gislabClient.userInfo;
-        projectLoader.projectData = null;
+        projectProvider.data = null;
         projectInfo.error = projectError[project.status];
         showLoginScreen();
         return true;
@@ -154,7 +101,7 @@
           .then(
             function(projectData) {
               $mdDialog.hide();
-              projectLoader.setProjectData(projectData);
+              projectProvider.setProjectData(projectData);
             },
             function(err) {
               projectInfo.error = projectError[err.status_code];
@@ -181,7 +128,7 @@
         if (scope.continueMode) {
           if (heldProjectData && heldProjectUser.username === gislabClient.userInfo.username) {
             $mdDialog.hide();
-            projectLoader.setProjectData(heldProjectData);
+            projectProvider.setProjectData(heldProjectData);
 
           } else {
             loadProject();
@@ -202,7 +149,7 @@
           confirmed = true;
           if (heldProjectData && heldProjectUser.is_guest && gislabClient.userInfo.is_guest) {
             $mdDialog.hide();
-            projectLoader.setProjectData(heldProjectData);
+            projectProvider.setProjectData(heldProjectData);
           } else {
             gislabClient.login("guest")
               .then(function(userData) {
@@ -223,9 +170,9 @@
       });
     }
 
-    projectLoader.on('projectLoaded', validateProject);
-    if (projectLoader.projectData) {
-      validateProject(projectLoader.projectData);
+    projectProvider.on('projectDataAvailable', validateProject);
+    if (projectProvider.data) {
+      validateProject(projectProvider.data);
     }
   }
 

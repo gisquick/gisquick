@@ -6,9 +6,8 @@
     .controller('ToolsController', ToolsController);
 
 
-  function ToolsController($scope, $timeout, $q, $mdDialog, $mdToast,
-                            projectLoader, projectProvider, gislabClient,
-                            glPanelManager, toolsManager, locationService) {
+  function ToolsController($scope, $timeout, $q, $mdDialog, $mdToast, projectProvider,
+                            gislabClient, glPanelManager, toolsManager, locationService) {
     $scope.activeTool = toolsManager.activeTool;
     $scope.tools = toolsManager.tools;
 
@@ -281,14 +280,14 @@
           if (mapProjection.getCode() !== 'EPSG:4326') {
             this.config.positionUnits.push(
               {
-                name: projectProvider.config.projection.code,
+                name: projectProvider.data.projection.code,
                 title: '{0} ({1})'.format(
-                  projectProvider.config.projection.code,
+                  projectProvider.data.projection.code,
                   mapProjection.getUnits()
                 ),
                 projection: mapProjection,
                 label: mapProjection.getUnits(),
-                decimalPlaces: projectProvider.config.position_precision.decimal_places
+                decimalPlaces: projectProvider.data.position_precision.decimal_places
               }
             );
           }
@@ -318,7 +317,7 @@
       toolsManager.addTool({
         name: 'print',
         // tooltip: 'Print output creation',
-        disabled: !(projectProvider.config.print_composers && projectProvider.config.print_composers.length),
+        disabled: !(projectProvider.data.print_composers && projectProvider.data.print_composers.length),
         ui: {
           primaryPanel: {
             title: 'Print',
@@ -333,13 +332,13 @@
           dpi: 96,
           format: 'png',
           rotation: 0,
-          title: projectProvider.config.root_title,
+          title: projectProvider.data.root_title,
           author: gislabClient.userInfo.full_name,
           screenSize: [0, 0], // available screen size for print preview
           contact:
             '<div style="position:absolute;bottom:0;right:0;font-family:Liberation Sans;">\
               <span>{0}<br />{1}</span>\
-            </div>'.format(projectProvider.config.organization, projectProvider.config.email)
+            </div>'.format(projectProvider.data.organization, projectProvider.data.email)
         },
         data: {},
         events: {
@@ -348,11 +347,11 @@
           layoutChanged: angular.noop
         },
         initialize: function() {
-          if (!projectProvider.config.print_composers) {
+          if (!projectProvider.data.print_composers) {
             return;
           }
           // sort layouts by height
-          var layouts = projectProvider.config.print_composers.sort(function(a, b) {
+          var layouts = projectProvider.data.print_composers.sort(function(a, b) {
             return a.height > b.height;
           });
           this.config.layouts = layouts;
@@ -600,12 +599,12 @@
       }, 20);
     }
 
-    if (projectLoader.projectData) {
+    if (projectProvider.data) {
       initialze();
     } else {
-      projectLoader.once('projectLoaded', initialze);
+      projectProvider.once('projectLoaded', initialze);
     }
-    projectLoader.once('projectClosed', function() {
+    projectProvider.once('projectClosed', function() {
       toolsManager.deactivateTool();
       toolsManager.tools = [];
       $scope.fullScreenTool.destroy();

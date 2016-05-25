@@ -32,7 +32,7 @@
         'TEMPLATE': layout.name,
         'DPI': config.dpi,
         'FORMAT': config.format,
-        'SRS': projectProvider.config.projection.code,
+        'SRS': projectProvider.data.projection.code,
         'LAYERS': layers.join(','),
         'map0:EXTENT': extent.join(','),
         'map0:SCALE': projectProvider.map.getView().getScale(),
@@ -221,7 +221,7 @@
           extent,
           {'DPI': 96, 'FORMAT': 'png', 'map0:SCALE': '1000'}
         );
-        layout.templateUrl = gislabClient.encodeUrl(projectProvider.config.ows_url, params);
+        layout.templateUrl = gislabClient.encodeUrl(projectProvider.data.ows_url, params);
       });
 
       $http.get(tool.previewTemplate, {cache: $templateCache})
@@ -268,7 +268,7 @@
 
     $scope.print = function() {
       var printParams = getPrintParameters();
-      var url = gislabClient.encodeUrl(projectProvider.config.ows_url, printParams);
+      var url = gislabClient.encodeUrl(projectProvider.data.ows_url, printParams);
       var popup;
       function closePrint () {
         if (popup) {
@@ -286,7 +286,7 @@
     $scope.download = function() {
       var printParams = getPrintParameters();
       // TODO: handle errors
-      tool.progress = gislabClient.get(projectProvider.config.ows_url, printParams, {responseType: 'blob'})
+      tool.progress = gislabClient.get(projectProvider.data.ows_url, printParams, {responseType: 'blob'})
         .then(function(data) {
           var link = document.createElement("a");
           link.download = "{0}.{1}".format(tool.config.layout.name, tool.config.format);

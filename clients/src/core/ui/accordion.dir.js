@@ -8,94 +8,62 @@
   .directive('glAccordionContent', glAccordionContent)
   .directive('glCollapsible', glCollapsible)
   .directive('glCollapsibleContent', glCollapsibleContent)
-  //.directive('glSplitter', glSplitter);
+  .service('glAccordionUtils', glAccordionUtils);
 
 
-  function glSplitter($timeout) {
-    return {
-      scope: false,
-      link: function(scope, iElem, iAttrs) {
-        console.log('---- splitter ----');
-        var elem = iElem.parent();
-        var containerTop, containerHeight;
-        var moveHandler = function(evt) {
-          var flex1 = 100*(evt.clientY-containerTop)/containerHeight;
-          //flex1 = Math.round(flex1);
-          //console.log(containerTop+' '+containerHeight);
-          $timeout(function() {
-            scope.ui.panelTop.flex = flex1;
-            scope.ui.panelBottom.flex = 100-flex1;
-          });
-        };
-        var resizeEndHandler = function(evt) {
-          console.log('mouseup / out');
-          elem.removeClass('no-anim');
-          elem.off('mousemove touchmove', moveHandler);
-          elem.off('mouseup', resizeEndHandler);
-          $timeout(function() {
-            scope.ui.panelTop.open = true;
-            scope.ui.panelBottom.open = true;
-          });
-        };
+  /**
+   * Helper service for collapsing & expanding DOM elements
+   * with height animation.
+   */
+  function glAccordionUtils($animateCss) {
 
-        elem.on('mousedown', function(evt) {
-          if (iElem[0] !== evt.target) {
-            return;
-          }
-          containerTop = evt.target.parentElement.offsetTop;
-          containerHeight = evt.target.parentElement.scrollHeight;
-          elem.addClass('no-anim');
-          elem.on('mousemove touchmove', moveHandler);
-          elem.on('mouseup', resizeEndHandler);
-        });
-      }
+    this.collapseElement = function(elem, duration, callback) {
+      var height = elem[0].scrollHeight;
+      elem.css('maxHeight', height+'px');
+      var animator = $animateCss(elem, {
+        from: {
+          maxHeight: height+'px',
+          opacity: 1
+        },
+        to: {
+          maxHeight: '0px',
+          opacity: 0
+        },
+        easing: 'ease-out',
+        duration: duration || 0.4
+      });
+      animator.start().done(callback || angular.noop);
+    };
+
+    this.expandElement = function(elem, duration, callback) {
+      var height = elem[0].scrollHeight;
+      var animator = $animateCss(elem, {
+        from: {
+          maxHeight: '0px',
+          opacity: 0
+        },
+        to: {
+          maxHeight: height + 'px',
+          opacity: 1
+        },
+        easing: 'ease-out',
+        duration: duration || 0.4
+      });
+      animator.start().done(function() {
+        elem.css('maxHeight', 'none');
+        (callback || angular.noop)();
+      });
     };
   }
 
-  function collapseElement(animateCss, elem) {
-    var height = elem[0].scrollHeight;
-    elem.css('maxHeight', height+'px');
-    var animator = animateCss(elem, {
-      from: {
-        maxHeight: height+'px',
-        opacity: 1
-      },
-      to: {
-        maxHeight: '0px',
-        opacity: 0
-      },
-      easing: 'ease-out',
-      duration: 0.4
-    });
-    animator.start()
-  }
 
-  function expandElement(animateCss, elem) {
-    var height = elem[0].scrollHeight;
-    var animator = animateCss(elem, {
-      from: {
-        maxHeight: '0px',
-        opacity: 0
-      },
-      to: {
-        maxHeight: height + 'px',
-        opacity: 1
-      },
-      easing: 'ease-out',
-      duration: 0.4
-    });
-    animator.start().done(function() {
-      elem.css('maxHeight', 'none');
-    });
-  }
-
-  function glAccordion($animateCss) {
+  function glAccordion(glAccordionUtils) {
     return {
       scope: false,
       controller: function($scope) {
         this.expandedAccordion = null;
         this.collapseAccordion = function(accordion) {
-          collapseElement($animateCss, accordion.element);
+          glAccordionUtils.collapseElement(accordion.element, 0.4);
           accordion.expanded = false;
           this.expandedAccordion = null;
         };
@@ -103,7 +71,7 @@
           if (this.expandedAccordion) {
             this.collapseAccordion(this.expandedAccordion);
           }
-          expandElement($animateCss, accordion.element);
+          glAccordionUtils.expandElement(accordion.element, 0.4);
           accordion.expanded = true;
           this.expandedAccordion = accordion;
         };
@@ -154,7 +122,7 @@
     };
   };
 
-  function glCollapsible($animateCss) {
+  function glCollapsible() {
     return {
       restrict: 'EA',
       scope: true,
@@ -163,11 +131,11 @@
         $scope.$collapsible = {
           collapsed: false,
           collapse: function() {
-            collapseElement($animateCss, $scope.$collapsible.element);
+            glAccordionUtils.collapseElement($scope.$collapsible.element, 0.4);
             $scope.$collapsible.collapsed = true;
           },
           expand: function() {
-            expandElement($animateCss, $scope.$collapsible.element);
+            glAccordionUtils.expandElement($scope.$collapsible.element, 0.4);
             $scope.$collapsible.collapsed = false;
           },
           toggle: function() {

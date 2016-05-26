@@ -6,46 +6,7 @@
     .factory('glPanelManager', glPanelManager);
 
 
-  function collapseElement(animateCss, elem, callback) {
-    var height = elem[0].scrollHeight;
-    elem.css('maxHeight', height+'px');
-    var animator = animateCss(elem, {
-      from: {
-        maxHeight: height+'px',
-        opacity: 1
-      },
-      to: {
-        maxHeight: '0px',
-        opacity: 0
-      },
-      easing: 'ease-out',
-      duration: 0.45
-    });
-    animator.start().done(callback || angular.noop);
-  }
-
-  function expandElement(animateCss, elem, callback) {
-    var height = elem[0].scrollHeight;
-    var animator = animateCss(elem, {
-      from: {
-        maxHeight: '0px',
-        opacity: 0
-      },
-      to: {
-        maxHeight: height + 'px',
-        opacity: 1
-      },
-      easing: 'ease-out',
-      duration: 0.45
-    });
-    animator.start().done(function() {
-      elem.css('maxHeight', 'none');
-      (callback || angular.noop)();
-    });
-  }
-
-
-  function glPanelManager($mdBottomSheet, $animateCss, $q, $$interimElement, $timeout, $animate, Observable) {
+  function glPanelManager($mdBottomSheet, $q, $$interimElement, $timeout, $animate, Observable, glAccordionUtils) {
 
     function PanelManager() {
       Observable.call(this, ["mapViewResized"]);
@@ -62,6 +23,7 @@
     PanelManager.prototype = Object.create(Observable.prototype);
 
     PanelManager.prototype.initialize = function(options) {
+      this.toolsPanel = null;
       this.panelElement = this._ngElement(options.mainPanel);
       this.statusBar = {
         element: this._ngElement(options.statusBar),
@@ -204,26 +166,14 @@
       return toolsPanel.show(options);
     };
 
-    // PanelManager.prototype.loadToolsPanel = function(options) {
-    //   $mdCompiler.compile(options)
-    //     .then(function(compileData) {
-    //       // attach controller and scope to element
-    //       compileData.link(options.scope);
-    //       var parent = angular.element(document.getElementById(options.parent.replace('#', '')));
-    //       parent.append(compileData.element);
-    //       this.toolsPanel = compileData;
-    //       this.toolsPanel.collapsed = false;
-    //     }.bind(this));
-    // }
-
     PanelManager.prototype.showToolsPanel = function() {
       var _this = this;
       if (_this.toolsPanel.collapsed) {
         $timeout(function() {
           _this.toolsPanel.collapsed = false;
-          expandElement(
-            $animateCss,
+          glAccordionUtils.expandElement(
             _this.toolsPanel.element,
+            0.45,
             function() {
               _this.toolsPanel.element.removeClass("collapsed");
             }
@@ -235,9 +185,9 @@
     PanelManager.prototype.hideToolsPanel = function() {
       if (!this.toolsPanel.collapsed) {
         this.toolsPanel.collapsed = true;
-        collapseElement(
-          $animateCss,
+        glAccordionUtils.collapseElement(
           this.toolsPanel.element,
+          0.45,
           function() {
             this.toolsPanel.element.addClass("collapsed");
           }.bind(this)
@@ -301,8 +251,6 @@
             return promise;
           }.bind(this),
           onRemove: function(scope, element, options) {
-
-            console.log('onRemove');
             element.parent().css('flex', '0 0 0');
             options.parent.addClass('hidden');
             if (this.contentPanel.collapsed) {
@@ -348,12 +296,8 @@
 
 
     PanelManager.prototype.showPanel = function(options) {
-      console.log('Open secondary panel');
-      console.log(options);
-
       if (this.secondaryLeftPanel) {
         return this.secondaryLeftPanel.hide().then(function() {
-          console.log('-- hide complete --');
           return this._openPanel(options);
         }.bind(this));
       } else {
@@ -392,9 +336,7 @@
     };
 
     PanelManager.prototype.hidePanel = function() {
-      console.log('** hidePanel');
       if (this.secondaryLeftPanel) {
-        console.log('close left secondary');
         this.secondaryLeftPanel.collapsed = true;
         this.updateLayout();
         var oldPanel = this.secondaryLeftPanel;
@@ -406,7 +348,6 @@
         }
         this.secondaryLeftPanel = null;
       } else if (this.secondaryBottomPanel) {
-        console.log('close bottom secondary');
         this.secondaryBottomPanel = null;
         $mdBottomSheet.hide();
       }

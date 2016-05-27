@@ -136,6 +136,41 @@ def _project_basic_data(metadata):
     }
 
 
+def _layers_names(layers, result=None):
+    """ Fetch layers name/title info."""
+    if result is None:
+        result = {}
+
+    for layer in layers:
+        if 'layers' in layer:
+            _layers_names(layer['layers'], result)
+        else:
+            title = layer.get('metadata', {}).get('title') or layer['name']
+            name = layer.get('serverName') or layer['name']
+            result[layer['name']] = {
+                'title': title,
+                'name': name
+            }
+    return result
+
+def _convert_layers_names(layers, info):
+    leafs = []
+    groups = []
+    for layer in layers:
+        if 'layers' in layer:
+            groups.append(layer)
+            layer['layers'] = _convert_layers_names(layer['layers'], info)
+        else:
+            layername = layer['name']
+            layer['title'] = info[layername]['title']
+            layer['name'] = info[layername]['name']
+            layer.pop('serverName', None)
+            leafs.append(layer)
+    return leafs + groups
+
+def _convert_topics(topics, info):
+    for topic in topics:
+        topic['visible_overlays'] = [info[name]['name'] for name in topic['visible_overlays']]
 
 def _convert_layers_metadata(layers):
     """ Returns transformed layers tree.
@@ -151,6 +186,7 @@ def _convert_layers_metadata(layers):
             groups.append(layer)
             layer['layers'] = _convert_layers_metadata(layer['layers'])
         else:
+            metaLayerName = layer['name']
             if layer.get('serverName'):
                 layer['title'] = layer['name']
                 layer['name'] = layer['serverName']
@@ -242,7 +278,9 @@ def get_project(request):
         context['base_layers'] = baselayers_tree
 
         # OVERLAYS LAYERS
-        layers_tree = _convert_layers_metadata(metadata.overlays)
+        info = _layers_names(metadata.overlays)
+        _convert_topics(metadata.topics, info)
+        layers_tree = _convert_layers_names(metadata.overlays, info)
         layers = form.cleaned_data['OVERLAY']
         # override layers tree with LAYERS GET parameter if provided
         if layers:

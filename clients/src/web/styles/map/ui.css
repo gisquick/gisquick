@@ -387,7 +387,8 @@ md-list-item .toggle-button {
 }
 
 md-switch .md-container {
-  margin-right: 0px;
+  margin-right: 0;
+  width: 34px;
   cursor: pointer;
 }
 
@@ -404,11 +405,15 @@ md-switch:not([disabled]) .md-thumb {
   background-color: rgba(0, 170, 212, 0.7);
 }
 
+md-switch .md-thumb-container {
+  width: 12px;
+}
 md-switch .md-thumb {
   top: 5px;
   height: 12px;
   width: 12px;
   border-radius: 4px;
+  margin-left: 2px;
   box-shadow:
     0 0 2px 0 rgba(0, 0, 0, 0.2),
     -1px 1px 1px 0 rgba(0, 0, 0, 0.14),

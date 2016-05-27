@@ -68,7 +68,8 @@
 
     $scope.loadTopic = function(index) {
       var topic = $scope.topics[index];
-      layersControl.setVisibleLayers(projectProvider.map, topic.visible_overlays);
+      var layers = topic.visible_overlays.concat(hiddenLayers);
+      layersControl.setVisibleLayers(projectProvider.map, layers);
       projectProvider.layers.list.forEach(function(layerModel) {
         layerModel.visible = topic.visible_overlays.indexOf(layerModel.name) != -1;
       });

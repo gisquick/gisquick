@@ -17,20 +17,30 @@
         right: 0,
         width: window.innerWidth,
         height: window.innerHeight
-      }
+      };
     }
 
     PanelManager.prototype = Object.create(Observable.prototype);
 
     PanelManager.prototype.initialize = function(options) {
-      this.toolsPanel = null;
       this.panelElement = this._ngElement(options.mainPanel);
+      this._initializeContentPanel(options.contentPanel);
+
+      var toolsPanelElem = this._ngElement(options.toolsPanel);
+      toolsPanelElem.css('maxHeight', '0');
+      toolsPanelElem.addClass("no-animation");
+      this.toolsPanel = {
+        element: toolsPanelElem,
+        collapsed: true
+      };
+
       this.statusBar = {
         element: this._ngElement(options.statusBar),
         _hidden: false,  // controlled by hideStatusBar/showStatusBar
         disabled: false, // controlled by window size (width)
         visible: true    // visibility (read-only)
       };
+
       this.mapView.bottom = this.statusBar.element[0].clientHeight;
       var panel = this;
       window.addEventListener("resize", function(evt) {
@@ -41,7 +51,6 @@
         }, 200); // Chrome needs some time to update window size
       });
       panel._windowResized();
-      panel.updateLayout();
     }
 
     PanelManager.prototype._ngElement = function(element) {
@@ -108,7 +117,7 @@
     };
 
     PanelManager.prototype.updateLayout = function() {
-      if (!this.contentPanel) {
+      if (!this.contentPanel.element) {
         return;
       }
       var hasSecondaryPanel = (this.secondaryLeftPanel && this.secondaryLeftPanel.element)? true : false;
@@ -150,21 +159,6 @@
       }
     };
 
-    PanelManager.prototype.loadToolsPanel = function(options) {
-      var toolsPanel = $$interimElement();
-      var panel = this;
-      options.onShow = function(scope, element, options) {
-        toolsPanel.element = element;
-        toolsPanel.element.css('maxHeight', '0');
-        toolsPanel.element.addClass("collapsed");
-        toolsPanel.collapsed = true;
-        // panel.hideToolsPanel();
-        return $animate.enter(element, options.parent);
-      }
-      this.toolsPanel = toolsPanel;
-      // this.toolsPanel.collapsed = true;
-      return toolsPanel.show(options);
-    };
 
     PanelManager.prototype.showToolsPanel = function() {
       var _this = this;
@@ -175,7 +169,7 @@
             _this.toolsPanel.element,
             0.45,
             function() {
-              _this.toolsPanel.element.removeClass("collapsed");
+              _this.toolsPanel.element.removeClass("no-animation");
             }
           );
           _this.updateLayout();
@@ -189,14 +183,14 @@
           this.toolsPanel.element,
           0.45,
           function() {
-            this.toolsPanel.element.addClass("collapsed");
+            this.toolsPanel.element.addClass("no-animation");
           }.bind(this)
         );
         this.updateLayout();
       }
     };
 
-    PanelManager.prototype.showContentPanel = function(options) {
+    PanelManager.prototype._initializeContentPanel = function(options) {
       var panel = this;
       var contentPanel = $$interimElement();
       contentPanel.collapsed = false;
@@ -360,7 +354,9 @@
       if (this.secondaryLeftPanel.collapsed && this.contentPanel.collapsed) {
         this.contentPanel.collapsed = false;
       }
-      if (!this.secondaryLeftPanel.collapsed && this.accordionMode && !this.contentPanel.collapsed) {
+      if (!this.secondaryLeftPanel.collapsed &&
+          this.accordionMode &&
+          !this.contentPanel.collapsed) {
         this.contentPanel.collapsed = true;
       }
       this.updateLayout();
@@ -369,10 +365,15 @@
     PanelManager.prototype.toggleContentPanel = function(options) {
       // console.log('toggleContentPanel');
       this.contentPanel.collapsed = !this.contentPanel.collapsed;
-      if (this.contentPanel.collapsed && this.secondaryLeftPanel && this.secondaryLeftPanel.collapsed) {
+      if (this.contentPanel.collapsed &&
+          this.secondaryLeftPanel &&
+          this.secondaryLeftPanel.collapsed) {
         this.secondaryLeftPanel.collapsed = false;
       }
-      if (!this.contentPanel.collapsed && this.accordionMode && this.secondaryLeftPanel && !this.secondaryLeftPanel.collapsed) {
+      if (!this.contentPanel.collapsed &&
+          this.accordionMode &&
+          this.secondaryLeftPanel &&
+          !this.secondaryLeftPanel.collapsed) {
         this.secondaryLeftPanel.collapsed = true;
       }
       this.updateLayout();

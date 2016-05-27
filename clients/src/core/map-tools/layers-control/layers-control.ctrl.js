@@ -97,7 +97,7 @@
         }
       });
     }
-    console.log(projectProvider.layers.tree);
+
     $scope.layersVisibilityChanged = function(node) {
       $scope.selectedTopic.index = null;
       // update list of hidden layers when group visibility was changed

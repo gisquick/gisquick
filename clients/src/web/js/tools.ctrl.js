@@ -8,9 +8,10 @@
 
   function ToolsController($scope, $timeout, $q, $mdDialog, $mdToast, projectProvider,
                             gislabClient, glPanelManager, toolsManager, locationService) {
-    $scope.activeTool = toolsManager.activeTool;
-    $scope.tools = toolsManager.tools;
 
+    /** ************************************************
+     **************    Full Screen Tool    *************
+     ***************************************************/
     $scope.fullScreenTool = {
       title: 'Fullscreen',
       active: false,
@@ -59,11 +60,104 @@
         this.active = !this.active;
       }
     };
-    $scope.fullScreenTool.initialize();
 
+    /** ************************************************
+     **************    Geolocation Tool    *************
+     ***************************************************/
+    $scope.geolocationTool = {
+      states: {
+        'INACTIVE': 0,
+        'ACTIVE': 1,
+        'ACTIVE_TRACKING': 2
+      },
+      active: false,
+      state: 0,
+      _zoomToLocation: function(geolocation) {
+        var extent = geolocation.getAccuracyGeometry().getExtent();
+        var width = window.innerWidth-glPanelManager.mapView.left-glPanelManager.mapView.right;
+        var height = window.innerHeight-glPanelManager.mapView.top-glPanelManager.mapView.bottom;
+        var options = {
+          padding: [
+            glPanelManager.mapView.top+height/2.5,
+            glPanelManager.mapView.right+width/2.5,
+            glPanelManager.mapView.bottom+height/2.5,
+            glPanelManager.mapView.left+width/2.5
+          ],
+          minResolution: projectProvider.map.getView().getResolution()
+        };
+        projectProvider.map.fitAnimated(extent, options, 700);
+      },
+      toggle: function() {
+        var tool = this;
+        var states = this.states;
+        this.state = (this.state + 1) % 3;
+
+        this.active = this.state !== 0;
+        switch(this.state) {
+          case states.ACTIVE_TRACKING:
+            tool.lastLocationTime = 0;
+            var pan = projectProvider.map.getInteractionByClass(ol.interaction.DragPan);
+            pan.setActive(false);
+            locationService.startTracking(
+              projectProvider.map,
+              this._zoomToLocation
+            );
+            break;
+          case states.ACTIVE:
+            if (!locationService.lastKnownPosition()) {
+              $mdToast.show({
+                template: '<div class="toast">\
+                  <md-icon class="info" md-svg-icon="circle-i-outline"></md-icon>\
+                  Waiting for location\
+                  <md-icon class="arrow" md-svg-icon="triangle"></md-icon>\
+                  </div>',
+                parent: '.location-toast',
+                hideDelay: 4000,
+                autoWrap: false
+              });
+            }
+            // zoom to current location and then after defined time change state back to INACTIVE
+            locationService.showPosition(projectProvider.map).then(
+              function(geolocation) {
+                $mdToast.hide();
+                tool._zoomToLocation(geolocation);
+                setTimeout(function() {
+                  projectProvider.map.once('moveend', function() {
+                    console.log('map moved');
+                    if (tool.state === states.ACTIVE) {
+                      tool.state = states.INACTIVE;
+                      tool.active = false;
+                      $scope.$apply();
+                    }
+                  });
+                }, 800);
+                tool.lastLocationTime = new Date();
+                setTimeout(function() {
+                  if (tool.state !== states.ACTIVE_TRACKING && tool.lastLocationTime && new Date()-tool.lastLocationTime > 7000) {
+                    tool.state = states.INACTIVE;
+                    tool.active = false;
+                    locationService.deactivate(projectProvider.map);
+                    $scope.$apply();
+                  }
+                }, 7500);
+              }, function(error) {
+                console.log(error);
+              }
+            );
+            break;
+          case states.INACTIVE:
+            locationService.deactivate(projectProvider.map);
+            var pan = projectProvider.map.getInteractionByClass(ol.interaction.DragPan);
+            pan.setActive(true);
+            break;
+        }
+      }
+    };
 
     function initializeTools() {
-      console.log(projectProvider);
+      /** **********************************************
+       ***********    Attribute Table Tool    **********
+       *************************************************/
       toolsManager.addTool({
         name: 'attribute_table',
         ui: {
@@ -106,6 +200,9 @@
           this.config.activeLayer = null;
         }
       });
+      /** *********************************************
+       ***********    Identification Tool    **********
+       ************************************************/
       toolsManager.addTool({
         name: 'identification',
         // tooltip: 'Identify features by mouse click',
@@ -171,6 +268,9 @@
           this.events.featuresChanged();
         }
       });
+      /** **********************************************
+       ***************    Measure Tool    **************
+       *************************************************/
       toolsManager.addTool({
         name: 'measure',
         tooltip: 'Mesure coordinates, length and area',
@@ -313,7 +413,9 @@
           this.events.toolDeactivated();
         }
       });
-
+      /** **********************************************
+       ****************    Print Tool    ***************
+       *************************************************/
       toolsManager.addTool({
         name: 'print',
         // tooltip: 'Print output creation',
@@ -421,106 +523,20 @@
           glPanelManager.showStatusBar();
           this.events.toolDeactivated();
           glPanelManager.un('mapViewResized', this._mapResizeListener);
-        },
-        close: function() {
-          $scope.deactivateTool();
         }
       });
-      $scope.tools.forEach(function(tool) {
+
+      $scope.fullScreenTool.initialize();
+      toolsManager.tools.forEach(function(tool) {
         tool.initialize();
       });
-
-      $scope.geolocationTool = {
-        states: {
-          'INACTIVE': 0,
-          'ACTIVE_TRACKING': 2,
-          'ACTIVE': 1
-        },
-        active: false,
-        state: 0,
-        _zoomToLocation: function(geolocation) {
-          var extent = geolocation.getAccuracyGeometry().getExtent();
-          var width = window.innerWidth-glPanelManager.mapView.left-glPanelManager.mapView.right;
-          var height = window.innerHeight-glPanelManager.mapView.top-glPanelManager.mapView.bottom;
-          var options = {
-            padding: [
-              glPanelManager.mapView.top+height/2.5,
-              glPanelManager.mapView.right+width/2.5,
-              glPanelManager.mapView.bottom+height/2.5,
-              glPanelManager.mapView.left+width/2.5
-            ],
-            minResolution: projectProvider.map.getView().getResolution()
-          };
-          projectProvider.map.fitAnimated(extent, options, 700);
-        },
-        toggle: function() {
-          var tool = this;
-          var states = this.states;
-          this.state = (this.state + 1) % 3;
-
-          this.active = this.state !== 0;
-          switch(this.state) {
-            case states.ACTIVE_TRACKING:
-              tool.lastLocationTime = 0;
-              var pan = projectProvider.map.getInteractionByClass(ol.interaction.DragPan);
-              pan.setActive(false);
-              locationService.startTracking(
-                projectProvider.map,
-                this._zoomToLocation
-              );
-              break;
-            case states.ACTIVE:
-              if (!locationService.lastKnownPosition()) {
-                $mdToast.show({
-                  template: '<div class="toast">\
-                    <md-icon class="info" md-svg-icon="circle-i-outline"></md-icon>\
-                    Waiting for location\
-                    <md-icon class="arrow" md-svg-icon="triangle"></md-icon>\
-                    </div>',
-                  parent: '.location-toast',
-                  hideDelay: 4000,
-                  autoWrap: false
-                });
-              }
-              locationService.showPosition(projectProvider.map).then(
-                function(geolocation) {
-                  $mdToast.hide();
-                  tool._zoomToLocation(geolocation);
-                  setTimeout(function() {
-                    projectProvider.map.once('moveend', function() {
-                      console.log('map moved');
-                      if (tool.state === states.ACTIVE) {
-                        tool.state = states.INACTIVE;
-                        tool.active = false;
-                        $scope.$apply();
-                      }
-                    });
-                  }, 800);
-                  tool.lastLocationTime = new Date();
-                  setTimeout(function() {
-                    if (tool.state !== states.ACTIVE_TRACKING && tool.lastLocationTime && new Date()-tool.lastLocationTime > 7000) {
-                      tool.state = states.INACTIVE;
-                      tool.active = false;
-                      locationService.deactivate(projectProvider.map);
-                      $scope.$apply();
-                    }
-                  }, 7500);
-                }, function(error) {
-                  console.log(error);
-                }
-              );
-              break;
-            case states.INACTIVE:
-              locationService.deactivate(projectProvider.map);
-              var pan = projectProvider.map.getInteractionByClass(ol.interaction.DragPan);
-              pan.setActive(true);
-              break;
-          }
-        }
-      };
     }
 
-    $scope.activateTool = function(tool) {
+    /**
+     * Activates toolbar tool (with UI panels management)
+     * @param {object} tool Tool data model (config)
+     */
+    var activateTool = function(tool) {
       console.log('activateTool: '+tool.name);
       var previousTool = toolsManager.activeTool;
       if (previousTool) {
@@ -551,10 +567,9 @@
         }, tool.ui.secondaryPanel);
 
         if (previousTool && previousTool._secondaryPanel) {
-          console.log('** switch secondaryPanel');
+          // Switch panel - pabel of last active tool with a new tool
           tool._secondaryPanel = glPanelManager.switchPanel(options);
         } else {
-          console.log('** open secondaryPanel');
           tool._secondaryPanel = glPanelManager.showPanel(options);
         }
         // handle panel's closing while the tool is still active
@@ -570,7 +585,10 @@
       }
     };
 
-    $scope.deactivateTool = function() {
+    /**
+     * Deactivates current active tool
+     */
+    var deactivateTool = function() {
       console.log('deactivateTool');
       if (toolsManager.activeTool) {
         if (toolsManager.activeTool._secondaryPanel) {
@@ -582,28 +600,13 @@
       glPanelManager.hideToolsPanel();
     };
 
-    // override activateTool/deactivateTool methods to add handling of UI
-    toolsManager.activateTool = $scope.activateTool;
-    toolsManager.deactivateTool = $scope.deactivateTool;
+    // override activateTool/deactivateTool methods to include handling of UI
+    toolsManager.activateTool = activateTool;
+    toolsManager.deactivateTool = deactivateTool;
 
 
-    function initialze(projectData) {
-      console.log('** Tools Controller: projectLoaded');
-      $timeout(function() {
-        initializeTools();
-        glPanelManager.loadToolsPanel({
-          templateUrl: 'tools_panel.html',
-          parent: '#tools-panel',
-          scope: $scope.$new()
-        });
-      }, 20);
-    }
+    projectProvider.once('mapInitialized', initializeTools);
 
-    if (projectProvider.data) {
-      initialze();
-    } else {
-      projectProvider.once('projectLoaded', initialze);
-    }
     projectProvider.once('projectClosed', function() {
       toolsManager.deactivateTool();
       toolsManager.tools = [];

@@ -15,6 +15,7 @@
     $scope.ui = {
       manager: glPanelManager
     };
+    $scope.toolsManager = toolsManager;
     $scope.Math = Math;
 
     // Configuration of additional secondary menu items
@@ -191,15 +192,17 @@
         initializeStatusBar();
         $scope.project = projectProvider;
 
+        projectProvider.dispatchEvent('mapInitialized');
+
         // initialize panel manager
         glPanelManager.initialize({
           mainPanel: '#vertical-panel-container',
-          statusBar: '#map-status-bar'
-        });
-        glPanelManager.showContentPanel({
-          templateUrl: 'templates/tools/layers_control.html',
-          parent: '#content-panel',
-          scope: $scope
+          toolsPanel: '#tools-panel',
+          statusBar: '#map-status-bar',
+          contentPanel: {
+            templateUrl: 'templates/tools/layers_control.html',
+            parent: '#content-panel'
+          }
         });
 
         // wait some time while the map/app is initializing
@@ -216,6 +219,8 @@
               padding: [0, 0, glPanelManager.mapView.bottom, glPanelManager.mapView.left]
             }
           );
+          $scope.zoomToInitialExtent();
+
         }, 2000);
       }
     }

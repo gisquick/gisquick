@@ -20,7 +20,7 @@
      * @constructor
      */
     function ProjectProvider() {
-      Observable.call(this, ["projectDataAvailable", "projectLoaded", "projectClosed"]);
+      Observable.call(this, ["projectDataAvailable", "projectLoaded", "projectClosed", "mapInitialized"]);
       this.map = null;
       this.baseLayers = {
         tree: {},

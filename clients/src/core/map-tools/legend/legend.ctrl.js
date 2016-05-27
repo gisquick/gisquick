@@ -5,7 +5,7 @@
     .module('gl.legend')
     .controller('LegendController', LegendController)
 
-    .directive('imageLoad', ['$parse', function ($parse) {
+    .directive('imageLoad', function($parse) {
       return {
         restrict: 'A',
         link: function (scope, elem, attrs) {
@@ -17,8 +17,8 @@
           });
         }
       };
-    }])
-    .directive('imageLoadError', ['$parse', function ($parse) {
+    })
+    .directive('imageLoadError', function($parse) {
       return {
         restrict: 'A',
         link: function (scope, elem, attrs) {
@@ -30,7 +30,7 @@
           });
         }
       };
-    }]);
+    });
 
   function LegendController($scope, $timeout, $q, projectProvider) {
     $scope.layers = projectProvider.layers;

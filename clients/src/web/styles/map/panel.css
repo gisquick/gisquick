@@ -41,6 +41,7 @@
   width: 36px;
   padding: 0;
   margin: 0;
+  z-index: 50;
 }
 .panel-collapse-button.md-button:hover {
   background-color: transparent;
@@ -390,9 +391,9 @@ md-tabs-wrapper md-icon {
 }
 
 /* Disable transition for collapsed tools panel */
-#tools-panel > .collapsed md-tab-content {
+#tools-panel.no-animation md-tab-content {
   transition: none;
 }
-#tools-panel > .collapsed md-tabs.md-dynamic-height {
+#tools-panel.no-animation md-tabs.md-dynamic-height {
   transition: none!important;
 }

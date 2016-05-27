@@ -34,29 +34,25 @@
       class="full-height">
       <div
         id="tools-panel"
-        ng-class="{hidden: !activeTool.template}">
-      </div>
-      <script type="text/ng-template" id="tools_panel.html">
+        ng-class="{hidden: !toolsManager.activeTool.template}">
         <div>
           <div
-            xng-show="activeTool.template"
             class="panel-header">
             {{ ui.manager.activeToolTitle }}
             <md-button
               aria-label="Close"
               class="right"
-              ng-click="deactivateTool()">
+              ng-click="toolsManager.deactivateTool()">
               <md-icon md-svg-icon="x"></md-icon>
             </md-button>
           </div>
-          {{ activeTool }}
           <md-tabs
             md-no-pagination
             md-dynamic-height
             class="tabs-no-header"
             md-selected="ui.manager.activeToolIndex">
             <md-tab
-              ng-repeat="tool in ::tools | filter:{ui:{primaryPanel:{template:'!!'}}} track by tool.name"
+              ng-repeat="tool in ::toolsManager.tools | filter:{ui:{primaryPanel:{template:'!!'}}} track by tool.name"
               ng-init="tool._tabIndex=$index"
               label="{{ ::tool.ui.primaryPanel.title }}">
               <ng-include
@@ -65,7 +61,7 @@
             </md-tab>
           </md-tabs>
         </div>
-      </script>
+      </div>
       <div
         id="vertical-panel-container"
         flex

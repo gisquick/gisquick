@@ -258,6 +258,7 @@ md-fab-trigger .md-fab.md-button md-icon {
 .fab-menu-toolbar {
   top: 0;
   right: -52px;
+  z-index: 51;
 }
 
 md-menu-item,

@@ -122,7 +122,7 @@
     };
   };
 
-  function glCollapsible() {
+  function glCollapsible(glAccordionUtils) {
     return {
       restrict: 'EA',
       scope: true,

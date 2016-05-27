@@ -1004,7 +1004,8 @@ class ProjectPage(WizardPage):
                     return {
                         'name': layer.name(),
                         'serverName': layer.shortName(),
-                        'hidden': True
+                        'hidden': True,
+                        'drawing_order': overlays_order.index(layer.id())
                     }
 
                 if layer.extent().isFinite() and not layer.extent().isEmpty():

@@ -252,7 +252,6 @@ md-fab-trigger .md-fab.md-button md-icon {
 .fab-menu-toolbar,
 .panel-collapse-button {
   position: absolute;
-  z-index: 50;
   transition: 0.45s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
 }
 .fab-menu-toolbar {
@@ -472,6 +471,11 @@ md-icon.md-secondary,
   background-color: #e5e5e5;
 }
 
+
+.gl-tree-leaf md-radio-button .md-off,
+.gl-tree-leaf md-checkbox.md-primary:not([disabled]) .md-icon {
+  border-color: #ccc;
+}
 
 .gl-tree-leaf md-checkbox.md-primary.md-checked:not([disabled]) .md-icon {
   background-color: rgb(0, 170, 212);

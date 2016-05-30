@@ -372,8 +372,8 @@ def get_project(request):
 
     #context['gislab_unique_id'] = GISLAB_VERSION.get('GISLAB_UNIQUE_ID', 'unknown')
     context['gislab_version'] = webgis.VERSION
-    context['gislab_homepage'] = 'http://github.com/gislab-npo/gislab/'
-    context['gislab_documentation'] = 'http://gislab-documentation.readthedocs.org/en/latest/gislab-web/'
+    context['gislab_homepage'] = settings.GISLAB_HOMEPAGE
+    context['gislab_documentation'] = settings.GISLAB_DOCUMENTATION_PAGE
     context['status'] = 200
     return context
 

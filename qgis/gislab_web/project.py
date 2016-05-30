@@ -974,10 +974,12 @@ class ProjectPage(WizardPage):
 
         non_identifiable_layers = project.readListEntry("Identify", "/disabledLayers")[0] or []
 
-        overlays_order = [
-            layer.id() for layer in self.plugin.layers_list()
-                if self.plugin.is_overlay_layer_for_publish(layer)
-        ]
+        if self.plugin.iface.layerTreeCanvasBridge().hasCustomLayerOrder():
+            overlays_order = self.plugin.iface.layerTreeCanvasBridge().customLayerOrder()
+        else:
+            overlays_order = [
+                layer.id() for layer in self.plugin.layers_list()
+            ]
         def create_overlays_data(node):
             sublayers = []
             for child in node.children:

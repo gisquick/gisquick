@@ -192,10 +192,10 @@ md-bottom-sheet {
 }
 
 .filter-row md-input-container {
-  min-width: 80px!important;
+  min-width: 90px!important;
 }
 .attribute-table md-select {
-  min-width: 100px;
+  min-width: 90px;
 }
 
 .identification .table-container table > thead > tr > th {

@@ -1002,14 +1002,6 @@ class ProjectPage(WizardPage):
                 if layer_widget.checkState() == Qt.Unchecked:
                     return None
 
-                if layers_model.columnItem(layer_widget, 1).checkState() == Qt.Checked:
-                    return {
-                        'name': layer.name(),
-                        'serverName': layer.shortName(),
-                        'hidden': True,
-                        'drawing_order': overlays_order.index(layer.id())
-                    }
-
                 if layer.extent().isFinite() and not layer.extent().isEmpty():
                     try:
                         map_settings = map_canvas.mapSettings()

@@ -228,8 +228,10 @@
                   </md-list-item>
                   <div class="layer-metadata" gl-accordion-content>
                     <label>Geometry:</label>
-                    <md-icon md-svg-icon="{{::$node.data.geom_type | lowercase}}">
-                    </md-icon><br />
+                    <md-icon
+                      md-svg-icon="{{::$node.data.geom_type? $node.data.geom_type.toLowerCase() : 'raster' }}">
+                    </md-icon>
+                    <br />
                     <label>Identification:</label>
                       <md-icon md-svg-icon="{{:: $node.data.queryable? 'check' : 'minus' }}">
                       </md-icon><br />

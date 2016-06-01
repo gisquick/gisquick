@@ -187,10 +187,10 @@
         if (attribution) {
           var attribution_html;
           if (attribution.url) {
-            attribution_html = '<a href="{0}" target="_blank">{1}</a>'
+            attribution_html = '<a href="{0}" target="_blank">{1}</a><span> | </span>'
                                .format(attribution.url, attribution.title);
           } else {
-            attribution_html = attribution.title;
+            attribution_html = attribution.title+' | ';
           }
           attributions[layerConfig.name] = new ol.Attribution({
             html: attribution_html

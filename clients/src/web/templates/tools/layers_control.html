@@ -243,6 +243,12 @@
                     <span> 1: {{ ::$node.data.visibility_scale_min | number : 0 }}</span><br />
                     <label>Minimal scale:</label>
                     <span> 1: {{ ::$node.data.visibility_scale_max | number : 0 }}</span><br />
+                    <label ng-if-start="::$node.data.attribution">Attribution</label>
+                    <a ng-if-end
+                      target="_blank"
+                      href="{{ ::$node.data.attribution.url || '#' }}">
+                        {{ ::$node.data.attribution.title }}
+                    </a>
                   </div>
                 </div>
               </script>

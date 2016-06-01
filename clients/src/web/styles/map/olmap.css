@@ -173,6 +173,23 @@
   background-color: rgba(90, 90, 90, 0.9);
 }
 
+.ol-attribution a {
+  padding: 1px 3px;
+}
+
+.ol-attribution a:link,
+.ol-attribution a:visited {
+  color: #333;
+  text-decoration: none;
+}
+
+.ol-attribution a:hover {
+  color: rgb(0, 150, 190);
+  text-shadow: none;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 3px;
+}
+
 /*
 @media (max-width: 900px) {
   #ol-scale-line-container {

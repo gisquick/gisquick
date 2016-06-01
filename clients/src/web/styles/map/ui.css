@@ -446,10 +446,28 @@ md-icon.md-secondary,
   width: 12px;
   height: 12px;
 }
+
 .layer-metadata md-icon {
   margin-left: 8px;
   width: 16px;
   height: 16px;
+}
+
+.layer-metadata a:link,
+.layer-metadata a:visited {
+  color: rgb(0, 150, 190);
+  text-decoration: underline;
+}
+
+.layer-metadata a:hover {
+  color: rgb(0, 150, 190);
+}
+
+.layer-metadata a[href="#"] {
+  color: #333;
+  text-decoration: none;
+  xcursor: default;
+  pointer-events: none;
 }
 
 .gl-tree-group > md-list-item {

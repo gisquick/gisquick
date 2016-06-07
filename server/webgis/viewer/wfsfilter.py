@@ -84,7 +84,7 @@ def get_filter_fes(filters, logical_operator=And):
     filter_request = None
 
     for myfilter in filters:
-        value = str(myfilter['value'])
+        value = unicode(myfilter['value'])
         if myfilter['operator'] == '=':
             conditions.append(
                     PropertyIsEqualTo(

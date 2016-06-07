@@ -5,10 +5,12 @@ md-dialog.login-window {
   width: 100%;
   height: 100%;
   border-radius: 0;
+  overflow: hidden;
 }
 
 md-dialog.login-window md-dialog-content {
   height: 100%;
+  z-index: 10;
 }
 
 .login-window h1, h3 {
@@ -26,13 +28,20 @@ md-dialog.login-window md-dialog-content {
   color: #888;
 }
 
-.logo-container .text-logo {
+.login-window .logo-container .text-logo {
   width: 85%;
   margin-bottom: 20px;
 }
 
-.logo-container {
+.login-window .logo-container {
   text-align: center;
+}
+
+
+@media (max-height: 550px) {
+  .login-window .logo-container {
+    display: none;
+  }
 }
 
 .login-container {
@@ -112,26 +121,33 @@ md-input-container.md-input-has-value:not(.md-input-invalid) label {
   color: red;
   margin: 10px 0 0 0;
   font-size: 16px;
+  min-height: 20px;
 }
 
 
 .login-window .big-logo-container {
-  position: relative;
+  position: absolute;
+  left: calc(400px + (100% - 400px) / 2);
+  top: 0;
+  bottom: 0;
   overflow: hidden;
+  z-index: 1;
+  width: calc((100% - 400px) / 2);;
 }
-
 .login-window .big-logo {
   position: absolute;
-  xwidth: 300px;
-  xheight: 300px;
-  xwidth: 100%;
   height: 100%;
-  left: 30%;
+  left: 40%;
   top: 0;
-  xtransform: translate(50%, 0);
 }
 
+
 .footer {
+  position: relative;
+  min-height: 40px!important;
+}
+
+.footer > span {
   position: absolute;
   left: 0;
   right: 0;

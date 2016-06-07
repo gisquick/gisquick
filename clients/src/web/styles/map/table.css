@@ -87,7 +87,7 @@ md-input-container.input-inline-label label {
   color: #777;
 }
 
-.bottom-bar .table-container tr.header {
+.table-container tr.header {
   height: 28px;
 }
 
@@ -433,7 +433,9 @@ md-list.attribute-table md-list-item.list-item-header {
 .attribute-table .table-list-item {
   padding: 0;
 }
-
+.attribute-table .table-list-item p {
+  padding-right: 24px;
+}
 
 .attribute-table.vertical .attribute-table,
 .identification-table.vertical .attribute-table {

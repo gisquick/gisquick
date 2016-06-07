@@ -189,10 +189,3 @@
   background-color: rgba(255, 255, 255, 0.8);
   border-radius: 3px;
 }
-
-/*
-@media (max-width: 900px) {
-  #ol-scale-line-container {
-    bottom: 5px;
-  }
-}*/

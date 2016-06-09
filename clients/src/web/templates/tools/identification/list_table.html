@@ -6,7 +6,8 @@
     class="panel-content"
     ng-class="{'tabs-no-header': tool.config.singleLayerResult}"
     md-selected="tool.data.activeLayerIndex"
-    md-autoselect="false">
+    md-autoselect="false"
+    md-swipe-content>
     <md-tab ng-repeat="layer in ::tool.data.layers track by layer.name"
       ng-disabled="layer.features.length === 0"
       md-on-select="setActiveLayer(layer);">
@@ -35,7 +36,7 @@
       </md-list>
       </md-tab-body>
     </md-tab>
-    <md-tab>
+    <md-tab ng-disabled="tool.data.totalFeaturesCount > 0">
       <md-tab-label>
         <span class="tab-label hidden"></span>
       </md-tab-label>
@@ -55,14 +56,15 @@
         class="list-table-progress-bar">
       </gl-progress-bar>
       <md-button
+        md-no-ink
         aria-label="Zoom to feature"
-        class="zoom-to-feature"
+        class="zoom-to icon-hover"
         ng-click="zoomToFeature(
           tool.data.activeLayer.selectedFeature,
           { padding: [0, 0, tool.config.mapView.bottom, tool.config.mapView.left] }
         )">
         <md-icon
-          md-svg-icon="zoom-to-feature">
+          md-svg-icon="zoom-to">
         </md-icon>
       </md-button>
       <span flex></span>

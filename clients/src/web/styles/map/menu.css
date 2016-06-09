@@ -63,39 +63,23 @@ md-menu-item .user-avatar {
   color: #777;
   display: inline-block;
   position: absolute;
-  right: 15px;
+  right: 16px;
   bottom: 3px;
-  text-align: center;
+  text-align: right;
   font-size: 11px;
   line-height: 11px;
-  height: 12px;
-  padding: 0px 3px;
-}
-
-md-menu-item .user-avatar md-icon > svg {
-  border: 1px solid #ccc;
-  width: 18px;
-  height: 18px;
-  padding: 2px;
-  border-radius: 16px;
+  height: 14px;
 }
 
 md-menu-item .user-avatar md-icon {
   position: absolute;
   margin: 0;
-  padding: 5px;
-  height: 16px;
-  left: 50%;
-  transform: translate(-50%, -25px);
-  overflow: hidden;
+  width: 20px;
+  height: 20px;
+  right: 3px;
+  top: -24px;
 }
 
-md-menu-content {
-  overflow: hidden;
-}
-
-md-menu-item .md-button.menu-icon-button {
-}
 
 md-menu-item .menu-icon-button md-icon {
   position: absolute;
@@ -266,7 +250,7 @@ md-menu-content {
 md-menu-item md-icon {
   color: #777;
   fill: #777;
-  width: 24px;
+  width: 20px;
   padding: 5px 0;
   stroke-width: 1px;
   stroke: white;
@@ -278,13 +262,10 @@ md-menu-item .md-button[disabled] {
   opacity: 0.5;
 }
 
-md-menu-item .md-button[role=menuitemradio] {
-  padding-left: 32px;
-}
 
 md-menu-item .menu-right-icon {
   right: 0px;
-  margin-right: 12px!important;
+  margin-right: 16px!important;
 }
 
 md-menu-item,
@@ -301,6 +282,6 @@ md-option .md-text {
 md-menu-item > .md-button .shortcut {
   color: #999;
   position: absolute;
-  right: 19px;
+  right: 16px;
   font-size: 13px;
 }

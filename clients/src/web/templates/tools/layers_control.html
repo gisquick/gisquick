@@ -3,7 +3,8 @@
     md-no-ink
     md-stretch-tabs="always"
     class="text-icon-tabs tabs-3"
-    md-selected="1">
+    md-selected="1"
+    md-swipe-content>
     <md-tab>
       <md-tab-label>
         <md-icon
@@ -32,8 +33,8 @@
               gl-collapsible>
               <md-list-item>
                 <md-button
-                  class="toggle-button list-item-button"
                   aria-label="Toggle"
+                  class="toggle-button list-item-button icon-hover"
                   ng-click="$collapsible.toggle()">
                   <md-icon
                     md-svg-icon="{{ $collapsible.collapsed? 'plus' : 'minus' }}">
@@ -54,10 +55,15 @@
             <div gl-accordion-item depth="{{ ::$node.treeDepth }}"
               class="gl-tree-leaf" ng-class="{expanded: $accordion.expanded}">
               <md-list-item class="md-with-secondary radio-button-item">
-                <md-radio-button md-no-ink aria-label="{{ ::node.title }}" ng-value="::node.name">
+                <md-radio-button
+                  md-no-ink
+                  aria-label="{{ ::node.title }}"
+                  ng-value="::node.name">
+                  {{ ::node.title }}
                 </md-radio-button>
-                <p>{{ ::node.title }}</p>
-                <md-button class="list-item-button" aria-label="Info"
+                <md-button
+                  aria-label="Info"
+                  class="list-item-button icon-hover"
                   ng-click="$accordion.toggle()">
                   <md-icon class="accordion-icon"
                     md-svg-icon="arrow-down">
@@ -120,11 +126,14 @@
                     ng-class="{expanded: $accordion.expanded}">
                     <md-list-item class="md-with-secondary radio-button-item">
                       <md-radio-button md-no-ink
+                        class="md-primary"
                         aria-label="{{ ::topic.title }}"
-                        ng-value="::$index" >
+                        ng-value="::$index">
+                        {{ ::topic.title }}
                       </md-radio-button>
-                      <p>{{ ::topic.title }}</p>
-                      <md-button class="list-item-button" aria-label="Info"
+                      <md-button
+                        aria-label="Info"
+                        class="list-item-button icon-hover"
                         ng-click="$accordion.toggle()">
                         <md-icon class="accordion-icon"
                           md-svg-icon="arrow-down">
@@ -165,8 +174,8 @@
                   gl-collapsible>
                   <md-list-item>
                     <md-button
-                      class="toggle-button list-item-button"
                       aria-label="Toggle"
+                      class="toggle-button list-item-button icon-hover"
                       ng-click="$collapsible.toggle()">
                       <md-icon
                         md-svg-icon="{{ $collapsible.collapsed? 'plus' : 'minus' }}">
@@ -212,14 +221,16 @@
                     <md-button
                       aria-label="Attributes"
                       ng-if="::$node.data.attributes.length>0"
-                      class="list-item-button"
+                      class="list-item-button icon-hover"
                       ng-class="{active: tool.config.activeLayer == $node.data}"
                       ng-click="showAttributeTable($node.data)">
                       <md-icon
                         md-svg-icon="attribute-table">
                       </md-icon>
                     </md-button>
-                    <md-button class="list-item-button" aria-label="Info"
+                    <md-button
+                      aria-label="Info"
+                      class="list-item-button icon-hover"
                       ng-click="$accordion.toggle()">
                       <md-icon class="accordion-icon"
                         md-svg-icon="arrow-down">

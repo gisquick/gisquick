@@ -17,8 +17,9 @@
       },
       template: '\
         <md-button\
+          md-no-ink\
           aria-label="First page"\
-          class="pagination-button button-first"\
+          class="pagination-button button-first icon-hover"\
           ng-disabled="paginator.page === 1"\
           ng-click="\
             paginator.page = 1;\
@@ -27,8 +28,9 @@
           <md-icon md-svg-icon="page-first"></md-icon>\
         </md-button>\
         <md-button\
+          md-no-ink\
           aria-label="Previous page"\
-          class="pagination-button button-prev"\
+          class="pagination-button button-prev icon-hover"\
           ng-disabled="paginator.page === 1"\
           ng-click="\
             paginator.page = paginator.page-1;\
@@ -42,8 +44,9 @@
           of {{ paginator.length }}\
         </span>\
         <md-button\
+          md-no-ink\
           aria-label="Next page"\
-          class="pagination-button button-next"\
+          class="pagination-button button-next icon-hover"\
           ng-disabled="paginator.page >= lastPage"\
           ng-click="\
             paginator.page = paginator.page+1;\
@@ -52,8 +55,9 @@
           <md-icon md-svg-icon="arrow-right"></md-icon>\
         </md-button>\
         <md-button\
+          md-no-ink\
           aria-label="Last page"\
-          class="pagination-button button-last"\
+          class="pagination-button button-last icon-hover"\
           ng-disabled="paginator.page >= lastPage"\
           ng-click="\
             paginator.page = lastPage;\
@@ -97,8 +101,9 @@
       },
       template: '\
         <md-button\
+          md-no-ink\
           aria-label="First page"\
-          class="pagination-button button-first"\
+          class="pagination-button button-first icon-hover"\
           ng-disabled="paginator.page === 1"\
           ng-click="\
             paginator.page = 1;\
@@ -107,8 +112,9 @@
           <md-icon md-svg-icon="page-first"></md-icon>\
         </md-button>\
         <md-button\
+          md-no-ink\
           aria-label="Previous page"\
-          class="pagination-button button-prev"\
+          class="pagination-button button-prev icon-hover"\
           ng-disabled="paginator.page === 1"\
           ng-click="\
             paginator.page = paginator.page-1;\
@@ -119,8 +125,9 @@
           {{ paginator.length? paginator.page : 0 }} of {{ paginator.length }}\
         </span>\
         <md-button\
+          md-no-ink\
           aria-label="Next page"\
-          class="pagination-button button-next"\
+          class="pagination-button button-next icon-hover"\
           ng-disabled="paginator.page >= paginator.length"\
           ng-click="\
             paginator.page = paginator.page+1;\
@@ -129,8 +136,9 @@
           <md-icon md-svg-icon="arrow-right"></md-icon>\
         </md-button>\
         <md-button\
+          md-no-ink\
           aria-label="Last page"\
-          class="pagination-button button-last"\
+          class="pagination-button button-last icon-hover"\
           ng-disabled="paginator.page >= paginator.length"\
           ng-click="\
             paginator.page = paginator.length;\

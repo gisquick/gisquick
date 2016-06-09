@@ -15,7 +15,7 @@
         <md-button
           md-no-ink
           aria-label="Close"
-          class="close-button no-hover"
+          class="close-button icon-hover"
           ng-click="toolsManager.deactivateTool()">
           <md-icon md-svg-icon="x"></md-icon>
         </md-button>
@@ -58,13 +58,16 @@
                     ng-class="{'md-selected': layer.selectedFeature === feature}"
                     ng-click="selectFeature(feature)">
                     <td class="icon">
-                      <md-icon
-                        md-svg-icon="zoom-to-feature"
+                      <md-button
+                        class="icon-hover"
                         ng-click="zoomToFeature(
                           feature,
                           { padding: [0, 0, tool.config.mapView.bottom, tool.config.mapView.left] }
                         )">
-                      </md-icon>
+                        <md-icon
+                          md-svg-icon="zoom-to">
+                        </md-icon>
+                      </md-button>
                     </td>
                     <td ng-repeat="attribute in layer.attributes">
                       {{ ::feature.get(attribute.name) }}

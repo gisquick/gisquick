@@ -358,10 +358,9 @@ label.md-no-float {
   min-width: 26px;
   width: 26px;
   min-height: 18px;
-  line-height: 18px;
+  line-height: 16px;
   margin: 0;
   padding: 0 4px 0 0;
-  vertical-align: top;
   border-top: 1px solid #888;
   border-radius: 0;
   box-sizing: border-box;
@@ -689,4 +688,13 @@ md-bottom-sheet.identification-table {
 
 .bottom-bar .attribute-table .ss-scroll.horizontal {
   bottom: 2px;
+}
+
+.table-container .md-button {
+  margin: 0;
+  padding: 0 4px;
+  min-width: 28px;
+  min-height: 26px;
+  height: 30px;
+  line-height: 30px;
 }

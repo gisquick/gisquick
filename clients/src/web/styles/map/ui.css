@@ -89,6 +89,18 @@ md-tabs-canvas {
 .text-icon-tabs md-pagination-wrapper {
   height: 43px;
 }
+
+.layers-control-container .text-icon-tabs md-tabs-canvas,
+.layers-control-container md-pagination-wrapper {
+  height: 45px;
+}
+.layers-control-container .text-icon-tabs label {
+  padding-top: 1px;
+}
+.layers-control-container .text-icon-tabs .md-tab {
+  padding-top: 1px;
+}
+
 .text-icon-tabs .md-tab {
   padding: 0;
 }
@@ -249,11 +261,15 @@ md-list.gl-tree {
   color: rgb(0, 170, 212);
 }
 
-md-list-item .toggle-button {
+.gl-tree .toggle-button {
   min-width: 24px;
   width: 26px;
   padding: 0 2px;
   text-align: left;
+}
+.gl-tree .toggle-button md-icon {
+  padding-left: 2px;
+  color: #000;
 }
 
 .gl-tree-group md-switch {
@@ -300,10 +316,12 @@ md-switch .md-bar {
   top: 6px;
   border-radius: 5px;
 }
-.disabled-content md-list-item {
-  opacity: 0.5;
+.disabled-content md-list-item,
+.disabled-content .layer-metadata {
+  opacity: 0.5!important;
 }
-.disabled-content .gl-tree-leaf md-list-item {
+.disabled-content .gl-tree-leaf md-list-item,
+.disabled-content .layer-metadata {
   pointer-events: none;
 }
 
@@ -331,11 +349,12 @@ md-icon.md-secondary,
 .layer-metadata a:link,
 .layer-metadata a:visited {
   color: rgb(0, 150, 190);
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 .layer-metadata a:hover {
   color: rgb(0, 150, 190);
+  text-decoration: underline;
 }
 
 .layer-metadata a[href="#"] {
@@ -350,6 +369,7 @@ md-icon.md-secondary,
   border-bottom: 1px solid #ccc;
   background-color: #e5e5e5;
   padding: 0 5px;
+  color: #444;
 }
 
 .gl-tree-leaf > md-list-item {
@@ -380,8 +400,17 @@ md-icon.md-secondary,
   min-height: 30px;
   max-height: 30px;
 }
-md-list-item p {
+
+md-list-item p,
+md-radio-button .md-label {
   font-size: 14px;
+}
+
+.gl-tree md-radio-button .md-label span {
+  line-height: 26px;
+  min-width: 210px;
+  max-width: 210px;
+  display: inline-block;
 }
 
 .gl-tree-leaf .layer-metadata {
@@ -544,11 +573,20 @@ md-input-container.md-input-focused:not(.md-input-invalid) label {
   z-index: 500;
 }
 
+.md-button.icon-hover,
+.md-button.icon-hover.md-focused,
+.md-button.icon-hover:hover,
 .md-button.no-hover.md-focused,
 .md-button.no-hover:hover {
   background-color: transparent;
 }
 
+.md-button.icon-hover:not(.active) md-icon {
+  opacity: 0.5;
+}
+.md-button.icon-hover:hover:not([disabled="disabled"]) md-icon {
+  opacity: 1;
+}
 
 md-progress-linear {
   transition: opacity 0.5s;

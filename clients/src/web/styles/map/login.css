@@ -56,11 +56,13 @@ md-dialog.login-window md-dialog-content {
   margin: 10px auto;
   padding: 12px 10px 18px 10px;
   width: 85%;
+  min-height: 205px;
 }
 
 .login-container .secondary-buttons-container {
   width: 85%;
   margin: 0 auto;
+  min-height: 36px;
 }
 
 .login-container .link-button {
@@ -99,6 +101,12 @@ md-input-container.md-input-has-value:not(.md-input-invalid) label {
 
 .login-form input {
   color: #fff;
+  background-color: transparent;
+}
+
+.login-form input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px #000 inset;
+  -webkit-text-fill-color: #fff
 }
 
 .login-form md-input-container .md-input[disabled] {
@@ -132,7 +140,8 @@ md-input-container.md-input-has-value:not(.md-input-invalid) label {
   bottom: 0;
   overflow: hidden;
   z-index: 1;
-  width: calc((100% - 400px) / 2);;
+  width: calc((100% - 400px) / 2);
+  min-height: 400px;
 }
 .login-window .big-logo {
   position: absolute;

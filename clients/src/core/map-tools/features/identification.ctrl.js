@@ -142,6 +142,7 @@
         layer.features = layersFeatures[layer.name] || [];
         layer.selectedFeature = null;
       });
+      tool.data.totalFeaturesCount = features.length;
       tool.showTable();
     }
 

@@ -1,7 +1,9 @@
 <md-menu
+  md-no-ink
   class="app-menu"
   md-position-mode="target-right target">
   <md-button
+    md-no-ink
     aria-label="Application menu"
     class="md-icon-button map-button"
     ng-click="$mdOpenMenu($event)">
@@ -20,7 +22,7 @@
         <p
           class="user-avatar">
           <md-icon
-            md-svg-icon="user">
+            md-svg-icon="avatar">
           </md-icon>
           {{ user.full_name }}
         </p>
@@ -37,7 +39,7 @@
     </md-menu-item>
 
     <md-menu-item
-      ng-repeat="item in secondaryMenuItems">
+      ng-repeat="item in ::secondaryMenuItems">
       <md-button
         ng-disabled="::!item.perform"
         ng-click="item.perform()">

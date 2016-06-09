@@ -15,18 +15,21 @@
       <span flex>Scale 1: {{ mapScale.toLocaleString() }}</span>
       <span class="title">Print Preview</span>
       <md-button
+        md-no-ink
         aria-label="Print"
         ng-disabled="!tool.config.layout"
         ng-click="print()">
         <md-icon md-svg-icon="printer"></md-icon>
       </md-button>
       <md-button
+        md-no-ink
         aria-label="Download"
         ng-disabled="!tool.config.layout"
         ng-click="download()">
         <md-icon md-svg-icon="download"></md-icon>
       </md-button>
       <md-button
+        md-no-ink
         aria-label="Close"
         ng-click="toolsManager.deactivateTool()">
         <md-icon md-svg-icon="x"></md-icon>

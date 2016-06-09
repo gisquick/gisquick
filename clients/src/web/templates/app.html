@@ -40,6 +40,7 @@
             class="panel-header">
             {{ ui.manager.activeToolTitle }}
             <md-button
+              md-no-ink
               aria-label="Close"
               class="right"
               ng-click="toolsManager.deactivateTool()">
@@ -76,6 +77,7 @@
             class="panel-header secondary hidden">
             Features
             <md-button
+              md-no-ink
               aria-label="Toggle Panel"
               class="toggle-button left"
               ng-class="{collapsed: ui.manager.secondaryLeftPanel.collapsed}"
@@ -96,6 +98,7 @@
           <div class="panel-header">
             Content
             <md-button
+              md-no-ink
               aria-label="Toggle Panel"
               class="toggle-button left"
               ng-show="ui.manager.contentPanel.collapseEnabled"
@@ -119,6 +122,7 @@
             class="panel-header secondary hidden">
             {{ ui.manager.secondaryLeftPanel.title }}
             <md-button
+              md-no-ink
               aria-label="Toggle Panel"
               class="toggle-button left"
               ng-class="{collapsed: ui.manager.secondaryLeftPanel.collapsed}"
@@ -131,6 +135,7 @@
               </md-icon>
             </md-button>
             <md-button
+              md-no-ink
               aria-label="Close"
               class="close-button right"
               ng-click="ui.manager.hidePanel()">
@@ -173,6 +178,7 @@
     </div>
 
     <md-button
+      md-no-ink
       id="location-button"
       aria-label="My Location"
       class="map-button location-button"
@@ -195,6 +201,7 @@
     </div>
 
     <md-button
+      md-no-ink
       aria-label="Zoom to max extent"
       class="map-button zoom-to-max-button"
       ng-click="zoomToInitialExtent()">

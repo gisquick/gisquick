@@ -21,11 +21,11 @@
 }
 
 .status-bar > .logo-container {
-  padding-top: 1px;
+  padding-top: 3px;
   width: 279px;
   text-align: center;
 }
 
 .status-bar > .logo-container > img {
-  height: 28px;
+  height: 24px;
 }

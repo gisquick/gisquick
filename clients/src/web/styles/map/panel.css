@@ -77,7 +77,6 @@
   font-size: 14px;
   font-weight: bold;
   margin-top: 3px;
-  xbackground-color: #ddd;
   border-bottom: 1px solid #ccc;
   color: #555;
   padding: 6px 3px 4px 3px;
@@ -88,7 +87,6 @@
   height: 21px;
 }
 
-
 .secondary-tabs md-tabs-canvas,
 .secondary-tabs md-pagination-wrapper {
   height: 42px;
@@ -97,24 +95,29 @@
   margin: 0 4px;
 }
 .secondary-tabs .md-tab {
-  color: rgb(0, 170, 212);
-  border: 1px solid rgb(0, 170, 212);
+  color: #555;
+  border: 1px solid #aaa;
   margin: 8px 0;
   line-height: 22px;
-  font-size: 13.5px;
+  font-size: 12px;
+  font-weight: normal;
 }
 .secondary-tabs md-pagination-wrapper .md-tab:nth-child(1) {
   border-top-left-radius: 6px;
   border-bottom-left-radius: 6px;
+  border-right: none;
 }
 .secondary-tabs md-pagination-wrapper .md-tab:nth-last-child(-n+2) {
   border-top-right-radius: 6px!important;
   border-bottom-right-radius: 6px;
+  border-left: none;
 }
 
 .secondary-tabs .md-tab.md-active {
   background-color: rgb(0, 170, 212);
   color: #fff;
+  border-color: rgb(0, 170, 212);
+  font-weight: bold;
 }
 
 .secondary-header {
@@ -126,8 +129,6 @@
   font-size: 13.5px;
   font-weight: bold;
   text-align: center;
-  xdisplay: inline;
-  xpadding: 2px 5px;
   margin: 7px 0;
 }
 .secondary-header label {

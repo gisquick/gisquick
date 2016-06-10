@@ -21,7 +21,7 @@
     // Configuration of additional secondary menu items
     $scope.secondaryMenuItems = [
       {
-        title: 'Copyrights',
+        title: 'Display attributions',
         checkbox: true,
         checked: false,
         perform: function() {

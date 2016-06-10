@@ -385,10 +385,10 @@ md-icon.md-secondary,
 }
 
 .gl-tree-group[depth="1"] > md-list-item {
-  background-color: #bbb;
+  background-color: #ccc;
 }
 .gl-tree-group[depth="2"] > md-list-item {
-  background-color: #e5e5e5;
+  background-color: #eee;
 }
 
 

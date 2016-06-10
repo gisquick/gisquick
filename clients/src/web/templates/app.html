@@ -5,7 +5,7 @@
   <div layout="column"
     style="height:100%;"
     ng-style="{left: ui.manager.mapView.left-280+'px'}"
-    class="main-panel md-whiteframe-3dp">
+    class="main-panel md-whiteframe-10dp">
     
     <div
       class="fab-menu-toolbar"
@@ -218,12 +218,12 @@
     <div class="logo-container">
       <img ng-src="{{ ::staticResources['text-logo'] }}">
     </div>
-    <div flex
-      id="ol-mouse-position-container"
+    <div
+      flex
       class="status-bar-content">
-      <label>Scale 1: {{ mapScale }}</label>
+      <label>Scale: 1: {{ mapScale }}</label>
       <label>{{ ::project.data.projection.code }}</label>
-      <label>Coordinates:</label>
+      <label id="ol-mouse-position-container">Coordinates:</label>
     </div>
   </div>
 

@@ -15,7 +15,15 @@ body {
 }
 
 .md-whiteframe-top {
-  box-shadow: 0 -1px 8px 0 rgba(0, 0, 0, 0.2), 0 -3px 3px -2px rgba(0, 0, 0, 0.12);
+  box-shadow:
+    0 -1px 8px 0 rgba(0, 0, 0, 0.2),
+    0 -3px 3px -2px rgba(0, 0, 0, 0.12);
+}
+
+.md-whiteframe-top-10dp {
+  box-shadow:
+    0 -5px 8px 0 rgba(0, 0, 0, 0.12),
+    0 -4px 4px -2px rgba(0, 0, 0, 0.14);
 }
 
 md-select.md-default-theme:focus:not([disabled]),

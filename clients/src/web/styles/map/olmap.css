@@ -37,6 +37,7 @@
 .ol-mouse-position {
   display: inline-block;
   position: static;
+  padding-left: 5px;
 }
 
 #map-rotate-reset .ol-rotate {
@@ -150,7 +151,8 @@
 .ol-attribution {
   bottom: 3px;
   right: 48px;
-  left: 75px;
+  xleft: 75px;
+  margin-left: 75px;
   background-color: transparent;
 }
 .ol-control.ol-attribution button {

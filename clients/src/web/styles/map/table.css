@@ -211,8 +211,9 @@ md-bottom-sheet {
   white-space: nowrap;
 }
 
-table td.icon {
+.table-container table > tbody > tr > td.icon {
   width: 18px;
+  padding: 0 5px!important;
 }
 td.icon md-icon {
   color: #444;
@@ -255,7 +256,7 @@ label.md-no-float {
 
 .tabs-header {
   position: absolute;
-  top: 4px;
+  top: 6px;
   height: 26px;
   background-color: rgb(250, 250, 250);
   color: #555;
@@ -286,15 +287,17 @@ label.md-no-float {
 }
 .bottom-bar .attribute-table md-tabs-canvas,
 .bottom-bar .identification-table md-tabs-canvas {
-  height: 31px;
+  height: 33px;
 }
 
 .bottom-bar .attribute-table md-pagination-wrapper,
 .bottom-bar .identification-table md-pagination-wrapper {
   border-top: 1px solid #888;
   height: 26px;
-  margin-top: 4px;
-  box-shadow: 0 -2px 5px 0 rgba(0, 0, 0, 0.2);
+  margin-top: 6px;
+  box-shadow:
+    0 -4px 6px 0 rgba(0, 0, 0, 0.12),
+    0 -3px 4px -2px rgba(0, 0, 0, 0.14);
   background-color: rgb(250, 250, 250);
   box-sizing: content-box;
   pointer-events: auto;
@@ -318,7 +321,9 @@ label.md-no-float {
   box-sizing: border-box;
   border-top-right-radius: 5px;
   background-color: rgb(250, 250, 250);
-  box-shadow: 4px 0px 3px 0 rgba(0, 0, 0, 0.12);
+  box-shadow:
+    7px -3px 6px 0 rgba(0, 0, 0, 0.1),
+    4px 0px 3px 0 rgba(0, 0, 0, 0.12);
 }
 
 .identification-table md-pagination-wrapper {
@@ -347,9 +352,9 @@ label.md-no-float {
 
 .bottom-bar .features-panel .close-button-container {
   position: absolute;
-  top: 11px;
+  top: 13px;
   right: 0;
-  box-shadow: 5px -3px 3px 0 rgba(0, 0, 0, 0.12);
+  box-shadow: 6px -4px 4px 0 rgba(0, 0, 0, 0.12);
   box-sizing: border-box;
   height: 20px;
   z-index: 1;
@@ -386,7 +391,7 @@ label.md-no-float {
   width: 13px;
   border-top-left-radius: 5px;
   background-color: rgb(250, 250, 250);
-  box-shadow: -3px -2px 3px 0 rgba(0, 0, 0, 0.10);
+  box-shadow: -4px -3px 4px 0 rgba(0, 0, 0, 0.15);
   pointer-events: none;
 }
 
@@ -623,9 +628,8 @@ gl-paginator {
 .bottom-bar .identification-table md-next-button,
 .bottom-bar .identification-table md-prev-button {
   background: rgb(250, 250, 250);
-  box-shadow: 0px -3px 3px 0 rgba(0, 0, 0, 0.12);
   transform: none;
-  top: 4px;
+  top: 6px;
   bottom: 0;
   height: auto;
   pointer-events: auto;
@@ -634,11 +638,17 @@ gl-paginator {
   border: solid #888;
   border-width: 1px 0 0 0;
   box-sizing: border-box;
+  box-shadow:
+    -1px -4px 6px 1px rgba(0, 0, 0, 0.08),
+    -1px -2px 3px 1px rgba(0, 0, 0, 0.1);
 }
 .bottom-bar .identification-table md-next-button {
   border: solid #888;
   border-width: 1px 0 0 0;
   box-sizing: border-box;
+  box-shadow:
+    1px -4px 6px 1px rgba(0, 0, 0, 0.08),
+    1px -2px 3px 1px rgba(0, 0, 0, 0.1);
 }
 
 .identification-table md-tabs-wrapper md-prev-button.md-disabled, md-tabs-wrapper md-next-button.md-disabled {
@@ -651,17 +661,17 @@ gl-paginator {
 
 .bottom-bar .attribute-table md-tabs-wrapper,
 .bottom-bar .identification-table md-tabs-wrapper {
-  height: 31px;
+  height: 33px;
   z-index: 1;
 }
 
 .bottom-bar .attribute-table md-tabs-content-wrapper,
 .bottom-bar .identification-table md-tabs-content-wrapper {
-  top: 31px;
+  top: 33px;
   background-color: rgb(250, 250, 250);
   box-shadow:
-    0 -3px 6px 0 rgba(0, 0, 0, 0.2),
-    0 -2px 3px -2px rgba(0, 0, 0, 0.16);
+    0 -5px 8px 0 rgba(0, 0, 0, 0.12),
+    0 -4px 4px -2px rgba(0, 0, 0, 0.18);
   border-top: 1px solid #888;
   pointer-events: auto;
 }

@@ -112,10 +112,13 @@ md-fab-speed-dial.md-is-open .toolbar-menu-icon {
   opacity: 0;
 }
 
+md-select-menu md-option {
+  background-color: transparent!important;
+}
 md-select-menu md-option:hover,
 md-menu-content .md-button:not([disabled]):hover,
 md-menu-content .md-button.md-focused:not([disabled]) {
-  background-color: #ffffe0;
+  background-color: #ffffe0!important;
 }
 md-select-menu md-option[selected],
 md-select-menu md-option[selected]:focus {

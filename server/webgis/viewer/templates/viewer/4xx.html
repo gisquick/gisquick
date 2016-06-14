@@ -1,0 +1,28 @@
+<!doctype html>
+{% load staticfiles i18n %}
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>GIS.lab Web</title>
+
+    <link rel="stylesheet" type="text/css" href="{% static "styles/4xx.css" %}">
+
+  </head>
+  <body>
+    <div class="content-container">
+      <div class="flex"></div>
+
+      <div>
+        <img
+          class="text-logo"
+          src="{% static "styles/login_text_logo.svg" %}">
+      </div>
+    
+      <h1>{{ message }}</h1>
+
+      <div class="flex"></div>
+      <div class="flex"></div>
+    </div>
+  </body>
+</html>

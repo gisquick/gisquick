@@ -442,3 +442,14 @@ def get_user_projects(request, username):
                     # metadata file does not exists or not valid
                     pass
     return projects
+
+
+def get_user_data(user):
+    return {
+        'username': user.username,
+        'first_name': user.first_name,
+        'last_name': user.last_name,
+        'full_name': user.get_full_name(),
+        'email': user.email,
+        'is_guest': user.is_guest
+    }

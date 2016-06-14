@@ -8,22 +8,16 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.csrf import csrf_exempt
+from django.utils.translation import ugettext as _
 
+import webgis
 from webgis.viewer import models
 from webgis.viewer import forms
 from webgis.viewer.views.project_utils import get_project, get_user_projects, \
-    InvalidProjectException
+    get_user_data, InvalidProjectException
 from webgis.libs.utils import secure_url, set_query_parameters
 
 
-def get_user_data(user):
-    return {
-        'username': user.username,
-        'first_name': user.first_name,
-        'last_name': user.last_name,
-        'full_name': user.get_full_name(),
-        'is_guest': user.is_guest
-    }
 
 @csrf_exempt
 def client_login(request):
@@ -68,7 +62,13 @@ def map(request):
         data['project'] = get_project(request)
 
     except InvalidProjectException:
-        raiseHttp404
+        return render(
+            request,
+            "viewer/4xx.html",
+            {'message': "Error when loading project or project does not exist"},
+            status=404,
+            content_type="text/html"
+        )
     except Exception, e:
         #TODO: log exception error
         raise
@@ -118,14 +118,22 @@ def user_projects(request, username):
         'url': request.build_absolute_uri('/'),
     }]
     projects.extend(get_user_projects(request, username))
-    context = {
+    data = {
         'username': username,
         'projects': projects,
-        'debug': settings.DEBUG
+        'gislab_version': webgis.VERSION,
+        'gislab_homepage': settings.GISLAB_HOMEPAGE,
+        'gislab_documentation': settings.GISLAB_DOCUMENTATION_PAGE,
+        'user': get_user_data(request.user),
+        'status': 200
+    }
+    templateData = {
+        'data': data,
+        'jsonData': json.dumps(data)
     }
     return render(
         request,
-        "viewer/user_projects.html",
-        context,
+        "viewer/user_home.html",
+        templateData,
         content_type="text/html"
     )

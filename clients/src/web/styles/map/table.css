@@ -26,7 +26,7 @@
   background-color: #ccc;
 }
 
-.search-settings {
+.table-toolbar {
   border-top: 1px solid rgba(0, 0, 0, 0.12);
   height: 36px;
   box-sizing: content-box;
@@ -38,9 +38,9 @@
   right: 0;
   z-index: 5;*/
 }
-.search-settings md-checkbox, 
-.search-settings md-input-container,
-.search-settings button {
+.table-toolbar md-checkbox,
+.table-toolbar md-input-container,
+.table-toolbar button {
   line-height: 36px;
   margin: 0 10px 0 10px;
   font-size: 12.5px;
@@ -48,29 +48,29 @@
   color: white;
 }
 
-.search-settings md-input-container {
+.table-toolbar md-input-container {
   flex-direction: row;
   padding: 0px 0 4px 0;
   margin-top: 2px;
 }
-.search-settings md-input-container label {
+.table-toolbar md-input-container label {
   padding: 0 8px 0 0;
 }
-.search-settings md-input-container input {
+.table-toolbar md-input-container input {
   width: 60px;
   text-align: center;
   height: 26px;
   margin-top: 4px;
 }
 
-.search-settings md-input-container.md-input-has-value:not(.md-input-invalid) label,
-.search-settings span {
+.table-toolbar md-input-container.md-input-has-value:not(.md-input-invalid) label,
+.table-toolbar span {
   color: rgba(0, 0, 0, 0.6);
 }
-.search-settings button span {
+.table-toolbar button span {
   color: rgba(0, 0, 0, 0.9);
 }
-.search-settings md-icon {
+.table-toolbar md-icon {
   color: #555;
   width: 18px;
 }
@@ -132,7 +132,7 @@ md-bottom-sheet {
   padding: 0;
 }
 
-.search-settings .pagination-label {
+.table-toolbar .pagination-label {
     margin-right: 0!important;
     min-width: 100px;
     line-height: 36px;
@@ -211,11 +211,20 @@ md-bottom-sheet {
   white-space: nowrap;
 }
 
+.table-container tbody tr a {
+  color: rgb(0, 150, 190);
+  text-decoration: none;
+}
+.table-container tbody tr a:hover {
+  color: rgb(0, 150, 190);
+  text-decoration: underline;
+}
+
 .table-container table > tbody > tr > td.icon {
   width: 18px;
   padding: 0 5px!important;
 }
-td.icon md-icon {
+.table-container td.icon md-icon {
   color: #444;
   width: 18px;
   height: 18px;

@@ -5,11 +5,47 @@
     .module('gl.web')
     .factory('glPanelManager', glPanelManager);
 
+  /**
+   * Service for handling opening/closing application's panels and status bar.
+   * It abstracts used UI framework (low level functions) and provide API for
+   * handling application layout, which is:
+
+   ---------------------------------------------------
+   |   ACTIVE    |                                   |
+   |    TOOL     |                                   |
+   |             |                                   |
+   +-------------+                                   |
+   |             |                                   |
+   |  left-top   |                                   |
+   |             |                MAP                |
+   |             |                                   |
+   +-------------+                                   |
+   |             |                                   |
+   |   CONTENT   |                                   |
+   |             |                                   |
+   |             |-----------------------------------|
+   +-------------+                                   |
+   |             |                                   |
+   | left-bottom |              bottom               |
+   |             |                              -----|
+   |             |                                   | <- status bar
+   ---------------------------------------------------
+
+  * The layout consist of:
+  *  - collapsible left panel, where are by default displayed ACTIVE TOOL
+  *    panel (if activated) and CONTENT panel (layers, legend)
+  *  - MAP container
+  *  - status bar - can be coverd by optional bottom panel
+  *
+  * Panel manager allows to open one additional optional panel - left-top,
+  * left-bottom or bottom.
+  */
 
   function glPanelManager($mdBottomSheet, $q, $$interimElement, $timeout, $animate, Observable, glAccordionUtils) {
 
     function PanelManager() {
       Observable.call(this, ["mapViewResized"]);
+      // hold actual position/size info about map panel
       this.mapView = {
         left: 0,
         top: 0,
@@ -22,11 +58,15 @@
 
     PanelManager.prototype = Object.create(Observable.prototype);
 
+    function ngElement(selector) {
+      return angular.element(document.querySelector(selector));
+    };
+
     PanelManager.prototype.initialize = function(options) {
-      this.panelElement = this._ngElement(options.mainPanel);
+      this.panelElement = ngElement(options.mainPanel);
       this._initializeContentPanel(options.contentPanel);
 
-      var toolsPanelElem = this._ngElement(options.toolsPanel);
+      var toolsPanelElem = ngElement(options.toolsPanel);
       toolsPanelElem.css('maxHeight', '0');
       toolsPanelElem.addClass("no-animation");
       this.toolsPanel = {
@@ -35,7 +75,7 @@
       };
 
       this.statusBar = {
-        element: this._ngElement(options.statusBar),
+        element: ngElement(options.statusBar),
         _hidden: false,  // controlled by hideStatusBar/showStatusBar
         disabled: false, // controlled by window size (width)
         visible: true    // visibility (read-only)
@@ -46,22 +86,12 @@
       window.addEventListener("resize", function(evt) {
         $timeout(function() {
           panel._windowResized();
-          panel.updateLayout();
+          panel._updateLayout();
           panel.dispatchEvent("mapViewResized", panel.mapView);
         }, 200); // Chrome needs some time to update window size
       });
       panel._windowResized();
     }
-
-    PanelManager.prototype._ngElement = function(element) {
-      var id = element.replace('#', '');
-      return angular.element(document.getElementById(id));
-    };
-
-    PanelManager.prototype.toggleMainPanel = function() {
-      this.mapView.left = this.mapView.left === 0? 280 : 0;
-      this.dispatchEvent("mapViewResized", this.mapView);
-    };
 
     PanelManager.prototype._calculateBottom = function() {
       if (this.secondaryBottomPanel) {
@@ -84,6 +114,9 @@
       }
     };
 
+    /**
+     * Hides status bar
+     */
     PanelManager.prototype.hideStatusBar = function() {
       this.statusBar._hidden = true;
       this.statusBar.element.css('transform', 'translate(0, 100%)');
@@ -91,6 +124,9 @@
       this._calculateBottom();
     };
 
+    /**
+     * Shows status bar
+     */
     PanelManager.prototype.showStatusBar = function() {
       this.statusBar._hidden = false;
       if (!this.statusBar.disabled) {
@@ -116,7 +152,7 @@
       this.mapView.height = window.innerHeight;
     };
 
-    PanelManager.prototype.updateLayout = function() {
+    PanelManager.prototype._updateLayout = function() {
       if (!this.contentPanel.element) {
         return;
       }
@@ -159,7 +195,9 @@
       }
     };
 
-
+    /**
+     * Opens active tool panel
+     */
     PanelManager.prototype.showToolsPanel = function() {
       var _this = this;
       if (_this.toolsPanel.collapsed) {
@@ -168,25 +206,32 @@
           glAccordionUtils.expandElement(
             _this.toolsPanel.element,
             0.45,
+            // turn on panel animations after tool activation
             function() {
               _this.toolsPanel.element.removeClass("no-animation");
             }
           );
-          _this.updateLayout();
+          _this._updateLayout();
         }, 20);
       }
     };
+
+    /**
+     * Hides active tool panel
+     */
     PanelManager.prototype.hideToolsPanel = function() {
       if (!this.toolsPanel.collapsed) {
         this.toolsPanel.collapsed = true;
         glAccordionUtils.collapseElement(
           this.toolsPanel.element,
           0.45,
+          // turn off panel animation when panel is closed for
+          // quick tool (UI tab) switch for later tool activation
           function() {
             this.toolsPanel.element.addClass("no-animation");
           }.bind(this)
         );
-        this.updateLayout();
+        this._updateLayout();
       }
     };
 
@@ -197,7 +242,7 @@
       options.onShow = function(scope, element, options) {
         contentPanel.element = element;
         $timeout(function() {
-          panel.updateLayout();
+          panel._updateLayout();
         }, 100);
         return $animate.enter(element, options.parent);
       }
@@ -206,7 +251,6 @@
     };
 
     PanelManager.prototype._openPanel = function(options) {
-      // options.scope = options.scope;
       var _this = this;
       var panelLocation;
       if (options.left && options.bottom) {
@@ -233,15 +277,14 @@
         angular.extend(options, {
           onShow: function(scope, element, options) {
             if (options.header) {
-              this.secondaryLeftPanel.headerElement = this._ngElement(options.header);
+              this.secondaryLeftPanel.headerElement = ngElement(options.header);
               this.secondaryLeftPanel.headerElement.removeClass("hidden");
             }
 
-            //console.log(element.find('md-tabs')[0].scrollHeight);
             options.parent.removeClass('hidden');
             this.secondaryLeftPanel.element = element;
             var promise = $animate.enter(element, options.parent);
-            this.updateLayout();
+            this._updateLayout();
             return promise;
           }.bind(this),
           onRemove: function(scope, element, options) {
@@ -250,14 +293,10 @@
             if (this.contentPanel.collapsed) {
               this.contentPanel.collapsed = false;
             }
-            this.updateLayout();
+            this._updateLayout();
             return element && $animate.leave(element) || $q.when();
           }.bind(this)
         });
-        // if (options.header) {
-        //   this.secondaryLeftPanel.headerElement = this._ngElement(options.header);
-        //   this.secondaryLeftPanel.headerElement.removeClass("hidden");
-        // }
         return this.secondaryLeftPanel.show(options);
       } else {
         options = angular.extend({
@@ -281,6 +320,9 @@
       }
     };
 
+    /**
+     * Method to be called when secondary panel (bottom) has resized
+     */
     PanelManager.prototype.panelResized = function() {
       var _this = this;
       $timeout(function() {
@@ -288,8 +330,10 @@
       }, 10);
     };
 
-
-    PanelManager.prototype.showPanel = function(options) {
+    /**
+     * Opens secondary panel defined in 'options' argument
+     */
+    PanelManager.prototype.showSecondaryPanel = function(options) {
       if (this.secondaryLeftPanel) {
         return this.secondaryLeftPanel.hide().then(function() {
           return this._openPanel(options);
@@ -299,7 +343,12 @@
       }
     };
 
-    PanelManager.prototype.switchPanel = function(options) {
+    /**
+     * Switch current optional (secondary) panel with another panel.
+     * It is preffered (more synchronized) than closing first panel
+     * and opening a new one.
+     */
+    PanelManager.prototype.switchSecondaryPanel = function(options) {
       // TODO properly check left or bottom panels
       if (!this.secondaryLeftPanel && !this.secondaryBottomPanel) {
         return this._openPanel(options);
@@ -307,7 +356,7 @@
       if (this.secondaryLeftPanel) {
         // collapse panel first (for animation)
         this.secondaryLeftPanel.collapsed = true;
-        this.updateLayout();
+        this._updateLayout();
         
         var hideComplete = $q.defer();
         var oldPanel = this.secondaryLeftPanel;
@@ -329,10 +378,13 @@
       }
     };
 
+    /**
+     * Hides current optional (secondary) panel.
+     */
     PanelManager.prototype.hidePanel = function() {
       if (this.secondaryLeftPanel) {
         this.secondaryLeftPanel.collapsed = true;
-        this.updateLayout();
+        this._updateLayout();
         var oldPanel = this.secondaryLeftPanel;
         setTimeout(function() {
           oldPanel.hide();
@@ -347,7 +399,18 @@
       }
     };
 
-    PanelManager.prototype.togglePanel = function(options) {
+    /**
+     * Toggles collapsed/expanded state of the whole left panel
+     */
+    PanelManager.prototype.toggleMainPanel = function() {
+      this.mapView.left = this.mapView.left === 0? 280 : 0;
+      this.dispatchEvent("mapViewResized", this.mapView);
+    };
+
+    /**
+     * Toggles collapsed/expanded state of the left secondary (top or bottom) panel
+     */
+    PanelManager.prototype.toggleSecondaryLeftPanel = function() {
       // console.log('togglePanel');
       var panelElement = this.secondaryLeftPanel.element;
       this.secondaryLeftPanel.collapsed = !this.secondaryLeftPanel.collapsed;
@@ -359,10 +422,14 @@
           !this.contentPanel.collapsed) {
         this.contentPanel.collapsed = true;
       }
-      this.updateLayout();
+      this._updateLayout();
     };
 
-    PanelManager.prototype.toggleContentPanel = function(options) {
+    /**
+     * Toggles collapsed/expanded state of the content panel (only if some secondary
+     * left panel is opened)
+     */
+    PanelManager.prototype.toggleContentPanel = function() {
       // console.log('toggleContentPanel');
       this.contentPanel.collapsed = !this.contentPanel.collapsed;
       if (this.contentPanel.collapsed &&
@@ -376,7 +443,7 @@
           !this.secondaryLeftPanel.collapsed) {
         this.secondaryLeftPanel.collapsed = true;
       }
-      this.updateLayout();
+      this._updateLayout();
     };
 
     return new PanelManager();

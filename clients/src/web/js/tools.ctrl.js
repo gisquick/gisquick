@@ -568,9 +568,9 @@
 
         if (previousTool && previousTool._secondaryPanel) {
           // Switch panel - pabel of last active tool with a new tool
-          tool._secondaryPanel = glPanelManager.switchPanel(options);
+          tool._secondaryPanel = glPanelManager.switchSecondaryPanel(options);
         } else {
-          tool._secondaryPanel = glPanelManager.showPanel(options);
+          tool._secondaryPanel = glPanelManager.showSecondaryPanel(options);
         }
         // handle panel's closing while the tool is still active
         var panelClosed = function() {

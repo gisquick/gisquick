@@ -593,46 +593,10 @@ md-list-item.list-filter md-icon {
   z-index: 100;
 }
 
-/* Customized tab animation */
-.features-panel md-tab-content:not(.md-active) {
-  pointer-events: none;
-}
-
-.features-panel md-tab-content.md-right:not(.md-active) {
-  -webkit-transform: translateX(30%);
-  transform: translateX(30%);
-}
-
-.features-panel md-tab-content.md-left:not(.md-active) {
-  -webkit-transform: translateX(-30%);
-  transform: translateX(-30%);
-}
-
-.features-panel md-tab-content {
-  transition: transform 0.55s cubic-bezier(0.35, 0, 0.25, 1);
-}
-
-.features-panel md-tab-content.md-left:not(.md-active) > div,
-.features-panel md-tab-content.md-right:not(.md-active) > div {
-  opacity: 1;
-}
-.features-panel md-tab-content.md-left:not(.md-active) > div > div,
-.features-panel md-tab-content.md-right:not(.md-active) > div > div{
-  opacity: 0.01;
-}
-
-.features-panel md-tab-content > div > div {
-  transition: opacity 0.5s cubic-bezier(0.35, 0, 0.25, 1);
-  opacity: 1.0;
-}
-.features-panel md-tab-content:not(.md-active) > div > div{
-  transition: opacity 0.5s cubic-bezier(0.35, 0, 0.25, 1);
-}
 
 gl-paginator {
   margin: 0 6px;
 }
-
 
 .bottom-bar .identification-table md-next-button,
 .bottom-bar .identification-table md-prev-button {

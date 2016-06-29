@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en" ng-app="gl.userpage">
+  <head>
+    <meta charset="utf-8">
+
+    <title>GIS.lab Web</title>
+
+    <link rel="stylesheet" type="text/css" href="node_modules/angular-material/angular-material.css"/>
+    <link rel="stylesheet" type="text/css" href="node_modules/simple-scrollbar/simple-scrollbar.css"></script>
+    <link rel="stylesheet" type="text/css" href="web/styles/fonts.css"/>
+    <link rel="stylesheet" type="text/css" href="web/styles/common.css"/>
+    <link rel="stylesheet" type="text/css" href="web/styles/login.css"/>
+    <link rel="stylesheet" type="text/css" href="web/styles/table.css"/>
+    <link rel="stylesheet" type="text/css" href="styles/ui.css"/>
+
+    <script type="text/javascript">
+    // First, checks if it isn't implemented yet.
+    if (!String.prototype.format) {
+      String.prototype.format = function() {
+        var args = arguments;
+        return this.replace(/{(\d+)}/g, function(match, number) {
+          return typeof args[number] != 'undefined'
+            ? args[number]
+            : match
+          ;
+        });
+      };
+    }
+    </script>
+
+    <script type="text/javascript" src="node_modules/angular/angular.js"></script>
+    <script type="text/javascript" src="node_modules/angular-animate/angular-animate.js"></script>
+    <script type="text/javascript" src="node_modules/angular-material/angular-material.gislab.js"></script>
+    <script type="text/javascript" src="node_modules/angular-aria/angular-aria.js"></script>
+    <script type="text/javascript" src="node_modules/simple-scrollbar/simple-scrollbar.js"></script>
+
+    <script type="text/javascript" src="js/userpage.module.js"></script>
+    <script type="text/javascript" src="js/user-page.ctrl.js"></script>
+
+    <script type="text/javascript" src="core/network/network.module.js"></script>
+    <script type="text/javascript" src="core/network/gislab-client.service.js"></script>
+
+
+    <script type="text/javascript" src="core/ui/ui.module.js"></script>
+    <script type="text/javascript" src="core/ui/accordion.dir.js"></script>
+    <script type="text/javascript" src="core/ui/paginator.dir.js"></script>
+    <script type="text/javascript" src="core/ui/scrollbar.dir.js"></script>
+
+    <script type="text/javascript" src="core/utils/utils.module.js"></script>
+    <script type="text/javascript" src="core/utils/observable.js"></script>
+
+    <script type="text/javascript">
+      var GISLAB_WEB_SERVER = 'https://localhost:8000';
+
+      angular.module('gl.userpage')
+        .constant('staticResources', {
+          'text-logo': 'web/styles/text_logo.svg',
+          'login-text-logo': 'web/styles/login_text_logo.svg',
+          'image-logo': 'web/styles/image_logo.svg'
+        })
+        .config(function($mdIconProvider) {
+          $mdIconProvider
+            .defaultIconSet('web/styles/icons.svg', 32)
+        })
+        .config(function(gislabClientProvider) {
+          gislabClientProvider.configure({
+            server: GISLAB_WEB_SERVER
+          });
+        })
+        .run(function(userPageLoader, gislabClient) {
+          // userPageLoader.showLoginScreen();
+          // gislabClient.login('vagrant', 'vagrant')
+          gislabClient.login('marcel', 'qq')
+            .then(function() {
+              gislabClient.userProjects()
+                .then(function(appData) {
+                  appData['gislab_documentation'] = 'http://gislab.readthedocs.io/en/latest/';
+                  appData['user'] = gislabClient.userInfo;
+                  userPageLoader.setData(appData);
+                });
+            });
+        });
+
+    </script>
+  </head>
+  <body>
+    <div
+      ng-controller="UserPageController"
+      ng-include="'templates/userpage.html'">
+    </div>
+  </body>
+</html>

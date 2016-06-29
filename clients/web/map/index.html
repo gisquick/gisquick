@@ -14,16 +14,17 @@
     <link rel="stylesheet" type="text/css" href="node_modules/simple-scrollbar/simple-scrollbar.css"/>
     <link rel="stylesheet" type="text/css" href="web/styles/fonts.css"/>
 
-    <link rel="stylesheet" type="text/css" href="web/styles/map/ui.css"/>
-    <link rel="stylesheet" type="text/css" href="web/styles/map/common.css"/>
-    <link rel="stylesheet" type="text/css" href="web/styles/map/panel.css"/>
-    <link rel="stylesheet" type="text/css" href="web/styles/map/menu.css"/>
-    <link rel="stylesheet" type="text/css" href="web/styles/map/status-bar.css"/>
-    <link rel="stylesheet" type="text/css" href="web/styles/map/table.css"/>
-    <link rel="stylesheet" type="text/css" href="web/styles/map/olmap.css"/>
-    <link rel="stylesheet" type="text/css" href="web/styles/map/login.css"/>
-    <link rel="stylesheet" type="text/css" href="web/styles/map/tools/measure.css"/>
-    <link rel="stylesheet" type="text/css" href="web/styles/map/tools/print.css"/>
+    <link rel="stylesheet" type="text/css" href="web/styles/common.css"/>
+    <link rel="stylesheet" type="text/css" href="web/styles/login.css"/>
+    <link rel="stylesheet" type="text/css" href="web/styles/table.css"/>
+
+    <link rel="stylesheet" type="text/css" href="web/map/styles/ui.css"/>
+    <link rel="stylesheet" type="text/css" href="web/map/styles/panel.css"/>
+    <link rel="stylesheet" type="text/css" href="web/map/styles/menu.css"/>
+    <link rel="stylesheet" type="text/css" href="web/map/styles/status-bar.css"/>
+    <link rel="stylesheet" type="text/css" href="web/map/styles/olmap.css"/>
+    <link rel="stylesheet" type="text/css" href="web/map/styles/tools/measure.css"/>
+    <link rel="stylesheet" type="text/css" href="web/map/styles/tools/print.css"/>
 
     <script type="text/javascript">
     // First, checks if it isn't implemented yet.
@@ -92,18 +93,19 @@
 
     <script type="text/javascript">
       var GISLAB_WEB_SERVER = 'https://localhost:8000';
+      // var GISLAB_WEB_SERVER = 'https://192.168.0.153:8000';
       var projectPath = goog.uri.utils.getParamValue(location.search, "PROJECT");
 
       angular.module('gl.web')
         .constant('staticResources', {
-          'text-logo': 'styles/map/text_logo.svg',
-          'login-text-logo': 'styles/map/login_text_logo.svg',
-          'image-logo': 'styles/map/image_logo.svg',
-          'geolocation-tracking': 'styles/map/geolocation_tracking.png',
+          'text-logo': 'web/styles/text_logo.svg',
+          'login-text-logo': 'web/styles/login_text_logo.svg',
+          'image-logo': 'web/styles/image_logo.svg',
+          'geolocation-tracking': 'styles/geolocation_tracking.png',
         })
         .config(function($mdIconProvider) {
           $mdIconProvider
-            .defaultIconSet('styles/map/icons.svg', 32)
+            .defaultIconSet('web/styles/icons.svg', 32)
         })
         .config(function(gislabClientProvider) {
           gislabClientProvider.configure({
@@ -122,7 +124,7 @@
           });
 
           // gislabClient.login('guest', '')
-          gislabClient.login('vagrant', 'vagrant')
+          gislabClient.login('marcel', 'qq')
             .then(function() {
               gislabClient.project(projectPath)
                 .then(function(projectData) {

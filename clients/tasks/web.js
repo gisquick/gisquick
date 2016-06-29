@@ -18,11 +18,11 @@ gulp.task('uglify', function() {
   return series(
     gulp.src([
       'src/core/**/*.module.js',
-      'src/web/**/*.module.js',
+      'src/web/map/**/*.module.js',
       'src/core/**/*.js',
-      'src/web/**/*.js'
+      'src/web/map/**/*.js'
     ]).pipe(ngAnnotate({ add: true })),
-    gulp.src('src/web/**/*.html')
+    gulp.src('src/web/map/**/*.html')
       .pipe(templateCache())
   )
     .pipe(uglify())
@@ -42,19 +42,20 @@ gulp.task('csss', function() {
       'node_modules/openlayers/dist/ol.css',
       'node_modules/gislab-web/node_modules/angular-material/angular-material.css',
       'node_modules/gislab-web/node_modules/simple-scrollbar/simple-scrollbar.css',
+      // 'src/simple-scrollbar/simple-scrollbar.css',
       'src/web/styles/*.css',
-      'src/web/styles/map/ui.css', // load ui first
-      'src/web/styles/map/**/*.css'
+      'src/web/map/styles/ui.css', // load ui first
+      'src/web/map/styles/**/*.css'
     ])
       .pipe(minifyCss())
       .pipe(concat('map.min.css'))
+      .pipe(gulp.dest(TARGET + 'styles/')),
+
+    gulp.src('src/web/styles/*.svg')
       .pipe(gulp.dest(TARGET + 'styles')),
 
-    gulp.src('src/web/styles/map/*.svg')
-      .pipe(gulp.dest(TARGET + 'styles')),
-
-    gulp.src('src/web/styles/map/*.png')
-      .pipe(gulp.dest(TARGET + 'styles')),
+    gulp.src('src/web/map/styles/*.png')
+      .pipe(gulp.dest(TARGET + 'styles/')),
 
     gulp.src('src/web/styles/fonts/*')
       .pipe(gulp.dest(TARGET + 'styles/fonts'))
@@ -65,7 +66,7 @@ gulp.task('csss', function() {
 /**
  * Build library dependencies
  */
-gulp.task('deps', ['build-ol3'], function() {
+ gulp.task('deps', ['build-ol3'], function() {
 
   var gulpif = require('gulp-if');
   return merge(
@@ -80,7 +81,8 @@ gulp.task('deps', ['build-ol3'], function() {
       'node_modules/gislab-web/node_modules/angular-animate/angular-animate.min.js',
       'node_modules/gislab-web/node_modules/angular-aria/angular-aria.min.js',
       'node_modules/gislab-web/node_modules/angular-material/angular-material.gislab.js',
-      'node_modules/gislab-web/node_modules/simple-scrollbar/simple-scrollbar.min.js',
+      'node_modules/gislab-web/node_modules/simple-scrollbar/simple-scrollbar.js',
+      // 'src/simple-scrollbar/simple-scrollbar.js',
     ])
       .pipe(
         gulpif(
@@ -105,18 +107,21 @@ gulp.task('serve', function() {
     port: 8100,
     root: [
       '.',
-      'web/',
+      'web/map/',
       'src/',
-      'src/web/',
+      'src/web/map/',
       'node_modules/gislab-web/'
     ],
     src: [
       'src/core/**/*.js',
-      'src/web/**/*.js',
-      'src/web/**/*.html',
-      'web/index.html'
+      'src/web/map/**/*.js',
+      'src/web/map/**/*.html',
+      'web/map/index.html'
     ],
-    css: 'src/web/styles/map/**/*.css'
+    css: [
+      'src/web/styles/**/*.css',
+      'src/web/map/styles/**/*.css'
+    ]
   };
   gulp.start('serve');
 });
@@ -140,7 +145,7 @@ gulp.task('icons', function() {
       parserOptions: { xmlMode: true }
     }))
     .pipe(svgng({ filename : "icons.svg"}))
-    .pipe(gulp.dest('src/web/styles/map/'));
+    .pipe(gulp.dest('src/web/styles/'));
     //.pipe(gzip({append: true,gzipOptions: { level: 9 }}))
     //.pipe(gulp.dest('src/web/styles/'));
 });

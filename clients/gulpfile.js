@@ -88,7 +88,25 @@ gulp.task('icons-mobile', function() {
   gulp.start('icons');
 });
 
+
+/**
+ *  Build user page web application as a part of GIS.lab Web server
+ */
+gulp.task('build-userpage', function() {
+  require('./tasks/userpage.js');
+  gulp.start('build');
+});
+
+/**
+ *  Serve user page web application with JavaScript server.
+ */
+gulp.task('serve-userpage', function() {
+  require('./tasks/userpage.js');
+  gulp.start('serve');
+});
+
+
 /**
  * Default gulp task
  */
-gulp.task('default', ['build-web', 'build-ol3-debug']);
+gulp.task('default', ['build-web', 'build-userpage', 'build-ol3-debug']);

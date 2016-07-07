@@ -381,6 +381,10 @@ label.md-no-float {
   height: 100%;
   background-color: rgb(250, 250, 250);
 }
+.features-panel .close-button-container .close-button.md-focused,
+.features-panel .close-button-container .close-button:hover {
+  background-color: rgb(250, 250, 250);
+}
 
 .features-panel .close-button md-icon {
   color: #555;

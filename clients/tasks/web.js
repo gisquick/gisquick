@@ -51,11 +51,12 @@ gulp.task('csss', function() {
       .pipe(concat('map.min.css'))
       .pipe(gulp.dest(TARGET + 'styles/')),
 
-    gulp.src('src/web/styles/*.svg')
+    gulp.src([
+      'src/web/styles/*.svg',
+      'src/web/styles/*.png',
+      'src/web/map/styles/*.png'
+    ])
       .pipe(gulp.dest(TARGET + 'styles')),
-
-    gulp.src('src/web/map/styles/*.png')
-      .pipe(gulp.dest(TARGET + 'styles/')),
 
     gulp.src('src/web/styles/fonts/*')
       .pipe(gulp.dest(TARGET + 'styles/fonts'))

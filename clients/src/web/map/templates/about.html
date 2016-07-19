@@ -1,0 +1,108 @@
+<md-dialog
+  aria-label="About dialog"
+  class="about-dialog">
+  <md-dialog-content layout-fill>
+    <div
+      layout="row"
+      class="panel-header">
+      <span flex>About</span>
+      <md-button
+        ng-click="closeDialog()"
+        class="icon-hover close-button">
+        <md-icon md-svg-icon="x"></md-icon>
+      </md-button>
+    </div>
+    <md-tabs
+      md-no-ink
+      class="short-tab-animation">
+
+      <md-tab label="Project">
+        <md-list
+          gl-parent-scrollbar="vertical"
+          class="about properties-list">
+          <md-list-item>
+            <label>Title:</label>
+            <p ng-bind="::project.root_title"></p>
+          </md-list-item>
+          <md-list-item>
+            <label>Author:</label>
+            <p ng-bind="::project.author"></p>
+          </md-list-item>
+          <md-list-item>
+            <label>E-mail:</label>
+            <p ng-bind="::project.email"></p>
+          </md-list-item>
+          <md-list-item>
+            <label>Phone:</label>
+            <p ng-bind="::project.phone"></p>
+          </md-list-item>
+          <md-list-item>
+            <label>Organization:</label>
+            <p ng-bind="::project.organization"></p>
+          </md-list-item>
+          <md-list-item>
+            <label>Abstract:</label>
+            <p ng-bind="::project.abstract"></p>
+          </md-list-item>
+          <md-list-item>
+            <label>Online resource:</label>
+            <p>
+              <a ng-href="::project.online_resource">
+                {{ ::project.online_resource }}
+              </a>
+            </p>
+          </md-list-item>
+          <md-list-item>
+            <label>Fees:</label>
+            <p ng-bind="::project.fees"></p>
+          </md-list-item>
+          <md-list-item>
+            <label>Access constraints:</label>
+            <p ng-bind="::project.access_constrains"></p>
+          </md-list-item>
+          <md-list-item>
+            <label>Keywords list:</label>
+            <p>{{ ::project.keyword_list.join(', ') }}</p>
+          </md-list-item>
+          <md-list-item>
+            <label>Publish date:</label>
+            <p ng-bind="::project.publish_date"></p>
+          </md-list-item>
+        </md-list>
+      </md-tab>
+
+      <md-tab label="GIS.lab">
+        <md-list
+          gl-parent-scrollbar="vertical"
+          class="about properties-list">
+          <md-list-item>
+            <label>GIS.lab ID:</label>
+            <p ng-bind="::project.gislab_unique_id"></p>
+          </md-list-item>
+          <md-list-item>
+            <label>Version:</label>
+            <p ng-bind="::project.gislab_version"></p>
+          </md-list-item>
+          <md-list-item gl-open-in-browser="{{ ::project.gislab_homepage }}">
+            <label>Home page:</label>
+            <p>
+              <a ng-href="::project.gislab_homepage">
+                {{ ::project.gislab_homepage }}
+              </a>
+            </p>
+          </md-list-item>
+          <md-list-item>
+            <label>Documentation:</label>
+            <p>
+              <a ng-href="::project.gislab_documentation">
+                {{ ::project.gislab_documentation }}
+              </a>
+            </p>
+          </md-list-item>
+        </md-list>
+      </md-tab>
+
+    </md-tabs>
+
+  </md-dialog-content>
+</md-dialog>

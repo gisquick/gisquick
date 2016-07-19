@@ -9,7 +9,7 @@
    * Main controller of GIS.lab Web application. It is responsible for initialization of map
    * and map-related components.
    */
-  function AppController($scope, $timeout, staticResources, projectProvider,
+  function AppController($scope, $timeout, $mdDialog, staticResources, projectProvider,
                           gislabClient, glPanelManager, toolsManager) {
     $scope.staticResources = staticResources;
     $scope.ui = {
@@ -48,7 +48,21 @@
           });
         }
       }, {
-        title: 'About'
+        title: 'About',
+        perform: function(event) {
+          var scope = $scope.$new(true);
+          scope.closeDialog = function() {
+            $mdDialog.hide();
+          };
+          console.log(projectProvider);
+          scope.project = projectProvider.data;
+          $mdDialog.show({
+            targetEvent: event,
+            templateUrl: 'templates/about.html',
+            scope: scope,
+            clickOutsideToClose: true
+          });
+        }
       }
     ];
 

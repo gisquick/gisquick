@@ -403,6 +403,12 @@
      * Toggles collapsed/expanded state of the whole left panel
      */
     PanelManager.prototype.toggleMainPanel = function() {
+      // hide tooltip
+      var tooltipElem = document.querySelector('#main-panel-toggle-tooltip');
+      if (tooltipElem) {
+        tooltipElem.style.left = '-300px';
+      }
+
       this.mapView.left = this.mapView.left === 0? 280 : 0;
       this.dispatchEvent("mapViewResized", this.mapView);
     };

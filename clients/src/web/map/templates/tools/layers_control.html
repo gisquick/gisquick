@@ -182,12 +182,19 @@
                       </md-icon>
                     </md-button>
                     <p ng-bind="::node.title"></p>
-                    <md-switch
-                      md-no-ink
-                      aria-label="Visible"
-                      ng-model="$node.isChecked"
-                      ng-disabled="!$node.parent.isEnabled"
-                      ng-change="nodeSelected($node)">
+                    <div>
+                      <md-switch
+                        md-no-ink
+                        aria-label="Visible"
+                        ng-model="$node.isChecked"
+                        ng-disabled="!$node.parent.isEnabled"
+                        ng-change="nodeSelected($node)">
+                      </md-switch>
+                      <md-tooltip
+                        md-delay="1000"
+                        md-direction="right">Toggle group visibility
+                      </md-tooltip>
+                    </div>
                   </md-list-item>
                   <div gl-collapsible-content
                     ng-class="{
@@ -227,6 +234,10 @@
                       <md-icon
                         md-svg-icon="attribute-table">
                       </md-icon>
+                      <md-tooltip
+                        md-delay="1000"
+                        md-direction="bottom">Attribute table
+                      </md-tooltip>
                     </md-button>
                     <md-button
                       aria-label="Info"

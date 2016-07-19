@@ -8,6 +8,7 @@
       class="md-fab md-primary">
       <md-icon class="toolbar-menu-icon" md-svg-src="menu"></md-icon>
       <md-icon class="toolbar-menu-open-icon" md-svg-src="arrow-down"></md-icon>
+      <md-tooltip md-delay="1000" md-direction="right">Tools</md-tooltip>
     </md-button>
   </md-fab-trigger>
   <md-fab-actions>
@@ -21,6 +22,7 @@
         md-svg-src="{{ ::tool.ui.primaryPanel.icon }}"
         aria-label="">
       </md-icon>
+      <md-tooltip md-delay="1000" md-direction="right">{{ ::tool.tooltip }}</md-tooltip>
     </md-button>
   </md-fab-actions>
 </md-fab-speed-dial>

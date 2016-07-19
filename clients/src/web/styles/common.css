@@ -1,6 +1,7 @@
 /* Customized tab animation */
-.short-tab-animation md-tab-content:not(.md-active) {
-  pointer-events: none;
+/*
+.short-tab-animation md-tab-content:not(.md-active):not(.ng-animate) {
+  display: none;
 }
 
 .short-tab-animation md-tab-content.md-right:not(.md-active) {
@@ -23,7 +24,7 @@
 }
 .short-tab-animation md-tab-content.md-left:not(.md-active) > div > div,
 .short-tab-animation md-tab-content.md-right:not(.md-active) > div > div {
-  opacity: 0.01;
+  opacity: 0.001;
 }
 
 .short-tab-animation md-tab-content > div > div {
@@ -32,4 +33,34 @@
 }
 .short-tab-animation md-tab-content:not(.md-active) > div > div {
   transition: opacity 0.5s cubic-bezier(0.35, 0, 0.25, 1);
+}
+
+*/
+
+.short-tab-animation md-tab-content:not(.md-active):not(.ng-animate) {
+  display: none;
+}
+
+.short-tab-animation md-tab-content.md-right:not(.md-active) {
+  -webkit-transform: translateX(30%);
+  transform: translateX(30%);
+  opacity: 0;
+  animation: none;
+}
+
+.short-tab-animation md-tab-content.md-left:not(.md-active) {
+  -webkit-transform: translateX(-30%);
+  transform: translateX(-30%);
+  opacity: 0;
+  animation: none;
+}
+
+.short-tab-animation md-tab-content {
+  transition: transform 0.55s cubic-bezier(0.35, 0, 0.25, 1),opacity 0.55s cubic-bezier(0.35, 0, 0.25, 1);
+  opacity: 1.0;
+}
+
+
+.properties-list label {
+  font-weight: bold;
 }

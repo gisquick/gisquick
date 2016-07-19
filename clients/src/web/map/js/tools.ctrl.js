@@ -205,7 +205,7 @@
        ************************************************/
       toolsManager.addTool({
         name: 'identification',
-        // tooltip: 'Identify features by mouse click',
+        tooltip: 'Identify features by mouse click',
         ui: {
           primaryPanel: {
             title: 'Identification',
@@ -418,7 +418,7 @@
        *************************************************/
       toolsManager.addTool({
         name: 'print',
-        // tooltip: 'Print output creation',
+        tooltip: 'Print output creation',
         disabled: !(projectProvider.data.print_composers && projectProvider.data.print_composers.length),
         ui: {
           primaryPanel: {
@@ -462,7 +462,7 @@
           this.config.layouts.forEach(function(layout) {
             var labelsData = [];
             layout.labels.forEach(function(label) {
-              if (!label.startsWith('gislab_')) {
+              if (label.indexOf('gislab_') !== 0) {
                 labelsData.push({
                   title: label,
                   value: ''

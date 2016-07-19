@@ -11,6 +11,7 @@
       md-menu-origin
       md-svg-icon="menu-dots">
     </md-icon>
+    <md-tooltip md-delay="1000" md-direction="left">More options</md-tooltip>
   </md-button>
   <md-menu-content
     width="4"
@@ -42,7 +43,7 @@
       ng-repeat="item in ::secondaryMenuItems">
       <md-button
         ng-disabled="::!item.perform"
-        ng-click="item.perform()">
+        ng-click="item.perform($event)">
         {{ ::item.title }}
         <md-icon
           ng-if="::item.checkbox"

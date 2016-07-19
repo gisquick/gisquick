@@ -6,7 +6,7 @@
     style="height:100%;"
     ng-style="{left: ui.manager.mapView.left-280+'px'}"
     class="main-panel md-whiteframe-10dp">
-    
+
     <div
       class="fab-menu-toolbar"
       ng-include="'templates/fab-toolbar.html'">
@@ -17,7 +17,7 @@
       aria-label="Toggle Panel"
       class="panel-collapse-button"
       ng-class="{
-        collapsed: ui.manager.mapView.left===0
+        collapsed: ui.manager.mapView.left === 0
       }"
       ng-style="{
         top: Math.max((ui.manager.mapView.height-ui.manager.mapView.bottom)/2, 50)+'px'
@@ -26,6 +26,12 @@
       <md-icon
         md-svg-src="arrow-left">
       </md-icon>
+      <md-tooltip
+        id="main-panel-toggle-tooltip"
+        md-delay="1000"
+        md-direction="right">
+        {{ ui.manager.mapView.left === 0? 'Show panel' : 'Hide panel' }}
+      </md-tooltip>
     </md-button>
 
     <div
@@ -175,6 +181,7 @@
       <md-icon
         md-svg-icon="north-arrow">
       </md-icon>
+      <md-tooltip md-delay="1000" md-direction="left">Reset rotation</md-tooltip>
     </div>
 
     <md-button
@@ -188,16 +195,23 @@
         md-svg-icon="{{ geolocationTool.state===2? 'tracking' : 'target' }}">
       </md-icon>
       <div class="location-toast"></div>
+      <md-tooltip md-delay="1000" md-direction="left">My Location</md-tooltip>
     </md-button>
 
     <div
       id="map-zoom-buttons">
-      <md-icon
-        md-svg-icon="plus">
-      </md-icon>
-      <md-icon
-        md-svg-icon="minus">
-      </md-icon>
+      <div>
+        <md-icon
+          md-svg-icon="plus">
+        </md-icon>
+        <md-tooltip md-delay="1000" md-direction="left">Zoom out</md-tooltip>
+      </div>
+      <div>
+        <md-icon
+          md-svg-icon="minus">
+        </md-icon>
+        <md-tooltip md-delay="1000" md-direction="left">Zoom in</md-tooltip>
+      </div>
     </div>
 
     <md-button
@@ -206,6 +220,7 @@
       class="map-button zoom-to-max-button"
       ng-click="zoomToInitialExtent()">
       <md-icon md-svg-icon="zoom-max"></md-icon>
+      <md-tooltip md-delay="1000" md-direction="left">Zoom to max extent</md-tooltip>
     </md-button>
 
   </div>

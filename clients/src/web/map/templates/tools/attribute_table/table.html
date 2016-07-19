@@ -36,6 +36,7 @@
         <md-tab ng-repeat="layer in ::layers track by layer.name"
           label="x"
           md-on-select="setActiveLayer(layer)">
+
           <div
             gl-scrollbar="horizontal"
             class="attribute-table table-container">
@@ -82,6 +83,9 @@
                         <md-icon class="filter-clear-button"
                           md-svg-icon="delete">
                         </md-icon>
+                        <md-tooltip md-delay="1000" md-direction="right">
+                          Clear filter
+                        </md-tooltip>
                       </md-button>
                     </div>
                   </th>
@@ -101,6 +105,9 @@
                       <md-icon
                         md-svg-icon="zoom-to">
                       </md-icon>
+                      <md-tooltip md-delay="1000" md-direction="right">
+                        Zoom to feature
+                      </md-tooltip>
                     </md-button>
                   </td>
                   <td ng-repeat="attribute in layer.attributes">
@@ -156,7 +163,12 @@
             aria-label="Filter to visible area">
             Filter to visible area
           </md-checkbox>
-          <md-button ng-click="search()">Refresh</md-button>
+          <md-button ng-click="search()">
+            Refresh
+            <md-tooltip md-delay="1000" md-direction="top">
+              Refresh table
+            </md-tooltip>
+          </md-button>
         </div>
       </div>
     </div>

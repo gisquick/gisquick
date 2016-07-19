@@ -62,13 +62,17 @@
       projectData.rotateOptions = {
         target: 'map-rotate-reset',
         className: 'md-button map-button ol-rotate',
-        label: document.getElementById('map-rotate-reset').children[0]
+        label: document.getElementById('map-rotate-reset').children[0],
+        tipLabel: ' '
       };
       projectData.zoomOptions = {
         target: 'map-zoom-buttons',
         className: 'md-button map-button ol-zoom',
         zoomInLabel: document.getElementById('map-zoom-buttons').children[0],
-        zoomOutLabel: document.getElementById('map-zoom-buttons').children[1]
+        zoomOutLabel: document.getElementById('map-zoom-buttons').children[1],
+        // turn off default tooltips
+        zoomInTipLabel: '',
+        zoomOutTipLabel: ''
       };
       projectData.attributionOptions = {
         target: document.getElementById('map-bottom-area')

@@ -20,6 +20,10 @@
         ng-disabled="!tool.config.layout"
         ng-click="print()">
         <md-icon md-svg-icon="printer"></md-icon>
+        <md-tooltip
+          md-delay="1000"
+          md-direction="bottom">Print document
+        </md-tooltip>
       </md-button>
       <md-button
         md-no-ink
@@ -27,6 +31,10 @@
         ng-disabled="!tool.config.layout"
         ng-click="download()">
         <md-icon md-svg-icon="download"></md-icon>
+        <md-tooltip
+          md-delay="1000"
+          md-direction="bottom">Download document
+        </md-tooltip>
       </md-button>
       <md-button
         md-no-ink

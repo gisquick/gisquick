@@ -132,3 +132,20 @@ md-icon.toast-icon {
 .fade.ng-leave.ng-leave-active {
   opacity:0;
 }
+
+
+.print-preview-error {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  height: 100%;
+}
+.print-preview-error p {
+  top: 40%;
+  position: relative;
+  text-align: center;
+}
+
+.print-preview.open .print-preview-error,
+.print-preview:not(.open) .print-preview-content {
+  display: none;
+}

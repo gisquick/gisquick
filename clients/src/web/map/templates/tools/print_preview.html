@@ -1,10 +1,16 @@
 <div
   ng-style="{paddingLeft: ui.manager.mapView.left+'px'}"
   class="print-preview"
+  ng-class="{open: tool.config.screenSize[0] > 320}"
   layout="row"
   layout-fill>
   <div class="print-preview-bg" flex></div>
-  <div layout="column">
+  <div class="print-preview-error">
+    <p>Not enough space for print preview</p>
+  </div>
+  <div
+    layout="column"
+    class="print-preview-content">
     <div flex
       class="print-preview-bg">
     </div>

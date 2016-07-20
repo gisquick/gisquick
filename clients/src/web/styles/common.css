@@ -63,4 +63,17 @@
 
 .properties-list label {
   font-weight: bold;
+  padding: 2px 0;
+}
+
+
+a:link,
+a:visited {
+  color: rgb(0, 150, 190);
+  text-decoration: none;
+}
+
+a:hover {
+  color: rgb(0, 150, 190);
+  text-decoration: underline;
 }

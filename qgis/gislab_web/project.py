@@ -196,6 +196,14 @@ class ProjectPage(WizardPage):
                 "before trying to continue."
             ))
 
+        wfs_layers = self.plugin.project.readListEntry("WFSLayers", "/")[0] or []
+        if (not wfs_layers):
+            messages.append((
+                MSG_WARNING,
+                u"WFS service is not allowed on any layer, identification and attribute tables " \
+                "will not be enabled (Project Properties -> OWS Server -> WFS capabilities)."
+            ))
+
         self._show_messages(messages)
         return len(filter(lambda msg: msg[0] == MSG_ERROR, messages)) == 0
 
@@ -245,7 +253,6 @@ class ProjectPage(WizardPage):
 
         file_datasources = set()
         dbname_pattern = re.compile("dbname='([^']+)'")
-
         for layer in self.get_published_layers():
             match = dbname_pattern.search(layer.source())
             if match:
@@ -980,6 +987,7 @@ class ProjectPage(WizardPage):
             overlays_order = [
                 layer.id() for layer in self.plugin.layers_list()
             ]
+        wfs_layers = self.plugin.project.readListEntry("WFSLayers", "/")[0] or []
         def create_overlays_data(node):
             sublayers = []
             for child in node.children:
@@ -1050,29 +1058,31 @@ class ProjectPage(WizardPage):
                     fields = layer.pendingFields()
                     attributes_data = []
                     excluded_attributes = layer.excludeAttributesWFS()
-                    for field in fields:
-                        if field.name() in excluded_attributes:
-                            continue
-                        attribute_data = {
-                            'name': field.name(),
-                            'type': field.typeName(),
-                            #'length': field.length(),
-                            #'precision': field.precision()
-                        }
-                        if field.comment():
-                            attribute_data['comment'] = field.comment()
-                        alias = layer.attributeAlias(fields.indexFromName(field.name()))
-                        if alias:
-                            attribute_data['alias'] = alias
-                        attributes_data.append(attribute_data)
+                    layer_wfs_allowed = layer.id() in wfs_layers
+                    if layer_wfs_allowed:
+                        for field in fields:
+                            if field.name() in excluded_attributes:
+                                continue
+                            attribute_data = {
+                                'name': field.name(),
+                                'type': field.typeName(),
+                                #'length': field.length(),
+                                #'precision': field.precision()
+                            }
+                            if field.comment():
+                                attribute_data['comment'] = field.comment()
+                            alias = layer.attributeAlias(fields.indexFromName(field.name()))
+                            if alias:
+                                attribute_data['alias'] = alias
+                            attributes_data.append(attribute_data)
 
                     if attributes_data:
                         layer_data['attributes'] = attributes_data
+                        layer_data['pk_attributes'] = [
+                            fields.at(index).name() for index in layer.dataProvider().pkAttributeIndexes()
+                        ]
                     else:
                         layer_data['queryable'] = False
-                    layer_data['pk_attributes'] = [
-                        fields.at(index).name() for index in layer.dataProvider().pkAttributeIndexes()
-                    ]
                 else:
                     layer_data['type'] = 'raster'
                 return layer_data

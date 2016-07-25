@@ -4,7 +4,7 @@ def create_case_insensitive_form(base_class):
     class FormClass(base_class):
         def __init__(self, data=None, **kwargs):
             if data:
-                data = { k.lower(): v for k, v in data.iteritems() }
+                data = { k.lower(): v for k, v in data.items() }
             super(FormClass, self).__init__(data=data, **kwargs)
 
         def _post_clean(self):

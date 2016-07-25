@@ -1,5 +1,5 @@
-import urllib
-from urlparse import parse_qs, urlsplit, urlunsplit
+import urllib.parse
+from urllib.parse import parse_qs, urlsplit, urlunsplit
 
 
 def secure_url(request, location=None):
@@ -17,10 +17,10 @@ def set_query_parameters(url, params_dict):
     query_params = parse_qs(url_parts[3])
 
     params = dict(params_dict)
-    new_params_names = [name.lower() for name in params_dict.iterkeys()]
-    for name, value in query_params.iteritems():
+    new_params_names = [name.lower() for name in params_dict.keys()]
+    for name, value in query_params.items():
         if name.lower() not in new_params_names:
             params[name] = value
 
-    url_parts[3] = urllib.urlencode(params, doseq=True)
+    url_parts[3] = urllib.parse.urlencode(params, doseq=True)
     return urlunsplit(url_parts)

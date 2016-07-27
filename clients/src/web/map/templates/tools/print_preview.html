@@ -1,7 +1,7 @@
 <div
   ng-style="{paddingLeft: ui.manager.mapView.left+'px'}"
   class="print-preview"
-  ng-class="{open: tool.config.screenSize[0] > 320}"
+  ng-class="{open: tool.config.screenSize[0] > 360}"
   layout="row"
   layout-fill>
   <div class="print-preview-bg" flex></div>
@@ -59,7 +59,9 @@
           class="toast-icon"
           md-svg-icon="circle-i-outline">
         </md-icon>
-        The map is scaled to display selected layout on the screen.
+        <span>
+          Map is scaled to display selected layout on the screen.
+        </span>
       </div>
     </div>
     <!-- Container for print layouts templates -->

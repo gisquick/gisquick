@@ -34,6 +34,7 @@ gulp.task('js', function() {
       ),
       // source files
       gulp.src([
+        'src/core/polyfills/**/*.js',
         'src/core/network/**/*.module.js',
         'src/core/utils/**/*.module.js',
         'src/core/ui/**/*.module.js',

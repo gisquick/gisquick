@@ -268,6 +268,7 @@
 
     $scope.print = function() {
       var printParams = getPrintParameters();
+      var layout = tool.config.layout;
       var url = gislabClient.encodeUrl(projectProvider.data.ows_url, printParams);
       var popup;
       function closePrint () {
@@ -276,11 +277,28 @@
         }
       }
 
-      popup = window.open(url);
+      // popup = window.open(url);
+      popup = window.open();
+      var pageOrientation = (layout.width > layout.height)? 'landscape' : 'portrait';
+      popup.document.head.innerHTML =
+          '<style type="text/css" media="print">\
+            @page {{\
+              size: {0};\
+              margin: 0;\
+            }}\
+            html, body {{\
+              margin: 0;\
+              height: 100%;\
+            }}\
+            img {{\
+              height: calc(100% - 1px);\
+            }}\
+          </style>'.format(pageOrientation);
+
+      popup.document.body.innerHTML = '<img onload="window.print()" src="{0}"></img>'.format(url);
+
       popup.onbeforeunload = closePrint;
       popup.onafterprint = closePrint;
-      // popup.focus(); // Required for IE
-      popup.print();
     };
 
     $scope.download = function() {

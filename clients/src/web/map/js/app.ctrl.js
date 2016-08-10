@@ -239,6 +239,31 @@
           );
           $scope.zoomToInitialExtent();
 
+          // Check if project contains some notification for user
+          if (projectData.message) {
+            var key = 'gislab.read-messages.{0}.{1}'.format(
+              gislabClient.userInfo.username,
+              projectData.project
+            );
+            var readMessages = JSON.parse(localStorage.getItem(key) || '[]');
+            if (readMessages.indexOf(projectData.message) === -1) {
+
+              $mdDialog.show({
+                templateUrl: 'templates/notification.html',
+                controller: function($scope) {
+                  $scope.message = projectData.message;
+                  $scope.closeDialog = $mdDialog.hide;
+                  $scope.markAsRead = function() {
+                    readMessages.push(projectData.message);
+                    localStorage.setItem(key, JSON.stringify(readMessages));
+                    $mdDialog.hide();
+                  }
+                },
+                clickOutsideToClose: false
+              });
+            }
+          }
+
         }, 2000);
       }
     }
@@ -249,10 +274,8 @@
      */
     $scope.initializeApp = function() {
       if (projectProvider.data) {
-        console.log('Project Data Already Available');
         initializeProject(projectProvider.data);
       } else {
-        console.log('Project Data Available!!!');
         projectProvider.once('projectDataAvailable', function() {
           initializeProject(projectProvider.data);
         });

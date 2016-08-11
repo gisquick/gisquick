@@ -3,7 +3,24 @@
 
   angular
     .module('gl.web')
-    .controller('AppController', AppController);
+    .controller('AppController', AppController)
+    // Disable tooltips on touch devices
+    .directive('mdTooltip', function() {
+      return{
+        replace: true,
+        template: '<span style="display:none"></span>',
+        scope: {}, //create an isolated scope
+        link: function(scope, element) {
+           element.remove();
+           scope.$destroy();
+        }
+      };
+    })
+    .decorator('mdTooltipDirective',function($delegate){
+      var onTouchDevice = navigator.maxTouchPoints > 0;
+      var version = onTouchDevice? 1 : 0;
+      return [$delegate[version]];
+    });
 
   /**
    * Main controller of GIS.lab Web application. It is responsible for initialization of map

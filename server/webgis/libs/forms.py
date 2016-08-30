@@ -9,7 +9,8 @@ def create_case_insensitive_form(base_class):
 
         def _post_clean(self):
             super(FormClass, self)._post_clean()
-            for key in self.cleaned_data.keys():
+            keys = list(self.cleaned_data.keys())
+            for key in keys:
                 value = self.cleaned_data[key]
                 del self.cleaned_data[key]
                 self.cleaned_data[key.upper()] = value

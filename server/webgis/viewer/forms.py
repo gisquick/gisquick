@@ -40,7 +40,7 @@ class ExtentField(forms.CharField):
 		if value:
 			try:
 				coordinates = value.split(",")
-				return map(float, coordinates)
+				return list(map(float, coordinates))
 			except:
 				raise forms.ValidationError("Invalid BBOX value!")
 		return None

@@ -10,7 +10,7 @@ import subprocess
 from webgis.mapcache.cache import Cache
 
 class Disk (Cache):
-    def __init__ (self, base = None, umask = '002', **kwargs):
+    def __init__ (self, base = None, umask = '2', **kwargs):
         Cache.__init__(self, **kwargs)
         self.basedir = base
         self.umask = int(umask, 0)
@@ -21,7 +21,7 @@ class Disk (Cache):
         old_umask = os.umask(self.umask)
         try:
             os.makedirs(path)
-        except OSError, E:
+        except OSError as E:
             # os.makedirs can suffer a race condition because it doesn't check
             # that the directory  doesn't exist at each step, nor does it
             # catch errors. This lets 'directory exists' errors pass through,
@@ -62,7 +62,7 @@ class Disk (Cache):
 
     def get (self, filename):
         if self.access(filename, 'read'):
-            data = file(filename, "rb").read()
+            data = open(filename, "rb").read()
             return data
         else:
             return None
@@ -78,7 +78,7 @@ class Disk (Cache):
         output = None
         try:
             old_umask = os.umask(self.umask)
-            output = file(tmpfile, "wb")
+            output = open(tmpfile, "wb")
             output.write(data)
         except:
             io_error = True
@@ -149,7 +149,7 @@ class Disk (Cache):
     def unlock (self, name):
         try:
             os.rmdir(name)
-        except OSError, E:
+        except OSError as E:
             sys.stderr.write("unlock %s failed: %s \n" % (name, str(E)))
 
 # vim: set ts=4 sts=4 sw=4 noet:

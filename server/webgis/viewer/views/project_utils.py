@@ -2,7 +2,7 @@ import os
 import re
 import json
 import time
-import urllib
+import urllib.parse
 import hashlib
 import datetime
 
@@ -95,7 +95,7 @@ def get_project_layers_info(project_key, publish, project=None):
     prefix = "{0}:{1}:".format(project_key, publish)
     data = cache.get_many((prefix+'extent', prefix+'resolutions', prefix+'projection'))
     if data:
-        return { param.replace(prefix, ''): value for param, value in data.iteritems() }
+        return { param.replace(prefix, ''): value for param, value in data.items() }
     elif project:
         filename = "{0}_{1}.meta".format(clean_project_name(project), publish)
         metadata_filename = os.path.join(settings.GISLAB_WEB_PROJECT_ROOT, filename)
@@ -119,7 +119,7 @@ def get_project_layers_info(project_key, publish, project=None):
                     'resolutions': metadata.tile_resolutions,
                     'projection': metadata.projection['code']
                 }
-        except Exception, e:
+        except Exception as e:
             pass
     return {}
 
@@ -290,7 +290,7 @@ def get_project(request):
         context['layers'] = layers_tree
 
         if use_mapcache:
-            project_hash = hashlib.md5(project).hexdigest()
+            project_hash = hashlib.md5(project.encode('utf-8')).hexdigest()
             project_layers_info = get_project_layers_info(project_hash, metadata.publish_date_unix)
             if not project_layers_info:
                 store_project_layers_info(
@@ -312,7 +312,7 @@ def get_project(request):
             'project': project,
             'ows_project': ows_project_name,
             'ows_url': ows_url,
-            'wms_url': urllib.unquote(secure_url(request, ows_url)),
+            'wms_url': urllib.parse.unquote(secure_url(request, ows_url)),
             'project_extent': metadata.extent,
             'zoom_extent': form.cleaned_data['EXTENT'] or metadata.zoom_extent,
             'print_composers': metadata.composer_templates if not request.user.is_guest else None,
@@ -404,7 +404,7 @@ def get_user_projects(request, username):
                     else:
                         projects_files[project_name].append((project_timestamp, filename))
 
-            for project_name, info in projects_files.iteritems():
+            for project_name, info in projects_files.subitems():
                 # select last project version by timestamp
                 last_project_filename = sorted(info, reverse=True)[0][1]
 

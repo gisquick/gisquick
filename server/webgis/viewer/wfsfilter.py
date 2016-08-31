@@ -1,6 +1,5 @@
 from owslib.wfs import WebFeatureService
 import json
-import urllib, urlparse
 import logging
 from owslib.fes import PropertyIsLike, And, Or, PropertyIsEqualTo, \
     PropertyIsNotEqualTo, PropertyIsGreaterThanOrEqualTo, \
@@ -47,7 +46,7 @@ def webgisfilter(mapserv, layer, maxfeatures=None, startindex=None, bbox=None,
         if bbox:
             filters.append({ 'operator':'BBOX', 'value': bbox})
         fes = get_filter_root(get_filter_fes(filters))
-        fes = etree.tostring(fes)
+        fes = etree.tostring(fes, encoding='unicode')
 
     if bbox and not filters:
         fes = None
@@ -84,7 +83,7 @@ def get_filter_fes(filters, logical_operator=And):
     filter_request = None
 
     for myfilter in filters:
-        value = unicode(myfilter['value'])
+        value = myfilter['value']
         if myfilter['operator'] == '=':
             conditions.append(
                     PropertyIsEqualTo(

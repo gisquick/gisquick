@@ -1,7 +1,7 @@
 import os
 import json
-import urllib
-import urllib2
+import urllib.parse
+import urllib.request
 import contextlib
 
 from django.conf import settings
@@ -24,24 +24,24 @@ def ows(request):
         settings.GISLAB_WEB_MAPSERVER_URL.rstrip("/"),
         request.environ['QUERY_STRING']
     )
-    owsrequest = urllib2.Request(url)
+    owsrequest = urllib.request.Request(url)
     owsrequest.add_header("User-Agent", "GIS.lab Web")
 
-    resp_content = ""
-    with contextlib.closing(urllib2.urlopen(owsrequest)) as resp:
+    resp_content = b""
+    with contextlib.closing(urllib.request.urlopen(owsrequest)) as resp:
         while True:
             data = resp.read()
             if not data:
                 break
             resp_content += data
-        content_type = resp.info().getheader('Content-Type')
+        content_type = resp.getheader('Content-Type')
         status = resp.getcode()
         return HttpResponse(resp_content, content_type=content_type, status=status)
 
 
 @login_required
 def tile(request, project_hash, publish, layers_hash=None, z=None, x=None, y=None, format=None):
-    params = {key.upper(): request.GET[key] for key in request.GET.iterkeys()}
+    params = {key.upper(): request.GET[key] for key in request.GET.keys()}
     project = params['PROJECT']+'.qgs'
     mapserver_url = set_query_parameters(settings.GISLAB_WEB_MAPSERVER_URL, {'MAP': project})
     layer_params = get_project_layers_info(project_hash, publish, project=project)
@@ -59,17 +59,17 @@ def tile(request, project_hash, publish, layers_hash=None, z=None, x=None, y=Non
                 **layer_params
             )
             return get_tile_response(layer, z=z, x=x, y=y)
-        except TileNotFoundException, e:
+        except TileNotFoundException as e:
             raise Http404
     raise Http404
 
 
 @login_required
 def legend(request, project_hash, publish, layer_hash=None, zoom=None, format=None):
-    params = {key.upper(): request.GET[key] for key in request.GET.iterkeys()}
+    params = {key.upper(): request.GET[key] for key in request.GET.keys()}
     project = params['PROJECT']+'.qgs'
     mapserver_url = set_query_parameters(settings.GISLAB_WEB_MAPSERVER_URL, {'MAP': project})
-    print mapserver_url
+    print(mapserver_url)
     try:
         layer = WmsLayer(
             project=project_hash,
@@ -88,7 +88,7 @@ def legend(request, project_hash, publish, layer_hash=None, zoom=None, format=No
 
 @login_required
 def vector_layers(request):
-    params = {k.upper(): v for k, v in request.GET.iteritems()}
+    params = {k.upper(): v for k, v in request.GET.items()}
     project = params.get('PROJECT')
     if project:
         ows_project = clean_project_name(project)
@@ -131,8 +131,8 @@ def filterdata(request):
         params = {
             'MAP': get_last_project_version(project) + '.qgs'
         }
-        mapserv = '{}?{}'.format(url, urllib.urlencode(params))
-        filter_request = json.loads(request.body)
+        mapserv = '{}?{}'.format(url, urllib.parse.urlencode(params))
+        filter_request = json.loads(request.body.decode('utf-8'))
 
         layer_name = filter_request['layer']
         maxfeatures = startindex = bbox = filters = None

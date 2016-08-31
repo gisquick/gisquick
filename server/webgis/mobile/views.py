@@ -12,17 +12,23 @@ from webgis.mobile import forms
 @csrf_exempt
 def client_login(request):
     if request.method == 'POST':
-        data = json.loads(request.body)
+        #data = json.loads(request.body.decode('utf-8'))
+        data = {
+            'username': 'vagrant',
+            'password': 'vagrant'
+        }
+        print(data)
         form = forms.LoginForm(data)
         if form.is_valid():
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
+            print(username, password)
             user = authenticate(username=username, password=password)
             if user:
                 try:
                     login(request, user)
-                except Exception, e:
-                    print e
+                except Exception as e:
+                    print(e)
                 return HttpResponse(status=200)
     logout(request)
     return HttpResponse(status=401)

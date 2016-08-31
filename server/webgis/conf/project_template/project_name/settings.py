@@ -90,7 +90,7 @@ AUTH_USER_MODEL = 'viewer.GislabUser'
 
 ### CUSTOM SETTINGS
 try:
-    from settings_custom import *
+    from {{ project_name }}.settings_custom import *
 except ImportError:
     pass
 

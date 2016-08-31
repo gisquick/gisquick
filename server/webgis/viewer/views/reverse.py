@@ -20,7 +20,7 @@ def project_vectorlayers_url(ows_project):
 
 
 def project_tile_url(project, timestamp):
-    project_hash = hashlib.md5(project).hexdigest()
+    project_hash = hashlib.md5(project.encode('utf-8')).hexdigest()
     mapcache_url = reverse(
         'viewer:tile',
         kwargs={
@@ -37,7 +37,7 @@ def project_tile_url(project, timestamp):
 
 
 def project_legend_url(project, timestamp):
-    project_hash = hashlib.md5(project).hexdigest()
+    project_hash = hashlib.md5(project.encode('utf-8')).hexdigest()
     legend_url = reverse(
         'viewer:legend',
         kwargs={

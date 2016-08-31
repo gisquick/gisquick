@@ -1,7 +1,7 @@
 # BSD Licensed, Copyright (c) 2006-2008 MetaCarta, Inc.
 
 import sys
-from cStringIO import StringIO
+from io import BytesIO
 from PIL import Image, ImageEnhance
 
 
@@ -70,8 +70,8 @@ class Layer (object):
         self.name = name
         self.provider_layers = provider_layers or name
 
-        if isinstance(extent, basestring):
-            extent = map(float, extent.split(","))
+        if isinstance(extent, str):
+            extent = list(map(float, extent.split(",")))
 
         self.extent = extent
         self.tile_size = tile_size
@@ -85,8 +85,8 @@ class Layer (object):
         self.metabuffer = (metabuffer, metabuffer)
         self.cache = cache
 
-        if isinstance(resolutions, basestring):
-            resolutions = map(float,resolutions.split(","))
+        if isinstance(resolutions, str):
+            resolutions = list(map(float,resolutions.split(",")))
         self.resolutions = resolutions
 
     def grid (self, z):
@@ -112,7 +112,7 @@ class Layer (object):
 
     def render_meta_tile (self, metatile, tile):
         data = self.render_tile(metatile)
-        image = Image.open( StringIO(data) )
+        image = Image.open( BytesIO(data) )
 
         meta_cols, meta_rows = self.get_meta_size(metatile.z)
         meta_height = meta_rows * self.tile_size + 2 * self.metabuffer[1]
@@ -125,7 +125,7 @@ class Layer (object):
                 miny = maxy - self.tile_size
                 subimage = image.crop((minx, miny, maxx, maxy))
                 subimage.info = image.info
-                buffer = StringIO()
+                buffer = BytesIO()
                 subimage.save(buffer, self.image_format, quality=85)
                 buffer.seek(0)
                 subdata = buffer.read()

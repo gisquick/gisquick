@@ -38,8 +38,8 @@ def client_login(request):
             if user:
                 try:
                     login(request, user)
-                except Exception, e:
-                    print e
+                except Exception as e:
+                    print (e)
                 return JsonResponse(get_user_data(user))
     logout(request)
     return HttpResponse(status=401)
@@ -61,7 +61,7 @@ def map(request):
         data['user'] = get_user_data(request.user)
         data['project'] = get_project(request)
 
-    except InvalidProjectException:
+    except InvalidProjectException as e:
         return render(
             request,
             "viewer/4xx.html",
@@ -69,9 +69,6 @@ def map(request):
             status=404,
             content_type="text/html"
         )
-    except Exception, e:
-        #TODO: log exception error
-        raise
 
     templateData = {
         'data': data,

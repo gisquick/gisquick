@@ -1,6 +1,5 @@
 import json
-import urllib
-import urllib2
+import urllib.request
 
 from django.test import TestCase
 from owslib.fes import PropertyIsEqualTo, And, Or, PropertyIsLike,\
@@ -21,8 +20,7 @@ class WfsFilterCase(TestCase):
         result = webgisfilter(self.url, 'Places')
         self.assertTrue(result, 'WFS Response')
         self.assertEqual(len(result['features']), 161, '161 places found')
-        self.assertFalse(result['features'][0].has_key('geometry'),
-                'Geometry cleared')
+        self.assertFalse('geometry' in result['features'][0], 'Geometry cleared')
 
     def _test_paging(self):
         result = webgisfilter(self.url, 'Places', 30, 30)
@@ -67,7 +65,7 @@ class WfsFilterCase(TestCase):
         myfilters = [{
             'attribute': 'POP_MAX',
             'operator': '>=',
-            'value': 100
+            'value': '100'
         }]
         result = webgisfilter(
             self.url, 'Places',
@@ -178,10 +176,8 @@ class WfsFilterCase(TestCase):
                 'FILTER': spatial_filter
             }
         )
-        # print "\nexport QUERY_STRING=\""+urllib.unquote(url)\
-        #     .replace("http://localhost/cgi-bin/qgis_mapserv.fcgi?", "")+"\""
 
-        response = urllib2.urlopen(url).read()
+        response = urllib.request.urlopen(url).read()
         data = json.loads(response)
         features = data['features']
-        #self.assertEqual(len(features), 2)
+        self.assertEqual(len(features), 2)

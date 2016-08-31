@@ -16,6 +16,7 @@
 - name: Install GIS.lab Web Python requirements
   pip:
     virtualenv: /home/{{ ansible_user }}/.virtualenvs/gislab-web
+    virtualenv_python: python3
     requirements: "{{ synced_folder }}/server/requirements.txt"
     virtualenv_site_packages: yes
     extra_args: "--download-cache={{ synced_folder }}/dev/cache/pip"
@@ -26,6 +27,7 @@
 - name: Install GIS.lab Web Python development requirements
   pip:
     virtualenv: /home/{{ ansible_user }}/.virtualenvs/gislab-web
+    virtualenv_python: python3
     requirements: "{{ synced_folder }}/server/requirements-dev.txt"
     virtualenv_site_packages: yes
     extra_args: "--download-cache={{ synced_folder }}/dev/cache/pip"

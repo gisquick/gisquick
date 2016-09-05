@@ -78,10 +78,6 @@ INSTALLED_APPS = (
     'webgis.mobile'
 )
 
-if DEBUG:
-    INSTALLED_APPS += ('sslserver',)
-
-
 ROOT_URLCONF = '{{ project_name }}.urls'
 WSGI_APPLICATION = '{{ project_name }}.wsgi.application'
 

@@ -361,6 +361,7 @@ label.md-no-float {
 
 .bottom-bar .features-panel .close-button-container {
   position: absolute;
+  width: 26px;
   top: 13px;
   right: 0;
   box-shadow: 6px -4px 4px 0 rgba(0, 0, 0, 0.12);
@@ -369,6 +370,9 @@ label.md-no-float {
   z-index: 1;
 }
 .features-panel .close-button-container .close-button {
+  position: absolute;
+  top: 0;
+  bottom: 0;
   min-width: 26px;
   width: 26px;
   min-height: 18px;
@@ -378,7 +382,6 @@ label.md-no-float {
   border-top: 1px solid #888;
   border-radius: 0;
   box-sizing: border-box;
-  height: 100%;
   background-color: rgb(250, 250, 250);
 }
 .features-panel .close-button-container .close-button.md-focused,

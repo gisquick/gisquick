@@ -62,12 +62,15 @@
                     <span flex></span>
                   </div>
                 </md-menu-item>
+
                 <md-menu-item
                   ng-repeat="unit in ::tool.config.positionUnits"
                   type="radio"
+                  class="md-indent"
                   ng-value="$index"
                   ng-model="tool.config.positionUnitsIndex"
                   ng-change="tool.events.unitsChanged()">
+                  <md-icon md-svg-icon="check"></md-icon>
                   <md-button>{{ ::unit.title }}</md-button>
                 </md-menu-item>
               </md-menu-content>
@@ -153,12 +156,14 @@
                   }">
                   <md-menu-item
                     type="radio"
+                    class="md-indent"
                     ng-value="$index"
                     ng-model="tool.config.unitsSystemIndex"
                     ng-change="
                       tool.config.lengthUnitIndex = 'auto';
                       tool.events.unitsChanged()
                     ">
+                    <md-icon md-svg-icon="check"></md-icon>
                     <md-button>
                       {{ unitsSystem.title }}
                     </md-button>
@@ -298,12 +303,14 @@
                   }">
                   <md-menu-item
                     type="radio"
+                    class="md-indent"
                     ng-value="$index"
                     ng-model="tool.config.unitsSystemIndex"
                     ng-change="
                       tool.config.areaUnitIndex = unitsSystem.areaAutoUnits? 'auto' : 0;
                       tool.events.unitsChanged()
                     ">
+                    <md-icon md-svg-icon="check"></md-icon>
                     <md-button>
                       {{ unitsSystem.title }}
                     </md-button>

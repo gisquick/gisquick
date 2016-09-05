@@ -47,6 +47,9 @@ md-fab-trigger .md-fab.md-button md-icon {
   max-height: auto;
 }
 
+md-menu-item.md-indent .md-button {
+  padding-left: 44px;
+}
 
 md-menu-item .md-button {
   color: yellow;

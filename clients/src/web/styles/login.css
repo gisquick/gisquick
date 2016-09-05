@@ -98,6 +98,9 @@ md-dialog.login-window md-dialog-content {
 md-input-container.md-input-has-value:not(.md-input-invalid) label {
   color: #aaa;
 }
+.login-form md-input-container label {
+  text-align: left;
+}
 
 .login-form input {
   color: #fff;

@@ -76,8 +76,10 @@
         }
         $scope.Math = Math;
         $scope.$watch('paginator', function(value) {
-          if (angular.isDefined(value) && !angular.isDefined(value.page)) {
-            value.page = 1;
+          if (angular.isDefined(value)) {
+            if (!$scope.paginator.page) {
+              $scope.paginator.page = 1;
+            }
             updatePagination();
           }
         });

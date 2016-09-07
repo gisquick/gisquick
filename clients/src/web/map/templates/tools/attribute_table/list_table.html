@@ -4,7 +4,7 @@
     md-no-ink
     class="tabs-no-header"
     md-selected="tool.config.layerIndex">
-    <md-tab ng-repeat="layer in ::layers track by layer.name"
+    <md-tab ng-repeat="layer in ::layers"
       label="layer"
       md-on-select="setActiveLayer(layer)">
       <md-list
@@ -50,14 +50,14 @@
               visible: attribute._filter,
               active: attribute.comparator && attribute.filterValue
             }">
-            <md-input-container>
+            <md-input-container md-no-float>
               <md-select
                 md-container-class="left-panel"
                 ng-model="attribute.comparator"
                 placeholder="Operator">
                 <span gl-parent-scrollbar="vertical"></span>
                 <md-option
-                  ng-repeat="comparator in attribute.comparators"
+                  ng-repeat="comparator in ::attribute.comparators"
                   ng-value="comparator">
                   {{ ::comparator.label }}
                 </md-option>
@@ -73,7 +73,10 @@
               md-no-ink
               aria-label="Remove Filter"
               class="list-item-button icon-hover"
-              ng-click="attribute.filterValue=attribute.comparator=null;attribute._filter=false">
+              ng-click="
+                attribute.filterValue=attribute.comparator=null;
+                attribute._filter=false
+              ">
               <md-icon
                 md-svg-icon="delete">
               </md-icon>

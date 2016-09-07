@@ -456,7 +456,9 @@ md-list.attribute-table md-list-item.list-item-header {
 .attribute-table .table-list-item p {
   padding-right: 24px;
 }
-
+.attribute-table md-list-item.table-list-item .md-list-item-inner {
+  padding: 0;
+}
 .attribute-table.vertical .attribute-table,
 .identification-table.vertical .attribute-table {
   margin: 6px 5px 0 5px;

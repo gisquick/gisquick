@@ -29,7 +29,7 @@
         md-selected="tool.data.activeLayerIndex"
         md-autoselect="false">
         <md-tab
-          ng-repeat="layer in ::tool.data.layers track by layer.name"
+          ng-repeat="layer in ::tool.data.layers"
           ng-disabled="layer.features.length === 0"
           md-on-select="setActiveLayer(layer)">
           <md-tab-label>
@@ -48,7 +48,7 @@
                   <tr class="header">
                     <th class="zoom header" width="10"></th>
                     <th class="header"
-                      ng-repeat="attribute in layer.attributes">
+                      ng-repeat="attribute in ::layer.attributes">
                       {{ ::attribute.label }}
                     </th>
                   </tr>
@@ -73,7 +73,7 @@
                         </md-tooltip>
                       </md-button>
                     </td>
-                    <td ng-repeat="attribute in layer.attributes">
+                    <td ng-repeat="attribute in ::layer.attributes">
                       {{ ::feature.get(attribute.name) }}
                     </td>
                   </tr>

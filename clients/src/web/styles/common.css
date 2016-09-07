@@ -84,6 +84,14 @@ md-icon {
 }
 
 md-list-item::before,
-md-list-item .md-list-item-inner::before {
+md-list-item .md-list-item-inner::before,
+md-list-item,
+md-list-item .md-list-item-inner {
   min-height: 32px;
+}
+
+/** better center of check mark in checkbox */
+md-checkbox.md-checked .md-icon:after {
+  left: 5.5px;
+  top: 1px;
 }

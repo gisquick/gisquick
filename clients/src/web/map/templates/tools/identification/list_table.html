@@ -8,7 +8,7 @@
     md-selected="tool.data.activeLayerIndex"
     md-autoselect="false"
     md-swipe-content>
-    <md-tab ng-repeat="layer in ::tool.data.layers track by layer.name"
+    <md-tab ng-repeat="layer in ::tool.data.layers"
       ng-disabled="layer.features.length === 0"
       md-on-select="setActiveLayer(layer);">
       <md-tab-label>
@@ -25,7 +25,7 @@
         style="padding:0;">
         
         <md-list-item
-          ng-repeat="attribute in layer.attributes"
+          ng-repeat="attribute in ::layer.attributes"
           class="table-list-item">
           <p>
             <b>{{ ::attribute.label }}: </b>

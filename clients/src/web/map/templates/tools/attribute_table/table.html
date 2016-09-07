@@ -33,7 +33,7 @@
         class="short-tab-animation"
         md-no-pagination
         md-selected="tool.config.layerIndex">
-        <md-tab ng-repeat="layer in ::layers track by layer.name"
+        <md-tab ng-repeat="layer in ::layers"
           label="x"
           md-on-select="setActiveLayer(layer)">
 
@@ -58,13 +58,13 @@
                       layout="row"
                       class="filter-row"
                       ng-class="{active: attribute.comparator && attribute.filterValue}">
-                      <md-input-container>
+                      <md-input-container md-no-float>
                         <md-select
                           ng-model="attribute.comparator"
                           placeholder="Operator">
                           <span gl-parent-scrollbar="vertical"></span>
                           <md-option
-                            ng-repeat="comparator in attribute.comparators"
+                            ng-repeat="comparator in ::attribute.comparators"
                             ng-value="comparator">
                             {{ ::comparator.label }}
                           </md-option>
@@ -72,6 +72,7 @@
                       </md-input-container>
                       <md-input-container md-no-float class="md-block" flex>
                         <input
+                          aria-label="Value"
                           ng-model="attribute.filterValue"
                           placeholder="{{ attribute.comparator.format }}">
                         </input>
@@ -79,7 +80,10 @@
                       <md-button
                         class="icon-hover"
                         aria-label="Remove Filter"
-                        ng-click="attribute.filterValue='';attribute.comparator=null">
+                        ng-click="
+                          attribute.filterValue='';
+                          attribute.comparator=null
+                        ">
                         <md-icon class="filter-clear-button"
                           md-svg-icon="delete">
                         </md-icon>
@@ -110,8 +114,8 @@
                       </md-tooltip>
                     </md-button>
                   </td>
-                  <td ng-repeat="attribute in layer.attributes">
-                    {{ feature.properties[attribute.name] }}
+                  <td ng-repeat="attribute in ::layer.attributes">
+                    {{ ::feature.properties[attribute.name] }}
                   </td>
                 </tr>
               </tbody>
@@ -158,6 +162,7 @@
           class="inline-flex">
           <span flex></span>
           <md-checkbox
+            md-no-ink
             class="md-primary"
             ng-model="tool.searchInExtent"
             aria-label="Filter to visible area">

@@ -42,12 +42,12 @@ def client_login(request):
                     print (e)
                 return JsonResponse(get_user_data(user))
     logout(request)
-    return HttpResponse(status=401)
+    return HttpResponse("Login Required", status=401)
 
 
 def client_logout(request):
     logout(request)
-    return HttpResponse(status=200)
+    return HttpResponse(" ", status=200)
 
 def map(request):
     data = {}

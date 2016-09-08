@@ -67,6 +67,7 @@ gulp.task('csss', function() {
     .src([
       'node_modules/gislab-web/node_modules/angular-material/angular-material.css',
       'node_modules/gislab-web/node_modules/simple-scrollbar/simple-scrollbar.css',
+      'src/web/styles/common.css',
       'src/web/styles/login.css',
       'src/web/styles/table.css',
       'src/web/userpage/styles/ui.css'

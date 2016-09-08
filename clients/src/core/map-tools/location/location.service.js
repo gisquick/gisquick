@@ -51,7 +51,9 @@
           this.trackingCallback(this.geolocation);
         }
         // this.geolocation.set('heading', 30 * Math.PI / 180);
-        this.trackingStyle.getImage().setRotation(this.geolocation.getHeading());
+        // console.log(this.geolocation.getHeading());
+        var heading = this.geolocation.getHeading() || 0;
+        this.trackingStyle.getImage().setRotation(heading);
       }
     };
 

@@ -60,8 +60,8 @@ md-tab-content > div {
 }
 
 .panel md-list-item:not(.active):hover,
-.panel md-list-item:not(.active) .md-button:not([disabled]):hover,
-.panel md-list-item:not(.active) .md-button.md-focused:not([disabled]) {
+.panel md-list-item:not(.active) div.md-button:not([disabled]):hover,
+.panel md-list-item:not(.active) div.md-button.md-focused:not([disabled]) {
   background-color: #ffffe0!important;
 }
 

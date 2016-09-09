@@ -7,16 +7,14 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=medium-dpi">
+
     <title>GIS.lab Web - User Page</title>
 
+    <link rel="icon" type="image/png" href="{% static "styles/gislab-web-16.png" %}"/>
     <link rel="stylesheet" type="text/css" href="{% static "styles/userpage.min.css" %}"/>
-
     <script type="text/javascript" src="{% static "js/userpage.min.js" %}"></script>
 
     <script type="text/javascript">
-      if (!location.search) {
-        location.search = "PROJECT=vagrant/natural-earth/central-europe";
-      }
       angular.module('gl.userpage')
         .constant('staticResources', {
           'text-logo': '{% static "styles/text_logo.svg" %}',
@@ -30,7 +28,6 @@
         .run(function($timeout, userPageLoader, gislabClient) {
           var data = JSON.parse('{{ jsonData|default:"{}"|escapejs }}');
           gislabClient.userInfo = data.user;
-          console.log(data);
           userPageLoader.setData(data);
         });
     </script>

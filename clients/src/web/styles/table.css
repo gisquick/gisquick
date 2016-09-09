@@ -546,7 +546,7 @@ md-list-item.list-filter md-icon {
   top: 0;
 }
 
-.identification-table.vertical md-tabs-content-wrapper {
+.identification-table.vertical md-tabs:not(.tabs-no-header) md-tabs-content-wrapper {
   top: 36px;
 }
 

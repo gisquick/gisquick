@@ -49,7 +49,9 @@
           <md-list-item>
             <label>Online resource:</label>
             <p>
-              <a ng-href="::project.online_resource">
+              <a
+                target="_blank"
+                ng-href="{{ ::project.online_resource }}">
                 {{ ::project.online_resource }}
               </a>
             </p>
@@ -78,17 +80,15 @@
           gl-parent-scrollbar="vertical"
           class="about properties-list">
           <md-list-item>
-            <label>GIS.lab ID:</label>
-            <p ng-bind="::project.gislab_unique_id"></p>
-          </md-list-item>
-          <md-list-item>
             <label>Version:</label>
             <p ng-bind="::project.gislab_version"></p>
           </md-list-item>
           <md-list-item gl-open-in-browser="{{ ::project.gislab_homepage }}">
             <label>Home page:</label>
             <p>
-              <a ng-href="::project.gislab_homepage">
+              <a
+                target="_blank"
+                ng-href="{{ ::project.gislab_homepage }}">
                 {{ ::project.gislab_homepage }}
               </a>
             </p>
@@ -96,7 +96,9 @@
           <md-list-item>
             <label>Documentation:</label>
             <p>
-              <a ng-href="::project.gislab_documentation">
+              <a
+                target="_blank"
+                ng-href="{{ ::project.gislab_documentation }}">
                 {{ ::project.gislab_documentation }}
               </a>
             </p>

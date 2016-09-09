@@ -27,8 +27,8 @@ SECRET_KEY = '{{ secret_key }}'
 GISLAB_WEB_PROJECT_ROOT = '/tmp/gislab-web'
 GISLAB_WEB_MAPSERVER_URL = 'http://localhost:90/cgi-bin/qgis_mapserv.fcgi'
 GISLAB_WEB_GUEST_USERNAME = 'guest'
-GISLAB_HOMEPAGE = 'http://github.com/gislab-npo/gislab/'
-GISLAB_DOCUMENTATION_PAGE = 'http://gislab.readthedocs.io/en/latest/'
+GISLAB_HOMEPAGE = 'http://github.com/gislab-npo/gislab-web/'
+GISLAB_DOCUMENTATION_PAGE = 'http://gislab.readthedocs.io/en/latest/gislab-web/index.html'
 
 
 ### INTERNATIONALIZATION

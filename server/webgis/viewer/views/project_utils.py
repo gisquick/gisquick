@@ -70,12 +70,13 @@ def get_last_project_version(project):
         return None
 
     project = clean_project_name(project)
-    project_pattern = re.compile(re.escape(os.path.basename(project))+'_(\d{10})\.qgs')
+    project_pattern = re.compile(re.escape(os.path.basename(project))+'_(\d{10})\.qgs$')
     matched_project_versions = []
     for filename in os.listdir(project_dir):
         match = project_pattern.match(filename)
         if match:
             matched_project_versions.append((int(match.group(1)), filename))
+
     if matched_project_versions:
         # load last published project file
         project_filename = sorted(matched_project_versions, reverse=True)[0][1]

@@ -2,7 +2,7 @@ import json
 
 from django.conf import settings
 from django.shortcuts import render
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.contrib.auth import login
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
@@ -83,47 +83,47 @@ def map(request):
     )
 
 
-@login_required
 def user_projects(request, username):
     if not request.user.is_authenticated() or request.user.is_guest:
-        # redirect to login page
-        login_url = secure_url(request, reverse('login'))
-        return HttpResponseRedirect(
-            set_query_parameters(login_url, {'next': secure_url(request)}))
-    if not username:
-        redirect_url = user_projects_url(request.user.username)
-        return HttpResponseRedirect(redirect_url)
-    if username != request.user.username:
-        if not request.user.is_superuser:
-            return HttpResponse(
-                "Access Denied",
-                content_type='text/plain',
-                status=403
-            )
-        else:
-            try:
-                request.user = models.GislabUser.objects.get(username=username)
-            except models.GislabUser.DoesNotExist:
+        data = {
+            'status': 401
+        }
+    else:
+        if not username:
+            redirect_url = user_projects_url(request.user.username)
+            return HttpResponseRedirect(redirect_url)
+        if username != request.user.username:
+            if not request.user.is_superuser:
                 return HttpResponse(
-                    "User does not exist.",
+                    "Access Denied",
                     content_type='text/plain',
                     status=403
                 )
+            else:
+                try:
+                    request.user = models.GislabUser.objects.get(username=username)
+                except models.GislabUser.DoesNotExist:
+                    return HttpResponse(
+                        "User does not exist.",
+                        content_type='text/plain',
+                        status=403
+                    )
 
-    projects = [{
-        'title': _('Empty Project'),
-        'url': request.build_absolute_uri('/'),
-    }]
-    projects.extend(get_user_projects(request, username))
-    data = {
-        'username': username,
-        'projects': projects,
-        'gislab_version': webgis.VERSION,
-        'gislab_homepage': settings.GISLAB_HOMEPAGE,
-        'gislab_documentation': settings.GISLAB_DOCUMENTATION_PAGE,
-        'user': get_user_data(request.user),
-        'status': 200
-    }
+        projects = [{
+            'title': _('Empty Project'),
+            'url': request.build_absolute_uri('/'),
+        }]
+        projects.extend(get_user_projects(request, username))
+        data = {
+            'username': username,
+            'projects': projects,
+            'gislab_version': webgis.VERSION,
+            'gislab_homepage': settings.GISLAB_HOMEPAGE,
+            'gislab_documentation': settings.GISLAB_DOCUMENTATION_PAGE,
+            'user': get_user_data(request.user),
+            'status': 200
+        }
+
     templateData = {
         'data': data,
         'jsonData': json.dumps(data)

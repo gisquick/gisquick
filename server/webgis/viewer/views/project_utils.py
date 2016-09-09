@@ -404,7 +404,7 @@ def get_user_projects(request, username):
                     else:
                         projects_files[project_name].append((project_timestamp, filename))
 
-            for project_name, info in projects_files.subitems():
+            for project_name, info in projects_files.items():
                 # select last project version by timestamp
                 last_project_filename = sorted(info, reverse=True)[0][1]
 

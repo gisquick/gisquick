@@ -24,8 +24,7 @@
 
     UserPageLoader.prototype.showLoginScreen = function() {
       console.log('showLoginScreen');
-      console.log(gislabClient.userInfo)
-      if (gislabClient.userInfo.is_guest === false) {
+      if (gislabClient.userInfo && gislabClient.userInfo.is_guest === false) {
         gislabClient.logout();
       }
       $mdDialog.show({
@@ -73,15 +72,18 @@
     $scope.initialized = false;
 
     var applicationData;
-    function initialize(addData) {
-      applicationData = addData;
-      var projects = addData.projects;
-      console.log(projects);
-      $scope.projects = projects;
-      $scope.projects.rowsPerPage = 25;
+    function initialize(appData) {
+      if (appData.status >= 400 &&  appData.status < 500) {
+        userPageLoader.showLoginScreen();
+      } else {
+        applicationData = appData;
+        var projects = appData.projects;
+        $scope.projects = projects;
+        $scope.projects.rowsPerPage = 25;
 
-      $scope.user = addData.user;
-      $scope.initialized = true;
+        $scope.user = appData.user;
+        $scope.initialized = true;
+      }
     }
 
     if (userPageLoader.data) {

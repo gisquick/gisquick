@@ -21,7 +21,7 @@ gulp.task('js', function() {
       'node_modules/gislab-web/node_modules/angular/angular.min.js',
       'node_modules/gislab-web/node_modules/angular-animate/angular-animate.min.js',
       'node_modules/gislab-web/node_modules/angular-aria/angular-aria.min.js',
-      'node_modules/gislab-web/node_modules/angular-material/angular-material.gislab.js',
+      'node_modules/gislab-web/node_modules/angular-material/angular-material.js',
       'node_modules/gislab-web/node_modules/simple-scrollbar/simple-scrollbar.js'
       ])
       .pipe(

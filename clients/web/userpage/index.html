@@ -17,7 +17,7 @@
 
     <script type="text/javascript" src="node_modules/angular/angular.js"></script>
     <script type="text/javascript" src="node_modules/angular-animate/angular-animate.js"></script>
-    <script type="text/javascript" src="node_modules/angular-material/angular-material.gislab.js"></script>
+    <script type="text/javascript" src="node_modules/angular-material/angular-material.js"></script>
     <script type="text/javascript" src="node_modules/angular-aria/angular-aria.js"></script>
     <script type="text/javascript" src="node_modules/simple-scrollbar/simple-scrollbar.js"></script>
 
@@ -55,9 +55,7 @@
           });
         })
         .run(function(userPageLoader, gislabClient) {
-          // userPageLoader.showLoginScreen();
-          // gislabClient.login('vagrant', 'vagrant')
-          gislabClient.login('marcel', 'qq')
+          gislabClient.login('vagrant', 'vagrant')
             .then(function() {
               gislabClient.userProjects()
                 .then(function(appData) {
@@ -67,7 +65,6 @@
                 });
             });
         });
-
     </script>
   </head>
   <body>

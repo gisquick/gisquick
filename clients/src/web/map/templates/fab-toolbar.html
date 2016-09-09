@@ -15,7 +15,6 @@
     <md-button
       ng-repeat="tool in ::toolsManager.tools | filter:{ui:{primaryPanel:{icon:'!!'}}} track by tool.name"
       class="md-fab md-raised md-mini"
-      ng-disabled="::tool.disabled"
       ng-class="{active: toolsManager.activeTool===tool}"
       ng-click="toolsManager.activateTool(tool)">
       <md-icon

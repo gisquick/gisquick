@@ -203,71 +203,76 @@
       /** *********************************************
        ***********    Identification Tool    **********
        ************************************************/
-      toolsManager.addTool({
-        name: 'identification',
-        tooltip: 'Identify features by mouse click',
-        ui: {
-          primaryPanel: {
-            title: 'Identification',
-            icon: 'circle-i',
-            template: 'templates/tools/identification/form.html'
+      var hasQueryableLayers = projectProvider.layers.list.find(
+        function(layer_data) {return layer_data.queryable}
+      );
+      if (hasQueryableLayers) {
+        toolsManager.addTool({
+          name: 'identification',
+          tooltip: 'Identify features by mouse click',
+          ui: {
+            primaryPanel: {
+              title: 'Identification',
+              icon: 'circle-i',
+              template: 'templates/tools/identification/form.html'
+            },
+            secondaryPanel: {
+              left: {
+                position: 'top',
+                template: 'templates/tools/identification/list_table.html',
+              },
+              bottom: {
+                template: 'templates/tools/identification/table.html'
+              },
+              header: '#vertical-identification-table-header',
+              controller: 'IdentificationTableController',
+              resolve: {} // will be set properly on tool activation
+            }
           },
-          secondaryPanel: {
-            left: {
-              position: 'top',
-              template: 'templates/tools/identification/list_table.html',
-            },
-            bottom: {
-              template: 'templates/tools/identification/table.html'
-            },
-            header: '#vertical-identification-table-header',
-            controller: 'IdentificationTableController',
-            resolve: {} // will be set properly on tool activation
+          config: {
+            markerIcon: 'plus',
+            identificationLayer: '_all_',
+            singleLayerResult: false,
+            rowsPerPage: 5,
+            limit: 10,
+            featureAutoselect: false,
+            mapView: glPanelManager.mapView
+          },
+          data: {
+            layers: [],
+            activeLayer: null,
+            activeLayerIndex: null
+          },
+          events: {
+            featuresChanged: angular.noop,
+            toolActivated: angular.noop,
+            toolDeactivated: angular.noop
+          },
+          initialize: angular.noop,
+          activate: function() {
+            this.panelResolve = $q.defer();
+            var resolve = this.panelResolve;
+            this.ui.secondaryPanel.resolve = {
+              open: function() {return resolve.promise;}
+            };
+            this.events.toolActivated();
+          },
+          deactivate: function() {
+            if (this.panelResolve) {
+              this.panelResolve.reject();
+            }
+            this.events.toolDeactivated();
+          },
+          showTable: function(layersFeatures) {
+            if (this.panelResolve) {
+              console.log('identification: show attribute table');
+              this.panelResolve.resolve();
+              this.panelResolve = null;
+            }
+            this.events.featuresChanged();
           }
-        },
-        config: {
-          markerIcon: 'plus',
-          identificationLayer: '_all_',
-          singleLayerResult: false,
-          rowsPerPage: 5,
-          limit: 10,
-          featureAutoselect: false,
-          mapView: glPanelManager.mapView
-        },
-        data: {
-          layers: [],
-          activeLayer: null,
-          activeLayerIndex: null
-        },
-        events: {
-          featuresChanged: angular.noop,
-          toolActivated: angular.noop,
-          toolDeactivated: angular.noop
-        },
-        initialize: angular.noop,
-        activate: function() {
-          this.panelResolve = $q.defer();
-          var resolve = this.panelResolve;
-          this.ui.secondaryPanel.resolve = {
-            open: function() {return resolve.promise;}
-          };
-          this.events.toolActivated();
-        },
-        deactivate: function() {
-          if (this.panelResolve) {
-            this.panelResolve.reject();
-          }
-          this.events.toolDeactivated();
-        },
-        showTable: function(layersFeatures) {
-          if (this.panelResolve) {
-            console.log('identification: show attribute table');
-            this.panelResolve.resolve();
-            this.panelResolve = null;
-          }
-          this.events.featuresChanged();
-        }
-      });
+        });
+      }
       /** **********************************************
        ***************    Measure Tool    **************
        *************************************************/
@@ -416,115 +421,113 @@
       /** **********************************************
        ****************    Print Tool    ***************
        *************************************************/
-      toolsManager.addTool({
-        name: 'print',
-        tooltip: 'Print output creation',
-        disabled: !(projectProvider.data.print_composers && projectProvider.data.print_composers.length),
-        ui: {
-          primaryPanel: {
-            title: 'Print',
-            icon: 'printer',
-            template: 'templates/tools/print.html'
-          }
-        },
-        previewTemplate: 'templates/tools/print_preview.html',
-        config: {
-          previewParentElement: projectProvider.map.getTargetElement().parentElement,
-          layouts: undefined, // define in initialization function
-          dpi: 96,
-          format: 'png',
-          rotation: 0,
-          title: projectProvider.data.root_title,
-          author: gislabClient.userInfo.full_name,
-          screenSize: [0, 0], // available screen size for print preview
-          contact:
-            '<div style="position:absolute;bottom:0;right:0;font-family:Liberation Sans;">\
-              <span>{0}<br />{1}</span>\
-            </div>'.format(projectProvider.data.organization, projectProvider.data.email)
-        },
-        data: {},
-        events: {
-          toolActivated: angular.noop,
-          toolDeactivated: angular.noop,
-          layoutChanged: angular.noop
-        },
-        initialize: function() {
-          if (!projectProvider.data.print_composers) {
-            return;
-          }
-          // sort layouts by height
-          var layouts = projectProvider.data.print_composers.sort(function(a, b) {
-            return a.height > b.height;
-          });
-          this.config.layouts = layouts;
-          // select default layout
-          this.config.layout = layouts[0];
-          this.config.layouts.forEach(function(layout) {
-            var labelsData = [];
-            layout.labels.forEach(function(label) {
-              if (label.indexOf('gislab_') !== 0) {
-                labelsData.push({
-                  title: label,
-                  value: ''
-                });
-              }
-            });
-            this.data[layout.name] = {labels: labelsData};
-          }, this);
-        },
-        _moveMap: function(offsetX) {
-          var resolution = projectProvider.map.getView().getResolution();
-          var center = projectProvider.map.getView().getCenter();
-          var mapSize = projectProvider.map.getSize();
-          var pan = ol.animation.pan({
-            duration: 450,
-            source: center,
-            easing: ol.easing.inAndOut
-          });
-
-          projectProvider.map.beforeRender(pan);
-          projectProvider.map.getView().setCenter([
-            center[0]+resolution*offsetX*mapSize[0]/window.innerWidth,
-            center[1]
-          ]);
-        },
-        mapResizeListener: function(mapView) {
-          var currentScale = this.config._previewScale;
-          if (mapView.left !== this.config._left) {
-            if (mapView.left < this.config._left) {
-              var offset = (this.config._left-mapView.left)/2;
-              this._moveMap(offset);
+      if (projectProvider.data.print_composers && projectProvider.data.print_composers.length) {
+        toolsManager.addTool({
+          name: 'print',
+          tooltip: 'Print output creation',
+          ui: {
+            primaryPanel: {
+              title: 'Print',
+              icon: 'printer',
+              template: 'templates/tools/print.html'
             }
+          },
+          previewTemplate: 'templates/tools/print_preview.html',
+          config: {
+            previewParentElement: projectProvider.map.getTargetElement().parentElement,
+            layouts: undefined, // define in initialization function
+            dpi: 96,
+            format: 'png',
+            rotation: 0,
+            title: projectProvider.data.root_title,
+            author: gislabClient.userInfo.full_name,
+            screenSize: [0, 0], // available screen size for print preview
+            contact:
+              '<div style="position:absolute;bottom:0;right:0;font-family:Liberation Sans;">\
+                <span>{0}<br />{1}</span>\
+              </div>'.format(projectProvider.data.organization, projectProvider.data.email)
+          },
+          data: {},
+          events: {
+            toolActivated: angular.noop,
+            toolDeactivated: angular.noop,
+            layoutChanged: angular.noop
+          },
+          initialize: function() {
+            // sort layouts by height
+            var layouts = projectProvider.data.print_composers.sort(function(a, b) {
+              return a.height > b.height;
+            });
+            this.config.layouts = layouts;
+            // select default layout
+            this.config.layout = layouts[0];
+            this.config.layouts.forEach(function(layout) {
+              var labelsData = [];
+              layout.labels.forEach(function(label) {
+                if (label.indexOf('gislab_') !== 0) {
+                  labelsData.push({
+                    title: label,
+                    value: ''
+                  });
+                }
+              });
+              this.data[layout.name] = {labels: labelsData};
+            }, this);
+          },
+          _moveMap: function(offsetX) {
+            var resolution = projectProvider.map.getView().getResolution();
+            var center = projectProvider.map.getView().getCenter();
+            var mapSize = projectProvider.map.getSize();
+            var pan = ol.animation.pan({
+              duration: 450,
+              source: center,
+              easing: ol.easing.inAndOut
+            });
+
+            projectProvider.map.beforeRender(pan);
+            projectProvider.map.getView().setCenter([
+              center[0]+resolution*offsetX*mapSize[0]/window.innerWidth,
+              center[1]
+            ]);
+          },
+          mapResizeListener: function(mapView) {
+            var currentScale = this.config._previewScale;
+            if (mapView.left !== this.config._left) {
+              if (mapView.left < this.config._left) {
+                var offset = (this.config._left-mapView.left)/2;
+                this._moveMap(offset);
+              }
+            }
+
+            this.config.screenSize[0] = window.innerWidth-mapView.right-mapView.left-100;
+            this.config.screenSize[1] = window.innerHeight-50;
+            this.events.mapResized();
+
+            if (mapView.left > this.config._left) {
+              var offset = (this.config._left-mapView.left)/2;
+              this._moveMap(offset*this.config._previewScale/currentScale);
+            }
+
+            this.config._left = mapView.left;
+          },
+          activate: function() {
+            glPanelManager.hideStatusBar();
+            var mapView = glPanelManager.mapView;
+            this.config._left = mapView.left;
+            this.config.screenSize[0] = window.innerWidth-mapView.right-mapView.left-100;
+            this.config.screenSize[1] = window.innerHeight-50;
+            this.events.toolActivated();
+
+            this._mapResizeListener = this.mapResizeListener.bind(this);
+            glPanelManager.on('mapViewResized', this._mapResizeListener);
+          },
+          deactivate: function() {
+            glPanelManager.showStatusBar();
+            this.events.toolDeactivated();
+            glPanelManager.un('mapViewResized', this._mapResizeListener);
           }
-
-          this.config.screenSize[0] = window.innerWidth-mapView.right-mapView.left-100;
-          this.config.screenSize[1] = window.innerHeight-50;
-          this.events.mapResized();
-
-          if (mapView.left > this.config._left) {
-            var offset = (this.config._left-mapView.left)/2;
-            this._moveMap(offset*this.config._previewScale/currentScale);
-          }
-
-          this.config._left = mapView.left;
-        },
-        activate: function() {
-          glPanelManager.hideStatusBar();
-          var mapView = glPanelManager.mapView;
-          this.config._left = mapView.left;
-          this.config.screenSize[0] = window.innerWidth-mapView.right-mapView.left-100;
-          this.config.screenSize[1] = window.innerHeight-50;
-          this.events.toolActivated();
-
-          this._mapResizeListener = this.mapResizeListener.bind(this);
-          glPanelManager.on('mapViewResized', this._mapResizeListener);
-        },
-        deactivate: function() {
-          glPanelManager.showStatusBar();
-          this.events.toolDeactivated();
-          glPanelManager.un('mapViewResized', this._mapResizeListener);
-        }
-      });
+        });
+      }
 
       $scope.fullScreenTool.initialize();
       toolsManager.tools.forEach(function(tool) {

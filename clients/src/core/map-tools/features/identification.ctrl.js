@@ -68,9 +68,9 @@
           "</Filter>"
         ].join("");
 
-        var layerName = $scope.tool.config.identificationLayer?
-          Layers.project2wfs[$scope.tool.config.identificationLayer] :
-          layersControl.getVisibleLayers(projectProvider.map).map(wfsLayerName).join(",");
+        var layerName = $scope.tool.config.identificationLayer === '_all_' ?
+          layersControl.getVisibleLayers(projectProvider.map).map(wfsLayerName).join(",") :
+          Layers.project2wfs[$scope.tool.config.identificationLayer];
         var params = {
           'VERSION': '1.0.0',
           'SERVICE': 'WFS',

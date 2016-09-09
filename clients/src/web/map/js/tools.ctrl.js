@@ -6,7 +6,7 @@
     .controller('ToolsController', ToolsController);
 
 
-  function ToolsController($scope, $timeout, $q, $mdDialog, $mdToast, projectProvider,
+  function ToolsController($scope, $timeout, $q, $mdToast, projectProvider,
                             gislabClient, glPanelManager, toolsManager, locationService) {
 
     /** ************************************************
@@ -227,7 +227,7 @@
         },
         config: {
           markerIcon: 'plus',
-          identificationLayer: '',
+          identificationLayer: '_all_',
           singleLayerResult: false,
           rowsPerPage: 5,
           limit: 10,

@@ -365,8 +365,14 @@ def get_project(request):
                 'code': 'EPSG:3857',
                 'is_geographic': False
             },
+            'position_precision': {
+                'decimal_places': 2
+            },
             'units': 'm',
-            'authentication': 'all'
+            'authentication': 'all',
+            'topics': [],
+            'layers': [],
+            'ows_url': ''
         })
         context['zoom_extent'] = form.cleaned_data['EXTENT'] or context['project_extent']
         context['base_layers'] = [OSM_LAYER]

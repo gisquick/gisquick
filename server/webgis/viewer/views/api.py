@@ -1,7 +1,6 @@
 from django.http import JsonResponse, HttpResponse
 from django.contrib.auth.decorators import login_required
 
-import webgis
 from webgis.viewer.views.project_utils import get_project, get_user_projects, \
     get_user_data, InvalidProjectException
 
@@ -29,8 +28,3 @@ def projects_json(request):
         'user': get_user_data(request.user)
     }
     return JsonResponse(data, safe=False)
-
-
-def gislab_version_json(request):
-    data = webgis.GISLAB_VERSION
-    return JsonResponse(data)

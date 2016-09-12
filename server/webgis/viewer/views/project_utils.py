@@ -334,7 +334,8 @@ def get_project(request):
             'selection_color': metadata.selection_color[:-2], #strip alpha channel,
             'position_precision': metadata.position_precision,
             'topics': metadata.topics,
-            'authentication': metadata.authentication
+            'authentication': metadata.authentication,
+            'plugin_version': metadata.plugin_version
         })
         if metadata.message:
             valid_until = datetime.datetime.strptime(metadata.message['valid_until'], "%d.%m.%Y").date()
@@ -342,9 +343,8 @@ def get_project(request):
                 context['message'] = metadata.message['text'].replace('\n', '<br />')
         # Update projects registry
         project_info = {
-            'gislab_version': metadata.gislab_version,
+            'plugin_version': metadata.plugin_version,
             'gislab_user': metadata.gislab_user,
-            'gislab_unique_id': metadata.gislab_unique_id,
             'publish_date': datetime.datetime.fromtimestamp(metadata.publish_date_unix),
             'last_display': datetime.datetime.now()
         }
@@ -377,7 +377,6 @@ def get_project(request):
         context['zoom_extent'] = form.cleaned_data['EXTENT'] or context['project_extent']
         context['base_layers'] = [OSM_LAYER]
 
-    #context['gislab_unique_id'] = GISLAB_VERSION.get('GISLAB_UNIQUE_ID', 'unknown')
     context['gislab_version'] = webgis.VERSION
     context['gislab_homepage'] = settings.GISLAB_HOMEPAGE
     context['gislab_documentation'] = settings.GISLAB_DOCUMENTATION_PAGE

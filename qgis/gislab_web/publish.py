@@ -51,8 +51,7 @@ class PublishPage(WizardPage):
 
         for param in (
                 'gislab_user',
-                'gislab_unique_id',
-                'gislab_version',
+                'plugin_version',
                 'title',
                 'abstract',
                 'contact_person',
@@ -209,16 +208,6 @@ class PublishPage(WizardPage):
         # construct tree item
         tree = self.dialog.config_summary
         tree.setColumnCount(1)
-
-        if self.plugin.run_in_gislab:
-            create_formatted_tree(tree.invisibleRootItem(),
-                                  { "General information" : [
-                                      "GIS.lab user: {GISLAB_USER}",
-                                      "GIS.lab ID: {GISLAB_UNIQUE_ID}",
-                                      "GIS.lab version: {GISLAB_VERSION}" ]
-                                  },
-                                  data
-            )
 
         project_item = create_formatted_tree(tree.invisibleRootItem(),
                                              { "Project" : [

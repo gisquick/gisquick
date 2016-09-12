@@ -13,6 +13,7 @@ import time
 import json
 import codecs
 import subprocess
+import ConfigParser
 from decimal import Decimal
 
 # Import the PyQt and QGIS libraries
@@ -31,7 +32,8 @@ from publish import PublishPage
 from confirmation import ConfirmationPage
 
 
-GISLAB_VERSION_FILE = "/etc/gislab_version"
+__metadata__ = ConfigParser.ConfigParser()
+__metadata__.read(os.path.join(os.path.dirname(__file__), 'metadata.txt'))
 
 
 class Node(object):
@@ -105,7 +107,6 @@ class WebGisPlugin:
 
     dialog = None
     project = None
-    run_in_gislab = False
 
     def __init__(self, iface):
         # Save reference to the QGIS interface
@@ -122,7 +123,6 @@ class WebGisPlugin:
 
             if qVersion() > '4.3.3':
                 QCoreApplication.installTranslator(self.translator)
-        self.run_in_gislab = os.path.exists(GISLAB_VERSION_FILE)
 
     def initGui(self):
         # Create action that will start plugin configuration
@@ -363,19 +363,8 @@ class WebGisPlugin:
             Dict[str, Any]: new metadata object
         """
         metadata = {}
-        gislab_version_data = {}
-        try:
-            with open(GISLAB_VERSION_FILE) as f:
-                param_pattern = re.compile('\s*(\w+)\s*\=\s*"([^"]*)"')
-                for line in f:
-                    match = param_pattern.match(line)
-                    if match:
-                        name, value = match.groups()
-                        gislab_version_data[name] = value
-        except IOError:
-            pass
-        metadata['gislab_unique_id'] = gislab_version_data.get('GISLAB_UNIQUE_ID', 'unknown')
-        metadata['gislab_version'] = gislab_version_data.get('GISLAB_VERSION', 'unknown')
+
+        metadata['plugin_version'] = __metadata__.get('general', 'version')
         metadata['gislab_user'] = os.environ['USERNAME'] if sys.platform == 'win32' else os.environ['USER']
         metadata['publish_date_unix'] = int(time.time())
         metadata['publish_date'] = time.ctime()

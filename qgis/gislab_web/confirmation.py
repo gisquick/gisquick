@@ -156,20 +156,6 @@ class ConfirmationPage(WizardPage):
         )
         tree.expandAll()
 
-        # Publish directory
-        if self.plugin.run_in_gislab:
-            self.dialog.label_publish_dir.setText(
-                "Publish directory: ~/Publish/{0}".format(
-                    os.environ['USER']
-                )
-            )
-            self.dialog.label_gislab_url.setText(
-                "Visit GIS.lab User page <a href=\"{0}/user\">{0}/user</a>"
-                " to launch this project in GIS.lab Web.".format(
-                    GISLAB_WEB_URL
-                )
-            )
-
         # Data sources
         self._datasources = {}
         vector_data_file = opt_value(self.plugin.metadata, 'vector_layers.filename')

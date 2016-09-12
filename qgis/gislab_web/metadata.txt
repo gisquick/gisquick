@@ -7,10 +7,10 @@ version=1.0.0
 author=Marcel Dancak
 email=dancakm@gmail.com
 
-homepage=http://imincik.github.io/gis-lab
+homepage=http://web.gislab.io
 icon=icon.png
 experimental=False
 deprecated=False
-tracker=https://github.com/imincik/gis-lab/issues
-repository=https://github.com/imincik/gis-lab
+tracker=https://github.com/gislab-npo/gislab-web/issues
+repository=https://github.com/gislab-npo/gislab-web
 tags=gis.lab,gislab

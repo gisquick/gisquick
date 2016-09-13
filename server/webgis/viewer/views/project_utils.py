@@ -343,7 +343,7 @@ def get_project(request):
                 context['message'] = metadata.message['text'].replace('\n', '<br />')
         # Update projects registry
         project_info = {
-            'plugin_version': metadata.plugin_version,
+            'plugin_version': metadata.plugin_version or '',
             'gislab_user': metadata.gislab_user,
             'publish_date': datetime.datetime.fromtimestamp(metadata.publish_date_unix),
             'last_display': datetime.datetime.now()

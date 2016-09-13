@@ -13,10 +13,10 @@ from django.utils.translation import ugettext as _
 import webgis
 from webgis.viewer import models
 from webgis.viewer import forms
+from webgis.viewer.views.reverse import user_page_url
 from webgis.viewer.views.project_utils import get_project, get_user_projects, \
     get_user_data, InvalidProjectException
 from webgis.libs.utils import secure_url, set_query_parameters
-
 
 
 @csrf_exempt
@@ -90,39 +90,37 @@ def user_projects(request, username):
         }
     else:
         if not username:
-            redirect_url = user_projects_url(request.user.username)
+            redirect_url = secure_url(request, user_page_url(request.user.username))
             return HttpResponseRedirect(redirect_url)
-        if username != request.user.username:
-            if not request.user.is_superuser:
+
+        if username == request.user.username or request.user.is_superuser:
+            # projects = [{
+            #     'title': _('Empty Project'),
+            #     'url': request.build_absolute_uri('/'),
+            # }]
+            # projects.extend(get_user_projects(request, username))
+            projects = get_user_projects(request, username)
+            data = {
+                'username': username,
+                'projects': projects,
+                'gislab_version': webgis.VERSION,
+                'gislab_homepage': settings.GISLAB_HOMEPAGE,
+                'gislab_documentation': settings.GISLAB_DOCUMENTATION_PAGE,
+                'user': get_user_data(request.user),
+                'status': 200
+            }
+        else:
+            try:
+                request.user = models.GislabUser.objects.get(username=username)
+            except models.GislabUser.DoesNotExist:
                 return HttpResponse(
-                    "Access Denied",
+                    "User does not exist.",
                     content_type='text/plain',
                     status=403
                 )
-            else:
-                try:
-                    request.user = models.GislabUser.objects.get(username=username)
-                except models.GislabUser.DoesNotExist:
-                    return HttpResponse(
-                        "User does not exist.",
-                        content_type='text/plain',
-                        status=403
-                    )
-
-        projects = [{
-            'title': _('Empty Project'),
-            'url': request.build_absolute_uri('/'),
-        }]
-        projects.extend(get_user_projects(request, username))
-        data = {
-            'username': username,
-            'projects': projects,
-            'gislab_version': webgis.VERSION,
-            'gislab_homepage': settings.GISLAB_HOMEPAGE,
-            'gislab_documentation': settings.GISLAB_DOCUMENTATION_PAGE,
-            'user': get_user_data(request.user),
-            'status': 200
-        }
+            data = {
+                'status': 403
+            }
 
     templateData = {
         'data': data,

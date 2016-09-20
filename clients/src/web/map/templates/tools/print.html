@@ -76,8 +76,10 @@
         <md-menu-item
           ng-repeat="format in ['pdf', 'png']"
           type="radio"
+          class="md-indent"
           ng-value="format"
           ng-model="tool.config.format">
+          <md-icon md-svg-icon="check"></md-icon>
           <md-button>{{ ::format }}</md-button>
         </md-menu-item>
 
@@ -92,8 +94,10 @@
         <md-menu-item
           ng-repeat="dpi in [96, 150, 300]"
           type="radio"
+          class="md-indent"
           ng-value="dpi"
           ng-model="tool.config.dpi">
+          <md-icon md-svg-icon="check"></md-icon>
           <md-button>{{ ::dpi }} dpi</md-button>
         </md-menu-item>
       </md-menu-content>

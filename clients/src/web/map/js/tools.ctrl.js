@@ -203,7 +203,7 @@
       /** *********************************************
        ***********    Identification Tool    **********
        ************************************************/
-      var hasQueryableLayers = projectProvider.layers.list.find(
+      var hasQueryableLayers = projectProvider.layers.list.some(
         function(layer_data) {return layer_data.queryable}
       );
       if (hasQueryableLayers) {

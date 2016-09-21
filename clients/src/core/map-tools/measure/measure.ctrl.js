@@ -151,25 +151,30 @@
         geometryType: 'LineString',
         mapProjection: mapProjection,
         geodesic: mapProjection.isGlobal(),
-        label: null,
+        _measureLength: function() {
+          var geom = this.feature.getGeometry();
+          this._lengthTotal = this.geodesic? geodesicLength(geom, mapProjection) : geom.getLength();
+        },
         clickHandler: function(evt) {
-          this._newSegment = true;
+          this.label.setPosition(this.feature.getGeometry().getLastCoordinate());
+          this._measureLength();
+          this.updateValue();
+
+          // reset last segment length after first 'pointermove' event
+          this._partialLength = this._lengthTotal;
         },
         moveHandler: function(evt) {
-          var geom = this.feature.getGeometry();
-          if (this._newSegment) {
-            this._partialLength = this._lengthTotal;
-            this._newSegment = false;
-          }
-
-          this._lengthTotal = this.geodesic? geodesicLength(geom, mapProjection) : geom.getLength();
-          /*
-          var count = geom.getFlatCoordinates().length;
-          var lastSegmentLength = ol.geom.flat.length.lineString(
-            geom.getFlatCoordinates(), count>4? count-4 : 0, count, 2
-          );*/
-          this.label.setPosition(this.feature.getGeometry().getLastCoordinate());
-          this.updateValue();
+          // execute mesurement with a slight delay for better accuracy
+          setTimeout(function() {
+            this._measureLength();
+            /*
+            var count = geom.getFlatCoordinates().length;
+            var lastSegmentLength = ol.geom.flat.length.lineString(
+              geom.getFlatCoordinates(), count>4? count-4 : 0, count, 2
+            );*/
+            this.label.setPosition(this.feature.getGeometry().getLastCoordinate());
+            this.updateValue();
+          }.bind(this), 20);
         },
         updateValue: function() {
           if (this._lengthTotal) {
@@ -214,26 +219,29 @@
         mapProjection: mapProjection,
         geodesic: mapProjection.isGlobal(),
         label: null,
-        moveHandler: function(evt) {
-          var geom = this.feature.getGeometry();
-          var pointsCount = geom.getLinearRing(0).getCoordinates().length;
-          if (pointsCount < 3) {
-            this._perimeter = 0;
-            this._area = 0;
-          } else {
-            this._area = this.geodesic? geodesicArea(geom, this.mapProjection) : geom.getArea();
-            if (this.geodesic) {
-              this._perimeter = geodesicPerimeter(geom, this.mapProjection);
-              this._area = geodesicArea(geom, this.mapProjection);
+        measureHandler: function() {
+          // execute mesurement with a slight delay for better accuracy
+          setTimeout(function() {
+            var geom = this.feature.getGeometry();
+            var pointsCount = geom.getLinearRing(0).getCoordinates().length;
+            if (pointsCount < 3) {
+              this._perimeter = 0;
+              this._area = 0;
             } else {
-              this._perimeter = ol.geom.flat.length.linearRing(
-                geom.getFlatCoordinates(), 0, pointsCount*2, 2
-              );
-              this._area = geom.getArea();
+              this._area = this.geodesic? geodesicArea(geom, this.mapProjection) : geom.getArea();
+              if (this.geodesic) {
+                this._perimeter = geodesicPerimeter(geom, this.mapProjection);
+                this._area = geodesicArea(geom, this.mapProjection);
+              } else {
+                this._perimeter = ol.geom.flat.length.linearRing(
+                  geom.getFlatCoordinates(), 0, pointsCount*2, 2
+                );
+                this._area = geom.getArea();
+              }
             }
-          }
-          this.label.setPosition(this.feature.getGeometry().getLastCoordinate());
-          this.updateValue();
+            this.label.setPosition(this.feature.getGeometry().getLastCoordinate());
+            this.updateValue();
+          }.bind(this), 20);
         },
         updateValue: function() {
           if (this._area > 0) {
@@ -247,7 +255,8 @@
         },
         drawstart: function(evt) {
           this.feature = evt.feature;
-          this._moveHandlerKey = projectProvider.map.on('pointermove', this.moveHandler, this);
+          this._clickHandlerKey = projectProvider.map.on('click', this.measureHandler, this);
+          this._moveHandlerKey = projectProvider.map.on('pointermove', this.measureHandler, this);
 
           // optimized angular data-binding updates
           var lastUpdatedValue;
@@ -260,6 +269,7 @@
           }, 80);
         },
         drawend: function(evt) {
+          projectProvider.map.unByKey(this._clickHandlerKey);
           projectProvider.map.unByKey(this._moveHandlerKey);
           clearInterval(this.updateTimer);
           // create feature's outline

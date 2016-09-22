@@ -43,7 +43,7 @@
       var view = projectProvider.map.getView();
       var mapScale = view.getScale();
       $scope.layers.list.forEach(function(layer_data) {
-        if (layer_data.visible) {
+        if (layer_data.visible && !layer_data.hidden) {
           if (
               (!layer_data.visibility_scale_max || mapScale <= layer_data.visibility_scale_max) &&
               (!layer_data.visibility_scale_min || mapScale >= layer_data.visibility_scale_min)

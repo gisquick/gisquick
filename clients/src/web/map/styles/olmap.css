@@ -163,6 +163,16 @@
   display: none;
 }
 
+.ol-attribution li > *::after {
+  color: #333;
+  content: "|";
+  pointer-events: none;
+  padding-left: 10px;
+}
+.ol-attribution li:last-child > *::after {
+  display: none;
+}
+
 #ol-scale-line-container {
   width: 150px;
   height: 30px;

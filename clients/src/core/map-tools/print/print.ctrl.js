@@ -84,7 +84,7 @@
       var overlaysLayer = projectProvider.map.getLayer('qgislayer');
       var copyrights = overlaysLayer.getSource().getAttributions().map(function(attribution) {
         return attribution.getHTML().replace('<a ', '<span ').replace('</a>', '</span>');
-      }).join('');
+      }).join('<span>&nbsp;|&nbsp;</span>');
 
       return createPrintParameters(
         layout,

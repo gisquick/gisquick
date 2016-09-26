@@ -1021,6 +1021,7 @@ class ProjectPage(WizardPage):
                     ).toRectF().getCoords()
                 else:
                     layer_extent = project_extent
+                is_hidden = layers_model.columnItem(layer_widget, 1).checkState() == Qt.Checked
                 layer_data = {
                     'name': layer.name(),
                     'serverName': layer.shortName(),
@@ -1028,8 +1029,8 @@ class ProjectPage(WizardPage):
                     'extent': layer_extent,
                     'projection': layer.crs().authid(),
                     'visible': self.plugin.iface.legendInterface().isLayerVisible(layer),
-                    'queryable': layer.id() not in non_identifiable_layers,
-                    'hidden': layers_model.columnItem(layer_widget, 1).checkState() == Qt.Checked,
+                    'queryable': not is_hidden and layer.id() not in non_identifiable_layers,
+                    'hidden': is_hidden,
                     'drawing_order': overlays_order.index(layer.id()),
                     'metadata': {
                         'title': layer.title(),

@@ -1104,7 +1104,7 @@ class ProjectPage(WizardPage):
             composition = composer.composition()
             map_composer = composition.getComposerMapById(0)
             map_rect = map_composer.rect()
-            composer_templates.append({
+            composer_data = {
                 # cannot get composer name other way
                 'name': composer.composerWindow().windowTitle(),
                 'width': composition.paperWidth(),
@@ -1120,7 +1120,14 @@ class ProjectPage(WizardPage):
                     item.id() for item in composition.items()
                         if isinstance(item, QgsComposerLabel) and item.id()
                 ]
-            })
+            }
+            grid = map_composer.grid()
+            if grid and grid.enabled():
+                composer_data['map']['grid'] = {
+                    'intervalX': grid.intervalX(),
+                    'intervalY': grid.intervalY(),
+                }
+            composer_templates.append(composer_data)
         metadata['composer_templates'] = composer_templates
 
         metadata['message'] = None

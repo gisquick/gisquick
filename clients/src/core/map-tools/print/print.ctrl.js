@@ -21,10 +21,6 @@
 
     function createPrintParameters(layout, layers, extent, options) {
       var config = tool.config;
-      var overlaysLayer = projectProvider.map.getLayer('qgislayer');
-      var copyrights = overlaysLayer.getSource().getAttributions().map(function(attribution) {
-        return attribution.getHTML().replace('<a ', '<span ').replace('</a>', '</span>');
-      }).join('');
 
       var params = {
         'SERVICE': 'WMS',
@@ -40,9 +36,13 @@
 
         'gislab_project': tool.config.title,
         'gislab_author': tool.config.author,
-        'gislab_contact': tool.config.contact,
-        'gislab_copyrights': copyrightsTemplate.format(copyrights)
+        'gislab_contact': tool.config.contact
       };
+      if (layout.map.grid) {
+        params['map0:GRID_INTERVAL_X'] = layout.map.grid.intervalX;
+        params['map0:GRID_INTERVAL_Y'] = layout.map.grid.intervalY;
+      }
+
       var labels = tool.data[config.layout.name].labels;
       labels.forEach(function(label) {
         if (label.value) {
@@ -79,10 +79,18 @@
       ];
       // rotation angle in degrees
       tool.config.rotation = projectProvider.map.getView().getRotation()*180/Math.PI;
+
+      // compose copyrights of visible layers
+      var overlaysLayer = projectProvider.map.getLayer('qgislayer');
+      var copyrights = overlaysLayer.getSource().getAttributions().map(function(attribution) {
+        return attribution.getHTML().replace('<a ', '<span ').replace('</a>', '</span>');
+      }).join('');
+
       return createPrintParameters(
         layout,
         layersControl.getVisibleLayers(projectProvider.map),
-        extent
+        extent,
+        {gislab_copyrights: copyrightsTemplate.format(copyrights)}
       );
     }
 
@@ -156,6 +164,7 @@
       console.log('SETUP PRINT LAYOUT');
       // console.log(tool.config);
       tool.config.layout = printLayout;
+      updateVisiblePreviewImage();
       var width = mmToPx(printLayout.width);
       var height = mmToPx(printLayout.height);
       var screenSize = tool.config.screenSize;
@@ -212,16 +221,37 @@
       }
     }
 
+    function printTemplateUrl(layout, scale) {
+      var extent = projectProvider.map.getView().calculateExtent([layout.map.width, layout.map.height]);
+      var params = createPrintParameters(
+        layout,
+        [], // empty map
+        extent,
+        {'DPI': 96, 'FORMAT': 'png', 'map0:SCALE': scale}
+      );
+      return gislabClient.encodeUrl(projectProvider.data.ows_url, params);
+    }
+
+    function updateVisiblePreviewImage() {
+      if (!tool.config.layout.previewTemplates) return;
+
+      var scale = projectProvider.map.getView().getScale();
+      tool.config.layout.previewTemplates.forEach(function(previewTemplate) {
+        previewTemplate.visible = previewTemplate.scale === scale;
+      });
+    }
+
     function initializePrintPreview() {
+      var mapScale = projectProvider.map.getView().getScale();
       tool.config.layouts.forEach(function(layout) {
-        var extent = projectProvider.map.getView().calculateExtent([layout.map.width, layout.map.height]);
-        var params = createPrintParameters(
-          layout,
-          [], // empty map
-          extent,
-          {'DPI': 96, 'FORMAT': 'png', 'map0:SCALE': '1000'}
-        );
-        layout.templateUrl = gislabClient.encodeUrl(projectProvider.data.ows_url, params);
+        var templates = projectProvider.data.scales.map(function(scale) {
+          return {
+            url: printTemplateUrl(layout, scale),
+            scale: scale,
+            visible: scale === mapScale
+          };
+        });
+        layout.previewTemplates = templates;
       });
 
       $http.get(tool.previewTemplate, {cache: $templateCache})
@@ -254,6 +284,13 @@
       if (tool.config.layout) {
         setupPrintLayout(tool.config.layout);
       }
+      // map scale change event
+      tool._zoomListener = projectProvider.map.getView().on(
+        'change:resolution',
+        function(evt) {
+          $timeout(updateVisiblePreviewImage);
+        }
+      );
     };
 
     tool.events.toolDeactivated = function() {
@@ -261,6 +298,7 @@
       tool._previewElem.css('display', 'none');
       removeMapEventsTransform();
 
+      projectProvider.map.getView().un('change:position', tool._zoomListener);
       // reset map scale
       scaleMap(100);
       tool.config._previewScale = 1;

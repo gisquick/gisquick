@@ -27,7 +27,17 @@
   box-sizing: content-box;
 }
 
+.print-templates-stack {
+  position: relative;
+}
 .print-area-image {
+  position: absolute;
+  width: inherit;
+  height: inherit;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   transition: 0.45s all cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
 }
 

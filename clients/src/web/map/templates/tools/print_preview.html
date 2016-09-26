@@ -107,16 +107,21 @@
           </mask>
         </defs>
       </svg>
-      <!-- Print template image -->
-      <img
+      <!-- Print template image (for each map scale) -->
+      <div
+        class="print-mask-{{ ::$index }} print-templates-stack"
         ng-style="{
           width: tool.config.previewWidth,
           height: tool.config.previewHeight
-        }"
-        class="print-mask-{{ ::$index }} print-area-image"
-        draggable="false"
-        ng-src="{{ ::layout.templateUrl }}">
-      </img>
+        }">
+        <img
+          ng-repeat="template in ::layout.previewTemplates"
+          class="print-area-image"
+          draggable="false"
+          ng-if="template.visible"
+          ng-src="{{ ::template.url }}">
+        </img>
+      </div>
       <!-- Map area element (border) -->
       <div
         class="print-preview-map"

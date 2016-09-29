@@ -34,9 +34,10 @@ Web.
 
 ### GIS.lab Web User Console
 
-TODO: screenshot
-
 * projects and OWS services management
+* user account information
+
+![GIS.lab Web (User Console)](doc/screen/user-console.png)
 
 
 ### GIS.lab Mobile
@@ -54,7 +55,7 @@ TODO: screenshot
 ## Technologies
 * QGIS Desktop and Mapserver
 * OpenLayers 3
-* AngularJS, Angular UI, Angular Material
+* AngularJS, Angular Material
 * Onsen
 * Cordova
 * Django

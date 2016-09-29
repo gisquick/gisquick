@@ -28,7 +28,7 @@
       </md-icon>
       <md-tooltip
         id="main-panel-toggle-tooltip"
-        md-delay="1000"
+        md-delay="2000"
         md-direction="right">
         {{ ui.manager.mapView.left === 0? 'Show panel' : 'Hide panel' }}
       </md-tooltip>
@@ -181,7 +181,7 @@
       <md-icon
         md-svg-icon="north-arrow">
       </md-icon>
-      <md-tooltip md-delay="1000" md-direction="left">Reset rotation</md-tooltip>
+      <md-tooltip md-delay="2000" md-direction="left">Reset rotation</md-tooltip>
     </div>
 
     <md-button
@@ -195,7 +195,7 @@
         md-svg-icon="{{ geolocationTool.state===2? 'tracking' : 'target' }}">
       </md-icon>
       <div class="location-toast"></div>
-      <md-tooltip md-delay="1000" md-direction="left">Geolocation</md-tooltip>
+      <md-tooltip md-delay="2000" md-direction="left">Geolocation</md-tooltip>
     </md-button>
 
     <div
@@ -204,13 +204,13 @@
         <md-icon
           md-svg-icon="plus">
         </md-icon>
-        <md-tooltip md-delay="1000" md-direction="left">Zoom out</md-tooltip>
+        <md-tooltip md-delay="2000" md-direction="left">Zoom out</md-tooltip>
       </div>
       <div>
         <md-icon
           md-svg-icon="minus">
         </md-icon>
-        <md-tooltip md-delay="1000" md-direction="left">Zoom in</md-tooltip>
+        <md-tooltip md-delay="2000" md-direction="left">Zoom in</md-tooltip>
       </div>
     </div>
 
@@ -220,7 +220,7 @@
       class="map-button zoom-to-max-button"
       ng-click="zoomToInitialExtent()">
       <md-icon md-svg-icon="zoom-max"></md-icon>
-      <md-tooltip md-delay="1000" md-direction="left">Zoom to max</md-tooltip>
+      <md-tooltip md-delay="2000" md-direction="left">Zoom to max</md-tooltip>
     </md-button>
 
   </div>

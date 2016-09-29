@@ -123,8 +123,8 @@ md-menu-content .md-button:not([disabled]):hover,
 md-menu-content .md-button.md-focused:not([disabled]) {
   background-color: #ffffe0!important;
 }
-md-select-menu md-option[selected],
-md-select-menu md-option[selected]:focus {
+md-select-menu md-content md-option[selected],
+md-select-menu md-content md-option[selected]:focus {
   color: rgb(0, 170, 212);
 }
 

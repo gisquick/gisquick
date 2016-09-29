@@ -645,6 +645,14 @@ md-dialog.md-dialog-fullscreen {
   border-radius: 0;
 }
 
-md-dialog md-dialog-content p {
+md-dialog.about-dialog md-dialog-content p {
   padding: 0 3px;
+}
+
+md-dialog.notification-dialog md-dialog-content p {
+  padding: 0 16px;
+}
+
+md-dialog md-tabs {
+  padding: 0 5px;
 }

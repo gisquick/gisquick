@@ -107,7 +107,7 @@
             if (!locationService.lastKnownPosition()) {
               $mdToast.show({
                 template: '<div class="toast">\
-                  <md-icon class="info" md-svg-icon="circle-i-outline"></md-icon>\
+                  <md-icon class="status" md-svg-icon="circle-i-outline"></md-icon>\
                   Waiting for location\
                   <md-icon class="arrow" md-svg-icon="triangle"></md-icon>\
                   </div>',
@@ -123,7 +123,6 @@
                 tool._zoomToLocation(geolocation);
                 setTimeout(function() {
                   projectProvider.map.once('moveend', function() {
-                    console.log('map moved');
                     if (tool.state === states.ACTIVE) {
                       tool.state = states.INACTIVE;
                       tool.active = false;
@@ -142,6 +141,21 @@
                 }, 7500);
               }, function(error) {
                 console.log(error);
+                $timeout(function() {
+                  $mdToast.show({
+                    template: '<div class="toast error">\
+                      <md-icon class="status" md-svg-icon="circle-i-outline"></md-icon>\
+                      Failed to find location\
+                      <md-icon class="arrow" md-svg-icon="triangle"></md-icon>\
+                      </div>',
+                    parent: '.location-toast',
+                    hideDelay: 4000,
+                    autoWrap: false
+                  });
+                  locationService.deactivate(projectProvider.map);
+                  tool.state = states.INACTIVE;
+                  tool.active = false;
+                }, 1000);
               }
             );
             break;

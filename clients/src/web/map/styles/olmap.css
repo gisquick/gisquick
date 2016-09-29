@@ -64,9 +64,6 @@
   transition: 0.45s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
   z-index: 99;
   text-transform: none;
-
-  border-radius: 7px;
-  background-color: rgba(0, 170, 212, 1);
   color: #fff;
 }
 
@@ -76,13 +73,15 @@
   font-size: 13px;
   overflow: visible;
   text-align: center;
+  background-color: rgb(0, 170, 212);
+  border-radius: 7px;
 }
 
 .location-toast.md-toast-open-bottom {
   transform: translate(0, 0);
   opacity: 1;
 }
-.location-toast md-icon.info {
+.location-toast md-icon.status {
   position: absolute;
   left: 2px;
   width: 20px;
@@ -96,8 +95,21 @@
   position: absolute;
   right: -6px;
   top: 12px;
-  color: rgba(0, 170, 212, 1);
+  color: rgb(0, 170, 212);
+  fill: rgb(0, 170, 212);
 }
+
+.location-toast .toast.error {
+  background-color: #e53935;
+}
+.location-toast .toast.error md-icon.status {
+  transform: rotate3d(1, 0, 0, 180deg);
+}
+.location-toast .toast.error md-icon.arrow {
+  color: #e53935;
+  fill: #e53935;
+}
+
 .md-button.location-button.active:not([disabled]) {
   background-color: rgb(0, 170, 212)!important;
 }
@@ -136,6 +148,9 @@
 .ol-rotate .md-button {
   margin: 0;
   background-color: transparent;
+}
+.ol-rotate.ol-hidden {
+  pointer-events: none;
 }
 
 #map-bottom-area {

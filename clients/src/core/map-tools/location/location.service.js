@@ -8,9 +8,11 @@
   function locationService($q, staticResources) {
     function LocationService() {
       this.watchID = null;
-      // options = options || {timeout: 20000, enableHighAccuracy: true, frequency: 5000};
       this.geolocation = new ol.Geolocation({
-        // trackingOptions: options,
+        trackingOptions: {
+          timeout: 20000,
+          enableHighAccuracy: true
+        },
         tracking: false
       });
       this.trackingStyle = new ol.style.Style({
@@ -66,7 +68,7 @@
       var location_layer = map.getLayer('__location_layer');
       if (!location_layer) {
         console.log('creating location layer');
-
+        this.geolocation.setProjection(map.getView().getProjection());
         var positionFeature = new ol.Feature();
         this.accuracyFeature = new ol.Feature();
         location_layer = new ol.layer.Vector({
@@ -86,35 +88,37 @@
 
     LocationService.prototype.startTracking = function(map, callback) {
       this.trackingCallback = callback;
-      this.geolocation.setProjection(map.getView().getProjection());
-      this.geolocation.setTracking(true);
+      this.trackingModeEnabled = true;
+      this._clearWatchers();
       this._activate(map);
+
       this.locationFeature.setStyle(this.trackingStyle);
-      this.geolocation.on('error', this._errorHandler, this);
-      this.geolocation.on('change:position', this._successHandler, this);
+
+      // this.geolocation.on('change:position', this._successHandler, this);
+      this._changeKeyListener = this.geolocation.on('change', this._successHandler, this);
+      this._errorKeyListener = this.geolocation.on('error', this._errorHandler, this);
+
+      this.geolocation.setTracking(true);
     };
 
     LocationService.prototype.showPosition = function(map) {
       this.trackingCallback = null;
       var task = $q.defer();
-      this.geolocation.setProjection(map.getView().getProjection());
-      this.geolocation.once('change:accuracyGeometry', function() {
-        console.log('change:accuracyGeometry');
-        this.accuracyFeature.setGeometry(this.geolocation.getAccuracyGeometry());
-      }, this);
-      this.geolocation.once('change:position', function() {
-        console.log('change:position');
-        this.geolocation.setTracking(false);
+
+      this._changeKeyListener = this.geolocation.once('change', function() {
+        if (!this.trackingModeEnabled) {
+          this.geolocation.setTracking(false);
+          this._clearWatchers();
+        }
         this._successHandler();
         task.resolve(this.geolocation);
       }, this);
 
+      this._errorKeyListener = this.geolocation.once('error', task.reject);
+
       this._activate(map);
       this.locationFeature.setStyle(this.locationStyle);
       this.geolocation.setTracking(true);
-      this.geolocation.once('error', function(error) {
-        task.reject(error);
-      }, this);
       return task.promise;
     };
 
@@ -122,10 +126,21 @@
       return this.geolocation.getPosition();
     };
 
+    LocationService.prototype._clearWatchers = function() {
+      if (this._changeKeyListener) {
+        this.geolocation.un('change', this._changeKeyListener);
+        this._changeKeyListener = null;
+      }
+      if (this._errorKeyListener) {
+        this.geolocation.un('error', this._errorKeyListener);
+        this._errorKeyListener = null;
+      }
+    };
+
     LocationService.prototype.deactivate = function(map) {
       this.geolocation.setTracking(false);
-      this.geolocation.un('error', this._errorHandler);
-      this.geolocation.un('change:position', this._successHandler);
+      this.trackingModeEnabled = false;
+      this._clearWatchers();
       var location_layer = map.getLayer('__location_layer');
       if (location_layer) {
         location_layer.setVisible(false);

@@ -5,6 +5,9 @@
   "keywords": [],
   "repository": {},
   "license": "GPL-2.0",
+  "scripts": {
+    "postinstall": "sh postinstall.sh"
+  },
   "dependencies": {
     "angular": "~1.5",
     "angular-animate": "~1.5",

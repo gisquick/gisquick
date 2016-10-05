@@ -218,6 +218,7 @@
      * @param {object} projectData Project configuration
      */
     function initializeProject(projectData) {
+      document.title = projectData.root_title;
       $scope.title = projectData.root_title;
       $scope.showApp = true;
 

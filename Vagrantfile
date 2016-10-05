@@ -35,6 +35,7 @@ Vagrant.configure(2) do |config|
       # deployment
       server.vm.provision "install", type: "ansible" do |ansible|
         ansible.playbook = "provision/deployment.yml"
+        ansible.force_remote_user = false
         ansible.verbose = "vv"
       end
 

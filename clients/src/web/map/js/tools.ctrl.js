@@ -225,9 +225,9 @@
           name: 'identification',
           tooltip: 'Identify features by mouse click',
           ui: {
+            icon: 'identification',
             primaryPanel: {
               title: 'Identification',
-              icon: 'circle-i',
               template: 'templates/tools/identification/form.html'
             },
             secondaryPanel: {
@@ -294,9 +294,9 @@
         name: 'measure',
         tooltip: 'Mesure coordinates, length and area',
         ui: {
+          icon: 'ruler',
           primaryPanel: {
             title: 'Measure',
-            icon: 'ruler',
             template: 'templates/tools/measure.html'
           }
         },
@@ -440,9 +440,9 @@
           name: 'print',
           tooltip: 'Print output creation',
           ui: {
+            icon: 'printer',
             primaryPanel: {
               title: 'Print',
-              icon: 'printer',
               template: 'templates/tools/print.html'
             }
           },

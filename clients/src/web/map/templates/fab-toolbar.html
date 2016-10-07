@@ -13,12 +13,12 @@
   </md-fab-trigger>
   <md-fab-actions>
     <md-button
-      ng-repeat="tool in ::toolsManager.tools | filter:{ui:{primaryPanel:{icon:'!!'}}} track by tool.name"
+      ng-repeat="tool in ::toolsManager.tools | filter:{ui:{icon:'!!'}} track by tool.name"
       class="md-fab md-raised md-mini"
       ng-class="{active: toolsManager.activeTool===tool}"
       ng-click="toolsManager.activateTool(tool)">
       <md-icon
-        md-svg-src="{{ ::tool.ui.primaryPanel.icon }}"
+        md-svg-src="{{ ::tool.ui.icon }}"
         aria-label="">
       </md-icon>
       <md-tooltip md-delay="2000" md-direction="right">{{ ::tool.tooltip }}</md-tooltip>

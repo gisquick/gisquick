@@ -664,6 +664,19 @@ gl-paginator {
   padding-bottom: 4px;
 }
 
+.bottom-bar .identification-table md-tab-item > span:not(.hidden)::before {
+  position: absolute;
+  content: "";
+  width: 1px;
+  background-color: #bbb;
+  top: 4px;
+  bottom: 4px;
+  left: 0;
+}
+.bottom-bar .identification-table md-pagination-wrapper {
+  left: -1px;
+}
+
 .bottom-bar .attribute-table md-tab-item {
   padding-left: 1px;
   padding-right: 0;

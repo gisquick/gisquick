@@ -22,60 +22,25 @@
         <md-list
           gl-parent-scrollbar="vertical"
           class="about properties-list">
-          <md-list-item>
-            <label>Title:</label>
-            <p ng-bind="::project.root_title"></p>
-          </md-list-item>
-          <md-list-item>
-            <label>Author:</label>
-            <p ng-bind="::project.author"></p>
-          </md-list-item>
-          <md-list-item>
-            <label>E-mail:</label>
-            <p ng-bind="::project.email"></p>
-          </md-list-item>
-          <md-list-item>
-            <label>Phone:</label>
-            <p ng-bind="::project.phone"></p>
-          </md-list-item>
-          <md-list-item>
-            <label>Organization:</label>
-            <p ng-bind="::project.organization"></p>
-          </md-list-item>
-          <md-list-item>
-            <label>Abstract:</label>
-            <p ng-bind="::project.abstract"></p>
-          </md-list-item>
-          <md-list-item>
+          <p><label>Title:</label> {{ ::project.root_title }}</p>
+          <p><label>Author:</label> {{ ::project.author }}</p>
+          <p><label>E-mail:</label> {{ ::project.email }}</p>
+          <p><label>Phone:</label> {{ ::project.phone }}</p>
+          <p><label>Organization:</label> {{ ::project.organization }}</p>
+          <p><label>Abstract:</label> {{ ::project.abstract }}</p>
+          <p>
             <label>Online resource:</label>
-            <p>
-              <a
-                target="_blank"
-                ng-href="{{ ::project.online_resource }}">
-                {{ ::project.online_resource }}
-              </a>
-            </p>
-          </md-list-item>
-          <md-list-item>
-            <label>Fees:</label>
-            <p ng-bind="::project.fees"></p>
-          </md-list-item>
-          <md-list-item>
-            <label>Access constraints:</label>
-            <p ng-bind="::project.access_constrains"></p>
-          </md-list-item>
-          <md-list-item>
-            <label>Keywords list:</label>
-            <p>{{ ::project.keyword_list.join(', ') }}</p>
-          </md-list-item>
-          <md-list-item>
-            <label>Publish date:</label>
-            <p ng-bind="::project.publish_date"></p>
-          </md-list-item>
-          <md-list-item>
-            <label>Plugin version:</label>
-            <p ng-bind="::project.plugin_version"></p>
-          </md-list-item>
+            <a
+              target="_blank"
+              ng-href="{{ ::project.online_resource }}">
+              {{ ::project.online_resource }}
+            </a>
+          </p>
+          <p><label>Fees:</label> {{ ::project.fees }}</p>
+          <p><label>Access constraints:</label> {{ ::project.access_constrains }}</p>
+          <p><label>Keywords list:</label> {{ ::project.keyword_list.join(', ') }}</p>
+          <p><label>Publish date:</label> {{ ::project.publish_date }}</p>
+          <p><label>Plugin version:</label> {{ ::project.plugin_version }}</p>
         </md-list>
       </md-tab>
 
@@ -83,30 +48,23 @@
         <md-list
           gl-parent-scrollbar="vertical"
           class="about properties-list">
-          <md-list-item>
-            <label>Version:</label>
-            <p ng-bind="::project.gislab_version"></p>
-          </md-list-item>
-          <md-list-item gl-open-in-browser="{{ ::project.gislab_homepage }}">
+          <p><label>Version:</label> {{ ::project.gislab_version }}</p>
+          <p gl-open-in-browser="{{ ::project.gislab_homepage }}">
             <label>Home page:</label>
-            <p>
-              <a
-                target="_blank"
-                ng-href="{{ ::project.gislab_homepage }}">
-                {{ ::project.gislab_homepage }}
-              </a>
-            </p>
-          </md-list-item>
-          <md-list-item>
+            <a
+              target="_blank"
+              ng-href="{{ ::project.gislab_homepage }}">
+              {{ ::project.gislab_homepage }}
+            </a>
+          </p>
+          <p gl-open-in-browser="::project.gislab_documentation">
             <label>Documentation:</label>
-            <p>
-              <a
-                target="_blank"
-                ng-href="{{ ::project.gislab_documentation }}">
-                {{ ::project.gislab_documentation }}
-              </a>
-            </p>
-          </md-list-item>
+            <a
+              target="_blank"
+              ng-href="{{ ::project.gislab_documentation }}">
+              {{ ::project.gislab_documentation }}
+            </a>
+          </p>
         </md-list>
       </md-tab>
 

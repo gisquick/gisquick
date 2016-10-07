@@ -352,6 +352,7 @@ md-icon.md-secondary,
   margin-left: 8px;
   width: 16px;
   height: 16px;
+  margin-bottom: 2px;
 }
 
 
@@ -646,7 +647,9 @@ md-dialog.md-dialog-fullscreen {
 }
 
 md-dialog.about-dialog md-dialog-content p {
-  padding: 0 3px;
+  padding: 10px 16px;
+  margin: 0;
+  font-size: 14px;
 }
 
 md-dialog.notification-dialog md-dialog-content p {

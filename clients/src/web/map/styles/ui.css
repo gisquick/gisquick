@@ -656,3 +656,25 @@ md-dialog.notification-dialog md-dialog-content p {
 md-dialog md-tabs {
   padding: 0 5px;
 }
+
+
+md-tooltip .md-content {
+  font-size: 12.5px;
+  font-weight: normal;
+  opacity: 1!important;
+}
+
+md-tooltip.multiline-tooltip {
+  transform: translate3d(0, -2px, 0);
+}
+md-tooltip.multiline-tooltip .md-content {
+  opacity: 1;
+  height: auto;
+  max-width: 300px;
+  white-space: normal;
+  line-height: 18px;
+}
+md-tooltip.multiline-tooltip .md-content p {
+  padding: 0;
+  margin: 5px 2px;
+}

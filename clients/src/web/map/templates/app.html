@@ -117,6 +117,25 @@
                 }}">
               </md-icon>
             </md-button>
+            <md-button
+              md-no-ink
+              aria-label="Info"
+              class="right icon-hover">
+              <md-icon
+                md-svg-icon="help">
+              </md-icon>
+              <md-tooltip
+                class="multiline-tooltip"
+                md-delay="350"
+                md-direction="right">
+                <p>
+                  <b>{{ ::project.data.root_title }}</b>
+                </p>
+                <p>
+                  {{ ::project.data.abstract }}
+                </p>
+              </md-tooltip>
+            </md-button>
           </div>
           <div
             id="content-panel"

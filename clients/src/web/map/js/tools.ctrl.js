@@ -443,10 +443,10 @@
             icon: 'printer',
             primaryPanel: {
               title: 'Print',
-              template: 'templates/tools/print.html'
+              template: 'templates/tools/print/print.html'
             }
           },
-          previewTemplate: 'templates/tools/print_preview.html',
+          previewTemplate: 'templates/tools/print/print_preview.html',
           config: {
             previewParentElement: projectProvider.map.getTargetElement().parentElement,
             layouts: undefined, // define in initialization function

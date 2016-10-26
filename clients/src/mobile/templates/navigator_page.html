@@ -1,0 +1,18 @@
+<div class="page-content" layout="column">
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <md-button
+        aria-label="{{ ::title }}"
+        class="icon-hover"
+        ng-click="navigator.back()">
+        <md-icon md-svg-icon="arrow-left"></md-icon>
+      </md-button>
+      <h2>
+        <span>{{ ::title }}</span>
+      </h2>
+    </div>
+  </md-toolbar>
+
+  <md-content flex layout="column" ng-transclude></md-content>
+
+</div>

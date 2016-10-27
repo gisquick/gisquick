@@ -54,6 +54,11 @@
             server: GISLAB_WEB_SERVER
           });
         })
+        .decorator('mdTooltipDirective',function($delegate){
+          var onTouchDevice = navigator.maxTouchPoints > 0;
+          var version = onTouchDevice? 1 : 0;
+          return [$delegate[version]];
+        })
         .run(function(userPageLoader, gislabClient) {
           gislabClient.login('vagrant', 'vagrant')
             .then(function() {

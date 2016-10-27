@@ -62,6 +62,7 @@
     "ol.control.defaults",
     "ol.control.Rotate",
     "ol.control.ScaleLine",
+    "ol.control.Zoom",
     "ol.control.MousePosition",
     "ol.control.Attribution",
     "ol.control.Attribution#getCollapsed",

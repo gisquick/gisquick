@@ -19,10 +19,6 @@
     <script type="text/javascript" src="{% static "js/app.min.js" %}"></script>
 
     <script type="text/javascript">
-      // temporary automatic setting of project parameter - handful for testing on mobile devices
-      // if (!location.search) {
-      //   location.search = "PROJECT=vagrant/natural-earth/central-europe";
-      // }
       angular.module('gl.web')
         .constant('staticResources', {
           'text-logo': '{% static "styles/text_logo.svg" %}',
@@ -38,6 +34,11 @@
           var data = JSON.parse('{{ jsonData|default:"{}"|escapejs }}');
           gislabClient.userInfo = data.user;
           projectProvider.setProjectData(data.project);
+        })
+        .decorator('mdTooltipDirective',function($delegate) {
+          var onTouchDevice = navigator.maxTouchPoints > 0;
+          var version = onTouchDevice? 1 : 0;
+          return [$delegate[version]];
         });
     </script>
   </head>

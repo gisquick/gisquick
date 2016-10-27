@@ -230,9 +230,6 @@ md-bottom-sheet {
   height: 18px;
 }
 
-md-progress-linear.md-default-theme, md-progress-linear .md-bar {
-  background-color: rgb(0, 170, 212);
-}
 
 .filter-row .md-input-has-placeholder:not(.md-input-has-value) .md-input,
 .filter-row md-select .md-select-value.md-select-placeholder {

@@ -35,13 +35,16 @@ gl-navigator > md-content {
 
 .navigator-page {
   transition: 0.4s cubic-bezier(0.35, 0, 0.25, 1);
+  -webkit-transition-property: opacity,transform;
   transition-property: opacity,transform;
+  -webkit-transform: translate3d(0, 40%, 0);
   transform: translate3d(0, 40%, 0);
   opacity: 0.001;
   pointer-events: none;
 }
 
 .navigator-page.enter {
+  -webkit-transform: none;
   transform: none;
   opacity: 1;
   pointer-events: auto;
@@ -61,12 +64,14 @@ md-toolbar:not(.md-menu-toolbar) {
   left: 0;
   right: 0;
   text-align: center;
+  pointer-events: none;
 }
 
 md-toolbar,
 .md-toolbar-tools {
   min-height: 48px;
   height: 48px;
+  line-height: 48px;
 }
 md-toolbar .md-button {
   min-width: 64px;
@@ -87,6 +92,7 @@ md-icon.list-right-icon {
 .navigator-page .bottom-toolbar {
   height: 48px;
   max-height: 48px;
+  line-height: 48px;
   padding: 0;
 }
 
@@ -190,6 +196,9 @@ md-tabs.wizard .wizard-header {
   text-align: center;
   margin: 0;
 }
+.wizard-actions .md-button {
+  margin: 0;
+}
 
 md-dialog.progress-dialog {
   background-color: rgba(0,0,0,0.8);
@@ -211,4 +220,18 @@ md-dialog.progress-dialog .title {
 
 .settings-list.projects {
   margin-bottom: 6px;
+}
+
+
+
+#map-status-bar {
+  display: none!important;
+}
+#map-bottom-area {
+  bottom: 0!important;
+  transition: none!important;
+}
+.map-control-container {
+  bottom: 0!important;
+  transition: none!important;
 }

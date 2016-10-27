@@ -27,12 +27,16 @@
   class="bottom-toolbar">
   <md-button
     flex
+    md-no-ink
+    aria-label="Save"
     ng-click="saveProfile($settings.serverUrl, $settings.username, $settings.password)"
     type="submit">
     Save profile
   </md-button>
   <md-button
     flex
+    md-no-ink
+    aria-label="Select profile"
     ng-click="
       navigator.pushPage({
         title: 'Select profile',

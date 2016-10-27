@@ -538,7 +538,9 @@ md-tabs > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper > md-ink-bar 
   transition: 0.45s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
 }
 .expanded .accordion-icon {
-  transform: rotate(180deg);
+  -webkit-transform: rotate3d(0, 0, 1, 180deg);
+  transform: rotate3d(0, 0, 1, 180deg);
+  -webkit-transform-origin: 50% 50%;
   transform-origin: 50% 50%;
 }
 
@@ -593,12 +595,18 @@ md-tab-content:not([.md-dynamic-height]) {
 
 @media (max-width: 900px) {
   .about-dialog {
-    min-width: 60%;
+    min-width: 70%;
+    width: auto
   }
 }
-@media (min-width: 900px) {
+@media (min-width: 901px) and (max-width: 1200px) {
   .about-dialog {
-    min-width: 35%;
+    min-width: 50%;
+  }
+}
+@media (min-width: 1201px) {
+  .about-dialog {
+    min-width: 40%;
   }
 }
 
@@ -668,6 +676,7 @@ md-tooltip .md-content {
 }
 
 md-tooltip.multiline-tooltip {
+  -webkit-transform: translate3d(0, -2px, 0);
   transform: translate3d(0, -2px, 0);
 }
 md-tooltip.multiline-tooltip .md-content {

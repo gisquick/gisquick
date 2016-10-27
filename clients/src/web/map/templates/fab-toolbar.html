@@ -13,7 +13,8 @@
   </md-fab-trigger>
   <md-fab-actions>
     <md-button
-      ng-repeat="tool in ::toolsManager.tools | filter:{ui:{icon:'!!'}} track by tool.name"
+      ng-repeat="tool in toolsManager.tools track by tool.name"
+      ng-if="::tool.ui.icon"
       class="md-fab md-raised md-mini"
       ng-class="{active: toolsManager.activeTool===tool}"
       ng-click="toolsManager.activateTool(tool)">

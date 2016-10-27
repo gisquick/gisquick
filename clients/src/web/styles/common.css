@@ -102,3 +102,19 @@ md-input-container.md-input-focused:not(.md-input-invalid) .md-input {
 md-input-container.md-input-focused:not(.md-input-invalid) label {
     color: rgb(0, 170, 212);
 }
+
+md-switch:not([disabled]).md-checked .md-bar {
+  background-color: rgb(0, 170, 212);
+}
+
+md-dialog .md-button.md-primary {
+  color: #555;
+}
+
+md-progress-linear.md-default-theme,
+md-progress-linear .md-bar {
+  background-color: rgb(0, 170, 212);
+}
+.md-container.md-mode-indeterminate {
+  height: 3px;
+}

@@ -40,11 +40,8 @@ md-fab-trigger .md-fab.md-button md-icon {
   right: -52px;
   z-index: 51;
 }
-.fab-menu-toolbar md-fab-speed-dial {
+.fab-menu-toolbar md-fab-speed-dial:not(.md-is-open) {
   max-height: 52px;
-}
-.fab-menu-toolbar md-fab-speed-dial.md-open {
-  max-height: auto;
 }
 
 md-menu-item.md-indent .md-button {
@@ -104,7 +101,8 @@ md-fab-speed-dial .toolbar-menu-open-icon {
 }
 md-fab-speed-dial.md-is-open .toolbar-menu-open-icon {
   opacity: 1;
-  transform: rotate(180deg);
+  -webkit-transform: rotate3d(0, 0, 1, 180deg);
+  transform: rotate3d(0, 0, 1, 180deg);
 }
 md-fab-speed-dial.md-down .toolbar-menu-icon {
   display: inline-block;

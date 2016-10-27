@@ -3,9 +3,9 @@
 
   angular
     .module('gl.tools')
-    .factory('toolsManager', [toolsManager]);
+    .factory('toolsManager', toolsManager);
 
-  function toolsManager() {
+  function toolsManager(projectProvider) {
 
     function ToolsManager() {
       this.activeTool = null;
@@ -38,6 +38,22 @@
         this.activeTool.deactivate();
         this.activeTool = null;
       }
+    };
+
+
+    ToolsManager.prototype.setScaleLineVisibility = function(visible) {
+      var control = projectProvider.map.getControlByClass(ol.control.ScaleLine);
+      control.setMap(visible? projectProvider.map : null);
+    };
+
+    ToolsManager.prototype.setAttributionsVisibility = function(visible) {
+      var control = projectProvider.map.getControlByClass(ol.control.Attribution);
+      control.setCollapsed(!visible);
+    };
+
+    ToolsManager.prototype.setZoomControlsVisibility = function(visible) {
+      var control = projectProvider.map.getControlByClass(ol.control.Zoom);
+      control.setMap(visible? projectProvider.map : null);
     };
 
     return new ToolsManager();

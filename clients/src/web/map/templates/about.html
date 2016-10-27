@@ -19,53 +19,17 @@
       class="short-tab-animation">
 
       <md-tab label="Project">
-        <md-list
+        <div
           gl-parent-scrollbar="vertical"
-          class="about properties-list">
-          <p><label>Title:</label> {{ ::project.root_title }}</p>
-          <p><label>Author:</label> {{ ::project.author }}</p>
-          <p><label>E-mail:</label> {{ ::project.email }}</p>
-          <p><label>Phone:</label> {{ ::project.phone }}</p>
-          <p><label>Organization:</label> {{ ::project.organization }}</p>
-          <p><label>Abstract:</label> {{ ::project.abstract }}</p>
-          <p>
-            <label>Online resource:</label>
-            <a
-              target="_blank"
-              ng-href="{{ ::project.online_resource }}">
-              {{ ::project.online_resource }}
-            </a>
-          </p>
-          <p><label>Fees:</label> {{ ::project.fees }}</p>
-          <p><label>Access constraints:</label> {{ ::project.access_constrains }}</p>
-          <p><label>Keywords list:</label> {{ ::project.keyword_list.join(', ') }}</p>
-          <p><label>Publish date:</label> {{ ::project.publish_date }}</p>
-          <p><label>Plugin version:</label> {{ ::project.plugin_version }}</p>
-        </md-list>
+          ng-include="'templates/about_project.html'">
+        </div>
       </md-tab>
 
       <md-tab label="GIS.lab">
-        <md-list
+        <div
           gl-parent-scrollbar="vertical"
-          class="about properties-list">
-          <p><label>Version:</label> {{ ::project.gislab_version }}</p>
-          <p gl-open-in-browser="{{ ::project.gislab_homepage }}">
-            <label>Home page:</label>
-            <a
-              target="_blank"
-              ng-href="{{ ::project.gislab_homepage }}">
-              {{ ::project.gislab_homepage }}
-            </a>
-          </p>
-          <p gl-open-in-browser="::project.gislab_documentation">
-            <label>Documentation:</label>
-            <a
-              target="_blank"
-              ng-href="{{ ::project.gislab_documentation }}">
-              {{ ::project.gislab_documentation }}
-            </a>
-          </p>
-        </md-list>
+          ng-include="'templates/about_application.html'">
+        </div>
       </md-tab>
 
     </md-tabs>

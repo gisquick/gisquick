@@ -9,7 +9,7 @@
 QGISDIR = .qgis2
 GISLAB_BUILDDIR = build
 PLUGINNAME = gislab_web
-PY_FILES = webgisplugin.py wizard.py project.py topics.py vector_layers.py confirmation.py publish.py utils.py __init__.py
+PY_FILES = webgisplugin.py wizard.py project.py topics.py confirmation.py publish.py utils.py __init__.py
 EXTRAS = icon.png metadata.txt
 UI_FILES = publish_dialog.ui
 RESOURCE_FILES = resources_rc.py

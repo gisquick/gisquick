@@ -36,7 +36,7 @@ GISLAB_DOCUMENTATION_PAGE = 'http://gislab.readthedocs.io/en/latest/gislab-web/i
 
 ### INTERNATIONALIZATION
 LANGUAGES = (
-    ('en-us', u'English'),
+    ('en-us', 'English'),
 )
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'Europe/Bratislava'

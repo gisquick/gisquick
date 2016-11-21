@@ -1061,13 +1061,16 @@ class ProjectPage(WizardPage):
                     excluded_attributes = layer.excludeAttributesWFS()
                     layer_wfs_allowed = layer.id() in wfs_layers
                     conversion_types = {
-                        'BIGINT': 'INTEGER'
+                        'BIGINT': 'INTEGER',
+                        'INTEGER64': 'INTEGER',
+                        'REAL': 'DOUBLE',
+                        'STRING': 'TEXT'
                     }
                     if layer_wfs_allowed:
                         for field in fields:
                             if field.name() in excluded_attributes:
                                 continue
-                            field_type = field.typeName()
+                            field_type = field.typeName().upper()
                             if field_type in conversion_types:
                                 field_type = conversion_types[field_type]
                             attribute_data = {

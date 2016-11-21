@@ -1,7 +1,11 @@
 #!/usr/bin/env python
 
+import os
 from setuptools import setup, find_packages
 
+# see https://github.com/gislab-npo/gislab-web/issues/46
+if os.environ.get('USER','') == 'vagrant':
+    del os.link
 
 # classifiers
 classifiers = [

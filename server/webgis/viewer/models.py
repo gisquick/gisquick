@@ -33,11 +33,11 @@ class GislabUser(AbstractUser):
         return self.username
 
 class Project_registry(models.Model):
-    project = models.TextField(u"project", primary_key=True)
-    plugin_version = models.CharField(u"plugin version", max_length=255)
-    gislab_user = models.CharField(u"gislab user", max_length=255)
-    publish_date = models.DateTimeField(u"publish date")
-    last_display = models.DateTimeField(u"last display", auto_now=True)
+    project = models.TextField("project", primary_key=True)
+    plugin_version = models.CharField("plugin version", max_length=255)
+    gislab_user = models.CharField("gislab user", max_length=255)
+    publish_date = models.DateTimeField("publish date")
+    last_display = models.DateTimeField("last display", auto_now=True)
 
 
 from django.db import connection

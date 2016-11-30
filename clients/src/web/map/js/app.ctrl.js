@@ -4,6 +4,8 @@
   angular
     .module('gl.web')
     .controller('AppController', AppController)
+    .controller('MapController', MapController)
+
     // Disable tooltips on touch devices
     .directive('mdTooltip', function() {
       return{
@@ -21,7 +23,7 @@
    * Main controller of GIS.lab Web application. It is responsible for initialization of map
    * and map-related components.
    */
-  function AppController($scope, $timeout, $mdDialog, staticResources, projectProvider,
+  function MapController($scope, $timeout, $mdDialog, staticResources, projectProvider,
                           gislabClient, glPanelManager, toolsManager) {
     $scope.staticResources = staticResources;
     $scope.ui = {
@@ -30,53 +32,6 @@
     $scope.toolsManager = toolsManager;
     $scope.Math = Math;
 
-    // Configuration of additional secondary menu items
-    $scope.secondaryMenuItems = [
-      {
-        title: 'Display attributions',
-        checkbox: true,
-        checked: false,
-        perform: function() {
-          var control = projectProvider.map.getControlByClass(ol.control.Attribution);
-          var collapsed = !control.getCollapsed();
-          control.setCollapsed(collapsed);
-          this.checked = !collapsed;
-        }
-      }, {
-        title: 'Help',
-        perform: function() {
-          setTimeout(function() { // run it outside Angular's digest cycle
-            var width = parseInt(window.innerWidth * 0.65);
-            var height = parseInt(window.innerWidth * 0.85);
-            var left = parseInt((window.innerWidth - width) / 2);
-            var windowParams =
-              "left={0},width={1},height={2},resizable=yes,menubar=no,scrollbars=yes,status=no"
-              .format(left, width, height);
-            window.open(
-              projectProvider.data.gislab_documentation,
-              "GIS.lab Web Documentation",
-              windowParams
-            );
-          });
-        }
-      }, {
-        title: 'About',
-        perform: function(event) {
-          var scope = $scope.$new(true);
-          scope.closeDialog = function() {
-            $mdDialog.hide();
-          };
-          console.log(projectProvider);
-          scope.project = projectProvider.data;
-          $mdDialog.show({
-            targetEvent: event,
-            templateUrl: 'templates/about.html',
-            scope: scope,
-            clickOutsideToClose: true
-          });
-        }
-      }
-    ];
 
     /**
      * Initialize map and map controls
@@ -116,74 +71,7 @@
         projectProvider.map.addControl(scaleLine);
       }
     }
-    /**
-     * Setup management of map navigation history (position, zoom, rotation)
-     * linked to browser's Back/Forward buttons
-     */
-    function initializeNavigationHistory() {
 
-      var preventNavigationHistorySave;
-
-      /**
-       * Save current state of map view
-       */
-      var saveNavigationState = function() {
-        var extent = projectProvider.map.getView().calculateExtent(projectProvider.map.getSize());
-        if (preventNavigationHistorySave) {
-          preventNavigationHistorySave = false;
-        } else {
-          var state = {
-            center: projectProvider.map.getView().getCenter(),
-            resolution: projectProvider.map.getView().getResolution(),
-            rotation: projectProvider.map.getView().getRotation()
-          };
-          history.pushState(state, "");
-        }
-      };
-      projectProvider.map.on('moveend', saveNavigationState);
-
-      /**
-       * Handle previous/next map view state change
-       */
-      window.onpopstate = function(evt) {
-        if (evt.state) {
-          var map = projectProvider.map;
-          var resolutionChanged = map.getView().getResolution() !== evt.state.resolution;
-          var rotationChanged = map.getView().getRotation() !== evt.state.rotation;
-          preventNavigationHistorySave = true;
-
-          var pan = ol.animation.pan({
-            duration: 300,
-            source: map.getView().getCenter()
-          });
-          map.beforeRender(pan);
-
-          if (resolutionChanged) {
-            var zoom = ol.animation.zoom({
-              duration: 300,
-              resolution: map.getView().getResolution()
-            });
-            map.beforeRender(zoom);
-          }
-
-          if (rotationChanged) {
-            var rotation = ol.animation.rotate({
-              duration: 300,
-              rotation: map.getView().getRotation()
-            });
-            map.beforeRender(rotation);
-          }
-
-          map.getView().setCenter(evt.state.center);
-          if (resolutionChanged) {
-            map.getView().setResolution(evt.state.resolution);
-          }
-          if (rotationChanged) {
-            map.getView().setRotation(evt.state.rotation);
-          }
-        }
-      };
-    }
 
     function initializeStatusBar() {
       // Setup updating of map scale value
@@ -219,7 +107,7 @@
 
       initializeMap(projectData);
       if (projectProvider.map) {
-        initializeNavigationHistory();
+        // initializeNavigationHistory();
         initializeStatusBar();
         $scope.project = projectProvider;
 
@@ -311,5 +199,130 @@
       };
       projectProvider.map.fitAnimated(projectProvider.data.project_extent, options);
     };
-  };
+  }
+
+  function AppController($scope, $timeout, $mdDialog, projectProvider) {
+
+
+    // Configuration of additional secondary menu items
+    $scope.secondaryMenuItems = [
+      {
+        title: 'Display attributions',
+        checkbox: true,
+        checked: false,
+        perform: function() {
+          var control = projectProvider.map.getControlByClass(ol.control.Attribution);
+          var collapsed = !control.getCollapsed();
+          control.setCollapsed(collapsed);
+          this.checked = !collapsed;
+        }
+      }, {
+        title: 'Help',
+        perform: function() {
+          setTimeout(function() { // run it outside Angular's digest cycle
+            var width = parseInt(window.innerWidth * 0.65);
+            var height = parseInt(window.innerWidth * 0.85);
+            var left = parseInt((window.innerWidth - width) / 2);
+            var windowParams =
+              "left={0},width={1},height={2},resizable=yes,menubar=no,scrollbars=yes,status=no"
+              .format(left, width, height);
+            window.open(
+              projectProvider.data.gislab_documentation,
+              "GIS.lab Web Documentation",
+              windowParams
+            );
+          });
+        }
+      }, {
+        title: 'About',
+        perform: function(event) {
+          var scope = $scope.$new(true);
+          scope.closeDialog = function() {
+            $mdDialog.hide();
+          };
+          console.log(projectProvider);
+          scope.project = projectProvider.data;
+          $mdDialog.show({
+            targetEvent: event,
+            templateUrl: 'templates/about.html',
+            scope: scope,
+            clickOutsideToClose: true
+          });
+        }
+      }
+    ];
+
+
+    /**
+     * Setup management of map navigation history (position, zoom, rotation)
+     * linked to browser's Back/Forward buttons
+     */
+    function initializeNavigationHistory() {
+
+      var preventNavigationHistorySave;
+
+      /**
+       * Save current state of map view
+       */
+      var saveNavigationState = function() {
+        var extent = projectProvider.map.getView().calculateExtent(projectProvider.map.getSize());
+        if (preventNavigationHistorySave) {
+          preventNavigationHistorySave = false;
+        } else {
+          var state = {
+            center: projectProvider.map.getView().getCenter(),
+            resolution: projectProvider.map.getView().getResolution(),
+            rotation: projectProvider.map.getView().getRotation()
+          };
+          history.pushState(state, "");
+        }
+      };
+      projectProvider.map.on('moveend', saveNavigationState);
+
+      /**
+       * Handle previous/next map view state change
+       */
+      window.onpopstate = function(evt) {
+        if (evt.state) {
+          var map = projectProvider.map;
+          var resolutionChanged = map.getView().getResolution() !== evt.state.resolution;
+          var rotationChanged = map.getView().getRotation() !== evt.state.rotation;
+          preventNavigationHistorySave = true;
+
+          var pan = ol.animation.pan({
+            duration: 300,
+            source: map.getView().getCenter()
+          });
+          map.beforeRender(pan);
+
+          if (resolutionChanged) {
+            var zoom = ol.animation.zoom({
+              duration: 300,
+              resolution: map.getView().getResolution()
+            });
+            map.beforeRender(zoom);
+          }
+
+          if (rotationChanged) {
+            var rotation = ol.animation.rotate({
+              duration: 300,
+              rotation: map.getView().getRotation()
+            });
+            map.beforeRender(rotation);
+          }
+
+          map.getView().setCenter(evt.state.center);
+          if (resolutionChanged) {
+            map.getView().setResolution(evt.state.resolution);
+          }
+          if (rotationChanged) {
+            map.getView().setRotation(evt.state.rotation);
+          }
+        }
+      };
+    }
+
+    projectProvider.on('mapInitialized', initializeNavigationHistory);
+  }
+
 })();

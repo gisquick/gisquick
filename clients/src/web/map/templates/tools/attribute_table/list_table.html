@@ -65,6 +65,7 @@
             </md-input-container>
             <md-input-container md-no-float class="md-block" flex>
               <input
+                aria-label="Value"
                 ng-model="attribute.filterValue"
                 placeholder="{{ attribute.comparator.format }}">
               </input>
@@ -100,7 +101,7 @@
       </gl-progress-bar>
       <md-button
         md-no-ink
-        aria-label="Zoom to feature"
+        aria-label="Zoom"
         class="zoom-to icon-hover"
         ng-click="zoomToFeature(
           activeLayer.features[activeLayer.features.page],

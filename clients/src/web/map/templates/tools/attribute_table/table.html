@@ -38,6 +38,7 @@
           md-on-select="setActiveLayer(layer)">
 
           <div
+            gl-blur-on-click
             gl-scrollbar="horizontal"
             class="attribute-table table-container">
             <table>
@@ -102,6 +103,7 @@
                   <td class="icon">
                     <md-button
                       class="icon-hover"
+                      aria-label="Zoom"
                       ng-click="zoomToFeature(
                         feature,
                         { padding: [0, 0, tool.config.mapView.bottom, tool.config.mapView.left] }

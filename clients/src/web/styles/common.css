@@ -118,3 +118,6 @@ md-progress-linear .md-bar {
 .md-container.md-mode-indeterminate {
   height: 3px;
 }
+div:focus {
+  outline: none;
+}

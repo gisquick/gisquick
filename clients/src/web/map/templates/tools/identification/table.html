@@ -41,6 +41,7 @@
           </md-tab-label>
           <md-tab-body>
             <div
+              gl-blur-on-click
               gl-scrollbar="horizontal"
               class="identification-table table-container">
               <table>
@@ -57,9 +58,12 @@
                   <tr
                     ng-repeat="feature in layer.features | limitTo: tool.config.rowsPerPage: (layer.features.page - 1) * tool.config.rowsPerPage"
                     ng-class="{'md-selected': layer.selectedFeature === feature}"
-                    ng-click="selectFeature(feature)">
+                    ng-click="
+                      selectFeature(feature)
+                    ">
                     <td class="icon">
                       <md-button
+                        aria-label="Zoom"
                         class="icon-hover"
                         ng-click="zoomToFeature(
                           feature,

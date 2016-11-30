@@ -75,3 +75,18 @@ ol.Map.prototype.fitAnimated = function(geometry, options, duration) {
   this.beforeRender(pan, zoom);
   this.getView().fit(geometry, this.getSize(), options);
 };
+
+/**
+ * Stab function for pre-processing browser events on map canvas.
+ * @param {Event} browserEvent Browser event.
+ * @param {string=} opt_type Type.
+ * @api
+ */
+ol.Map.prototype.transformBrowserEvent = function(browserEvent, opt_type) {};
+
+/** Wrapper for ol.Map.handleMapBrowserEvent which allows to pre-process event **/
+var handleMapBrowserEvent = ol.Map.prototype.handleMapBrowserEvent;
+ol.Map.prototype.handleMapBrowserEvent = function(browserEvent, opt_type) {
+  this.transformBrowserEvent(browserEvent, opt_type);
+  return handleMapBrowserEvent.call(this, browserEvent, opt_type);
+}

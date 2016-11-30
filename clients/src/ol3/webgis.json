@@ -30,7 +30,7 @@
     "ol.style.Circle",
     "ol.style.Icon",
     "ol.style.Icon#setRotation",
-    "ol.interaction.DragZoom",
+
     "ol.interaction.DragPan",
     "ol.interaction.DragPan#setActive",
     "ol.interaction.Select",

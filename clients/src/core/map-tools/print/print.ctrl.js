@@ -186,39 +186,27 @@
       }
     }
 
+
     /** Setup scale transformation on all required map mouse events
     used in map controls - when map canvas is resized and scaled down
     to fit print layout area into device screen size. */
     function setupMapEventsTransform() {
-      function transformEvent(evt) {
-        var x = evt.pixel[0] * tool.config._previewScale;
-        var y = evt.pixel[1] * tool.config._previewScale;
 
-        evt.pixel[0] = x;
-        evt.pixel[1] = y;
-        if (evt.getPointerEvent) {
-          var pointerEvent = evt.getPointerEvent();
-          pointerEvent.clientX = x
-          pointerEvent.clientY = y;
+      projectProvider.map.transformBrowserEvent = function(event, type) {
+        event.pixel[0] = event.pixel[0] * tool.config._previewScale;
+        event.pixel[1] = event.pixel[1] * tool.config._previewScale;
+        event.coordinate = projectProvider.map.getCoordinateFromPixel(event.pixel);
+        if (event.getPointerEvent) {
+          var pointerEvent = event.getPointerEvent();
+          pointerEvent.clientX = pointerEvent.screenX * tool.config._previewScale;
+          pointerEvent.clientY = pointerEvent.screenY * tool.config._previewScale;
         }
-        evt.coordinate = projectProvider.map.getCoordinateFromPixel(evt.pixel);
-      }
-      var zoomInteraction = projectProvider.map.getInteractionByClass(ol.interaction.DragZoom);
-      if (zoomInteraction) {
-        zoomInteraction._handleEvent_ = zoomInteraction.handleEvent;
-        zoomInteraction.handleEvent = function(evt) {
-          transformEvent(evt);
-          return zoomInteraction._handleEvent_(evt);
-        };
-      }
+      };
     }
 
     /** Remove all registred event listener used for map mouse events transformation */
     function removeMapEventsTransform() {
-      var zoomInteraction = projectProvider.map.getInteractionByClass(ol.interaction.DragZoom);
-      if (zoomInteraction._handleEvent_) {
-        zoomInteraction.handleEvent = zoomInteraction._handleEvent_;
-      }
+      projectProvider.map.transformBrowserEvent = angular.noop;
     }
 
     function printTemplateUrl(layout, scale) {

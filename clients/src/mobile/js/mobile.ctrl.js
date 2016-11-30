@@ -10,6 +10,10 @@
     .controller('WizardController', WizardController)
     .directive('glNavigator', glNavigator)
     .directive('glNavigatorPage', glNavigatorPage)
+    .value('keyHandler', {
+      backHandlers: [],
+      menuHandlers: []
+    });
 
 
   function glNavigatorPage() {
@@ -20,7 +24,7 @@
     };
   }
 
-  function glNavigator($mdCompiler, $timeout, $animate) {
+  function glNavigator($mdCompiler, $timeout, $animate, keyHandler) {
     return {
       restrict: 'E',
       scope: false,
@@ -62,11 +66,17 @@
                 }
                 page.elem.remove();
               });
+            } else {
+              keyHandler.backHandlers.pop();
+              $scope.close();
             }
           }
         }
-      },
-      link: function(scope, iElem, iAttrs) {}
+        $scope._backButtonHandler = function(evt) {
+          $scope.navigator.back();
+        }
+        keyHandler.backHandlers.push($scope._backButtonHandler);
+      }
     };
   }
 
@@ -94,8 +104,10 @@
    * Main controller of GIS.lab Web application. It is responsible for initialization of map
    * and map-related components.
    */
-  function MobileController($scope, $timeout, $q, $localStorage, $mdPanel, gislabClient, projectProvider, toolsManager) {
+  function MobileController($scope, $timeout, $q, $localStorage, $mdPanel, $mdToast,
+    gislabClient, projectProvider, toolsManager, keyHandler) {
     console.log('MobileController');
+
     // $localStorage.serverUrl = '';
 
     function startApplication() {
@@ -190,6 +202,26 @@
         startApplication();
       }, 10);
     });
+
+    function backButtonHandler() {
+      if (toolsManager.activeTool) {
+        toolsManager.deactivateTool();
+      } else {
+        navigator.app.exitApp();
+      }
+    }
+    keyHandler.backHandlers.push(backButtonHandler);
+
+    document.addEventListener("deviceready", onDeviceReady, false);
+    function onDeviceReady() {
+      console.log('onDeviceReady');
+      document.addEventListener("backbutton", function(evt) {
+        keyHandler.backHandlers[keyHandler.backHandlers.length-1].call(null, evt);
+      });
+      // document.addEventListener("menubutton", function() {
+      //   console.log('MENU PRESSED');
+      // }, false);
+    }
 
     window.$localStorage = $localStorage;
     window.projectProvider = projectProvider;

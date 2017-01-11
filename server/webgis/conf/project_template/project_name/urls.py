@@ -4,6 +4,7 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.views.i18n import javascript_catalog
 from django.conf.urls.static import static
 from django.contrib.auth.views import login, logout
+from django.contrib import admin
 
 
 js_info_dict = {
@@ -16,6 +17,7 @@ urlpatterns = [
     url(r'^login/$', login, name='login'),
     url(r'^logout/$', logout, name='logout'),
     url(r'^jsi18n/$', javascript_catalog, js_info_dict),
+    url(r'^admin/', include(admin.site.urls))
 ]
 
 urlpatterns += staticfiles_urlpatterns()

@@ -76,6 +76,7 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.staticfiles',
+    'django.contrib.admin',
     'webgis.mapcache',
     'webgis.viewer',
     'webgis.mobile'

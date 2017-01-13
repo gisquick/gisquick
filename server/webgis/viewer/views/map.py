@@ -3,6 +3,7 @@ import json
 import urllib.parse
 import urllib.request
 import contextlib
+from urllib.parse import parse_qs
 
 from django.conf import settings
 from django.http import HttpResponse, Http404
@@ -18,12 +19,19 @@ from webgis.viewer.views.project_utils import clean_project_name, \
 from webgis.libs.auth.decorators import basic_authentication
 
 
+def abs_project_path(project):
+    return os.path.join(settings.GISLAB_WEB_PROJECT_ROOT, project)
+
 @basic_authentication(realm="OWS API")
 def ows(request):
     url = "{0}?{1}".format(
         settings.GISLAB_WEB_MAPSERVER_URL.rstrip("/"),
         request.environ['QUERY_STRING']
     )
+    query_params = parse_qs(request.environ['QUERY_STRING'])
+    abs_project = abs_project_path(query_params.get('MAP')[0])
+    url = set_query_parameters(url, {'MAP': abs_project})
+
     owsrequest = urllib.request.Request(url)
     owsrequest.add_header("User-Agent", "GIS.lab Web")
 
@@ -43,7 +51,10 @@ def ows(request):
 def tile(request, project_hash, publish, layers_hash=None, z=None, x=None, y=None, format=None):
     params = {key.upper(): request.GET[key] for key in request.GET.keys()}
     project = params['PROJECT']+'.qgs'
-    mapserver_url = set_query_parameters(settings.GISLAB_WEB_MAPSERVER_URL, {'MAP': project})
+    mapserver_url = set_query_parameters(
+        settings.GISLAB_WEB_MAPSERVER_URL,
+        {'MAP': abs_project_path(project)}
+    )
     layer_params = get_project_layers_info(project_hash, publish, project=project)
     if layer_params:
         try:
@@ -68,8 +79,10 @@ def tile(request, project_hash, publish, layers_hash=None, z=None, x=None, y=Non
 def legend(request, project_hash, publish, layer_hash=None, zoom=None, format=None):
     params = {key.upper(): request.GET[key] for key in request.GET.keys()}
     project = params['PROJECT']+'.qgs'
-    mapserver_url = set_query_parameters(settings.GISLAB_WEB_MAPSERVER_URL, {'MAP': project})
-    print(mapserver_url)
+    mapserver_url = set_query_parameters(
+        settings.GISLAB_WEB_MAPSERVER_URL,
+        {'MAP': abs_project_path(project)}
+    )
     try:
         layer = WmsLayer(
             project=project_hash,
@@ -127,9 +140,10 @@ def filterdata(request):
     """
     if request.method == 'POST':
         project = request.GET['PROJECT']
+        project = get_last_project_version(project) + '.qgs'
         url = settings.GISLAB_WEB_MAPSERVER_URL
         params = {
-            'MAP': get_last_project_version(project) + '.qgs'
+            'MAP': abs_project_path(project)
         }
         mapserv = '{}?{}'.format(url, urllib.parse.urlencode(params))
         filter_request = json.loads(request.body.decode('utf-8'))

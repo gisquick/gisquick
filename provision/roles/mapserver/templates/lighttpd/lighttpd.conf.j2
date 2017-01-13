@@ -36,11 +36,6 @@ fastcgi.server = (
     ))
 )
 
-# TODO: replace this rewrite with Django
-url.rewrite-once = (
-    "^(.*[?&])(?i)MAP=(.*)$" => "$1MAP=/vagrant/dev/publish/$2",
-)
-
 # logging
 server.errorlog                 = "/var/log/lighttpd/error.log"
 

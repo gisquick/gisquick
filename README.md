@@ -80,7 +80,7 @@ TODO: screenshot
 * Git
 * VirtualBox
 * Vagrant
-* Ansible 1.9 (version 2 is not supported yet)
+* Ansible 2
 
 **Creating development environment:**  
 * clone source code with Git

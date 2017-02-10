@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>GISQUICK</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="css/pure-min.css" type="text/css">
+    <link rel="stylesheet" href="css/grids-responsive-min.css" type="text/css">
+    
+    <!-- Custom Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css" type="text/css">
+
+    <!-- Plugin CSS -->
+    <link rel="stylesheet" href="css/animate.min.css" type="text/css">
+
+    <link rel="stylesheet" href="css/swiper.min.css" type="text/css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/gis.css" type="text/css">
+
+</head>
+
+
+<body id="page-top">
+
+  <div id="menu" class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
+    <div class="container">
+      <a class="home-link" href="#" data-scroll="0">
+        <img class="logo" src="img/gis/logo.svg">
+      </a>
+
+      <ul class="pure-menu-list menu-pagination">
+        <li class="pure-menu-item hidden"></li>
+        <li class="pure-menu-item">Benefits</li>
+        <li class="pure-menu-item">Features</li>
+        <li class="pure-menu-item">Examples</li>
+        <li class="pure-menu-item">Development</li>
+      </ul>
+
+      <!-- <a href="#" class="custom-toggle" id="toggle">
+        <s class="bar"></s><s class="bar"></s>
+      </a> -->
+      <a href="#" class="menu-link" id="toggle">
+        <span></span>
+      </a>
+
+    </div>
+</div>
+
+
+  <div class="page swiper-container">
+    <div class="swiper-wrapper">
+
+      <div class="swiper-slide">
+        <header>
+  <div class="header-content">
+    <div class="header-content-inner xswiper-no-swiping">
+      <h1>Let’s share GIS much quicker</h1>
+      <hr>
+      <p>Gisquick is an open source geospatial data publishing platform. We have developed it for rapid sharing of our projects created with QGIS. We put together minimal set of function for useful generic web mapping application. We developed it for ourselves as well as for you. Just use it to solve today’s problems and show the best solution for tomorrow.</p>
+      <a data-scroll="1" href="#" class="btn btn-primary btn-xl page-scroll">
+        Learn more
+      </a>
+    </div>
+  </div>
+</header>
+
+      </div>
+
+      <div class="swiper-slide">
+        <div class="tabs-swiper flex-column">
+
+  <div class="submenu page-padding">
+    <div class="container">
+      <ul class="tabs-paginator">
+        <li class="tab-item">QGIS</li>
+        <li class="tab-item">Open source</li>
+        <li class="tab-item">Web and mobile</li>
+        <li class="tab-item">Deployment</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="container swiper-container flex content">
+    <div class="swiper-wrapper">
+
+      <div class="swiper-slide flex-row md-flex-column">
+        <div class="text-block flex-column r-pad">
+          <h3 data-animate="fadeInRight">QGIS</h3>
+          <p data-animate="fadeInRight" class="anim-delay-2">
+            Gisquick is set of the mapping applications for publishing QGIS projects. It consists of plugin for QGIS, Django based server application, QGIS-server and web and mobile clients.
+          </p>
+          <p data-animate="fadeInRight" class="anim-delay-3">
+            The process of data publishing with Gisquck is quite easy. You can create and set up your projects with QGIS (layers, metadata, print layouts), prepare it for publishing using Gisquick plugin and upload it to the server.
+          </p>
+        </div>
+
+        <div class="f-2-3 flex-column l-box">
+          <img class="pure-img-responsive" src="img/gis/qgis.svg">
+        </div>
+      </div>
+
+      <div class="swiper-slide flex-row md-flex-column">
+        <div class="flex-column f-2-3 l-box">
+          <img
+            class="pure-img-responsive r-shadow"
+            src="img/gis/screen.svg">
+        </div>
+        <div class="text-block flex-column l-pad">
+          <h3 data-animate="fadeInDown">Open solutions</h3>
+          <p data-animate="fadeInUp" class="anim-delay-2">
+            Gisquick is developed as an open source project under GNU/GPL license. For client-server communication it uses OGC WMS, WMTS and WFS services. Gisquick is the solution without any extra costs (in comparison with common proprietary solutions). It’s applicable in everyday practice (e.g. education or nature conservancy) or for further custom development.
+          </p>
+        </div>
+      </div>
+
+      <div class="swiper-slide flex-column">
+        <div class="flex-column text-block">
+          <h3 data-animate="fadeInRight">Web and mobile</h3>
+          <p data-animate="fadeInUp" class="anim-delay-2">
+            Gisquick web client gives you an easy to use user interface for viewing your GIS projects online. It’s designed as responsive and mobile-friendly application, but a dedicated mobile client (Cordova hybrid app) for even better experience is also available.
+          </p>
+        </div>
+        <div class="f-2-3 flex-column l-box">
+          <img
+            class="pure-img-responsive l-shadow"
+            src="img/gis/mobile.svg">
+        </div>
+      </div>
+
+      <div class="swiper-slide flex-row md-flex-column">
+        <div class="text-block flex-column">
+          <h3 data-animate="fadeInRight">Deployment</h3>
+          <p data-animate="fadeInUp" class="anim-delay-2">
+            All Gisquick server components can be easily deployed in Docker containers. You can start serving your GIS projects from the cloud (like Amazon Web Services) or from your own hardware without any troubles. For project creators it's even simpler, all they need is QGIS with Gisquick plugin installed.
+          </p>
+        </div>
+        <div class="f-2-3 flex-column l-box">
+          <img
+            class="pure-img-responsive r-shadow"
+            src="img/gis/docker.svg">
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <i class="fa fa-chevron-left slide-button-prev"></i>
+  <i class="fa fa-chevron-right slide-button-next"></i>
+</div>
+
+      </div>
+
+      <div class="swiper-slide">
+        <div class="tabs-swiper flex-column">
+
+  <div class="submenu page-padding">
+    <div class="container">
+      <ul class="tabs-paginator">
+        <li class="tab-item">Map content</li>
+        <li class="tab-item">Data tables</li>
+        <li class="tab-item">Print</li>
+        <li class="tab-item">Server-side tile caching</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="container swiper-container flex content">
+    <div class="swiper-wrapper">
+
+      <div class="swiper-slide flex-row md-flex-column">
+        <div class="text-block flex-column r-pad">
+          <h3 data-animate="fadeInRight">Map content</h3>
+          <p data-animate="fadeInRight" class="anim-delay-2">
+            Gisquick web client has clean user interface. Everything you need for creating maps is located at one place - on the side panel. It offers ready to use layer compilations (topics) suitable for basic users and well arranged layers (base and overlay layers linking up with attribute data tables and layer metadata) for users who are used to working with common GIS. It also contains a map legend.
+          </p>
+        </div>
+
+        <div class="f-2-3 flex-column l-box">
+          <img class="pure-img-responsive r-shadow" src="img/gis/content_detail.svg">
+        </div>
+      </div>
+
+      <div class="swiper-slide flex-column">
+        <div class="text-block flex-column l-pad">
+          <h3 data-animate="fadeInRight">Data tables</h3>
+          <p data-animate="fadeInUp" class="anim-delay-2">
+            Working with data tables is very intuitive and quick. Gisquick combines map and table view on your datasets. You can enjoy map features (paning, zooming, navigating or geolocating) and features of database table (searching, filtering accross big data tables or zooming and higlighting objects from table on the map) together in one application and at the same time.
+          </p>
+        </div>
+        <div class="flex-column f-2-3 l-box">
+          <img
+            class="pure-img-responsive r-shadow"
+            src="img/gis/table_detail.svg">
+        </div>
+      </div>
+
+
+      <div class="swiper-slide flex-column">
+        <div class="f-2-3 flex-column l-box">
+          <img
+            class="pure-img-responsive l-shadow"
+            src="img/gis/print_detail2.svg">
+        </div>
+        <div class="flex-column text-block">
+          <h3 data-animate="fadeInDown">Print</h3>
+          <p data-animate="fadeInUp" class="anim-delay-2">
+            Gisquick web client uses innovative print tool with advanced layout preview. Map will be automaticaly scaled to display whole page in selected zoom level, regardless of screen resolution.
+          </p>
+          <p data-animate="fadeInUp" class="anim-delay-3">
+            With Gisquick, you can create a custom print templates in QGIS desktop and use them in web application.
+          </p>
+        </div>
+      </div>
+
+
+<!--       <div class="swiper-slide flex-row md-flex-column">
+        <div class="flex-column text-block">
+          <h3 data-animate="fadeInDown">Print</h3>
+          <p data-animate="fadeInUp" class="anim-delay-2">
+            Gisquick web client uses innovative print tool with advanced layout preview. Map will be automaticaly scaled to display whole page in selected zoom level, regardless of screen resolution.
+          </p>
+          <p data-animate="fadeInUp" class="anim-delay-3">
+            With Gisquick, you can create a custom print templates in QGIS desktop and use them in web application.
+          </p>
+        </div>
+        <div class="f-2-3 flex-column l-box">
+          <img
+            class="pure-img-responsive l-shadow"
+            src="img/gis/print_detail2.svg">
+        </div>
+      </div> -->
+
+      <div class="swiper-slide flex-row md-flex-column">
+        <div class="text-block flex-column">
+          <h3 data-animate="fadeInRight">Automatic server-side tile caching</h3>
+          <p data-animate="fadeInUp" class="anim-delay-2">
+            Gisquick server support map tiles caching without any additional configuration. You can simply enable it for your projects with less often changing geometry data and achieve better performance and faster access to your maps.
+          </p>
+        </div>
+        <div class="f-2-3 flex-column l-box">
+          <img
+            class="pure-img-responsive r-shadow"
+            src="img/gis/screen.svg">
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <i class="fa fa-chevron-left slide-button-prev"></i>
+  <i class="fa fa-chevron-right slide-button-next"></i>
+</div>
+
+      </div>
+
+      <div class="swiper-slide">
+        <div class="tabs-swiper flex-column">
+
+  <div class="submenu page-padding">
+    <div class="container">
+      <ul class="tabs-paginator">
+        <li class="tab-item">Screenshots</li>
+        <li class="tab-item">Sample projectes</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="container swiper-container flex content">
+    <div class="swiper-wrapper">
+
+
+      <div class="swiper-slide">
+      
+<div class="container pure-g thumbnails flex-column">
+  <div>
+    <div class="pure-u-1-2 pure-u-md-1-3 l-box thumbnail">
+      <label>Topics</label>
+      <svg
+        data-gallery-index="0"
+        width="500" height="285"
+        class="pure-img-responsive shadow"
+        style="background-image: url('img/gis/screenshot.svg');">
+    </div>
+    <div class="pure-u-1-2 pure-u-md-1-3 l-box thumbnail">
+      <label>Layers</label>
+      <svg
+        data-gallery-index="1"
+        width="500" height="285"
+        class="pure-img-responsive shadow"
+        style="background-image: url('img/gis/screenshot.svg');">
+    </div>
+    <div class="pure-u-1-2 pure-u-md-1-3 l-box thumbnail">
+      <label>Identification</label>
+      <svg
+        data-gallery-index="2"
+        width="500" height="285"
+        class="pure-img-responsive shadow"
+        style="background-image: url('img/gis/screenshot.svg');">
+    </div>
+    <div class="pure-u-1-2 pure-u-md-1-3 l-box thumbnail">
+      <label>Attribute table</label>
+      <svg
+        data-gallery-index="3"
+        width="500" height="285"
+        class="pure-img-responsive shadow"
+        style="background-image: url('img/gis/screenshot.svg');">
+    </div>
+    <div class="pure-u-1-2 pure-u-md-1-3 l-box thumbnail">
+      <label>Print</label>
+      <svg
+        data-gallery-index="4"
+        width="500" height="285"
+        class="pure-img-responsive shadow"
+        style="background-image: url('img/gis/screenshot.svg');">
+    </div>
+    <div class="pure-u-1-2 pure-u-md-1-3 l-box thumbnail">
+      <label>Measure</label>
+      <svg
+        data-gallery-index="5"
+        width="500" height="285"
+        class="pure-img-responsive shadow"
+        style="background-image: url('img/gis/screenshot.svg');">
+    </div>
+  </div>
+</div>
+
+<div class="hidden">
+  <div class="gallery-images swiper-wrapper">
+
+    <div class="swiper-slide">
+      <div class="swiper-zoom-container l-box">
+        <img src="img/gis/screenshot.svg">
+        <div
+          data-animate="bounceInRight"
+          class="image-panel">
+          <div class="scroller">
+            <h3 class="header">Topics panel</h3>
+            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="swiper-slide">
+      <div class="swiper-zoom-container l-box">
+        <img src="img/gis/screenshot.svg">
+        <div
+          data-animate="bounceInRight"
+          class="image-panel">
+          <div class="scroller">
+            <h3 class="header">Layers panel</h3>
+            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="swiper-slide">
+      <div class="swiper-zoom-container l-box">
+        <img src="img/gis/screenshot.svg" alt="">
+        <div
+          data-animate="bounceInRight"
+          class="image-panel">
+          <div class="scroller">
+            <h3 class="header">Identification tool</h3>
+            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="swiper-slide">
+      <div class="swiper-zoom-container l-box">
+        <img src="img/gis/screenshot.svg">
+        <div
+          data-animate="bounceInRight"
+          class="image-panel">
+          <h3 class="header">Attribute table</h3>
+          <p>Description goes here. Longer text is expected.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="swiper-slide">
+      <div class="swiper-zoom-container l-box">
+        <img src="img/gis/screenshot.svg">
+        <div
+          data-animate="bounceInRight"
+          class="image-panel">
+          <h3 class="header">Print tool</h3>
+          <p>Description goes here. Longer text is expected.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="swiper-slide">
+      <div class="swiper-zoom-container l-box">
+        <img src="img/gis/screenshot.svg">
+        <div
+          data-animate="bounceInRight"
+          class="image-panel">
+          <h3 class="header">Measure tool</h3>
+          <p>Description goes here. Longer text is expected.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+      </div>
+
+      <div class="swiper-slide flex-column l-box">
+
+        <div class="project-thumbnail flex-row f-a-start">
+          <a target="_blank"
+            class=""
+            href="https://52.57.100.149/?PROJECT=user1/natural-earth/central-europe">
+            <img class="pure-img-responsive shadow" src="img/gis/central-europe.png">
+          </a>
+          <div class="l-pad">
+            <h3>Central Europe</h3>
+            <p><b>Keywords: </b> OpenStreet Map</p>
+            <p><b>Projection:</b> EPSG:3857</p>
+          </div>
+        </div>
+        <div class="project-thumbnail flex-row f-a-start">
+          <a target="_blank"
+            href="https://52.57.100.149/?PROJECT=user1/prague/prague">
+            <img class="pure-img-responsive shadow" src="img/gis/prague.png">
+          </a>
+          <div class="l-pad">
+            <h3>Prague</h3>
+            <p><b>Keywords: </b> WMS Ortophoto map, SVG point symbols</p>
+            <p><b>Projection:</b> EPSG:5514</p>
+          </div>
+        </div>
+        <div class="project-thumbnail flex-row f-a-start">
+          <a target="_blank"
+            href="https://52.57.100.149/?PROJECT=user2/uster/uster">
+            <img class="pure-img-responsive shadow" src="img/gis/uster.png">
+          </a>
+          <div class="l-pad">
+            <h3>Uster - workshop demo</h3>
+            <p><b>Keywords: </b> Raster overlay, grid in print template</p>
+            <p><b>Projection:</b> EPSG:21781</p>
+          </div>
+        </div>
+
+      </div>
+
+
+    </div>
+  </div>
+  <i class="fa fa-chevron-left slide-button-prev"></i>
+  <i class="fa fa-chevron-right slide-button-next"></i>
+</div>
+
+      </div>
+
+<!--       <div class="swiper-slide compact bg-dark">
+        <div class="call-to-action container is-center">
+  <h2>Free Download at Start Bootstrap!</h2>
+  <a data-animate-once="tada" href="#" class="btn btn-default btn-xl">Download Now!</a>
+</div>
+
+      </div> -->
+
+      <div class="swiper-slide compact">
+        <div class="container contact">
+    <h2 class="section-heading is-center">Let's Get In Touch!</h2>
+    <hr class="primary">
+    <p class="is-center">Ready to start your next project with us? That's great! Give us a call or send us an email and we will get back to you as soon as possible!</p>
+
+    <div class="pure-g">
+        <div class="pure-u-1-3 is-center">
+            <a href="mailto:gisquick@info.org">
+                <i data-animate-once="bounceIn" class="fa fa-envelope-o fa-3x anim-delay-2"></i>
+                <p>E-mail</p>
+            </a>
+        </div>
+        <div class="pure-u-1-3 is-center">
+            <a href="https://www.youtube.com/channel/UCHXyhq_wrEBnGYTRJovxrCg">
+                <i data-animate-once="bounceIn" class="fa fa-youtube fa-3x anim-delay-1"></i>
+                <p>Youtube</p>
+            </a>  
+        </div>
+        <div class="pure-u-1-3 is-center">
+            <a href="https://github.com/gislab-npo/gislab-web">
+                <i data-animate-once="bounceIn" class="fa fa-github fa-3x anim-delay-3"></i>
+                <p>GitHub</p>
+            </a>
+        </div>
+    </div>
+
+</div>
+
+      </div>
+    </div>
+
+    <!-- Add Pagination -->
+    <!-- <div class="swiper-pagination"></div> -->
+    <div class="swiper-scrollbar"></div>
+  </div>
+
+  <div class="swiper-container-gallery dialog">
+
+  <div class="gallery-toolbar">
+    <i class="fa fa-chevron-left button-prev"></i>
+    <div class="swiper-pagination"></div>
+    <i class="fa fa-chevron-right button-next"></i>
+    <i class="fa fa-close dialog-close"></i>
+  </div>
+
+</div>
+
+
+  <script src="js/swiper.min.js"></script>
+<script src="js/main.js"></script>
+</body>
+
+</html>

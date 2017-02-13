@@ -25,7 +25,7 @@
 
 - name: Add QGIS repository signing key
   apt_key:
-    url: http://qgis.org/downloads/qgis-2016.gpg.key
+    url: http://ubuntu.qgis.org/downloads/qgis-2016.gpg.key
     state: present
   become: yes
 

@@ -38,86 +38,6 @@
   window.addEventListener(WINDOW_CHANGE_EVENT, closeMenu);
 
 
-  var navbarElem = document.querySelector('.home-menu');
-  var swiper = new Swiper('.page.swiper-container', {
-    speed: 500,
-    roundLengths: true,
-    direction: 'vertical',
-    threshold: 25,
-    // slidesPerView: 1,
-    slidesPerView: 'auto',
-    centeredSlides: true,
-    paginationClickable: true,
-    spaceBetween: 0,
-    mousewheelControl: true,
-    freeMode: false,
-    // grabCursor: true,
-
-    // Scrollbar
-    scrollbar: '.swiper-scrollbar',
-    scrollbarHide: true,
-    scrollbarDraggable: true,
-    scrollbarSnapOnRelease: true,
-
-    pagination: '.menu-pagination',
-    paginationClickable: true,
-    bulletClass: 'pure-menu-item',
-    bulletActiveClass: 'pure-menu-selected',
-    paginationBulletRender: function(swiper, index, className) {
-      return swiper.paginationContainer[0].children[index].outerHTML;
-    },
-    breakpoints: {
-      // when window width is <= 320px
-      840: {
-        // freeMode: true,
-        spaceBetween: 0
-      }
-    },
-    onInit: function(sw) {
-      document.body.setAttribute('page', sw.snapIndex);
-    },
-    onTransitionEnd: function(sw) {
-      console.log('TRANSITION END');
-      document.body.setAttribute('page', sw.snapIndex);
-      slideAnimation(sw);
-    }
-  });
-
-  var startBtn = document.querySelector('[data-scroll]');
-  swiper.$('[data-scroll]').on('click', function(evt) {
-    var page = parseInt(evt.target.getAttribute('data-scroll'));
-    evt.preventDefault();
-    swiper.slideTo(page);
-  });
-
-
-  /**  Tab Swipers  **/
-  function initializeTabSwiper(pageElem) {
-    new Swiper(pageElem.querySelector('.swiper-container'), {
-      speed: 500,
-      roundLengths: true,
-      direction: 'horizontal',
-      slidesPerView: 1,
-      spaceBetween: 20,
-      freeMode: false,
-
-      nextButton: pageElem.querySelector('.slide-button-next'),
-      prevButton: pageElem.querySelector('.slide-button-prev'),
-
-      pagination: pageElem.querySelector('.tabs-paginator'),
-      paginationClickable: true,
-      bulletClass: 'tab-item',
-      bulletActiveClass: 'tab-item-selected',
-      paginationBulletRender: function(swiper, index, className) {
-        return swiper.paginationContainer[0].children[index].outerHTML;
-      },
-      onTransitionEnd: slideAnimation,
-    });
-  }
-  var tabSwipers = document.querySelectorAll('.tabs-swiper');
-  for (var i = 0; i < tabSwipers.length; i++) {
-    initializeTabSwiper(tabSwipers[i]);
-  }
 
   function slideAnimation(s) {
     if (s.snapIndex === (s.prevActiveIndex || 0)) {
@@ -159,6 +79,7 @@
     s.$('.swiper-slide:not(.swiper-slide-active) [data-animate], .swiper-slide:not(.swiper-slide-active) [data-animate-once]:not(.animated)', s.wrapper[0]).addClass('invisible');
     s.prevActiveIndex = s.snapIndex;
   }
+
 
   function imageRealBounds(imgEl) {
     var box = imgEl.getBoundingClientRect();
@@ -246,6 +167,7 @@
     galleryElem.style.display = 'block';
     var gallerySwiper = new Swiper('.swiper-container-gallery', {
       speed: 500,
+      threshold: 20,
       // effect: 'fade',
       roundLengths: true,
       direction: 'horizontal',
@@ -323,11 +245,93 @@
     var keyListener = document.addEventListener('keydown', keyHandler);
   }
 
+  var swiper = new Swiper();
   swiper.$('.thumbnails .thumbnail svg').on('click', function(evt) {
     var index = parseInt(evt.target.getAttribute('data-gallery-index')) || 0;
     openGallery(evt, index);
   });
 
   swiper.$('[data-animate], [data-animate-once]').addClass('invisible');
-  window.sw = swiper;
+
+  swiper.$('[data-link]').on('click', function(evt) {
+    var targetLink = evt.target.getAttribute('data-link');
+    // var activeItem = evt.target.parentElement.querySelector('.pure-menu-selected');
+    // if (activeItem && activeItem !== evt.target) {
+    //   activeItem.classList.remove('pure-menu-selected');
+    // }
+    // evt.target.classList.add('pure-menu-selected');
+    Jump(targetLink);
+  });
+
+  /*
+  document.addEventListener('DOMContentLoaded', function(){
+    var trigger = new ScrollTrigger({
+      toggle: {
+        visible: 'v',
+        hidden: 'h'
+      },
+      offset: {
+        x: 0,
+        y: 0
+      },
+      addHeight: true
+    }, document.body, window);
+  });*/
+
+  function sectionEntered(target) {
+    // console.log('sectionEntered '+target);
+    var newActiveItem = document.querySelector('.home-menu [data-link="'+target+'"]');
+    var activeItem = document.querySelector('.home-menu .pure-menu-selected');
+    if (activeItem && activeItem !== newActiveItem) {
+      activeItem.classList.remove('pure-menu-selected');
+    }
+    newActiveItem.classList.add('pure-menu-selected');
+  }
+
+
+  var targets = document.querySelectorAll('[data-scroll-target]');
+  var links = [];
+  for (var i = 0; i < targets.length; i++) {
+    var target = targets[i];
+    links.push(target.getAttribute('data-scroll-target'));
+    new Waypoint({
+      element: target,
+      handler: function(direction) {
+        var targetLink = this.element.getAttribute('data-scroll-target');
+        if (direction === 'up') {
+          targetLink = links[links.indexOf(targetLink) - 1];
+        }
+        sectionEntered(targetLink);
+      },
+      offset: (i < targets.length - 1)? '50%' : '85%'
+    });
+  }
+
+  var elems = document.querySelectorAll('[data-scroll-anim]');
+  for (var i = 0; i < elems.length; i++) {
+    var elem = elems[i];
+    var classes = elem.getAttribute('data-scroll-anim').split(',');
+    elem.classList.add(classes.pop());
+    new Waypoint({
+      element: elem,
+      offset: '100%',
+      handler: function(direction) {
+        var classes = this.element.getAttribute('data-scroll-anim').split(',');
+        // if (direction === 'down') {
+        //   classes.forEach(this.element.classList.add.bind(this.element.classList));
+        // } else {
+        //   classes.forEach(this.element.classList.remove.bind(this.element.classList));
+        // }
+        
+        if (direction === 'down') {
+          this.element.classList.add(classes[0]);
+          this.element.classList.remove(classes[1]);
+        } else {
+          this.element.classList.remove(classes[0]);
+          this.element.classList.add(classes[1]);
+        }
+      }
+    });
+  }
+
 })(this, this.document);

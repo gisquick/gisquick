@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="io.gislab.mobile" version="0.1.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="io.gislab.mobile2" version="0.1.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>GIS.lab Mobile</name>
     <project name="GIS.lab Mobile" />
     <description>
@@ -19,19 +19,20 @@
     <preference name="ShowSplashScreenSpinner" value="false" />
     <preference name="SplashScreenDelay" value="8000" />
     <icon src="res/launcher/hdpi.png" />
-    <icon src="res/launcher/mdpi.png" width="48" height="48" density="mdpi" />
-    <icon src="res/launcher/hdpi.png" width="72" height="72" density="hdpi" />
-    <icon src="res/launcher/xhdpi.png" width="96" height="96" density="xhdpi" />
-    <icon src="res/launcher/xxhdpi.png" width="144" height="144" density="xxhdpi" />
+    <icon density="mdpi" height="48" src="res/launcher/mdpi.png" width="48" />
+    <icon density="hdpi" height="72" src="res/launcher/hdpi.png" width="72" />
+    <icon density="xhdpi" height="96" src="res/launcher/xhdpi.png" width="96" />
+    <icon density="xxhdpi" height="144" src="res/launcher/xxhdpi.png" width="144" />
     <platform name="android">
-        <splash src="res/splash/land-mdpi.png" density="land-mdpi" />
-        <splash src="res/splash/land-hdpi.png" density="land-hdpi" />
-        <splash src="res/splash/land-xhdpi.png" density="land-xhdpi" />
-        <splash src="res/splash/land-xxhdpi.png" density="land-xxhdpi" />
-
-        <splash src="res/splash/port-mdpi.png" density="port-mdpi" />
-        <splash src="res/splash/port-hdpi.png" density="port-hdpi" />
-        <splash src="res/splash/port-xhdpi.png" density="port-xhdpi" />
-        <splash src="res/splash/port-xxhdpi.png" density="port-xxhdpi" />
+        <splash density="land-mdpi" src="res/splash/land-mdpi.png" />
+        <splash density="land-hdpi" src="res/splash/land-hdpi.png" />
+        <splash density="land-xhdpi" src="res/splash/land-xhdpi.png" />
+        <splash density="land-xxhdpi" src="res/splash/land-xxhdpi.png" />
+        <splash density="port-mdpi" src="res/splash/port-mdpi.png" />
+        <splash density="port-hdpi" src="res/splash/port-hdpi.png" />
+        <splash density="port-xhdpi" src="res/splash/port-xhdpi.png" />
+        <splash density="port-xxhdpi" src="res/splash/port-xxhdpi.png" />
+        <preference name="AndroidPersistentFileLocation" value="Compatibility" />
+        <preference name="AndroidExtraFilesystems" value="files,cache, sdcard, cache-external, files-external" />
     </platform>
 </widget>

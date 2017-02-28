@@ -3,7 +3,7 @@ dist/
 MANIFEST
 clients/node_modules
 server/webgis/viewer/static/
-dev/
+/dev/
 
 *.pyc
 

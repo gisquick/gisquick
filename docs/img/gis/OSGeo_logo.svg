@@ -8,8 +8,8 @@
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="500"
-   height="250"
-   viewBox="0 0 500 250"
+   height="220"
+   viewBox="0 0 500 220"
    version="1.1"
    id="svg2"
    inkscape:version="0.48.4 r9939"
@@ -34,15 +34,15 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="801"
-     inkscape:window-height="622"
+     inkscape:window-width="919"
+     inkscape:window-height="703"
      id="namedview21"
      showgrid="false"
-     inkscape:zoom="0.89333333"
-     inkscape:cx="198.69403"
-     inkscape:cy="147.83582"
-     inkscape:window-x="876"
-     inkscape:window-y="213"
+     inkscape:zoom="0.63168206"
+     inkscape:cx="275.04869"
+     inkscape:cy="106.32032"
+     inkscape:window-x="584"
+     inkscape:window-y="155"
      inkscape:window-maximized="0"
      inkscape:current-layer="svg2" />
   <!-- Generator: Sketch 3.6.1 (26313) - http://www.bohemiancoding.com/sketch -->
@@ -55,7 +55,7 @@
   <g
      id="Page-1"
      style="fill:none;stroke:none"
-     transform="matrix(1.6251249,0,0,1.6251249,7.506468,20.710047)">
+     transform="matrix(1.6251249,0,0,1.6251249,7.506468,5.7100472)">
     <g
        id="OSGeo_logo">
       <path

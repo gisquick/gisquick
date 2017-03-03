@@ -10,12 +10,12 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="720"
-   height="400"
+   width="560"
+   height="380"
    id="svg4155"
    version="1.1"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="docker_pucture.svg">
+   sodipodi:docname="docker.svg">
   <defs
      id="defs4157">
     <clipPath
@@ -64,19 +64,6 @@
          inkscape:export-xdpi="300"
          inkscape:export-ydpi="300" />
     </clipPath>
-    <filter
-       color-interpolation-filters="sRGB"
-       inkscape:collect="always"
-       id="filter4776-5"
-       x="-0.33183911"
-       width="1.6636782"
-       y="-0.39338365"
-       height="1.7867672">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="0.65194979"
-         id="feGaussianBlur4778-0" />
-    </filter>
     <linearGradient
        id="linearGradient5342-4-9">
       <stop
@@ -142,18 +129,18 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.32212109"
-     inkscape:cx="435.41825"
-     inkscape:cy="160.41725"
+     inkscape:zoom="0.91109603"
+     inkscape:cx="480.1895"
+     inkscape:cy="271.96432"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      showguides="true"
      inkscape:guide-bbox="true"
      inkscape:window-width="1920"
-     inkscape:window-height="1177"
-     inkscape:window-x="1920"
-     inkscape:window-y="0"
+     inkscape:window-height="1028"
+     inkscape:window-x="0"
+     inkscape:window-y="25"
      inkscape:window-maximized="1" />
   <metadata
      id="metadata4160">
@@ -163,7 +150,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -171,10 +158,10 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0,-652.3622)">
+     transform="translate(0,-672.3622)">
     <g
        id="g4663"
-       transform="matrix(1.5898366,0,0,1.5898366,-179.08803,-463.33882)">
+       transform="matrix(1.5898366,0,0,1.5898366,-260.83071,-451.36319)">
       <path
          style="fill:none;stroke:#394d54;stroke-width:7.71189356;stroke-linecap:round;stroke-linejoin:round"
          id="path12-8"

@@ -78,7 +78,7 @@
   data-scroll-target="#benefits">
   <section class="container pure-g">
     <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-3 b-pad md-r-pad">
-      <h3 data-scroll-anim="fromRightIn,fromRightOut">QGIS Friendly</h3>
+      <h3 data-scroll-anim="fromLeftIn,fromLeftOut">QGIS Friendly</h3>
       <p data-scroll-anim="fromRightIn,fromRightOut">
         Gisquick is set of the mapping applications for publishing QGIS projects. It consists of plugin for QGIS, Django based server application, QGIS-server and web and mobile clients.
         The process of data publishing with Gisquick is quite easy. You can create and set up your projects with QGIS (layers, metadata, print layouts), prepare it for publishing using Gisquick plugin and upload it to the server.
@@ -100,7 +100,7 @@
         src="img/gis/OSGeo_logo.svg">
     </div>
     <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-3 b-pad md-l-pad">
-      <h3 data-scroll-anim="fromLeftIn,fromLeftOut">Open for Challenges</h3>
+      <h3 data-scroll-anim="fromRightIn,fromRightOut">Open for Challenges</h3>
       <p data-scroll-anim="fromLeftIn,fromLeftOut">
         Gisquick is developed as an open source project under GNU/GPL license. For client-server communication it uses OGC WMS, WMTS and WFS services. Gisquick is the solution without any extra costs (in comparison with common proprietary solutions). It’s applicable in everyday practice (e.g. education or nature conservancy) or for further custom development.
         <em class="call-to-action">Take full advantage of the Open source.</em>
@@ -110,8 +110,8 @@
 
   <section class="container pure-g">
     <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-3 b-pad md-r-pad flex-column">
-      <h3 data-scroll-anim="fromBottomIn,fromBottomOut">Easy to Deploy</h3>
-      <p data-scroll-anim="fromBottomIn,fromBottomOut">
+      <h3 data-scroll-anim="fromLeftIn,fromLeftOut">Easy to Deploy</h3>
+      <p data-scroll-anim="fromRightIn,fromRightOut">
         All Gisquick server components can be easily deployed in Docker containers. You can start serving your GIS projects from the cloud (like Amazon Web Services) or from your own hardware without any troubles. For project creators it's even simpler, all they need is QGIS desktop software with Gisquick plugin installed.
         <em class="call-to-action">Deploy Gisquick yourself or use our help.</em>
       </p>
@@ -127,7 +127,7 @@
     <div class="pure-u-1 pure-u-md-1-2  pure-u-lg-2-5 b-pad is-center">
       <h3 data-scroll-anim="fromBottomIn,fromBottomOut">Accessible Anywhere</h3>
       <p data-scroll-anim="fromBottomIn,fromBottomOut">
-        Gisquick web client gives you an easy to use user interface for viewing your GIS projects online. It’s designed as responsive and mobile-friendly application, but a dedicated mobile client (Cordova hybrid app) for even better experience is also available.
+        Gisquick web client gives you an easy to use user interface for viewing your GIS projects online (via Internet browser on any device). It’s designed as responsive and mobile-friendly application, but a dedicated mobile client (Cordova hybrid app) for even better experience is also available.
         <em class="call-to-action">Use Gisquick to solve your tasks anywhere.</em>
       </p>
     </div>
@@ -147,8 +147,8 @@
   data-scroll-target="#features">
   <section class="container pure-g">
     <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-3 b-pad md-r-pad flex-column">
-      <h3 data-scroll-anim="fromBottomIn,fromBottomOut">Suited to Anyone</h3>
-      <p data-scroll-anim="fromBottomIn,fromBottomOut">
+      <h3 data-scroll-anim="fromRightIn,fromRightOut">Suited to Anyone</h3>
+      <p data-scroll-anim="fromLeftIn,fromLeftOut">
         Everything you need for creating maps in Gisquick is located at one place - on the side panel. It offers ready to use layer compilations (topics) suitable for basic users and well arranged layers (base and overlay layers linking up with attribute data tables and layer metadata) for users who are used to working with common GIS.
         <em class="call-to-action">Use Gisquick to more effective work with your end users.</em>
       </p>
@@ -195,10 +195,10 @@
 
   <section class="container pure-g">
     <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-3 b-pad md-r-pad flex-column">
-      <h3 data-scroll-anim="fromBottomIn,fromBottomOut">Automatic tile caching</h3>
-      <p data-scroll-anim="fromBottomIn,fromBottomOut">
+      <h3 data-scroll-anim="fromLeftIn,fromLeftOut">Automatic Tile Caching</h3>
+      <p data-scroll-anim="fromRightIn,fromRightOut">
         Gisquick server support server-side map tiles caching without any additional configuration. You can simply enable it for your projects with less often changing geometry data and achieve better performance and faster access to your maps.
-        <em class="call-to-action">Improve server performace without the effort.</em>
+        <em class="call-to-action">Improve server performance without the effort.</em>
       </p>
     </div>
     <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-2-3 l-box">
@@ -211,12 +211,12 @@
 
   <div
   id="examples"
-  class="page-padding container"
+  class="page-padding"
   data-scroll-target="#examples">
   <section class="container">
     <h3>Screenshots</h3>
     
-<div class="container pure-g thumbnails flex-column">
+<div class="pure-g thumbnails flex-column">
   <div>
     <div class="pure-u-1-2 pure-u-md-1-3 l-box thumbnail">
       <div class="inner-content">
@@ -329,7 +329,7 @@
           data-animate="fadeInRight"
           class="image-panel">
           <div class="scroller">
-            <h3 class="header">Attribute table</h3>
+            <h3 class="header">Tables</h3>
             <p>
               Attribute table tool allows to display data attributes of any layer with enabled WFS service. You can also display and zoom-to geometry of selected object in the table.
             </p>
@@ -396,8 +396,11 @@
         <div
           data-animate="fadeInRight"
           class="image-panel">
-          <h3 class="header">Measure tool</h3>
-          <p>Todo</p>
+          <h3 class="header">Measurement</h3>
+          <p>
+            Measure tool allows you to measure point coordinates, distances and areas.
+            Measure panel has also options to select measure units, zoom to measured object, and it may contain some secondary measurements (not displayed on the map).
+          </p>
         </div>
       </div>
     </div>
@@ -409,7 +412,9 @@
           data-animate="fadeInRight"
           class="image-panel">
           <h3 class="header">Mobile</h3>
-          <p>Todo</p>
+          <p>
+            Application running on mobile device with Android OS. It offers the same features as web application on regular desktop, but use more compact layout and has additional account settings and projects manager.
+          </p>
         </div>
       </div>
     </div>
@@ -423,7 +428,7 @@
 
 <div class="bg-dark">
   <section class="container">
-    <h3>Demonstration projects</h3>
+    <h3>Demonstration Projects</h3>
     <div class="pure-g">
       <div class="project-thumbnail pure-u-1 pure-u-md-1-3 l-box">
         <a target="_blank"
@@ -471,42 +476,156 @@
 
   <div
   id="development"
-  class="container contact page-padding"
+  class="people container page-padding"
   data-scroll-target="#development">
-  <h2 class="section-heading is-center">Let's Get In Touch!</h2>
-  <hr class="primary">
-  <p class="is-center">Ready to start your next project with us? That's great! Give us a call or send us an email and we will get back to you as soon as possible!</p>
+  <section>
+  <h3>The People Behind</h3>
+  <div class="swiper-container flex content">
+    <div class="swiper-wrapper">
 
-  <div class="pure-g">
-      <div class="pure-u-1-3 is-center">
-          <a href="mailto:gisquick@info.org">
-              <i
-                data-scroll-anim="scaleUpIn,scaleUpOut"
-                class="fa fa-envelope-o fa-3x">
-              </i>
-              <p>E-mail</p>
-          </a>
+      <div class="swiper-slide flex-column is-center l-box">
+        <div class="card shadow">
+          <div class="header">
+            <div class="avatar">
+              <!-- <i class="fa fa-user"></i> -->
+              <img src="img/gis/people/marcel.jpeg">
+            </div>
+          </div>
+          <div class="content">
+            <p class="title">Marcel Dancák</p>
+            <p class="subtitle">Open source developer</p>
+            <div class="is-left">
+              <p><b>Skills: </b>Python, JavaScript, HTML5, Django</p>
+              <p><b>Contributions: </b>Gisplan, GIS.lab, QGIS</p>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="pure-u-1-3 is-center">
-          <a href="https://www.youtube.com/channel/UCHXyhq_wrEBnGYTRJovxrCg">
-              <i
-                data-scroll-anim="scaleUpIn,scaleUpOut"
-                class="fa fa-youtube fa-3x anim-delay-2">
-              </i>
-              <p>Youtube</p>
-          </a>  
+
+      <div class="swiper-slide flex-column is-center l-box">
+        <div class="card shadow">
+          <div class="header">
+            <div class="avatar">
+              <img src="img/gis/people/martin.jpeg">
+            </div>
+          </div>
+          <div class="content">
+            <p class="title">Martin Landa</p>
+            <p class="subtitle">
+              Open Source GIS consultant and instructor,  GRASS GIS expert
+            </p>
+            <div class="is-left">
+              <p><b>Skills: </b>Python</p>
+              <p>
+                <b>Contributions: </b>
+                GRASS GIS, QGIS, GDAL, GeoPython, PostGIS, GIS.lab, GeoForAll Lab, OSGeo, GISMentors
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="pure-u-1-3 is-center">
-          <a href="https://github.com/gislab-npo/gislab-web">
-              <i
-                data-scroll-anim="scaleUpIn,scaleUpOut"
-                class="fa fa-github fa-3x anim-delay-4">
-              </i>
-              <p>GitHub</p>
-          </a>
+
+      <div class="swiper-slide flex-column is-center l-box">
+        <div class="card shadow">
+          <div class="header">
+            <div class="avatar">
+              <img src="img/gis/people/jachym.jpeg">
+            </div>
+          </div>
+          <div class="content">
+            <p class="title">Jáchym Čepický</p>
+            <p class="subtitle">Open source GIS developer and consultant, PyWPS expert</p>
+            <div class="is-left">
+              <p><b>Skills: </b>Python, JavaScript</p>
+              <p>
+                <b>Contributions: </b>
+                PyWPS, GRASS GIS, OpenLayers, GDAL, OWSLib, GeoPython, GIS.lab, OSGeo, GISMentors
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
+
+      <div class="swiper-slide flex-column is-center l-box">
+        <div class="card shadow">
+          <div class="header">
+            <div class="avatar">
+              <img src="img/gis/people/ivan.jpeg">
+            </div>
+          </div>
+          <div class="content">
+            <p class="title">Ivan Minčík</p>
+            <p class="subtitle">Open source GIS architect and consultant</p>
+            <div class="is-left">
+              <p><b>Skills: </b>Python, SQL</p>
+              <p><b>Contributions: </b>Gisplan, GIS.lab</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="swiper-slide flex-column is-center l-box">
+        <div class="card shadow">
+          <div class="header">
+            <div class="avatar">
+              <img src="img/gis/people/rasto.jpeg">
+            </div>
+          </div>
+          <div class="content">
+            <p class="title">Rastislav Mičaník</p>
+            <p class="subtitle">User interface designer</p>
+            <div class="is-left">
+              <p><b>Contributions: </b>Gisplan, GIS.lab</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
   </div>
+  </section>
+  <i class="fa fa-chevron-left slide-button-prev"></i>
+  <i class="fa fa-chevron-right slide-button-next"></i>
+</div>
 
+
+  <div class=" contact bg-light">
+  <section class="container">
+    <h2 class="section-heading is-center">Let's Get In Touch!</h2>
+    <hr class="primary">
+    <p class="is-center">Ready to start your next project with us? That's great! Give us a call or send us an email and we will get back to you as soon as possible!</p>
+    <br />
+
+    <div class="pure-g">
+      <div class="pure-u-1-3 is-center">
+        <a href="mailto:gisquick@info.org">
+          <i
+            data-scroll-anim="scaleUpIn,scaleUpOut"
+            class="fa fa-envelope-o fa-3x">
+          </i>
+          <p>E-mail</p>
+        </a>
+      </div>
+      <div class="pure-u-1-3 is-center">
+        <a href="https://www.youtube.com/channel/UCHXyhq_wrEBnGYTRJovxrCg">
+          <i
+            data-scroll-anim="scaleUpIn,scaleUpOut"
+            class="fa fa-youtube fa-3x anim-delay-2">
+          </i>
+          <p>Youtube</p>
+        </a>  
+      </div>
+      <div class="pure-u-1-3 is-center">
+        <a href="https://github.com/gislab-npo/gislab-web">
+          <i
+            data-scroll-anim="scaleUpIn,scaleUpOut"
+            class="fa fa-github fa-3x anim-delay-4">
+          </i>
+          <p>GitHub</p>
+        </a>
+      </div>
+    </div>
+  </section>
 </div>
 
 

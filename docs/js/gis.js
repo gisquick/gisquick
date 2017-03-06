@@ -394,4 +394,18 @@
     });
   }
 
+  new Swiper('.people .swiper-container', {
+    speed: 500,
+    nextButton: '.slide-button-next',
+    prevButton: '.slide-button-prev',
+    slidesPerView: 3.25,
+    breakpoints: {
+      1200: {
+        slidesPerView: 2.25
+      },
+      680: {
+        slidesPerView: 1.25
+      }
+    }
+  });
 })(this, this.document);

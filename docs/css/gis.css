@@ -93,7 +93,7 @@ p {
   color: white; }
 
 .bg-light {
-  background-color: #f9f9f9; }
+  background-color: #f4f4f4; }
 
 .text-faded {
   color: rgba(255, 255, 255, 0.7); }
@@ -371,7 +371,7 @@ header {
           margin-right: auto; }
           header .header-content .header-content-inner p {
             font-size: 1.1em;
-            max-width: 70%;
+            max-width: 72%;
             margin-left: auto;
             margin-right: auto; } }
 
@@ -585,9 +585,9 @@ svg.thumbnail {
     top: 0;
     left: 0;
     right: 0;
-    bottom: 0;
+    bottom: 4px;
     background-color: #222;
-    opacity: 0.15;
+    opacity: 0.12;
     pointer-events: none; }
   .thumbnail .inner-content:hover label {
     background-color: #00aad4; }
@@ -608,8 +608,7 @@ svg.thumbnail {
     transition: all 400ms cubic-bezier(0.455, 0.03, 0.515, 0.955); }
   .thumbnail label {
     position: absolute;
-    xtop: 1em;
-    bottom: 0;
+    bottom: 4px;
     left: 0;
     right: 0;
     height: 1.5em;
@@ -619,10 +618,8 @@ svg.thumbnail {
     font-weight: bold;
     color: #fff;
     background-color: rgba(0, 0, 0, 0.45);
-    xbackground-color: #00aad4;
-    xopacity: 0.5;
-    text-transform: uppercase;
-    pointer-events: none; }
+    pointer-events: none;
+    z-index: 10; }
 
 .pure-img-responsive {
   max-width: 100%;
@@ -939,7 +936,7 @@ svg.thumbnail {
 
 .item-list .item {
   position: relative;
-  border-bottom: 1px solid #f9f9f9;
+  border-bottom: 1px solid #f4f4f4;
   padding: 8px 10px 8px 58px; }
   .item-list .item h4 {
     margin-top: 0;
@@ -1121,6 +1118,49 @@ section {
     padding-left: 22px; }
   .project-thumbnail h4 {
     text-transform: uppercase; }
+
+.people {
+  position: relative; }
+  .people .slide-button-next {
+    right: 0;
+    font-size: 24px; }
+  .people .slide-button-prev {
+    left: 0;
+    font-size: 24px; }
+  .people .card .avatar {
+    font-size: 48px;
+    width: 64px;
+    height: 64px;
+    background-color: #aaa;
+    border-radius: 50%;
+    margin: 0 auto;
+    transform: translateY(30%); }
+    .people .card .avatar img {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%; }
+  .people .card .header {
+    padding: 0px 8px 0 8px;
+    background-color: #eee; }
+  .people .card .content {
+    padding: 8px;
+    color: #444; }
+    .people .card .content p {
+      margin: 4px 0; }
+    .people .card .content .title {
+      font-size: 14px;
+      font-weight: bold;
+      padding: 12px 0 0 0;
+      display: inline-block;
+      margin-bottom: 2px; }
+    .people .card .content .subtitle {
+      color: #777;
+      font-style: italic;
+      text-align: center;
+      margin-top: 0;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #ccc;
+      margin-bottom: 20px; }
 
 /**
  * Animations

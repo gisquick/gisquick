@@ -86,7 +86,12 @@ p {
   visibility: hidden; }
 
 .bg-primary {
-  background-color: #00aad4; }
+  background-color: #00aad4;
+  color: #fff; }
+  .bg-primary h3 {
+    text-shadow: 2px 2px 8px #222; }
+  .bg-primary p {
+    text-shadow: 2px 1px 3px #777; }
 
 .bg-dark {
   background-color: #222;
@@ -375,6 +380,23 @@ header {
             margin-left: auto;
             margin-right: auto; } }
 
+footer {
+  padding-top: 1.5em;
+  padding-bottom: 0.5em;
+  text-align: center;
+  padding-left: 0 !important;
+  padding-right: 0 !important; }
+  footer a {
+    color: #fff;
+    display: inline-block;
+    text-align: center;
+    min-width: 120px;
+    opacity: 0.8; }
+    footer a:hover {
+      opacity: 1; }
+  footer p {
+    font-size: 0.85em; }
+
 .section-heading {
   margin-top: 0; }
 
@@ -392,7 +414,7 @@ header {
   display: block;
   margin-top: 1em;
   font-size: 85%;
-  color: #777; }
+  opacity: 0.7; }
 
 .text-primary {
   color: #00aad4; }
@@ -456,10 +478,6 @@ header {
 
 .btn-l {
   padding: 8px 16px; }
-
-.contact .fa {
-  color: #222;
-  font-size: 4em; }
 
 ::-moz-selection {
   color: white;
@@ -1131,8 +1149,6 @@ section {
     font-size: 48px;
     width: 64px;
     height: 64px;
-    background-color: #aaa;
-    border-radius: 50%;
     margin: 0 auto;
     transform: translateY(30%); }
     .people .card .avatar img {
@@ -1141,10 +1157,11 @@ section {
       border-radius: 50%; }
   .people .card .header {
     padding: 0px 8px 0 8px;
-    background-color: #eee; }
+    background-color: #ddd; }
   .people .card .content {
     padding: 8px;
-    color: #444; }
+    color: #444;
+    background-color: #fff; }
     .people .card .content p {
       margin: 4px 0; }
     .people .card .content .title {

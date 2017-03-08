@@ -96,7 +96,8 @@
 
     var parent = imgEl.parentElement;
     var parentBox = parent.getBoundingClientRect()
-    var padding = parseFloat(Dom7(parent).css('padding'));
+    var padding = Dom7(parent).css('padding') || Dom7(parent).css('padding-left');
+    padding = parseFloat(padding) || 0;
 
     var containerBox = {
       top: parentBox.top+padding,
@@ -404,7 +405,8 @@
         slidesPerView: 2.25
       },
       680: {
-        slidesPerView: 1.25
+        slidesPerView: 1.25,
+        centeredSlides: true
       }
     }
   });

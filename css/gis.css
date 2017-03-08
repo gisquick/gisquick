@@ -67,8 +67,12 @@ h3 {
       font-size: 1.65em; } }
   @media (max-width: 47.99em) {
     h3 {
-      margin: 0.5em 0 0.25em 0;
+      margin: 0.5em 0 0.5em 0;
       font-size: 1.5em; } }
+
+@media (max-width: 47.99em) {
+  h4 {
+    margin: 0.75em 0; } }
 
 p {
   font-size: 1em;
@@ -116,7 +120,7 @@ body[page="0"] .home-menu {
 
 .home-menu {
   width: 100%;
-  height: 42px;
+  height: 40px;
   padding-bottom: 10px;
   box-sizing: content-box;
   overflow: hidden;
@@ -133,21 +137,22 @@ body[page="0"] .home-menu {
     outline: none;
     padding: 12px 0; }
   .home-menu .logo {
-    height: 52px;
+    height: 50px;
     vertical-align: middle;
     padding: 14px 0;
     pointer-events: none; }
   .home-menu .pure-menu-list {
     padding-top: 6px;
-    height: 41px; }
+    height: 40px; }
   .home-menu .pure-menu-item {
     padding: 0 1em;
     color: #aaa;
     cursor: pointer;
-    border-bottom: 1px solid #999;
+    border-bottom: 1px solid #444;
     line-height: 52px;
     height: 52px;
-    padding-left: 0; }
+    padding-left: 0;
+    min-width: 85px; }
   .home-menu .pure-menu-selected {
     color: #fff;
     font-weight: bold; }
@@ -165,7 +170,7 @@ body[page="0"] .home-menu {
           left: -400%;
           width: 400%;
           bottom: -10px;
-          height: 9px;
+          height: 10px;
           transition: all ease-in-out 0.4s; }
         .home-menu .pure-menu-list:after {
           content: "";
@@ -174,15 +179,15 @@ body[page="0"] .home-menu {
           left: 100%;
           width: 200%;
           bottom: -10px;
-          height: 9px;
+          height: 10px;
           transition: background-color ease-in-out 0.4s; }
       .home-menu .pure-menu-item {
         border-bottom: none;
-        line-height: 36px;
-        height: 35px;
-        font-size: 100%;
+        line-height: 34px;
+        height: 34px;
         font-weight: bold;
-        padding: 0 0.75em; }
+        padding: 0 0.75em;
+        text-align: center; }
         .home-menu .pure-menu-item:before {
           content: "";
           position: absolute;
@@ -190,7 +195,7 @@ body[page="0"] .home-menu {
           left: 0;
           right: 0;
           bottom: -10px;
-          height: 9px;
+          height: 10px;
           transition: opacity ease-in-out .4s; }
       .home-menu .pure-menu-selected:before {
         /*
@@ -587,7 +592,9 @@ svg.thumbnail {
   background-size: cover;
   background-position: center;
   min-height: 0;
-  max-height: none; }
+  max-height: none;
+  -webkit-filter: none;
+  filter: none; }
 
 .thumbnail {
   box-sizing: border-box;
@@ -596,19 +603,13 @@ svg.thumbnail {
   transform-origin: 0 0 0;
   cursor: pointer;
   position: relative;
-  z-index: 0; }
-  .thumbnail .inner-content:hover:after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 4px;
-    background-color: #222;
-    opacity: 0.12;
-    pointer-events: none; }
-  .thumbnail .inner-content:hover label {
-    background-color: #00aad4; }
+  z-index: 0;
+  -webkit-filter: grayscale(100%);
+  filter: grayscale(100%);
+  transition: filter 200ms cubic-bezier(0.455, 0.03, 0.515, 0.955); }
+  .thumbnail:hover {
+    -webkit-filter: grayscale(0%);
+    filter: grayscale(0%); }
   @media screen and (max-width: 47.99em) {
     .thumbnail {
       max-height: 32%; } }
@@ -635,13 +636,15 @@ svg.thumbnail {
     font-size: 1em;
     font-weight: bold;
     color: #fff;
-    background-color: rgba(0, 0, 0, 0.45);
+    background-color: #00aad4;
+    opacity: 0.85;
     pointer-events: none;
     z-index: 10; }
 
 .pure-img-responsive {
   max-width: 100%;
-  height: auto; }
+  height: auto;
+  object-fit: contain; }
 
 .dialog {
   position: fixed;
@@ -793,7 +796,7 @@ svg.thumbnail {
     object-position: 50% 50%; }
 
 .page-padding {
-  padding-top: 52px; }
+  padding-top: 50px; }
 
 .flex-row {
   display: flex;
@@ -933,7 +936,7 @@ svg.thumbnail {
 
 .swiper-container-vertical > .swiper-scrollbar {
   width: 4px;
-  top: 52px;
+  top: 50px;
   bottom: 0;
   height: auto; }
 
@@ -1094,9 +1097,12 @@ svg.thumbnail {
 body.modal-open {
   overflow: hidden; }
 
-.home-menu .pure-menu-item {
-  font-weight: 500;
-  letter-spacing: 0.5px; }
+.home-menu {
+  -webkit-backface-visibility: hidden; }
+  .home-menu .pure-menu-item {
+    font-weight: 500;
+    letter-spacing: 0.6px;
+    font-size: 90%; }
 
 header {
   box-shadow: 0px 3px 8px 1px rgba(0, 0, 0, 0.3), 0px 1px 12px 0px rgba(0, 0, 0, 0.52); }
@@ -1116,7 +1122,23 @@ header {
     position: absolute;
     bottom: 5%;
     left: 50%;
-    transform: translateX(-50%); }
+    transform: translateX(-50%);
+    box-shadow: 0px 3px 8px 1px rgba(0, 0, 0, 0.3), 0px 1px 12px 0px rgba(0, 0, 0, 0.52); }
+  header p {
+    position: relative;
+    padding-bottom: 1em; }
+  @media (max-width: 47.99em) {
+    header h1 {
+      z-index: 100; }
+    header .header-content:before {
+      content: "";
+      position: absolute;
+      top: 200px;
+      bottom: 170px;
+      left: 0;
+      right: 0;
+      background-color: #00aad4;
+      background: linear-gradient(#00aad4 85%, transparent); } }
 
 section {
   overflow: hidden; }
@@ -1125,17 +1147,19 @@ section {
   section p[data-scroll-anim] {
     transition-delay: 0.25s !important; }
 
+@media (max-width: 47.99em) {
+  footer a {
+    min-width: 115px; } }
 .project-thumbnail {
   xflex: 1 1 auto;
   position: relative;
-  height: 100%; }
-  .project-thumbnail img {
-    border-radius: 4px;
-    object-fit: contain; }
+  height: 100%;
+  transition: opacity 200ms cubic-bezier(0.455, 0.03, 0.515, 0.955);
+  opacity: 0.85; }
+  .project-thumbnail:hover {
+    opacity: 1; }
   .project-thumbnail ul {
     padding-left: 22px; }
-  .project-thumbnail h4 {
-    text-transform: uppercase; }
 
 .people {
   position: relative; }
@@ -1163,16 +1187,17 @@ section {
     color: #444;
     background-color: #fff; }
     .people .card .content p {
-      margin: 4px 0; }
+      margin: 4px 0;
+      color: #aaa; }
     .people .card .content .title {
-      font-size: 14px;
+      color: #222;
+      font-size: 15px;
       font-weight: bold;
       padding: 12px 0 0 0;
       display: inline-block;
       margin-bottom: 2px; }
     .people .card .content .subtitle {
-      color: #777;
-      font-style: italic;
+      color: #444;
       text-align: center;
       margin-top: 0;
       padding-bottom: 8px;

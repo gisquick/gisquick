@@ -136,6 +136,10 @@
 #map-zoom-buttons {
   margin-bottom: 2px;
 }
+#map-zoom-buttons .map-button {
+  left: 0;
+  top: 0;
+}
 .md-button.map-button.ol-zoom {
   height: auto;
   background-color: transparent!important;

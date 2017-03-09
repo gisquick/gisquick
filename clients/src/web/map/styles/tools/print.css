@@ -23,13 +23,23 @@
   position: relative;
   border: 2px solid;
   border-top: none;
-  opacity: 0.8;
+  opacity: 0.85;
   box-sizing: content-box;
+}
+
+.print-template-container {
+  opacity: 0;
+  position: absolute;
+}
+.print-template-container:not(.ng-hide) {
+  opacity: 0.85;
+  position: relative;
 }
 
 .print-templates-stack {
   position: relative;
 }
+
 .print-area-image {
   position: absolute;
   width: inherit;

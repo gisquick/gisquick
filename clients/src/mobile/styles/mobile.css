@@ -235,3 +235,7 @@ md-dialog.progress-dialog .title {
   bottom: 0!important;
   transition: none!important;
 }
+
+.print-preview .md-button[aria-label="Print"] {
+  display: none;
+}

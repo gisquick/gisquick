@@ -217,10 +217,6 @@ md-menu-item .secondary-check.checked {
   right: 5px;
 }
 
-.app-menu .md-button.map-button {
-  border-radius: 18px;
-}
-
 md-menu-item.menu-group-item md-divider {
   position: absolute;
   top: 10px;

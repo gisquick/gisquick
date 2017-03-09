@@ -121,3 +121,9 @@ md-progress-linear .md-bar {
 div:focus {
   outline: none;
 }
+
+.md-button.map-button,
+.md-button.md-fab {
+  overflow: visible;
+  position: relative;
+}

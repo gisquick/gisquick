@@ -332,15 +332,25 @@
       // TODO: handle errors
       tool.progress = gislabClient.get(projectProvider.data.ows_url, printParams, {responseType: 'blob'})
         .then(function(data) {
-          var link = document.createElement("a");
-          link.download = "{0}.{1}".format(tool.config.layout.name, tool.config.format);
-          link.href = URL.createObjectURL(data);
-          (document.body || document.documentElement).appendChild(link);
-          link.click();
-          setTimeout(function() {
-            (document.body || document.documentElement).removeChild(link);
-            URL.revokeObjectURL(link.href);
-          }, 10000);
+          var timeString = new Date().toISOString();
+          // var timeStamp = "{0} {1}".format(timeString.substring(0, 10), timeString.substring(11, 19));
+          var timeStamp = timeString.substring(11, 19).split(':').join('-');
+          var filename = "{0}_{1}.{2}".format(tool.config.layout.name, timeStamp, tool.config.format);
+          // var filename = "{0}.{1}".format(tool.config.layout.name, tool.config.format);
+
+          if (tool.saveFile) {
+            tool.saveFile(filename, data);
+          } else {
+            var link = document.createElement("a");
+            link.download = filename;
+            link.href = URL.createObjectURL(data);
+            (document.body || document.documentElement).appendChild(link);
+            link.click();
+            setTimeout(function() {
+              (document.body || document.documentElement).removeChild(link);
+              URL.revokeObjectURL(link.href);
+            }, 10000);
+          }
         });
     }
   }

@@ -126,10 +126,38 @@
       });
 
       projectProvider.once('mapInitialized', function(map) {
+
         toolsManager.setScaleLineVisibility($localStorage.showScaleLine);
         toolsManager.setAttributionsVisibility($localStorage.showAttributions);
         toolsManager.setZoomControlsVisibility($localStorage.showZoomControls);
         $timeout(function() {
+          var printTool = toolsManager.get('print');
+          if (printTool) {
+            var logError = function(err) {
+              console.log('error: '+err.toString());
+            }
+            var writeFile = function(fileEntry, dataObj) {
+              // Create a FileWriter object for our FileEntry (log.txt).
+              fileEntry.createWriter(function (fileWriter) {
+                fileWriter.onerror = logError;
+                fileWriter.onwriteend = function() {
+                  // fileEntry.name
+                  $mdToast.showSimple('File was saved: '+fileEntry.fullPath);
+                };
+                fileWriter.write(dataObj);
+              });
+            }
+
+            printTool.saveFile = function(filename, data) {
+              var blob = new Blob([data], { type: 'application/octet-binary' });
+
+              window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fs) {
+                fs.root.getFile(filename, { create: true, exclusive: false }, function (fileEntry) {
+                  writeFile(fileEntry, blob);
+                }, logError);
+              }, logError);
+            }
+          }
           var tool = toolsManager.tools.splice(0, 1)[0];
           toolsManager.addTool(tool);
         });

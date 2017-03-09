@@ -9,11 +9,11 @@
     return {
       restrict: 'A',
       link: function (scope, iElem, iAttrs) {
-        iElem.on('click', function() {
-          if (document.activeElement.tagName === 'INPUT') {
+        iElem.on('click', function(evt) {
+          if (evt.target.tagName !== 'INPUT' && document.activeElement.tagName === 'INPUT') {
             document.activeElement.blur();
           }
-        })
+        });
       }
     }
   }

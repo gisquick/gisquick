@@ -87,6 +87,6 @@ ol.Map.prototype.transformBrowserEvent = function(browserEvent, opt_type) {};
 /** Wrapper for ol.Map.handleMapBrowserEvent which allows to pre-process event **/
 var handleMapBrowserEvent = ol.Map.prototype.handleMapBrowserEvent;
 ol.Map.prototype.handleMapBrowserEvent = function(browserEvent, opt_type) {
-  this.transformBrowserEvent(browserEvent, opt_type);
+  this['transformBrowserEvent'](browserEvent, opt_type);
   return handleMapBrowserEvent.call(this, browserEvent, opt_type);
 }

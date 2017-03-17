@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
 /***************************************************************************
- GIS.lab Web plugin
- Publish your projects into GIS.lab Web application
+ Gisquick plugin
+ Publish your projects into Gisquick application
  ***************************************************************************/
 """
 
@@ -128,17 +128,17 @@ class WebGisPlugin:
         # Create action that will start plugin configuration
         self.action = QAction(
             QIcon(":/plugins/webgisplugin/icon.png"),
-            u"Publish in GIS.lab Web", self.iface.mainWindow())
+            u"Publish in Gisquick", self.iface.mainWindow())
         # connect the action to the run method
         self.action.triggered.connect(self.show_publish_dialog)
 
         # Add toolbar button and menu item
         self.iface.addToolBarIcon(self.action)
-        self.iface.addPluginToWebMenu(u"&GIS.lab Web", self.action)
+        self.iface.addPluginToWebMenu(u"&Gisquick", self.action)
 
     def unload(self):
         # Remove the plugin menu item and icon
-        self.iface.removePluginMenu(u"&GIS.lab Web", self.action)
+        self.iface.removePluginMenu(u"&Gisquick", self.action)
         self.iface.removeToolBarIcon(self.action)
 
     def is_overlay_layer_for_publish(self, layer):
@@ -415,7 +415,7 @@ class WebGisPlugin:
             QMessageBox.critical(
                 None,
                 'Error',
-                'Create new QGIS project or open existing one before publishing to GIS.lab Web'
+                'Create new QGIS project or open existing one before publishing to Gisquick'
             )
             return
 

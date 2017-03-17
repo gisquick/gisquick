@@ -1,19 +1,19 @@
 #/***************************************************************************
-# GIS.lab Web plugin
-# Publish your projects into GIS.lab Web application
+# Gisquick plugin
+# Publish your projects into Gisquick application
 # ***************************************************************************/
 
 # WARNING: Every line in Makefile recipe must begin with a tab character. Don't
 #          try to convert them spaces !
 
 QGISDIR = .qgis2
-GISLAB_BUILDDIR = build
-PLUGINNAME = gislab_web
+GISQUICK_BUILDDIR = build
+PLUGINNAME = gisquick
 PY_FILES = webgisplugin.py wizard.py project.py topics.py confirmation.py publish.py utils.py __init__.py
 EXTRAS = icon.png metadata.txt
 UI_FILES = publish_dialog.ui
 RESOURCE_FILES = resources_rc.py
-ZIPNAME = gislab-web-qgis
+ZIPNAME = gisquick-qgis
 VERSION := $(shell grep version metadata.txt | awk -F "=" '{print $$2}')
 
 
@@ -40,14 +40,14 @@ derase:
 # The zip target creates a zip file with the deployed content.
 zip:
 	rm -f $(ZIPNAME)*.zip
-	rm -Rf $(GISLAB_BUILDDIR)
-	mkdir -p $(GISLAB_BUILDDIR)/$(PLUGINNAME)
-	cp -vf $(PY_FILES) $(GISLAB_BUILDDIR)/$(PLUGINNAME)
-	cp -vf $(UI_FILES) $(GISLAB_BUILDDIR)/$(PLUGINNAME)
-	cp -vf $(RESOURCE_FILES) $(GISLAB_BUILDDIR)/$(PLUGINNAME)
-	cp -vf $(EXTRAS) $(GISLAB_BUILDDIR)/$(PLUGINNAME)
-	cd $(GISLAB_BUILDDIR); zip -9r $(CURDIR)/$(ZIPNAME)-$(VERSION).zip $(PLUGINNAME)
-	rm -Rf $(GISLAB_BUILDDIR)
+	rm -Rf $(GISQUICK_BUILDDIR)
+	mkdir -p $(GISQUICK_BUILDDIR)/$(PLUGINNAME)
+	cp -vf $(PY_FILES) $(GISQUICK_BUILDDIR)/$(PLUGINNAME)
+	cp -vf $(UI_FILES) $(GISQUICK_BUILDDIR)/$(PLUGINNAME)
+	cp -vf $(RESOURCE_FILES) $(GISQUICK_BUILDDIR)/$(PLUGINNAME)
+	cp -vf $(EXTRAS) $(GISQUICK_BUILDDIR)/$(PLUGINNAME)
+	cd $(GISQUICK_BUILDDIR); zip -9r $(CURDIR)/$(ZIPNAME)-$(VERSION).zip $(PLUGINNAME)
+	rm -Rf $(GISQUICK_BUILDDIR)
 
 clean:
 	rm $(RESOURCE_FILES)

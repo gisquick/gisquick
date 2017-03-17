@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
 /***************************************************************************
- GIS.lab Web plugin
- Publish your projects into GIS.lab Web application
+ Gisquick plugin
+ Publish your projects into Gisquick application
  ***************************************************************************/
 """
 

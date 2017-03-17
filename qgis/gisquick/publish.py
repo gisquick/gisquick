@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
 /***************************************************************************
- GIS.lab Web plugin
- Publish your projects into GIS.lab Web application
+ Gisquick plugin
+ Publish your projects into Gisquick application
  ***************************************************************************/
 """
 
@@ -258,7 +258,7 @@ class PublishPage(WizardPage):
         ).setExpanded(True)
 
     def publish_project(self):
-        """Creates files required for publishing current project for GIS.lab Web application."""
+        """Creates files required for publishing current project for Gisquick application."""
         metadata = self.plugin.metadata
         project = self.plugin.project
 

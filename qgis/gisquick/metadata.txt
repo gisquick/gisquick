@@ -1,0 +1,16 @@
+[general]
+name=Gisquick plugin
+qgisMinimumVersion=2.8
+description=Publish your projects in Gisquick
+category=Web
+version=1.0.0
+author=Marcel Dancak
+email=dancakm@gmail.com
+
+homepage=http://gisquick.org
+icon=icon.png
+experimental=False
+deprecated=False
+tracker=https://github.com/gislab-npo/gisquick/issues
+repository=https://github.com/gislab-npo/gisquick
+tags=web,gisquick,gislab

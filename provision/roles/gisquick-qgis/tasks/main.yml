@@ -1,0 +1,13 @@
+---
+# GISQUICK PLUGIN - DEVELOPMENT
+
+- name: Install packages
+  apt:
+    pkg: "{{ packages }}"
+    force: yes
+    install_recommends: no
+    state: latest
+  environment: "{{ proxy_env }}"
+  become: yes
+
+# vim: set ts=8 sts=2 sw=2 et:

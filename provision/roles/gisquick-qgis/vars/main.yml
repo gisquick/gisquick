@@ -1,0 +1,7 @@
+---
+
+packages:
+  - pyqt4-dev-tools
+  - zip
+
+# vim: set ts=8 sts=2 sw=2 et:

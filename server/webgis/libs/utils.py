@@ -6,7 +6,7 @@ from django.conf import settings
 
 def app_url(request, location=None):
     url = request.build_absolute_uri(location)
-    if settings.GISLAB_WEB_SECURE_URL:
+    if settings.GISQUICK_SECURE_URL:
         url = url.replace('http:', 'https:')
     return url
 

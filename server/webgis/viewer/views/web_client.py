@@ -104,8 +104,8 @@ def user_projects(request, username):
                 'username': username,
                 'projects': projects,
                 'gislab_version': webgis.VERSION,
-                'gislab_homepage': settings.GISLAB_HOMEPAGE,
-                'gislab_documentation': settings.GISLAB_DOCUMENTATION_PAGE,
+                'gislab_homepage': settings.GISQUICK_HOMEPAGE,
+                'gislab_documentation': settings.GISQUICK_DOCUMENTATION_PAGE,
                 'user': get_user_data(request.user),
                 'status': 200
             }

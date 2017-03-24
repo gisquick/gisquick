@@ -64,7 +64,7 @@ def clean_project_name(project):
     return project
 
 def get_last_project_version(project):
-    full_project = os.path.join(settings.GISLAB_WEB_PROJECT_ROOT, project)
+    full_project = os.path.join(settings.GISQUICK_PROJECT_ROOT, project)
     project_dir = os.path.dirname(full_project)
     if not os.path.exists(project_dir):
         return None
@@ -99,11 +99,11 @@ def get_project_layers_info(project_key, publish, project=None):
         return { param.replace(prefix, ''): value for param, value in data.items() }
     elif project:
         filename = "{0}_{1}.meta".format(clean_project_name(project), publish)
-        metadata_filename = os.path.join(settings.GISLAB_WEB_PROJECT_ROOT, filename)
+        metadata_filename = os.path.join(settings.GISQUICK_PROJECT_ROOT, filename)
         if not os.path.exists(metadata_filename):
             # fallback to old metadata filename without publish timestamp
             metadata_filename = os.path.join(
-                settings.GISLAB_WEB_PROJECT_ROOT,
+                settings.GISQUICK_PROJECT_ROOT,
                 "{0}.meta".format(clean_project_name(project))
             )
         try:
@@ -216,7 +216,7 @@ def get_project(request):
         ows_project = ows_project_name
 
         metadata_filename = os.path.join(
-            settings.GISLAB_WEB_PROJECT_ROOT,
+            settings.GISQUICK_PROJECT_ROOT,
             ows_project_name + '.meta'
         )
         try:
@@ -384,16 +384,16 @@ def get_project(request):
         context['base_layers'] = [OSM_LAYER]
 
     context['gislab_version'] = webgis.VERSION
-    context['gislab_homepage'] = settings.GISLAB_HOMEPAGE
-    context['gislab_documentation'] = settings.GISLAB_DOCUMENTATION_PAGE
+    context['gislab_homepage'] = settings.GISQUICK_HOMEPAGE
+    context['gislab_documentation'] = settings.GISQUICK_DOCUMENTATION_PAGE
     context['status'] = 200
     return context
 
 
 def get_user_projects(request, username):
     projects = []
-    projects_root = os.path.join(settings.GISLAB_WEB_PROJECT_ROOT, username)
-    project_prefix_length = len(os.path.join(settings.GISLAB_WEB_PROJECT_ROOT, ''))
+    projects_root = os.path.join(settings.GISQUICK_PROJECT_ROOT, username)
+    project_prefix_length = len(os.path.join(settings.GISQUICK_PROJECT_ROOT, ''))
     for root, dirs, files in os.walk(projects_root):
         if files:
             # analyze project filenames and group different publications of the same project into one record

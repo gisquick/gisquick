@@ -20,12 +20,12 @@ from webgis.libs.auth.decorators import basic_authentication
 
 
 def abs_project_path(project):
-    return os.path.join(settings.GISLAB_WEB_PROJECT_ROOT, project)
+    return os.path.join(settings.GISQUICK_PROJECT_ROOT, project)
 
 @basic_authentication(realm="OWS API")
 def ows(request):
     url = "{0}?{1}".format(
-        settings.GISLAB_WEB_MAPSERVER_URL.rstrip("/"),
+        settings.GISQUICK_MAPSERVER_URL.rstrip("/"),
         request.environ['QUERY_STRING']
     )
     query_params = parse_qs(request.environ['QUERY_STRING'])
@@ -52,7 +52,7 @@ def tile(request, project_hash, publish, layers_hash=None, z=None, x=None, y=Non
     params = {key.upper(): request.GET[key] for key in request.GET.keys()}
     project = params['PROJECT']+'.qgs'
     mapserver_url = set_query_parameters(
-        settings.GISLAB_WEB_MAPSERVER_URL,
+        settings.GISQUICK_MAPSERVER_URL,
         {'MAP': abs_project_path(project)}
     )
     layer_params = get_project_layers_info(project_hash, publish, project=project)
@@ -80,7 +80,7 @@ def legend(request, project_hash, publish, layer_hash=None, zoom=None, format=No
     params = {key.upper(): request.GET[key] for key in request.GET.keys()}
     project = params['PROJECT']+'.qgs'
     mapserver_url = set_query_parameters(
-        settings.GISLAB_WEB_MAPSERVER_URL,
+        settings.GISQUICK_MAPSERVER_URL,
         {'MAP': abs_project_path(project)}
     )
     try:
@@ -106,7 +106,7 @@ def vector_layers(request):
     if project:
         ows_project = clean_project_name(project)
         vector_data_filename = os.path.join(
-            settings.GISLAB_WEB_PROJECT_ROOT,
+            settings.GISQUICK_PROJECT_ROOT,
             '{0}.geojson'.format(ows_project)
         )
         if os.path.exists(vector_data_filename):
@@ -141,7 +141,7 @@ def filterdata(request):
     if request.method == 'POST':
         project = request.GET['PROJECT']
         project = get_last_project_version(project) + '.qgs'
-        url = settings.GISLAB_WEB_MAPSERVER_URL
+        url = settings.GISQUICK_MAPSERVER_URL
         params = {
             'MAP': abs_project_path(project)
         }

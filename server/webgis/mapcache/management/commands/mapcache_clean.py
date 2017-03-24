@@ -27,14 +27,14 @@ class Command(BaseCommand):
             last_publish = 0
             last_project_version = get_last_project_version(project)
             version_pattern = re.compile(re.escape(project)+'_(\d{10})')
-            if os.path.exists(os.path.join(settings.GISLAB_WEB_PROJECT_ROOT, last_project_version+'.qgs')):
+            if os.path.exists(os.path.join(settings.GISQUICK_PROJECT_ROOT, last_project_version+'.qgs')):
                 match = version_pattern.match(last_project_version)
                 if match:
                     # timestamp from filename
                     last_publish = int(match.group(1))
                 else:
                     # timestamp from metadata
-                    metadata_filename = os.path.join(settings.GISLAB_WEB_PROJECT_ROOT, last_project_version+'.meta')
+                    metadata_filename = os.path.join(settings.GISQUICK_PROJECT_ROOT, last_project_version+'.meta')
                     if os.path.exists(metadata_filename):
                         try:
                             metadata = MetadataParser(metadata_filename)

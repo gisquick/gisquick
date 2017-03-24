@@ -246,7 +246,7 @@
     };
 
     $scope.loginProgressBarTask = function() {
-      $scope.setProgressBarMessage('Login to GIS.lab server');
+      $scope.setProgressBarMessage('Login to Gisquick server');
       return gislabMobileClient.login($scope.$storage.serverUrl, $scope.$storage.username, $scope.$storage.password)
         .then(function() {
           $scope.currentServer = '{0}:{1}:{2}'.format($scope.$storage.serverUrl, $scope.$storage.username, $scope.$storage.password);

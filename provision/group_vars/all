@@ -2,7 +2,7 @@
 # Place custom variables to 'host_vars/gisquick ' instead of modifying this
 # file.
 
-# Enable GIS.lab Mobile client
+# Enable Gisquick Mobile client
 GISQUICK_CLIENT_MOBILE: no
 
 

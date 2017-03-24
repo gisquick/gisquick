@@ -33,7 +33,7 @@ def ows(request):
     url = set_query_parameters(url, {'MAP': abs_project})
 
     owsrequest = urllib.request.Request(url)
-    owsrequest.add_header("User-Agent", "GIS.lab Web")
+    owsrequest.add_header("User-Agent", "Gisquick")
 
     resp_content = b""
     with contextlib.closing(urllib.request.urlopen(owsrequest)) as resp:

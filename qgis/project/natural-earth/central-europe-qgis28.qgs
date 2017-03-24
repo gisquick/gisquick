@@ -2194,7 +2194,7 @@
     <WCSUrl type="QString"></WCSUrl>
     <WMSContactPhone type="QString">+421 999 123 456</WMSContactPhone>
     <WMSServiceCapabilities type="bool">true</WMSServiceCapabilities>
-    <WMSServiceAbstract type="QString">GIS.lab example project</WMSServiceAbstract>
+    <WMSServiceAbstract type="QString">Gisquick example project</WMSServiceAbstract>
     <WMSAddWktGeometry type="bool">true</WMSAddWktGeometry>
     <Measure>
       <Ellipsoid type="QString">NONE</Ellipsoid>

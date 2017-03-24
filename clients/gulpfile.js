@@ -1,5 +1,5 @@
 /**
- * Gulp build system for GIS.lab clients
+ * Gulp build system for Gisquick clients
  * TODO:
  *  - replace jslint with jshint
  */
@@ -19,7 +19,7 @@ gulp.task('lint', function() {
 });
 
 /**
- *  Build optimized OpenLayers3 library with GIS.lab
+ *  Build optimized OpenLayers3 library with Gisquick
  *  extensions and dependencies
  */
 gulp.task('build-ol3', function () {
@@ -29,7 +29,7 @@ gulp.task('build-ol3', function () {
 
 /**
  *  Build debug version of OpenLayers3 library
- *  with GIS.lab extensions and dependencies
+ *  with Gisquick extensions and dependencies
  */
 gulp.task('build-ol3-debug', function () {
   require('./tasks/ol3-build.js');
@@ -37,7 +37,7 @@ gulp.task('build-ol3-debug', function () {
 });
 
 /**
- *  Build web application as a part of GIS.lab Web server
+ *  Build web application as a part of Gisquick server
  */
 gulp.task('build-web', function() {
   require('./tasks/web.js');
@@ -90,7 +90,7 @@ gulp.task('icons-mobile', function() {
 
 
 /**
- *  Build user page web application as a part of GIS.lab Web server
+ *  Build user page web application as a part of Gisquick server
  */
 gulp.task('build-userpage', function() {
   require('./tasks/userpage.js');

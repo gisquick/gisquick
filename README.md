@@ -5,7 +5,7 @@ Web.
 
 ## Features
 
-### GIS.lab QGIS plugin
+### Gisquick QGIS plugin
 
 * building Gisquick bundle from any QGIS Desktop project
 * adding base layers
@@ -40,7 +40,7 @@ Web.
 ![Gisquick (User Console)](doc/screen/user-console.png)
 
 
-### GIS.lab Mobile
+### Gisquick Mobile
 
 TODO: screenshot
 
@@ -88,7 +88,7 @@ TODO: screenshot
 $ git clone https://github.com/gislab-npo/gislab-web.git
 ```
 
-* optionaly enable GIS.lab Mobile by adding configuration variable to
+* optionaly enable Gisquick Mobile by adding configuration variable to
   'provision/host_vars/gislab-web' file
 ```
 GISQUICK_CLIENT_MOBILE: yes
@@ -174,7 +174,7 @@ $ cd /vagrant/server \
   python ./setup.py sdist
 ```
 
-* GIS.lab Mobile
+* Gisquick Mobile
 ```
 $ nvm use stable
 

@@ -2732,7 +2732,7 @@ def my_form_open(dialog, layer, feature):
       <value>places20151229145055933527266987_1451402410</value>
       <value>roads20151229145319510379790035_1451402410</value>
     </WFSLayers>
-    <WMSServiceAbstract type="QString">GIS.lab example project</WMSServiceAbstract>
+    <WMSServiceAbstract type="QString">Gisquick example project</WMSServiceAbstract>
     <Measure>
       <Ellipsoid type="QString">WGS84</Ellipsoid>
     </Measure>

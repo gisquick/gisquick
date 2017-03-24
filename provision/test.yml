@@ -32,6 +32,6 @@
         app_path: /home/{{ ansible_user }}/deploy/www
         apps: webgis.viewer
         settings: devproj.settings
-        virtualenv: /home/{{ ansible_user }}/.virtualenvs/gislab-web
+        virtualenv: /home/{{ ansible_user }}/.virtualenvs/gisquick
 
 # vim: set ts=8 sts=2 sw=2 et:

@@ -7,8 +7,8 @@ WWW_PROJ_DIR=$HOME/deploy/www
 SYNCED_DIR=/vagrant
 
 
-if [ "$(hostname)" != "gislab-web" ]; then
-    echo "Must be executed in GIS.lab Web virtual machine !"
+if [ "$(hostname)" != "gisquick" ]; then
+    echo "Must be executed in Gisquick virtual machine !"
     exit 1
 fi
 
@@ -24,12 +24,12 @@ if [ $? != 0 ]; then
     tmux split-window -h -t development
 
     tmux send-keys -t development:0.0 "cd $SYNCED_DIR/dev" C-m
-    tmux send-keys -t development:0.0 "workon gislab-web" C-m
+    tmux send-keys -t development:0.0 "workon gisquick" C-m
     tmux send-keys -t development:0.0 "nvm use stable" C-m
     tmux send-keys -t development:0.0 "clear" C-m
 
     tmux send-keys -t development:0.1 "cd $WWW_PROJ_DIR" C-m
-    tmux send-keys -t development:0.1 "workon gislab-web" C-m
+    tmux send-keys -t development:0.1 "workon gisquick" C-m
     tmux send-keys -t development:0.1 "python ./manage.py runsslserver 0.0.0.0:8000" C-m
 
     tmux send-keys -t development:0.2 \

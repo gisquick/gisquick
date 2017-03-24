@@ -5,12 +5,12 @@
   roles:
     - { role: basic, tags: ['basic'] }
     - { role: mapserver, tags: ['mapserver'] }
-    - { role: gislab-web, tags: ['gislab-web'] }
-    - { role: gislab-web-qgis, tags: ['gislab-web-qgis'] }
+    - { role: gisquick, tags: ['gisquick'] }
+    - { role: gisquick-qgis, tags: ['gisquick-qgis'] }
     - {
-        role: gislab-mobile,
-        tags: ['gislab-mobile'],
-        when: GISLAB_CLIENT_MOBILE
+        role: gisquick-mobile,
+        tags: ['gisquick-mobile'],
+        when: GISQUICK_CLIENT_MOBILE
     }
     - { role: example-data, tags: ['example-data'] }
 

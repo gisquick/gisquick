@@ -26,10 +26,10 @@ TAGS=$1
 
 ### VARIABLES
 ansible_cmd="ansible-playbook \
-  --private-key=$(pwd)/.vagrant/machines/gislab-web/virtualbox/private_key \
+  --private-key=$(pwd)/.vagrant/machines/gisquick/virtualbox/private_key \
   --user=vagrant \
   --connection=ssh \
-  --limit=gislab-web \
+  --limit=gisquick \
   --inventory-file=$(pwd)/.vagrant/provisioners/ansible/inventory \
   --verbose"
 

@@ -1,5 +1,5 @@
-# GIS.lab Web New Generation (in development)
-New generation of GIS.lab Web infrastructure for publishing QGIS projects in
+# Gisquick New Generation (in development)
+New generation of Gisquick infrastructure for publishing QGIS projects in
 Web.
 
 
@@ -7,17 +7,17 @@ Web.
 
 ### GIS.lab QGIS plugin
 
-* building GIS.lab Web bundle from any QGIS Desktop project
+* building Gisquick bundle from any QGIS Desktop project
 * adding base layers
 * creating topics from layers list
 * setting access constraints
 * setting project expiration
 
-![GIS.lab Web QGIS plugin (Base Layers)](doc/screen/gislab-web-qgis-plugin.png)
-![GIS.lab Web QGIS plugin (Project)](doc/screen/gislab-web-qgis-plugin2.png)
+![Gisquick QGIS plugin (Base Layers)](doc/screen/gislab-web-qgis-plugin.png)
+![Gisquick QGIS plugin (Project)](doc/screen/gislab-web-qgis-plugin2.png)
 
 
-### GIS.lab Web
+### Gisquick
 
 * responsive web design
 * topics
@@ -28,16 +28,16 @@ Web.
 * measurement - coordinates, length, area
 * print
 
-![GIS.lab Web (Basic UI)](doc/screen/gislab-web.png)
-![GIS.lab Web (Attributes)](doc/screen/gislab-web2.png)
+![Gisquick (Basic UI)](doc/screen/gislab-web.png)
+![Gisquick (Attributes)](doc/screen/gislab-web2.png)
 
 
-### GIS.lab Web User Console
+### Gisquick User Console
 
 * projects and OWS services management
 * user account information
 
-![GIS.lab Web (User Console)](doc/screen/user-console.png)
+![Gisquick (User Console)](doc/screen/user-console.png)
 
 
 ### GIS.lab Mobile
@@ -91,7 +91,7 @@ $ git clone https://github.com/gislab-npo/gislab-web.git
 * optionaly enable GIS.lab Mobile by adding configuration variable to
   'provision/host_vars/gislab-web' file
 ```
-GISLAB_CLIENT_MOBILE: yes
+GISQUICK_CLIENT_MOBILE: yes
 ```
 
 * start development environment (run in source code root directory)  
@@ -112,7 +112,7 @@ $ vagrant ssh
 $ /vagrant/utils/tmux-dev.sh
 ```
 
-* enter URL below in web browser to launch GIS.lab Web
+* enter URL below in web browser to launch Gisquick
 ```
 https://localhost:8000?PROJECT=vagrant/natural-earth/central-europe
 ```
@@ -136,27 +136,27 @@ $ python ./manage.py test webgis.viewer.tests
 
 
 **Workflow:**
-* install QGIS GIS.lab Web plugin
+* install QGIS Gisquick plugin
 ```
-$ ln -s $(pwd)/qgis/gislab_web  ~/.qgis2/python/plugins/gislab_web
+$ ln -s $(pwd)/qgis/gisquick  ~/.qgis2/python/plugins/gisquick
 ```
 
 * create project in QGIS Desktop
 
-* run QGIS GIS.lab Web plugin wizard from 'Web > GIS.lab Web' to publish QGIS
+* run QGIS Gisquick plugin wizard from 'Web > Gisquick' to publish QGIS
   project
 
 * copy published QGIS project with all associated data to 'dev/publish'
   directory
 
-* open GIS.lab Web User Console and launch published project in GIS.lab Web
+* open Gisquick User Console and launch published project in Gisquick
   interface
 
 
 ## Packaging
 *TODO: add instructions how to clean environment before build*
 
-* GIS.lab Web QGIS plugin
+* Gisquick QGIS plugin
 ```
 $ cd /vagrant/qgis/gislab_web \
   && \
@@ -167,7 +167,7 @@ $ cd /vagrant/qgis/gislab_web \
   make zip
 ```
 
-* GIS.lab Web
+* Gisquick
 ```
 $ cd /vagrant/server \
   && \

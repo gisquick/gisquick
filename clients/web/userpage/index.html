@@ -37,7 +37,7 @@
     <script type="text/javascript" src="core/utils/observable.js"></script>
 
     <script type="text/javascript">
-      var GISLAB_WEB_SERVER = 'https://localhost:8000';
+      var GISQUICK_SERVER = 'https://localhost:8000';
 
       angular.module('gl.userpage')
         .constant('staticResources', {
@@ -51,7 +51,7 @@
         })
         .config(function(gislabClientProvider) {
           gislabClientProvider.configure({
-            server: GISLAB_WEB_SERVER
+            server: GISQUICK_SERVER
           });
         })
         .decorator('mdTooltipDirective',function($delegate){

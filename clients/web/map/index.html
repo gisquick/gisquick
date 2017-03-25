@@ -80,8 +80,8 @@
     <script type="text/javascript" src="core/map-tools/location/location.service.js"></script>
 
     <script type="text/javascript">
-      var GISLAB_WEB_SERVER = 'https://localhost:8000';
-      // var GISLAB_WEB_SERVER = 'https://192.168.0.153:8000';
+      var GISQUICK_SERVER = 'https://localhost:8000';
+      // var GISQUICK_SERVER = 'https://192.168.0.153:8000';
       var projectPath = goog.uri.utils.getParamValue(location.search, "PROJECT");
 
       angular.module('gl.web')
@@ -97,7 +97,7 @@
         })
         .config(function(gislabClientProvider) {
           gislabClientProvider.configure({
-            server: GISLAB_WEB_SERVER
+            server: GISQUICK_SERVER
           });
         })
         .decorator('mdTooltipDirective',function($delegate){
@@ -107,12 +107,12 @@
         })
         .run(function($q, gislabClient, projectProvider) {
           projectProvider.on('projectDataAvailable', function(projectData) {
-            if (!projectData.ows_url.startsWith(GISLAB_WEB_SERVER)) {
+            if (!projectData.ows_url.startsWith(GISQUICK_SERVER)) {
               if (projectData.mapcache_url) {
-                projectData.mapcache_url = GISLAB_WEB_SERVER+projectData.mapcache_url;
+                projectData.mapcache_url = GISQUICK_SERVER+projectData.mapcache_url;
               }
-              projectData.legend_url = GISLAB_WEB_SERVER+projectData.legend_url;
-              projectData.ows_url = GISLAB_WEB_SERVER+projectData.ows_url;
+              projectData.legend_url = GISQUICK_SERVER+projectData.legend_url;
+              projectData.ows_url = GISQUICK_SERVER+projectData.ows_url;
             }
           });
 

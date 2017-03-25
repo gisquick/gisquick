@@ -18,9 +18,6 @@ from utils import opt_value, create_formatted_tree
 from wizard import WizardPage
 
 
-GISLAB_WEB_URL = 'https://web.gis.lab'
-
-
 class ConfirmationPage(WizardPage):
 
     def __init__(self, plugin, page):

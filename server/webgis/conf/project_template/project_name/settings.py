@@ -85,7 +85,7 @@ INSTALLED_APPS = (
 ROOT_URLCONF = '{{ project_name }}.urls'
 WSGI_APPLICATION = '{{ project_name }}.wsgi.application'
 
-AUTH_USER_MODEL = 'viewer.GislabUser'
+AUTH_USER_MODEL = 'viewer.GisquickUser'
 
 
 ### CUSTOM SETTINGS

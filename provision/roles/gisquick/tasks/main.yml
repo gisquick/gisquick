@@ -183,8 +183,8 @@
     &&
     workon gisquick
     &&
-    echo "from webgis.viewer.models import GislabUser;
-    GislabUser.objects.create_superuser('admin', 'admin@gisquick.io', 'admin')"
+    echo "from webgis.viewer.models import GisquickUser;
+    GisquickUser.objects.create_superuser('admin', 'admin@gisquick.io', 'admin')"
     | python ./manage.py shell
   args:
     chdir: "/home/{{ ansible_user }}/deploy/www"
@@ -200,8 +200,8 @@
     &&
     workon gisquick
     &&
-    echo "from webgis.viewer.models import GislabUser;
-    GislabUser.objects.create_user('{{ ansible_user }}', 'user@gisquick.io', '{{ ansible_user }}')"
+    echo "from webgis.viewer.models import GisquickUser;
+    GisquickUser.objects.create_user('{{ ansible_user }}', 'user@gisquick.io', '{{ ansible_user }}')"
     | python ./manage.py shell
   args:
     chdir: "/home/{{ ansible_user }}/deploy/www"

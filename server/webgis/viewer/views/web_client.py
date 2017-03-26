@@ -32,7 +32,7 @@ def client_login(request):
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
             if username == "guest":
-                user = models.GislabUser.get_guest_user()
+                user = models.GisquickUser.get_guest_user()
             else:
                 user = authenticate(username=username, password=password)
             if user:
@@ -53,7 +53,7 @@ def map(request):
     data = {}
     try:
         if not request.user.is_authenticated():
-            user = models.GislabUser.get_guest_user()
+            user = models.GisquickUser.get_guest_user()
             if user:
                 login(request, user)
             else:
@@ -111,8 +111,8 @@ def user_projects(request, username):
             }
         else:
             try:
-                request.user = models.GislabUser.objects.get(username=username)
-            except models.GislabUser.DoesNotExist:
+                request.user = models.GisquickUser.objects.get(username=username)
+            except models.GisquickUser.DoesNotExist:
                 return HttpResponse(
                     "User does not exist.",
                     content_type='text/plain',

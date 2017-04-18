@@ -878,7 +878,7 @@ class ProjectPage(WizardPage):
                 source_params = parse_qs(layer.source())
                 layer_data = {
                     'name': layer.name(),
-                    'serverName': layer.shortName(),
+                    'serverName': layer.shortName() if hasattr(layer, 'shortName') else layer.name(),
                     'provider_type': layer.providerType(),
                     'visible': layer.name() == default_baselayer_name,
                     'extent': map_settings.layerExtentToOutputExtent(
@@ -1024,7 +1024,7 @@ class ProjectPage(WizardPage):
                 is_hidden = layers_model.columnItem(layer_widget, 1).checkState() == Qt.Checked
                 layer_data = {
                     'name': layer.name(),
-                    'serverName': layer.shortName(),
+                    'serverName': layer.shortName() if hasattr(layer, 'shortName') else layer.name(),
                     'provider_type': layer.providerType(),
                     'extent': layer_extent,
                     'projection': layer.crs().authid(),

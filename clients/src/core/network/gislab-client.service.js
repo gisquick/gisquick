@@ -37,7 +37,7 @@
       var request = $http(httpParams);
       var promise = request.then(
         function(response) {
-          if (!angular.isFunction(response.headers) || !response.headers('X-GIS.lab-Version')) {
+          if (!angular.isFunction(response.headers) || !response.headers('X-Gisquick-Version')) {
             return $q.reject({
               invalid_server: true,
               canceled: false
@@ -46,7 +46,7 @@
           return response.data;
         }, function(response) {
           return $q.reject({
-            invalid_server: response.headers('X-GIS.lab-Version')? false : true,
+            invalid_server: response.headers('X-Gisquick-Version')? false : true,
             canceled: promise.canceled === true,
             status_code: response.status,
           });

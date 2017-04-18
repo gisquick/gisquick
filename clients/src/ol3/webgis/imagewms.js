@@ -5,7 +5,7 @@ goog.provide('ol.source.WebgisImageWMS');
 
 /**
  * @classdesc
- * WMS layer source with extensions for GIS.lab Web app. Handles all qgis
+ * WMS layer source with extensions for Gisquick app. Handles all qgis
  * project layers as one source.
  *
  * @constructor

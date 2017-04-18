@@ -95,7 +95,7 @@ $ adb logcat chromium:D *:S
 ### Debugging in Chrome
 
 Open Chrome web browser page `chrome://inspect/#devices` and select WebView component
-with GIS.lab mobile client application. You should be able to debug application as normal
+with Gisquick mobile client application. You should be able to debug application as normal
 web application. (If you get only blank screen, open the page `chrome://appcache-internals/`
 and remove all cached Manifest records)
 

@@ -19,11 +19,11 @@ Vagrant.configure(2) do |config|
   config.vm.box = BOX
   config.vm.box_url = BOX_URL
   config.vm.synced_folder '.', '/vagrant'
-  config.vm.hostname = "gislab-web"
+  config.vm.hostname = "gisquick"
 
   config.ssh.forward_agent = true
 
-    config.vm.define "gislab-web" do |server|
+    config.vm.define "gisquick" do |server|
 
       # port forwarding
       config.vm.network "forwarded_port", guest: 90, host: 8090

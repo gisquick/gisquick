@@ -1,5 +1,5 @@
 ---
-# GIS.lab MOBILE - DEVELOPMENT
+# Gisquick MOBILE - DEVELOPMENT
 
 - name: Install packages
   apt:
@@ -98,7 +98,7 @@
 
 
 ### JAVASCRIPT
-- name: Install local Node modules for GIS.lab Mobile client
+- name: Install local Node modules for Gisquick mobile client
   shell: >
     export NVM_DIR="$HOME/.nvm"
     &&

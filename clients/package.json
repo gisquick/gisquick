@@ -1,9 +1,9 @@
 {
-  "name": "gislab-clients",
+  "name": "gisquick-clients",
   "version": "1.0.0",
-  "description": "Build tools for developing of the GIS.lab Web",
+  "description": "Build tools for developing of the Gisquick",
   "keywords": [],
-  "homepage": "http://gislab.github.io/",
+  "homepage": "http://gisquick.org",
   "repository": {},
   "license": "GPL-2.0",
   "bugs": {

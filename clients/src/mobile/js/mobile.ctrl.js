@@ -101,7 +101,7 @@
   }
 
   /**
-   * Main controller of GIS.lab Web application. It is responsible for initialization of map
+   * Main controller of Gisquick application. It is responsible for initialization of map
    * and map-related components.
    */
   function MobileController($scope, $timeout, $q, $localStorage, $mdPanel, $mdToast,

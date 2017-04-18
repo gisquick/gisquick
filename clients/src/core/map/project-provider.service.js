@@ -6,7 +6,7 @@
     .factory('projectProvider', projectProvider);
 
   /**
-   * Holds information about project loaded by GIS.lab Web application
+   * Holds information about project loaded by Gisquick application
    * through theese attributes:
    *  - data {object} project data
    *  - map {ol.Map}
@@ -36,7 +36,7 @@
 
     /**
      * Set or unset project data
-     * @param {object} data GIS.lab Web project data, or null
+     * @param {object} data Gisquick project data, or null
      */
     ProjectProvider.prototype.setProjectData = function(data) {
       if (data !== null) {
@@ -50,7 +50,7 @@
     };
 
     /**
-     * Loads GIS.lab Web project and initialize ol3 map.
+     * Loads Gisquick project and initialize ol3 map.
      * @param {object} project config
      */
     ProjectProvider.prototype.loadProject = function() {

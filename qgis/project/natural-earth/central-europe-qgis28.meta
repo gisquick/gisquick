@@ -20,7 +20,7 @@
     4514, 
     2257
   ], 
-  "abstract": "GIS.lab example project", 
+  "abstract": "Gisquick example project",
   "zoom_extent": [
     190552.623, 
     5646310.479, 
@@ -30,7 +30,7 @@
   "fees": "Free", 
   "message": {
     "valid_until": "01.01.2099", 
-    "text": "Welcome to GIS.lab example project ! Please note that print composer is not available for guest user."
+    "text": "Welcome to Gisquick example project ! Please note that print composer is not available for guest user."
   }, 
   "overlays": [
     {

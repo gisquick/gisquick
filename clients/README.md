@@ -1,4 +1,4 @@
-New generation of GIS.lab Web and Mobile clients
+New generation of Gisquick Web and Mobile clients
 ================================================
 
 
@@ -6,7 +6,7 @@ Web client
 ----------
 
 For running and development of Web client application it is required to start
-GIS.lab Web server (Django Webgis server) on port 8000.
+Gisquick server (Django Webgis server) on port 8000.
 
 * run simple development environment in TMUX (to quit running session type 'tmux kill-session')
 ```
@@ -33,7 +33,7 @@ Build minified JavaScript/CSS files
 $ gulp build-web
 ```
 
-Enter URL below to open GIS.lab Web interface in web browser
+Enter URL below to open Gisquick interface in web browser
 ([hyperlink](https://localhost:8000?PROJECT=user/natural-earth/central-europe))
 ```
 https://localhost:8000?PROJECT=user/natural-earth/central-europe
@@ -52,7 +52,7 @@ Start Node development server (default on port 8100):
 $ gulp serve-web
 ```
 
-Enter URL below to open GIS.lab Web interface in web browser
+Enter URL below to open Gisquick interface in web browser
 ([hyperlink](http://localhost:8100?PROJECT=user/natural-earth/central-europe))
 ```
 http://localhost:8100?PROJECT=user/natural-earth/central-europe

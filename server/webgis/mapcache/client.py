@@ -32,7 +32,7 @@ class WMS (object):
         # request_params.update(self.base_url_params)
         # request_params.update(params)
         urlrequest = urllib.request.Request(self.base_url + "?" + urllib.parse.urlencode(request_params))
-        urlrequest.add_header("User-Agent", "GIS.lab Web")
+        urlrequest.add_header("User-Agent", "Gisquick")
         response = None
         while response is None:
             try:

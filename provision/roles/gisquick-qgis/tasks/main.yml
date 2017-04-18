@@ -1,5 +1,5 @@
 ---
-# GIS.lab WEB QGIS PLUGIN - DEVELOPMENT
+# GISQUICK PLUGIN - DEVELOPMENT
 
 - name: Install packages
   apt:

@@ -101,7 +101,7 @@
           .format(left, width, height);
         window.open(
           applicationData.gislab_documentation,
-          "GIS.lab Web Documentation",
+          "Gisquick Documentation",
           windowParams
         );
       });

@@ -5,7 +5,7 @@ goog.provide('ol.source.WebgisTileImage');
 
 /**
  * @classdesc
- * Tile layer source with extensions for GIS.lab Web app. Handles all qgis
+ * Tile layer source with extensions for Gisquick app. Handles all qgis
  * project layers as one source.
  *
  * @constructor

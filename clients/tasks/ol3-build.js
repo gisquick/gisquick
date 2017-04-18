@@ -35,7 +35,7 @@ gulp.task('copyol3-src', ['clean-ol3'], function() {
 });
 
 /**
- * Build OpenLayers 3 lib with GIS.lab extensions
+ * Build OpenLayers 3 lib with Gisquick extensions
  */
 gulp.task('compile-ol3', ['copyol3-src'], function(cb) {
   var fs = require('fs');
@@ -49,7 +49,7 @@ gulp.task('compile-ol3', ['copyol3-src'], function(cb) {
 
 
 /**
- * Build OpenLayers 3 with GIS.lab extensions in debug mode
+ * Build OpenLayers 3 with Gisquick extensions in debug mode
  */
 gulp.task('compile-ol3-debug', ['copyol3-src'], function(cb) {
   var fs = require('fs');

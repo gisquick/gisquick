@@ -1,5 +1,5 @@
 ---
-# GIS.lab WEB - DEVELOPMENT
+# Gisquick - DEVELOPMENT
 
 - name: Install packages
   apt:
@@ -13,9 +13,9 @@
 
 ### DEPENDENCIES
 # Python
-- name: Install GIS.lab Web Python requirements
+- name: Install Gisquick Python requirements
   pip:
-    virtualenv: /home/{{ ansible_user }}/.virtualenvs/gislab-web
+    virtualenv: /home/{{ ansible_user }}/.virtualenvs/gisquick
     virtualenv_python: python3
     requirements: "{{ synced_folder }}/server/requirements.txt"
     virtualenv_site_packages: yes
@@ -24,9 +24,9 @@
   tags:
     - dep-python
 
-- name: Install GIS.lab Web Python development requirements
+- name: Install Gisquick Python development requirements
   pip:
-    virtualenv: /home/{{ ansible_user }}/.virtualenvs/gislab-web
+    virtualenv: /home/{{ ansible_user }}/.virtualenvs/gisquick
     virtualenv_python: python3
     requirements: "{{ synced_folder }}/server/requirements-dev.txt"
     virtualenv_site_packages: yes
@@ -41,7 +41,7 @@
     &&
     source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
     &&
-    workon gislab-web
+    workon gisquick
     &&
     add2virtualenv server
   args:
@@ -100,7 +100,7 @@
   tags:
     - dep-javascript
 
-- name: Prune local Node modules for GIS.lab Web clients
+- name: Prune local Node modules for Gisquick clients
   shell: >
     export NVM_DIR="$HOME/.nvm"
     &&
@@ -114,7 +114,7 @@
   tags:
     - dep-javascript
 
-- name: Install local Node modules for GIS.lab Web clients
+- name: Install local Node modules for Gisquick clients
   shell: >
     export NVM_DIR="$HOME/.nvm"
     &&
@@ -133,7 +133,7 @@
 
 
 ### DJANGO SERVER
-- name: Create GIS.lab Web project directory
+- name: Create Gisquick project directory
   file:
     path: "/home/{{ ansible_user }}/deploy/www/devproj"
     state: directory
@@ -142,13 +142,13 @@
     - server-django
 
 
-- name: Create GIS.lab Web project
+- name: Create Gisquick project
   shell: >
     export WORKON_HOME="$HOME/.virtualenvs"
     &&
     source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
     &&
-    workon gislab-web
+    workon gisquick
     &&
     django-admin.py startproject
     --template={{ synced_folder }}/server/webgis/conf/project_template/
@@ -159,19 +159,19 @@
   tags:
     - server-django
 
-- name: Install custom GIS.lab Web project configuration
+- name: Install custom Gisquick project configuration
   template:
     src: django/settings_custom.py.j2
     dest: "/home/{{ ansible_user }}/deploy/www/devproj/settings_custom.py"
   tags:
     - server-django
 
-- name: Build GIS.lab Web project database
+- name: Build Gisquick project database
   django_manage:
     command: migrate
     app_path: "/home/{{ ansible_user }}/deploy/www"
     settings: devproj.settings
-    virtualenv: /home/{{ ansible_user }}/.virtualenvs/gislab-web
+    virtualenv: /home/{{ ansible_user }}/.virtualenvs/gisquick
   tags:
     - server-django
 
@@ -181,10 +181,10 @@
     &&
     source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
     &&
-    workon gislab-web
+    workon gisquick
     &&
-    echo "from webgis.viewer.models import GislabUser;
-    GislabUser.objects.create_superuser('admin', 'admin@gislab.io', 'admin')"
+    echo "from webgis.viewer.models import GisquickUser;
+    GisquickUser.objects.create_superuser('admin', 'admin@gisquick.io', 'admin')"
     | python ./manage.py shell
   args:
     chdir: "/home/{{ ansible_user }}/deploy/www"
@@ -198,10 +198,10 @@
     &&
     source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
     &&
-    workon gislab-web
+    workon gisquick
     &&
-    echo "from webgis.viewer.models import GislabUser;
-    GislabUser.objects.create_user('{{ ansible_user }}', 'user@gislab.io', '{{ ansible_user }}')"
+    echo "from webgis.viewer.models import GisquickUser;
+    GisquickUser.objects.create_user('{{ ansible_user }}', 'user@gisquick.io', '{{ ansible_user }}')"
     | python ./manage.py shell
   args:
     chdir: "/home/{{ ansible_user }}/deploy/www"
@@ -211,7 +211,7 @@
 
 
 ### WEB CLIENT
-- name: Build GIS.lab Web JS
+- name: Build Gisquick JS
   shell: >
     export NVM_DIR="$HOME/.nvm"
     &&

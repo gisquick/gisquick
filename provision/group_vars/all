@@ -1,9 +1,9 @@
 # DEFAULT CONFIGURATION FILE
-# Place custom variables to 'host_vars/gislab-web ' instead of modifying this
+# Place custom variables to 'host_vars/gisquick ' instead of modifying this
 # file.
 
-# Enable GIS.lab Mobile client
-GISLAB_CLIENT_MOBILE: no
+# Enable Gisquick Mobile client
+GISQUICK_CLIENT_MOBILE: no
 
 
 # DO NOT CHANGE VARIABLES UNDER THIS LINE !

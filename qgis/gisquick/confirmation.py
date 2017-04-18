@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
 /***************************************************************************
- GIS.lab Web plugin
- Publish your projects into GIS.lab Web application
+ Gisquick plugin
+ Publish your projects into Gisquick application
  ***************************************************************************/
 """
 
@@ -16,9 +16,6 @@ from PyQt4.QtCore import *
 
 from utils import opt_value, create_formatted_tree
 from wizard import WizardPage
-
-
-GISLAB_WEB_URL = 'https://web.gis.lab'
 
 
 class ConfirmationPage(WizardPage):

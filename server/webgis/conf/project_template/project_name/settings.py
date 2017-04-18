@@ -1,5 +1,5 @@
 """
-Django settings for GIS.lab Web.
+Django settings for Gisquick.
 """
 
 import os
@@ -23,15 +23,15 @@ DATABASES = {
 SECRET_KEY = '{{ secret_key }}'
 
 
-### GIS.LAB WEB CONFIGURATION
+### GISQUICK CONFIGURATION
 
 # Set true for https scheme
-GISLAB_WEB_SECURE_URL = True
-GISLAB_WEB_PROJECT_ROOT = '/tmp/gislab-web'
-GISLAB_WEB_MAPSERVER_URL = 'http://localhost:90/cgi-bin/qgis_mapserv.fcgi'
-GISLAB_WEB_GUEST_USERNAME = 'guest'
-GISLAB_HOMEPAGE = 'http://github.com/gislab-npo/gislab-web/'
-GISLAB_DOCUMENTATION_PAGE = 'http://gislab.readthedocs.io/en/latest/gislab-web/index.html'
+GISQUICK_SECURE_URL = True
+GISQUICK_PROJECT_ROOT = '/tmp/gislab-web'
+GISQUICK_MAPSERVER_URL = 'http://localhost:90/cgi-bin/qgis_mapserv.fcgi'
+GISQUICK_GUEST_USERNAME = 'guest'
+GISQUICK_HOMEPAGE = 'http://gisquick.org'
+GISQUICK_DOCUMENTATION_PAGE = 'http://gisquick.readthedocs.io/en/latest/'
 
 
 ### INTERNATIONALIZATION
@@ -85,7 +85,7 @@ INSTALLED_APPS = (
 ROOT_URLCONF = '{{ project_name }}.urls'
 WSGI_APPLICATION = '{{ project_name }}.wsgi.application'
 
-AUTH_USER_MODEL = 'viewer.GislabUser'
+AUTH_USER_MODEL = 'viewer.GisquickUser'
 
 
 ### CUSTOM SETTINGS

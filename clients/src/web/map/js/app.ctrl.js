@@ -20,7 +20,7 @@
     })
 
   /**
-   * Main controller of GIS.lab Web application. It is responsible for initialization of map
+   * Main controller of Gisquick application. It is responsible for initialization of map
    * and map-related components.
    */
   function MapController($scope, $timeout, $mdDialog, staticResources, projectProvider,
@@ -228,7 +228,7 @@
               .format(left, width, height);
             window.open(
               projectProvider.data.gislab_documentation,
-              "GIS.lab Web Documentation",
+              "Gisquick Documentation",
               windowParams
             );
           });

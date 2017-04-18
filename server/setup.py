@@ -29,12 +29,12 @@ with open("requirements.txt") as f:
     requirements = f.read().splitlines()
 
 # setup
-setup(name='gislab-web',
+setup(name='gisquick',
     version=(__import__('webgis').VERSION),
-    description='GIS.lab Web client',
-    author='GIS.lab Web Developers',
+    description='Gisquick client',
+    author='GIS.lab Developers',
     author_email='gis.lab@lists.osgeo.org',
-    url='https://github.com/gislab-npo/gislab-web/',
+    url='https://github.com/gislab-npo/gisquick/',
     packages=find_packages(),
     include_package_data=True,
     classifiers=classifiers,

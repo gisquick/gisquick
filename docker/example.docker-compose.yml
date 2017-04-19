@@ -1,0 +1,53 @@
+version: "2"
+services:
+  qgisserver:
+    restart: always
+    image: gisquick/qgis-server
+    build: ./qgis-server
+    volumes:
+      - /publish:/publish/:ro
+    ports:
+      - "90"
+
+  django:
+    restart: always
+    image: gisquick/django
+    build: ./django
+    links:
+      - qgisserver
+    volumes_from:
+      - qgisserver
+    volumes:
+      - /var/www/media/:/var/www/qisquick/media/
+      - /var/www/data/:/var/www/gisquick/data/
+    environment:
+      - GUNICORN_WORKERS=3
+      - GUNICORN_ERRORLOG=-
+      - GUNICORN_ACCESSLOG=-
+    ports:
+      - "8000"
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "10"
+
+  nginx:
+    restart: unless-stopped
+    image: gisquick/nginx
+    build: ./nginx
+    links:
+      - django
+    volumes_from:
+      - django:ro
+    volumes:
+      - /etc/letsencrypt/:/etc/letsencrypt/
+      - /var/www/certbot/:/var/www/certbot/
+    ports:
+      - "80:80"
+      - "443:443"
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "10"

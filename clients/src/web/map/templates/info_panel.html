@@ -1,0 +1,18 @@
+<div layout-fill class="info-panel">
+  <div
+    layout="row"
+    class="panel-header">
+    <span flex>Info Panel</span>
+    <md-button
+      md-no-ink
+      aria-label="Close"
+      ng-click="closePanel()"
+      class="icon-hover close-button">
+      <md-icon md-svg-icon="x"></md-icon>
+    </md-button>
+  </div>
+
+  <div layout-padding>
+    <ng-transclude></ng-transclude>
+  </div>
+</div>

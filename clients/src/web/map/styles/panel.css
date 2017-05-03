@@ -192,6 +192,8 @@ md-tabs-wrapper md-icon {
   text-transform: uppercase;
   overflow: hidden;
   position: relative;
+  user-select: none;
+  cursor: move;
 }
 .panel-header.secondary {
   background-color: #777;

@@ -5,7 +5,8 @@
     .module('gl.features')
     .controller('IdentificationController', IdentificationController);
 
-  function IdentificationController($scope, $timeout, projectProvider, layersControl, gislabClient, featuresViewer, $mdIcon) {
+  function IdentificationController($scope, $timeout, $mdIcon,
+      projectProvider, layersControl, gislabClient, featuresViewer, infoPanel) {
     console.log('IdentificationController: INIT');
     var tool = $scope.tool;
     var mapClickListener;
@@ -19,7 +20,9 @@
             tool.data.layers.push({
               title: layer.title,
               name: layer.name,
+              info_template: layer.info_template,
               attributes: featuresViewer.getLayerAttributes(layer.name),
+              // pk_attributes: layer.pk_attributes,
               features: []
             });
           }
@@ -152,6 +155,9 @@
       featuresViewer.removeAllFeatures();
       if (tool._markerOverlay) {
         tool._markerOverlay.setPosition(undefined);
+      }
+      if (infoPanel.isOpen()) {
+        infoPanel.close();
       }
     };
   };

@@ -23,6 +23,10 @@
 
   function infoPanel(projectProvider, $timeout, $q, $mdPanel) {
 
+    var panelPosition = {
+      top: 8,
+      right: 8
+    };
     function InfoPanel() {
       this.activePanel = null;
     }
@@ -35,6 +39,17 @@
       }
     }
 
+    InfoPanel.prototype.isOpen = function() {
+      return this.activePanel !== null;
+    }
+
+    InfoPanel.prototype.showEmpty = function($scope) {
+      if (this.isOpen()) {
+        this.activePanel.scope.feature = null;
+        this.activePanel.scope.layer = null;
+      }
+    }
+
     InfoPanel.prototype.show = function(feature, layer, $scope) {
       var _this = this;
 
@@ -42,6 +57,7 @@
 
       if (this.activePanel && this.activePanel.layer === layer) {
         this.activePanel.scope.feature = feature;
+        this.activePanel.scope.data = feature.getProperties();
         if (this.activePanel.isHidden) {
           this.activePanel.panel.show();
           this.activePanel.isHidden = false;
@@ -55,14 +71,8 @@
       var scope = $scope.$new(true);
       scope.layer = layer;
       scope.feature = feature;
+      scope.data = feature.getProperties();
       scope.Math = Math;
-
-      var position = $mdPanel.newPanelPosition()
-        .absolute()
-        .right()
-        .top()
-        .withOffsetX('-50px')
-        .withOffsetY('8px')
 
       var template = angular.element('<div>'+layer.info_template+'</div>');
 
@@ -130,16 +140,25 @@
 
       var panel = $mdPanel.create({
         attachTo: angular.element(document.body),
-        template: '<div gl-info-panel md-whiteframe="16">'+style+html+'</div>',
+        template: '<div gl-info-panel md-whiteframe="16" rc-drag=".panel-header">'+style+html+'</div>',
+        propagateContainerEvents: true,
         scope: scope,
-        controller: function($scope, mdPanelRef) {
+        controller: ['$scope', 'mdPanelRef', function($scope, mdPanelRef) {
           $scope.closePanel = function() {
             mdPanelRef.hide();
             _this.activePanel.isHidden = true;
           }
+        }],
+        onDomAdded: function(args) {
+          var panel = args[1].panelContainer.children();
+          panel.css({top: 0, right: 0});
+          panel.css('transform', 'translate('+(-panelPosition.right)+'px, '+ panelPosition.top +'px)');
         },
-        position: position,
-        propagateContainerEvents: true
+        onRemoving: function(panel) {
+          var bounds = panel.panelContainer[0].firstElementChild.getBoundingClientRect();
+          panelPosition.top = bounds.top;
+          panelPosition.right = window.innerWidth - bounds.right;
+        }
       });
 
       this.activePanel = {

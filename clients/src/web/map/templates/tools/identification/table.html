@@ -48,6 +48,7 @@
                 <thead>
                   <tr class="header">
                     <th class="zoom header" width="10"></th>
+                    <th ng-if="::layer.info_template" class="header" width="10"></th>
                     <th class="header"
                       ng-repeat="attribute in ::layer.attributes">
                       {{ ::attribute.label }}
@@ -58,9 +59,8 @@
                   <tr
                     ng-repeat="feature in layer.features | limitTo: tool.config.rowsPerPage: (layer.features.page - 1) * tool.config.rowsPerPage"
                     ng-class="{'md-selected': layer.selectedFeature === feature}"
-                    ng-click="
-                      selectFeature(feature)
-                    ">
+                    ng-click="selectFeature(feature)"
+                    ng-dblclick="showInfoPanel(feature)">
                     <td class="icon">
                       <md-button
                         aria-label="Zoom"
@@ -81,6 +81,24 @@
                         </md-tooltip>
                       </md-button>
                     </td>
+                    <td
+                      class="icon"
+                      ng-if="::layer.info_template">
+                      <md-button
+                        aria-label="Info"
+                        class="icon-hover"
+                        ng-click="showInfoPanel(feature)">
+                        <md-icon
+                          md-svg-icon="circle-i-outline">
+                        </md-icon>
+                        <md-tooltip
+                          md-delay="2000"
+                          md-direction="right"
+                          class="multiline-tooltip">
+                          Show detail information
+                        </md-tooltip>
+                      </md-button>
+                    </td>
                     <td ng-repeat="attribute in ::layer.attributes">
                       {{ ::feature.get(attribute.name) }}
                     </td>
@@ -93,7 +111,7 @@
         <md-tab>
           <md-tab-label>
             <span class="tab-label hidden">
-            {{ tool.data.activeLayerIndex === tool.data.layers.length? '&nbsp No feaures' : '' }}
+            {{ tool.data.activeLayerIndex === tool.data.layers.length? '&nbsp; No feaures' : '' }}
             </span>
           </md-tab-label>
           <div

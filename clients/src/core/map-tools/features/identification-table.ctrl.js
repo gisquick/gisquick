@@ -5,7 +5,8 @@
     .module('gl.features')
     .controller('IdentificationTableController', IdentificationTableController);
 
-  function IdentificationTableController($scope, $timeout, featuresViewer, tool) {
+
+  function IdentificationTableController($scope, $timeout, featuresViewer, infoPanel, tool) {
     $scope.tool = tool;
 
     function updateFeaturesTable() {
@@ -24,6 +25,8 @@
         if (selectedLayer) {
           var selectedLayerIndex = tool.data.layers.indexOf(selectedLayer);
           if (tool.data.activeLayerIndex !== selectedLayerIndex) {
+            // set active layer immediately for info panel
+            tool.data.activeLayer = tool.data.layers[selectedLayerIndex];
             // trigger new active tab selection
             $timeout(function() {
               tool.data.activeLayerIndex = selectedLayerIndex;
@@ -41,10 +44,17 @@
 
     tool.events.featuresChanged = function() {
       updateFeaturesTable();
+      if (infoPanel.isOpen()) {
+        var layer = tool.data.activeLayer;
+        if (layer) {
+          infoPanel.show(layer.features[0], layer, $scope);
+        } else {
+          infoPanel.showEmpty();
+        }
+      }
     };
 
     $scope.setActiveLayer = function(layer) {
-      // console.log('SET ACTIVE LAYER', layer.name);
       if (layer.features.length === 0 || tool.data.activeLayer === layer) {
         // not valid active layer
         return;
@@ -63,6 +73,11 @@
       featuresViewer.selectFeature(feature);
       tool.data.activeLayer.selectedFeature = feature;
     };
+
+
+    $scope.showInfoPanel = function(feature) {
+      infoPanel.show(feature, tool.data.activeLayer, $scope);
+    }
 
     $scope.zoomToFeature = featuresViewer.zoomToFeature;
 

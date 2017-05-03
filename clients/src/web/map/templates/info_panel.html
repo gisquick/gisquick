@@ -2,7 +2,7 @@
   <div
     layout="row"
     class="panel-header">
-    <span flex>Info Panel</span>
+    <span flex>Detail Info - {{ layer.title || 'No active layer' }}</span>
     <md-button
       md-no-ink
       aria-label="Close"
@@ -12,7 +12,8 @@
     </md-button>
   </div>
 
-  <div layout-padding>
+  <div layout-padding ng-if="feature">
     <ng-transclude></ng-transclude>
   </div>
+  <p ng-if="!feature">No identified feature</p>
 </div>

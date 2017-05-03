@@ -700,3 +700,15 @@ md-bottom-sheet.identification-table {
   height: 30px;
   line-height: 30px;
 }
+
+.info-panel {
+  background-color: #fff;
+  pointer-events: auto;
+  border-radius: 4px;
+  overflow: hidden;
+  min-width: 300px;
+}
+.info-panel > p {
+  text-align: center;
+  padding: 16px 0;
+}

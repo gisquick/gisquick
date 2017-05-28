@@ -12,3 +12,5 @@ server/webgis/viewer/static/
 .*.un~*
 
 .vagrant
+
+docker/docker-compose.yml

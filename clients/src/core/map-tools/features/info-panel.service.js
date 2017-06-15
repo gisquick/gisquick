@@ -113,7 +113,11 @@
       var scriptEl = template[0].querySelector('script:not([src])');
       var controller;
       if (scriptEl) {
-        controller = layer.name+"Controller";
+        // generate layer hash for unique layer's controller name
+        var layerId = layer.name.split('').reduce(
+          function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0
+        ) + 2147483647 + 1; // make it a positive integer
+        controller = "LayerCtrl_"+layerId
         if (!document.querySelector('script[layer="{0}"]'.format(layer.name))) {
           // Add script with controller of layer's Info Panel template
           var scriptCode = '(function() {{ angular.module("gl.features").controller("{0}", {1}) }})()'

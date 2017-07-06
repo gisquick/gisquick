@@ -9,7 +9,7 @@ from django.core.management.base import BaseCommand
 from webgis.mapcache import Disk
 from webgis.viewer.models import Project_registry
 from webgis.viewer.metadata_parser import MetadataParser
-from webgis.viewer.client import get_last_project_version
+from webgis.viewer.views.project_utils import get_last_project_version
 
 
 class Command(BaseCommand):
@@ -21,13 +21,14 @@ class Command(BaseCommand):
         cache = Disk(base=os.path.join(settings.MEDIA_ROOT, 'cache'))
         for project_record in list(Project_registry.objects.all()):
             project = project_record.project
-            project_hash = hashlib.md5(project).hexdigest()
+            project_hash = hashlib.md5(project.encode('utf-8')).hexdigest()
             project_cache_dir = os.path.join(cache.basedir, project_hash)
 
             last_publish = 0
             last_project_version = get_last_project_version(project)
-            version_pattern = re.compile(re.escape(project)+'_(\d{10})')
-            if os.path.exists(os.path.join(settings.GISQUICK_PROJECT_ROOT, last_project_version+'.qgs')):
+
+            if last_project_version and os.path.exists(os.path.join(settings.GISQUICK_PROJECT_ROOT, last_project_version+'.qgs')):
+                version_pattern = re.compile(re.escape(project)+'_(\d{10})')
                 match = version_pattern.match(last_project_version)
                 if match:
                     # timestamp from filename

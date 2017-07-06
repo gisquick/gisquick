@@ -94,4 +94,11 @@ try:
 except ImportError:
     pass
 
+
+### ENVIRONMENT VARIABLES SETTINGS
+for k,v in os.environ.items():
+    if k.startswith("DJANGO_"):
+        key = k.split('_', 1)[1]
+        globals()[key] = v
+
 # vim: set ts=8 sts=4 sw=4 et:

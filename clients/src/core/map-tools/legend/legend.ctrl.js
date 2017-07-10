@@ -35,7 +35,8 @@
   function LegendController($scope, $timeout, $q, projectProvider) {
     $scope.layers = projectProvider.layers;
 
-    var legendUpdateTask, loadingLegendsList, downloadedLegendsList;
+    var legendUpdateTask = $q.defer();
+    var loadingLegendsList, downloadedLegendsList;
     function updateLegendUrls () {
       loadingLegendsList = [];
       downloadedLegendsList = [];

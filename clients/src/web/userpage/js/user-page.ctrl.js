@@ -5,7 +5,12 @@
     .module('gl.userpage')
     .factory('userPageLoader', userPageLoader)
     .controller('LoginController', LoginController)
-    .controller('UserPageController', UserPageController);
+    .controller('UserPageController', UserPageController)
+    .config(function($mdThemingProvider) {
+      $mdThemingProvider.theme('default')
+        .primaryPalette('blue')
+        .accentPalette('blue-grey');
+    })
 
 
   function userPageLoader(Observable, $mdDialog, gislabClient) {
@@ -66,7 +71,7 @@
     };
   }
 
-  function UserPageController($scope, staticResources, userPageLoader) {
+  function UserPageController($scope, $mdToast, $mdPanel, $mdDialog, staticResources, userPageLoader, gislabClient) {
     console.log('UserPageController');
     $scope.staticResources = staticResources;
     $scope.initialized = false;
@@ -111,6 +116,55 @@
       $scope.initialized = false;
       userPageLoader.logout();
     };
-  }
 
+    function showNotification(msg, type) {
+      var toast = $mdToast.simple()
+        .textContent(msg)
+        .position('top right');
+      if (type) {
+        toast.toastClass(type);
+      }
+      $mdToast.show(toast);
+    }
+
+    $scope.updateTableTempaltes = function(project) {
+      gislabClient.post('project/templates/', {project: project.project})
+        .then(function() {
+          showNotification('Updated');
+        }, function() {
+          showNotification('Failed to update templates', 'error');
+        });
+    }
+
+    $scope.deleteProject = function(project) {
+      var confirm = $mdDialog.confirm()
+            .title('Confirm')
+            .textContent('Are you sure to delete project?')
+            .ariaLabel('Confirm')
+            .ok('Delete')
+            .cancel('Cancel');
+
+      $mdDialog.show(confirm).then(function() {
+        gislabClient.delete('project/'+project.project).then(function() {
+          $scope.projects.splice($scope.projects.indexOf(project), 1);
+        })
+      });
+    }
+
+    $scope.uploadProject = function() {
+      var data = new FormData(document.querySelector('form'));
+      gislabClient.post('upload/', data)
+        .then(function() {
+          showNotification('Uploaded');
+          gislabClient.userProjects()
+            .then(function(appData) {
+              appData['user'] = gislabClient.userInfo;
+              userPageLoader.setData(appData);
+            });
+
+        }, function() {
+          showNotification('Failed to upload project', 'error');
+        });
+    }
+  }
  })();

@@ -1,4 +1,4 @@
-body > div {
+body > div[ng-include] {
   width: 100%;
   height: 100%;
   overflow: hidden;
@@ -55,7 +55,7 @@ md-tab-content > div {
   right: 4px;
   bottom: 0;
   height: 1px;
-  background-color: #ccc;
+  background-color: #eee;
   content: "";
 }
 
@@ -125,7 +125,7 @@ md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {
   left: 4px;
   right: 4px;
   height: 1px;
-  margin-top: 32px;
+  margin-top: 38px;
   background-color: #ccc;
 }
 
@@ -151,4 +151,25 @@ md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {
 .account-info label {
   font-weight: bold;
   padding-right: 10px;
+}
+
+input[type="file"] {
+  height: 36px;
+}
+form {
+  padding:16px;
+  max-width: 400px;
+}
+
+.context-menu {
+  background-color: #fff;
+}
+
+
+.table-container table > tbody > tr {
+  height: 38px;
+}
+
+md-toast.error .md-toast-content {
+  background-color: #f44336;
 }

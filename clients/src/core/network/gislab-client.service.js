@@ -3,7 +3,12 @@
 
   angular
     .module('gl.network')
-    .provider('gislabClient', GislabClientProvider);
+    .provider('gislabClient', GislabClientProvider)
+    .config(function($httpProvider) {
+      $httpProvider.defaults.xsrfCookieName = 'csrftoken';
+      $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+    })
+
 
   function GislabClientProvider() {
     this.config = {};
@@ -46,7 +51,7 @@
           return response.data;
         }, function(response) {
           return $q.reject({
-            invalid_server: response.headers('X-Gisquick-Version')? false : true,
+            invalid_server: angular.isFunction(response.headers) && response.headers('X-Gisquick-Version')? false : true,
             canceled: promise.canceled === true,
             status_code: response.status,
           });
@@ -135,14 +140,28 @@
     };
 
     GislabClient.prototype.post = function(url, data) {
+      var headers = {};
+      if (data instanceof FormData) {
+        headers['Content-Type'] = undefined
+      } else {
+        headers['Content-Type'] = 'application/json; charset=UTF-8';
+      }
       return this._deferredRequest({
         url: url,
         method: 'post',
         withCredentials: true,
         data: data,
-        headers: {'Content-Type': 'application/json; charset=UTF-8'}
+        headers: headers
       });
     };
+
+    GislabClient.prototype.delete = function(url) {
+      return this._deferredRequest({
+        url: url,
+        method: 'delete',
+        withCredentials: true
+      });
+    }
 
     GislabClient.prototype.encodeUrl = function(url, params) {
       var query = [];

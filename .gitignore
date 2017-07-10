@@ -14,3 +14,4 @@ server/webgis/viewer/static/
 .vagrant
 
 docker/docker-compose.yml
+docker/_data

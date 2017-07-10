@@ -25,8 +25,6 @@ SECRET_KEY = '{{ secret_key }}'
 
 ### GISQUICK CONFIGURATION
 
-# Set true for https scheme
-GISQUICK_SECURE_URL = True
 GISQUICK_PROJECT_ROOT = '/tmp/gislab-web'
 GISQUICK_MAPSERVER_URL = 'http://localhost:90/cgi-bin/qgis_mapserv.fcgi'
 GISQUICK_GUEST_USERNAME = 'guest'

@@ -5,6 +5,9 @@ from django.core.urlresolvers import reverse
 from webgis.libs.utils import set_query_parameters
 
 
+def map_url():
+    return reverse('viewer:map')
+
 def project_ows_url(ows_project):
     return set_query_parameters(
         reverse('viewer:ows'),

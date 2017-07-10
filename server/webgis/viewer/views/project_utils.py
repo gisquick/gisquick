@@ -18,9 +18,9 @@ import webgis
 from webgis.viewer import forms
 from webgis.viewer import models
 from webgis.viewer.metadata_parser import MetadataParser
-from webgis.libs.utils import app_url, set_query_parameters
+from webgis.libs.utils import set_query_parameters
 from webgis.viewer.views.reverse import project_ows_url, project_tile_url, \
-    project_legend_url, project_vectorlayers_url
+    project_legend_url, project_vectorlayers_url, map_url
 
 
 OSM_LAYER = {
@@ -248,7 +248,7 @@ def get_project(request):
             return project_data
 
     if project:
-        ows_url = app_url(request, project_ows_url(ows_project))
+        ows_url = project_ows_url(ows_project)
         context['units'] = {
             'meters': 'm',
             'feet': 'ft',
@@ -302,14 +302,9 @@ def get_project(request):
                     metadata.projection['code']
                 )
 
-            context['mapcache_url'] = app_url(
-                request,
-                project_tile_url(project, metadata.publish_date_unix)
-            )
-            context['legend_url'] = app_url(
-                request,
-                project_legend_url(project, metadata.publish_date_unix)
-            )
+            context['mapcache_url'] = project_tile_url(project, metadata.publish_date_unix)
+            context['legend_url'] = project_legend_url(project, metadata.publish_date_unix)
+
         else:
             context['legend_url'] = ows_url
         if metadata.vector_layers:
@@ -427,8 +422,8 @@ def get_user_projects(request, username):
                 metadata_filename = clean_project_name(ows_project_filename) + '.meta'
                 try:
                     metadata = MetadataParser(metadata_filename)
-                    url = set_query_parameters(app_url(request, '/'), {'PROJECT': project})
-                    ows_url = app_url(request, project_ows_url(ows_project))
+                    url = set_query_parameters(map_url(), {'PROJECT': project})
+                    ows_url = project_ows_url(ows_project)
                     authentication = metadata.authentication
                     # backward compatibility with older version
                     if type(authentication) is dict:

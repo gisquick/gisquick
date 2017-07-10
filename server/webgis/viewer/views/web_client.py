@@ -4,7 +4,6 @@ from django.conf import settings
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.contrib.auth import login
-from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.csrf import csrf_exempt
@@ -13,13 +12,16 @@ from django.utils.translation import ugettext as _
 import webgis
 from webgis.viewer import models
 from webgis.viewer import forms
-from webgis.viewer.views.reverse import user_page_url
+from webgis.viewer.views.reverse import map_url, user_page_url
 from webgis.viewer.views.project_utils import get_project, get_user_projects, \
     get_user_data, InvalidProjectException
-from webgis.libs.utils import app_url, set_query_parameters
+from webgis.libs.utils import set_query_parameters
 
+
+from django.views.decorators.csrf import ensure_csrf_cookie
 
 @csrf_exempt
+@ensure_csrf_cookie
 def client_login(request):
     if request.method == 'POST':
         context_type = request.META['CONTENT_TYPE']
@@ -84,13 +86,14 @@ def map(request):
 
 
 def user_projects(request, username):
+    data = {
+        'serverUrl': map_url()
+    }
     if not request.user.is_authenticated() or request.user.is_guest:
-        data = {
-            'status': 401
-        }
+        data['status'] = 401
     else:
         if not username:
-            redirect_url = app_url(request, user_page_url(request.user.username))
+            redirect_url = user_page_url(request.user.username)
             return HttpResponseRedirect(redirect_url)
 
         if username == request.user.username or request.user.is_superuser:
@@ -100,7 +103,7 @@ def user_projects(request, username):
             # }]
             # projects.extend(get_user_projects(request, username))
             projects = get_user_projects(request, username)
-            data = {
+            data.update({
                 'username': username,
                 'projects': projects,
                 'gislab_version': webgis.VERSION,
@@ -108,7 +111,7 @@ def user_projects(request, username):
                 'gislab_documentation': settings.GISQUICK_DOCUMENTATION_PAGE,
                 'user': get_user_data(request.user),
                 'status': 200
-            }
+            })
         else:
             try:
                 request.user = models.GisquickUser.objects.get(username=username)
@@ -118,9 +121,7 @@ def user_projects(request, username):
                     content_type='text/plain',
                     status=403
                 )
-            data = {
-                'status': 403
-            }
+            data['status'] = 403
 
     templateData = {
         'data': data,

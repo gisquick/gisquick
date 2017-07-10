@@ -1,14 +1,6 @@
 import urllib.parse
 from urllib.parse import parse_qs, urlsplit, urlunsplit
 
-from django.conf import settings
-
-
-def app_url(request, location=None):
-    url = request.build_absolute_uri(location)
-    if settings.GISQUICK_SECURE_URL:
-        url = url.replace('http:', 'https:')
-    return url
 
 def set_query_parameters(url, params_dict):
     """Given a URL, set or replace a query parameters and return the

@@ -13,6 +13,7 @@ js_info_dict = {
 
 urlpatterns = [
     url(r'', include('webgis.viewer.urls', namespace='viewer')),
+    url(r'', include('webgis.userpage.urls', namespace='userpage')),
     url(r'^mobile/', include('webgis.mobile.urls', namespace='mobile')),
     url(r'^login/$', login, name='login'),
     url(r'^logout/$', logout, name='logout'),

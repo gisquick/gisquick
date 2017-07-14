@@ -1,8 +1,7 @@
 import json
 
-from django.conf import settings
 from django.shortcuts import render
-from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
@@ -12,10 +11,9 @@ from django.utils.translation import ugettext as _
 import webgis
 from webgis.viewer import models
 from webgis.viewer import forms
-from webgis.viewer.views.reverse import map_url, user_page_url
-from webgis.viewer.views.project_utils import get_project, get_user_projects, \
+from webgis.viewer.views.reverse import map_url
+from webgis.viewer.views.project_utils import get_project, \
     get_user_data, InvalidProjectException
-from webgis.libs.utils import set_query_parameters
 
 
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -81,55 +79,5 @@ def map(request):
         "viewer/index.html",
         templateData,
         status=200,
-        content_type="text/html"
-    )
-
-
-def user_projects(request, username):
-    data = {
-        'serverUrl': map_url()
-    }
-    if not request.user.is_authenticated() or request.user.is_guest:
-        data['status'] = 401
-    else:
-        if not username:
-            redirect_url = user_page_url(request.user.username)
-            return HttpResponseRedirect(redirect_url)
-
-        if username == request.user.username or request.user.is_superuser:
-            # projects = [{
-            #     'title': _('Empty Project'),
-            #     'url': request.build_absolute_uri('/'),
-            # }]
-            # projects.extend(get_user_projects(request, username))
-            projects = get_user_projects(request, username)
-            data.update({
-                'username': username,
-                'projects': projects,
-                'gislab_version': webgis.VERSION,
-                'gislab_homepage': settings.GISQUICK_HOMEPAGE,
-                'gislab_documentation': settings.GISQUICK_DOCUMENTATION_PAGE,
-                'user': get_user_data(request.user),
-                'status': 200
-            })
-        else:
-            try:
-                request.user = models.GisquickUser.objects.get(username=username)
-            except models.GisquickUser.DoesNotExist:
-                return HttpResponse(
-                    "User does not exist.",
-                    content_type='text/plain',
-                    status=403
-                )
-            data['status'] = 403
-
-    templateData = {
-        'data': data,
-        'jsonData': json.dumps(data)
-    }
-    return render(
-        request,
-        "viewer/user_home.html",
-        templateData,
         content_type="text/html"
     )

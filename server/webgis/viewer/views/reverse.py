@@ -52,10 +52,3 @@ def project_legend_url(project, timestamp):
         }
     )
     return legend_url.split('/__layer__/')[0]+'/'
-
-
-def user_page_url(username):
-    return reverse(
-        'viewer:user_projects',
-        kwargs={'username': username}
-    )

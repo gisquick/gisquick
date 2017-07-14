@@ -2,7 +2,7 @@ var gulp = require('gulp');
 var concat = require('gulp-concat');
 
 
-var TARGET = '../server/webgis/viewer/static/';
+var TARGET = '../server/webgis/userpage/static/';
 
 
 /**

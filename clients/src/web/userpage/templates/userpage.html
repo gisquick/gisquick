@@ -23,6 +23,12 @@
           <md-icon md-svg-icon="arrow-right"></md-icon>
         </md-list-item>
         <md-list-item
+          ng-click="pageIndex=2"
+          ng-class="{active: pageIndex===2}">
+          <p>Upload Project</p>
+          <md-icon md-svg-icon="arrow-right"></md-icon>
+        </md-list-item>
+        <md-list-item
           ng-click="pageIndex=1"
           ng-class="{active: pageIndex===1}">
           <p>My account</p>
@@ -64,7 +70,7 @@
               <thead>
                 <tr class="header">
                   <th
-                    ng-repeat="column in ['Title', 'Authentication', 'Publication time', 'Expiration', 'Cache', 'WMS service']"
+                    ng-repeat="column in ['Title', 'Authentication', 'Publication time', 'Expiration', 'Cache', 'WMS service', 'Action']"
                     class="header">
                     {{ ::column }}
                   </th>
@@ -72,7 +78,8 @@
               </thead>
               <tbody>
                 <tr
-                  ng-repeat="project in projects | limitTo: projects.rowsPerPage: (projects.page - 1) * projects.rowsPerPage">
+                  ng-repeat="project in projects | limitTo: projects.rowsPerPage: (projects.page - 1) * projects.rowsPerPage"
+                  ng-right-click="openProjectMenu($event, project)">
                   <td>
                     <a target="_blank"
                       ng-href="{{ ::project.url }}">
@@ -93,9 +100,35 @@
                   </td>
                   <td>
                     <a target="_blank"
-                      ng-href="{{ ::project.ows_url }}">
+                      ng-href="{{ ::project.ows_url }}&service=WMS&request=GetCapabilities">
                       link
                     </a>
+                  </td>
+                  <td>
+                    <div>
+                      <md-menu>
+                        <md-button
+                          md-no-ink
+                          aria-label="Menu"
+                          ng-click="$mdOpenMenu($event)">
+                          <md-icon md-menu-origin md-svg-icon="pen"></md-icon>
+                        </md-button>
+                        <md-menu-content width="3">
+                          <md-menu-item>
+                            <md-button
+                              ng-click="deleteProject(project)">
+                              Delete Project
+                            </md-button>
+                          </md-menu-item>
+                          <md-menu-item>
+                            <md-button
+                              ng-click="updateTableTempaltes(project)">
+                              Update table templates
+                            </md-button>
+                          </md-menu-item>
+                        </md-menu-content>
+                      </md-menu>
+                    </div>
                   </td>
                 </tr>
               </tbody>
@@ -140,6 +173,33 @@
       </div>
     </md-tab>
 
+    <md-tab
+      label="upload">
+      <div class="tab-content">
+        <div class="page-header">
+          Project Upload
+        </div>
+        <form>
+          <p style="opacity:0.5">Select published project files in .zip or .tar.gz format</p>
+          <md-input-container>
+            <label class="md-no-float">Project file</label>
+            <input
+              name="proj_file"
+              type="file">
+          </md-input-container>
+          <div layout="row">
+            <span flex></span>
+            <md-button
+              md-no-ink
+              class="md-raised md-primary"
+              ng-click="uploadProject()">
+              Upload
+            </md-button>
+            <!-- <span flex></span> -->
+          </div>
+        </form>
+      </div>
+    </md-tab>
   </md-tabs>
 
 </div>

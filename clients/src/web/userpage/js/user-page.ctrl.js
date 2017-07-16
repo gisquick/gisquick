@@ -128,7 +128,7 @@
     }
 
     $scope.updateTableTempaltes = function(project) {
-      gislabClient.post('project/templates/', {project: project.project})
+      gislabClient.post('/project/templates/', {project: project.project})
         .then(function() {
           showNotification('Updated');
         }, function() {
@@ -145,7 +145,7 @@
             .cancel('Cancel');
 
       $mdDialog.show(confirm).then(function() {
-        gislabClient.delete('project/'+project.project).then(function() {
+        gislabClient.delete('/project/'+project.project).then(function() {
           $scope.projects.splice($scope.projects.indexOf(project), 1);
         })
       });
@@ -153,7 +153,7 @@
 
     $scope.uploadProject = function() {
       var data = new FormData(document.querySelector('form'));
-      gislabClient.post('upload/', data)
+      gislabClient.post('/project/upload/', data)
         .then(function() {
           showNotification('Uploaded');
           gislabClient.userProjects()

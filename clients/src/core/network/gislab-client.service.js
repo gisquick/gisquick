@@ -33,8 +33,11 @@
       };
     };
 
-    GislabClient.prototype._deferredRequest = function(httpParams) {
+    GislabClient.prototype._deferredRequest = function(httpParams, options) {
       var deferredAbort = $q.defer();
+      if (options) {
+        httpParams = angular.extend(httpParams, options);
+      }
       if (httpParams.url.indexOf("://") === -1) {
         httpParams.url = '{0}{1}'.format(this.serverUrl, httpParams.url);
       }
@@ -54,6 +57,7 @@
             invalid_server: angular.isFunction(response.headers) && response.headers('X-Gisquick-Version')? false : true,
             canceled: promise.canceled === true,
             status_code: response.status,
+            response: response
           });
         }
       );
@@ -126,41 +130,38 @@
       });
     };
 
-    GislabClient.prototype.get = function(url, params, http_options) {
-      var httpParams = {
+    GislabClient.prototype.get = function(url, params, options) {
+      return this._deferredRequest({
         url: url,
         method: 'get',
         params: params,
         withCredentials: true
-      };
-      if (http_options) {
-        httpParams = angular.extend(http_options, httpParams);
-      }
-      return this._deferredRequest(httpParams);
+      }, options);
     };
 
-    GislabClient.prototype.post = function(url, data) {
+    GislabClient.prototype.post = function(url, data, options) {
       var headers = {};
       if (data instanceof FormData) {
         headers['Content-Type'] = undefined
       } else {
         headers['Content-Type'] = 'application/json; charset=UTF-8';
       }
-      return this._deferredRequest({
+      var httpParams = {
         url: url,
         method: 'post',
         withCredentials: true,
         data: data,
         headers: headers
-      });
+      };
+      return this._deferredRequest(httpParams, options);
     };
 
-    GislabClient.prototype.delete = function(url) {
+    GislabClient.prototype.delete = function(url, options) {
       return this._deferredRequest({
         url: url,
         method: 'delete',
         withCredentials: true
-      });
+      }, options);
     }
 
     GislabClient.prototype.encodeUrl = function(url, params) {

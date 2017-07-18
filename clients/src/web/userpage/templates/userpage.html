@@ -186,7 +186,17 @@
             <input
               name="proj_file"
               type="file">
+            <div ng-messages="upload.error" layout="column">
+              <small>{{ upload.error.proj_file[0].message }}</small>
+              <small>{{ upload.error.__all__[0].message }}</small>
+            </div>
+            <md-progress-linear
+              md-mode="determinate"
+              ng-show="upload.active"
+              value="{{ upload.progress }}">
+            </md-progress-linear>
           </md-input-container>
+
           <div layout="row">
             <span flex></span>
             <md-button

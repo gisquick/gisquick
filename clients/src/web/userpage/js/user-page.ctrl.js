@@ -151,9 +151,23 @@
       });
     }
 
+    $scope.upload = {
+      active: false,
+      progress: 0
+    };
     $scope.uploadProject = function() {
       var data = new FormData(document.querySelector('form'));
-      gislabClient.post('/project/upload/', data)
+      var options = {
+        uploadEventHandlers: {
+          progress: function(e) {
+            $scope.upload.progress = 100 * e.loaded / e.total;
+          }
+        }
+      };
+      $scope.upload.active = true;
+      $scope.upload.progress = 0;
+      delete $scope.upload.error;
+      gislabClient.post('/project/upload/', data, options)
         .then(function() {
           showNotification('Uploaded');
           gislabClient.userProjects()
@@ -162,9 +176,12 @@
               userPageLoader.setData(appData);
             });
 
-        }, function() {
+        }, function(err) {
           showNotification('Failed to upload project', 'error');
-        });
+          $scope.upload.error = err.response.data;
+        }).finally(function() {
+          $scope.upload.active = false;
+        })
     }
   }
  })();

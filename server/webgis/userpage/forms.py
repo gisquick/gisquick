@@ -60,6 +60,7 @@ class UploadForm(forms.Form):
             zip_ref.extractall(dest_dir)
             zip_ref.close()
         elif file.name.endswith('.gz'):
+            file.seekable = lambda: True
             tar_ref = tarfile.open(fileobj=file)
             tar_ref.extractall(dest_dir)
             tar_ref.close()

@@ -62,7 +62,8 @@ def webgisfilter(mapserv, layer, maxfeatures=None, startindex=None, bbox=None,
                                   outputFormat="GeoJSON",
                                   maxfeatures=maxfeatures,
                                   startindex=startindex)
-    data = json.load(layer_data)
+
+    data = json.load(layer_data, encoding='utf8', strict=False)
 
     for feature in data['features']:
         feature.pop('geometry', None)

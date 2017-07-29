@@ -20,7 +20,7 @@ services:
     volumes:
       - /var/www/media/:/var/www/qisquick/media/
       - /var/www/data/:/var/www/gisquick/data/
-      - /var/www/publish:/var/www/gisquick/publish/
+      - /var/www/publish:/publish/
     environment:
       - GUNICORN_WORKERS=3
       - GUNICORN_ERRORLOG=-

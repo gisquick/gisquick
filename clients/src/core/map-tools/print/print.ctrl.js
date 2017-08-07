@@ -296,6 +296,9 @@
       var printParams = getPrintParameters();
       var layout = tool.config.layout;
       var url = gislabClient.encodeUrl(projectProvider.data.ows_url, printParams);
+      if (url.indexOf('://') === -1) {
+        url = location.protocol+'//'+location.host+url;
+      }
       var popup;
       function closePrint () {
         if (popup) {

@@ -8,3 +8,5 @@ recursive-include webgis/conf/project_template *
 recursive-include webgis/viewer/static *
 recursive-include webgis/viewer/media *
 recursive-include webgis/viewer/templates *
+recursive-include webgis/userpage/static *
+recursive-include webgis/userpage/templates *

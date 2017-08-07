@@ -14,7 +14,7 @@ DEBUG = True
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'webgis.sqlite3'),
+        'NAME': os.path.join(BASE_DIR, 'gisquick.sqlite3'),
     }
 }
 
@@ -30,6 +30,10 @@ GISQUICK_MAPSERVER_URL = 'http://localhost:90/cgi-bin/qgis_mapserv.fcgi'
 GISQUICK_GUEST_USERNAME = 'guest'
 GISQUICK_HOMEPAGE = 'http://gisquick.org'
 GISQUICK_DOCUMENTATION_PAGE = 'http://gisquick.readthedocs.io/en/latest/'
+
+# Optional limit for maximal uploaded project files
+# Integer in bytes or string number in megabytes (50M)
+# GISQUICK_UPLOAD_MAX_SIZE = '10M'
 
 
 ### INTERNATIONALIZATION

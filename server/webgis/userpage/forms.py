@@ -38,12 +38,24 @@ class UploadForm(forms.Form):
         # print('projects count', projects_count)
         # if projects_count >= settings.GISQUICK_UPLOAD_LIMIT and not self.request.user.is_staff:
         #     raise forms.ValidationError(_('You have reached maximal number of uploaded projects'))
+
+        max_size = getattr(settings, 'GISQUICK_UPLOAD_MAX_SIZE', None)
+        if isinstance(max_size, str):
+            if max_size[-1].upper() == 'M':
+                max_size = int(max_size[:-1]) * 1024 * 1024
+            else:
+                max_size = int(max_size)
+            # units = {'K': 1024, 'M': 1024*1024}
+            # unit = max_size[-1].upper()
+            # if unit in units:
+            #     max_size = int(max_size[:-1]) * units[unit]
+
         try:
             file = self.cleaned_data['proj_file']
             if file:
                 file_type = file.content_type.split('/')[-1]
                 if file_type in self.UPLOAD_FILE_TYPES:
-                    if file._size > settings.GISQUICK_UPLOAD_MAX_SIZE * 1024 * 1024:
+                    if max_size and file._size > max_size:
                         raise forms.ValidationError(_('Please keep file size under %s MB. Current file size %s') %
                                                     (filesizeformat(settings.GISQUICK_UPLOAD_MAX_SIZE),
                                                      filesizeformat(file._size)))

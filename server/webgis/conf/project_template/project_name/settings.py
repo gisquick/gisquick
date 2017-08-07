@@ -3,6 +3,9 @@ Django settings for Gisquick.
 """
 
 import os
+import logging
+
+logger = logging.getLogger('django')
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
@@ -60,6 +63,7 @@ MEDIA_ROOT =  os.path.join(BASE_DIR, 'media/')
 ### SYSTEM CONFIGURATION
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -99,8 +103,23 @@ except ImportError:
 
 
 ### ENVIRONMENT VARIABLES SETTINGS
-for k,v in os.environ.items():
+for k, v in os.environ.items():
     if k.startswith("DJANGO_"):
+        if v:
+            if v[0] in ("'", '"'):
+                v = v[1:-1]
+            else:
+                try:
+                    if v in ('True', 'False'):
+                        v = True if v == 'True' else False
+                    elif '.' in v:
+                        v = float(v)
+                    else:
+                        v = int(v)
+                except ValueError:
+                    # let it be a string
+                    if k != 'DJANGO_SETTINGS_MODULE':
+                        logger.warn('Warning: {0} - Invalid number value, converting to string'.format(k))
         key = k.split('_', 1)[1]
         globals()[key] = v
 

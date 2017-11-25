@@ -3,30 +3,24 @@ services:
   qgisserver:
     restart: always
     image: gisquick/qgis-server
-    build: ./qgis-server
     volumes:
-      - /publish:/publish/:ro
+      - ./_data/publish:/publish/:ro
     ports:
-      - "90"
+      - "9000:90"
 
   django:
     restart: always
     image: gisquick/django
-    build: ./django
     links:
       - qgisserver
-    volumes_from:
-      - qgisserver
     volumes:
-      - /var/www/media/:/var/www/qisquick/media/
-      - /var/www/data/:/var/www/gisquick/data/
-      - /var/www/publish:/publish/
+      - ./_data/data/:/var/www/gisquick/data/
+      - ./_data/media/:/var/www/qisquick/media/
+      - ./_data/publish:/publish/
     environment:
-      - GUNICORN_WORKERS=3
+      - GUNICORN_WORKERS=2
       - GUNICORN_ERRORLOG=-
       - GUNICORN_ACCESSLOG=-
-    ports:
-      - "8000"
     logging:
       driver: json-file
       options:
@@ -36,17 +30,17 @@ services:
   nginx:
     restart: unless-stopped
     image: gisquick/nginx
-    build: ./nginx
     links:
       - django
     volumes_from:
       - django:ro
     volumes:
-      - /etc/letsencrypt/:/etc/letsencrypt/
-      - /var/www/certbot/:/var/www/certbot/
+      - ./_data/etc/letsencrypt/:/etc/letsencrypt/
+      - ./_data/var/www/certbot/:/var/www/certbot/
     ports:
-      - "80:80"
-      - "443:443"
+      - "4433:443"
+    environment:
+      - NGINX_HOST=server
     logging:
       driver: json-file
       options:

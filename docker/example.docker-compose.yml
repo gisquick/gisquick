@@ -38,7 +38,7 @@ services:
       - ./_data/etc/letsencrypt/:/etc/letsencrypt/
       - ./_data/var/www/certbot/:/var/www/certbot/
     ports:
-      - "433:443"
+      - "443:443"
     environment:
       - NGINX_HOST=server
     logging:

@@ -64,7 +64,7 @@
             .then(function() {
               gislabClient.userProjects()
                 .then(function(appData) {
-                  appData['gislab_documentation'] = 'http://gisquick.readthedocs.io/en/latest/user-interface.html';
+                  appData['gislab_documentation'] = 'http://gisquick.readthedocs.io/en/latest/user-manual/user-interface.html';
                   appData['user'] = gislabClient.userInfo;
                   userPageLoader.setData(appData);
                 });

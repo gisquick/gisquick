@@ -15,7 +15,9 @@
     "md5": "^2.2.1",
     "ol": "^4.6.4",
     "proj4": "^2.4.4",
-    "vue": "^2.5.2"
+    "simplebar": "^2.5.1",
+    "vue": "^2.5.2",
+    "vuetify": "^0.17.5"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
@@ -56,6 +58,9 @@
     "semver": "^5.3.0",
     "shelljs": "^0.7.6",
     "style-loader": "^0.19.1",
+    "svg-sprite-loader": "^3.5.4",
+    "svgo": "^1.0.3",
+    "svgo-loader": "^2.1.0",
     "uglifyjs-webpack-plugin": "^1.1.1",
     "url-loader": "^0.5.8",
     "vue-loader": "^13.3.0",

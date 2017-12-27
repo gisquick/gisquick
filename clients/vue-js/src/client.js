@@ -4,7 +4,8 @@ import https from 'https'
 
 const HTTP = axios.create({
   // baseURL: 'https://localhost',
-  baseURL: 'http://localhost:8000',
+  // baseURL: 'http://10.0.2.2:8000',
+  baseURL: process.env.SERVER_URL,
   withCredentials: true,
   httpsAgent: new https.Agent({
     rejectUnauthorized: false

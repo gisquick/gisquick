@@ -150,20 +150,24 @@ export class WebgisTileImage extends TileImage {
   }
 }
 
+export function groupLayers (layer) {
+  return layer.layers.reduce((values, l) => {
+    return values.concat(l.isGroup ? groupLayers(l) : l)
+  }, [])
+}
+
 export function layersList (layers, skipGroups = true) {
   const list = []
 
-  function visitNode (list, layerData, depth = 0) {
+  function visitNode (list, layerData) {
     layerData.title = layerData.title || layerData.name
-    layerData.depth = depth
 
     if (layerData.layers) {
       if (!skipGroups && layerData.title) {
         layerData.isGroup = true
         list.push(layerData)
       }
-      layerData.layers.forEach(childData => visitNode(list, childData, depth + 1))
-      layerData.visible = true
+      layerData.layers.forEach(childData => visitNode(list, childData))
     } else if (layerData) {
       layerData.isGroup = false
       list.push(layerData)
@@ -171,7 +175,7 @@ export function layersList (layers, skipGroups = true) {
     return list
   }
 
-  visitNode(list, {layers})
+  visitNode(list, Array.isArray(layers) ? {layers} : layers)
   return list
 }
 

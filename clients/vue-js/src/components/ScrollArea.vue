@@ -28,9 +28,11 @@ export default {
 
 </script>
 
-<style>
-.simplebar-scrollbar {
-  /*opacity: 0.25;*/
-  right: 0;
+<style lang="scss">
+.simplebar-track.vertical {
+  .simplebar-scrollbar {
+    /*opacity: 0.25;*/
+    right: 0;
+  }
 }
 </style>

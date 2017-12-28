@@ -18,7 +18,7 @@ export default {
   },
   created () {
     let project = new URLSearchParams(location.search).get('PROJECT')
-    project = 'user1/prague/prague'
+    // project = 'user1/prague/prague'
     // project = 'user1/natural-earth/central-europe'
     // project = 'user2/uster/uster'
 

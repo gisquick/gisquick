@@ -1,6 +1,16 @@
-# vue-gisquick
+Start development docker containers service
+``` bash
+docker-compose -f docker-compose-dev.yml up
+```
 
-> A Vue.js project
+Create superuser
+``` bash
+docker-compose -f docker-compose-dev.yml exec django django-admin createsuperuser
+```
+
+# Simple gisquick web client written in [Vue.js](https://vuejs.org/)
+
+Install [Node.js](https://nodejs.org/) (we recommend to use [nvm](https://github.com/creationix/nvm))
 
 ## Build Setup
 

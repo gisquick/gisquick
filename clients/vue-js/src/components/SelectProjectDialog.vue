@@ -1,0 +1,62 @@
+<template>
+  <v-dialog v-model="open" scrollable max-width="350px">
+    <v-card>
+      <v-card-title>Select Project</v-card-title>
+      <v-divider></v-divider>
+      <v-card-text>
+        <v-radio-group v-model="selected">
+          <v-radio
+            v-for="project in projects"
+            color="primary"
+            :label="project.title"
+            :value="project.project">
+          </v-radio>
+        </v-radio-group>
+      </v-card-text>
+      <v-divider></v-divider>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn
+          raised
+          color="primary"
+          :disabled="!selected"
+          @click="selectProject">Open</v-btn>
+        <v-spacer></v-spacer>
+        <!-- <v-btn raised @click="open=false">Close</v-btn> -->
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
+</template>
+
+<script>
+import HTTP from '../client'
+
+export default {
+  name: 'select-project-dialog',
+  mounted () {
+    HTTP.get('/projects.json')
+      .then((resp) => {
+        this.projects = resp.data.projects
+      })
+  },
+  data () {
+    return {
+      open: true,
+      projects: [],
+      selected: ''
+    }
+  },
+  methods: {
+    selectProject () {
+      console.log(this.selected)
+      location.search = `PROJECT=${this.selected}`
+    }
+  }
+}
+</script>
+
+<style scoped>
+  .input-group {
+    padding-top: 0;
+  }
+</style>

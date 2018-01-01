@@ -1,36 +1,43 @@
 <template>
   <v-app id="app" light>
     <Map v-if="project" :project="project"></Map>
+    <SelectProjectDialog v-if="showProjects"/>
   </v-app>
 </template>
 
 <script>
 import Map from './components/Map'
 import HTTP from './client'
+import SelectProjectDialog from './components/SelectProjectDialog'
 
 export default {
   name: 'app',
-  components: { Map },
+  components: { Map, SelectProjectDialog },
   data () {
     return {
+      showProjects: false,
       project: null
     }
   },
-  created () {
-    let project = new URLSearchParams(location.search).get('PROJECT')
-    // project = 'user1/prague/prague'
-    // project = 'user1/natural-earth/central-europe'
-    // project = 'user2/uster/uster'
-
-    HTTP
-      .login('user1', 'user1')
-      .then(() => {
-        HTTP
-          .project(project)
-          .then(resp => {
-            this.project = resp.data
-          })
-      })
+  mounted () {
+    HTTP.login('user1', 'user1').then(() => {
+      let project = new URLSearchParams(location.search).get('PROJECT')
+      // project = 'user2/uster/uster'
+      if (project) {
+        this.loadProject(project)
+      } else {
+        this.showProjects = true
+      }
+    })
+  },
+  methods: {
+    loadProject (project) {
+      HTTP
+        .project(project)
+        .then(resp => {
+          this.project = resp.data
+        })
+    }
   }
 }
 </script>
@@ -44,7 +51,6 @@ html, body {
   overflow: hidden;
 }
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   width: 100%;

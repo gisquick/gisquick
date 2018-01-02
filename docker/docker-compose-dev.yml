@@ -3,7 +3,6 @@ services:
   qgisserver:
     restart: always
     image: gisquick/qgis-server
-    build: ./qgis-server
     volumes:
       - ./_data/publish:/publish/:ro
     ports:
@@ -12,7 +11,6 @@ services:
   django:
     restart: always
     image: gisquick/django-dev
-    build: ./django-dev
     links:
       - qgisserver
     volumes:

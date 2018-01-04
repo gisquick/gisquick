@@ -8,6 +8,7 @@
           <v-radio
             v-for="project in projects"
             color="primary"
+            :key="project.project"
             :label="project.title"
             :value="project.project">
           </v-radio>
@@ -29,26 +30,17 @@
 </template>
 
 <script>
-import HTTP from '../client'
-
 export default {
   name: 'select-project-dialog',
-  mounted () {
-    HTTP.get('/projects.json')
-      .then((resp) => {
-        this.projects = resp.data.projects
-      })
-  },
+  props: ['projects'],
   data () {
     return {
       open: true,
-      projects: [],
       selected: ''
     }
   },
   methods: {
     selectProject () {
-      console.log(this.selected)
       location.search = `PROJECT=${this.selected}`
     }
   }

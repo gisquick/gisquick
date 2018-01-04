@@ -1,42 +1,54 @@
 <template>
   <v-app id="app" light>
     <Map v-if="project" :project="project"></Map>
-    <SelectProjectDialog v-if="showProjects"/>
+    <LoginDialog v-if="showLogin" @login="bootstrap" />
+    <SelectProjectDialog v-if="showProjects" :projects="projects" />
   </v-app>
 </template>
 
 <script>
-import Map from './components/Map'
 import HTTP from './client'
+import Map from './components/Map'
+import LoginDialog from './components/LoginDialog'
 import SelectProjectDialog from './components/SelectProjectDialog'
 
 export default {
   name: 'app',
-  components: { Map, SelectProjectDialog },
+  components: { Map, LoginDialog, SelectProjectDialog },
   data () {
     return {
       showProjects: false,
+      showLogin: false,
       project: null
     }
   },
   mounted () {
-    HTTP.login('user1', 'user1').then(() => {
-      let project = new URLSearchParams(location.search).get('PROJECT')
-      // project = 'user2/uster/uster'
-      if (project) {
-        this.loadProject(project)
-      } else {
-        this.showProjects = true
-      }
-    })
+    this.bootstrap()
   },
   methods: {
-    loadProject (project) {
-      HTTP
-        .project(project)
-        .then(resp => {
-          this.project = resp.data
-        })
+    bootstrap () {
+      let project = new URLSearchParams(location.search).get('PROJECT')
+      // project = 'user1/prague/prague'
+      if (project) {
+        HTTP
+          .project(project)
+          .then(resp => {
+            this.project = resp.data
+          })
+          .catch(resp => {
+            this.showLogin = true
+          })
+      } else {
+        // Show list of user projects
+        HTTP.get('/projects.json')
+          .then((resp) => {
+            this.projects = resp.data.projects
+            this.showProjects = true
+          })
+          .catch(resp => {
+            this.showLogin = true
+          })
+      }
     }
   }
 }
@@ -64,7 +76,7 @@ html, body {
   }
 }
 .checkbox {
-  .input-group--selection-controls__ripple{
+  .input-group--selection-controls__ripple {
     display: none;
   }
 }

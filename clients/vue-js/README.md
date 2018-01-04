@@ -8,7 +8,7 @@ Start development docker containers service
 docker-compose -f docker-compose-dev.yml up
 ```
 
-Create superuser (username='user1', password='user1')
+Create superuser
 ``` bash
 docker-compose -f docker-compose-dev.yml exec django django-admin createsuperuser
 ```

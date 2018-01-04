@@ -17,7 +17,7 @@ HTTP.absUrl = function (url) {
 }
 
 HTTP.login = function (username, password) {
-  const params = new URLSearchParams()
+  const params = new FormData()
   params.append('username', username)
   params.append('password', password)
 

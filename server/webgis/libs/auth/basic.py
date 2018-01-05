@@ -1,3 +1,5 @@
+import base64
+
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import AnonymousUser
 
@@ -26,7 +28,8 @@ def is_authenticated(request):
     if not authmeth.lower() == 'basic':
         return False
 
-    auth = auth.strip().decode('base64')
+    auth = base64.b64decode(auth.strip()).decode('utf-8')
+
     (username, password) = auth.split(':', 1)
 
     request.user = authenticate(username=username, password=password) or AnonymousUser()

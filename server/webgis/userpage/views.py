@@ -2,12 +2,13 @@ import os
 import json
 import hashlib
 import subprocess
+import logging
 
 from django.conf import settings
 from django.shortcuts import render
 from django.views.generic import View
-from django.http import JsonResponse, HttpResponse, \
-    Http404, HttpResponseNotAllowed, HttpResponseRedirect
+from django.core.exceptions import PermissionDenied
+from django.http import JsonResponse, HttpResponse, Http404, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
@@ -21,6 +22,8 @@ from webgis.mapcache import Disk
 from webgis.viewer.views.project_utils import get_user_projects, \
     get_user_data, get_last_project_version
 
+
+logger = logging.getLogger('django')
 
 def user_projects(request, username):
     data = {}
@@ -65,6 +68,7 @@ def user_projects(request, username):
         'data': data,
         'jsonData': json.dumps(data)
     }
+
     return render(
         request,
         "userpage/index.html",
@@ -80,7 +84,7 @@ def upload_file(request):
         form = UploadForm(request, request.POST, request.FILES)
         if form.is_valid():
             f = form.extract()
-            return JsonResponse({})
+            return JsonResponse({'status': '200'})
         else:
             return HttpResponse(
                 form.errors.as_json(),
@@ -114,7 +118,7 @@ def update_table_templates(request):
 
             templates_dir = os.path.join(os.path.dirname(metafile), 'info_panel')
             if os.path.exists(templates_dir):
-                for filename in os.listdir(templates_dir):
+                for filename in filter(lambda f: f.endswith('.html'), os.listdir(templates_dir)):
                     lname = os.path.splitext(filename)[0]
                     if lname in layers:
                         layer = layers[lname]
@@ -122,7 +126,7 @@ def update_table_templates(request):
                             template = temp.read()
                             layer['info_template'] = template
                     else:
-                        print ('Warning: Unknown Layer Template: ', lname)
+                        logging.warn('Unknown Layer Template: %s', lname)
             else:
                 # remove existing templates
                 for layer in layers:
@@ -145,8 +149,8 @@ class Project(View):
 
     def delete(self, request, project):
         username = project.split('/')[0]
-        if username != request.user.username:
-            return HttpResponseNotAllowed()
+        if username != request.user.username or username.startswith('user'):
+            raise PermissionDenied
 
         project_dir = project.split('/')[1]
         project_dir = os.path.join(settings.GISQUICK_PROJECT_ROOT, username, project_dir)

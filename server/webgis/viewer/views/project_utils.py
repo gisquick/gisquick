@@ -318,6 +318,7 @@ def get_project(request):
             'project_extent': metadata.extent,
             'zoom_extent': form.cleaned_data['EXTENT'] or metadata.zoom_extent,
             'print_composers': metadata.composer_templates if not request.user.is_guest else None,
+            'info_panel': metadata.info_panel,
             'root_title': metadata.title,
             'author': metadata.contact_person,
             'email': metadata.contact_mail,
@@ -389,7 +390,7 @@ def get_user_projects(request, username):
     projects = []
     projects_root = os.path.join(settings.GISQUICK_PROJECT_ROOT, username)
     project_prefix_length = len(os.path.join(settings.GISQUICK_PROJECT_ROOT, ''))
-    for root, dirs, files in os.walk(projects_root):
+    for root, dirs, files in os.walk(projects_root, followlinks=True):
         if files:
             # analyze project filenames and group different publications of the same project into one record
             projects_files = {}

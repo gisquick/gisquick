@@ -39,6 +39,21 @@
     <script type="text/javascript">
       var GISQUICK_SERVER = 'https://localhost:8000';
 
+      function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+          const cookies = document.cookie.split(';');
+          for (const i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+              break;
+            }
+          }
+        }
+        return cookieValue;
+      }
       angular.module('gl.userpage')
         .constant('staticResources', {
           'text-logo': 'web/styles/text_logo.svg',
@@ -59,12 +74,15 @@
           var version = onTouchDevice? 1 : 0;
           return [$delegate[version]];
         })
-        .run(function(userPageLoader, gislabClient) {
+        .run(function($http, userPageLoader, gislabClient) {
           gislabClient.login('vagrant', 'vagrant')
             .then(function() {
+              var csrftoken = getCookie('csrftoken');
+              $http.defaults.headers.post['X-CSRFToken'] = csrftoken;
+              $http.defaults.headers.delete = {'X-CSRFToken': csrftoken};
               gislabClient.userProjects()
                 .then(function(appData) {
-                  appData['gislab_documentation'] = 'http://gisquick.readthedocs.io/en/latest/user-interface.html';
+                  appData['gislab_documentation'] = 'http://gisquick.readthedocs.io/en/latest/user-manual/user-interface.html';
                   appData['user'] = gislabClient.userInfo;
                   userPageLoader.setData(appData);
                 });

@@ -3,7 +3,6 @@ import json
 import urllib.parse
 import urllib.request
 import contextlib
-from urllib.parse import parse_qs
 
 from django.conf import settings
 from django.http import HttpResponse, Http404
@@ -24,12 +23,13 @@ def abs_project_path(project):
 
 @basic_authentication(realm="OWS API")
 def ows(request):
+    params = {key.upper(): request.GET[key] for key in request.GET.keys()}
     url = "{0}?{1}".format(
         settings.GISQUICK_MAPSERVER_URL.rstrip("/"),
         request.environ['QUERY_STRING']
     )
-    query_params = parse_qs(request.environ['QUERY_STRING'])
-    abs_project = abs_project_path(query_params.get('MAP')[0])
+
+    abs_project = abs_project_path(params.get('MAP'))
     url = set_query_parameters(url, {'MAP': abs_project})
 
     owsrequest = urllib.request.Request(url)
@@ -42,6 +42,13 @@ def ows(request):
             if not data:
                 break
             resp_content += data
+
+        if params.get('REQUEST', '') == 'GetCapabilities':
+            resp_content = resp_content.replace(
+                settings.GISQUICK_MAPSERVER_URL.encode(),
+                request.build_absolute_uri(request.path).encode()
+            )
+
         content_type = resp.getheader('Content-Type')
         status = resp.getcode()
         return HttpResponse(resp_content, content_type=content_type, status=status)

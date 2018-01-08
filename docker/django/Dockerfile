@@ -12,9 +12,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 
 # Install Gunicorn and GIS.lab Web dependencies
-COPY ../../server/dist/gisquick-dev.tar.gz /tmp/gisquick-dev.tar.gz
+COPY tmp/requirements.txt /tmp/
+
 RUN pip3 install --no-cache-dir 'gunicorn>=19.7,<19.8' && \
-    pip3 install --no-cache-dir /tmp/gisquick-dev.tar.gz && \
+    pip3 install --no-cache-dir -r /tmp/requirements.txt
+
+COPY tmp/gisquick-dev.tar.gz /tmp/
+
+RUN pip3 install --no-cache-dir /tmp/gisquick-dev.tar.gz && \
     rm /tmp/gisquick-dev.tar.gz
 
 
@@ -24,10 +29,12 @@ RUN mkdir -p /var/www/gisquick && \
     mkdir -p /var/log/gunicorn/ && \
     django-admin startproject --template=/usr/local/lib/python3.5/dist-packages/webgis/conf/project_template/ djproject /var/www/gisquick/
 
-COPY settings_custom.py /var/www/gisquick/djproject/settings_custom.py
+
+COPY settings_custom.py /var/www/gisquick/djproject/
 
 ENV PYTHONPATH $PYTHONPATH:/var/www/gisquick/
 ENV DJANGO_SETTINGS_MODULE djproject.settings
+ENV LANG C.UTF-8
 
 
 # Configure Gunicorn and Supervisor

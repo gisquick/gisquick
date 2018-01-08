@@ -8,6 +8,8 @@ DEBUG = False
 GISQUICK_PROJECT_ROOT = '/publish/'
 GISQUICK_MAPSERVER_URL = 'http://qgisserver:90/cgi-bin/qgis_mapserv.fcgi'
 
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 ### DATABASE
 DATABASES = {
     'default': {

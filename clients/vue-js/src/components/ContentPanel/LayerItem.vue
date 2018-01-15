@@ -56,6 +56,7 @@
       </div>
       <Collapsible>
         <div v-if="isExpanded" class="metadata">
+          <div class="pb-1" />
           <label>Geometry:</label>
           <icon :name="layer.geom_type? layer.geom_type.toLowerCase() : 'raster'" /><br />
           
@@ -70,6 +71,7 @@
 
 <!--           <label>Maximal scale:</label>
           <span> 1: {{ layer.visibility_scale_min }}</span><br /> -->
+          <div class="pb-1" />
         </div>
       </Collapsible>
     </div>
@@ -122,9 +124,9 @@ export default Vue.component('layer-item', {
   }
 
   .item-container {
-    padding-left: 4px;
     .item {
       position: relative;
+      padding-left: 4px;
       .btn.expand {
         position: absolute;
         top: 0;
@@ -140,7 +142,7 @@ export default Vue.component('layer-item', {
     }
     .metadata {
       font-size: 80%;
-      padding-bottom: 0.25em;
+      padding-left: 4px;
       label {
         font-weight: 600;
       }

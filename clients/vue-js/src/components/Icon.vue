@@ -7,7 +7,7 @@
 <script>
 
 const svgIcons = require.context('../../icons', false, /.*\.svg$/)
-console.log(svgIcons)
+
 function requireAll (requireContext) {
   return requireContext.keys().map(requireContext)
 }

@@ -1,12 +1,11 @@
 <template>
-  <div class="layers-list">
+  <div class="content-panel">
     <v-toolbar dark flat height="30">
       <v-spacer></v-spacer>
       <h4>Content</h4>
       <v-spacer></v-spacer>
     </v-toolbar>
     <v-tabs icons centered grow
-      class="content-panel"
       v-model="activeMainTab">
       <v-tabs-bar class="main-tabs">
         <v-tabs-slider color="primary" />
@@ -171,7 +170,7 @@ export default {
 <style lang="scss">
 @import '../../theme.scss';
 
-.layers-list {
+.content-panel {
   position: absolute;
   left: 0;
   top: 0;
@@ -267,4 +266,5 @@ export default {
     }
   }
 }
+
 </style>

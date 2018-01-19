@@ -109,7 +109,7 @@ export default Vue.component('layer-item', {
 
 <style lang="scss">
 @import '../../theme.scss';
-.layers-list {
+.content-panel {
 
   /* Fixes checkbox position in FF */
   .icon--selection-control {

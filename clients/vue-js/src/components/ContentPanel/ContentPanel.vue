@@ -30,14 +30,13 @@
               v-model="visibleBaseLayer"
               :mandatory="false"
               hide-details>
-              <v-radio
+              <baselayer-item
                 v-for="(layer, index) in baseLayers.list"
                 :key="index"
-                :label="layer.title || layer.name"
-                :value="layer.name"
-                color="primary"
-                @change="updateBaseLayerVisibility">
-              </v-radio>
+                :layer="layer"
+                :expanded="expandedItems.baselayer"
+                @expanded="id => expandItem('baselayer', id)"
+                @changed:visibility="updateBaseLayerVisibility" />
             </v-radio-group>
           </scroll-area>
         </v-tabs-content>
@@ -69,14 +68,14 @@
               </v-tabs-content>
               <v-tabs-content id="layers">
                 <scroll-area>
-                  <LayerItem
+                  <layer-item
                     v-for="layer in overlays.tree"
                     :key="layer.name"
                     :layer="layer"
-                    :expanded="expandedLayerItem"
+                    :expanded="expandedItems.overlay"
                     :depth="1"
                     @changed:visibility="updateLayersVisibility"
-                    @expanded="expanded" />
+                    @expanded="id => expandItem('overlay', id)" />
                 </scroll-area>
 
               </v-tabs-content>
@@ -86,7 +85,9 @@
 
         <v-tabs-content id="legend">
           <scroll-area class="legend-container">
-            <Legend :layers="visibleLayers" :visible="activeMainTab === 'legend'"/>
+            <map-legend
+              :layers="visibleLayers"
+              :visible="activeMainTab === 'legend'" />
           </scroll-area>
         </v-tabs-content>
 
@@ -98,12 +99,12 @@
 <script>
 import { layersList, groupLayers } from '../../map-builder'
 import LayerItem from './LayerItem'
-import Legend from './Legend'
-import ScrollArea from '../ScrollArea'
+import BaseLayerItem from './BaseLayerItem'
+import MapLegend from './Legend'
 
 export default {
   name: 'content-panel',
-  components: { LayerItem, Legend, ScrollArea },
+  components: { BaseLayerItem, LayerItem, MapLegend },
   props: ['baseLayers', 'overlays'],
   inject: ['$map'],
   data () {
@@ -113,7 +114,10 @@ export default {
       visibleBaseLayer: '',
       activeMainTab: 'overlays',
       activeSecondaryTab: 'layers',
-      expandedLayerItem: ''
+      expandedItems: {
+        baselayer: '',
+        overlay: ''
+      }
     }
   },
   created () {
@@ -160,8 +164,8 @@ export default {
 
       this.$map.overlay.getSource().setVisibleLayers(this.visibleLayers.map(l => l.name))
     },
-    expanded (id) {
-      this.expandedLayerItem = this.expandedLayerItem !== id ? id : ''
+    expandItem (group, id) {
+      this.expandedItems[group] = this.expandedItems[group] !== id ? id : ''
     }
   }
 }

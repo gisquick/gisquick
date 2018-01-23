@@ -12,8 +12,9 @@
 </template>
 
 <script>
+/* Container component for animated collapse/expand elements */
+
 export default {
-  name: 'collapsible',
   methods: {
     beforeEnter (el) {
       el.style.display = ''

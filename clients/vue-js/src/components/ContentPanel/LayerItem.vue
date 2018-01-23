@@ -18,7 +18,7 @@
           @change="toggleGroupVisibility"
           hide-details />
       </div>
-      <Collapsible>
+      <v-collapsible>
         <div
           v-show="!collapsed"
           :class="{disabled: !layer.visible}">
@@ -31,7 +31,7 @@
             @changed:visibility="$emit('changed:visibility')"
             @expanded="(id) => $emit('expanded', id)" />
         </div>
-      </Collapsible>
+      </v-collapsible>
     </div>
 
     <!-- Layer Item -->
@@ -54,7 +54,7 @@
             <v-icon>keyboard_arrow_down</v-icon>
         </v-btn>
       </div>
-      <Collapsible>
+      <v-collapsible>
         <div v-if="isExpanded" class="metadata">
           <div class="pb-1" />
           <label>Geometry:</label>
@@ -73,18 +73,16 @@
           <span> 1: {{ layer.visibility_scale_min }}</span><br /> -->
           <div class="pb-1" />
         </div>
-      </Collapsible>
+      </v-collapsible>
     </div>
 
 </template>
 
 <script>
 import Vue from 'vue'
-import Collapsible from '../Collapsible'
 
 export default Vue.component('layer-item', {
   props: ['layer', 'expanded', 'depth'],
-  components: { Collapsible },
   data () {
     return {
       collapsed: false
@@ -109,6 +107,7 @@ export default Vue.component('layer-item', {
 
 <style lang="scss">
 @import '../../theme.scss';
+
 .content-panel {
 
   /* Fixes checkbox position in FF */
@@ -141,7 +140,7 @@ export default Vue.component('layer-item', {
       }
     }
     .metadata {
-      font-size: 80%;
+      font-size: 0.813em;
       padding-left: 4px;
       label {
         font-weight: 600;
@@ -153,13 +152,13 @@ export default Vue.component('layer-item', {
     }
     &.expanded {
       .item {
-        background-color: rgba($primary-color, 0.2);
+        background-color: rgba($primary-color, 0.15);
         .btn.expand .icon {
           transform: rotateZ(180deg);
         }
       }
       .metadata {
-        background-color: rgba($primary-color, 0.1);
+        background-color: rgba($primary-color, 0.05);
       }
     }
   }

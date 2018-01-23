@@ -7,6 +7,12 @@ import 'url-polyfill'
 
 import App from './App'
 import Icon from './components/Icon'
+import ScrollArea from './components/ScrollArea'
+import Collapsible from './components/Collapsible'
+
+// register general purpose components globally
+Vue.component('scroll-area', ScrollArea)
+Vue.component('v-collapsible', Collapsible)
 
 
 Vue.config.productionTip = false

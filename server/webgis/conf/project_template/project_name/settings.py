@@ -32,7 +32,7 @@ GISQUICK_PROJECT_ROOT = '/tmp/gislab-web'
 GISQUICK_MAPSERVER_URL = 'http://localhost:90/cgi-bin/qgis_mapserv.fcgi'
 GISQUICK_GUEST_USERNAME = 'guest'
 GISQUICK_HOMEPAGE = 'http://gisquick.org'
-GISQUICK_DOCUMENTATION_PAGE = 'http://gisquick.readthedocs.io/en/latest/user-interface.html'
+GISQUICK_DOCUMENTATION_PAGE = 'http://gisquick.readthedocs.io/en/latest/user-manual/user-interface.html'
 
 # Optional limit for maximal uploaded project files
 # Integer in bytes or string number in megabytes (50M)

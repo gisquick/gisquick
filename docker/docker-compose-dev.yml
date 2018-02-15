@@ -1,0 +1,26 @@
+version: "2"
+services:
+  qgisserver:
+    restart: always
+    image: gisquick/qgis-server
+    volumes:
+      - ./_data/publish:/publish/:ro
+    ports:
+      - "9090:90"
+
+  django:
+    restart: always
+    image: gisquick/django-dev
+    links:
+      - qgisserver
+    volumes:
+      - ./_data/media:/var/www/gisquick/media/
+      - ./_data/data:/var/www/gisquick/data/
+      - ./_data/publish:/publish/
+      - ../server/webgis:/var/www/gisquick/webgis/
+    environment:
+      - GUNICORN_ERRORLOG=-
+      - GUNICORN_ACCESSLOG=-
+      - DJANGO_GISQUICK_UPLOAD_MAX_SIZE='100M'
+    ports:
+      - "8000:8000"

@@ -4,14 +4,41 @@
     <bottom-toolbar :project="project" />
 
     <transition name="slide">
-      <content-panel v-show="panelVisible" :baseLayers="baseLayers" :overlays="overlays" />
+      <div
+        v-show="panelVisible"
+        class="main-panel">
+
+        <collapse-transition class="collapsible">
+          <div v-if="topContainer">
+            <v-toolbar dark flat height="30">
+              <v-spacer></v-spacer>
+              <h4>{{ topContainer.title }}</h4>
+              <v-spacer></v-spacer>
+              <v-btn flat @click="topContainer = null">
+                <v-icon>close</v-icon>
+              </v-btn>
+            </v-toolbar>
+
+            <switch-transition>
+              <div :is="topContainer.component" v-bind="topContainer.props" />
+            </switch-transition>
+          </div>
+        </collapse-transition>
+
+        <content-panel
+          :baseLayers="baseLayers"
+          :overlays="overlays" />
+      </div>
     </transition>
-    <v-btn flat icon
+    <v-btn
+      flat icon
       class="panel-toggle"
       :class="{expanded: panelVisible}"
       @click="panelVisible = !panelVisible">
       <icon name="arrow-right" />
     </v-btn>
+
+    <tools-menu :style="{left: panelVisible ? '280px' : 0}" />
 
     <scale-line class="scale-line" :style="{left: panelVisible ? '280px' : 0}" />
   </div>
@@ -24,19 +51,21 @@ import { layersList, createMap } from '../map-builder'
 import ContentPanel from './ContentPanel/ContentPanel'
 import BottomToolbar from './BottomToolbar'
 import ScaleLine from './ScaleLine'
+import ToolsMenu from './ToolsMenu'
 
 export default {
   name: 'Map',
-  components: { ContentPanel, BottomToolbar, ScaleLine },
+  components: { ContentPanel, BottomToolbar, ScaleLine, ToolsMenu },
   props: [
     'project'
   ],
   provide: {
-    $map: this.map
+    $map: this.map,
+    $project: this.project
   },
   data () {
     return {
-      // scale: -1,
+      topContainer: null,
       panelVisible: true,
       baseLayers: {
         tree: this.project.base_layers,
@@ -52,6 +81,14 @@ export default {
   created () {
     this.map = createMap(this.project)
     this._provided.$map = this.map
+    this._provided.$project = this.project
+    this.$root.$panel = {
+      setPanel: (component, props) => {
+        this.topContainer = component
+          ? { component, props, title: component.name }
+          : null
+      }
+    }
   },
   mounted () {
     this.map.setTarget(this.$refs.mapEl)
@@ -59,8 +96,11 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
+.main-panel > .collapsible {
+  flex-shrink: 0;
+}
+
 .map-container {
   width: 100%;
   height: 100%;
@@ -110,14 +150,39 @@ export default {
   }
 }
 
-.scale-line {
+.scale-line, .speed-dial {
   transition: left .3s cubic-bezier(.25,.8,.5,1);
 }
-.slide-enter-active, .slide-leave-active {
-  transition: transform .3s cubic-bezier(.25,.8,.5,1);
-}
-.slide-enter, .slide-leave-to {
-  transform: translate3d(-100%, 0, 0);
+
+.main-panel {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 280px;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border-right: 1px solid #aaa;
+  box-shadow:
+    0 6px 6px -3px rgba(0,0,0,.2),
+    0 10px 14px 1px rgba(0,0,0,.14),
+    0 4px 18px 3px rgba(0,0,0,.12);
+
+  .toolbar {
+    h4 {
+      text-transform: uppercase;
+      font-size: 90%;
+    }
+    .btn {
+      height: 100%;
+      margin: 0;
+      min-width: 2em;
+      width: 2.25em;
+      position: absolute;
+      right: 0;
+    }
+  }
 }
 
 .panel-toggle {
@@ -136,4 +201,8 @@ export default {
   }
 }
 
+.speed-dial {
+  position: absolute;
+  top: 0;
+}
 </style>

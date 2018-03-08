@@ -16,6 +16,12 @@ HTTP.absUrl = function (url) {
   return HTTP.defaults.baseURL + url
 }
 
+HTTP.appendParams = function (url, params) {
+  const u = new URL(url)
+  Object.keys(params).forEach(k => u.searchParams.append(k, params[k]))
+  return u.href
+}
+
 HTTP.login = function (username, password) {
   const params = new FormData()
   params.append('username', username)

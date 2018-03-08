@@ -151,7 +151,7 @@ export default {
 }
 
 .scale-line, .speed-dial {
-  transition: left .3s cubic-bezier(.25,.8,.5,1);
+  transition: left .4s cubic-bezier(.25,.8,.5,1);
 }
 
 .main-panel {

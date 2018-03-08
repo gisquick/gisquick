@@ -129,4 +129,12 @@ html, body {
     }
   }
 }
+
+.slide-enter-active, .slide-leave-active {
+  transition: transform .4s cubic-bezier(.25,.8,.5,1);
+}
+.slide-enter, .slide-leave-to {
+  transform: translate3d(-100%, 0, 0);
+}
+
 </style>

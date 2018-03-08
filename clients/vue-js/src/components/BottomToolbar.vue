@@ -17,11 +17,9 @@ export default {
   name: 'bottom-toolbar',
   props: ['project'],
   inject: ['$map'],
-  data () {
-    return {
-      scale: 1
-    }
-  },
+  data: () => ({
+    scale: 1
+  }),
   mounted () {
     this.updateScale()
     this.listener = this.$map.getView().on('change:resolution', this.updateScale)

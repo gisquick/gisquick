@@ -5,93 +5,84 @@
       <h4>Content</h4>
       <v-spacer></v-spacer>
     </v-toolbar>
-    <v-tabs icons centered grow
+    <v-tabs icons-and-text
       v-model="activeMainTab">
-      <v-tabs-bar class="main-tabs">
-        <v-tabs-slider color="primary" />
-        <v-tabs-item href="#base">
-          <icon name="base-layer" />
-          Base Layers
-        </v-tabs-item>
-        <v-tabs-item href="#overlays">
-          <icon name="overlays" />
-          Overlay Layers
-        </v-tabs-item>
-        <v-tabs-item href="#legend">
-          <icon name="legend" />
-          Legend
-        </v-tabs-item>
-      </v-tabs-bar>
-      <v-tabs-items>
+      <v-tabs-slider color="primary" />
+      <v-tab href="#base">
+        <span>Base Layers</span>
+        <icon name="base-layer" />
+      </v-tab>
+      <v-tab href="#overlays">
+        <span>Overlay Layers</span>
+        <icon name="overlays" />
+      </v-tab>
+      <v-tab href="#legend">
+        <span>Legend</span>
+        <icon name="legend" />
+      </v-tab>
 
-        <v-tabs-content id="base">
-          <scroll-area>
+      <v-tab-item id="base">
+        <scroll-area>
+          <v-radio-group
+            v-model="visibleBaseLayer"
+            :mandatory="false"
+            hide-details>
+            <baselayer-item
+              v-for="(layer, index) in baseLayers.list"
+              :key="index"
+              :layer="layer"
+              :expanded="expandedItems.baselayer"
+              @expanded="id => expandItem('baselayer', id)"
+              @changed:visibility="updateBaseLayerVisibility" />
+          </v-radio-group>
+        </scroll-area>
+      </v-tab-item>
+
+      <v-tab-item id="overlays">
+        <v-tabs
+          grow
+          :hide-slider="true"
+          class="secondary-tabs"
+          v-model="activeSecondaryTab">
+          <v-tab href="#topics">Topics</v-tab>
+          <v-tab href="#layers">Layers</v-tab>
+          <v-tab-item id="topics">
             <v-radio-group
-              v-model="visibleBaseLayer"
-              :mandatory="false"
+              v-model="activeTopicIndex"
               hide-details>
-              <baselayer-item
-                v-for="(layer, index) in baseLayers.list"
+              <v-radio
+                v-for="(topic, index) in overlays.topics"
                 :key="index"
-                :layer="layer"
-                :expanded="expandedItems.baselayer"
-                @expanded="id => expandItem('baselayer', id)"
-                @changed:visibility="updateBaseLayerVisibility" />
+                :label="topic.title"
+                :value="index"
+                color="primary"
+                @change="setTopic">
+              </v-radio>
             </v-radio-group>
-          </scroll-area>
-        </v-tabs-content>
+          </v-tab-item>
+          <v-tab-item id="layers">
+            <scroll-area>
+              <layer-item
+                v-for="layer in overlays.tree"
+                :key="layer.name"
+                :layer="layer"
+                :expanded="expandedItems.overlay"
+                :depth="1"
+                @changed:visibility="updateLayersVisibility"
+                @expanded="id => expandItem('overlay', id)" />
+            </scroll-area>
+          </v-tab-item>
+        </v-tabs>
+      </v-tab-item>
 
-        <v-tabs-content id="overlays">
-          <v-tabs centered v-model="activeSecondaryTab">
-            <v-tabs-bar class="secondary-tabs">
-              <v-tabs-item href="#topics">
-                Topics
-              </v-tabs-item>
-              <v-tabs-item href="#layers">
-                Layers
-              </v-tabs-item>
-            </v-tabs-bar>
-            <v-tabs-items>
-              <v-tabs-content id="topics">
-                <v-radio-group
-                  v-model="activeTopicIndex"
-                  hide-details>
-                  <v-radio
-                    v-for="(topic, index) in overlays.topics"
-                    :key="index"
-                    :label="topic.title"
-                    :value="index"
-                    color="primary"
-                    @change="setTopic">
-                  </v-radio>
-                </v-radio-group>
-              </v-tabs-content>
-              <v-tabs-content id="layers">
-                <scroll-area>
-                  <layer-item
-                    v-for="layer in overlays.tree"
-                    :key="layer.name"
-                    :layer="layer"
-                    :expanded="expandedItems.overlay"
-                    :depth="1"
-                    @changed:visibility="updateLayersVisibility"
-                    @expanded="id => expandItem('overlay', id)" />
-                </scroll-area>
+      <v-tab-item id="legend">
+        <scroll-area class="legend-container">
+          <map-legend
+            :layers="visibleLayers"
+            :visible="activeMainTab === 'legend'" />
+        </scroll-area>
+      </v-tab-item>
 
-              </v-tabs-content>
-            </v-tabs-items>
-          </v-tabs>
-        </v-tabs-content>
-
-        <v-tabs-content id="legend">
-          <scroll-area class="legend-container">
-            <map-legend
-              :layers="visibleLayers"
-              :visible="activeMainTab === 'legend'" />
-          </scroll-area>
-        </v-tabs-content>
-
-      </v-tabs-items>
     </v-tabs>
   </div>
 </template>
@@ -107,19 +98,17 @@ export default {
   components: { BaseLayerItem, LayerItem, MapLegend },
   props: ['baseLayers', 'overlays'],
   inject: ['$map'],
-  data () {
-    return {
-      visibleLayers: [],
-      activeTopicIndex: null,
-      visibleBaseLayer: '',
-      activeMainTab: 'overlays',
-      activeSecondaryTab: 'layers',
-      expandedItems: {
-        baselayer: '',
-        overlay: ''
-      }
+  data: () => ({
+    visibleLayers: [],
+    activeTopicIndex: null,
+    visibleBaseLayer: '',
+    activeMainTab: 'overlays',
+    activeSecondaryTab: 'layers',
+    expandedItems: {
+      baselayer: '',
+      overlay: ''
     }
-  },
+  }),
   created () {
     this.groups.forEach(l => { this.$set(l, 'visible', true) })
     this.overlays.list.forEach(l => { this.$set(l, '_visible', l.visible) })
@@ -175,20 +164,10 @@ export default {
 @import '../../theme.scss';
 
 .content-panel {
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 280px;
-  background-color: #fff;
-  border-right: 1px solid #aaa;
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
 
-  box-shadow:
-    0 6px 6px -3px rgba(0,0,0,.2),
-    0 10px 14px 1px rgba(0,0,0,.14),
-    0 4px 18px 3px rgba(0,0,0,.12);
   .input-group {
     padding-top: 0;
   }
@@ -211,50 +190,13 @@ export default {
     }
   }
 
-  h4 {
-    text-transform: uppercase;
-    font-size: 90%;
-  }
-
-  .main-tabs {
-    height: 3.5em;
-    .tabs__li {
-      width: 33%;
-      font-size: 0.75rem;
-      position: relative;
-      .tabs__item {
-        padding: 0;
-        text-transform: none;
-        font-weight: 500;
-        &.tabs__item--active {
-          color: $primary-color!important;
-        }
-
-        .icon {
-          width: 20px;
-          height: 20px;
-          fill: currentColor;
-        }
-      }
-      &:not(:last-child):after {
-        content: "";
-        position: absolute;
-        right: 0;
-        top: 20%;
-        bottom: 45%;
-        width: 1px;
-        background-color: #aaa;
-      }
-    }
-  }
   .secondary-tabs {
-    height: 3em;
-    .tabs__li {
+    .tabs__div {
       .tabs__item {
         margin: 0.5em 0;
-        height: 2.5em;
+        height: 2.25em;
         text-transform: none;
-        font-size: 0.75em;
+        font-size: 0.875em;
         &.tabs__item--active {
           color: #fff!important;
           background-color: $primary-color;

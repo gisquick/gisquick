@@ -1,5 +1,5 @@
 <template>
-  <v-app id="app" light>
+  <v-app id="app">
     <Map v-if="project" :project="project"></Map>
     <LoginDialog v-if="showLogin" @login="bootstrap" />
     <SelectProjectDialog v-if="showProjects" :projects="projects" />
@@ -15,13 +15,11 @@ import SelectProjectDialog from './components/SelectProjectDialog'
 export default {
   name: 'app',
   components: { Map, LoginDialog, SelectProjectDialog },
-  data () {
-    return {
-      showProjects: false,
-      showLogin: false,
-      project: null
-    }
-  },
+  data: () => ({
+    showProjects: false,
+    showLogin: false,
+    project: null
+  }),
   mounted () {
     this.bootstrap()
   },
@@ -55,6 +53,8 @@ export default {
 </script>
 
 <style lang="scss">
+@import './theme.scss';
+
 html, body {
   margin: 0;
   width: 100%;
@@ -78,6 +78,55 @@ html, body {
 .checkbox {
   .input-group--selection-controls__ripple {
     display: none;
+  }
+}
+
+.theme--light .icon {
+  color: currentColor;
+}
+
+.tabs__div a {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+}
+
+.tabs__container--icons-and-text {
+  height: 3em;
+
+  .tabs__div {
+    min-width: 33%;
+    font-size: 0.75rem;
+    position: relative;
+
+    .tabs__item {
+      padding: 0;
+      text-transform: none;
+      font-weight: 400;
+      &.tabs__item--active {
+        color: $primary-color;
+        .icon {
+          color: $primary-color;
+        }
+      }
+      .icon {
+        width: 20px;
+        height: 20px;
+        margin-bottom: 2px;
+        color: #333;
+      }
+    }
+    &:not(:last-child):after {
+      content: "";
+      position: absolute;
+      right: 0;
+      top: 20%;
+      bottom: 30%;
+      width: 1px;
+      background-color: #ccc;
+    }
   }
 }
 </style>

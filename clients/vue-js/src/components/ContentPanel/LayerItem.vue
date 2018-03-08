@@ -18,19 +18,15 @@
           @change="toggleGroupVisibility"
           hide-details />
       </div>
-      <v-collapsible>
-        <div
-          v-show="!collapsed"
-          :class="{disabled: !layer.visible}">
-          <layer-item
-            v-for="l in layer.layers"
-            :key="l.title"
-            :layer="l"
-            :expanded="expanded"
-            :depth="depth + 1"
-            @changed:visibility="$emit('changed:visibility')"
-            @expanded="(id) => $emit('expanded', id)" />
-        </div>
+      <v-collapsible v-show="!collapsed" :class="{disabled: !layer.visible}">
+        <layer-item
+          v-for="l in layer.layers"
+          :key="l.title"
+          :layer="l"
+          :expanded="expanded"
+          :depth="depth + 1"
+          @changed:visibility="$emit('changed:visibility')"
+          @expanded="(id) => $emit('expanded', id)" />
       </v-collapsible>
     </div>
 
@@ -54,26 +50,26 @@
             <v-icon>keyboard_arrow_down</v-icon>
         </v-btn>
       </div>
-      <v-collapsible>
+      <collapse-transition>
         <div v-if="isExpanded" class="metadata">
           <div class="pb-1" />
           <label>Geometry:</label>
           <icon :name="layer.geom_type? layer.geom_type.toLowerCase() : 'raster'" /><br />
-          
+
           <label>Identification:</label>
           <icon :name="layer.queryable? 'check' : 'dash'" /><br />
-          
+
           <label>Abstract:</label>
           <span>{{ layer.metadata.abstract }}</span><br />
-          
+
           <label>Keywords list:</label>
           <span>{{ layer.metadata.keyword_list }}</span><br />
 
-<!--           <label>Maximal scale:</label>
+  <!--           <label>Maximal scale:</label>
           <span> 1: {{ layer.visibility_scale_min }}</span><br /> -->
           <div class="pb-1" />
         </div>
-      </v-collapsible>
+      </collapse-transition>
     </div>
 
 </template>
@@ -83,11 +79,9 @@ import Vue from 'vue'
 
 export default Vue.component('layer-item', {
   props: ['layer', 'expanded', 'depth'],
-  data () {
-    return {
-      collapsed: false
-    }
-  },
+  data: () => ({
+    collapsed: false
+  }),
   computed: {
     isExpanded () {
       return this.expanded === this.layer.name

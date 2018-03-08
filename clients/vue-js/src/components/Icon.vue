@@ -18,3 +18,9 @@ export default {
 }
 
 </script>
+
+<style>
+.icon {
+  fill: currentColor;
+}
+</style>

@@ -87,6 +87,9 @@ export class WebgisTileImage extends TileImage {
   }
 
   _tileUrlFunction (tileCoord, pixelRatio, projection) {
+    if (this.visibleLayers.length === 0) {
+      return ''
+    }
     const [z, x, y] = tileCoord
     return this.tileUrlTemplate
       .replace('{z}', z)

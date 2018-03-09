@@ -938,6 +938,11 @@ svg.thumbnail {
   .anim-delay-4[data-scroll-anim] {
     transition-delay: 0.4s !important; }
 
+.anim-delay-5 {
+  animation-delay: 0.5s; }
+  .anim-delay-5[data-scroll-anim] {
+    transition-delay: 0.5s !important; }
+
 .anim-delay-6 {
   animation-delay: 0.6s; }
   .anim-delay-6[data-scroll-anim] {

@@ -1,21 +1,14 @@
 <template>
   <div>
-<!--     <v-toolbar dark flat height="30">
-      <v-spacer></v-spacer>
-      <h4>Identification</h4>
-      <v-spacer></v-spacer>
-      <v-btn flat @click="$emit('close')"><v-icon>close</v-icon></v-btn>
-    </v-toolbar> -->
     <div class="pa-2">
       <v-select
         label="Layer"
-        :items="layers"
         v-model="selected"
         item-text="title"
         item-value="name"
-        placeholder="Select layer"
+        :items="options"
         :hide-details="true"
-      ></v-select>
+      />
     </div>
   </div>
 </template>
@@ -26,20 +19,33 @@ import Circle from 'ol/geom/circle'
 import GML3 from 'ol/format/gml3'
 import GeoJSON from 'ol/format/geojson'
 import Observable from 'ol/observable'
+import Feature from 'ol/feature'
+import Overlay from 'ol/overlay'
 
 import HTTP from '../client'
 import { layersList } from '../map-builder'
+import FeaturesTable from './FeaturesTable'
+import Marker from '../assets/identification-marker.svg'
 
+let state = null
+
+const defaultOption = {
+  title: 'All visible layers',
+  name: ''
+}
 export default {
   name: 'identification',
   icon: 'identification',
   inject: ['$project', '$map'],
-  data: () => ({
-    selected: null
+  data: () => state || ({
+    selected: defaultOption.name
   }),
   computed: {
     layers () {
-      return layersList(this.$project.layers).filter(l => l.queryable && l.visible)
+      return layersList(this.$project.layers).filter(l => l.queryable && l.visible && !l.hidden)
+    },
+    options () {
+      return [defaultOption].concat(this.layers)
     }
   },
   mounted () {
@@ -50,15 +56,29 @@ export default {
   },
   beforeDestroy () {
     this.deactivate()
+    state = this.$data
   },
   deactivated () {
     this.deactivate()
   },
   methods: {
+    createPointer () {
+      const map = this.$map
+      const img = new Image()
+      img.src = Marker
+      const overlay = new Overlay({
+        element: img,
+        positioning: 'center-center'
+      })
+      overlay.setMap(map)
+      return overlay
+    },
     activate () {
       // register click events listener on map with
       // WFS GetFeature features identification
       const map = this.$map
+      this.pointer = this.createPointer()
+
       this.mapClickListener = map.on('singleclick', evt => {
         // featuresViewer.removeAllFeatures()
 
@@ -95,8 +115,20 @@ export default {
         HTTP.get(url).then(resp => {
           const parser = new GeoJSON()
           const features = parser.readFeatures(resp.data)
-          console.log(features)
+
+          const categorizedFeatures = this.categorize(features)
+          const items = this.tableData(categorizedFeatures)
+
+          // console.log(features)
+          // console.log(categorizedFeatures)
+          // console.log(items)
+
+          this.$root.$panel.setBottomPanel(
+            FeaturesTable,
+            Object.freeze({data: items})
+          )
         })
+        this.pointer.setPosition(map.getCoordinateFromPixel(pixel))
         // tool._markerOverlay.setPosition(projectProvider.map.getCoordinateFromPixel(pixel))
       })
       map.getViewport().style.cursor = 'crosshair'
@@ -104,6 +136,48 @@ export default {
     deactivate () {
       Observable.unByKey(this.mapClickListener)
       this.$map.getViewport().style.cursor = ''
+      this.$root.$panel.setBottomPanel(null)
+      if (this.pointer) {
+        this.pointer.setMap(null)
+      }
+    },
+    categorize (features) {
+      // (WFS layer name cannot contain space character)
+      const WfsToLayerName = {}
+      this.layers.forEach(l => {
+        WfsToLayerName[l.name.replace(/ /g, '')] = l.name
+      })
+
+      // group features by layer name
+      const layersFeatures = {}
+      if (features.length > 0) {
+        features.forEach(feature => {
+          if (feature instanceof Feature) {
+            const fid = feature.getId()
+            const layer = WfsToLayerName[fid.substring(0, fid.lastIndexOf('.'))]
+            if (!layersFeatures[layer]) {
+              layersFeatures[layer] = []
+            }
+            layersFeatures[layer].push(feature)
+          }
+        })
+      }
+      return layersFeatures
+    },
+    tableData (groupedFeatures) {
+      const matchedLayers = Object.keys(groupedFeatures)
+      return this.layers
+        .filter(l => matchedLayers.includes(l.name))
+        .map(l => ({
+          layer: l,
+          features: groupedFeatures[l.name],
+          header: l.attributes.map(attr => ({
+            text: attr.alias || attr.name,
+            value: attr.name,
+            align: 'left',
+            sortable: false
+          }))
+        }))
     }
   }
 }

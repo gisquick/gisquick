@@ -41,6 +41,16 @@
     <tools-menu :style="{left: panelVisible ? '280px' : 0}" />
 
     <scale-line class="scale-line" :style="{left: panelVisible ? '280px' : 0}" />
+
+    <transition name="bslide">
+      <div v-if="bottomPanel" :style="{left: panelVisible ? '280px' : 0}"
+        class="bottom-panel">
+        <div
+          :is="bottomPanel.component"
+          v-bind="bottomPanel.props"
+           />
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -66,6 +76,7 @@ export default {
   data () {
     return {
       topContainer: null,
+      bottomPanel: null,
       panelVisible: true,
       baseLayers: {
         tree: this.project.base_layers,
@@ -82,10 +93,18 @@ export default {
     this.map = createMap(this.project)
     this._provided.$map = this.map
     this._provided.$project = this.project
+
+    // this.$root.constructor.prototype.$panel = {}
     this.$root.$panel = {
       setPanel: (component, props) => {
         this.topContainer = component
           ? { component, props, title: component.name }
+          : null
+      },
+      setBottomPanel: (component, props) => {
+        console.log(props)
+        this.bottomPanel = component
+          ? { component, props }
           : null
       }
     }
@@ -150,7 +169,7 @@ export default {
   }
 }
 
-.scale-line, .speed-dial {
+.scale-line, .speed-dial, .bottom-panel {
   transition: left .4s cubic-bezier(.25,.8,.5,1);
 }
 
@@ -204,5 +223,13 @@ export default {
 .speed-dial {
   position: absolute;
   top: 0;
+}
+
+.bottom-panel {
+  position: absolute;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  box-shadow: 0 -5px 8px 0 rgba(0,0,0,.12), 0 -4px 4px -2px rgba(0,0,0,.18);
 }
 </style>

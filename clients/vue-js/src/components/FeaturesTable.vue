@@ -20,10 +20,14 @@
           hide-actions
         >
           <template slot="items" slot-scope="props">
-            <td class="icon"><icon name="zoom-to"/></td>
-            <td v-for="attr in data[layerIndex].header">
-              {{ props.item.get(attr.value) }}
-            </td>
+            <tr
+              :class="{selected: layersSelection[layerId] === props.item.ol_uid}"
+              @click="selectFeature(props.item, props.index)">
+              <td class="icon"><icon name="zoom-to"/></td>
+              <td v-for="attr in data[layerIndex].header">
+                {{ props.item.get(attr.value) }}
+              </td>
+            </tr>
           </template>
         </v-data-table>
         </switch-transition>
@@ -40,16 +44,42 @@ import Fill from 'ol/style/fill'
 import Stroke from 'ol/style/stroke'
 import Circle from 'ol/style/circle'
 
+function createStyle (color) {
+  return new Style({
+    stroke: new Stroke({
+      color: color.concat(0.8),
+      width: 2
+    }),
+    fill: new Fill({
+      color: color.concat(0.5)
+    }),
+    image: new Circle({
+      stroke: new Stroke({
+        color: color.concat(0.8),
+        width: 2
+      }),
+      fill: new Fill({
+        color: color.concat(0.5)
+      }),
+      radius: 5
+    })
+  })
+}
+const defaultStyle = createStyle([255, 235, 59])
+const selectedStyle = createStyle([3, 169, 244])
+
 const zoomToHeader = {
   text: '',
   value: '',
   sortable: false,
   width: 1
 }
+
 export default {
   props: ['data'],
   data: () => ({
-    layerIndex: 0
+    layerIndex: 0,
+    layersSelection: {}
   }),
   inject: ['$map'],
   computed: {
@@ -58,34 +88,22 @@ export default {
     },
     items () {
       return this.data.length ? this.data[this.layerIndex].features : []
+    },
+    layerId () {
+      console.log('layerId')
+      return this.data.length ? this.data[this.layerIndex].layer.name : ''
     }
   },
   created () {
     const source = new VectorSource()
     const vectors = new VectorLayer({
       source,
-      style: new Style({
-        stroke: new Stroke({
-          color: [250, 250, 25, 0.8],
-          width: 2
-        }),
-        fill: new Fill({
-          color: [250, 250, 25, 0.5]
-        }),
-        image: new Circle({
-          stroke: new Stroke({
-            color: [250, 250, 25, 0.8],
-            width: 2
-          }),
-          fill: new Fill({
-            color: [250, 250, 25, 0.5]
-          }),
-          radius: 5
-        })
-      })
+      style: defaultStyle
     })
     vectors.setMap(this.$map)
+    this.layersData = {}
     this.featuresOverlay = vectors
+    this.initializeSelection()
     this.setActiveLayer(this.layerIndex)
   },
   beforeDestroy () {
@@ -96,14 +114,27 @@ export default {
       if (this.layerIndex >= value.length) {
         this.layerIndex = 0
       }
+      this.initializeSelection()
       this.setActiveLayer(this.layerIndex)
     }
   },
   methods: {
+    initializeSelection () {
+      const selection = {}
+      this.data.forEach(layerData => {
+        selection[layerData.layer.name] = null
+      })
+      this.layersSelection = selection
+    },
     setActiveLayer (index) {
       this.layerIndex = index
       this.featuresOverlay.getSource().clear()
       this.featuresOverlay.getSource().addFeatures(this.data[index].features)
+    },
+    selectFeature (feature) {
+      this.featuresOverlay.getSource().forEachFeature(f => f.setStyle(null))
+      feature.setStyle(selectedStyle)
+      this.layersSelection[this.layerId] = feature.ol_uid
     }
   }
 }
@@ -167,6 +198,9 @@ table.table {
     }
   }
   tbody {
+    tr.selected {
+      background-color: rgb(255,245,157)!important;
+    }
     td {
       height: 2.5em;
       &.icon {

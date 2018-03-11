@@ -54,7 +54,7 @@
 
 /* Slide from the bottom */
 .bslide-enter-active, .bslide-leave-active {
-  transition: transform .4s cubic-bezier(.25,.8,.5,1);
+  transition: transform .4s cubic-bezier(.25,.8,.5,1)!important;
 }
 .bslide-enter, .bslide-leave-to {
   transform: translate3d(0, 100%, 0);

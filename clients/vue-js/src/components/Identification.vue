@@ -170,13 +170,7 @@ export default {
         .filter(l => matchedLayers.includes(l.name))
         .map(l => ({
           layer: l,
-          features: groupedFeatures[l.name],
-          header: l.attributes.map(attr => ({
-            text: attr.alias || attr.name,
-            value: attr.name,
-            align: 'left',
-            sortable: false
-          }))
+          features: groupedFeatures[l.name]
         }))
     }
   }

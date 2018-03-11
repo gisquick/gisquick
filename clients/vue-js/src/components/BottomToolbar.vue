@@ -4,7 +4,7 @@
       <img  src="../assets/text_logo.svg">
     </div>
     <label>Scale: 1: {{ scale }}</label>
-    <label>{{ project.projection.code }}</label>
+    <label>{{ $project.projection.code }}</label>
     <label>Coordinates: <span ref="coords"></span></label>
   </div>
 </template>
@@ -15,8 +15,7 @@ import coordinate from 'ol/coordinate'
 
 export default {
   name: 'bottom-toolbar',
-  props: ['project'],
-  inject: ['$map'],
+  inject: ['$map', '$project'],
   data: () => ({
     scale: 1
   }),
@@ -27,7 +26,7 @@ export default {
     // Setup updating of mouse pointer coordinates on map (in map units)
     this.positionControl = new MousePosition({
       coordinateFormat: coordinate.createStringXY(
-        this.project.position_precision.decimal_places
+        this.$project.position_precision.decimal_places
       ),
       target: this.$refs.coords
     })

@@ -134,8 +134,7 @@
                       @click="setUnits(system, unit)">
                       <v-icon
                         class="check"
-                        v-show="distance.format.area === unit.area"
-                        xv-show="formatter.area === unit.area">check_circle
+                        v-show="formatter.area === unit.area">check_circle
                       </v-icon>
                       <v-list-tile-title>{{ unit.name }}</v-list-tile-title>
                     </v-list-tile>

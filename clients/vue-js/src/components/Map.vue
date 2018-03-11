@@ -1,9 +1,12 @@
 <template>
   <div class="map-container">
     <div ref="mapEl" class="map" />
-    <bottom-toolbar :project="project" />
+    <bottom-toolbar />
 
-    <transition name="slide">
+    <transition
+      name="slide"
+      @beforeLeave="leftView = '0'"
+      @beforeEnter="leftView = '280px'">
       <div
         v-show="panelVisible"
         class="main-panel">
@@ -38,12 +41,12 @@
       <icon name="arrow-right" />
     </v-btn>
 
-    <tools-menu :style="{left: panelVisible ? '280px' : 0}" />
+    <tools-menu :style="{ left: leftView }" />
 
-    <scale-line class="scale-line" :style="{left: panelVisible ? '280px' : 0}" />
+    <scale-line class="scale-line" :style="{ left: leftView }" />
 
     <transition name="bslide">
-      <div v-if="bottomPanel" :style="{left: panelVisible ? '280px' : 0}"
+      <div v-if="bottomPanel" :style="{ left: leftView }"
         class="bottom-panel">
         <div
           :is="bottomPanel.component"
@@ -78,6 +81,7 @@ export default {
       topContainer: null,
       bottomPanel: null,
       panelVisible: true,
+      leftView: '280px',
       baseLayers: {
         tree: this.project.base_layers,
         list: layersList(this.project.base_layers, true)
@@ -102,7 +106,6 @@ export default {
           : null
       },
       setBottomPanel: (component, props) => {
-        console.log(props)
         this.bottomPanel = component
           ? { component, props }
           : null
@@ -173,6 +176,7 @@ export default {
   transition: left .4s cubic-bezier(.25,.8,.5,1);
 }
 
+
 .main-panel {
   position: absolute;
   left: 0;
@@ -232,4 +236,5 @@ export default {
   bottom: 0;
   box-shadow: 0 -5px 8px 0 rgba(0,0,0,.12), 0 -4px 4px -2px rgba(0,0,0,.18);
 }
+
 </style>

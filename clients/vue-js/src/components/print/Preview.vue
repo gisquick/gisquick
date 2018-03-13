@@ -14,7 +14,7 @@
             <v-btn icon @click="print">
               <icon name="printer" />
             </v-btn>
-            <v-btn icon>
+            <v-btn icon @click="download">
               <icon name="download" />
             </v-btn>
             <v-btn icon @click="$emit('close')">
@@ -53,11 +53,11 @@
 
 <script>
 import Observable from 'ol/observable'
+import FileSaver from 'file-saver'
 import HTTP from '../../client'
 import { mmToPx, createPrintParameters, formatCopyrights, openPrintWindow } from './utils'
 
 export default {
-  name: 'print-preview',
   props: ['layout', 'format', 'dpi', 'labelsData'],
   inject: ['$project', '$map'],
   data: () => ({
@@ -100,13 +100,12 @@ export default {
     templateUrl () {
       const layout = this.layout
       const extent = this.$map.getView().calculateExtent([layout.map.width, layout.map.height])
-      const params = createPrintParameters(
-        this.$map,
-        layout,
-        [], // empty map
-        extent,
-        { dpi: 96, format: 'png' }
-      )
+      const config = {
+        dpi: 96,
+        format: 'png',
+        layers: []
+      }
+      const params = createPrintParameters(this.$map, layout, extent, config)
       return HTTP.appendParams(this.$project.ows_url, params)
     },
     scaleRatio () {
@@ -172,7 +171,7 @@ export default {
         delete map.transformBrowserEvent
       }
     },
-    print () {
+    printRequest (opts) {
       const map = this.$map
       const layout = this.layout
 
@@ -193,27 +192,32 @@ export default {
         center[1] + resolution * height / 2
       ]
 
+      const config = Object.assign({
+        dpi: this.dpi,
+        format: this.format
+      }, opts)
       const copyrights = formatCopyrights(map.overlay.getSource().getAttributions())
       const printParams = Object.assign(
-        createPrintParameters(
-          map,
-          layout,
-          map.overlay.getSource().getVisibleLayers(),
-          extent,
-          {
-            dpi: this.dpi,
-            format: 'png'// this.format
-          }
-        ),
+        createPrintParameters(map, layout, extent, config),
         // TODO: other hidden labels
         { gislab_copyrights: copyrights },
         this.labelsData[layout.name]
       )
-
-      const url = HTTP.appendParams(this.$project.ows_url, printParams)
-      console.log(printParams)
-      console.log(url)
-      openPrintWindow(layout, url)
+      return HTTP.appendParams(this.$project.ows_url, printParams)
+    },
+    print () {
+      const url = this.printRequest({format: 'png'})
+      openPrintWindow(this.layout, url)
+    },
+    download () {
+      const url = this.printRequest()
+      HTTP.get(url, {responseType: 'blob'})
+        .then(resp => {
+          const timeString = new Date().toISOString()
+          const timeStamp = timeString.substring(11, 19).split(':').join('-')
+          const filename = `${this.layout.name}_${timeStamp}.${this.format}`
+          FileSaver.saveAs(resp.data, filename)
+        })
     }
   }
 }

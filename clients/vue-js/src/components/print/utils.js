@@ -2,33 +2,28 @@ export function mmToPx (value) {
   return parseInt((96 * value) / 25.4)
 }
 
-export function createPrintParameters (map, layout, layers, extent, opts = {}) {
+export function createPrintParameters (map, layout, extent, config) {
   const params = {
     'SERVICE': 'WMS',
     'REQUEST': 'GetPrint',
     'TEMPLATE': layout.name,
-    'DPI': opts.dpi,
-    'FORMAT': opts.format,
+    'DPI': config.dpi,
+    'FORMAT': config.format,
     'SRS': map.getView().getProjection().getCode(),
-    'LAYERS': layers.join(','),
+    'LAYERS': (config.layers || map.overlay.getSource().getVisibleLayers()).join(','),
     'map0:EXTENT': extent.join(','),
     'map0:SCALE': map.getView().getScale(),
-    'map0:ROTATION': map.getView().getRotation() * 180 / Math.PI,
-
-    'gislab_project': opts.title,
-    'gislab_author': opts.author,
-    'gislab_contact': opts.contact
+    'map0:ROTATION': map.getView().getRotation() * 180 / Math.PI
   }
   if (layout.map.grid) {
     params['map0:GRID_INTERVAL_X'] = layout.map.grid.intervalX
     params['map0:GRID_INTERVAL_Y'] = layout.map.grid.intervalY
   }
-
-  layout.labels.forEach(label => {
-    if (label.value) {
-      params[label.title] = label.value
-    }
-  })
+  // layout.labels.forEach(label => {
+  //   if (label.value) {
+  //     params[label.title] = label.value
+  //   }
+  // })
   return params
 }
 
@@ -62,8 +57,8 @@ export function openPrintWindow (layout, url) {
   // popup = window.open(url)
   popup = window.open()
   const pageOrientation = (layout.width > layout.height) ? 'landscape' : 'portrait'
-  popup.document.head.innerHTML =
-    `<style type="text/css" media="print">
+  popup.document.head.innerHTML = `
+    <style type="text/css" media="print">
       @page {
         size: ${pageOrientation};
         margin: 0;

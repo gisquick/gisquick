@@ -273,6 +273,15 @@ export function createBaseLayer (layerConfig) {
   }
 }
 
+const handleMapBrowserEvent = Map.prototype.handleMapBrowserEvent
+/* eslint no-extend-native: ["error", { "exceptions": ["Map"] }] */
+Map.prototype.handleMapBrowserEvent = function (evt) {
+  if (this.transformBrowserEvent) {
+    this.transformBrowserEvent(evt)
+  }
+  return handleMapBrowserEvent.call(this, evt)
+}
+
 export function createMap (config) {
   let projection = proj.get(config.projection.code)
   if (!projection) {

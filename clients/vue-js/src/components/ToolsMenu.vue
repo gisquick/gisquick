@@ -28,6 +28,7 @@
 <script>
 import Identification from './Identification'
 import Measure from './measure/Measure'
+import Print from './print/Print'
 
 export default {
   inject: ['$map', '$project'],
@@ -37,7 +38,8 @@ export default {
   created () {
     this.tools = [
       Identification,
-      Measure
+      Measure,
+      Print
     ]
   },
   methods: {

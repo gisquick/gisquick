@@ -171,7 +171,7 @@ function PartiallyReactive (attributes) {
 }
 
 export default {
-  name: 'measure',
+  title: 'Measure',
   icon: 'ruler',
   // mixins: [DynamicHeight],
   inject: ['$project', '$map'],

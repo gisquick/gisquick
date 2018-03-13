@@ -41,8 +41,6 @@
       <icon name="arrow-right" />
     </v-btn>
 
-    <tools-menu :style="{ left: leftView }" />
-
     <scale-line class="scale-line" :style="{ left: leftView }" />
 
     <transition name="bslide">
@@ -50,10 +48,19 @@
         class="bottom-panel">
         <div
           :is="bottomPanel.component"
-          v-bind="bottomPanel.props"
-           />
+          v-bind="bottomPanel.props" />
       </div>
     </transition>
+
+    <div
+      v-if="overlayContainer"
+      class="map-overlay"
+      :style="{ left: leftView }"
+      :is="overlayContainer.component"
+      v-bind="overlayContainer.props"
+      v-on="overlayContainer.listeners" />
+
+    <tools-menu :style="{ left: leftView }" />
   </div>
 </template>
 
@@ -80,6 +87,7 @@ export default {
     return {
       topContainer: null,
       bottomPanel: null,
+      overlayContainer: null,
       panelVisible: true,
       leftView: '280px',
       baseLayers: {
@@ -101,14 +109,16 @@ export default {
     // this.$root.constructor.prototype.$panel = {}
     this.$root.$panel = {
       setPanel: (component, props) => {
-        this.topContainer = component
-          ? { component, props, title: component.name }
-          : null
+        if (!this.panelVisible) {
+          this.panelVisible = true
+        }
+        this.topContainer = component ? { component, props, title: component.title } : null
       },
       setBottomPanel: (component, props) => {
-        this.bottomPanel = component
-          ? { component, props }
-          : null
+        this.bottomPanel = component ? { component, props } : null
+      },
+      setOverlay: (component, props, listeners) => {
+        this.overlayContainer = component ? { component, props, listeners } : null
       }
     }
   },
@@ -236,5 +246,10 @@ export default {
   bottom: 0;
   box-shadow: 0 -5px 8px 0 rgba(0,0,0,.12), 0 -4px 4px -2px rgba(0,0,0,.18);
 }
-
+.map-overlay {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
 </style>

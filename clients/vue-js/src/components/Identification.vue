@@ -34,7 +34,7 @@ const defaultOption = {
   name: ''
 }
 export default {
-  name: 'identification',
+  title: 'Identification',
   icon: 'identification',
   inject: ['$project', '$map'],
   data: () => state || ({

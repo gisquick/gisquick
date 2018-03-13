@@ -1,0 +1,274 @@
+<template>
+  <v-layout class="print-preview">
+    <div class="preview-bg"></div>
+    <v-layout class="column fit">
+      <div class="preview-bg"></div>
+      <v-layout class="column fit">
+
+        <v-toolbar dark flat height="30">
+          <span flex>Scale 1: {{ scale }}</span>
+          <v-spacer></v-spacer>
+          <h1>Print Preview</h1>
+          <v-spacer></v-spacer>
+          <v-layout class="controls">
+            <v-btn icon @click="print">
+              <icon name="printer" />
+            </v-btn>
+            <v-btn icon>
+              <icon name="download" />
+            </v-btn>
+            <v-btn icon @click="$emit('close')">
+              <icon name="x" />
+            </v-btn>
+          </v-layout>
+        </v-toolbar>
+
+        <div
+          ref="templateEl"
+          class="template-container"
+          :style="size">
+          <img
+            :style="clipMask"
+            :src="templateUrl"
+            :key="layout.name"
+          />
+          <div
+            class="map-border"
+            :style="borderArea"
+            ng-style="::{
+              left: (100*layout.map.x/layout.width)+'%',
+              top: (100*layout.map.y/layout.height)+'%',
+              right: (100*(1-(layout.map.x+layout.map.width)/layout.width))+'%',
+              bottom: (100*(1-(layout.map.y+layout.map.height)/layout.height))+'%'
+            }">
+          </div>
+        </div>
+
+      </v-layout>
+      <div class="preview-bg"></div>
+    </v-layout>
+    <div class="preview-bg"></div>
+  </v-layout>
+</template>
+
+<script>
+import Observable from 'ol/observable'
+import HTTP from '../../client'
+import { mmToPx, createPrintParameters, formatCopyrights, openPrintWindow } from './utils'
+
+export default {
+  name: 'print-preview',
+  props: ['layout', 'format', 'dpi', 'labelsData'],
+  inject: ['$project', '$map'],
+  data: () => ({
+    scale: 0,
+    visible: false
+  }),
+  computed: {
+    size () {
+      return {
+        width: mmToPx(this.layout.width) / this.scaleRatio + 'px',
+        height: mmToPx(this.layout.height) / this.scaleRatio + 'px'
+      }
+    },
+    borderArea () {
+      const layout = this.layout
+      return {
+        left: (100 * layout.map.x / layout.width) + '%',
+        top: (100 * layout.map.y / layout.height) + '%',
+        right: (100 * (1 - (layout.map.x + layout.map.width) / layout.width)) + '%',
+        bottom: (100 * (1 - (layout.map.y + layout.map.height) / layout.height)) + '%'
+      }
+    },
+    clipMask () {
+      const l = this.layout
+      const clipPath = `polygon(
+        0% 0%,
+        100% 0%,
+        100% 100%,
+        0% 100%,
+        0 ${100 * l.map.y / l.height}%,
+        ${100 * l.map.x / l.width}% ${100 * l.map.y / l.height}%,
+        ${100 * l.map.x / l.width}% ${100 * (l.map.y + l.map.height) / l.height}%,
+        ${100 * (l.map.x + l.map.width) / l.width}% ${100 * (l.map.y + l.map.height) / l.height}%,
+        ${100 * (l.map.x + l.map.width) / l.width}% ${100 * l.map.y / l.height}%,
+        0% ${100 * l.map.y / l.height}%,
+        0% 0%
+      )`
+      return { clipPath }
+    },
+    templateUrl () {
+      const layout = this.layout
+      const extent = this.$map.getView().calculateExtent([layout.map.width, layout.map.height])
+      const params = createPrintParameters(
+        this.$map,
+        layout,
+        [], // empty map
+        extent,
+        { dpi: 96, format: 'png' }
+      )
+      return HTTP.appendParams(this.$project.ows_url, params)
+    },
+    scaleRatio () {
+      if (this.visible) {
+        const layoutWidth = mmToPx(this.layout.width)
+        const layoutHeight = mmToPx(this.layout.height)
+        const viewWidth = this.$el.offsetWidth - 40
+        const viewHeight = this.$el.offsetHeight - 40
+        if (layoutWidth > viewWidth || layoutHeight > viewHeight) {
+          const scale = Math.max(layoutWidth / viewWidth, layoutHeight / viewHeight)
+          return scale
+        }
+      }
+      return 1
+    }
+  },
+  watch: {
+    scaleRatio (value) {
+      this.setScale(value)
+    }
+  },
+  mounted () {
+    const view = this.$map.getView()
+    const updateScale = () => {
+      const scale = view.getScale()
+      if (scale) {
+        this.scale = view.getScale().toLocaleString()
+      }
+    }
+    updateScale()
+    this.listener = view.on('change:resolution', updateScale)
+    this.visible = true
+  },
+  beforeDestroy () {
+    this.setScale(1)
+    Observable.unByKey(this.listener)
+  },
+  methods: {
+    setScale (ratio) {
+      const map = this.$map
+      const mapEl = this.$map.getViewport()
+      const percScale = Math.round(100 * ratio) + '%'
+      mapEl.style.width = percScale
+      mapEl.style.height = percScale
+      mapEl.style.transformOrigin = 'top left'
+      mapEl.style.transform = `scale(${1 / ratio}, ${1 / ratio})`
+      map.setSize([window.innerWidth * ratio, window.innerHeight * ratio])
+
+      if (ratio !== 1) {
+        if (!map.transformBrowserEvent) {
+          map.transformBrowserEvent = evt => {
+            const scale = this.scaleRatio
+            evt.pixel[0] = evt.pixel[0] * scale
+            evt.pixel[1] = evt.pixel[1] * scale
+            evt.coordinate = map.getCoordinateFromPixel(evt.pixel)
+            if (evt.pointerEvent) {
+              evt.pointerEvent.clientX = evt.pointerEvent.screenX * scale
+              evt.pointerEvent.clientY = evt.pointerEvent.screenY * scale
+            }
+          }
+        }
+      } else {
+        delete map.transformBrowserEvent
+      }
+    },
+    print () {
+      const map = this.$map
+      const layout = this.layout
+
+      const width = mmToPx(layout.map.width)
+      const height = mmToPx(layout.map.height)
+      const mapBounds = map.getViewport().getBoundingClientRect()
+      const layoutBounds = this.$refs.templateEl.getBoundingClientRect()
+
+      const left = (layoutBounds.left - mapBounds.left) * this.scaleRatio + mmToPx(layout.map.x)
+      const top = (layoutBounds.top - mapBounds.top) * this.scaleRatio + mmToPx(layout.map.y)
+
+      const center = map.getCoordinateFromPixel([left + width / 2, top + height / 2])
+      const resolution = map.getView().getResolution()
+      var extent = [
+        center[0] - resolution * width / 2,
+        center[1] - resolution * height / 2,
+        center[0] + resolution * width / 2,
+        center[1] + resolution * height / 2
+      ]
+
+      const copyrights = formatCopyrights(map.overlay.getSource().getAttributions())
+      const printParams = Object.assign(
+        createPrintParameters(
+          map,
+          layout,
+          map.overlay.getSource().getVisibleLayers(),
+          extent,
+          {
+            dpi: this.dpi,
+            format: 'png'// this.format
+          }
+        ),
+        // TODO: other hidden labels
+        { gislab_copyrights: copyrights },
+        this.labelsData[layout.name]
+      )
+
+      const url = HTTP.appendParams(this.$project.ows_url, printParams)
+      console.log(printParams)
+      console.log(url)
+      openPrintWindow(layout, url)
+    }
+  }
+}
+</script>
+
+<style lang="scss">
+@import '../../theme.scss';
+
+.print-preview {
+
+  .layout {
+    &.fit {
+      flex-grow: 0;
+    }
+  }
+
+  pointer-events: none;
+  .preview-bg {
+    background-color: rgba(0,0,0,0.25);
+    flex-grow: 1;
+  }
+
+  .toolbar {
+    span {
+      font-size: 90%;
+    }
+    pointer-events: auto;
+    h1 {
+      font-size: 1em;
+    }
+    .controls {
+      flex-grow: 0;
+    }
+    .btn {
+      margin: 0;
+    }
+    .icon {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  .template-container {
+    position: relative;
+    opacity: 0.85;
+
+    img {
+      position: absolute;
+      width: inherit;
+      height: inherit;
+    }
+    .map-border {
+      position: absolute;
+      border: 2px solid $primary-color;
+    }
+  }
+}
+</style>

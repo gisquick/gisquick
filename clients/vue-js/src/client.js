@@ -18,7 +18,11 @@ HTTP.absUrl = function (url) {
 
 HTTP.appendParams = function (url, params) {
   const u = new URL(url)
-  Object.keys(params).forEach(k => u.searchParams.append(k, params[k]))
+  for (let key in params) {
+    if (params[key] !== undefined) {
+      u.searchParams.append(key, params[key])
+    }
+  }
   return u.href
 }
 

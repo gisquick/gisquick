@@ -35,6 +35,11 @@
               <v-icon>more_vert</v-icon>
             </v-btn>
             <v-list>
+              <v-list-tile @click="zoomTo(location.feature)">
+                <v-list-tile-title>Zoom to</v-list-tile-title>
+                <icon name="zoom-to"></icon>
+              </v-list-tile>
+              <text-separator>Coordinate systems</text-separator>
               <v-list-tile
                 v-for="format in coordinateSystems"
                 :key="format.name"
@@ -65,6 +70,11 @@
                 <v-icon>more_vert</v-icon>
               </v-btn>
               <v-list>
+                <v-list-tile @click="zoomTo(distance.feature)">
+                  <v-list-tile-title>Zoom to</v-list-tile-title>
+                  <icon name="zoom-to"></icon>
+                </v-list-tile>
+                <text-separator>Units</text-separator>
                 <template v-for="(system, i) in availableUnits">
                   <v-list-tile
                     class="checkable"
@@ -111,6 +121,11 @@
                 <v-icon>more_vert</v-icon>
               </v-btn>
               <v-list>
+                <v-list-tile @click="zoomTo(area.feature)">
+                  <v-list-tile-title>Zoom to</v-list-tile-title>
+                  <icon name="zoom-to"></icon>
+                </v-list-tile>
+                <text-separator>Units</text-separator>
                 <template v-for="(system, i) in availableUnits">
                   <v-list-tile
                     class="checkable"
@@ -150,6 +165,7 @@
 </template>
 
 <script>
+import Extent from 'ol/extent'
 import { reactive } from '../../utils'
 // import DynamicHeight from '../../tabs-dynamic-height'
 import { projectionCoordinatesFormatter, LocationUnits, Units } from './units'
@@ -228,7 +244,6 @@ export default {
     },
     setUnits (unitSystem, unit = {}) {
       if (unitSystem !== this.unitSystem) {
-        console.log('Unit SYSTEM Change')
         this.formatter.length = null
         this.formatter.area = null
       }
@@ -237,6 +252,14 @@ export default {
       this.distance.setFormat(this.formatter)
       this.area.setFormat(this.formatter)
       this.unitSystem = unitSystem
+    },
+    zoomTo (feature) {
+      if (feature) {
+        this.$map.getView().animate({
+          center: Extent.getCenter(feature.getGeometry().getExtent()),
+          duration: 450
+        })
+      }
     },
     deactivate () {
       if (this.activeTool) {

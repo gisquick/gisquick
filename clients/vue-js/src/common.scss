@@ -64,9 +64,16 @@
 .menu__content {
   .list__tile {
     min-width: 200px;
-    padding-right: 0;
     font-size: 0.875em;
     height: 3em;
+    .btn {
+      margin: 0;
+      justify-content: flex-start;
+    }
+    .icon {
+      width: 1em;
+      height: 1em;
+    }
   }
   .expanded {
     .icon.expand {

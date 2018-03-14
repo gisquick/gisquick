@@ -61,6 +61,7 @@ function createDrawTool (type, style) {
     draw,
     createLabel () {
       const labelFeature = new Feature({geometry: new Point([0, 0])})
+      labelFeature.set('type', 'label')
       source.addFeature(labelFeature)
       labelFeature.setStyle(new Style({renderer: labelRenderer}))
       return {
@@ -90,8 +91,7 @@ function createDrawTool (type, style) {
     source.clear()
   })
   draw.on('drawend', evt => {
-    tool.feature = evt.feature.clone()
-    source.addFeature(tool.feature)
+    tool.feature = evt.feature
   })
 
   return tool

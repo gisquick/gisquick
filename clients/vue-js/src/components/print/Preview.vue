@@ -34,13 +34,7 @@
           />
           <div
             class="map-border"
-            :style="borderArea"
-            ng-style="::{
-              left: (100*layout.map.x/layout.width)+'%',
-              top: (100*layout.map.y/layout.height)+'%',
-              right: (100*(1-(layout.map.x+layout.map.width)/layout.width))+'%',
-              bottom: (100*(1-(layout.map.y+layout.map.height)/layout.height))+'%'
-            }">
+            :style="borderArea">
           </div>
         </div>
 
@@ -55,7 +49,8 @@
 import Observable from 'ol/observable'
 import FileSaver from 'file-saver'
 import HTTP from '../../client'
-import { mmToPx, createPrintParameters, formatCopyrights, openPrintWindow } from './utils'
+import { mmToPx, createPrintParameters, formatCopyrights, scaleAnimation, openPrintWindow } from './utils'
+
 
 export default {
   props: ['layout', 'format', 'dpi', 'labelsData'],
@@ -146,13 +141,17 @@ export default {
   methods: {
     setScale (ratio) {
       const map = this.$map
-      const mapEl = this.$map.getViewport()
-      const percScale = Math.round(100 * ratio) + '%'
-      mapEl.style.width = percScale
-      mapEl.style.height = percScale
-      mapEl.style.transformOrigin = 'top left'
-      mapEl.style.transform = `scale(${1 / ratio}, ${1 / ratio})`
-      map.setSize([window.innerWidth * ratio, window.innerHeight * ratio])
+      // const mapEl = this.$map.getViewport()
+      // const percScale = Math.round(100 * ratio) + '%'
+
+      // mapEl.style.transformOrigin = 'top left'
+      // mapEl.style.width = percScale
+      // mapEl.style.height = percScale
+      // mapEl.style.transform = `scale(${1 / ratio}, ${1 / ratio})`
+      // map.setSize([window.innerWidth * ratio, window.innerHeight * ratio])
+
+      scaleAnimation(map, {from: this.prevScale || 1, to: ratio})
+      this.prevScale = ratio
 
       if (ratio !== 1) {
         if (!map.transformBrowserEvent) {
@@ -243,16 +242,21 @@ export default {
   .toolbar {
     span {
       font-size: 90%;
+      position: absolute;
+      left: 0;
     }
     pointer-events: auto;
     h1 {
       font-size: 1em;
     }
     .controls {
-      flex-grow: 0;
+      position: absolute;
+      right: -0.5em;
     }
     .btn {
       margin: 0;
+      width: 32px;
+      height: 30px;
     }
     .icon {
       width: 20px;

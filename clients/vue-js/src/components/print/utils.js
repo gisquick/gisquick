@@ -1,3 +1,7 @@
+import Easing from 'ol/easing'
+import Observable from 'ol/observable'
+
+
 export function mmToPx (value) {
   return parseInt((96 * value) / 25.4)
 }
@@ -75,4 +79,38 @@ export function openPrintWindow (layout, url) {
   popup.document.body.innerHTML = `<img onload="window.print()" src="${url}"></img>`
   popup.onbeforeunload = closePrint
   popup.onafterprint = closePrint
+}
+
+export function scaleAnimation (map, opts) {
+  const mapEl = map.getViewport()
+
+  const start = opts.start || Date.now()
+  const duration = opts.duration || 450
+  const easing = opts.easing || Easing.inAndOut
+  const startScale = opts.from
+  const endScale = opts.to
+
+  let listener
+  const animate = evt => {
+    let t = 1
+    if (evt.frameState.time < start + duration) {
+      t = easing((evt.frameState.time - start) / duration)
+    }
+
+    const scale = startScale + (endScale - startScale) * t
+    map.setSize([window.innerWidth * scale, window.innerHeight * scale])
+
+    if (t === 1) {
+      setTimeout(() => {
+        const percScale = 100 * scale + '%'
+        mapEl.style.width = percScale
+        mapEl.style.height = percScale
+        mapEl.style.transform = `scale(${1 / scale}, ${1 / scale})`
+      }, 50)
+      Observable.unByKey(listener)
+    }
+  }
+  mapEl.style.transformOrigin = 'top left'
+  listener = map.on('postcompose', animate)
+  map.render()
 }

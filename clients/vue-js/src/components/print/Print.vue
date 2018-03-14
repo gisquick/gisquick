@@ -15,6 +15,8 @@
           <v-icon>more_vert</v-icon>
         </v-btn>
         <v-list>
+
+          <text-separator>Output format</text-separator>
           <v-list-tile
             v-for="value in ['pdf', 'png']"
             :key="value"
@@ -27,6 +29,7 @@
             <v-list-tile-title>{{ value }}</v-list-tile-title>
           </v-list-tile>
 
+          <text-separator>Print quality</text-separator>
           <v-list-tile
             v-for="value in [96, 150, 300]"
             :key="value"

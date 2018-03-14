@@ -268,41 +268,6 @@ export default {
 </script>
 
 <style lang="scss">
-.measure.menu__content {
-
-  .list__tile {
-    min-width: 220px;
-    padding-right: 0;
-    font-size: 0.875em;
-    height: 3em;
-  }
-  .expanded {
-    .icon.expand {
-      transform: rotateZ(180deg);
-    }
-  }
-  .checkable {
-    .list__tile {
-      padding-left: 3em;
-      line-height: 2.5em;
-      .icon.check {
-        position: absolute;
-        left: 0.5em;
-        top: 0.38em;
-      }
-    }
-    &.nested {
-      .list__tile {
-        opacity: 0.75;
-        padding-left: 4em;
-        .icon.check {
-          left: 1em;
-        }
-      }
-    }
-  }
-}
-
 .measure-form {
   .tabs__items {
     will-change: height;

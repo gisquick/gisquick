@@ -6,15 +6,16 @@ import 'vuetify/dist/vuetify.min.css'
 import 'url-polyfill'
 
 import App from './App'
-import Icon from './components/Icon'
-import ScrollArea from './components/ScrollArea'
+import Icon from './ui/Icon'
+import ScrollArea from './ui/ScrollArea'
+import TextSeparator from './ui/TextSeparator'
 import Collapsible from './transitions/Collapsible'
 import CollapseTransition from './transitions/CollapseTransition'
 import SwitchTransition from './transitions/SwitchTransition'
-import './transitions/transitions.scss'
 
 // register general purpose components globally
 Vue.component('scroll-area', ScrollArea)
+Vue.component('text-separator', TextSeparator)
 Vue.component('v-collapsible', Collapsible)
 Vue.component('collapse-transition', CollapseTransition)
 Vue.component('switch-transition', SwitchTransition)

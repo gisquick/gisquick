@@ -150,25 +150,12 @@
 </template>
 
 <script>
-import Vue from 'vue'
+import { reactive } from '../../utils'
 // import DynamicHeight from '../../tabs-dynamic-height'
 import { projectionCoordinatesFormatter, LocationUnits, Units } from './units'
 import { LocationMeasure, DistanceMeasure, AreaMeasure } from './measure'
 
 let state
-
-// function makeReactive (obj, ...props) {
-//   props.forEach(prop => Vue.util.defineReactive(obj, prop))
-// }
-
-function PartiallyReactive (attributes) {
-  Object.values(attributes).forEach(attr => {
-    attr.enumerable = true
-    attr.configurable = false
-    attr.reactive.forEach(prop => Vue.util.defineReactive(attr.value, prop))
-  })
-  return Object.defineProperties({}, attributes)
-}
 
 export default {
   title: 'Measure',
@@ -176,33 +163,26 @@ export default {
   // mixins: [DynamicHeight],
   inject: ['$project', '$map'],
   data () {
-    return state ||
-      Object.assign({
-        type: '',
-        coordinateSystems: null,
-        availableUnits: Units,
-        formatter: {
-          length: null,
-          area: null
-        },
-        unitSystem: null,
-        expandedItem: null
+    return state || {
+      type: '',
+      coordinateSystems: null,
+      availableUnits: Units,
+      formatter: {
+        length: null,
+        area: null
       },
-      PartiallyReactive({
-        location: {
-          value: LocationMeasure(),
-          reactive: ['coord1', 'coord2', 'format']
-        },
-        distance: {
-          value: DistanceMeasure(),
-          reactive: ['total', 'lastSegment']
-        },
-        area: {
-          value: AreaMeasure(),
-          reactive: ['area', 'perimeter']
-        }
-      })
-    )
+      unitSystem: null,
+      expandedItem: null,
+
+      @reactive('coord1', 'coord2', 'format')
+      location: LocationMeasure(),
+
+      @reactive('total', 'lastSegment')
+      distance: DistanceMeasure(),
+
+      @reactive('area', 'perimeter')
+      area: AreaMeasure()
+    }
   },
   created () {
     if (!this.coordinateSystems) {

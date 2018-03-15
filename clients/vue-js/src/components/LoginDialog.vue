@@ -25,15 +25,15 @@
               label="Username"
               v-model="username"
               @keyup.enter="login"
-            ></v-text-field>
+            />
             <v-text-field
               label="Password"
               v-model="password"
-              :append-icon="passwordVisible ? 'visibility' : 'visibility_off'"
+              :append-icon="passwordVisible ? 'visibility_off' : 'visibility'"
               :append-icon-cb="() => (passwordVisible = !passwordVisible)"
-              :type="passwordVisible ? 'password' : 'text'"
+              :type="passwordVisible ? 'text' : 'password'"
               @keyup.enter="login"
-            ></v-text-field>
+            />
             <v-btn light color="grey lighten-3" @click="login">
               Login
             </v-btn>

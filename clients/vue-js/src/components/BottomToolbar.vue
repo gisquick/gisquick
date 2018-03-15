@@ -10,6 +10,7 @@
 </template>
 
 <script>
+import Observable from 'ol/observable'
 import MousePosition from 'ol/control/mouseposition'
 import coordinate from 'ol/coordinate'
 
@@ -31,6 +32,9 @@ export default {
       target: this.$refs.coords
     })
     this.$map.addControl(this.positionControl)
+  },
+  beforeDestroy () {
+    Observable.unByKey(this.listener)
   },
   methods: {
     updateScale () {

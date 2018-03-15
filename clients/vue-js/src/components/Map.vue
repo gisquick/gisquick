@@ -1,12 +1,15 @@
 <template>
   <div class="map-container">
     <div ref="mapEl" class="map" />
-    <bottom-toolbar />
+
+    <transition name="bslide">
+      <bottom-toolbar v-if="statusBarVisible" />
+    </transition>
 
     <transition
       name="slide"
-      @beforeLeave="leftView = '0'"
-      @beforeEnter="leftView = '280px'">
+      @beforeLeave="mapView.left = '0'"
+      @beforeEnter="mapView.left = '280px'">
       <div
         v-show="panelVisible"
         class="main-panel">
@@ -28,9 +31,7 @@
           </div>
         </collapse-transition>
 
-        <content-panel
-          :baseLayers="baseLayers"
-          :overlays="overlays" />
+        <content-panel :baseLayers="baseLayers" :overlays="overlays" />
       </div>
     </transition>
     <v-btn
@@ -41,11 +42,15 @@
       <icon name="arrow-right" />
     </v-btn>
 
-    <scale-line class="scale-line" :style="{ left: leftView }" />
+    <scale-line
+      class="scale-line"
+      :style="{transform: `translate(${mapView.left}, -${mapView.bottom})`}" />
 
     <transition name="bslide">
-      <div v-if="bottomPanel" :style="{ left: leftView }"
-        class="bottom-panel">
+      <div
+        v-if="bottomPanel"
+        class="bottom-panel"
+        :style="{ left: mapView.left }">
         <div
           :is="bottomPanel.component"
           v-bind="bottomPanel.props" />
@@ -55,12 +60,12 @@
     <div
       v-if="overlayContainer"
       class="map-overlay"
-      :style="{ left: leftView }"
+      :style="{ left: mapView.left }"
       :is="overlayContainer.component"
       v-bind="overlayContainer.props"
       v-on="overlayContainer.listeners" />
 
-    <tools-menu :style="{ left: leftView }" />
+    <tools-menu :style="{transform: `translate(${mapView.left}, 0)`}" />
   </div>
 </template>
 
@@ -89,7 +94,11 @@ export default {
       bottomPanel: null,
       overlayContainer: null,
       panelVisible: true,
-      leftView: '280px',
+      statusBarVisible: true,
+      mapView: {
+        left: '280px',
+        bottom: '32px'
+      },
       baseLayers: {
         tree: this.project.base_layers,
         list: layersList(this.project.base_layers, true)
@@ -119,6 +128,10 @@ export default {
       },
       setOverlay: (component, props, listeners) => {
         this.overlayContainer = component ? { component, props, listeners } : null
+      },
+      setStatusBarVisible: (visible) => {
+        this.statusBarVisible = visible
+        this.mapView.bottom = visible ? '32px' : '0'
       }
     }
   },
@@ -182,10 +195,18 @@ export default {
   }
 }
 
-.scale-line, .speed-dial, .bottom-panel {
-  transition: left .4s cubic-bezier(.25,.8,.5,1);
+.scale-line, .speed-dial {
+  transition: transform .45s cubic-bezier(.25,.8,.5,1);
+}
+.bottom-panel, .map-overlay {
+  transition: left .45s cubic-bezier(.25,.8,.5,1);
 }
 
+.scale-line {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}
 
 .main-panel {
   position: absolute;
@@ -223,10 +244,10 @@ export default {
   margin: 0;
   left: 0;
   top: calc(50% - 18px);
+  transition: transform 0.4s cubic-bezier(.25,.8,.5,1);
 
   &.expanded {
-    left: 280px;
-    transform: rotateY(180deg);
+    transform: translate(280px, 0) rotateY(180deg);
   }
   .icon {
     width: 24px;

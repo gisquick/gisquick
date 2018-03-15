@@ -125,9 +125,11 @@ export default {
         }
       }
       this.$root.$panel.setOverlay(Preview, props, listeners)
+      this.$root.$panel.setStatusBarVisible(false)
     },
     deactivate () {
       this.$root.$panel.setOverlay()
+      this.$root.$panel.setStatusBarVisible(true)
     }
   }
 }

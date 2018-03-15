@@ -37,12 +37,19 @@ export default {
         this.$el.classList.remove('collapse-leave-to', 'collapse-leave-active')
       },
       beforeEnter: (el) => {
+        if (this.$el.offsetParent === null) {
+          this.$el.style.height = ''
+          return // container is not visible => skip animation
+        }
         if (!this.$el.style.height) {
           this.$el.style.height = 0
         }
         this.$el.classList.add('collapse-enter', 'collapse-enter-active')
       },
       enter: (el, done) => {
+        if (this.$el.offsetParent === null) {
+          return // container is not visible => skip animation
+        }
         nextFrame(() => {
           this.$el.classList.remove('collapse-enter')
           this.$el.classList.add('collapse-enter-to')

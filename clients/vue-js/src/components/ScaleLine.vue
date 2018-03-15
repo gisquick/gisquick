@@ -18,9 +18,6 @@ export default {
 
 <style>
 #ol-scale-line-container {
-  position: absolute;
-  xleft: 280px;
-  bottom: 2em;
   width: 150px;
   height: 30px;
   overflow: visible;

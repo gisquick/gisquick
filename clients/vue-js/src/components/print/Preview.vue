@@ -233,7 +233,7 @@ export default {
     }
   }
 
-  pointer-events: none;
+  pointer-events: none!important;
   .preview-bg {
     background-color: rgba(0,0,0,0.25);
     flex-grow: 1;

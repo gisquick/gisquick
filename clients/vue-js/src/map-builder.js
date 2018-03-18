@@ -10,6 +10,7 @@ import Extent from 'ol/extent'
 import proj from 'ol/proj'
 import proj4 from 'proj4'
 import Attribution from 'ol/attribution'
+import Control from 'ol/control'
 import md5 from 'md5'
 
 
@@ -282,7 +283,7 @@ Map.prototype.handleMapBrowserEvent = function (evt) {
   return handleMapBrowserEvent.call(this, evt)
 }
 
-export function createMap (config) {
+export function createMap (config, controlOpts = {}) {
   let projection = proj.get(config.projection.code)
   if (!projection) {
     proj.setProj4(proj4)
@@ -312,7 +313,8 @@ export function createMap (config) {
       zoom: 0,
       resolutions: config.tile_resolutions,
       extent: projection.getExtent() || config.project_extent
-    })
+    }),
+    controls: Control.defaults(controlOpts)
   })
   map.overlay = overlay
 

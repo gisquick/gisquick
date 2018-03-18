@@ -47,18 +47,20 @@
           <v-tab href="#topics">Topics</v-tab>
           <v-tab href="#layers">Layers</v-tab>
           <v-tab-item id="topics">
-            <v-radio-group
-              v-model="activeTopicIndex"
-              hide-details>
-              <v-radio
-                v-for="(topic, index) in overlays.topics"
-                :key="index"
-                :label="topic.title"
-                :value="index"
-                color="primary"
-                @change="setTopic">
-              </v-radio>
-            </v-radio-group>
+            <scroll-area>
+              <v-radio-group
+                v-model="activeTopicIndex"
+                hide-details>
+                <v-radio
+                  v-for="(topic, index) in overlays.topics"
+                  :key="index"
+                  :label="topic.title"
+                  :value="index"
+                  color="primary"
+                  @change="setTopic">
+                </v-radio>
+              </v-radio-group>
+            </scroll-area>
           </v-tab-item>
           <v-tab-item id="layers">
             <scroll-area>
@@ -191,16 +193,36 @@ export default {
   }
 
   .secondary-tabs {
+    .tabs__bar {
+      margin: 0 0.25em;
+    }
     .tabs__div {
+      &:first-child {
+        .tabs__item {
+          border-top-left-radius: 0.5em;
+          border-bottom-left-radius: 0.5em;
+          border-width: 1px 0 1px 1px;
+        }
+      }
+      &:last-child {
+        .tabs__item {
+          border-top-right-radius: 0.5em;
+          border-bottom-right-radius: 0.5em;
+          border-width: 1px 1px 1px 0;
+        }
+      }
       .tabs__item {
         margin: 0.5em 0;
         height: 2.25em;
         text-transform: none;
         font-size: 0.875em;
+        border: 1px solid #bbb;
+
         &.tabs__item--active {
           color: #fff!important;
           background-color: $primary-color;
           font-weight: 600;
+          border-color: darken($primary-color, 8%);
         }
       }
     }

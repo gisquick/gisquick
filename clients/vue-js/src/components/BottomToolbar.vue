@@ -49,10 +49,6 @@ export default {
 
 <style lang="scss">
 .bottom-toolbar {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
   height: 32px;
   background-color: #eee;
   display: flex;

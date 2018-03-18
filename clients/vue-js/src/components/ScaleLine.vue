@@ -1,5 +1,5 @@
 <template>
-  <div id="ol-scale-line-container"></div>
+  <div class="scale-line"></div>
 </template>
 
 <script>
@@ -9,7 +9,7 @@ export default {
   inject: ['$map'],
   mounted () {
     this.scaleLine = new ScaleLine({
-      target: 'ol-scale-line-container'
+      target: this.$el
     })
     this.$map.addControl(this.scaleLine)
   }
@@ -17,7 +17,7 @@ export default {
 </script>
 
 <style>
-#ol-scale-line-container {
+.scale-line {
   width: 150px;
   height: 30px;
   overflow: visible;

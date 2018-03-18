@@ -2,9 +2,48 @@
   <div class="map-container">
     <div ref="mapEl" class="map" />
 
-    <transition name="bslide">
-      <bottom-toolbar v-if="statusBarVisible" />
-    </transition>
+    <!-- <collapse-transition name="bslide"> -->
+      <bottom-toolbar v-if="statusBarVisible && !bottomPanel" />
+    <!-- </collapse-transition> -->
+
+    <v-layout
+      class="column map-view"
+      :style="{ left: mapView.left }">
+
+      <div class="visible-container">
+        <scale-line v-if="!bottomPanel" />
+        <div ref="attributions" />
+
+        <div
+          v-if="overlayContainer"
+          class="map-overlay"
+          :is="overlayContainer.component"
+          v-bind="overlayContainer.props"
+          v-on="overlayContainer.listeners" />
+
+        <tools-menu />
+        <map-control />
+        <app-menu />
+        <v-btn
+          flat icon
+          class="panel-toggle"
+          :class="{expanded: panelVisible}"
+          @click="panelVisible = !panelVisible">
+          <icon name="arrow-right" />
+        </v-btn>
+      </div>
+
+      <div
+        class="bottom-container"
+        :style="{minHeight: mapView.bottom}">
+        <collapse-transition>
+          <div
+            v-if="bottomPanel"
+            :is="bottomPanel.component"
+            v-bind="bottomPanel.props" />
+        </collapse-transition>
+      </div>
+    </v-layout>
 
     <transition
       name="slide"
@@ -34,53 +73,25 @@
         <content-panel :baseLayers="baseLayers" :overlays="overlays" />
       </div>
     </transition>
-    <v-btn
-      flat icon
-      class="panel-toggle"
-      :class="{expanded: panelVisible}"
-      @click="panelVisible = !panelVisible">
-      <icon name="arrow-right" />
-    </v-btn>
 
-    <scale-line
-      class="scale-line"
-      :style="{transform: `translate(${mapView.left}, -${mapView.bottom})`}" />
-
-    <transition name="bslide">
-      <div
-        v-if="bottomPanel"
-        class="bottom-panel"
-        :style="{ left: mapView.left }">
-        <div
-          :is="bottomPanel.component"
-          v-bind="bottomPanel.props" />
-      </div>
-    </transition>
-
-    <div
-      v-if="overlayContainer"
-      class="map-overlay"
-      :style="{ left: mapView.left }"
-      :is="overlayContainer.component"
-      v-bind="overlayContainer.props"
-      v-on="overlayContainer.listeners" />
-
-    <tools-menu :style="{transform: `translate(${mapView.left}, 0)`}" />
   </div>
 </template>
 
 <script>
 import 'ol/ol.css'
+import Attribution from 'ol/control/attribution'
 
 import { layersList, createMap } from '../map-builder'
 import ContentPanel from './ContentPanel/ContentPanel'
 import BottomToolbar from './BottomToolbar'
 import ScaleLine from './ScaleLine'
 import ToolsMenu from './ToolsMenu'
+import AppMenu from './AppMenu'
+import MapControl from './MapControl'
 
 export default {
   name: 'Map',
-  components: { ContentPanel, BottomToolbar, ScaleLine, ToolsMenu },
+  components: { ContentPanel, BottomToolbar, ScaleLine, ToolsMenu, AppMenu, MapControl },
   props: [
     'project'
   ],
@@ -111,7 +122,7 @@ export default {
     }
   },
   created () {
-    this.map = createMap(this.project)
+    this.map = createMap(this.project, {zoom: false, attribution: false})
     this._provided.$map = this.map
     this._provided.$project = this.project
 
@@ -137,11 +148,37 @@ export default {
   },
   mounted () {
     this.map.setTarget(this.$refs.mapEl)
+    this.map.addControl(new Attribution({
+      target: this.$refs.attributions
+    }))
   }
 }
 </script>
 
 <style lang="scss">
+
+.map-view {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transition: left .4s cubic-bezier(.25,.8,.5,1);
+  pointer-events: none;
+
+  > * {
+    pointer-events: auto;
+  }
+  .visible-container {
+    flex-grow: 1;
+    pointer-events: none;
+    position: relative;
+    > * {
+      pointer-events: auto;
+    }
+  }
+}
+
 .main-panel > .collapsible {
   flex-shrink: 0;
 }
@@ -159,47 +196,6 @@ export default {
     left: auto;
     right: 0.5em;
   }
-
-  .ol-attribution {
-    bottom: 2.25em;
-    a[href="https://openlayers.org/"] {
-      display: none;
-    }
-    a:link, a:visited {
-      text-decoration: none;
-      color: #333;
-    }
-    a:hover {
-      color: rgb(0, 150, 190);
-      text-shadow: none;
-      background-color: rgba(255, 255, 255, 0.8);
-      border-radius: 3px;
-    }
-    li > *::after {
-      color: #333;
-      content: "|";
-      pointer-events: none;
-      padding-left: 9px;
-      padding-right: 5px;
-    }
-    li:last-child > *::after {
-      display: none;
-    }
-  }
-
-  .ol-control {
-    button {
-      background-color: #333;
-      border-radius: 4px;
-    }
-  }
-}
-
-.scale-line, .speed-dial {
-  transition: transform .45s cubic-bezier(.25,.8,.5,1);
-}
-.bottom-panel, .map-overlay {
-  transition: left .45s cubic-bezier(.25,.8,.5,1);
 }
 
 .scale-line {
@@ -244,10 +240,9 @@ export default {
   margin: 0;
   left: 0;
   top: calc(50% - 18px);
-  transition: transform 0.4s cubic-bezier(.25,.8,.5,1);
 
   &.expanded {
-    transform: translate(280px, 0) rotateY(180deg);
+    transform: rotateY(180deg);
   }
   .icon {
     width: 24px;
@@ -260,17 +255,75 @@ export default {
   top: 0;
 }
 
-.bottom-panel {
-  position: absolute;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  box-shadow: 0 -5px 8px 0 rgba(0,0,0,.12), 0 -4px 4px -2px rgba(0,0,0,.18);
+.bottom-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  position: relative;
+  .collapse-enter-active, .collapse-leave-active {
+    overflow: visible!important;
+  }
+  /*.collapse-enter, .collapse-leave-to {
+    opacity: 0!important;
+  }*/
+
+  > * {
+    box-shadow: 0 -5px 8px 0 rgba(0,0,0,.12), 0 -4px 4px -2px rgba(0,0,0,.18);
+  }
 }
+
 .map-overlay {
   position: absolute;
+  left: 0;
   right: 0;
   top: 0;
   bottom: 0;
+}
+.bottom-toolbar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.map-control {
+  position: absolute;
+  right: 0.5em;
+  bottom: 0.5em;
+}
+.app-menu {
+  position: absolute;
+  right: 0.5em;
+  top: 0.5em;
+}
+
+.ol-attribution {
+  bottom: 0.25em;
+  right: 3em;
+  a[href="https://openlayers.org/"] {
+    display: none;
+  }
+  a:link, a:visited {
+    text-decoration: none;
+    color: #333;
+  }
+  a:hover {
+    color: rgb(0, 150, 190);
+    text-shadow: none;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 3px;
+  }
+  li > *::after {
+    color: #333;
+    content: "|";
+    pointer-events: none;
+    padding-left: 9px;
+    padding-right: 5px;
+  }
+  li:last-child > *::after {
+    display: none;
+  }
+  button {
+    display: none;
+  }
 }
 </style>

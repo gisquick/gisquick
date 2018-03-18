@@ -7,7 +7,6 @@
     transition="scale-transition">
     <v-btn
       fab dark
-      color="gray"
       slot="activator"
       v-model="open">
       <v-icon>menu</v-icon>
@@ -18,7 +17,6 @@
       v-for="tool in tools"
       :key="tool.name"
       fab dark
-      color="gray"
       @click="activate(tool)">
       <icon :name="tool.icon" />
     </v-btn>
@@ -60,7 +58,7 @@ export default {
   .btn--floating {
     border-radius: 20%;
     width: 2.75em;
-    height: 2.7em;
+    height: 2.75em;
   }
   svg.icon {
     width: 24px;

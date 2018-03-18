@@ -36,6 +36,8 @@
       padding: 0;
       text-transform: none;
       font-weight: 400;
+      outline: none;
+
       &.tabs__item--active {
         color: $primary-color;
         .icon {

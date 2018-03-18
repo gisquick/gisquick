@@ -34,6 +34,10 @@ HTTP.login = function (username, password) {
   return HTTP.post('/login/', params)
 }
 
+HTTP.logout = function () {
+  return HTTP.get('/logout/')
+}
+
 HTTP.project = function (project) {
   const opts = {
     transformResponse (text) {

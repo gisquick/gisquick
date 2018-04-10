@@ -23,7 +23,8 @@
               info_template: layer.info_template,
               attributes: featuresViewer.getLayerAttributes(layer.name),
               // pk_attributes: layer.pk_attributes,
-              features: []
+              features: [],
+              model: layer
             });
           }
         });

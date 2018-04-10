@@ -44,7 +44,7 @@
               gl-blur-on-click
               gl-scrollbar="horizontal"
               class="identification-table table-container">
-              <table>
+              <table ng-disabled="!layer.model.visible">
                 <thead>
                   <tr class="header">
                     <th class="zoom header" width="10"></th>

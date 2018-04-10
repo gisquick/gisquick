@@ -712,3 +712,8 @@ md-bottom-sheet.identification-table {
   text-align: center;
   padding: 16px 0;
 }
+.identification-table table[disabled],
+.info-panel[disabled] > div:not(.panel-header) {
+  pointer-events: none;
+  opacity: 0.5;
+}

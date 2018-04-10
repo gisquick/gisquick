@@ -34,6 +34,12 @@
         var markerElem = angular.element('<div style="width: 12px; height: 12px;">');
         $mdIcon(tool.config.markerIcon).then(function(elem) {
           var iconElem = angular.element(elem);
+          iconElem.css({
+            position: 'absolute',
+            top: 0,
+            left: 0
+          });
+
           iconElem.css('fill', '#f00000');
           markerElem.append(iconElem);
         });
@@ -50,11 +56,12 @@
       mapClickListener = projectProvider.map.on('singleclick', function(evt) {
         featuresViewer.removeAllFeatures();
 
-        var coords = projectProvider.map.getCoordinateFromPixel(evt.pixel);
+        var pixel = evt.pixel;
+        var coords = projectProvider.map.getCoordinateFromPixel(pixel);
         var pixelRadius = 8;
         var radius = Math.abs(projectProvider.map.getCoordinateFromPixel([
-            evt.pixel[0]+pixelRadius,
-            evt.pixel[1]
+            pixel[0]+pixelRadius,
+            pixel[1]
           ])[0]-coords[0]);
 
         var identifyPolygon = ol.geom.Polygon.fromCircle(
@@ -90,8 +97,9 @@
             setFeatures(features);
           });
 
-        tool._markerOverlay.setPosition(projectProvider.map.getCoordinateFromPixel(evt.pixel));
+        tool._markerOverlay.setPosition(projectProvider.map.getCoordinateFromPixel(pixel));
       });
+      projectProvider.map.getViewport().style.cursor = 'crosshair';
     };
 
     // conversions between project's layers names and WFS names
@@ -159,6 +167,7 @@
       if (infoPanel.isOpen()) {
         infoPanel.close();
       }
+      projectProvider.map.getViewport().style.cursor = '';
     };
   };
 })();

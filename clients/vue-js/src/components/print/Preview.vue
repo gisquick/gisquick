@@ -57,6 +57,8 @@ export default {
   inject: ['$project', '$map'],
   data: () => ({
     scale: 0,
+    width: 0,
+    height: 0,
     visible: false
   }),
   computed: {
@@ -107,8 +109,8 @@ export default {
       if (this.visible) {
         const layoutWidth = mmToPx(this.layout.width)
         const layoutHeight = mmToPx(this.layout.height)
-        const viewWidth = this.$el.offsetWidth - 40
-        const viewHeight = this.$el.offsetHeight - 40
+        const viewWidth = this.width - 40
+        const viewHeight = this.height - 40
         if (layoutWidth > viewWidth || layoutHeight > viewHeight) {
           const scale = Math.max(layoutWidth / viewWidth, layoutHeight / viewHeight)
           return scale
@@ -123,6 +125,7 @@ export default {
     }
   },
   mounted () {
+    this.updateSize()
     const view = this.$map.getView()
     const updateScale = () => {
       const scale = view.getScale()
@@ -133,12 +136,20 @@ export default {
     updateScale()
     this.listener = view.on('change:resolution', updateScale)
     this.visible = true
+
+    window.addEventListener('resize', this.updateSize)
   },
   beforeDestroy () {
     this.setScale(1)
     Observable.unByKey(this.listener)
+    window.removeEventListener('resize', this.updateSize)
   },
   methods: {
+    updateSize () {
+      console.log('Update Size')
+      this.width = this.$el.offsetWidth
+      this.height = this.$el.offsetHeight
+    },
     setScale (ratio) {
       const map = this.$map
       // const mapEl = this.$map.getViewport()

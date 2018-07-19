@@ -170,20 +170,20 @@ export default {
   display: flex;
   flex-direction: column;
 
-  .input-group {
+  .v-input-group {
     padding-top: 0;
   }
 
   /* For proper scrolling */
-  .tabs {
+  .v-tabs {
     flex: 1 1;
     display: flex;
     flex-direction: column;
-    .tabs__items {
+    .v-tabs__items {
       flex: 1 1;
       display: flex;
       flex-direction: column;
-      .tabs__content {
+      .v-tabs__content {
         display: flex;
         flex-direction: column;
         flex: 1 1;
@@ -193,32 +193,32 @@ export default {
   }
 
   .secondary-tabs {
-    .tabs__bar {
+    .v-tabs__bar {
       margin: 0 0.25em;
     }
-    .tabs__div {
+    .v-tabs__div {
       &:first-child {
-        .tabs__item {
+        .v-tabs__item {
           border-top-left-radius: 0.5em;
           border-bottom-left-radius: 0.5em;
           border-width: 1px 0 1px 1px;
         }
       }
       &:last-child {
-        .tabs__item {
+        .v-tabs__item {
           border-top-right-radius: 0.5em;
           border-bottom-right-radius: 0.5em;
           border-width: 1px 1px 1px 0;
         }
       }
-      .tabs__item {
+      .v-tabs__item {
         margin: 0.5em 0;
         height: 2.25em;
         text-transform: none;
         font-size: 0.875em;
         border: 1px solid #bbb;
 
-        &.tabs__item--active {
+        &.v-tabs__item--active {
           color: #fff!important;
           background-color: $primary-color;
           font-weight: 600;
@@ -234,5 +234,4 @@ export default {
     }
   }
 }
-
 </style>

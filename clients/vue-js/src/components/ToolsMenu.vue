@@ -54,8 +54,8 @@ export default {
 </script>
 
 <style lang="scss">
-.tools.speed-dial {
-  .btn--floating {
+.tools.v-speed-dial {
+  .v-btn--floating {
     border-radius: 20%;
     width: 2.75em;
     height: 2.75em;

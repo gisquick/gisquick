@@ -85,8 +85,8 @@ export default {
 
 <style lang="scss">
 .app-menu {
-  .menu__activator {
-    .btn {
+  .v-menu__activator {
+    .v-btn {
       margin: 0;
       width: 2.75em;
       height: 2.75em;

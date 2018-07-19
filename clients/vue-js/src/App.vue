@@ -70,4 +70,10 @@ html, body {
   width: 100%;
   height: 100%;
 }
+.v-input--checkbox, .v-radio {
+  input {
+    width: 26px;
+    height: 26px;
+  }
+}
 </style>

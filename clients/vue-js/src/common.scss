@@ -1,13 +1,8 @@
 @import './theme.scss';
 
-.btn.btn--icon {
-  .btn__content:before {
+.v-btn.v-btn--icon {
+  &:before {
     /*border-radius: 0;*/
-    display: none;
-  }
-}
-.checkbox {
-  .input-group--selection-controls__ripple {
     display: none;
   }
 }
@@ -16,7 +11,7 @@
   color: currentColor;
 }
 
-.tabs__div a {
+.v-tabs__div a {
   -webkit-user-drag: none;
   -khtml-user-drag: none;
   -moz-user-drag: none;
@@ -24,21 +19,21 @@
   user-drag: none;
 }
 
-.tabs__container--icons-and-text {
+.v-tabs__container--icons-and-text {
   height: 3em;
 
-  .tabs__div {
+  .v-tabs__div {
     min-width: 33%;
     font-size: 0.75rem;
     position: relative;
 
-    .tabs__item {
+    .v-tabs__item {
       padding: 0;
       text-transform: none;
       font-weight: 400;
       outline: none;
 
-      &.tabs__item--active {
+      &.v-tabs__item--active {
         color: $primary-color;
         .icon {
           color: $primary-color;
@@ -63,12 +58,12 @@
   }
 }
 
-.menu__content {
-  .list__tile {
+.v-menu__content {
+  .v-list__tile {
     min-width: 200px;
     font-size: 0.875em;
     height: 3em;
-    .btn {
+    .v-btn {
       margin: 0;
       justify-content: flex-start;
     }
@@ -83,17 +78,17 @@
     }
   }
   .checkable {
-    .list__tile {
+    .v-list__tile {
       padding-left: 3em;
       line-height: 2.5em;
-      .icon.check {
+      .v-icon.check {
         position: absolute;
         left: 0.5em;
         top: 0.38em;
       }
     }
     &.nested {
-      .list__tile {
+      .v-list__tile {
         opacity: 0.75;
         padding-left: 4em;
         .icon.check {

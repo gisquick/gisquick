@@ -1,9 +1,9 @@
 <template>
   <v-layout class="print-preview">
     <div class="preview-bg"></div>
-    <v-layout class="column fit">
+    <v-layout class="column shrink">
       <div class="preview-bg"></div>
-      <v-layout class="column fit">
+      <v-layout class="column shrink">
 
         <v-toolbar dark flat height="30">
           <span flex>Scale 1: {{ scale }}</span>
@@ -238,23 +238,17 @@ export default {
 
 .print-preview {
 
-  .layout {
-    &.fit {
-      flex-grow: 0;
-    }
-  }
-
   pointer-events: none!important;
   .preview-bg {
     background-color: rgba(0,0,0,0.25);
     flex-grow: 1;
   }
 
-  .toolbar {
+  .v-toolbar {
     span {
       font-size: 90%;
       position: absolute;
-      left: 0;
+      left: 0.5em;
     }
     pointer-events: auto;
     h1 {
@@ -262,9 +256,9 @@ export default {
     }
     .controls {
       position: absolute;
-      right: -0.5em;
+      right: 0;
     }
-    .btn {
+    .v-btn {
       margin: 0;
       width: 32px;
       height: 30px;

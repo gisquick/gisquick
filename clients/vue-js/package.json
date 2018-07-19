@@ -20,7 +20,7 @@
     "simplebar": "^2.5.1",
     "url-polyfill": "^1.0.10",
     "vue": "^2.5.2",
-    "vuetify": "^1.0.0"
+    "vuetify": "^1.1.6"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

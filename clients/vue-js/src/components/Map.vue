@@ -219,12 +219,12 @@ export default {
     0 10px 14px 1px rgba(0,0,0,.14),
     0 4px 18px 3px rgba(0,0,0,.12);
 
-  .toolbar {
+  .v-toolbar {
     h4 {
       text-transform: uppercase;
       font-size: 90%;
     }
-    .btn {
+    .v-btn {
       height: 100%;
       margin: 0;
       min-width: 2em;
@@ -235,7 +235,7 @@ export default {
   }
 }
 
-.panel-toggle {
+.v-btn.panel-toggle {
   position: absolute;
   margin: 0;
   left: 0;
@@ -250,7 +250,7 @@ export default {
   }
 }
 
-.speed-dial {
+.v-speed-dial {
   position: absolute;
   top: 0;
 }

@@ -51,8 +51,7 @@ export default {
 @import '../theme';
 
 .map-control {
-
-  .btn {
+  .v-btn {
     font-size: 1em;
     background-color: $dark-color;
     margin: 0.125em;
@@ -62,8 +61,8 @@ export default {
     border-radius: 20%;
     opacity: 0.85;
     .icon {
-      width: 813em;
-      height: 0.813em;
+      width: 1.25em;
+      height: 1.25em;
       fill: white;
     }
   }

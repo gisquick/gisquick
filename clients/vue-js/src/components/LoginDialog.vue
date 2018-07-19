@@ -81,7 +81,7 @@ export default {
 <style lang="scss">
 .login-dialog {
   background-color: black;
-  .card {
+  .v-card {
     max-width: 400px;
 
     .header {

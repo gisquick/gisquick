@@ -272,7 +272,7 @@ export default {
 
 <style lang="scss">
 .measure-form {
-  .tabs__items {
+  .v-tabs__items {
     will-change: height;
     transition: height .35s cubic-bezier(.25,.8,.5,1);
   }
@@ -286,11 +286,11 @@ export default {
     line-height: 3em;
     border-bottom: 1px solid #ccc;
   }
-  .menu {
+  .v-menu {
     position: absolute;
     right: 0;
     top: 0;
-    .menu__activator .btn {
+    .v-menu__activator .v-btn {
       color: #aaa;
       margin: 0;
     }

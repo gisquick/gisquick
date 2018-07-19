@@ -108,19 +108,27 @@ export default Vue.component('layer-item', {
   .icon--selection-control {
     top: 0;
   }
-  .input-group.radio {
+  .v-radio {
     padding-left: 2px;
+    margin-bottom: 0;
+    height: 2em;
     label {
       font-size: 0.938rem;
       color: #333;
     }
   }
 
+  .v-input--radio-group {
+    margin-top: 0;
+  }
   .item-container {
     .item {
       position: relative;
       padding-left: 4px;
-      .btn.expand {
+      .v-input {
+        margin-top: 0;
+      }
+      .v-btn.expand {
         position: absolute;
         top: 0;
         right: 0;
@@ -147,7 +155,7 @@ export default Vue.component('layer-item', {
     &.expanded {
       .item {
         background-color: rgba($primary-color, 0.15);
-        .btn.expand .icon {
+        .v-btn.expand .v-icon {
           transform: rotateZ(180deg);
         }
       }
@@ -170,7 +178,7 @@ export default Vue.component('layer-item', {
         border: solid #bbb;
         border-width: 1px 0;
       }
-      .btn {
+      .v-btn {
         width: 2.5em;
         margin: 0;
         height: 100%;
@@ -180,32 +188,33 @@ export default Vue.component('layer-item', {
         font-weight: 600;
         color: #333;
       }
-      .switch {
-        overflow: hidden;
+      .v-input--switch {
         position: absolute;
         top: 0;
         right: 0;
-        width: 2.5em;
-        height: inherit;
-        .input-group--selection-controls__toggle {
-          width: 28px;
+        margin-top: 0;
+        .v-input--switch__track {
+          top: 4px;
+          width: 31px;
           height: 16px;
           border-radius: 5px;
           opacity: 1;
         }
-        .input-group--selection-controls__ripple {
-          height: 2.25em;
-          transform: translate(-16px,-18px);
-          &.input-group--selection-controls__ripple--active {
-            transform: translate(-4px,-18px);
-          }
-          &:after {
-            width: 13px;
-            height: 13px;
-            border-radius: 4px;
-            color: #fff;
-            box-shadow: none;
-          }
+        .v-input--switch__thumb {
+          border-radius: 4px;
+          width: 13px;
+          height: 14px;
+          top: 5px;
+          left: 3px;
+          color: #fff!important;
+          box-shadow: none;
+        }
+        .v-input--selection-controls__ripple {
+          left: -18px;
+        }
+        input {
+          width: 36px;
+          height: 24px;
         }
       }
     }

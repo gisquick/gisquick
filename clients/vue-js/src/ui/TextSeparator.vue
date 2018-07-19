@@ -1,6 +1,6 @@
 <template functional>
   <v-layout class="text-separator" @click.stop="">
-    <v-spacer />
+    <v-spacer/>
     <span><slot></slot></span>
     <v-spacer />
   </v-layout>
@@ -13,7 +13,7 @@ export default {
 </script>
 
 <style lang="scss">
-.menu__content {
+.v-menu__content {
   .text-separator {
     align-items: center;
     font-size: 80%;

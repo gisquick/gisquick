@@ -27,6 +27,7 @@
 import Identification from './Identification'
 import Measure from './measure/Measure'
 import Print from './print/Print'
+import SpatioTemporalTool from './spatio-temporal-tool/SpatioTemporalTool'
 
 export default {
   inject: ['$map', '$project'],
@@ -37,7 +38,8 @@ export default {
     this.tools = [
       Identification,
       Measure,
-      Print
+      Print,
+      SpatioTemporalTool
     ]
   },
   methods: {

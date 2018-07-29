@@ -70,7 +70,10 @@
           </div>
         </collapse-transition>
 
-        <content-panel :baseLayers="baseLayers" :overlays="overlays" />
+        <content-panel
+          :baseLayers="baseLayers"
+          :overlays="overlays"
+        />
       </div>
     </transition>
 
@@ -97,7 +100,8 @@ export default {
   ],
   provide: {
     $map: this.map,
-    $project: this.project
+    $project: this.project,
+    $overlays: this.overlays
   },
   data () {
     return {
@@ -125,6 +129,7 @@ export default {
     this.map = createMap(this.project, {zoom: false, attribution: false})
     this._provided.$map = this.map
     this._provided.$project = this.project
+    this._provided.$overlays = this.overlays
 
     // this.$root.constructor.prototype.$panel = {}
     this.$root.$panel = {

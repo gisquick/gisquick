@@ -29,6 +29,7 @@ import Measure from './measure/Measure'
 import Print from './print/Print'
 import SpatioTemporalTool from './spatio-temporal-tool/SpatioTemporalTool'
 
+
 export default {
   inject: ['$map', '$project'],
   data: () => ({
@@ -38,9 +39,12 @@ export default {
     this.tools = [
       Identification,
       Measure,
-      Print,
-      SpatioTemporalTool
+      Print
     ]
+    // if (this.$project.layers.find(l => l.time_values && (l.time_values.length > 0 || l.spatio_temporal))) {
+    if (this.$project.layers.find(l => l.time_values || l.spatio_temporal)) {
+      this.tools.push(SpatioTemporalTool)
+    }
   },
   methods: {
     activate (tool) {

@@ -1,73 +1,106 @@
  <template>
   <div class="mx-2">
-    <time-field
-      :min="range.min"
-      :max="range.max"
-      v-model="time[0]"
-      mask="YYYY-MM-DD"
-      label="From"
+    <!--layers drop box-->
+    <v-select
+      label="Select Time Layer"
+      :items="layersSelection"
+      v-model="selection"
+      return-object
     />
 
-    <time-field
-      :min="time[0]"
-      :max="range.max"
-      v-model="time[1]"
-      mask="YYYY-MM-DD"
-      label="To"
+    <vector-filter
+      v-if="selection && selection.type === 'vector'"
+      :input="selection.value"
     />
 
-<!--     <range-slider
-      :min="range.min"
-      :max="range.max"
-      :fixed="fixed"
-      v-model="time"
-      hide-details
+<!--     <raster-filter
+      v-if="selection && selection.type === 'raster'"
+      :input="selection.value"
     /> -->
-    <f-range-slider
-      :min="range.min"
-      :max="range.max"
-      v-model="time"
-      :fixed="fixed"
-      class="mx-2"
-      hide-details
-    />
-    <v-checkbox
-      color="primary"
-      label="Fixed range"
-      v-model="fixed"
-      hide-details
-    />
+
   </div>
 </template>
 
 <script>
-import moment from 'moment'
-import TimeField from './TimeField'
-import RangeSlider from './RangeSlider1'
-import './RangeSlider3' // gobally registred 'f-range-slider'
+import ImageLayer from 'ol/layer/image'
+import { WebgisImageWMS, layersList } from '../../map-builder'
+import VectorFilter from './VectorFilter'
 
-function unixTime (time) {
-  return moment(time, 'YYYY-MM-DD').unix()
-}
 
 let state = null
 
 export default {
-  components: { TimeField, RangeSlider },
+  icon: 'time-slider',
+  title: 'Time',
+  inject: ['$map', '$project', '$overlays'],
+  components: { VectorFilter },
+
   data () {
     return state || {
-      fixed: false,
-      range: {
-        min: unixTime('2018-06-03'),
-        max: unixTime('2018-08-05')
-      },
-      time: [
-        unixTime('2018-06-15'),
-        unixTime('2018-07-15')
-      ]
+      selection: null
     }
   },
+
+  computed: {
+    layers () {
+      return layersList(this.$project.layers, true)
+    },
+    layersSelection () {
+      const items = this.layers
+        .filter(layer => layer.time_values || layer.spatio_temporal)
+        .map(layer => ({
+          text: layer.title,
+          value: layer,
+          type: layer.time_values.length > 0 ? 'vector' : 'raster'
+        }))
+      const vector = items.filter(item => item.type === 'vector')
+      if (vector.length > 1) {
+        items.unshift({
+          text: 'All visible vector layers',
+          value: vector.map(item => item.value),
+          type: 'vector'
+        })
+      }
+      return items
+    }
+  },
+
+  created () {
+    // disable map cashing
+    const map = this.$map
+    if (!(map.overlay instanceof ImageLayer)) {
+      // create and switch to WMS layer
+      this.originalLayer = map.overlay
+      this.originalLayer.setVisible(false)
+
+      this.layer = new ImageLayer({
+        visible: true,
+        extent: this.$project.project_extent,
+        source: new WebgisImageWMS({
+          resolutions: this.$project.tile_resolutions,
+          url: this.$project.ows_url,
+          visibleLayers: this.originalLayer.getSource().getVisibleLayers(),
+          layersAttributions: {},
+          params: {
+            'FORMAT': 'image/png'
+          },
+          serverType: 'qgis',
+          ratio: 1
+        })
+      })
+
+      // set as new main map's layer
+      map.addLayer(this.layer)
+      map.overlay = this.layer
+    } else {
+      this.layer = map.overlay
+    }
+  },
+
   beforeDestroy () {
+    this.$map.removeLayer(this.layer)
+    this.originalLayer.setVisible(true)
+    this.$map.overlay = this.originalLayer
     state = this.$data
   }
 }

@@ -2,23 +2,22 @@
   <div>
     <!--attributes drop box-->
     <v-select
-      v-if="allAttributes.length > 1"
       label="Select Attribute"
       :items="attributesOptions"
-      v-model="attribute"
+      v-model="filter.attribute"
     />
 
     <time-field
       :min="range.min"
       :max="range.max"
-      v-model="timeRange[0]"
+      v-model="filter.timeRange[0]"
       mask="YYYY-MM-DD"
       label="From"
     />
     <time-field
-      :min="timeRange[0]"
+      :min="filter.timeRange[0]"
       :max="range.max"
-      v-model="timeRange[1]"
+      v-model="filter.timeRange[1]"
       mask="YYYY-MM-DD"
       label="To"
     />
@@ -27,7 +26,7 @@
       :max="range.max"
       :fixed="fixedRange"
       :step="step"
-      v-model="timeRange"
+      v-model="filter.timeRange"
       class="mx-2"
       hide-details
     />
@@ -46,6 +45,7 @@ import moment from 'moment'
 import _debounce from 'lodash/debounce'
 import TimeField from './TimeField'
 import RangeSlider from './RangeSlider1'
+import LayerInfo from './LayerInfo'
 
 let lastState
 
@@ -56,9 +56,11 @@ export default {
   data () {
     return lastState || {
       step: 100,
-      attribute: null,
       fixedRange: false,
-      timeRange: [Number.MIN_VALUE, Number.MAX_VALUE]
+      filter: {
+        attribute: null,
+        timeRange: [Number.MIN_VALUE, Number.MAX_VALUE]
+      }
     }
   },
   computed: {
@@ -74,52 +76,74 @@ export default {
       }
       return this.allAttributes
     },
+    filterAttribute () {
+      if (this.allAttributes.includes(this.filter.attribute)) {
+        return this.filter.attribute
+      }
+      return this.allAttributes[0]
+    },
+    filterLayers () {
+      return this.layers.filter(l => l.original_time_attribute === this.filterAttribute)
+    },
     range () {
       return {
-        min: Math.min(...this.layers.map(l => l.time_values[0])),
-        max: Math.max(...this.layers.map(l => l.time_values[1]))
+        min: Math.min(...this.filterLayers.map(l => l.time_values[0])),
+        max: Math.max(...this.filterLayers.map(l => l.time_values[1]))
       }
     },
-    filter () {
-      const filters = []
-      const attribute = this.attribute || this.allAttributes[0]
-      if (attribute) {
-        this.layers
-          .filter(layer => layer.visible)
-          .forEach(layer => {
-            filters.push(this.createFilterString(layer, ...this.timeRange))
-          })
-      }
-      return filters.join(';')
+    currentFilters () {
+      const filters = {}
+      this.filterLayers.forEach(layer => {
+        filters[layer.name] = this.createFilterString(layer, ...this.filter.timeRange)
+      })
+      return filters
+    },
+    // string filter identifier just for watcher
+    filterKey () {
+      return this.filterLayers.map(l => l.name) + ':' + this.filterAttribute
     }
   },
   watch: {
+    filterKey: {
+      immediate: true,
+      handler () {
+        const timeLayer = this.filterLayers.find(l => l.timeFilter)
+        const timeRange = timeLayer ? timeLayer.timeFilter.timeRange : [Number.MIN_VALUE, Number.MAX_VALUE]
+        // create new filter model and use it in all filtered layers
+        this.filter = {
+          attribute: this.filterAttribute,
+          timeRange
+        }
+        this.filterLayers.forEach(l => this.$set(l, 'timeFilter', this.filter))
+      }
+    },
     range: {
       immediate: true,
       handler (range) {
-        if (this.timeRange[0] < range.min || this.timeRange[0] > range.max) {
+        if (this.filter.timeRange[0] < range.min || this.filter.timeRange[0] > range.max) {
           // https://vuejs.org/v2/guide/list.html#Array-Change-Detection
-          this.$set(this.timeRange, 0, range.min)
+          this.$set(this.filter.timeRange, 0, range.min)
         }
-        if (this.timeRange[1] < range.min || this.timeRange[1] > range.max) {
-          this.$set(this.timeRange, 1, range.max)
+        if (this.filter.timeRange[1] < range.min || this.filter.timeRange[1] > range.max) {
+          this.$set(this.filter.timeRange, 1, range.max)
         }
       }
     },
-    filter: {
+    currentFilters: {
       immediate: true,
       handler () {
         this.updateVectorLayer()
       }
     }
   },
+  created () {
+    this.$root.$panel.setLayerCustomComponent(LayerInfo)
+  },
   beforeDestroy () {
     lastState = this.$data
+    this.$root.$panel.setLayerCustomComponent(null)
   },
   methods: {
-    updateVectorLayer: _debounce(function () {
-      this.$map.overlay.getSource().updateParams({'FILTER': this.filter})
-    }, 250),
     createFilterString (layer, min, max) {
       if (layer.unix) {
         return this.createLayerFilterString(layer.name, layer.time_attribute, min, max)
@@ -134,7 +158,10 @@ export default {
     },
     createLayerFilterString (layerName, attribute, min, max) {
       return `${layerName}:"${attribute}" >= '${min}' AND "${attribute}" <= '${max}'`
-    }
+    },
+    updateVectorLayer: _debounce(function () {
+      this.$map.overlay.getSource().updateFilters(this.currentFilters)
+    }, 250)
   }
 }
 </script>

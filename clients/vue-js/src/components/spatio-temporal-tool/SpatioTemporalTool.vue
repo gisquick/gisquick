@@ -73,20 +73,31 @@ export default {
       this.originalLayer = map.overlay
       this.originalLayer.setVisible(false)
 
+      const source = new WebgisImageWMS({
+        resolutions: this.$project.tile_resolutions,
+        url: this.$project.ows_url,
+        visibleLayers: this.originalLayer.getSource().getVisibleLayers(),
+        layersAttributions: {},
+        params: {
+          'FORMAT': 'image/png'
+        },
+        serverType: 'qgis',
+        ratio: 1
+      })
+
+      Object.assign(source, {
+        filters: {},
+        updateFilters (filters) {
+          this.filters = {...this.filters, ...filters}
+          const filterString = Object.values(this.filters).join(';')
+          this.updateParams({'FILTER': filterString})
+        }
+      })
+
       this.layer = new ImageLayer({
         visible: true,
         extent: this.$project.project_extent,
-        source: new WebgisImageWMS({
-          resolutions: this.$project.tile_resolutions,
-          url: this.$project.ows_url,
-          visibleLayers: this.originalLayer.getSource().getVisibleLayers(),
-          layersAttributions: {},
-          params: {
-            'FORMAT': 'image/png'
-          },
-          serverType: 'qgis',
-          ratio: 1
-        })
+        source
       })
 
       // set as new main map's layer

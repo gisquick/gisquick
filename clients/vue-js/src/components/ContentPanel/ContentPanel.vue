@@ -71,7 +71,15 @@
                 :expanded="expandedItems.overlay"
                 :depth="1"
                 @changed:visibility="updateLayersVisibility"
-                @expanded="id => expandItem('overlay', id)" />
+                @expanded="id => expandItem('overlay', id)">
+                <div
+                  slot="custom"
+                  slot-scope="props"
+                  :is="customSlot.component"
+                  :layer="props.layer"
+                  v-bind="customSlot.props"
+                />
+              </layer-item>
             </scroll-area>
           </v-tab-item>
         </v-tabs>
@@ -109,9 +117,13 @@ export default {
     expandedItems: {
       baselayer: '',
       overlay: ''
-    }
+    },
+    customSlot: {}
   }),
   created () {
+    this.$root.$panel.setLayerCustomComponent = (component, props) => {
+      this.setCustomComponent(component, props)
+    }
     this.groups.forEach(l => { this.$set(l, 'visible', true) })
     this.overlays.list.forEach(l => { this.$set(l, '_visible', l.visible) })
 
@@ -157,6 +169,9 @@ export default {
     },
     expandItem (group, id) {
       this.expandedItems[group] = this.expandedItems[group] !== id ? id : ''
+    },
+    setCustomComponent (component, props) {
+      this.customSlot = {component, props}
     }
   }
 }

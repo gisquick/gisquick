@@ -26,7 +26,9 @@
           :expanded="expanded"
           :depth="depth + 1"
           @changed:visibility="$emit('changed:visibility')"
-          @expanded="(id) => $emit('expanded', id)" />
+          @expanded="(id) => $emit('expanded', id)">
+          <layer-slot slot="custom" slot-scope="props" :node="$scopedSlots.custom(props)"/>
+        </layer-item>
       </v-collapsible>
     </div>
 
@@ -70,6 +72,7 @@
           <div class="pb-1" />
         </div>
       </collapse-transition>
+      <slot name="custom" :layer="layer"/>
     </div>
 
 </template>
@@ -77,7 +80,16 @@
 <script>
 import Vue from 'vue'
 
+const LayerSlot = {
+  functional: true,
+  props: ['node'],
+  render (h, context) {
+    return context.props.node
+  }
+}
+
 export default Vue.component('layer-item', {
+  components: { LayerSlot },
   props: ['layer', 'expanded', 'depth'],
   data: () => ({
     collapsed: false
@@ -93,6 +105,9 @@ export default Vue.component('layer-item', {
     },
     toggleCollapsed () {
       this.collapsed = !this.collapsed
+    },
+    slotNode (layer) {
+      return this.$scopedSlots.custom({layer})
     }
   }
 })

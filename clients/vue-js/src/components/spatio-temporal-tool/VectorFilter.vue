@@ -4,7 +4,7 @@
     <v-select
       label="Select Attribute"
       :items="attributesOptions"
-      v-model="filter.attribute"
+      v-model="attribute"
     />
 
     <time-field
@@ -57,8 +57,8 @@ export default {
     return lastState || {
       step: 100,
       fixedRange: false,
+      attribute: null,
       filter: {
-        attribute: null,
         timeRange: [Number.MIN_VALUE, Number.MAX_VALUE]
       }
     }
@@ -67,23 +67,17 @@ export default {
     layers () {
       return Array.isArray(this.input) ? this.input : [this.input]
     },
-    allAttributes () {
+    layersAttributes () {
       return [...new Set(this.layers.map(l => l.original_time_attribute))]
     },
     attributesOptions () {
-      if (this.allAttributes.length > 1) {
-        return ['All attributes', ...this.allAttributes]
+      if (this.layersAttributes.length > 1) {
+        return ['All attributes', ...this.layersAttributes]
       }
-      return this.allAttributes
-    },
-    filterAttribute () {
-      if (this.allAttributes.includes(this.filter.attribute)) {
-        return this.filter.attribute
-      }
-      return this.allAttributes[0]
+      return this.layersAttributes
     },
     filterLayers () {
-      return this.layers.filter(l => l.original_time_attribute === this.filterAttribute)
+      return this.layers.filter(l => this.attribute === 'All attributes' || l.original_time_attribute === this.attribute)
     },
     range () {
       return {
@@ -97,24 +91,25 @@ export default {
         filters[layer.name] = this.createFilterString(layer, ...this.filter.timeRange)
       })
       return filters
-    },
-    // string filter identifier just for watcher
-    filterKey () {
-      return this.filterLayers.map(l => l.name) + ':' + this.filterAttribute
     }
   },
   watch: {
-    filterKey: {
+    layers: {
       immediate: true,
-      handler () {
-        const timeLayer = this.filterLayers.find(l => l.timeFilter)
+      handler (layers) {
+        this.attribute = layers.length > 1 ? 'All attributes' : this.layersAttributes[0]
+      }
+    },
+    filterLayers: {
+      immediate: true,
+      handler (layers) {
+        const timeLayer = layers.find(l => l.timeFilter)
         const timeRange = timeLayer ? timeLayer.timeFilter.timeRange : [Number.MIN_VALUE, Number.MAX_VALUE]
         // create new filter model and use it in all filtered layers
         this.filter = {
-          attribute: this.filterAttribute,
           timeRange
         }
-        this.filterLayers.forEach(l => this.$set(l, 'timeFilter', this.filter))
+        layers.forEach(l => this.$set(l, 'timeFilter', this.filter))
       }
     },
     range: {

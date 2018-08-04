@@ -4,7 +4,7 @@
     v-if="layer.timeFilter"
   >
     <v-icon>access_time</v-icon>
-    <span>{{ layer.timeFilter.attribute }} {{ layer.timeFilter.timeRange }}</span>
+    <span>{{ layer.original_time_attribute }} {{ layer.timeFilter.timeRange }}</span>
   </v-layout>
 </template>
 

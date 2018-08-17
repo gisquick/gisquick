@@ -13,20 +13,18 @@
 
 - name: Configure Xvfb service
   template:
-    src: init/xvfb.conf.j2
-    dest: /etc/init/xvfb.conf
+    src: systemd/xvfb.service
+    dest: /etc/systemd/system/xvfb.service
   become: yes
   notify:
     - service xvfb restart
 
 - name: Register Xvfb service
-  file:
-    src: /lib/init/upstart-job
-    dest: /etc/init.d/xvfb
-    state: link
+  command: systemctl  enable /etc/systemd/system/xvfb.service
   become: yes
   notify:
     - service xvfb restart
+
 
 - name: Start Xvfb service
   service:

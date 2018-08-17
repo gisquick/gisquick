@@ -3,7 +3,7 @@
 packages:
   - ant
   - expect
-  - openjdk-7-jdk
+  - openjdk-8-jdk
 
 # android
 android_sdk_url: http://dl.google.com/android

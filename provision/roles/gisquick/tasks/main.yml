@@ -19,7 +19,6 @@
     virtualenv_python: python3
     requirements: "{{ synced_folder }}/server/requirements.txt"
     virtualenv_site_packages: yes
-    extra_args: "--download-cache={{ synced_folder }}/dev/cache/pip"
     state: present
   tags:
     - dep-python
@@ -30,7 +29,6 @@
     virtualenv_python: python3
     requirements: "{{ synced_folder }}/server/requirements-dev.txt"
     virtualenv_site_packages: yes
-    extra_args: "--download-cache={{ synced_folder }}/dev/cache/pip"
     state: present
   tags:
     - dep-python
@@ -41,9 +39,13 @@
     &&
     source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
     &&
+    mkvirtualenv gislab-web
+    &&
     workon gisquick
     &&
-    add2virtualenv server
+    ln -sf python3 /home/{{ ansible_user }}/.virtualenvs/gislab-web/bin/python
+    &&
+    add2virtualenv {{ synced_folder }}/server
   args:
     chdir: "{{ synced_folder }}"
     executable: /bin/bash
@@ -147,6 +149,8 @@
     export WORKON_HOME="$HOME/.virtualenvs"
     &&
     source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
+    &&
+    mkvirtualenv gislab-web
     &&
     workon gisquick
     &&

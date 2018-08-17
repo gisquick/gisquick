@@ -8,9 +8,8 @@
 
 Vagrant.require_version ">= 1.7.0"
 
-BOX = "trusty-canonical-32"
-BOX_URL = "http://cloud-images.ubuntu.com/vagrant/trusty/current/trusty-server-cloudimg-i386-vagrant-disk1.box"
-
+BOX = "bionic-canonical-64"
+BOX_URL = "https://cloud-images.ubuntu.com/bionic/current/bionic-server-cloudimg-amd64-vagrant.box"
 
 Vagrant.configure(2) do |config|
   # fix for https://github.com/ansible/ansible/issues/8644

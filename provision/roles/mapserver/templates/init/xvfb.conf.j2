@@ -1,8 +1,0 @@
-description "Xvfb virtual framebuffer X server"
-start on (net-device-up
-          and local-filesystems
-          and runlevel [2345])
-stop on runlevel [016]
-respawn
-respawn limit 10 5
-exec /usr/bin/Xvfb :99 -screen 0 1024x768x24 -ac +extension GLX +render -noreset

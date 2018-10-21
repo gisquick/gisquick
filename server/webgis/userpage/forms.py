@@ -20,7 +20,7 @@ def _total_size(source):
 
 
 class UploadForm(forms.Form):
-    UPLOAD_FILE_TYPES = ['zip', 'x-compressed-tar', 'gzip']
+    UPLOAD_FILE_TYPES = ['zip', 'x-compressed-tar', 'gzip', 'x-zip-compressed']
     proj_file = forms.FileField()
 
 

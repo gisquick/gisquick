@@ -48,6 +48,9 @@ md-menu-item.md-indent .md-button {
   padding-left: 44px;
 }
 
+md-menu-item > a.md-button {
+  padding-top: 0;
+}
 md-menu-item .md-button {
   color: yellow;
 }

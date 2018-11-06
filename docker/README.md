@@ -11,6 +11,11 @@ Application is split into 3 services running in docker containers:
   - `/var/www/data/` - for sqlite database
   - `/var/www/media/` - for tilecache
 
+Build:
+```
+$ docker build -f docker/django/Dockerfile -t gisquick/django:1.0.0 --build-arg version=1.0.0 .
+```
+
 #### Nginx Server
 * Image: `gisquick/nginx`
 * Volumes:

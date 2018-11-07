@@ -4,7 +4,6 @@ FROM nginx
 RUN rm /etc/nginx/conf.d/default.conf
 
 COPY gisquick.template /etc/nginx/conf.d/
-COPY gisquick /etc/nginx/conf.d/gisquick/
 COPY proxy-parameters /etc/nginx/
 COPY ssl-parameters /etc/nginx/
 

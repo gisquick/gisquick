@@ -10,7 +10,7 @@ services:
 
   django:
     restart: always
-    image: gisquick/django
+    image: gisquick/django:1.0.0
     links:
       - qgisserver
     volumes:

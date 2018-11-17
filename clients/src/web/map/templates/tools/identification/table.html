@@ -100,7 +100,7 @@
                       </md-button>
                     </td>
                     <td ng-repeat="attribute in ::layer.attributes">
-                      {{ ::feature.get(attribute.name) }}
+                      {{ ::formatValue(feature, attribute.name) }}
                     </td>
                   </tr>
                 </tbody>

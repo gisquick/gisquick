@@ -41,10 +41,11 @@
             gl-blur-on-click
             gl-scrollbar="horizontal"
             class="attribute-table table-container">
-            <table>
+            <table ng-disabled="!layer.model.visible">
               <thead>
                 <tr class="header">
                   <th class="zoom header" width="10"></th>
+                  <th ng-if="::layer.info_template" class="header" width="10"></th>
                   <th
                     ng-repeat="attribute in ::layer.attributes"
                     class="header">
@@ -53,6 +54,8 @@
                 </tr>
                 <tr class="filter">
                   <th class="zoom" width="10"></th>
+                  <th ng-if="::layer.info_template" class="header" width="10"
+                    style="background-color: transparent"></th>
                   <th
                     ng-repeat="attribute in ::layer.attributes">
                     <div
@@ -120,8 +123,26 @@
                       </md-tooltip>
                     </md-button>
                   </td>
+                  <td
+                    class="icon"
+                    ng-if="::layer.info_template">
+                    <md-button
+                      aria-label="Info"
+                      class="icon-hover"
+                      ng-click="showInfoPanel(feature)">
+                      <md-icon
+                        md-svg-icon="circle-i-outline">
+                      </md-icon>
+                      <md-tooltip
+                        md-delay="2000"
+                        md-direction="right"
+                        class="multiline-tooltip">
+                        Show detail information
+                      </md-tooltip>
+                    </md-button>
+                  </td>
                   <td ng-repeat="attribute in ::layer.attributes">
-                    {{ ::feature.properties[attribute.name] }}
+                    {{ ::formatValue(feature, attribute.name) }}
                   </td>
                 </tr>
               </tbody>

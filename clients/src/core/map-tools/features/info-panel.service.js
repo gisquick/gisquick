@@ -50,10 +50,41 @@
       }
     }
 
+    function createScript(code) {
+      var scriptEl = document.createElement('script');
+      scriptEl.type = 'text/javascript';
+      scriptEl.innerHTML = code;
+      document.body.appendChild(scriptEl);
+      return scriptEl;
+    }
+
     InfoPanel.prototype.show = function(feature, layer, $scope) {
       var _this = this;
 
       if (!layer.info_template) return;
+
+      /*
+      if (projectProvider.data.info_panel) {
+        var componentName = 'Graph';
+        var template = angular.element('<div>'+projectProvider.data.info_panel.components.Graph+'</div>');
+        // var script = template.find('script');
+        console.log(projectProvider.data.info_panel);
+
+        var componentTemplate = template[0].querySelector('template').innerHTML;
+        var scriptEl = template[0].querySelector('script:not([src])');
+        window.createComponent = function(params) {
+          console.log('TODO: create component');
+          params = Object.assign({
+            scope: false,
+            template: componentTemplate
+          }, params);
+          console.log(params);
+          angular.module('gl.features').component(componentName, params);
+        }
+        createScript('createComponent('+scriptEl.innerHTML+')')
+          .setAttribute('component', componentName);
+      }
+      */
 
       if (this.activePanel && this.activePanel.layer === layer) {
         this.activePanel.scope.feature = feature;
@@ -101,7 +132,6 @@
           script.type = 'text/javascript';
           script.src = scriptElem.src;
           script.onload = function() {
-            console.log('loaded: '+script.src)
             if (++loaded === scriptElems.length) {
               loading.resolve();
             }

@@ -80,6 +80,7 @@
     }
 
     $scope.zoomToFeature = featuresViewer.zoomToFeature;
+    $scope.formatValue = featuresViewer.formatValue.bind(featuresViewer);
 
     $timeout(updateFeaturesTable);
   };

@@ -27,7 +27,7 @@
               attributes.push({
                 name: attr.name,
                 label: attr.alias || attr.name,
-                type: attr.type
+                type: attr.type.toUpperCase()
               });
             });
           }
@@ -201,6 +201,20 @@
         this.selectionControls[layername].getFeatures().clear();
       }
     }
+
+    FeaturesViewer.prototype.formatValue = function(feature, property) {
+      var layer = feature.getId().split('.')[0];
+      var value = feature.get(property);
+      var attr = this.layersAttributes[layer].find(function(a) {
+        return a.name === property;
+      });
+      if (attr.type === 'REAL') {
+        var precision = 4;
+        var power = Math.pow(10, precision || 0);
+        return String(Math.round(value * power) / power);
+      }
+      return value;
+    };
 
     return new FeaturesViewer();
   };

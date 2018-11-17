@@ -59,6 +59,7 @@
     <script type="text/javascript" src="core/ui/scrollbar.dir.js"></script>
     <script type="text/javascript" src="core/ui/progressbar.dir.js"></script>
     <script type="text/javascript" src="core/ui/paginator.dir.js"></script>
+    <script type="text/javascript" src="core/ui/drag.dir.js"></script>
 
     <script type="text/javascript" src="core/map-tools/tools.module.js"></script>
     <script type="text/javascript" src="core/map-tools/tools-manager.service.js"></script>
@@ -72,6 +73,7 @@
     <script type="text/javascript" src="core/map-tools/features/identification.ctrl.js"></script>
     <script type="text/javascript" src="core/map-tools/features/identification-table.ctrl.js"></script>
     <script type="text/javascript" src="core/map-tools/features/attribute-table.ctrl.js"></script>
+    <script type="text/javascript" src="core/map-tools/features/info-panel.service.js"></script>
     <script type="text/javascript" src="core/map-tools/measure/measure.module.js"></script>
     <script type="text/javascript" src="core/map-tools/measure/measure.ctrl.js"></script>
     <script type="text/javascript" src="core/map-tools/print/print.module.js"></script>
@@ -115,7 +117,6 @@
               projectData.ows_url = GISQUICK_SERVER+projectData.ows_url;
             }
           });
-
           // gislabClient.login('guest', '')
           gislabClient.login('vagrant', 'vagrant')
             .then(function() {

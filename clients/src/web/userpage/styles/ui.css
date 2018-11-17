@@ -155,6 +155,7 @@ md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {
 
 input[type="file"] {
   height: 36px;
+  padding: 0;
 }
 form {
   padding:16px;

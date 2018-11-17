@@ -39,7 +39,7 @@ $ openssl req -x509 -nodes -days 3650 -newkey rsa:2048 \
 ### Certbot (LetsEncrypt) certificate
 
 
-Create empty folders for data volumes mounted by containers
+Create empty folders for data volumes mounted by nginx container
 ```
 $ mkdir -p /var/www/certbot
 $ mkdir -p /etc/letsencrypt
@@ -52,7 +52,7 @@ $ docker run --rm -it \
     -v "/etc/letsencrypt/:/etc/letsencrypt/" \
     -p 80:80 -p 443:443 \
     certbot/certbot certonly --standalone --agree-tos \
-    --email info@gisquick.org \
+    --email admin@gisquick.org \
     -d projects.gisquick.org
 ```
 

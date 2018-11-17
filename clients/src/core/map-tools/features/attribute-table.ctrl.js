@@ -5,7 +5,7 @@
     .module('gl.features')
     .controller('AttributeTableController', AttributeTableController);
 
-  function AttributeTableController($scope, $timeout, projectProvider, gislabClient, featuresViewer, tool) {
+  function AttributeTableController($scope, $timeout, projectProvider, gislabClient, featuresViewer, infoPanel, tool) {
     // console.log('AttributeTableController: INIT');
     featuresViewer.initialize();
     $scope.tool = tool;
@@ -128,7 +128,9 @@
           name: layer.name,
           index: layers.length,
           attributes: attributes,
-          features: []
+          info_template: layer.info_template,
+          features: [],
+          model: layer
         });
       }
     });
@@ -184,7 +186,10 @@
         '/filter/?PROJECT={0}'.format(projectProvider.data.project),
         wfsParams)
         .then(function (data) {
-          $scope.activeLayer.features = data.features;
+          var parser = new ol.format.GeoJSON();
+          var features = parser.readFeatures(data);
+          $scope.activeLayer.features = features;
+          // $scope.activeLayer.features = data.features;
         });
     };
 
@@ -201,6 +206,11 @@
       });
       fetchFeatures(filters);
     };
+
+    $scope.showInfoPanel = function(feature) {
+      infoPanel.show(feature, $scope.activeLayer, $scope);
+    }
+    $scope.formatValue = featuresViewer.formatValue.bind(featuresViewer);
 
     $scope.$on("$destroy", function() {
       // console.log('AttributeTableController: DESTROY');

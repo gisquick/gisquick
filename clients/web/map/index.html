@@ -82,7 +82,7 @@
     <script type="text/javascript" src="core/map-tools/location/location.service.js"></script>
 
     <script type="text/javascript">
-      var GISQUICK_SERVER = 'https://localhost:8000';
+      var GISQUICK_SERVER = 'http://localhost:8000';
       // var GISQUICK_SERVER = 'https://192.168.0.153:8000';
       var projectPath = goog.uri.utils.getParamValue(location.search, "PROJECT");
 
@@ -118,7 +118,7 @@
             }
           });
           // gislabClient.login('guest', '')
-          gislabClient.login('vagrant', 'vagrant')
+          gislabClient.login('user1', 'user1')
             .then(function() {
               gislabClient.project(projectPath)
                 .then(function(projectData) {

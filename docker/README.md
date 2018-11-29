@@ -13,7 +13,7 @@ Application is split into 3 services running in docker containers:
 
 Build:
 ```
-$ docker build -f docker/django/Dockerfile -t gisquick/django:1.0.0 --build-arg version=1.0.0 .
+$ docker build -f docker/django/Dockerfile -t gisquick/django:1.0 --build-arg version=1.0 .
 ```
 
 #### Nginx Server
@@ -103,3 +103,16 @@ Then you can create users programmatically
 from django.contrib.auth import get_user_model
 get_user_model().objects.create_user('user', email='user@gisquick.org', password='user', first_name='User')
 ```
+
+
+## Web client development
+
+Setup folders for published projects, data and media files and create user with username 'user1' and password 'user1'.
+Then start docker containers:
+
+```
+$ docker build -t gisquick/js-dev:alpine -f docker/client/alpine/Dockerfile .
+$ docker-compose -f docker/docker-compose-dev-client.yml up
+```
+
+Open http://localhost:8100

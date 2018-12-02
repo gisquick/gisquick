@@ -1,5 +1,6 @@
 import json
 
+from django.conf import settings
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import login
@@ -60,6 +61,10 @@ def map(request):
                 raise RuntimeError("Anonymous user is not configured")
         data['user'] = get_user_data(request.user)
         data['project'] = get_project(request)
+        data['app'] = {
+            'version': webgis.VERSION,
+            'reset_password_url': getattr(settings, 'RESET_PASSWORD_URL', '')
+        }
 
     except InvalidProjectException as e:
         return render(

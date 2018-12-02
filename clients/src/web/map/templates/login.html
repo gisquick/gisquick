@@ -50,7 +50,7 @@
         layout="row"
         class="secondary-buttons-container">
         <md-button
-          flex="50"
+          flex
           md-no-ink
           aria-label="Continue as Guest"
           ng-show="continueAsGuest"
@@ -59,10 +59,19 @@
           Continue as Guest
         </md-button>
         <md-button
-          flex="50"
+          flex
+          md-no-ink
+          aria-label="Forgot password"
+          ng-if="!continueMode && resetPasswordUrl"
+          class="link-button right"
+          ng-href="{{ ::resetPasswordUrl }}">
+          Forgot password?
+        </md-button>
+        <md-button
+          flex
           md-no-ink
           aria-label="Switch account"
-          ng-show="continueMode"
+          ng-if="continueMode"
           class="link-button right"
           ng-click="switchAccount()">
           Switch account

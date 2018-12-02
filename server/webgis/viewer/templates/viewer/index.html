@@ -34,6 +34,7 @@
           var data = JSON.parse('{{ jsonData|default:"{}"|escapejs }}');
           gislabClient.userInfo = data.user;
           projectProvider.setProjectData(data.project);
+          window.app = data.app;
         })
         .decorator('mdTooltipDirective',function($delegate) {
           var onTouchDevice = navigator.maxTouchPoints > 0;

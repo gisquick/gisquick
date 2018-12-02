@@ -124,6 +124,7 @@
 
     $scope.projectInfo = projectInfo;
     $scope.continueMode = gislabClient.userInfo.is_guest === false;
+    $scope.resetPasswordUrl = window.app && window.app.reset_password_url;
     $scope.form = {
       username: $scope.continueMode? gislabClient.userInfo.username : '',
       password: $scope.continueMode? '********' : ''

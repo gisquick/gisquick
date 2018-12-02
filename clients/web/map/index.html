@@ -83,9 +83,11 @@
 
     <script type="text/javascript">
       var GISQUICK_SERVER = 'http://localhost:8000';
-      // var GISQUICK_SERVER = 'https://192.168.0.153:8000';
       var projectPath = goog.uri.utils.getParamValue(location.search, "PROJECT");
-
+      window.app = {
+        version: 'dev',
+        reset_password_url: ''
+      }
       angular.module('gl.web')
         .constant('staticResources', {
           'text-logo': 'web/styles/text_logo.svg',

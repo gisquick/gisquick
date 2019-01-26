@@ -40,7 +40,7 @@ services:
     ports:
       - "443:443"
     environment:
-      - NGINX_HOST=server
+      - NGINX_HOST=localhost
     logging:
       driver: json-file
       options:

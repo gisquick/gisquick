@@ -16,6 +16,7 @@
       'gl.features',
       'gl.measure',
       'gl.print',
-      'gl.location'
+      'gl.location',
+      'gl.opacity'
     ]);
 })();

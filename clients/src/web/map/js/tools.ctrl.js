@@ -543,6 +543,50 @@
         });
       }
 
+       /** **********************************************
+       ***************    Opacity Tool    **************
+       *************************************************/
+      toolsManager.addTool({
+        name: 'opacity',
+        tooltip: 'Opacity',
+        ui: {
+          icon: 'ruler',
+          primaryPanel: {
+            title: 'layer opacity',
+            template: 'templates/tools/opacity.html'
+          }
+        },
+        config: {
+          markerIcon: 'plus',
+          opacityLayer: '_all_',
+          singleLayerResult: false,
+          rowsPerPage: 5,
+          limit: 10,
+          featureAutoselect: false,
+          mapView: glPanelManager.mapView
+        },
+        data: {
+          layers: [],
+          activeLayer: null,
+          activeLayerIndex: null,
+          opacityValue: null
+        },
+        events: {
+          toolActivated: angular.noop,
+          toolDeactivated: angular.noop,
+          unitsChanged: angular.noop
+        },
+        initialize: function() {
+          this.events.toolActivated();
+        },
+        activate: function() {
+          this.events.toolActivated();
+        },
+        deactivate: function() {
+          this.events.toolDeactivated();
+        }
+      });
+
       $scope.fullScreenTool.initialize();
       toolsManager.tools.forEach(function(tool) {
         tool.initialize();

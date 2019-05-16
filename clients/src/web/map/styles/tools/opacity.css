@@ -1,0 +1,6 @@
+
+.opacity-slider .md-thumb::after,
+.opacity-slider .md-track-fill {
+  background-color: rgb(0, 170, 212) !important;
+  border-color: rgb(0, 170, 212) !important;
+}

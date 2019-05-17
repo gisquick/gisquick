@@ -67,15 +67,15 @@ RUN mkdir -p /var/www/gisquick && \
     mkdir -p /var/log/gunicorn/ && \
     django-admin startproject --template=/usr/local/lib/python3.5/dist-packages/webgis/conf/project_template/ djproject /var/www/gisquick/
 
-COPY ./docker/django-new/settings_custom.py /var/www/gisquick/djproject/settings_custom.py
+COPY ./docker/django/settings_custom.py /var/www/gisquick/djproject/settings_custom.py
 
 ENV PYTHONPATH $PYTHONPATH:/var/www/gisquick/
 ENV DJANGO_SETTINGS_MODULE djproject.settings
 
 
 # Configure Gunicorn and Supervisor
-COPY ./docker/django-new/gunicorn_conf.py /var/www/gisquick/gunicorn_conf.py
-COPY ./docker/django-new/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY ./docker/django/gunicorn_conf.py /var/www/gisquick/gunicorn_conf.py
+COPY ./docker/django/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 
 VOLUME /var/www/gisquick/static/

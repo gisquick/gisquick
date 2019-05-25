@@ -123,6 +123,9 @@
             comparators: comparators[attr.type]
           });
         });
+
+        console.log('LAYER: ', layer);
+
         layers.push({
           title: layer.title,
           name: layer.name,

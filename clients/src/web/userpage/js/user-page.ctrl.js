@@ -128,6 +128,7 @@
     }
 
     $scope.updateTableTempaltes = function(project) {
+      console.log('UPDATE TEMPLATES!!!');
       gislabClient.post('/project/templates/', {project: project.project})
         .then(function() {
           showNotification('Updated');

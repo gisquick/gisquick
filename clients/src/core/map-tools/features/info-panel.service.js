@@ -61,6 +61,9 @@
     InfoPanel.prototype.show = function(feature, layer, $scope) {
       var _this = this;
 
+      console.log('FEATURE:', feature);
+      console.log('LAYER:', layer);
+
       if (!layer.info_template) return;
 
       /*

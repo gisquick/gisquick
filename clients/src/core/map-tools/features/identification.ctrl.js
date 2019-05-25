@@ -8,14 +8,33 @@
   function IdentificationController($scope, $timeout, $mdIcon,
       projectProvider, layersControl, gislabClient, featuresViewer, infoPanel) {
     console.log('IdentificationController: INIT');
+
     var tool = $scope.tool;
     var mapClickListener;
+
+    console.log('PP: ', projectProvider);
+
+
+    $scope.updateTableTempaltes = function(project) {
+      console.log('UPDATE TEMPLATES!!!');
+      gislabClient.post('/project/templates/', {project: projectProvider.data.ows_project})
+        .then(function() {
+          console.log('Updated')
+          // showNotification('Updated');
+        }, function() {
+          console.log('Failed to update templates', 'error')
+          // showNotification('Failed to update templates', 'error');
+        });
+    }
+    $scope.updateTableTempaltes();
+
 
     $scope.tool.events.toolActivated = function() {
       featuresViewer.initialize();
       if (tool.data.layers.length === 0) {
         // prepare data model for all queryable layers
         projectProvider.layers.list.forEach(function(layer) {
+
           if (layer.queryable) {
             tool.data.layers.push({
               title: layer.title,

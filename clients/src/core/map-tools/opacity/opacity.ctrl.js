@@ -6,24 +6,24 @@
     .controller('OpacityController', OpacityController);
 
   function OpacityController($scope, $timeout, projectProvider, layersControl, featuresViewer) {
-    console.log('OpacityController: INIT');
+    // console.log('OpacityController: INIT');
     var tool = $scope.tool;
-    var layerName;
-
-    $scope.tool.events.toolActivated = function() {
-      $scope.setLayer(); 
-    }
-
-    $scope.setLayer = function() {
-      layerName = $scope.tool.config.opacityLayer === '_all_' ?
-        layersControl.getVisibleLayers(projectProvider.map).join(",") :
-        $scope.tool.config.opacityLayer;
-    }
+    var qgislayer;
 
     $scope.changeOpacity = function() {
-      // console.log(layerName);
-      // console.log($scope.tool.data.opacityValue)
-    }
+      qgislayer.setOpacity($scope.tool.data.opacityValue / 100);
+    };
+
+    $scope.tool.events.toolActivated = function() {
+      qgislayer = projectProvider.map.getLayerGroup().getLayers().getArray().filter(function (layer) {
+        return layer.get('type') && layer.get('type') === 'qgislayer';
+      })[0];
+      $scope.changeOpacity();  
+    };
+
+    $scope.tool.events.toolDeactivated = function() {
+      qgislayer.setOpacity(1);
+    };
 
   }
 })();

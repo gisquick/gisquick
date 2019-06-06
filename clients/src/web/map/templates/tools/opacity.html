@@ -3,7 +3,7 @@
   class="panel-tool identification-form"
   ng-controller="OpacityController">
 
-  <md-input-container>
+  <!-- <md-input-container>
     <label class="md-label md-no-float">Layer</label>
     <md-select
       md-no-ink
@@ -21,10 +21,11 @@
         {{layer.title}}
       </md-option>
     </md-select>
-  </md-input-container>
+  </md-input-container> -->
 
   <md-input-container>
     <md-slider
+      aria-label="opacity-slider"
       class="opacity-slider" 
       ng-model="tool.data.opacityValue" 
       min="0" max="100"

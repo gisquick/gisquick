@@ -550,9 +550,9 @@
         name: 'opacity',
         tooltip: 'Opacity',
         ui: {
-          icon: 'ruler',
+          icon: 'opacity',
           primaryPanel: {
-            title: 'layer opacity',
+            title: 'overlay layers opacity',
             template: 'templates/tools/opacity.html'
           }
         },

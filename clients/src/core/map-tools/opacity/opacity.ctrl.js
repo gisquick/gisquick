@@ -7,6 +7,7 @@
 
   function OpacityController($scope, $timeout, projectProvider, layersControl, featuresViewer) {
     // console.log('OpacityController: INIT');
+    $scope.tool.data.opacityValue = 100;
     var tool = $scope.tool;
     var qgislayer;
 

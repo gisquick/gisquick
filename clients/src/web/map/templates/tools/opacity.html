@@ -1,35 +1,28 @@
 <div
   layout="column"
-  class="panel-tool identification-form"
+  class="panel-tool opacity-form"
   ng-controller="OpacityController">
 
-  <!-- <md-input-container>
-    <label class="md-label md-no-float">Layer</label>
-    <md-select
-      md-no-ink
-      md-container-class="left-panel"
-      ng-change="setLayer()"
-      ng-model="tool.config.opacityLayer"><span ></span>
-      <md-option
-        gl-parent-scrollbar="vertical"
-        value="_all_">
-        All visible layers
-      </md-option>
-      <md-option
-        ng-repeat="layer in project.layers.list | filter:{queryable:true, visible:true}"
-        value="{{ layer.name }}">
-        {{layer.title}}
-      </md-option>
-    </md-select>
-  </md-input-container> -->
+  <div layout="row">
+    <label flex="100">Opacity</label>
+  </div>
+
+  <div layout="row">
+    <div
+      flex="100"
+      class="field .md-whiteframe-1dp">
+      {{ tool.data.opacityValue }} %
+    </div>
+  </div>
 
   <md-input-container>
     <md-slider
       aria-label="opacity-slider"
       class="opacity-slider" 
-      ng-model="tool.data.opacityValue" 
+      ng-model="tool.data.opacityValue"
       min="0" max="100"
       ng-change="changeOpacity()">
     </md-slider>
   </md-input-container>
+  
 </div>

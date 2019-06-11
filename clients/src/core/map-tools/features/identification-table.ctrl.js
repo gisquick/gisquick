@@ -9,6 +9,9 @@
   function IdentificationTableController($scope, $timeout, featuresViewer, infoPanel, tool) {
     $scope.tool = tool;
 
+
+
+
     function updateFeaturesTable() {
       tool.config.singleLayerResult = tool.config.identificationLayer !== '_all_';
       if (tool.data.activeLayer && tool.data.activeLayer.features.length > 0) {
@@ -39,6 +42,9 @@
           tool.data.activeLayer = null;
           // featuresViewer.removeAllFeatures();
         }
+      }
+      if(tool.data.activeLayer && tool.data.activeLayer.info_template) {
+        $scope.showInfoPanel(tool.data.activeLayer.features[0]);
       }
     }
 

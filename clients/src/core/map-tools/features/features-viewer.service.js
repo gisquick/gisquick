@@ -204,6 +204,7 @@
 
     FeaturesViewer.prototype.formatValue = function(feature, property) {
       var layer = feature.getId().split('.')[0];
+      layer = this.layersAttributes[layer] ? layer : layer.replace('_', ' ');
       var value = feature.get(property);
       var attr = this.layersAttributes[layer].find(function(a) {
         return a.name === property;

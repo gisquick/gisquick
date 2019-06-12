@@ -202,14 +202,14 @@
       }
     }
 
-    FeaturesViewer.prototype.formatValue = function(feature, property) {
+    FeaturesViewer.prototype.formatValue = function (feature, property) {
       var layer = feature.getId().split('.')[0];
       layer = this.layersAttributes[layer] ? layer : layer.replace('_', ' ');
       var value = feature.get(property);
-      var attr = this.layersAttributes[layer].find(function(a) {
+      var attr = this.layersAttributes[layer] ? this.layersAttributes[layer].find(function (a) {
         return a.name === property;
-      });
-      if (attr.type === 'REAL') {
+      }) : null;
+      if (attr && attr.type === 'REAL') {
         var precision = 4;
         var power = Math.pow(10, precision || 0);
         return String(Math.round(value * power) / power);

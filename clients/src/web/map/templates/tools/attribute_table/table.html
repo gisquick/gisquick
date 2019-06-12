@@ -102,7 +102,8 @@
               <tbody>
                 <tr
                   ng-repeat="feature in layer.features | limitTo: tool.config.rowsPerPage: (layer.features.page - 1) * tool.config.rowsPerPage"
-                  ng-class="{'md-selected': tool.selectedFeature === feature}">
+                  ng-class="{'md-selected': tool.selectedFeature === feature}"
+                  ng-dblclick="showInfoPanel(feature)">
                   <td class="icon">
                     <md-button
                       class="icon-hover"

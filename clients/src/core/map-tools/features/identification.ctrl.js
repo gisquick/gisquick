@@ -12,11 +12,8 @@
     var tool = $scope.tool;
     var mapClickListener;
 
-    console.log('PP: ', projectProvider);
-
-
     $scope.updateTableTempaltes = function(project) {
-      console.log('UPDATE TEMPLATES!!!');
+      console.log('UPDATE TEMPLATES');
       gislabClient.post('/project/templates/', {project: projectProvider.data.ows_project})
         .then(function() {
           console.log('Updated')

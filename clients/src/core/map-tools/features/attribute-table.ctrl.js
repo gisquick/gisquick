@@ -118,13 +118,11 @@
         layer.attributes.forEach(function(attr) {
           attributes.push({
             label: attr.alias || attr.name,
-            //type: attr.type,
+            type: attr.type.toUpperCase(),
             name: attr.name,
             comparators: comparators[attr.type]
           });
         });
-
-        console.log('LAYER: ', layer);
 
         layers.push({
           title: layer.title,

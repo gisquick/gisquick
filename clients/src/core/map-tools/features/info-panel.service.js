@@ -86,7 +86,7 @@
       }
       */
 
-      if (this.activePanel && this.activePanel.layer === layer) {
+      if (this.activePanel && this.activePanel.scope.layer === layer) {
         this.activePanel.scope.feature = feature;
         this.activePanel.scope.data = feature.getProperties();
         if (this.activePanel.isHidden) {

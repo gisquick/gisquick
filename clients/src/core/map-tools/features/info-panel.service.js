@@ -61,7 +61,7 @@
     InfoPanel.prototype.show = function(feature, layer, $scope) {
       var _this = this;
 
-      if (!layer.info_template) return;
+      if (!layer || !layer.info_template) return;
 
       /*
       if (projectProvider.data.info_panel) {

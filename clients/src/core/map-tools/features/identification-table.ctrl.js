@@ -43,11 +43,8 @@
           // featuresViewer.removeAllFeatures();
         }
       }
-      if(tool.data.activeLayer && tool.data.activeLayer.info_template) {
-        $scope.showInfoPanel(tool.data.activeLayer.features[0]);
-      }
     }
-
+    
     tool.events.featuresChanged = function() {
       updateFeaturesTable();
       if (infoPanel.isOpen()) {

@@ -148,6 +148,17 @@
       }
     });*/
 
+    function showInfoPanel(feature) {
+      var fid = feature.getId();
+      var layername = Layers.wfs2project[
+        fid.substring(0, fid.lastIndexOf('.'))
+      ];
+      var activeLayer = tool.data.layers.filter(function(layer) {
+        return layer.name === layername
+      })[0];
+      infoPanel.show(feature, activeLayer, $scope)
+    };
+
     function setFeatures (features) {
       // organize features by layer name
       var layersFeatures = {};
@@ -172,7 +183,8 @@
       });
       tool.data.totalFeaturesCount = features.length;
       tool.showTable();
-    }
+      showInfoPanel(features[0]);
+    };
 
     $scope.tool.events.toolDeactivated = function() {
       // console.log('IdentificationController: DESTROY');

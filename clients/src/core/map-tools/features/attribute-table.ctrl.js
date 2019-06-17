@@ -217,6 +217,9 @@
       // console.log('AttributeTableController: DESTROY');
       featuresViewer.setActiveFeaturesLayer('');
       featuresViewer.selectFeature(null);
+      if (infoPanel.isOpen()) {
+        infoPanel.close();
+      }
     });
   };
 })();

@@ -15,9 +15,23 @@ from webgis.viewer import forms
 from webgis.viewer.views.reverse import map_url
 from webgis.viewer.views.project_utils import get_project, \
     get_user_data, InvalidProjectException
+from django.views.generic.base import RedirectView
 
 
 from django.views.decorators.csrf import ensure_csrf_cookie
+
+
+class MapRedirectView(RedirectView):
+    permanent = False
+    query_string = True
+    pattern_name = 'project_name'
+
+    def get_redirect_url(self, *args, **kwargs):
+        return "/?PROJECT={prefix}{project}".format(
+            prefix=getattr(settings, 'GISQUICK_DEFAULT_PROJECT_NAMESPACE', ''),
+            project=kwargs["project_name"])
+
+
 
 @csrf_exempt
 @ensure_csrf_cookie
@@ -49,6 +63,7 @@ def client_login(request):
 def client_logout(request):
     logout(request)
     return HttpResponse(" ", status=200)
+
 
 def map(request):
     data = {}

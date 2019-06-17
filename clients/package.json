@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "openlayers": "3.14.0",
+    "closure-util": "",
     "proj4": "2.3.12",
     "crypto-js": "",
     "gulp": "^3.9.0",
@@ -32,7 +33,10 @@
     "jshint": "2.8.0",
     "jshint-stylish": "",
     "gulp-if": "^2.0.0",
-    "merge-stream": "^1.0.0"
+    "merge-stream": "^1.0.0",
+    "natives":"1.0.2",
+    "acorn": "2.6.4"
+
   },
   "ext": [],
   "maintainers": [],

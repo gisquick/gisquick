@@ -10,9 +10,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python-setuptools \
     python-pip \
     git \
+    apt-utils \
     patch \
     openjdk-8-jre \
     curl \
+    make \
+    g++ \
     && rm -rf /var/lib/apt/lists/*
 
 

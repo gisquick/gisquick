@@ -1,0 +1,29 @@
+
+.opacity-slider .md-thumb::after,
+.opacity-slider .md-track-fill {
+  background-color: rgb(0, 170, 212) !important;
+  border-color: rgb(0, 170, 212) !important;
+}
+
+.opacity-form md-input-container {
+  margin: 0 5px 10px;
+}
+
+.opacity-form .layout-row {
+  padding: 0 5px;
+}
+
+.opacity-form label {
+  font-size: 13.5px;
+  color: #777;
+  margin-top: 5px;
+  margin-bottom: 4px;
+}
+
+.opacity-form .field {
+  border-bottom: 1px solid #ccc;
+  height: 28px;
+  font-size: 16px;
+  line-height: 26px;
+  margin-top: 4px;
+}

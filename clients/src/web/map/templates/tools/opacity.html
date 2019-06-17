@@ -1,0 +1,28 @@
+<div
+  layout="column"
+  class="panel-tool opacity-form"
+  ng-controller="OpacityController">
+
+  <div layout="row">
+    <label flex="100">Opacity</label>
+  </div>
+
+  <div layout="row">
+    <div
+      flex="100"
+      class="field .md-whiteframe-1dp">
+      {{ tool.data.opacityValue }} %
+    </div>
+  </div>
+
+  <md-input-container>
+    <md-slider
+      aria-label="opacity-slider"
+      class="opacity-slider" 
+      ng-model="tool.data.opacityValue"
+      min="0" max="100"
+      ng-change="changeOpacity()">
+    </md-slider>
+  </md-input-container>
+  
+</div>

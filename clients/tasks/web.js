@@ -39,7 +39,7 @@ gulp.task('csss', function() {
 
   return merge(
     gulp.src([
-      'node_modules/openlayers/dist/ol.css',
+      'ol3/ol.css',
       'node_modules/gislab-web/node_modules/angular-material/angular-material.css',
       'node_modules/gislab-web/node_modules/simple-scrollbar/simple-scrollbar.css',
       // 'src/simple-scrollbar/simple-scrollbar.css',
@@ -67,12 +67,12 @@ gulp.task('csss', function() {
 /**
  * Build library dependencies
  */
- gulp.task('deps', ['build-ol3'], function() {
+ gulp.task('deps', function() {
 
   var gulpif = require('gulp-if');
   return merge(
     // copy compiled ol3+deps
-    gulp.src('node_modules/openlayers/build/ol3-deps.min.js')
+    gulp.src('ol3/ol3-deps.min.js')
       .pipe(concat('ol3-deps.min.js'))
       .pipe(gulp.dest(TARGET + 'js/')),
 

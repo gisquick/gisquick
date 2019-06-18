@@ -1,4 +1,3 @@
-# multistage build requires at least docker-ce 17.06
 
 FROM ubuntu:16.04 AS builder
 MAINTAINER Marcel Dancak "dancakm@gmail.com"
@@ -12,7 +11,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     apt-utils \
     patch \
-    openjdk-8-jre \
     curl \
     make \
     g++ \

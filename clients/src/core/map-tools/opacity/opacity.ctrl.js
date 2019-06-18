@@ -16,9 +16,7 @@
     };
 
     $scope.tool.events.toolActivated = function() {
-      qgislayer = projectProvider.map.getLayerGroup().getLayers().getArray().filter(function (layer) {
-        return layer.get('type') && layer.get('type') === 'qgislayer';
-      })[0];
+      qgislayer = projectProvider.map.getLayer('qgislayer');
       $scope.changeOpacity();  
     };
 

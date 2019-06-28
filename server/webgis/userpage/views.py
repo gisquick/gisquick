@@ -127,8 +127,6 @@ def update_table_templates(request):
 
                 for filename in filter(lambda f: f.endswith('.html'), os.listdir(templates_dir)):
                     lname = os.path.splitext(filename)[0]
-                    print('\n'.join(lname))
-
                     if lname in layers:
                         layer = layers[lname]
                         with open(os.path.join(templates_dir, filename)) as temp:

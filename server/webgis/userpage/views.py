@@ -94,8 +94,8 @@ def upload_file(request):
 
     raise Http404
 
-# @login_required
-@csrf_exempt
+@login_required
+# @csrf_exempt
 def update_table_templates(request):
     params = json.loads(request.body.decode('utf-8'))
     project = params['project']
@@ -119,23 +119,23 @@ def update_table_templates(request):
 
             templates_dir = os.path.join(os.path.dirname(metafile), 'info_panel')
             if os.path.exists(templates_dir):
-                for lname in layers:
-                    layer = layers[lname]
-                    with open(os.path.join(templates_dir, 'general.html')) as temp:
-                        template = temp.read()
-                        layer['info_template'] = template
+                # for lname in layers:
+                #     layer = layers[lname]
+                #     with open(os.path.join(templates_dir, 'general.html')) as temp:
+                #         template = temp.read()
+                #         layer['info_template'] = template
 
-                # for filename in filter(lambda f: f.endswith('.html'), os.listdir(templates_dir)):
-                #     lname = os.path.splitext(filename)[0]
-                #     print('\n'.join(lname))
+                for filename in filter(lambda f: f.endswith('.html'), os.listdir(templates_dir)):
+                    lname = os.path.splitext(filename)[0]
+                    print('\n'.join(lname))
 
-                #     if lname in layers:
-                #         layer = layers[lname]
-                #         with open(os.path.join(templates_dir, filename)) as temp:
-                #             template = temp.read()
-                #             layer['info_template'] = template
-                #     else:
-                #         logging.warn('Unknown Layer Template: %s', lname)
+                    if lname in layers:
+                        layer = layers[lname]
+                        with open(os.path.join(templates_dir, filename)) as temp:
+                            template = temp.read()
+                            layer['info_template'] = template
+                    else:
+                        logging.warn('Unknown Layer Template: %s', lname)
             else:
                 # remove existing templates
                 for layer in layers:

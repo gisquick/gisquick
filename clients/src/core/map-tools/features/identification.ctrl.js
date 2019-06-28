@@ -12,20 +12,6 @@
     var tool = $scope.tool;
     var mapClickListener;
 
-    $scope.updateTableTempaltes = function(project) {
-      console.log('UPDATE TEMPLATES');
-      gislabClient.post('/project/templates/', {project: projectProvider.data.ows_project})
-        .then(function() {
-          console.log('Updated')
-          // showNotification('Updated');
-        }, function() {
-          console.log('Failed to update templates', 'error')
-          // showNotification('Failed to update templates', 'error');
-        });
-    }
-    $scope.updateTableTempaltes();
-
-
     $scope.tool.events.toolActivated = function() {
       featuresViewer.initialize();
       if (tool.data.layers.length === 0) {

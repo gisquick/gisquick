@@ -8,6 +8,7 @@
   function IdentificationController($scope, $timeout, $mdIcon,
       projectProvider, layersControl, gislabClient, featuresViewer, infoPanel) {
     console.log('IdentificationController: INIT');
+
     var tool = $scope.tool;
     var mapClickListener;
 
@@ -16,6 +17,7 @@
       if (tool.data.layers.length === 0) {
         // prepare data model for all queryable layers
         projectProvider.layers.list.forEach(function(layer) {
+
           if (layer.queryable) {
             tool.data.layers.push({
               title: layer.title,
@@ -132,6 +134,17 @@
       }
     });*/
 
+    function showInfoPanel(feature) {
+      var fid = feature.getId();
+      var layername = Layers.wfs2project[
+        fid.substring(0, fid.lastIndexOf('.'))
+      ];
+      var activeLayer = tool.data.layers.filter(function(layer) {
+        return layer.name === layername
+      })[0];
+      infoPanel.show(feature, activeLayer, $scope)
+    };
+
     function setFeatures (features) {
       // organize features by layer name
       var layersFeatures = {};
@@ -156,7 +169,8 @@
       });
       tool.data.totalFeaturesCount = features.length;
       tool.showTable();
-    }
+      showInfoPanel(features[0]);
+    };
 
     $scope.tool.events.toolDeactivated = function() {
       // console.log('IdentificationController: DESTROY');

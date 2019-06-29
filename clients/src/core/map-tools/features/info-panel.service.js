@@ -61,7 +61,7 @@
     InfoPanel.prototype.show = function(feature, layer, $scope) {
       var _this = this;
 
-      if (!layer.info_template) return;
+      if (!layer || !layer.info_template) return;
 
       /*
       if (projectProvider.data.info_panel) {
@@ -86,7 +86,7 @@
       }
       */
 
-      if (this.activePanel && this.activePanel.layer === layer) {
+      if (this.activePanel && this.activePanel.scope.layer === layer) {
         this.activePanel.scope.feature = feature;
         this.activePanel.scope.data = feature.getProperties();
         if (this.activePanel.isHidden) {

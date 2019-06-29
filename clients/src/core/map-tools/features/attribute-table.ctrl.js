@@ -118,11 +118,12 @@
         layer.attributes.forEach(function(attr) {
           attributes.push({
             label: attr.alias || attr.name,
-            //type: attr.type,
+            type: attr.type.toUpperCase(),
             name: attr.name,
             comparators: comparators[attr.type]
           });
         });
+
         layers.push({
           title: layer.title,
           name: layer.name,
@@ -216,6 +217,9 @@
       // console.log('AttributeTableController: DESTROY');
       featuresViewer.setActiveFeaturesLayer('');
       featuresViewer.selectFeature(null);
+      if (infoPanel.isOpen()) {
+        infoPanel.close();
+      }
     });
   };
 })();

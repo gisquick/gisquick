@@ -165,6 +165,12 @@
             }
           }
 
+          $scope.toolsManager.activateTool(
+            toolsManager.tools.filter(function (tool) {
+              return tool.name === "identification";
+            })[0]
+          );
+
         }, 2000);
       }
     }

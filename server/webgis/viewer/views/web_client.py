@@ -27,9 +27,8 @@ class MapRedirectView(RedirectView):
     pattern_name = 'project_name'
 
     def get_redirect_url(self, *args, **kwargs):
-        return "/?PROJECT={prefix}{project}".format(
-            prefix=getattr(settings, 'GISQUICK_DEFAULT_PROJECT_NAMESPACE', ''),
-            project=kwargs["project_name"])
+        return "/?PROJECT={user}/{project}/{project}".format(
+            user="mapotip", project=kwargs["project_name"])
 
 
 

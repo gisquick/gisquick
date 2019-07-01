@@ -30,6 +30,7 @@ services:
     volumes:
       - ../clients/src:/gisquick/clients/src
       - ../clients/web:/gisquick/clients/web
+      - ./_data/publish:/publish
     ports:
       - "8100:8100"
       - "35729:35729"

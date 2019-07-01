@@ -107,7 +107,18 @@ get_user_model().objects.create_user('user', email='user@gisquick.org', password
 
 ## Web client development
 
-Setup folders for published projects, data and media files and create user with username 'user1' and password 'user1'.
+Setup folders for published projects, data and media files 
+
+```
+mkdir _data
+mkdir _data/data; mkdir _data/etc; _data/publish; mkdir _data/static; mkdir
+_data/var
+
+mkdir _data/publish/user1
+cd  _data/publish/user1
+unzip prague.zip
+```
+
 Then start docker containers:
 
 ```
@@ -115,4 +126,14 @@ $ docker build -t gisquick/js-dev:alpine -f docker/client/alpine/Dockerfile .
 $ docker-compose -f docker/docker-compose-dev-client.yml up
 ```
 
-Open http://localhost:8100
+and create user with username 'user1' and password 'user1'.
+
+```
+docker exec -it `docker ps -qf "ancestor=gisquick/django"` django-admin shell
+from django.contrib.auth import get_user_model
+get_user_model().objects.create_user('user1', email='user@gisquick.org',
+                                     password='user1', first_name='User1')
+
+```
+
+Open http://localhost:8100?project=prague

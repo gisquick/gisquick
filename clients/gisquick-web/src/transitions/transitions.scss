@@ -1,0 +1,61 @@
+.collapse-enter-active, .collapse-leave-active {
+  will-change: height;
+  transition: all 0.5s ease;
+  overflow: hidden;
+}
+
+.collapse-enter, .collapse-leave-to {
+  opacity: 0.5;
+}
+.collapse-leave, .collapse-enter-to {
+  opacity: 1;
+}
+.collapse-enter {
+  transition: all 0s;
+}
+
+.switch-enter, .switch-leave-to {
+  transform: translate(-30%, 0);
+  opacity: 0;
+}
+.switch-leave, .switch-enter-to {
+  transform: translate(0, 0);
+  opacity: 1;
+}
+.switch-enter-active, .switch-leave-active {
+  transition: all 0.5s ease;
+  /*overflow: hidden;*/
+}
+.switch-enter-active, .switch-leave-active {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.switch-container {
+  position: relative;
+  overflow: hidden;
+}
+.switch-active {
+  will-change: height;
+  transition: all 0.5s ease;
+}
+
+
+/* Slide from the left */
+.slide-enter-active, .slide-leave-active {
+  transition: transform .4s cubic-bezier(.25,.8,.5,1);
+}
+.slide-enter, .slide-leave-to {
+  transform: translate3d(-100%, 0, 0);
+}
+
+
+/* Slide from the bottom */
+.bslide-enter-active, .bslide-leave-active {
+  transition: transform .4s cubic-bezier(.25,.8,.5,1)!important;
+}
+.bslide-enter, .bslide-leave-to {
+  transform: translate3d(0, 100%, 0);
+}

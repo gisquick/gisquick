@@ -1,6 +1,5 @@
 <template>
   <v-speed-dial
-    class="tools"
     v-model="open"
     :open-on-hover="false"
     direction="bottom"
@@ -49,14 +48,13 @@ export default {
       } else {
         this.$root.$panel.setPanel(tool)
       }
-      this.activeTool = tool
     }
   }
 }
 </script>
 
-<style lang="scss">
-.tools.v-speed-dial {
+<style lang="scss" scoped>
+.v-speed-dial {
   .v-btn--floating {
     border-radius: 20%;
     width: 2.75em;

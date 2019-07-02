@@ -12,7 +12,7 @@
     >
       <div class="visible-container">
         <scale-line v-if="!bottomPanel"/>
-        <div ref="attributions"/>
+        <map-attributions/>
 
         <div
           v-if="overlayContainer"
@@ -86,19 +86,19 @@
 import Vue from 'vue'
 import { mapState, mapGetters } from 'vuex'
 import 'ol/ol.css'
-import Attribution from 'ol/control/attribution'
 
 import { createMap } from '../map-builder'
 import ContentPanel from './content-panel/ContentPanel'
 import BottomToolbar from './BottomToolbar'
 import ScaleLine from './ScaleLine'
+import MapAttributions from './MapAttributions'
 import ToolsMenu from './ToolsMenu'
 import AppMenu from './AppMenu'
 import MapControl from './MapControl'
 
 export default {
   name: 'Map',
-  components: { ContentPanel, BottomToolbar, ScaleLine, ToolsMenu, AppMenu, MapControl },
+  components: { ContentPanel, BottomToolbar, ScaleLine, MapAttributions, ToolsMenu, AppMenu, MapControl },
   data () {
     return {
       topContainer: null,
@@ -157,9 +157,6 @@ export default {
   },
   mounted () {
     this.map.setTarget(this.$refs.mapEl)
-    this.map.addControl(new Attribution({
-      target: this.$refs.attributions
-    }))
   },
   methods: {
     setVisibleBaseLayer (layer) {
@@ -278,6 +275,7 @@ export default {
 .v-speed-dial {
   position: absolute;
   top: 0;
+  z-index: 100;
 }
 
 .bottom-container {
@@ -316,36 +314,5 @@ export default {
   position: absolute;
   right: 0.5em;
   top: 0.5em;
-}
-
-/deep/ .ol-attribution {
-  bottom: 0.25em;
-  right: 3em;
-  a[href="https://openlayers.org/"] {
-    display: none;
-  }
-  a:link, a:visited {
-    text-decoration: none;
-    color: #333;
-  }
-  a:hover {
-    color: rgb(0, 150, 190);
-    text-shadow: none;
-    background-color: rgba(255, 255, 255, 0.8);
-    border-radius: 3px;
-  }
-  li > *::after {
-    color: #333;
-    content: "|";
-    pointer-events: none;
-    padding-left: 9px;
-    padding-right: 5px;
-  }
-  li:last-child > *::after {
-    display: none;
-  }
-  button {
-    display: none;
-  }
 }
 </style>

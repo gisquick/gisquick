@@ -271,6 +271,10 @@
             };
             this.events.toolActivated();
           },
+          backgroundActivate: function() {
+            this.panelResolve = $q.defer();
+            this.events.toolActivated();
+          },
           deactivate: function() {
             if (this.panelResolve) {
               this.panelResolve.reject();
@@ -563,6 +567,11 @@
         }
       }
 
+      // handle background tools 
+      if (toolsManager.backgroundActiveTool) {
+        toolsManager.backgroundActiveTool.deactivate();
+      }
+
       toolsManager.activeTool = tool;
       toolsManager.activeTool.activate();
 
@@ -611,8 +620,14 @@
         if (toolsManager.activeTool._secondaryPanel) {
           glPanelManager.hidePanel();
         }
+        
         toolsManager.activeTool.deactivate();
         toolsManager.activeTool = null;
+
+        // handle background tools 
+        if (toolsManager.backgroundActiveTool) {
+          toolsManager.backgroundActiveTool.backgroundActivate();
+        }
       }
       glPanelManager.hideToolsPanel();
     };

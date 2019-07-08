@@ -165,7 +165,7 @@
             }
           }
 
-          $scope.toolsManager.activateTool(
+          $scope.toolsManager.backgroundActivateTool(
             toolsManager.tools.filter(function (tool) {
               return tool.name === "identification";
             })[0]

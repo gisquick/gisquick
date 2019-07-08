@@ -9,6 +9,7 @@
 
     function ToolsManager() {
       this.activeTool = null;
+      this.backgroundActiveTool = null;
       this.tools = [];
     };
 
@@ -25,7 +26,20 @@
       }
     };
 
-    ToolsManager.prototype.activateTool = function(tool) {
+    ToolsManager.prototype.backgroundActivateTool = function(tool) {
+      this.backgroundActiveTool = tool;
+      this.backgroundActiveTool.backgroundActivate();
+    };
+
+    ToolsManager.prototype.backgroundDeactivateTool = function() {
+      this.backgroundActiveTool = null;
+      this.backgroundActiveTool.deactivate();
+    };
+
+    ToolsManager.prototype.activateTool = function (tool) {
+      if (this.backgroundActiveTool) {
+        this.backgroundActiveTool.deactivate();
+      }
       if (this.activeTool) {
         this.activeTool.deactivate();
       }
@@ -37,6 +51,9 @@
       if (this.activeTool) {
         this.activeTool.deactivate();
         this.activeTool = null;
+      }
+      if (this.backgroundActiveTool) {
+        this.backgroundActiveTool.backgroundActivate();
       }
     };
 

@@ -174,7 +174,7 @@ export function createQgisLayer (config) {
       visible: true,
       extent: config.extent,
       source: new WebgisTileImage({
-        project: config.ows_project,
+        project: config.project,
         tilesUrl: config.mapcacheUrl,
         legendUrl: config.legendUrl,
         owsUrl: config.owsUrl,
@@ -263,6 +263,7 @@ Map.prototype.handleMapBrowserEvent = function (evt) {
  * @param {String} config.owsUrl mapserver url
  * @param {String} config.legendUrl legend url
  * @param {String} config.mapcacheUrl mapcache url for cached overlays
+ * @param {String} config.project ows project name
  * @param {Object} controlOpts ol control options
  */
 export function createMap (config, controlOpts = {}) {

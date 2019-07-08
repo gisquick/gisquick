@@ -168,7 +168,7 @@
         layer.selectedFeature = null;
       });
       tool.data.totalFeaturesCount = features.length;
-      tool.showTable();
+      // tool.showTable();
       showInfoPanel(features[0]);
     };
 

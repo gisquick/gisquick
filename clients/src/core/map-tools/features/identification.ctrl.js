@@ -145,16 +145,15 @@
       infoPanel.show(feature, activeLayer, $scope)
     };
 
-    function setFeatures (features) {
+    function setFeatures(features) {
       // organize features by layer name
       var layersFeatures = {};
       if (features.length > 0) {
         features.forEach(function(feature) {
           if (feature instanceof ol.Feature) {
             var fid = feature.getId();
-            var layername = Layers.wfs2project[
-              fid.substring(0, fid.lastIndexOf('.'))
-            ];
+            var layername =
+              Layers.wfs2project[fid.substring(0, fid.lastIndexOf("."))];
             if (!layersFeatures.hasOwnProperty(layername)) {
               layersFeatures[layername] = [];
             }
@@ -169,7 +168,11 @@
       });
       tool.data.totalFeaturesCount = features.length;
       // tool.showTable();
-      showInfoPanel(features[0]);
+      if (features[0]) {
+        showInfoPanel(features[0]);
+      } else {
+        infoPanel.close();
+      }
     };
 
     $scope.tool.events.toolDeactivated = function() {

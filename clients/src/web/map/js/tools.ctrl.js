@@ -225,7 +225,7 @@
           name: 'identification',
           tooltip: 'Identify features by mouse click',
           ui: {
-            icon: 'identification',
+            // icon: 'identification',
             primaryPanel: {
               title: 'Identification',
               template: 'templates/tools/identification/form.html'
@@ -269,6 +269,10 @@
             this.ui.secondaryPanel.resolve = {
               open: function() {return resolve.promise;}
             };
+            this.events.toolActivated();
+          },
+          backgroundActivate: function() {
+            this.panelResolve = $q.defer();
             this.events.toolActivated();
           },
           deactivate: function() {
@@ -607,6 +611,11 @@
         }
       }
 
+      // handle background tools 
+      if (toolsManager.backgroundActiveTool) {
+        toolsManager.backgroundActiveTool.deactivate();
+      }
+
       toolsManager.activeTool = tool;
       toolsManager.activeTool.activate();
 
@@ -655,8 +664,14 @@
         if (toolsManager.activeTool._secondaryPanel) {
           glPanelManager.hidePanel();
         }
+        
         toolsManager.activeTool.deactivate();
         toolsManager.activeTool = null;
+
+        // handle background tools 
+        if (toolsManager.backgroundActiveTool) {
+          toolsManager.backgroundActiveTool.backgroundActivate();
+        }
       }
       glPanelManager.hideToolsPanel();
     };

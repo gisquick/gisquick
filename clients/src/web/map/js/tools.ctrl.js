@@ -225,7 +225,7 @@
           name: 'identification',
           tooltip: 'Identify features by mouse click',
           ui: {
-            icon: 'identification',
+            // icon: 'identification',
             primaryPanel: {
               title: 'Identification',
               template: 'templates/tools/identification/form.html'

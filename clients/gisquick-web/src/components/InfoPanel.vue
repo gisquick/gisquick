@@ -85,6 +85,7 @@ export default {
   border-radius: 3px;
   width: 20em;
   border: 1px solid #aaa;
+  background-color: #fff;
 
   .toolbar {
     background-color: #ddd;

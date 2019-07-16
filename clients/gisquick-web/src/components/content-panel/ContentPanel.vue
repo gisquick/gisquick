@@ -43,6 +43,7 @@
       </v-tab-item>
 
       <v-tab-item id="overlays">
+        <overlays-opacity class="opacity-tool mx-1 px-1 mt-2"/>
         <v-tabs
           grow
           :hide-slider="true"
@@ -99,13 +100,13 @@ import { mapState, mapGetters } from 'vuex'
 import LayerItem from './LayerItem'
 import BaseLayerItem from './BaseLayerItem'
 import MapLegend from './Legend'
+import OverlaysOpacity from './OverlaysOpacity'
 
 export default {
   name: 'content-panel',
-  components: { BaseLayerItem, LayerItem, MapLegend },
+  components: { BaseLayerItem, LayerItem, MapLegend, OverlaysOpacity },
   data () {
     return {
-      // activeTopicIndex: null,
       activeMainTab: 'overlays',
       activeSecondaryTab: 'layers',
       expandedItems: {
@@ -222,6 +223,9 @@ export default {
     img {
       display: block;
     }
+  }
+  .opacity-tool {
+    background-color: #e7e7e7;
   }
 }
 </style>

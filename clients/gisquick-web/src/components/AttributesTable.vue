@@ -16,37 +16,16 @@
       :pagination.sync="pagination"
       hide-actions
     >
-      <v-layout
-        class="column filter"
-        slot="headerCell"
-        slot-scope="{ header }"
-      >
-        <span v-text="header.text"/>
-        <v-layout row v-if="header.text">
-          <v-select
-            placeholder="Operator"
-            :items="Operators[header.type]"
-            :value="layerFilters[header.value].comparator"
-            @input="updateFilterComparator({ attr: header.value, comparator: $event })"
-            class="my-1 mr-1"
-            hide-details
-          />
-          <v-text-field
-            class="my-1 mr-1"
-            :value="layerFilters[header.value].value"
-            @input="updateFilterValue({ attr: header.value, value: $event })"
-            hide-details
-          />
-          <v-btn
-            icon
-            class="mx-0 my-0"
-            @click="clearFilter(header.value)"
-          >
-            <icon name="delete"/>
-          </v-btn>
-        </v-layout>
-      </v-layout>
-
+      <template slot="headerCell" slot-scope="{ header }">
+        <attribute-filter
+          :label="header.text"
+          :type="header.type"
+          :filter="layerFilters[header.value]"
+          @input:comparator="updateFilterComparator({ attr: header.value, comparator: $event })"
+          @input:value="updateFilterValue({ attr: header.value, value: $event })"
+          @clear="clearFilter(header.value)"
+        />
+      </template>
       <template slot="items" slot-scope="{ item, index }">
         <tr @click="">
           <td
@@ -119,6 +98,7 @@
 <script>
 import { mapState, mapGetters, mapMutations } from 'vuex'
 import TabsHeader from './TabsHeader'
+import AttributeFilter from './AttributeFilter'
 
 const zoomToHeader = {
   text: '',
@@ -127,63 +107,9 @@ const zoomToHeader = {
   width: 1
 }
 
-const Operators = {
-  text: [
-    {
-      text: '=',
-      value: '='
-    },
-    {
-      text: '!=',
-      value: '!='
-    },
-    {
-      text: 'LIKE',
-      value: 'LIKE'
-    },
-    {
-      text: 'IN',
-      value: 'IN'
-    }
-  ],
-  integer: [
-    {
-      text: '=',
-      value: '='
-    },
-    {
-      text: '!=',
-      value: '!='
-    },
-    {
-      text: '<',
-      value: '<'
-    },
-    {
-      text: '<=',
-      value: '<='
-    },
-    {
-      text: '>',
-      value: '>'
-    },
-    {
-      text: '>=',
-      value: '>='
-    },
-    {
-      text: 'IN',
-      value: 'IN'
-    },
-    {
-      text: 'BETWEEN',
-      value: 'BETWEEN'
-    }
-  ]
-}
 export default {
   name: 'attribute-table',
-  components: { TabsHeader },
+  components: { TabsHeader, AttributeFilter },
   data () {
     return {
       loading: false,
@@ -219,9 +145,6 @@ export default {
       const sIndex = (page - 1) * rowsPerPage + 1
       const eIndex = Math.min(sIndex + rowsPerPage - 1, totalItems)
       return `${sIndex} - ${eIndex} of ${totalItems}`
-    },
-    Operators () {
-      return Operators
     }
   },
   watch: {
@@ -296,21 +219,6 @@ export default {
     tr {
       height: 2em;
       background-color: #ddd;
-    }
-    .filter {
-      .v-select {
-        width: auto;
-        flex: 0 0 auto;
-        .v-select__selections {
-          max-width: 52px; // to make width compact
-          font-size: 80%;
-        }
-      }
-      .icon {
-        width: 1.15em;
-        height: 1.15em;
-        opacity: 0.7;
-      }
     }
     .v-datatable__progress {
       background-color: #fff;

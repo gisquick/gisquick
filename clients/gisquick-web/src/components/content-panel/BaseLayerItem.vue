@@ -2,7 +2,8 @@
     <!-- Group Item -->
     <div
       v-if="layer.layers"
-      class="group-container">
+      class="group-container"
+    >
       <div
         class="item group layout row"
         :depth="depth"
@@ -46,7 +47,7 @@
           class="expand"
           @click.stop="$emit('expanded', layer.name)"
         >
-            <v-icon>keyboard_arrow_down</v-icon>
+          <v-icon>keyboard_arrow_down</v-icon>
         </v-btn>
       </div>
       <collapse-transition>

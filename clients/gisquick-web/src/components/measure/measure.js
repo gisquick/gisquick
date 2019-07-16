@@ -121,15 +121,6 @@ export function LocationMeasure () {
     const proj = base.map.getView().getProjection()
     ;[base.coord1, base.coord2] = base.format.format(coords, proj)
     base.feature.set('label', `${base.coord1}, ${base.coord2}`)
-
-    // base.dispatchEvent('change')
-    base.dispatchEvent({
-      type: 'change',
-      values: {
-        coord1: base.coord1,
-        coord2: base.coord2
-      }
-    })
   }
 
   base.draw.on('drawend', evt => measure())

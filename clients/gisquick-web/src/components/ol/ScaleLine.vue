@@ -1,5 +1,5 @@
 <template>
-  <div class="scale-line"></div>
+  <div class="scale-line"/>
 </template>
 
 <script>

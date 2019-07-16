@@ -6,19 +6,19 @@
     transition="scale-transition"
   >
     <v-btn
-      fab dark
       slot="activator"
       v-model="open"
+      fab dark
     >
       <v-icon>menu</v-icon>
       <v-icon>close</v-icon>
     </v-btn>
 
     <v-btn
-      v-for="tool in tools"
+      v-for="tool in menuTools"
       :key="tool.name"
-      fab dark
       @click="activate(tool)"
+      fab dark
     >
       <icon :name="tool.icon"/>
     </v-btn>
@@ -26,28 +26,24 @@
 </template>
 
 <script>
-import Identification from './Identification'
-import Measure from './measure/Measure'
-import Print from './print/Print'
 
 export default {
-  data: () => ({
-    open: false
-  }),
-  created () {
-    this.tools = [
-      Identification,
-      Measure,
-      Print
-    ]
+  props: {
+    tools: Array
+  },
+  data () {
+    return {
+      open: false
+    }
+  },
+  computed: {
+    menuTools () {
+      return this.tools.filter(t => t.icon)
+    }
   },
   methods: {
     activate (tool) {
-      if (tool.activate) {
-        tool.activate()
-      } else {
-        this.$root.$panel.setPanel(tool)
-      }
+      this.$store.commit('activeTool', tool.name)
     }
   }
 }

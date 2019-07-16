@@ -1,13 +1,13 @@
 <template>
   <div>
     <!-- Header -->
-    <tabs-header @close="close">
+    <tabs-header @close="$emit('close')">
       <template slot="tabs">
         <a
-          v-for="(item, index) in data"
-          :key="index"
-          :class="{ active: layerIndex === index }"
-          @click="setActiveLayer(index)"
+          v-for="item in data"
+          :key="item.layer.name"
+          :class="{ active: layer === item.layer }"
+          @click="setActiveLayer(item.layer)"
         >
           {{ item.layer.title }}
         </a>
@@ -15,19 +15,19 @@
     </tabs-header>
 
     <!-- Table -->
-    <div class="table-container">
+    <div class="table-container" v-if="layer">
       <!-- <transition name="tabslide"> -->
       <switch-transition>
         <v-data-table
-          :key="layerIndex"
+          :key="layer.name"
           :headers="headers"
           :items="features"
           hide-actions
         >
           <template slot="items" slot-scope="props">
             <tr
-              :class="{selected: layersSelection[layer.name] === props.item.ol_uid}"
-              @click="selectFeature(props.item, props.index)"
+              :class="{selected: selected && selected.featureIndex === props.index}"
+              @click="selectFeature(props.index)"
             >
               <td
                 class="icon px-3"
@@ -48,38 +48,8 @@
 </template>
 
 <script>
-import VectorSource from 'ol/source/vector'
-import VectorLayer from 'ol/layer/vector'
-import Style from 'ol/style/style'
-import Fill from 'ol/style/fill'
-import Stroke from 'ol/style/stroke'
-import Circle from 'ol/style/circle'
 import Extent from 'ol/extent'
 import TabsHeader from './TabsHeader'
-
-function createStyle (color) {
-  return new Style({
-    stroke: new Stroke({
-      color: color.concat(0.8),
-      width: 2
-    }),
-    fill: new Fill({
-      color: color.concat(0.5)
-    }),
-    image: new Circle({
-      stroke: new Stroke({
-        color: color.concat(0.8),
-        width: 2
-      }),
-      fill: new Fill({
-        color: color.concat(0.5)
-      }),
-      radius: 5
-    })
-  })
-}
-const defaultStyle = createStyle([255, 235, 59])
-const selectedStyle = createStyle([3, 169, 244])
 
 const zoomToHeader = {
   text: '',
@@ -90,22 +60,25 @@ const zoomToHeader = {
 
 export default {
   components: { TabsHeader },
-  props: ['data'],
-  data () {
-    return {
-      layerIndex: 0,
-      layersSelection: {}
-    }
+  props: {
+    data: Array,
+    selected: Object
   },
   computed: {
+    layerFeatures () {
+      if (this.selected) {
+        return this.data.find(i => i.layer.name === this.selected.layer)
+      }
+      return null
+    },
     layer () {
-      return this.data.length ? this.data[this.layerIndex].layer : { name: '' }
+      return this.layerFeatures && this.layerFeatures.layer
     },
     features () {
-      return this.data.length ? this.data[this.layerIndex].features : []
+      return this.layerFeatures && this.layerFeatures.features
     },
     headers () {
-      if (this.data.length) {
+      if (this.layer) {
         const columns = this.layer.attributes.map(attr => ({
           text: attr.alias || attr.name,
           value: attr.name,
@@ -117,50 +90,12 @@ export default {
       return []
     }
   },
-  created () {
-    const source = new VectorSource()
-    const vectors = new VectorLayer({
-      source,
-      style: defaultStyle
-    })
-    vectors.setMap(this.$map)
-    this.layersData = {}
-    this.featuresOverlay = vectors
-    this.initializeSelection()
-    this.setActiveLayer(this.layerIndex)
-  },
-  beforeDestroy () {
-    this.featuresOverlay.setMap(null)
-  },
-  watch: {
-    data (value) {
-      if (this.layerIndex >= value.length) {
-        this.layerIndex = 0
-      }
-      this.initializeSelection()
-      this.setActiveLayer(this.layerIndex)
-    }
-  },
   methods: {
-    close () {
-      this.$root.$panel.setPanel(null)
+    setActiveLayer (layer) {
+      this.$emit('selection-change', { layer: layer.name, featureIndex: 0 })
     },
-    initializeSelection () {
-      const selection = {}
-      this.data.forEach(layerData => {
-        selection[layerData.layer.name] = null
-      })
-      this.layersSelection = selection
-    },
-    setActiveLayer (index) {
-      this.layerIndex = index
-      this.featuresOverlay.getSource().clear()
-      this.featuresOverlay.getSource().addFeatures(this.features)
-    },
-    selectFeature (feature) {
-      this.featuresOverlay.getSource().forEachFeature(f => f.setStyle(null))
-      feature.setStyle(selectedStyle)
-      this.layersSelection[this.layer.name] = feature.ol_uid
+    selectFeature (featureIndex) {
+      this.$emit('selection-change', { layer: this.selected.layer, featureIndex })
     },
     zoomToFeature (feature, options = {}) {
       const map = this.$map

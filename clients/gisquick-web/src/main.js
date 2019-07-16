@@ -3,9 +3,10 @@
 import Vue from 'vue'
 import Vuetify from 'vuetify'
 import 'url-polyfill'
+import PortalVue from 'portal-vue'
 
 import http from './client'
-import store from './store'
+import store from './store/index'
 import App from './App'
 import Icon from './ui/Icon'
 import ScrollArea from './ui/ScrollArea'
@@ -27,6 +28,7 @@ Vue.component('switch-transition', SwitchTransition)
 
 Vue.config.productionTip = false
 
+Vue.use(PortalVue)
 Vue.use(Vuetify)
 Vue.component('icon', Icon)
 Vue.prototype.$http = http

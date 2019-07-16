@@ -54,7 +54,12 @@ import FileSaver from 'file-saver'
 import { mmToPx, createPrintParameters, formatCopyrights, scaleAnimation, openPrintWindow } from './utils'
 
 export default {
-  props: ['layout', 'format', 'dpi', 'labelsData'],
+  props: {
+    layout: Object,
+    format: String,
+    dpi: Number,
+    labelsData: Object
+  },
   data: () => ({
     scale: 0,
     width: 0,
@@ -238,7 +243,7 @@ export default {
 @import '../../theme.scss';
 
 .print-preview {
-
+  height: 100%;
   pointer-events: none!important;
   .preview-bg {
     background-color: rgba(0,0,0,0.25);

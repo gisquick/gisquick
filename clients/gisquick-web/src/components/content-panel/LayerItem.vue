@@ -50,8 +50,9 @@
         />
         <v-btn
           v-if="layer.attributes"
+          :color="isAttributeTableActive ? 'primary' : ''"
           @click="showAttributesTable(layer)"
-          icon
+          flat icon
         >
           <icon name="attribute-table"/>
         </v-btn>
@@ -93,7 +94,6 @@
 
 <script>
 import Vue from 'vue'
-import AttributesTable from '@/components/AttributesTable'
 
 export default Vue.component('layer-item', {
   props: {
@@ -109,6 +109,10 @@ export default Vue.component('layer-item', {
   computed: {
     isExpanded () {
       return this.expanded === this.layer.name
+    },
+    isAttributeTableActive () {
+      const { activeTool, attributeTable } = this.$store.state
+      return activeTool === 'attribute-table' && attributeTable.layer === this.layer
     }
   },
   methods: {
@@ -119,8 +123,8 @@ export default Vue.component('layer-item', {
       this.$store.commit('layerVisibility', { layer: this.layer, visible })
     },
     showAttributesTable (layer) {
-      const props = { layer }
-      this.$root.$panel.setBottomPanel(AttributesTable, props)
+      this.$store.commit('attributeTable/layer', layer)
+      this.$store.commit('activeTool', 'attribute-table')
     }
   }
 })
@@ -157,7 +161,7 @@ export default Vue.component('layer-item', {
       }
       .v-btn {
         margin: 0;
-        opacity: 0.4;
+        opacity: 0.45;
         height: 2em;
         width: 1.85em;
         .icon {
@@ -181,10 +185,13 @@ export default Vue.component('layer-item', {
         height: 1em;
       }
     }
+    .v-btn.expand .icon {
+      transition: transform 0.3s ease;
+    }
     &.expanded {
       .item {
         background-color: rgba($primary-color, 0.15);
-        .v-btn.expand .v-icon {
+        .v-btn.expand .icon {
           transform: rotateZ(180deg);
         }
       }

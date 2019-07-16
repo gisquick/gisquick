@@ -1,0 +1,113 @@
+<template>
+  <v-layout class="column info-panel" v-if="feature">
+    <v-layout class="row align-center px-2 pb-1 toolbar">
+      <v-select
+        :items="layersOptions"
+        :value="selected.layer"
+        @input="setActiveLayer"
+        class="my-0"
+        hide-details
+      />
+      <v-spacer/>
+
+      <v-btn
+        :disabled="index === 0"
+        @click="setSelected(index - 1)"
+        icon
+      >
+        <v-icon>navigate_before</v-icon>
+      </v-btn>
+      <span>{{ index + 1 }}/{{ features.length }}</span>
+      <v-btn
+        @click="setSelected(index + 1)"
+        :disabled="index === features.length - 1"
+        icon
+      >
+        <v-icon>navigate_next</v-icon>
+      </v-btn>
+      <!-- <v-btn @click="$emit('close')" icon>
+        <v-icon>close</v-icon>
+      </v-btn> -->
+    </v-layout>
+
+    <div class="grid mx-2 my-2">
+      <template v-for="attr in layer.attributes">
+        <label :key="attr.name">{{ attr.alias || attr.name }}</label>
+        <span>{{ feature.get(attr.name) }}</span>
+      </template>
+    </div>
+  </v-layout>
+</template>
+
+<script>
+export default {
+  name: 'info-panel',
+  props: {
+    data: Array,
+    selected: Object
+  },
+  computed: {
+    layersOptions () {
+      return this.data.map(item => ({
+        text: item.layer.title || item.layer.name,
+        value: item.layer.name
+      }))
+    },
+    layerFeatures () {
+      return this.selected && this.data.find(i => i.layer.name === this.selected.layer)
+    },
+    layer () {
+      return this.layerFeatures && this.layerFeatures.layer
+    },
+    features () {
+      return this.layerFeatures && this.layerFeatures.features
+    },
+    index () {
+      return this.selected && this.selected.featureIndex
+    },
+    feature () {
+      return this.selected && this.features[this.index]
+    }
+  },
+  methods: {
+    setActiveLayer (layer) {
+      this.$emit('selection-change', { layer, featureIndex: 0 })
+    },
+    setSelected (featureIndex) {
+      this.$emit('selection-change', { layer: this.selected.layer, featureIndex })
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.info-panel {
+  border-radius: 3px;
+  width: 20em;
+  border: 1px solid #aaa;
+
+  .toolbar {
+    background-color: #ddd;
+    border-bottom: 1px solid #aaa;
+    .v-btn {
+      margin: 0;
+    }
+  }
+  label {
+    font-weight: 500;
+  }
+
+  .grid {
+    transition: grid-template-columns 0.5s;
+    display: grid;
+    grid-template-columns: auto auto;
+    // grid-template-columns: 1fr;
+    label {
+      margin: 0 0.75em 0 0;
+    }
+    span {
+      color: #555;
+    }
+  }
+}
+</style>

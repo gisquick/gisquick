@@ -1,7 +1,7 @@
 <template>
   <v-layout column>
     <!-- Header -->
-    <tabs-header @close="close">
+    <tabs-header @close="$emit('close')">
       <a slot="tabs" class="active">
         {{ layer.title }}
       </a>
@@ -26,13 +26,15 @@
           <v-select
             placeholder="Operator"
             :items="Operators[header.type]"
-            v-model="filters[header.value].comparator"
+            :value="layerFilters[header.value].comparator"
+            @input="updateFilterComparator({ attr: header.value, comparator: $event })"
             class="my-1 mr-1"
             hide-details
           />
           <v-text-field
             class="my-1 mr-1"
-            v-model="filters[header.value].value"
+            :value="layerFilters[header.value].value"
+            @input="updateFilterValue({ attr: header.value, value: $event })"
             hide-details
           />
           <v-btn
@@ -59,7 +61,7 @@
         </tr>
       </template>
     </v-data-table>
-    <v-layout class="row align-center bottom-panel">
+    <v-layout class="row align-center bottom-panel" xv-if="false">
       <v-btn
         icon
         class="mx-1 my-0"
@@ -97,18 +99,25 @@
       <v-spacer/>
       <v-checkbox
         color="primary"
-        v-model="visibleAreaFilter"
+        :input-value="visibleAreaFilter"
+        @change="$store.commit('attributeTable/visibleAreaFilter', $event)"
         label="Filter to visible area"
         class="my-0"
         hide-details
       />
-      <v-btn flat @click="fetchFeatures">Refresh</v-btn>
+      <v-btn
+        flat
+        class="my-0"
+        @click="fetchFeatures"
+      >
+        Refresh
+      </v-btn>
     </v-layout>
   </v-layout>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters, mapMutations } from 'vuex'
 import TabsHeader from './TabsHeader'
 
 const zoomToHeader = {
@@ -173,22 +182,18 @@ const Operators = {
   ]
 }
 export default {
+  name: 'attribute-table',
   components: { TabsHeader },
-  props: {
-    layer: Object
-  },
   data () {
     return {
-      limit: 50,
-      visibleAreaFilter: false,
-      filters: {},
       loading: false,
-      features: [],
       pagination: null
     }
   },
   computed: {
     ...mapState(['project']),
+    ...mapState('attributeTable', ['limit', 'visibleAreaFilter', 'layer', 'features']),
+    ...mapGetters('attributeTable', ['layerFilters']),
     headers () {
       if (this.layer.attributes) {
         const columns = this.layer.attributes.map(attr => ({
@@ -204,10 +209,13 @@ export default {
     },
     lastPage () {
       const { rowsPerPage, totalItems } = this.pagination
-      return Math.ceil(totalItems / rowsPerPage)
+      return Math.floor(totalItems / rowsPerPage) + 1
     },
     paginationRangeText () {
       const { page, rowsPerPage, totalItems } = this.pagination
+      if (totalItems === 0) {
+        return '-'
+      }
       const sIndex = (page - 1) * rowsPerPage + 1
       const eIndex = Math.min(sIndex + rowsPerPage - 1, totalItems)
       return `${sIndex} - ${eIndex} of ${totalItems}`
@@ -219,16 +227,10 @@ export default {
   watch: {
     layer: {
       immediate: true,
-      handler (layer) {
-        const filters = {}
-        this.layer.attributes.forEach(attr => {
-          filters[attr.name] = {
-            comparator: null,
-            value: null
-          }
-        })
-        this.filters = filters
-        this.fetchFeatures()
+      handler (layer, old) {
+        if (layer) {
+          this.fetchFeatures()
+        }
       }
     },
     features: {
@@ -243,12 +245,13 @@ export default {
     }
   },
   methods: {
+    ...mapMutations('attributeTable', ['clearFilter', 'updateFilterComparator', 'updateFilterValue']),
     fetchFeatures () {
       this.loading = true
       // convert to WFS layer name
       const layerName = this.layer.name.replace(/ /g, '_')
 
-      const filters = Object.entries(this.filters)
+      const filters = Object.entries(this.layerFilters)
         .filter(([name, filter]) => filter.comparator && filter.value)
         .map(([name, filter]) => ({
           attribute: name,
@@ -268,8 +271,8 @@ export default {
       }
       this.$http.post(`/filter/?PROJECT=${this.project.config.project}`, wfsParams)
         .then(resp => {
-          this.features = resp.data.features
           this.loading = false
+          this.$store.commit('attributeTable/features', resp.data.features)
         })
         .catch(resp => {
           this.loading = false
@@ -277,13 +280,6 @@ export default {
     },
     zoomToFeature (feature) {
 
-    },
-    clearFilter (attrName) {
-      this.filters[attrName].value = null
-      this.filters[attrName].comparator = null
-    },
-    close () {
-      this.$root.$panel.setBottomPanel(null)
     }
   }
 }
@@ -315,6 +311,10 @@ export default {
         height: 1.15em;
         opacity: 0.7;
       }
+    }
+    .v-datatable__progress {
+      background-color: #fff;
+      height: 3px!important;
     }
   }
   tbody {

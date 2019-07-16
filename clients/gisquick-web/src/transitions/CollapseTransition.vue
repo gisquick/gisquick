@@ -1,9 +1,7 @@
 <template>
   <div>
-    <transition
-      :css="false"
-      v-on="transition">
-      <slot></slot>
+    <transition :css="false" v-on="transition" mode="out-in">
+      <slot/>
     </transition>
   </div>
 </template>

@@ -1,15 +1,61 @@
 <template>
   <div>
-    <div class="pa-2">
-      <v-select
-        label="Layer"
-        v-model="selected"
-        item-text="title"
-        item-value="name"
-        :items="options"
-        :hide-details="true"
-      />
-    </div>
+    <portal to="main-panel">
+      <div class="pa-2" key="identification">
+        <v-select
+          label="Layer"
+          v-model="identificationLayer"
+          item-text="title"
+          item-value="name"
+          :items="options"
+          :hide-details="true"
+        />
+        <v-menu bottom left content-class="identification-menu">
+          <v-btn icon slot="activator">
+            <v-icon>more_vert</v-icon>
+          </v-btn>
+          <v-list>
+            <text-separator>Display</text-separator>
+            <v-list-tile
+              v-for="mode in displayModes"
+              :key="mode.text"
+              class="checkable"
+              @click="displayMode = mode.value"
+            >
+              <v-icon
+                class="check"
+                v-show="mode.value === displayMode">check
+              </v-icon>
+              <v-list-tile-title>{{ mode.text }}</v-list-tile-title>
+            </v-list-tile>
+          </v-list>
+        </v-menu>
+      </div>
+    </portal>
+
+    <features-viewer :features="displayedFeaures"/>
+    <point-marker :coords="mapCoords"/>
+
+    <template v-if="layersFeatures.length">
+      <portal to="right-panel">
+        <info-panel
+          v-if="displayMode === 'info-panel' || displayMode === 'both'"
+          class="ml-1 elevation-6"
+          :data="layersFeatures"
+          :selected="selection"
+          @selection-change="selection = $event"
+        />
+      </portal>
+      <portal to="bottom-panel">
+        <features-table
+          v-if="displayMode === 'table' || displayMode === 'both'"
+          :data="layersFeatures"
+          :selected="selection"
+          @selection-change="selection = $event"
+          @close="$emit('close')"
+        />
+      </portal>
+    </template>
   </div>
 </template>
 
@@ -21,30 +67,74 @@ import GML3 from 'ol/format/gml3'
 import GeoJSON from 'ol/format/geojson'
 import Observable from 'ol/observable'
 import Feature from 'ol/feature'
-import Overlay from 'ol/overlay'
 
 import FeaturesTable from './FeaturesTable'
-import Marker from '../assets/identification-marker.svg'
+import InfoPanel from './InfoPanel'
+import PointMarker from './ol/PointMarker'
+import FeaturesViewer, { createStyle } from './ol/FeaturesViewer'
 
-let state = null
+
+const SelectedStyle = createStyle([3, 169, 244])
 
 const defaultOption = {
   title: 'All visible layers',
   name: ''
 }
+const DisplayModes = [
+  {
+    text: 'Table',
+    value: 'table'
+  },
+  {
+    text: 'Info Panel',
+    value: 'info-panel'
+  },
+  {
+    text: 'Table & Info Panel',
+    value: 'both'
+  }
+]
+const data = {
+  mapCoords: null,
+  identificationLayer: defaultOption.name,
+  layersFeatures: [],
+  selection: null,
+  displayMode: 'both'
+}
+
 export default {
-  title: 'Identification',
-  icon: 'identification',
-  data: () => state || ({
-    selected: defaultOption.name
-  }),
+  name: 'identification',
+  components: { InfoPanel, FeaturesTable, PointMarker, FeaturesViewer },
+  data () {
+    return data
+  },
   computed: {
     ...mapState(['project']),
-    layers () {
+    queryableLayers () {
       return this.project.overlays.list.filter(l => l.queryable && l.visible && !l.hidden)
     },
     options () {
-      return [defaultOption].concat(this.layers)
+      return [defaultOption].concat(this.queryableLayers)
+    },
+    displayModes () {
+      return DisplayModes
+    },
+    displayedFeaures () {
+      const item = this.selection && this.layersFeatures.find(i => i.layer.name === this.selection.layer)
+      return item && item.features
+    },
+    selectedFeature () {
+      return this.selection && this.displayedFeaures[this.selection.featureIndex]
+    }
+  },
+  watch: {
+    selectedFeature (feature, oldFeature) {
+      if (oldFeature) {
+        oldFeature.setStyle(null)
+      }
+      if (feature) {
+        feature.setStyle(SelectedStyle)
+      }
     }
   },
   mounted () {
@@ -55,29 +145,15 @@ export default {
   },
   beforeDestroy () {
     this.deactivate()
-    state = this.$data
   },
   deactivated () {
     this.deactivate()
   },
   methods: {
-    createPointer () {
-      const map = this.$map
-      const img = new Image()
-      img.src = Marker
-      const overlay = new Overlay({
-        element: img,
-        positioning: 'center-center'
-      })
-      overlay.setMap(map)
-      return overlay
-    },
     activate () {
       // register click events listener on map with
       // WFS GetFeature features identification
       const map = this.$map
-      this.pointer = this.createPointer()
-
       this.mapClickListener = map.on('singleclick', evt => {
         // featuresViewer.removeAllFeatures()
 
@@ -98,9 +174,7 @@ export default {
           '</Filter>'
         ].join('')
 
-        const layers = !this.selected
-          ? this.layers.map(l => l.name).join(',')
-          : this.selected
+        const layers = this.identificationLayer || this.queryableLayers.map(l => l.name).join(',')
         const params = {
           'VERSION': '1.0.0',
           'SERVICE': 'WFS',
@@ -110,6 +184,7 @@ export default {
           'MAXFEATURES': 10,
           'FILTER': filter
         }
+
         this.$http.get(this.project.config.ows_url, { params })
           .then(resp => {
             const parser = new GeoJSON()
@@ -118,24 +193,23 @@ export default {
             const categorizedFeatures = this.categorize(features)
             const items = this.tableData(categorizedFeatures)
 
-            // console.log(features)
-            // console.log(categorizedFeatures)
-            // console.log(items)
-
-            this.$root.$panel.setBottomPanel(
-              FeaturesTable,
-              Object.freeze({ data: items })
-            )
+            this.layersFeatures = Object.freeze(items)
+            if (items.length) {
+              this.selection = {
+                layer: items[0].layer.name,
+                featureIndex: 0
+              }
+            } else {
+              this.selection = null
+            }
           })
-        this.pointer.setPosition(map.getCoordinateFromPixel(pixel))
-        // tool._markerOverlay.setPosition(projectProvider.map.getCoordinateFromPixel(pixel))
+        this.mapCoords = map.getCoordinateFromPixel(pixel)
       })
       map.getViewport().style.cursor = 'crosshair'
     },
     deactivate () {
       Observable.unByKey(this.mapClickListener)
       this.$map.getViewport().style.cursor = ''
-      this.$root.$panel.setBottomPanel(null)
       if (this.pointer) {
         this.pointer.setMap(null)
       }
@@ -143,7 +217,7 @@ export default {
     categorize (features) {
       // (WFS layer name cannot contain space character)
       const WfsToLayerName = {}
-      this.layers.forEach(l => {
+      this.queryableLayers.forEach(l => {
         WfsToLayerName[l.name.replace(/ /g, '')] = l.name
       })
 
@@ -165,7 +239,7 @@ export default {
     },
     tableData (groupedFeatures) {
       const matchedLayers = Object.keys(groupedFeatures)
-      return this.layers
+      return this.queryableLayers
         .filter(l => matchedLayers.includes(l.name))
         .map(l => ({
           layer: l,
@@ -175,3 +249,19 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.info-panel {
+  max-height: 100%;
+  overflow: auto;
+}
+.v-menu {
+  position: absolute;
+  right: 0;
+  top: 0;
+  .v-menu__activator .v-btn {
+    color: #aaa;
+    margin: 0;
+  }
+}
+</style>

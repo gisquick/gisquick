@@ -1,9 +1,7 @@
 <template>
   <div class="switch-container">
-    <transition
-      :name="name"
-      v-on="transition">
-      <slot></slot>
+    <transition :name="name" v-on="transition">
+      <slot/>
     </transition>
   </div>
 </template>

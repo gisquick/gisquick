@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import attributeTable from './attribute-table'
 
 Vue.use(Vuex)
 
@@ -13,16 +14,20 @@ function filterGroups (node) {
 
 export default new Vuex.Store({
   strict: process.env.NODE_ENV === 'development',
+  modules: {
+    attributeTable
+  },
   state: {
     app: {},
-    project: null
+    project: null,
+    activeTool: null
   },
   mutations: {
     app (state, config) {
       state.app = config
     },
     project (state, project) {
-      const { base_layers: baseLayers, layers, ...rest } = project
+      const { base_layers: baseLayers, layers } = project
 
       const groups = [].concat(...layers.map(filterGroups))
       groups.forEach(l => { l.visible = true })
@@ -39,6 +44,9 @@ export default new Vuex.Store({
           list: layersList({ layers })
         }
       }
+    },
+    activeTool (state, name) {
+      state.activeTool = name
     },
     visibleBaseLayer (state, name) {
       state.project.baseLayers.list.forEach(l => {

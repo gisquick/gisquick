@@ -3,7 +3,7 @@
     <div ref="mapEl" class="map"/>
 
     <!-- <collapse-transition name="bslide"> -->
-      <bottom-toolbar v-if="statusBarVisible && !bottomPanel"/>
+      <bottom-toolbar v-if="statusBarVisible"/>
     <!-- </collapse-transition> -->
 
     <v-layout
@@ -11,19 +11,17 @@
       :style="{ left: mapView.left }"
     >
       <div class="visible-container">
-        <scale-line v-if="!bottomPanel"/>
+        <scale-line/>
+
         <map-attributions/>
 
-        <div
-          v-if="overlayContainer"
-          class="map-overlay"
-          :is="overlayContainer.component"
-          v-bind="overlayContainer.props"
-          v-on="overlayContainer.listeners"
-        />
+        <portal-target name="map-overlay" class="map-overlay"/>
 
-        <tools-menu/>
-        <map-control/>
+        <tools-menu :tools="tools"/>
+        <v-layout class="row align-end right-container">
+          <map-control/>
+          <portal-target name="right-panel" class="right-panel layout"/>
+        </v-layout>
         <app-menu/>
         <v-btn
           dark
@@ -40,13 +38,7 @@
         class="bottom-container"
         :style="{minHeight: mapView.bottom}"
       >
-        <collapse-transition>
-          <div
-            v-if="bottomPanel"
-            :is="bottomPanel.component"
-            v-bind="bottomPanel.props"
-          />
-        </collapse-transition>
+        <portal-target transition="collapse-transition" name="bottom-panel"/>
       </div>
     </v-layout>
 
@@ -60,25 +52,26 @@
         class="main-panel"
       >
         <collapse-transition class="collapsible">
-          <div v-if="topContainer">
+          <div v-if="activeToolObj && activeToolObj.title">
             <v-toolbar dark flat height="30">
               <v-spacer/>
-              <h4>{{ topContainer.title }}</h4>
+              <h4>{{ activeToolObj.title }}</h4>
               <v-spacer/>
-              <v-btn flat @click="topContainer = null">
+              <v-btn flat @click="$store.commit('activeTool', null)">
                 <v-icon>close</v-icon>
               </v-btn>
             </v-toolbar>
-
-            <switch-transition>
-              <div :is="topContainer.component" v-bind="topContainer.props"/>
-            </switch-transition>
+            <portal-target name="main-panel" transition="switch-transition"/>
           </div>
         </collapse-transition>
         <content-panel/>
       </div>
     </transition>
-
+    <!-- Component of active tool -->
+    <div
+      :is="activeToolObj && activeToolObj.component"
+      @close="$store.commit('activeTool', null)"
+    />
   </div>
 </template>
 
@@ -90,20 +83,53 @@ import 'ol/ol.css'
 import { createMap } from '../map-builder'
 import ContentPanel from './content-panel/ContentPanel'
 import BottomToolbar from './BottomToolbar'
-import ScaleLine from './ScaleLine'
 import MapAttributions from './MapAttributions'
 import ToolsMenu from './ToolsMenu'
 import AppMenu from './AppMenu'
 import MapControl from './MapControl'
+import ScaleLine from './ol/ScaleLine'
+
+import AttributesTable from './AttributesTable'
+import Identification from './Identification'
+import Measure from './measure/Measure'
+import Print from './print/Print'
+
+const Tools = [
+  {
+    name: 'identification',
+    title: 'Identification',
+    icon: 'identification',
+    component: Identification
+  }, {
+    name: 'measure',
+    title: 'Measure',
+    icon: 'ruler',
+    component: Measure
+  }, {
+    name: 'print',
+    title: 'Print',
+    icon: 'printer',
+    component: Print
+  }, {
+    name: 'attribute-table',
+    component: {
+      render (h) {
+        return <portal to="bottom-panel"><AttributesTable key="attribute-table" onClose={this.close}/></portal>
+      },
+      methods: {
+        close () {
+          this.$store.commit('activeTool', null)
+        }
+      }
+    }
+  }
+]
 
 export default {
   name: 'Map',
   components: { ContentPanel, BottomToolbar, ScaleLine, MapAttributions, ToolsMenu, AppMenu, MapControl },
   data () {
     return {
-      topContainer: null,
-      bottomPanel: null,
-      overlayContainer: null,
       panelVisible: true,
       statusBarVisible: true,
       mapView: {
@@ -113,15 +139,30 @@ export default {
     }
   },
   computed: {
-    ...mapState(['project']),
-    ...mapGetters(['visibleBaseLayer', 'visibleLayers'])
+    ...mapState(['project', 'activeTool']),
+    ...mapGetters(['visibleBaseLayer', 'visibleLayers']),
+    tools () {
+      return Tools
+    },
+    activeToolObj () {
+      return this.activeTool && this.tools.find(t => t.name === this.activeTool)
+    }
   },
   watch: {
     visibleLayers: 'setVisibleLayers',
     visibleBaseLayer: 'setVisibleBaseLayer'
+    // activeTool: {
+    //   immediate: true,
+    //   handler (activeTool) {
+    //     if (!activeTool) {
+    //       this.$store.commit('activeTool', 'identification')
+    //     }
+    //   }
+    // }
   },
   created () {
     const mapConfig = {
+      project: this.project.config.project,
       baselayers: this.project.baseLayers.list,
       overlays: this.project.overlays.list,
       extent: this.project.config.project_extent,
@@ -136,18 +177,6 @@ export default {
     // this.setVisibleLayers(this.visibleLayers)
 
     this.$root.$panel = {
-      setPanel: (component, props) => {
-        if (!this.panelVisible) {
-          this.panelVisible = true
-        }
-        this.topContainer = component ? { component, props, title: component.title } : null
-      },
-      setBottomPanel: (component, props) => {
-        this.bottomPanel = component ? { component, props } : null
-      },
-      setOverlay: (component, props, listeners) => {
-        this.overlayContainer = component ? { component, props, listeners } : null
-      },
       setStatusBarVisible: (visible) => {
         this.statusBarVisible = visible
         this.mapView.bottom = visible ? '32px' : '0'
@@ -179,7 +208,8 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
-  transition: left .4s cubic-bezier(.25,.8,.5,1);
+  transition: none.4s cubic-bezier(.25,.8,.5,1);
+  transition-property: left, right;
   pointer-events: none;
 
   > * {
@@ -192,6 +222,14 @@ export default {
     > * {
       pointer-events: auto;
     }
+  }
+  .map-overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    pointer-events: none;
   }
 }
 
@@ -292,23 +330,21 @@ export default {
   }*/
 }
 
-.map-overlay {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-}
 .bottom-toolbar {
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
 }
-.map-control {
+.right-container {
   position: absolute;
+  top: 3.5em;
   right: 0.5em;
   bottom: 0.5em;
+  .right-panel {
+    max-height: 100%;
+    flex-direction: column;
+  }
 }
 .app-menu {
   position: absolute;

@@ -36,7 +36,7 @@ module.exports = {
     // }
     proxy: {
       // '**'
-      '/login|/logout|/project.json|/projects.json|/ows|/tile|/filter': {
+      '/login|/logout|/project.json|/projects.json|/ows|/tile|/legend|/filter': {
         target: 'http://localhost:8000'
       }
     }

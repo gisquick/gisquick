@@ -10,7 +10,7 @@
       class="column map-view"
       :style="{ left: mapView.left }"
     >
-      <div class="visible-container">
+      <div ref="mapViewport" class="visible-container">
         <scale-line/>
 
         <map-attributions/>
@@ -22,7 +22,6 @@
           <map-control/>
           <portal-target name="right-panel" class="right-panel layout"/>
         </v-layout>
-        <app-menu/>
         <v-btn
           dark
           color="grey darken-2"
@@ -85,7 +84,6 @@ import ContentPanel from './content-panel/ContentPanel'
 import BottomToolbar from './BottomToolbar'
 import MapAttributions from './MapAttributions'
 import ToolsMenu from './ToolsMenu'
-import AppMenu from './AppMenu'
 import MapControl from './MapControl'
 import ScaleLine from './ol/ScaleLine'
 
@@ -94,40 +92,9 @@ import Identification from './Identification'
 import Measure from './measure/Measure'
 import Print from './print/Print'
 
-const Tools = [
-  {
-    name: 'identification',
-    title: 'Identification',
-    icon: 'identification',
-    component: Identification
-  }, {
-    name: 'measure',
-    title: 'Measure',
-    icon: 'ruler',
-    component: Measure
-  }, {
-    name: 'print',
-    title: 'Print',
-    icon: 'printer',
-    component: Print
-  }, {
-    name: 'attribute-table',
-    component: {
-      render (h) {
-        return <portal to="bottom-panel"><AttributesTable key="attribute-table" onClose={this.close}/></portal>
-      },
-      methods: {
-        close () {
-          this.$store.commit('activeTool', null)
-        }
-      }
-    }
-  }
-]
-
 export default {
   name: 'Map',
-  components: { ContentPanel, BottomToolbar, ScaleLine, MapAttributions, ToolsMenu, AppMenu, MapControl },
+  components: { ContentPanel, BottomToolbar, ScaleLine, MapAttributions, ToolsMenu, MapControl },
   data () {
     return {
       panelVisible: true,
@@ -142,7 +109,37 @@ export default {
     ...mapState(['project', 'activeTool']),
     ...mapGetters(['visibleBaseLayer', 'visibleLayers']),
     tools () {
-      return Tools
+      return [
+        {
+          name: 'identification',
+          title: 'Identification',
+          icon: 'identification',
+          component: Identification
+        }, {
+          name: 'measure',
+          title: 'Measure',
+          icon: 'ruler',
+          component: Measure
+        }, {
+          name: 'print',
+          title: 'Print',
+          icon: 'printer',
+          component: Print,
+          disabled: !this.project.config.print_composers
+        }, {
+          name: 'attribute-table',
+          component: {
+            render (h) {
+              return <portal to="bottom-panel"><AttributesTable key="attribute-table" onClose={this.close}/></portal>
+            },
+            methods: {
+              close () {
+                this.$store.commit('activeTool', null)
+              }
+            }
+          }
+        }
+      ].filter(t => !t.disabled)
     },
     activeToolObj () {
       return this.activeTool && this.tools.find(t => t.name === this.activeTool)
@@ -345,10 +342,5 @@ export default {
     max-height: 100%;
     flex-direction: column;
   }
-}
-.app-menu {
-  position: absolute;
-  right: 0.5em;
-  top: 0.5em;
 }
 </style>

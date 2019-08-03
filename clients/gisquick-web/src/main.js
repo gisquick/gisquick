@@ -33,24 +33,28 @@ Vue.use(Vuetify)
 Vue.component('icon', Icon)
 Vue.prototype.$http = http
 
-/* eslint-disable no-new */
-// new Vue({
-//   el: '#app',
-//   template: '<App/>',
-//   components: { App },
-//   beforeCreate () {
-//     // globally change default props of some components
-//     Vue.component('v-checkbox').options.props.ripple.default = false
-//     Vue.component('v-btn').options.props.ripple.default = false
-//   }
-// })
+if (process.env.NODE_ENV === 'development') {
+  var initialize = new Promise((resolve, reject) => {
+    http.get('/dev/vue' + location.search)
+      .then(resp => resolve(resp.data))
+      .catch(reject)
+  })
+} else {
+  initialize = new Promise(resolve => {
+    resolve(JSON.parse(document.getElementById('app-data').textContent))
+  })
+}
 
-new Vue({
-  store,
-  beforeCreate () {
-    // globally change default props of some components
-    Vue.component('v-checkbox').options.props.ripple.default = false
-    Vue.component('v-btn').options.props.ripple.default = false
-  },
-  render: h => h(App)
-}).$mount('#app')
+initialize.then(data => {
+  store.commit('user', data.user)
+  store.commit('project', data.project)
+  new Vue({
+    store,
+    beforeCreate () {
+      // globally change default props of some components
+      Vue.component('v-checkbox').options.props.ripple.default = false
+      Vue.component('v-btn').options.props.ripple.default = false
+    },
+    render: h => h(App)
+  }).$mount('#app')
+})

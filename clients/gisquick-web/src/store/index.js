@@ -18,15 +18,19 @@ export default new Vuex.Store({
     attributeTable
   },
   state: {
-    app: {},
+    user: null,
     project: null,
     activeTool: null
   },
   mutations: {
-    app (state, config) {
-      state.app = config
+    user (state, user) {
+      state.user = user
     },
     project (state, project) {
+      if (!project || project.status === 401) {
+        state.project = null
+        return
+      }
       const { base_layers: baseLayers, layers } = project
 
       const groups = [].concat(...layers.map(filterGroups))
@@ -66,9 +70,12 @@ export default new Vuex.Store({
   },
   getters: {
     visibleBaseLayer: state => {
-      return state.project.baseLayers.list.find(l => l.visible)
+      return state.project && state.project.baseLayers.list.find(l => l.visible)
     },
     visibleLayers: state => {
+      if (!state.project) {
+        return []
+      }
       const { groups, list: layers } = state.project.overlays
       const excluded = [].concat(...groups.filter(g => !g.visible).map(layersList))
       return layers.filter(l => l.visible && !excluded.includes(l))

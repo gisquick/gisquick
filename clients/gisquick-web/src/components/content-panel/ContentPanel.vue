@@ -167,7 +167,7 @@ export default {
     flex: 1 1;
     display: flex;
     flex-direction: column;
-    max-height: 100%;
+    overflow: hidden;
     .v-tabs__items {
       flex: 1 1;
       display: flex;

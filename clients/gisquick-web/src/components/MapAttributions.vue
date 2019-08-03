@@ -1,15 +1,34 @@
 <template>
-  <div/>
+  <div>
+    <portal to="app-menu">
+      <v-list-tile @click="toggleAttributions">
+        <v-list-tile-title>Display attributions</v-list-tile-title>
+        <v-icon v-show="!attributionsHidden">check</v-icon>
+      </v-list-tile>
+    </portal>
+  </div>
 </template>
 
 <script>
 import Attribution from 'ol/control/attribution'
 
 export default {
+  data () {
+    return {
+      attributionsHidden: true
+    }
+  },
   mounted () {
-    this.$map.addControl(new Attribution({
+    this.attributions = new Attribution({
       target: this.$el
-    }))
+    })
+    this.$map.addControl(this.attributions)
+  },
+  methods: {
+    toggleAttributions () {
+      this.attributionsHidden = !this.attributionsHidden
+      this.attributions.setCollapsed(this.attributionsHidden)
+    }
   }
 }
 </script>

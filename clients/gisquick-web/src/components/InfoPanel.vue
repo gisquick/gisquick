@@ -30,7 +30,13 @@
       </v-btn> -->
     </v-layout>
 
-    <div class="grid mx-2 my-2">
+    <div
+      v-if="customComponent"
+      :is="customComponent"
+      :feature="feature"
+      :layer="layer"
+    />
+    <div v-else class="grid mx-2 my-2">
       <template v-for="attr in layer.attributes">
         <label :key="attr.name">{{ attr.alias || attr.name }}</label>
         <span>{{ feature.get(attr.name) }}</span>
@@ -40,6 +46,32 @@
 </template>
 
 <script>
+import Vue from 'vue'
+
+const cache = {}
+function externalComponent (url) {
+  if (cache[url]) {
+    return cache[url]
+  }
+  window.Vue = Vue
+  return new Promise((resolve, reject) => {
+    const name = url.split('/').reverse()[0].match(/^(.*?)\.umd/)[1]
+    const script = document.createElement('script')
+    script.async = true
+    script.addEventListener('load', () => {
+      cache[url] = window[name]
+      resolve(window[name])
+    })
+    script.addEventListener('error', () => {
+      reject(new Error(`Error loading ${url}`))
+    })
+    script.src = url
+    document.head.appendChild(script)
+  })
+}
+
+const CustomComponents = {}
+
 export default {
   name: 'info-panel',
   props: {
@@ -67,6 +99,27 @@ export default {
     },
     feature () {
       return this.selected && this.features[this.index]
+    },
+    customComponents () {
+      const comps = {}
+      this.$store.state.project.overlays.list.filter(l => l.info_panel)
+        .forEach(l => {
+          comps[l.name] = async () => {
+              const { resource, component } = l.info_panel
+              const mod = await externalComponent(resource)
+              return mod.__esModule ? mod.default[component] : mod
+          }
+        })
+      return comps
+    },
+    /* Development */
+    // customComponents () {
+    //   return {
+    //     districts: () => import('@/extensions/Districts.vue')
+    //   }
+    // },
+    customComponent () {
+      return this.customComponents[this.layer.name]
     }
   },
   methods: {
@@ -90,6 +143,8 @@ export default {
   .toolbar {
     background-color: #ddd;
     border-bottom: 1px solid #aaa;
+    position: sticky;
+    top: 0;
     .v-btn {
       margin: 0;
     }

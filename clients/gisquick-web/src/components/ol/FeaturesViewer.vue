@@ -27,17 +27,25 @@ export function createStyle (color) {
     })
   })
 }
-const defaultStyle = createStyle([255, 235, 59])
 
 export default {
   props: {
-    features: Array
+    features: Array,
+    color: {
+      type: Array,
+      default: () => [255, 235, 59]
+    }
+  },
+  computed: {
+    style () {
+      return createStyle(this.color)
+    }
   },
   created () {
     const source = new VectorSource()
     const layer = new VectorLayer({
       source,
-      style: defaultStyle
+      style: this.style
     })
     layer.setMap(this.$map)
     this.layer = layer
@@ -45,7 +53,10 @@ export default {
     this.setFeatures(this.features)
   },
   watch: {
-    features: 'setFeatures'
+    features: 'setFeatures',
+    style (style) {
+      this.layer.setStyle(style)
+    }
   },
   beforeDestroy () {
     this.layer.setMap(null)

@@ -36,7 +36,7 @@
       </v-list>
     </v-menu>
 
-    <login-dialog v-if="!project || showLogin" @login="loadProject"/>
+    <login-dialog v-if="!project || showLogin" @login="onLogin"/>
     <projects-dialog v-if="showProjects" :projects="projects"/>
   </v-app>
 </template>
@@ -92,6 +92,10 @@ export default {
     logout () {
       this.$http.logout()
         .then(() => location.reload())
+    },
+    onLogin (user) {
+      this.$store.commit('user', user)
+      this.loadProject()
     },
     openHelp () {
       const width = parseInt(window.innerWidth * 0.65)

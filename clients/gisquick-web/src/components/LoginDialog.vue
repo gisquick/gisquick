@@ -31,7 +31,7 @@
               label="Password"
               v-model="password"
               :append-icon="passwordVisible ? 'visibility_off' : 'visibility'"
-              :append-icon-cb="() => (passwordVisible = !passwordVisible)"
+              @click:append="passwordVisible = !passwordVisible"
               :type="passwordVisible ? 'text' : 'password'"
               @keyup.enter="login"
             />
@@ -64,9 +64,9 @@ export default {
     login () {
       // if (this.$refs.form.validate()) {
       this.$http.login(this.username, this.password)
-        .then(() => {
+        .then(resp => {
           this.authenticationError = null
-          this.$emit('login')
+          this.$emit('login', resp.data)
           this.open = false
         })
         .catch(resp => {

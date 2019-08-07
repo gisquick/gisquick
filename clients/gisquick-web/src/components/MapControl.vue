@@ -37,7 +37,8 @@ export default {
     },
     zoomToMax () {
       const extent = this.project.config.project_extent
-      this.$map.getView().fit(extent, { duration: 400 })
+      const padding = this.$map.ext.visibleAreaPadding()
+      this.$map.getView().fit(extent, { duration: 400, padding })
     }
   }
 }

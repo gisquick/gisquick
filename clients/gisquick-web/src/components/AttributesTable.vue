@@ -26,8 +26,8 @@
           @clear="clearFilter(header.value)"
         />
       </template>
-      <template slot="items" slot-scope="{ item, index }">
-        <tr @click="">
+      <template slot="items" slot-scope="{ item }">
+        <tr :class="{selected: zoomedFeatureId === item.id}">
           <td
             class="icon px-3"
             @click="zoomToFeature(item)"
@@ -92,13 +92,16 @@
         Refresh
       </v-btn>
     </v-layout>
+    <features-viewer :features="geometryFeatures" :color="[3, 169, 244]"/>
   </v-layout>
 </template>
 
 <script>
 import { mapState, mapGetters, mapMutations } from 'vuex'
+import GeoJSON from 'ol/format/geojson'
 import TabsHeader from './TabsHeader'
 import AttributeFilter from './AttributeFilter'
+import FeaturesViewer, { createStyle } from './ol/FeaturesViewer'
 
 const zoomToHeader = {
   text: '',
@@ -109,11 +112,13 @@ const zoomToHeader = {
 
 export default {
   name: 'attribute-table',
-  components: { TabsHeader, AttributeFilter },
+  components: { TabsHeader, AttributeFilter, FeaturesViewer },
   data () {
     return {
       loading: false,
-      pagination: null
+      pagination: null,
+      geometryFeatures: [],
+      zoomedFeatureId: null
     }
   },
   computed: {
@@ -202,7 +207,27 @@ export default {
         })
     },
     zoomToFeature (feature) {
-
+      const params = {
+        VERSION: '1.0.0',
+        SERVICE: 'WFS',
+        REQUEST: 'GetFeature',
+        OUTPUTFORMAT: 'GeoJSON',
+        FEATUREID: feature.id
+      }
+      this.loading = true
+      this.$http.get(this.project.config.ows_url, { params })
+        .then(resp => {
+          this.loading = false
+          const parser = new GeoJSON()
+          const geomFeature = parser.readFeatures(resp.data)[0]
+          this.geometryFeatures = Object.freeze([geomFeature])
+          this.$map.ext.zoomToFeature(geomFeature)
+          this.zoomedFeatureId = feature.id
+        })
+        .catch(err => {
+          this.loading = false
+          // TODO: error notification
+        })
     }
   }
 }

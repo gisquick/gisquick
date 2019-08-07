@@ -77,6 +77,7 @@
 <script>
 import Vue from 'vue'
 import { mapState, mapGetters } from 'vuex'
+import Extent from 'ol/extent'
 import 'ol/ol.css'
 
 import { createMap } from '../map-builder'
@@ -182,7 +183,34 @@ export default {
     Vue.prototype.$map = this.map
   },
   mounted () {
-    this.map.setTarget(this.$refs.mapEl)
+    const map = this.map
+    map.setTarget(this.$refs.mapEl)
+
+    // extra map functions
+    map.ext = {
+      visibleAreaPadding: () => {
+        const { top, right, bottom, left } = this.$refs.mapViewport.getBoundingClientRect()
+        return [top, window.innerWidth - right, window.innerHeight - bottom, left]
+      },
+      zoomToFeature: (feature, options = {}) => {
+        const resolution = map.getView().getResolution()
+        let padding = options.padding || map.ext.visibleAreaPadding()
+        if (feature.getGeometry().getType() === 'Point') {
+          const center = feature.getGeometry().getCoordinates()
+          center[0] += (-padding[3] * resolution + padding[1] * resolution) / 2
+          center[1] += (-padding[2] * resolution + padding[0] * resolution) / 2
+          map.getView().animate({
+            center,
+            duration: 450
+          })
+        } else {
+          const extent = feature.getGeometry().getExtent()
+          // add 5% buffer (padding)
+          const buffer = (map.getSize()[0] - padding[1] - padding[3]) * 0.05 * resolution
+          map.getView().fit(Extent.buffer(extent, buffer), { duration: 450, padding })
+        }
+      }
+    }
   },
   methods: {
     setVisibleBaseLayer (layer) {

@@ -253,6 +253,8 @@ export default {
 <style lang="scss" scoped>
 .info-panel {
   max-height: 100%;
+  min-height: 150px;
+  flex: 1 1;
   overflow: auto;
 }
 .v-menu {

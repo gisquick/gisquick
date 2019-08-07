@@ -81,24 +81,38 @@
           "</Filter>"
         ].join("");
 
-        var layerName = $scope.tool.config.identificationLayer === '_all_' ?
-          layersControl.getVisibleLayers(projectProvider.map).map(wfsLayerName).join(",") :
-          Layers.project2wfs[$scope.tool.config.identificationLayer];
-        var params = {
-          'VERSION': '1.0.0',
-          'SERVICE': 'WFS',
-          'REQUEST': 'GetFeature',
-          'OUTPUTFORMAT': 'GeoJSON',
-          'TYPENAME': layerName,
-          'MAXFEATURES': $scope.tool.config.limit,
-          'FILTER': filter
-        }
-        tool.progress = gislabClient.get(projectProvider.data.ows_url, params)
-          .then(function(data) {
-            var parser = new ol.format.GeoJSON();
-            var features = parser.readFeatures(data);
-            setFeatures(features);
-          });
+        var layerNames = $scope.tool.config.identificationLayer === '_all_' ?
+          layersControl.getVisibleLayers(projectProvider.map).map(wfsLayerName).filter(filterQueryableLayers) :
+          Layers.project2wfs[$scope.tool.config.identificationLayer].split(",");
+
+        var all_features = [];
+        var getAllFeatures = function() {
+          var layerName = layerNames.pop();
+          var params = {
+            'VERSION': '1.0.0',
+            'SERVICE': 'WFS',
+            'REQUEST': 'GetFeature',
+            'OUTPUTFORMAT': 'GeoJSON',
+            'TYPENAME': layerName,
+            'MAXFEATURES': $scope.tool.config.limit,
+            'FILTER': filter
+          };
+          tool.progress = gislabClient.get(projectProvider.data.ows_url, params)
+            .then(function(data) {
+              var parser = new ol.format.GeoJSON();
+              var features = parser.readFeatures(data);
+              all_features = all_features.concat(features);
+
+              if (layerNames.length > 0) {
+                getAllFeatures(layerNames);
+              } else {
+                setFeatures(all_features);
+              }
+
+            });
+
+        };
+        getAllFeatures(layerNames);
 
         tool._markerOverlay.setPosition(projectProvider.map.getCoordinateFromPixel(pixel));
       });
@@ -111,13 +125,27 @@
       wfs2project: {},
       project2wfs: {}
     };
+
+    // work only WFS layers with info_template
+    function filterQueryableLayers(layerName) {
+
+      var isvalid = false;
+      projectProvider.layers.list.forEach(function(layer) {
+        if (layerName == layer.name && layer.info_template) {
+          isvalid = true;
+        }
+      });
+      return isvalid;
+    };
+
+
     function wfsLayerName(layerName) {
       var name = layerName;
       while (name.indexOf(' ') != -1) {
         name = name.replace(' ', '_');
       }
       return name;
-    }
+    };
     projectProvider.layers.list.forEach(function(layer) {
       var wfsName = wfsLayerName(layer.name);
       Layers.wfs2project[wfsName] = layer.name;

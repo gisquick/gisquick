@@ -97,24 +97,8 @@ export default {
     selectFeature (featureIndex) {
       this.$emit('selection-change', { layer: this.selected.layer, featureIndex })
     },
-    zoomToFeature (feature, options = {}) {
-      const map = this.$map
-      const resolution = map.getView().getResolution()
-      const padding = options.padding || [0, 0, 0, 0]
-      if (feature.getGeometry().getType() === 'Point') {
-        const center = feature.getGeometry().getCoordinates()
-        center[0] += (-padding[3] * resolution + padding[1] * resolution) / 2
-        center[1] += (-padding[2] * resolution + padding[0] * resolution) / 2
-        map.getView().animate({
-          center: center,
-          duration: 450
-        })
-      } else {
-        const extent = feature.getGeometry().getExtent()
-        // add 5% buffer (padding)
-        const buffer = (map.getSize()[0] - padding[1] - padding[3]) * 0.05 * resolution
-        map.getView().fit(Extent.buffer(extent, buffer), { duration: 450 })
-      }
+    zoomToFeature (feature) {
+      this.$map.ext.zoomToFeature(feature)
     }
   }
 }
@@ -131,6 +115,11 @@ export default {
     tr {
       height: 2em;
       background-color: #ddd;
+      th {
+        background-color: #ddd;
+        position: sticky;
+        top: 0;
+      }
     }
   }
   tbody {

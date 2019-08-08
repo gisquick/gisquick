@@ -37,6 +37,9 @@ export default {
 /deep/ .ol-attribution {
   bottom: 0.25em;
   right: 3em;
+  &.ol-collapsed {
+    display: none;
+  }
   a[href="https://openlayers.org/"] {
     display: none;
   }

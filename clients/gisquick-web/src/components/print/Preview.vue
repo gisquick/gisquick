@@ -1,49 +1,47 @@
 <template>
-  <v-layout class="print-preview">
-    <div class="preview-bg"/>
-    <v-layout class="column shrink">
-      <div class="preview-bg"/>
-      <v-layout class="column shrink">
+  <div class="print-preview">
+    <div class="preview-bg left"/>
+    <div class="preview-bg right"/>
+    <div class="preview-bg top"/>
+    <div class="preview-bg bottom"/>
 
-        <v-toolbar dark flat height="30">
-          <span flex>Scale 1: {{ scale }}</span>
-          <v-spacer/>
-          <h1>Print Preview</h1>
-          <v-spacer/>
-          <v-layout class="controls">
-            <v-btn icon @click="print">
-              <icon name="printer"/>
-            </v-btn>
-            <v-btn icon @click="download">
-              <icon name="download"/>
-            </v-btn>
-            <v-btn icon @click="$emit('close')">
-              <icon name="x"/>
-            </v-btn>
-          </v-layout>
-        </v-toolbar>
+    <v-layout class="center column shrink">
 
+      <v-toolbar dark flat height="30">
+        <span flex>Scale 1: {{ scale }}</span>
+        <v-spacer/>
+        <h1>Print Preview</h1>
+        <v-spacer/>
+        <v-layout class="controls">
+          <v-btn icon @click="print">
+            <icon name="printer"/>
+          </v-btn>
+          <v-btn icon @click="download">
+            <icon name="download"/>
+          </v-btn>
+          <v-btn icon @click="$emit('close')">
+            <icon name="x"/>
+          </v-btn>
+        </v-layout>
+      </v-toolbar>
+
+      <div
+        ref="templateEl"
+        class="template-container"
+        :style="size"
+      >
+        <img
+          :style="clipMask"
+          :src="templateUrl"
+          :key="layout.name"
+        />
         <div
-          ref="templateEl"
-          class="template-container"
-          :style="size"
-        >
-          <img
-            :style="clipMask"
-            :src="templateUrl"
-            :key="layout.name"
-          />
-          <div
-            class="map-border"
-            :style="borderArea"
-          />
-        </div>
-
-      </v-layout>
-      <div class="preview-bg"/>
+          class="map-border"
+          :style="borderArea"
+        />
+      </div>
     </v-layout>
-    <div class="preview-bg"/>
-  </v-layout>
+  </div>
 </template>
 
 <script>
@@ -239,55 +237,82 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '../../theme.scss';
 
 .print-preview {
+  display: grid;
+  width: 100%;
   height: 100%;
-  pointer-events: none!important;
+  max-height: 100%;
+  overflow: hidden;
+  grid-template-columns: 1fr auto 1fr;
+  grid-template-rows: 1fr auto 1fr;
+  pointer-events: none;
+
   .preview-bg {
     background-color: rgba(0,0,0,0.25);
-    flex-grow: 1;
-  }
-
-  .v-toolbar {
-    span {
-      font-size: 90%;
-      position: absolute;
-      left: 0.5em;
+    &.left {
+      grid-column: 1 / 2;
+      grid-row: 1 / 4;
     }
-    pointer-events: auto;
-    h1 {
-      font-size: 1em;
+    &.right {
+      grid-column: 3 / 4;
+      grid-row: 1 / 4;
     }
-    .controls {
-      position: absolute;
-      right: 0;
+    &.top {
+      grid-column: 2 / 3;
+      grid-row: 1 / 2;
     }
-    .v-btn {
-      margin: 0;
-      width: 32px;
-      height: 30px;
+    &.bottom {
+      grid-column: 2 / 3;
+      grid-row: 3 / 4;
     }
-    .icon {
-      width: 20px;
-      height: 20px;
+    .center {
+      grid-column: 2 / 3;
+      grid-row: 2 / 3;
+      max-height: 100%;
+      overflow: hidden;
     }
   }
+}
+.v-toolbar {
+  span {
+    font-size: 90%;
+    position: absolute;
+    left: 0.5em;
+  }
+  pointer-events: auto;
+  h1 {
+    font-size: 1em;
+  }
+  .controls {
+    position: absolute;
+    right: 0;
+  }
+  .v-btn {
+    margin: 0;
+    width: 32px;
+    height: 30px;
+  }
+  .icon {
+    width: 20px;
+    height: 20px;
+  }
+}
 
-  .template-container {
-    position: relative;
-    opacity: 0.85;
+.template-container {
+  position: relative;
+  opacity: 0.85;
 
-    img {
-      position: absolute;
-      width: inherit;
-      height: inherit;
-    }
-    .map-border {
-      position: absolute;
-      border: 2px solid $primary-color;
-    }
+  img {
+    position: absolute;
+    width: inherit;
+    height: inherit;
+  }
+  .map-border {
+    position: absolute;
+    border: 2px solid $primary-color;
   }
 }
 </style>

@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'
+import { mapState } from 'vuex'
 import Polygon from 'ol/geom/polygon'
 import Circle from 'ol/geom/circle'
 import GML3 from 'ol/format/gml3'
@@ -72,7 +72,6 @@ import FeaturesTable from './FeaturesTable'
 import InfoPanel from './InfoPanel'
 import PointMarker from './ol/PointMarker'
 import FeaturesViewer, { createStyle } from './ol/FeaturesViewer'
-
 
 const SelectedStyle = createStyle([3, 169, 244])
 
@@ -252,9 +251,7 @@ export default {
 
 <style lang="scss" scoped>
 .info-panel {
-  max-height: 100%;
-  min-height: 150px;
-  flex: 1 1;
+  flex: 0 1 auto;
   overflow: auto;
 }
 .v-menu {

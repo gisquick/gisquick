@@ -17,9 +17,9 @@ export default {
 
 <style>
 .scale-line {
-  width: 150px;
   height: 30px;
   overflow: visible;
+  position: relative;
 }
 .ol-scale-line {
   left: 0.35em;

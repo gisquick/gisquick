@@ -2,70 +2,76 @@
   <div class="map-container">
     <div ref="mapEl" class="map"/>
 
-    <!-- <collapse-transition name="bslide"> -->
-      <bottom-toolbar v-if="statusBarVisible"/>
+    <!-- <collapse-transition class="status-bar"> -->
+      <bottom-toolbar v-if="statusBarVisible" class="status-bar"/>
     <!-- </collapse-transition> -->
 
-    <v-layout
-      class="column map-view"
-      :style="{ left: mapView.left }"
+    <!-- <scale-line/> -->
+    <div class="sticky-bottom">
+      <scale-line/>
+      <map-attributions class="map-attributions"/>
+    </div>
+    <portal-target name="map-overlay" class="map-overlay"/>
+    <tools-menu :tools="tools"/>
+
+    <v-btn
+      dark
+      color="grey darken-2"
+      class="panel-toggle"
+      :class="{expanded: panelVisible}"
+      @click="panelVisible = !panelVisible"
     >
-      <div ref="mapViewport" class="visible-container">
-        <scale-line/>
+      <icon name="arrow-right"/>
+    </v-btn>
 
-        <map-attributions/>
-
-        <portal-target name="map-overlay" class="map-overlay"/>
-
-        <tools-menu :tools="tools"/>
-        <v-layout class="row align-end right-container">
-          <map-control/>
-          <portal-target name="right-panel" class="right-panel layout"/>
-        </v-layout>
-        <v-btn
-          dark
-          color="grey darken-2"
-          class="panel-toggle"
-          :class="{expanded: panelVisible}"
-          @click="panelVisible = !panelVisible"
-        >
-          <icon name="arrow-right"/>
-        </v-btn>
-      </div>
-
-      <div
-        class="bottom-container"
-        :style="{minHeight: mapView.bottom}"
-      >
-        <portal-target transition="collapse-transition" name="bottom-panel"/>
-      </div>
+    <v-layout class="right-container column">
+      <v-spacer/>
+      <portal-target
+        name="right-panel"
+        class="right-panel"
+        transition="collapse-width"
+      />
+      <v-spacer/>
+      <map-control/>
     </v-layout>
+    <!-- <map-control/>
+    <portal-target
+      name="right-panel"
+      class="right-panel"
+      transition="collapse-width"
+    /> -->
 
-    <transition
-      name="slide"
-      @beforeLeave="mapView.left = '0'"
-      @beforeEnter="mapView.left = '280px'"
-    >
+    <div ref="mapViewport" class="visible-container"/>
+
+    <div class="bottom-container">
+      <portal-target transition="collapse-transition" name="bottom-panel"/>
+    </div>
+    <!-- <portal-target transition="collapse-transition" name="bottom-panel" class="bottom-container"/> -->
+
+    <transition name="collapse-width">
       <div
         v-show="panelVisible"
         class="main-panel"
       >
-        <collapse-transition class="collapsible">
-          <div v-if="activeToolObj && activeToolObj.title">
-            <v-toolbar dark flat height="30">
-              <v-spacer/>
-              <h4>{{ activeToolObj.title }}</h4>
-              <v-spacer/>
-              <v-btn flat @click="$store.commit('activeTool', null)">
-                <v-icon>close</v-icon>
-              </v-btn>
-            </v-toolbar>
-            <portal-target name="main-panel" transition="switch-transition"/>
-          </div>
-        </collapse-transition>
-        <content-panel/>
+        <v-layout column>
+          <collapse-transition class="collapsible">
+            <div v-if="activeToolObj && activeToolObj.title">
+              <v-toolbar dark flat height="30">
+                <v-spacer/>
+                <h4>{{ activeToolObj.title }}</h4>
+                <v-spacer/>
+                <v-btn flat @click="$store.commit('activeTool', null)">
+                  <v-icon>close</v-icon>
+                </v-btn>
+              </v-toolbar>
+              <portal-target name="main-panel" transition="switch-transition"/>
+            </div>
+          </collapse-transition>
+          <content-panel/>
+        </v-layout>
       </div>
     </transition>
+
     <!-- Component of active tool -->
     <div
       :is="activeToolObj && activeToolObj.component"
@@ -99,11 +105,7 @@ export default {
   data () {
     return {
       panelVisible: true,
-      statusBarVisible: true,
-      mapView: {
-        left: '280px',
-        bottom: '32px'
-      }
+      statusBarVisible: true
     }
   },
   computed: {
@@ -177,7 +179,6 @@ export default {
     this.$root.$panel = {
       setStatusBarVisible: (visible) => {
         this.statusBarVisible = visible
-        this.mapView.bottom = visible ? '32px' : '0'
       }
     }
     Vue.prototype.$map = this.map
@@ -226,68 +227,157 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-.map-view {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  transition: none.4s cubic-bezier(.25,.8,.5,1);
-  transition-property: left, right;
+.collapse-width-enter-active, .collapse-width-leave-active {
+  transition: all .5s;
+}
+.collapse-width-enter, .collapse-width-leave-to {
+  width: 0!important;
+}
+.visible-container {
+  flex-grow: 1;
   pointer-events: none;
-
+  position: relative;
   > * {
     pointer-events: auto;
   }
-  .visible-container {
-    flex-grow: 1;
-    pointer-events: none;
-    position: relative;
-    > * {
-      pointer-events: auto;
-    }
-  }
-  .map-overlay {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    pointer-events: none;
-  }
+}
+.map-overlay {
+  pointer-events: none;
 }
 
-.main-panel > .collapsible {
-  flex-shrink: 0;
+.main-panel {
+  overflow: hidden;
+  > div {
+    align-self: flex-end;
+    width: 280px;
+    flex: 1 1;
+    overflow: hidden;
+    // > .collapsible {
+    //   flex-shrink: 0;
+    // }
+  }
+  .content-panel {
+    flex: 1 1;
+    overflow: hidden;
+  }
 }
 
 .map-container {
   width: 100%;
   height: 100%;
   position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr minmax(0, auto);
+  grid-template-rows: 1fr minmax(0, max-content) minmax(0, min-content) minmax(0, min-content);
+  > * {
+    position: relative;
+  }
+
+  .map {
+    grid-column: 1 / 4;
+    grid-row: 1 / 4;
+    z-index: 0;
+  }
+  .right-container {
+    grid-column: 3 / 4;
+    grid-row: 1 / 2;
+    justify-content: flex-end;
+    align-items: flex-end;
+    // justify-items: center;
+    min-height: 0;
+    max-height: 100%;
+    .map-control {
+      flex: 0 0;
+    }
+  }
+  .sticky-bottom {
+    grid-column: 2 / 3;
+    grid-row: 3 / 4;
+    position: relative;
+    overflow: visible;
+    > * {
+      position: absolute;
+      bottom: 2px;
+    }
+    .scale-line {
+      left: 0;
+    }
+    .map-attributions {
+      right: 2px;
+      left: 10em;
+    }
+  }
+  .map-attributions {
+    z-index: 1;
+  }
+  .main-panel {
+    grid-column: 1 / 2;
+    grid-row: 1 / 5;
+    z-index: 2;
+  }
+  .v-speed-dial {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+    align-self: start;
+    width: 3.5em;
+    z-index: 1;
+  }
+  .panel-toggle {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+    align-self: center;
+    z-index: 2;
+  }
+  .map-control {
+    grid-column: 3 / 4;
+    grid-row: 1 / 2;
+    // align-self: end;
+    // justify-self: end;
+    margin: 0.25em;
+    z-index: 2;
+  }
+  .right-panel {
+    margin: 3.5em 0.25em 0.25em 0;
+    grid-column: 3 / 4;
+    grid-row: 1 / 2;
+    z-index: 2;
+
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    justify-content: flex-end;
+    pointer-events: none;
+    > /deep/ * {
+      pointer-events: auto;
+    }
+  }
+  .map-overlay, .visible-container {
+    grid-column: 2 / 4;
+    grid-row: 1 / 2;
+    min-height: 0;
+    max-height: 100%;
+  }
+  .status-bar {
+    grid-column: 1 / 4;
+    grid-row: 4 / 5;
+    z-index: 1;
+    align-self: end;
+  }
+  .bottom-container {
+    grid-column: 2 / 4;
+    grid-row: 2 / 5;
+    z-index: 2;
+  }
 }
+
 .map {
   width: 100%;
   height: 100%;
   background-color: #fff;
-  .ol-zoom {
-    left: auto;
-    right: 0.5em;
-  }
-
-  .scale-line {
-    position: absolute;
-    left: 0;
-    bottom: 0;
-  }
 }
 
 .main-panel {
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
+  position: relative;
   width: 280px;
   display: flex;
   flex-direction: column;
@@ -315,10 +405,7 @@ export default {
 }
 
 .v-btn.panel-toggle {
-  position: absolute;
   margin: 0;
-  left: 0;
-  top: calc(50% - 18px);
   width: 19px;
   min-width: 0;
   padding: 0;
@@ -335,12 +422,6 @@ export default {
   }
 }
 
-.v-speed-dial {
-  position: absolute;
-  top: 0;
-  z-index: 100;
-}
-
 .bottom-container {
   display: flex;
   flex-direction: column;
@@ -355,20 +436,4 @@ export default {
   }*/
 }
 
-.bottom-toolbar {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
-.right-container {
-  position: absolute;
-  top: 3.5em;
-  right: 0.5em;
-  bottom: 0.5em;
-  .right-panel {
-    max-height: 100%;
-    flex-direction: column;
-  }
-}
 </style>

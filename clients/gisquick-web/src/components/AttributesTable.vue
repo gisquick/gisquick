@@ -101,7 +101,7 @@ import { mapState, mapGetters, mapMutations } from 'vuex'
 import GeoJSON from 'ol/format/geojson'
 import TabsHeader from './TabsHeader'
 import AttributeFilter from './AttributeFilter'
-import FeaturesViewer, { createStyle } from './ol/FeaturesViewer'
+import FeaturesViewer from './ol/FeaturesViewer'
 
 const zoomToHeader = {
   text: '',

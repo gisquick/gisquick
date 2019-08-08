@@ -14,6 +14,7 @@ import TextSeparator from './ui/TextSeparator'
 import Collapsible from './transitions/Collapsible'
 import CollapseTransition from './transitions/CollapseTransition'
 import SwitchTransition from './transitions/SwitchTransition'
+import CollapseWidth from './transitions/CollapseWidth'
 
 import 'material-icons/iconfont/material-icons.scss'
 import 'vuetify/dist/vuetify.min.css'
@@ -24,6 +25,7 @@ Vue.component('scroll-area', ScrollArea)
 Vue.component('text-separator', TextSeparator)
 Vue.component('v-collapsible', Collapsible)
 Vue.component('collapse-transition', CollapseTransition)
+Vue.component('collapse-width', CollapseWidth)
 Vue.component('switch-transition', SwitchTransition)
 
 Vue.config.productionTip = false

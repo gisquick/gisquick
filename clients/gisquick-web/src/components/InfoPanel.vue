@@ -70,8 +70,6 @@ function externalComponent (url) {
   })
 }
 
-const CustomComponents = {}
-
 export default {
   name: 'info-panel',
   props: {
@@ -101,16 +99,16 @@ export default {
       return this.selected && this.features[this.index]
     },
     customComponents () {
-      const comps = {}
+      const components = {}
       this.$store.state.project.overlays.list.filter(l => l.info_panel)
         .forEach(l => {
-          comps[l.name] = async () => {
-              const { resource, component } = l.info_panel
-              const mod = await externalComponent(resource)
-              return mod.__esModule ? mod.default[component] : mod
+          components[l.name] = async () => {
+            const { resource, component } = l.info_panel
+            const mod = await externalComponent(resource)
+            return mod.__esModule ? mod.default[component] : mod
           }
         })
-      return comps
+      return components
     },
     /* Development */
     // customComponents () {
@@ -135,6 +133,7 @@ export default {
 
 <style lang="scss" scoped>
 .info-panel {
+  position: relative;
   border-radius: 3px;
   width: 20em;
   border: 1px solid #aaa;

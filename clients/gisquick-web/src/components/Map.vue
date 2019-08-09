@@ -163,7 +163,7 @@ export default {
   created () {
     const mapConfig = {
       project: this.project.config.project,
-      baselayers: this.project.baseLayers.list,
+      baseLayers: this.project.baseLayers.list,
       overlays: this.project.overlays.list,
       extent: this.project.config.project_extent,
       projection: this.project.config.projection,
@@ -212,6 +212,9 @@ export default {
         }
       }
     }
+    const extent = this.project.config.project_extent
+    const padding = this.map.ext.visibleAreaPadding()
+    this.map.getView().fit(extent, { padding })
   },
   methods: {
     setVisibleBaseLayer (layer) {

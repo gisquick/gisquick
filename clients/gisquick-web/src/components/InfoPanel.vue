@@ -36,17 +36,18 @@
       :feature="feature"
       :layer="layer"
     />
-    <div v-else class="grid mx-2 my-2">
-      <template v-for="attr in layer.attributes">
-        <label :key="attr.name">{{ attr.alias || attr.name }}</label>
-        <span>{{ feature.get(attr.name) }}</span>
-      </template>
-    </div>
+    <generic-infopanel
+      v-else
+      class="grid mx-2 my-2"
+      :layer="layer"
+      :feature="feature"
+    />
   </v-layout>
 </template>
 
 <script>
 import Vue from 'vue'
+import GenericInfopanel from '@/components/GenericInfopanel'
 
 const cache = {}
 function externalComponent (url) {
@@ -72,6 +73,7 @@ function externalComponent (url) {
 
 export default {
   name: 'info-panel',
+  components: { GenericInfopanel },
   props: {
     data: Array,
     selected: Object
@@ -146,22 +148,6 @@ export default {
     top: 0;
     .v-btn {
       margin: 0;
-    }
-  }
-  label {
-    font-weight: 500;
-  }
-
-  .grid {
-    transition: grid-template-columns 0.5s;
-    display: grid;
-    grid-template-columns: auto auto;
-    // grid-template-columns: 1fr;
-    label {
-      margin: 0 0.75em 0 0;
-    }
-    span {
-      color: #555;
     }
   }
 }

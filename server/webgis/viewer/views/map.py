@@ -36,23 +36,26 @@ def ows(request):
     owsrequest.add_header("User-Agent", "Gisquick")
 
     resp_content = b""
-    with contextlib.closing(urllib.request.urlopen(owsrequest)) as resp:
-        while True:
-            data = resp.read()
-            if not data:
-                break
-            resp_content += data
+    try:
+        with contextlib.closing(urllib.request.urlopen(owsrequest)) as resp:
+            while True:
+                data = resp.read()
+                if not data:
+                    break
+                resp_content += data
 
-        if params.get('REQUEST', '') == 'GetCapabilities':
-            resp_content = resp_content.replace(
-                settings.GISQUICK_MAPSERVER_URL.encode(),
-                request.build_absolute_uri(request.path).encode()
-            )
+            if params.get('REQUEST', '') == 'GetCapabilities':
+                resp_content = resp_content.replace(
+                    settings.GISQUICK_MAPSERVER_URL.encode(),
+                    request.build_absolute_uri(request.path).encode()
+                )
 
-        content_type = resp.getheader('Content-Type')
-        status = resp.getcode()
-        return HttpResponse(resp_content, content_type=content_type, status=status)
-
+            content_type = resp.getheader('Content-Type')
+            status = resp.getcode()
+            return HttpResponse(resp_content, content_type=content_type, status=status)
+    except urllib.error.HTTPError as e:
+        # reason = e.read().decode("utf8")
+        return HttpResponse(e.read(), content_type=e.headers.get_content_type(), status=e.code)
 
 @login_required
 def tile(request, project_hash, publish, layers_hash=None, z=None, x=None, y=None, format=None):

@@ -3,9 +3,11 @@
     <div class="logo">
       <img src="../assets/text_logo.svg">
     </div>
-    <label>Scale: 1: {{ scale }}</label>
+    <label><translate>Scale</translate> 1: {{ scale }}</label>
     <label>{{ project.config.projection.code }}</label>
-    <label>Coordinates: <span ref="coords"></span></label>
+    <label>
+      <translate>Coordinates</translate>: <span ref="coords"></span>
+    </label>
   </div>
 </template>
 
@@ -60,7 +62,7 @@ export default {
   box-shadow: 0 -1px 8px 0 rgba(0,0,0,.2), 0 -3px 3px -2px rgba(0,0,0,.12);
 
   .logo {
-    width: 280px;
+    width: 288px;
     text-align: center;
     height: inherit;
     padding: 4px 0;

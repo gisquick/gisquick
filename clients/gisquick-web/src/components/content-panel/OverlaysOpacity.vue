@@ -2,17 +2,17 @@
   <v-layout row shrink mt-1 align-center>
     <v-tooltip top>
       <v-icon slot="activator">opacity</v-icon>
-      <span>Opacity of overlay layers</span>
+      <translate>Transparency of overlay layers</translate>
     </v-tooltip>
     <v-slider
       min="0"
       max="1"
       step="0.01"
       class="ml-3 mr-2"
-      v-model="overlaysOpacity"
+      v-model="transparency"
       hide-details
     />
-    <span class="value">{{ Math.round(overlaysOpacity * 100) }}%</span>
+    <span class="value">{{ Math.round(transparency * 100) }}%</span>
   </v-layout>
 </template>
 
@@ -20,18 +20,18 @@
 export default {
   data () {
     return {
-      overlaysOpacity: 1
+      transparency: 0
     }
   },
   mounted () {
-    this.updateOpacity()
+    this.updateTransparency()
   },
   watch: {
-    overlaysOpacity: 'updateOpacity'
+    transparency: 'updateTransparency'
   },
   methods: {
-    updateOpacity () {
-      this.$map.overlay.setOpacity(this.overlaysOpacity)
+    updateTransparency () {
+      this.$map.overlay.setOpacity(1 - this.transparency)
     }
   }
 }
@@ -43,5 +43,8 @@ export default {
   text-align: right;
   font-size: 90%;
   opacity: 0.75;
+}
+.v-icon {
+  user-select: none;
 }
 </style>

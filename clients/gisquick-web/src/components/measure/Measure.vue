@@ -8,15 +8,15 @@
       >
         <v-tabs-slider color="primary"/>
         <v-tab href="#location">
-          <span>Location</span>
+          <translate>Location</translate>
           <icon name="point"/>
         </v-tab>
         <v-tab href="#distance">
-          <span>Distance</span>
+          <translate>Distance</translate>
           <icon name="line"/>
         </v-tab>
         <v-tab href="#area">
-          <span>Area</span>
+          <translate>Area</translate>
           <icon name="polygon"/>
         </v-tab>
 
@@ -24,8 +24,12 @@
           <v-tab-item id="location">
             <v-layout column pt-3 pb-1>
               <v-layout row>
-                <v-flex class="label px-1 xs6">1st coordinate</v-flex>
-                <v-flex class="label px-1 xs6">2nd coordinate</v-flex>
+                <v-flex class="label px-1 xs6">
+                  <translate>1st coordinate</translate>
+                </v-flex>
+                <v-flex class="label px-1 xs6">
+                  <translate>2nd coordinate</translate>
+                </v-flex>
               </v-layout>
               <v-layout row>
                 <v-flex class="field mx-1 xs6">{{ location.coord1 }}</v-flex>
@@ -38,10 +42,14 @@
               </v-btn>
               <v-list>
                 <v-list-tile @click="zoomTo(location.feature)">
-                  <v-list-tile-title>Zoom to</v-list-tile-title>
+                  <v-list-tile-title>
+                    <translate>Zoom to</translate>
+                  </v-list-tile-title>
                   <icon name="zoom-to"/>
                 </v-list-tile>
-                <text-separator>Coordinate systems</text-separator>
+                <text-separator>
+                  <translate>Coordinate systems</translate>
+                </text-separator>
                 <v-list-tile
                   v-for="format in coordinateSystems"
                   :key="format.name"
@@ -62,8 +70,12 @@
           <v-tab-item id="distance">
             <v-layout column pt-3 pb-1>
               <v-layout row>
-                <v-flex class="label px-1">Last segment</v-flex>
-                <v-flex class="label px-1">Total length</v-flex>
+                <v-flex class="label px-1">
+                  <translate>Last segment</translate>
+                  </v-flex>
+                <v-flex class="label px-1">
+                  <translate>Total length</translate>
+                </v-flex>
               </v-layout>
               <v-layout row>
                 <v-flex class="field mx-1 xs6">{{ distance.lastSegment }}</v-flex>
@@ -75,10 +87,14 @@
                 </v-btn>
                 <v-list>
                   <v-list-tile @click="zoomTo(distance.feature)">
-                    <v-list-tile-title>Zoom to</v-list-tile-title>
+                    <v-list-tile-title>
+                      <translate>Zoom to</translate>
+                    </v-list-tile-title>
                     <icon name="zoom-to"/>
                   </v-list-tile>
-                  <text-separator>Units</text-separator>
+                  <text-separator>
+                    <translate>Units</translate>
+                  </text-separator>
                   <template v-for="(system, i) in availableUnits">
                     <v-list-tile
                       :key="`group_${i}`"
@@ -124,8 +140,12 @@
           <v-tab-item id="area">
             <v-layout column pt-3 pb-1>
               <v-layout row>
-                <v-flex class="label px-1">Perimeter</v-flex>
-                <v-flex class="label px-1">Area</v-flex>
+                <v-flex class="label px-1">
+                  <translate>Perimeter</translate>
+                </v-flex>
+                <v-flex class="label px-1">
+                  <translate>Area</translate>
+                </v-flex>
               </v-layout>
               <v-layout row>
                 <v-flex class="field mx-1 xs6">{{ area.perimeter }}</v-flex>
@@ -137,10 +157,14 @@
                 </v-btn>
                 <v-list>
                   <v-list-tile @click="zoomTo(area.feature)">
-                    <v-list-tile-title>Zoom to</v-list-tile-title>
+                    <v-list-tile-title>
+                      <translate>Zoom to</translate>
+                    </v-list-tile-title>
                     <icon name="zoom-to"/>
                   </v-list-tile>
-                  <text-separator>Units</text-separator>
+                  <text-separator>
+                    <translate>Units</translate>
+                  </text-separator>
                   <template v-for="(system, i) in availableUnits">
                     <v-list-tile
                       :key="`group_${i}`"

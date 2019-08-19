@@ -13,7 +13,7 @@
           <img class="logo" src="../assets/login_text_logo.svg">
           <!-- <h4>You're entering project</h4> -->
           <!-- <h3>Project</h3> -->
-          <h3>Sign In to Continue</h3>
+          <h3><translate>Sign In to Continue</translate></h3>
         </v-layout>
 
         <v-card-text>
@@ -23,20 +23,20 @@
           </p>
           <v-form ref="form" v-model="valid" :lazy-validation="true">
             <v-text-field
-              label="Username"
               v-model="username"
+              :label="tr.Username"
               @keyup.enter="login"
             />
             <v-text-field
-              label="Password"
               v-model="password"
+              :label="tr.Password"
               :append-icon="passwordVisible ? 'visibility_off' : 'visibility'"
               @click:append="passwordVisible = !passwordVisible"
               :type="passwordVisible ? 'text' : 'password'"
               @keyup.enter="login"
             />
             <v-btn light color="grey lighten-3" @click="login">
-              Login
+              <translate>Login</translate>
             </v-btn>
           </v-form>
         </v-card-text>
@@ -60,6 +60,14 @@ export default {
       passwordVisible: false
     }
   },
+  computed: {
+    tr () {
+      return {
+        Username: this.$gettext('Username'),
+        Password: this.$gettext('Password')
+      }
+    }
+  },
   methods: {
     login () {
       // if (this.$refs.form.validate()) {
@@ -70,7 +78,7 @@ export default {
           this.open = false
         })
         .catch(resp => {
-          this.authenticationError = 'Authentication Failed'
+          this.authenticationError = this.$gettext('Authentication failed')
         })
       // }
     }

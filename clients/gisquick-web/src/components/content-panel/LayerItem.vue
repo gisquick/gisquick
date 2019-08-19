@@ -67,19 +67,19 @@
       <collapse-transition>
         <div v-if="isExpanded" class="metadata">
           <div class="pb-1"/>
-          <label>Geometry: </label>
+          <label><translate>Geometry</translate>: </label>
           <icon :name="layer.geom_type ? layer.geom_type.toLowerCase() : 'raster'"/>
           <br/>
 
-          <label>Identification: </label>
+          <label><translate>Identification</translate>: </label>
           <icon :name="layer.queryable ? 'check' : 'dash'"/>
           <br/>
 
-          <label>Abstract: </label>
+          <label><translate>Abstract</translate>: </label>
           <span>{{ layer.metadata.abstract }}</span>
           <br/>
 
-          <label>Keywords list: </label>
+          <label><translate>Keywords list</translate>: </label>
           <span>{{ layer.metadata.keyword_list }}</span>
           <br/>
 

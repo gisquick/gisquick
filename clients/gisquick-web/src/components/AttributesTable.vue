@@ -78,9 +78,9 @@
       <v-spacer/>
       <v-checkbox
         color="primary"
+        :label="tr.FilterVisibleLabel"
         :input-value="visibleAreaFilter"
         @change="$store.commit('attributeTable/visibleAreaFilter', $event)"
-        label="Filter to visible area"
         class="my-0"
         hide-details
       />
@@ -89,7 +89,7 @@
         class="my-0"
         @click="fetchFeatures"
       >
-        Refresh
+        <translate>Refresh</translate>
       </v-btn>
     </v-layout>
     <features-viewer :features="geometryFeatures" :color="[3, 169, 244]"/>
@@ -150,6 +150,11 @@ export default {
       const sIndex = (page - 1) * rowsPerPage + 1
       const eIndex = Math.min(sIndex + rowsPerPage - 1, totalItems)
       return `${sIndex} - ${eIndex} of ${totalItems}`
+    },
+    tr () {
+      return {
+        FilterVisibleLabel: this.$gettext('Filter to visible area')
+      }
     }
   },
   watch: {

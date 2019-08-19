@@ -47,17 +47,17 @@
           class="expand"
           @click.stop="$emit('expanded', layer.name)"
         >
-          <v-icon>keyboard_arrow_down</v-icon>
+          <icon name="arrow-down"/>
         </v-btn>
       </div>
       <collapse-transition>
         <div v-if="isExpanded" class="metadata">
           <div class="pb-1"/>
 
-          <label>Abstract:</label>
+          <label><translate>Abstract</translate>: </label>
           <span>{{ layer.metadata.abstract }}</span><br/>
 
-          <label>Keywords list:</label>
+          <label><translate>Keywords list</translate>: </label>
           <span>{{ layer.metadata.keyword_list }}</span><br/>
 
   <!--           <label>Maximal scale:</label>

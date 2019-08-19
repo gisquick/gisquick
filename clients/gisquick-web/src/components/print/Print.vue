@@ -3,8 +3,8 @@
     <portal to="main-panel">
       <div class="print-form pa-2" key="print">
         <v-select
-          label="Layout"
           v-model="layout"
+          :label="tr.Layout"
           item-text="name"
           :return-object="true"
           :items="layouts"
@@ -16,7 +16,9 @@
           </v-btn>
           <v-list>
 
-            <text-separator>Output format</text-separator>
+            <text-separator>
+              <translate>Output format</translate>
+            </text-separator>
             <v-list-tile
               v-for="value in ['pdf', 'png']"
               :key="value"
@@ -29,7 +31,9 @@
               <v-list-tile-title>{{ value }}</v-list-tile-title>
             </v-list-tile>
 
-            <text-separator>Print quality</text-separator>
+            <text-separator>
+              <translate>Print quality</translate>
+            </text-separator>
             <v-list-tile
               v-for="value in [96, 150, 300]"
               :key="value"
@@ -89,6 +93,23 @@ export default {
     dpi: 96,
     labelsData: null
   }),
+  computed: {
+    ...mapState(['project']),
+    layouts () {
+      return this.project.config.print_composers
+    },
+    visibleLabels () {
+      if (this.layout) {
+        return this.layout.labels.filter(label => !label.startsWith('gislab_'))
+      }
+      return []
+    },
+    tr () {
+      return {
+        Layout: this.$gettext('Layout')
+      }
+    }
+  },
   created () {
     if (!this.labelsData) {
       // initialize data for all labels
@@ -104,18 +125,6 @@ export default {
       this.labelsData = labelsdata
     }
     this.layout = this.layout || this.layouts[0]
-  },
-  computed: {
-    ...mapState(['project']),
-    layouts () {
-      return this.project.config.print_composers
-    },
-    visibleLabels () {
-      if (this.layout) {
-        return this.layout.labels.filter(label => !label.startsWith('gislab_'))
-      }
-      return []
-    }
   },
   mounted () {
     this.activate()

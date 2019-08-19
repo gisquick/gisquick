@@ -2,8 +2,10 @@
   <div>
     <portal to="app-menu">
       <v-list-tile @click="toggleAttributions">
-        <v-list-tile-title>Display attributions</v-list-tile-title>
-        <v-icon v-show="!attributionsHidden">check</v-icon>
+        <v-list-tile-title>
+          <translate>Display attributions</translate>
+        </v-list-tile-title>
+        <v-icon v-show="!attributionsHidden" class="ml-3">check</v-icon>
       </v-list-tile>
     </portal>
   </div>

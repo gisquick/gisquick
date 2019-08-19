@@ -3,8 +3,8 @@
     <portal to="main-panel">
       <div class="pa-2" key="identification">
         <v-select
-          label="Layer"
           v-model="identificationLayer"
+          :label="tr.Layer"
           item-text="title"
           item-value="name"
           :items="options"
@@ -15,7 +15,9 @@
             <v-icon>more_vert</v-icon>
           </v-btn>
           <v-list>
-            <text-separator>Display</text-separator>
+            <text-separator>
+              <translate>Display</translate>
+            </text-separator>
             <v-list-tile
               v-for="mode in displayModes"
               :key="mode.text"
@@ -75,27 +77,9 @@ import FeaturesViewer, { createStyle } from './ol/FeaturesViewer'
 
 const SelectedStyle = createStyle([3, 169, 244])
 
-const defaultOption = {
-  title: 'All visible layers',
-  name: ''
-}
-const DisplayModes = [
-  {
-    text: 'Table',
-    value: 'table'
-  },
-  {
-    text: 'Info Panel',
-    value: 'info-panel'
-  },
-  {
-    text: 'Table & Info Panel',
-    value: 'both'
-  }
-]
 const data = {
   mapCoords: null,
-  identificationLayer: defaultOption.name,
+  identificationLayer: '',
   layersFeatures: [],
   selection: null,
   displayMode: 'both'
@@ -113,10 +97,27 @@ export default {
       return this.project.overlays.list.filter(l => l.queryable && l.visible && !l.hidden)
     },
     options () {
-      return [defaultOption].concat(this.queryableLayers)
+      const allVisible = {
+        title: this.$gettext('All visible layers'),
+        name: ''
+      }
+      return [allVisible].concat(this.queryableLayers)
     },
     displayModes () {
-      return DisplayModes
+      return [
+        {
+          text: this.$gettext('Table'),
+          value: 'table'
+        },
+        {
+          text: this.$gettext('Info Panel'),
+          value: 'info-panel'
+        },
+        {
+          text: this.$gettext('Table & Info Panel'),
+          value: 'both'
+        }
+      ]
     },
     displayedFeaures () {
       const item = this.selection && this.layersFeatures.find(i => i.layer.name === this.selection.layer)
@@ -124,6 +125,11 @@ export default {
     },
     selectedFeature () {
       return this.selection && this.displayedFeaures[this.selection.featureIndex]
+    },
+    tr () {
+      return {
+        Layer: this.$gettext('Layer')
+      }
     }
   },
   watch: {
@@ -161,7 +167,7 @@ export default {
         const pixelRadius = 8
         const radius = Math.abs(map.getCoordinateFromPixel([pixel[0] + pixelRadius, pixel[1]])[0] - coords[0])
 
-        var identifyPolygon = Polygon.fromCircle(new Circle(coords, radius), 6)
+        const identifyPolygon = Polygon.fromCircle(new Circle(coords, radius), 6)
         const identifyPolygonGml = new GML3().writeGeometryNode(identifyPolygon).innerHTML
 
         const filter = [

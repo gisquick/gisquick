@@ -2,7 +2,7 @@
   <div class="content-panel">
     <v-toolbar dark flat height="30">
       <v-spacer/>
-      <h4>Content</h4>
+      <h4><translate>Content</translate></h4>
       <v-spacer/>
     </v-toolbar>
     <v-tabs
@@ -11,15 +11,15 @@
     >
       <v-tabs-slider color="primary"/>
       <v-tab href="#base">
-        <span>Base Layers</span>
+        <translate>Base Layers</translate>
         <icon name="base-layer"/>
       </v-tab>
       <v-tab href="#overlays">
-        <span>Overlay Layers</span>
+        <translate>Overlay Layers</translate>
         <icon name="overlays"/>
       </v-tab>
       <v-tab href="#legend">
-        <span>Legend</span>
+        <translate>Legend</translate>
         <icon name="legend"/>
       </v-tab>
 
@@ -50,8 +50,12 @@
           class="secondary-tabs"
           v-model="activeSecondaryTab"
         >
-          <v-tab href="#topics">Topics</v-tab>
-          <v-tab href="#layers">Layers</v-tab>
+          <v-tab href="#topics">
+            <translate>Topics</translate>
+          </v-tab>
+          <v-tab href="#layers">
+            <translate>Layers</translate>
+          </v-tab>
           <v-tab-item id="topics">
             <scroll-area>
               <v-radio-group

@@ -115,17 +115,17 @@ export default {
       return [
         {
           name: 'identification',
-          title: 'Identification',
+          title: this.$pgettext('noun', 'Identification'),
           icon: 'identification',
           component: Identification
         }, {
           name: 'measure',
-          title: 'Measure',
+          title: this.$pgettext('noun', 'Measure'),
           icon: 'ruler',
           component: Measure
         }, {
           name: 'print',
-          title: 'Print',
+          title: this.$pgettext('noun', 'Print'),
           icon: 'printer',
           component: Print,
           disabled: !this.project.config.print_composers
@@ -252,7 +252,7 @@ export default {
   overflow: hidden;
   > div {
     align-self: flex-end;
-    width: 280px;
+    width: 288px;
     flex: 1 1;
     overflow: hidden;
     // > .collapsible {
@@ -381,7 +381,7 @@ export default {
 
 .main-panel {
   position: relative;
-  width: 280px;
+  width: 288px;
   display: flex;
   flex-direction: column;
   background-color: #fff;

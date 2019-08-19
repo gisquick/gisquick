@@ -16,22 +16,30 @@
           <v-list-tile-title>Logout</v-list-tile-title>
         </v-list-tile>
         <v-list-tile v-else @click="showLogin = true">
-          <v-list-tile-title>Login</v-list-tile-title>
+          <v-list-tile-title>
+            <translate>Login</translate>
+          </v-list-tile-title>
         </v-list-tile>
 
         <v-list-tile href="/user/">
-          <v-list-tile-title>My profile</v-list-tile-title>
+          <v-list-tile-title>
+            <translate>My profile</translate>
+          </v-list-tile-title>
         </v-list-tile>
 
         <v-list-tile @click="toggleFullscreen">
-          <v-list-tile-title>{{ fullscreen ? 'Exit Full Screen' : 'Full screen' }}</v-list-tile-title>
-          <v-icon v-show="fullscreen">check</v-icon>
+          <v-list-tile-title>
+            <translate>Full screen</translate>
+          </v-list-tile-title>
+          <v-icon v-show="fullscreen" class="ml-3">check</v-icon>
         </v-list-tile>
 
         <portal-target name="app-menu" multiple/>
 
         <v-list-tile @click="openHelp">
-          <v-list-tile-title>Help</v-list-tile-title>
+          <v-list-tile-title>
+            <translate>Help</translate>
+          </v-list-tile-title>
         </v-list-tile>
       </v-list>
     </v-menu>

@@ -3,7 +3,7 @@
     <span v-text="label"/>
     <v-layout row v-if="operators">
       <v-select
-        placeholder="Operator"
+        :placeholder="tr.Operator"
         :items="operators"
         :value="filter.comparator"
         @input="$emit('input:comparator', $event)"
@@ -115,6 +115,11 @@ export default {
         return ''
       }
       return this.operators.find(op => op.value === this.filter.comparator).placeholder
+    },
+    tr () {
+      return {
+        Operator: this.$gettext('Operator')
+      }
     }
   }
 }

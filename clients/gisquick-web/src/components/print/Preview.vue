@@ -8,9 +8,9 @@
     <v-layout class="center column shrink">
 
       <v-toolbar dark flat height="30">
-        <span flex>Scale 1: {{ scale }}</span>
+        <span class="scale flex"><translate>Scale</translate> 1: {{ scale }}</span>
         <v-spacer/>
-        <h1>Print Preview</h1>
+          <translate tag="h1">Print Preview</translate>
         <v-spacer/>
         <v-layout class="controls">
           <v-btn icon @click="print">
@@ -277,7 +277,7 @@ export default {
   }
 }
 .v-toolbar {
-  span {
+  .scale {
     font-size: 90%;
     position: absolute;
     left: 0.5em;

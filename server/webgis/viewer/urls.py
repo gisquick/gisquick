@@ -6,7 +6,6 @@ from webgis.viewer.views import web_client, map, api
 
 urlpatterns = [
     url(r"^$", web_client.map, name="map"),
-    url(r"^vue/$", web_client.vue_map, name="vuemap"),
     url(r"^login/$", web_client.client_login, name="login"),
     url(r"^logout/$", web_client.client_logout, name="logout"),
 
@@ -25,5 +24,5 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += [
-        url(r'^dev/vue/$', web_client.dev_vue_map)
+        url(r'^dev/map/$', web_client.dev_vue_map)
     ]

@@ -5,10 +5,15 @@ from webgis.viewer.views.project_utils import get_project, \
     get_user_projects, get_user_data, InvalidProjectException
 
 
-@login_required
+# TODO: replace or set login_required to return 401 response instead of redirect
+# @login_required
 def user_json(request):
-    user = request.user
-    return JsonResponse(get_user_data(data))
+    if request.user.is_anonymous():
+        return HttpResponse('Unauthorized', status=401)
+    data = {
+        "user": get_user_data(request.user)
+    }
+    return JsonResponse(data)
 
 
 @login_required

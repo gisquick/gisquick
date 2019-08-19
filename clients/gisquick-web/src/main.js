@@ -41,7 +41,7 @@ Vue.prototype.$http = http
 
 if (process.env.NODE_ENV === 'development') {
   var initialize = new Promise((resolve, reject) => {
-    http.get('/dev/vue/' + location.search)
+    http.get('/dev/map/' + location.search)
       .then(resp => resolve(resp.data))
       .catch(reject)
   })
@@ -52,6 +52,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 initialize.then(data => {
+  store.commit('app', data.app)
   store.commit('user', data.user)
   store.commit('project', data.project)
   const vm = new Vue({
@@ -63,8 +64,8 @@ initialize.then(data => {
     },
     render: h => h(App)
   })
-  if (data.lang) {
-    vm.$language.current = data.lang
+  if (data.app.lang) {
+    vm.$language.current = data.app.lang
   }
   vm.$mount('#app')
 })

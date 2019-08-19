@@ -67,3 +67,25 @@ npm run makemessages
 ```
 npm run translations
 ```
+
+### Build selected components as library module
+Single component
+```
+CSS_EXTRACT=False npm run build -- --target lib --dest dist/ --name infopanel src/extensions/Districts.vue
+```
+
+Multiple components
+```
+CSS_EXTRACT=False npm run build -- --target lib --dest dist/ --name infopanel src/extensions/index.js
+```
+
+#### index.js
+```javascript
+import component1 from './Component1'
+import component2 from './Component2'
+
+export default {
+  component1,
+  component2
+}
+```

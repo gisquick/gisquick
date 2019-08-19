@@ -77,6 +77,7 @@ def map(request):
         data['user'] = get_user_data(request.user)
         data['project'] = get_project(request)
         data['app'] = {
+            'lang': settings.LANGUAGE_CODE,
             'version': webgis.VERSION,
             'reset_password_url': getattr(settings, 'RESET_PASSWORD_URL', '')
         }
@@ -102,44 +103,6 @@ def map(request):
         content_type="text/html"
     )
 
-def vue_map(request):
-    data = {}
-    try:
-        if not request.user.is_authenticated():
-            user = models.GisquickUser.get_guest_user()
-            if user:
-                login(request, user)
-            else:
-                raise RuntimeError("Anonymous user is not configured")
-        data['user'] = get_user_data(request.user)
-        data['project'] = get_project(request)
-        data['app'] = {
-            'version': webgis.VERSION,
-            'reset_password_url': getattr(settings, 'RESET_PASSWORD_URL', '')
-        }
-
-    except InvalidProjectException as e:
-        return render(
-            request,
-            "viewer/4xx.html",
-            {'message': "Error when loading project or project does not exist"},
-            status=404,
-            content_type="text/html"
-        )
-
-    templateData = {
-        'data': data,
-        'jsonData': json.dumps(data)
-    }
-    return render(
-        request,
-        "viewer/vue/index.html",
-        templateData,
-        status=200,
-        content_type="text/html"
-    )
-
-
 def dev_vue_map(request):
     if not request.user.is_authenticated():
         user = models.GisquickUser.get_guest_user()
@@ -151,6 +114,7 @@ def dev_vue_map(request):
         user = request.user
     data = {
         'app': {
+            'lang': settings.LANGUAGE_CODE,
             'version': webgis.VERSION,
             'reset_password_url': getattr(settings, 'RESET_PASSWORD_URL', '')
         },

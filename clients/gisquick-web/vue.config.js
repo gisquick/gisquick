@@ -1,5 +1,18 @@
 module.exports = {
-
+  outputDir: 'dist/static',
+  publicPath: process.env.NODE_ENV === 'production' ? '/static/' : '/',
+  pages: process.env.NODE_ENV === 'production'
+    ? {
+      index: {
+        entry: 'src/main.js',
+        template: 'index-prod.html',
+        filename: '../templates/index.html'
+      }
+    }
+    : undefined,
+  css: {
+    extract: process.env.CSS_EXTRACT !== 'False'
+  },
   chainWebpack: config => {
     const svgRule = config.module.rule('svg')
     svgRule.uses.clear()
@@ -30,13 +43,8 @@ module.exports = {
   },
 
   devServer: {
-    // proxy: {
-    //   context: ['/login', '/project.json'],
-    //   target: 'http://localhost:8000'
-    // }
     proxy: {
-      // '**'
-      '/login|/logout|/project.json|/projects.json|/ows|/tile|/legend|/filter': {
+      '^/dev|^/login|^/logout|^/project.json|^/projects.json|^/ows|^/tile|^/legend|^/filter': {
         target: 'http://localhost:8000'
       }
     }

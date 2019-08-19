@@ -1,47 +1,13 @@
-
-FROM ubuntu:16.04 AS builder
+FROM node:12-alpine AS webapp
 MAINTAINER Marcel Dancak "dancakm@gmail.com"
 
-ARG version
-
-# Install system packages
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    python-setuptools \
-    python-pip \
-    git \
-    apt-utils \
-    patch \
-    curl \
-    make \
-    g++ \
-    && rm -rf /var/lib/apt/lists/*
+COPY ./clients/gisquick-web/ /gisquick-web/
+WORKDIR /gisquick-web/
+RUN npm install
+RUN npm run build
 
 
-RUN curl -sL https://deb.nodesource.com/setup_4.x | bash -
-RUN apt-get install -y nodejs
-
-
-COPY ./server/ /gisquick/server
-COPY ./clients/ /gisquick/clients/
-
-WORKDIR /gisquick/clients/
-RUN npm install && \
-    npm install web && \
-    npm install -g gulp
-
-RUN gulp icons-web && \
-    gulp build-web && \
-    gulp build-userpage
-
-WORKDIR /gisquick/server
-RUN echo "VERSION = '${version}'" > webgis/__init__.py && \
-    python setup.py sdist
-
-CMD echo 'Build is finished.'
-
-
-FROM ubuntu:16.04
-
+FROM ubuntu:18.04
 ARG version
 
 # Install system packages
@@ -53,20 +19,20 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     sqlite3 \
     && rm -rf /var/lib/apt/lists/*
 
+RUN pip3 install --no-cache-dir 'gunicorn>=19.7,<19.8'
 
-# Install Gunicorn and GIS.lab Web dependencies
-COPY --from=builder /gisquick/server/dist/gisquick-${version}.tar.gz /tmp/gisquick.tar.gz
+COPY ./server/ /gisquick/server/
+COPY --from=webapp /gisquick-web/dist/static/ /gisquick/server/webgis/viewer/static/
+COPY --from=webapp /gisquick-web/dist/templates/index.html /gisquick/server/webgis/viewer/templates/viewer/index.html
 
-RUN pip3 install --no-cache-dir 'gunicorn>=19.7,<19.8' && \
-    pip3 install --no-cache-dir /tmp/gisquick.tar.gz && \
-    rm /tmp/gisquick.tar.gz
+RUN echo "VERSION = '${version}'" > /gisquick/server/webgis/__init__.py && \
+    pip3 install -e /gisquick/server/
 
-
-# Create GisQuick Django project
+# Create Gisquick Django project
 RUN mkdir -p /var/www/gisquick && \
     mkdir -p /var/log/django/ && \
     mkdir -p /var/log/gunicorn/ && \
-    django-admin startproject --template=/usr/local/lib/python3.5/dist-packages/webgis/conf/project_template/ djproject /var/www/gisquick/
+    django-admin startproject --template=/gisquick/server/webgis/conf/project_template/ djproject /var/www/gisquick/
 
 COPY ./docker/django/settings_custom.py /var/www/gisquick/djproject/settings_custom.py
 

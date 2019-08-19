@@ -16,7 +16,7 @@
           <h3><translate>Sign In to Continue</translate></h3>
         </v-layout>
 
-        <v-card-text>
+        <v-card-text class="pb-1">
           <p
             v-if="authenticationError"
             class="text-xs-center red--text">{{ authenticationError }}
@@ -35,12 +35,35 @@
               :type="passwordVisible ? 'text' : 'password'"
               @keyup.enter="login"
             />
-            <v-btn light color="grey lighten-3" @click="login">
+            <v-btn
+              light
+              color="grey lighten-3"
+              class="mx-0"
+              @click="login"
+            >
               <translate>Login</translate>
             </v-btn>
           </v-form>
         </v-card-text>
-
+        <v-layout class="row footer mx-3">
+          <v-btn
+            v-if="!loginRequired"
+            @click="$emit('close')"
+            color="grey"
+            flat
+          >
+            <translate>Continue as Guest</translate>
+          </v-btn>
+          <v-spacer/>
+          <v-btn
+            v-if="passwordReset"
+            :href="passwordReset"
+            color="grey"
+            flat
+          >
+            <translate>Forgot password?</translate>
+          </v-btn>
+        </v-layout>
       </v-card>
     </v-container>
   </v-dialog>
@@ -50,6 +73,10 @@
 
 export default {
   name: 'login-dialog',
+  props: {
+    loginRequired: Boolean,
+    passwordReset: String
+  },
   data () {
     return {
       open: true,
@@ -86,8 +113,8 @@ export default {
 }
 </script>
 
-<style lang="scss">
-.login-dialog {
+<style lang="scss" scoped>
+/deep/ .login-dialog {
   background-color: black;
   .v-card {
     max-width: 400px;
@@ -123,6 +150,11 @@ export default {
       input:-webkit-autofill {
         -webkit-box-shadow: 0 0 0px 1000px #000 inset;
         -webkit-text-fill-color: #fff
+      }
+    }
+    .footer {
+      .v-btn {
+        text-transform: none;
       }
     }
   }

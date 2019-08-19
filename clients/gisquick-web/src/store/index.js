@@ -18,11 +18,15 @@ export default new Vuex.Store({
     attributeTable
   },
   state: {
+    app: null,
     user: null,
     project: null,
     activeTool: null
   },
   mutations: {
+    app (state, app) {
+      state.app = app
+    },
     user (state, user) {
       state.user = user
     },

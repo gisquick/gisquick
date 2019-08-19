@@ -44,7 +44,13 @@
       </v-list>
     </v-menu>
 
-    <login-dialog v-if="!project || showLogin" @login="onLogin"/>
+    <login-dialog
+      v-if="!project || showLogin"
+      :login-required="!project"
+      :password-reset="app.reset_password_url"
+      @login="onLogin"
+      @close="showLogin = false"
+    />
     <projects-dialog v-if="showProjects" :projects="projects"/>
   </v-app>
 </template>
@@ -67,7 +73,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['user', 'project'])
+    ...mapState(['app', 'user', 'project'])
   },
   mounted () {
     if (process.env.NODE_ENV === 'development' && !location.search) {

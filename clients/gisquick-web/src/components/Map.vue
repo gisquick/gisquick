@@ -162,7 +162,7 @@ export default {
   },
   created () {
     const mapConfig = {
-      project: this.project.config.project,
+      project: this.project.config.ows_project,
       baseLayers: this.project.baseLayers.list,
       overlays: this.project.overlays.list,
       extent: this.project.config.project_extent,

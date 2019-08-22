@@ -54,6 +54,7 @@
       }
       tool._markerOverlay.setPosition(undefined);
 
+      var mapProjection = projectProvider.map.getView().getProjection().getCode()
       // register click events listener on map with
       // WFS GetFeature features identification
       mapClickListener = projectProvider.map.on('singleclick', function(evt) {
@@ -100,7 +101,7 @@
           tool.progress = gislabClient.get(projectProvider.data.ows_url, params)
             .then(function(data) {
               var parser = new ol.format.GeoJSON();
-              var features = parser.readFeatures(data);
+              var features = parser.readFeatures(data, { featureProjection: mapProjection });
               all_features = all_features.concat(features);
 
               if (layerNames.length > 0) {

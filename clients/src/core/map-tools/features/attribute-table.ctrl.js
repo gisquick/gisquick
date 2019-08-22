@@ -155,12 +155,13 @@
         'SERVICE': 'WFS',
         'REQUEST': 'GetFeature',
         'OUTPUTFORMAT': 'GeoJSON',
-        'FEATUREID': feature.id
+        'FEATUREID': feature.getId()
       }
+      var mapProjection = projectProvider.map.getView().getProjection().getCode()
       $scope.progress = gislabClient.get(projectProvider.data.ows_url, params)
         .then(function(data) {
           var parser = new ol.format.GeoJSON();
-          var geomFeature = parser.readFeatures(data)[0];
+          var geomFeature = parser.readFeatures(data, { featureProjection: mapProjection })[0];
           featuresViewer.selectFeature(geomFeature);
           featuresViewer.zoomToFeature(geomFeature, options);
           tool.selectedFeature = feature;

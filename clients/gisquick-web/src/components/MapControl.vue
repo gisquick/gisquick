@@ -1,9 +1,17 @@
 <template>
   <v-layout class="map-control column">
-    <v-btn icon @click="zoomIn">
+    <v-btn
+      icon
+      class="zoom-in"
+      @click="zoomIn"
+    >
       <v-icon>add</v-icon>
     </v-btn>
-    <v-btn icon @click="zoomOut">
+    <v-btn
+      icon
+      class="zoom-out"
+      @click="zoomOut"
+    >
       <v-icon>remove</v-icon>
     </v-btn>
     <v-btn icon @click="zoomToMax">
@@ -44,14 +52,14 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 @import '../theme';
 
 .map-control {
   .v-btn {
     font-size: 1em;
     background-color: $dark-color;
-    margin: 0.125em;
+    margin: 2px;
     color: white;
     width: 2em;
     height: 2em;
@@ -61,6 +69,16 @@ export default {
       width: 1.25em;
       height: 1.25em;
       fill: white;
+    }
+    &.zoom-in {
+      border-bottom-left-radius: 2px;
+      border-bottom-right-radius: 2px;
+      margin-bottom: 1px;
+    }
+    &.zoom-out {
+      border-top-left-radius: 2px;
+      border-top-right-radius: 2px;
+      margin-top: 0;
     }
   }
 }

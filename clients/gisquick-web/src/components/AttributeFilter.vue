@@ -1,17 +1,17 @@
 <template>
-  <v-layout class="column filter">
+  <v-layout class="column my-1">
     <span v-text="label"/>
-    <v-layout row v-if="operators">
+    <v-layout class="filter row" v-if="operators">
       <v-select
         :placeholder="tr.Operator"
         :items="operators"
         :value="filter.comparator"
         @input="$emit('input:comparator', $event)"
-        class="my-1 mr-1"
+        class="mt-0 mb-0 mr-1"
         hide-details
       />
       <v-text-field
-        class="my-1 mr-1"
+        class="my-0 mr-1"
         :placeholder="placeholder"
         :value="filter.value"
         @input="$emit('input:value', $event)"
@@ -127,13 +127,25 @@ export default {
 
 <style lang="scss" scoped>
 .filter {
-  /deep/ .v-select {
+  font-weight: normal;
+  .v-select {
     width: auto;
     flex: 0 0 auto;
-    .v-select__selections {
+    /deep/ .v-select__selections {
+      height: 28px;
       max-width: 52px; // to make width compact
-      font-size: 80%;
+      font-size: 13px;
     }
+  }
+  .v-text-field {
+    height: 28px;
+    font-size: 14px;
+    /deep/ input {
+      height: 28px;
+    }
+  }
+  .v-btn {
+    height: 28px;
   }
   .icon {
     width: 1.15em;

@@ -278,7 +278,7 @@ export default {
 
   .map {
     grid-column: 1 / 4;
-    grid-row: 1 / 4;
+    grid-row: 1 / 5;
     z-index: 0;
   }
   .right-container {
@@ -294,7 +294,7 @@ export default {
     }
   }
   .sticky-bottom {
-    grid-column: 2 / 3;
+    grid-column: 2 / 4;
     grid-row: 3 / 4;
     position: relative;
     overflow: visible;
@@ -323,13 +323,13 @@ export default {
     grid-row: 1 / 2;
     align-self: start;
     width: 3.5em;
-    z-index: 1;
+    z-index: 2;
   }
   .panel-toggle {
     grid-column: 2 / 3;
     grid-row: 1 / 2;
     align-self: center;
-    z-index: 2;
+    z-index: 1;
   }
   .map-control {
     grid-column: 3 / 4;
@@ -340,7 +340,7 @@ export default {
     z-index: 2;
   }
   .right-panel {
-    margin: 3.5em 0.25em 0.25em 0;
+    margin: 3.5em 0.25em 0 0;
     grid-column: 3 / 4;
     grid-row: 1 / 2;
     z-index: 2;

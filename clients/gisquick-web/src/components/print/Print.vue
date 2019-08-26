@@ -68,6 +68,7 @@
     </portal>
     <portal to="map-overlay">
       <print-preview
+        v-if="showPreview"
         :layout="layout"
         :format="format"
         :dpi="dpi"
@@ -91,7 +92,8 @@ export default {
     layout: null,
     format: 'png',
     dpi: 96,
-    labelsData: null
+    labelsData: null,
+    showPreview: false
   }),
   computed: {
     ...mapState(['project']),
@@ -111,6 +113,11 @@ export default {
     }
   },
   created () {
+    this.showPreview = false
+    // wait some time before showing preview to avoid possible resizing during closing of previous tool
+    setTimeout(() => {
+      this.showPreview = true
+    }, 500)
     if (!this.labelsData) {
       // initialize data for all labels
       const labelsdata = {}

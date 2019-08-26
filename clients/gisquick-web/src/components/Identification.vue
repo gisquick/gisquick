@@ -42,7 +42,7 @@
       <portal to="right-panel">
         <info-panel
           v-if="displayMode === 'info-panel' || displayMode === 'both'"
-          class="ml-1 elevation-6"
+          class="ml-1 mb-2 elevation-3"
           :data="layersFeatures"
           :selected="selection"
           @selection-change="selection = $event"

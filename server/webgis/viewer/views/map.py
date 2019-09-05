@@ -21,6 +21,7 @@ from webgis.libs.auth.decorators import basic_authentication
 def abs_project_path(project):
     return os.path.join(settings.GISQUICK_PROJECT_ROOT, project)
 
+@csrf_exempt
 @basic_authentication(realm="OWS API")
 def ows(request):
     params = {key.upper(): request.GET[key] for key in request.GET.keys()}
@@ -32,7 +33,10 @@ def ows(request):
     abs_project = abs_project_path(params.get('MAP'))
     url = set_query_parameters(url, {'MAP': abs_project})
 
-    owsrequest = urllib.request.Request(url)
+    if request.method == 'POST':
+        owsrequest = urllib.request.Request(url, request.body)
+    else:
+        owsrequest = urllib.request.Request(url)
     owsrequest.add_header("User-Agent", "Gisquick")
 
     resp_content = b""

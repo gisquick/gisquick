@@ -159,6 +159,7 @@ export default {
       // register click events listener on map with
       // WFS GetFeature features identification
       const map = this.$map
+      const mapProjection = map.getView().getProjection().getCode()
       this.mapClickListener = map.on('singleclick', evt => {
         // featuresViewer.removeAllFeatures()
 
@@ -169,31 +170,42 @@ export default {
 
         const identifyPolygon = Polygon.fromCircle(new Circle(coords, radius), 6)
         const identifyPolygonGml = new GML3().writeGeometryNode(identifyPolygon).innerHTML
+        const layers = this.identificationLayer ? [this.identificationLayer] : this.queryableLayers.map(l => l.name)
 
-        const filter = [
-          '<Filter>',
-          '<ogc:Intersects>',
-          '<ogc:PropertyName>geometry</ogc:PropertyName>',
-          identifyPolygonGml,
-          '</ogc:Intersects>',
-          '</Filter>'
-        ].join('')
+        const query = layers.map(name => [
+          `<gml:Query gml:typeName="${name.replace(/ /g, '')}">`,
+          ' <ogc:Filter>',
+          '  <ogc:Intersects>',
+          '   <ogc:PropertyName>geometry</ogc:PropertyName>',
+          `   ${identifyPolygonGml}`,
+          '  </ogc:Intersects>',
+          ' </ogc:Filter>',
+          '</gml:Query>'
+        ].join('\n')).join('\n')
 
-        const layers = this.identificationLayer || this.queryableLayers.map(l => l.name).join(',')
+        // attributes like 'outputFormat' or 'maxFeatures' doesn't seems to have eny effect in GetFeature
+        const xml = [
+          '<GetFeature',
+          ' xmlns="http://www.opengis.net/wfs"',
+          ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"',
+          ' xmlns:gml="http://www.qgis.org/gml"',
+          ' xmlns:ogc="http://www.opengis.net/ogc"',
+          '>',
+          ` ${query}`,
+          '</GetFeature>'
+        ].join('\n')
+
         const params = {
-          'VERSION': '1.0.0',
+          'VERSION': '1.1.0',
           'SERVICE': 'WFS',
           'REQUEST': 'GetFeature',
           'OUTPUTFORMAT': 'GeoJSON',
-          'TYPENAME': layers.replace(/ /g, ''),
-          'MAXFEATURES': 10,
-          'FILTER': filter
+          'MAXFEATURES': 10
         }
-
-        this.$http.get(this.project.config.ows_url, { params })
+        this.$http.post(this.project.config.ows_url, xml, { params, headers: { 'Content-Type': 'text/xml' } })
           .then(resp => {
             const parser = new GeoJSON()
-            const features = parser.readFeatures(resp.data)
+            const features = parser.readFeatures(resp.data, { featureProjection: mapProjection })
 
             const categorizedFeatures = this.categorize(features)
             const items = this.tableData(categorizedFeatures)

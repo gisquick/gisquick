@@ -213,7 +213,7 @@ export default {
     },
     zoomToFeature (feature) {
       const params = {
-        VERSION: '1.0.0',
+        VERSION: '1.1.0',
         SERVICE: 'WFS',
         REQUEST: 'GetFeature',
         OUTPUTFORMAT: 'GeoJSON',
@@ -224,7 +224,8 @@ export default {
         .then(resp => {
           this.loading = false
           const parser = new GeoJSON()
-          const geomFeature = parser.readFeatures(resp.data)[0]
+          const featureProjection = this.$map.getView().getProjection().getCode()
+          const geomFeature = parser.readFeatures(resp.data, { featureProjection })[0]
           this.geometryFeatures = Object.freeze([geomFeature])
           this.$map.ext.zoomToFeature(geomFeature)
           this.zoomedFeatureId = feature.id

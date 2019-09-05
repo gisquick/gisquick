@@ -25,7 +25,6 @@
     </v-btn>
 
     <v-layout class="right-container column">
-      <v-spacer/>
       <portal-target
         name="right-panel"
         class="right-panel"

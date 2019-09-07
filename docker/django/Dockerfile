@@ -38,6 +38,7 @@ COPY ./docker/django/settings_custom.py /var/www/gisquick/djproject/settings_cus
 
 ENV PYTHONPATH $PYTHONPATH:/var/www/gisquick/
 ENV DJANGO_SETTINGS_MODULE djproject.settings
+ENV LANG C.UTF-8
 
 
 # Configure Gunicorn and Supervisor

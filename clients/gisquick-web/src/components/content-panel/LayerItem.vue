@@ -156,6 +156,10 @@ export default Vue.component('layer-item', {
   .item-container {
     .item {
       position: relative;
+
+      &:hover {
+        background-color: #eee;
+      }
       .v-input {
         margin-top: 0;
       }
@@ -172,6 +176,11 @@ export default Vue.component('layer-item', {
       label {
         font-size: 0.938rem;
         color: #333;
+      }
+      .v-input--checkbox {
+        label {
+          flex-grow: 1;
+        }
       }
     }
     .metadata {

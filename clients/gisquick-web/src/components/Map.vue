@@ -25,6 +25,7 @@
     </v-btn>
 
     <v-layout class="right-container column">
+      <!-- <v-spacer/> -->
       <portal-target
         name="right-panel"
         class="right-panel"
@@ -33,12 +34,6 @@
       <v-spacer/>
       <map-control/>
     </v-layout>
-    <!-- <map-control/>
-    <portal-target
-      name="right-panel"
-      class="right-panel"
-      transition="collapse-width"
-    /> -->
 
     <div ref="mapViewport" class="visible-container"/>
 
@@ -288,6 +283,11 @@ export default {
     // justify-items: center;
     min-height: 0;
     max-height: 100%;
+    margin: 3.5em 0.25em 0 0;
+    pointer-events: none;
+    > * {
+      pointer-events: auto;
+    }
     .map-control {
       flex: 0 0;
     }
@@ -339,19 +339,13 @@ export default {
     z-index: 2;
   }
   .right-panel {
-    margin: 3.5em 0.25em 0 0;
     grid-column: 3 / 4;
     grid-row: 1 / 2;
     z-index: 2;
-
     display: flex;
     flex-direction: column;
     overflow: hidden;
     justify-content: flex-end;
-    pointer-events: none;
-    > /deep/ * {
-      pointer-events: auto;
-    }
   }
   .map-overlay, .visible-container {
     grid-column: 2 / 4;

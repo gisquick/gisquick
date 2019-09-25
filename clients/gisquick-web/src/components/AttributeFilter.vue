@@ -138,6 +138,7 @@ export default {
     }
   }
   .v-text-field {
+    min-width: 100px;
     height: 28px;
     font-size: 14px;
     /deep/ input {

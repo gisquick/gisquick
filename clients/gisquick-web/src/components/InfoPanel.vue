@@ -137,7 +137,7 @@ export default {
 .info-panel {
   position: relative;
   border-radius: 3px;
-  width: 20em;
+  width: 24em;
   border: 1px solid #aaa;
   background-color: #fff;
 

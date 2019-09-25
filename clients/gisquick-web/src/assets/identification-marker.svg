@@ -14,7 +14,7 @@
    height="16"
    viewBox="0 0 16 16"
    id="svg2"
-   inkscape:version="0.48.4 r9939"
+   inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
    sodipodi:docname="identification-marker.svg">
   <metadata
      id="metadata12">
@@ -45,17 +45,17 @@
      showgrid="false"
      showguides="true"
      inkscape:guide-bbox="true"
-     inkscape:zoom="7.375"
-     inkscape:cx="-30.23132"
-     inkscape:cy="17.716115"
+     inkscape:zoom="20.85965"
+     inkscape:cx="4.6744536"
+     inkscape:cy="7.2299854"
      inkscape:window-x="0"
-     inkscape:window-y="25"
+     inkscape:window-y="34"
      inkscape:window-maximized="0"
      inkscape:current-layer="svg2" />
   <path
      id="path6"
-     style="fill:#03a9f4;fill-opacity:1"
-     d="m 6.4250324,0 0,6.4250322 -6.4250324,0 0,3.1499354 6.4250324,0 0,6.4250324 3.1499352,0 0,-6.4250324 6.4250324,0 0,-3.1499354 -6.4250324,0 0,-6.4250322 z"
+     style="fill:#03a9f4;fill-opacity:1;stroke:#ffffff;stroke-width:0.71641791;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="M 6.4955533,0.35820901 V 6.4955531 H 0.35820895 V 9.5044467 H 6.4955533 V 15.641791 H 9.5044467 V 9.5044467 H 15.641791 V 6.4955531 H 9.5044467 V 0.35820901 Z"
      inkscape:connector-curvature="0"
      sodipodi:nodetypes="ccccccccccccc" />
 </svg>

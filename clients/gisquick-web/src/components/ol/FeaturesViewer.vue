@@ -23,7 +23,7 @@ export function createStyle (color) {
       fill: new Fill({
         color: color.concat(0.5)
       }),
-      radius: 5
+      radius: 8
     })
   })
 }

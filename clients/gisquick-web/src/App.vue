@@ -13,7 +13,9 @@
 
       <v-list>
         <v-list-tile v-if="user && !user.is_guest" @click="logout">
-          <v-list-tile-title>Logout</v-list-tile-title>
+          <v-list-tile-title>
+            <translate>Logout</translate>
+          </v-list-tile-title>
         </v-list-tile>
         <v-list-tile v-else @click="showLogin = true">
           <v-list-tile-title>

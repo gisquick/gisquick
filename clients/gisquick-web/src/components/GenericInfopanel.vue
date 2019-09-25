@@ -41,7 +41,7 @@ const UrlWidget = Widget((h, ctx) => (
 ))
 
 const ImageWidget = Widget((h, ctx) => (
-  <img src={ctx.props.value}/>
+  <a href={ctx.props.value} target="_blank" class="img"><img src={ctx.props.value}/></a>
 ))
 
 export default {
@@ -76,17 +76,23 @@ export default {
 .grid {
   transition: grid-template-columns 0.5s;
   display: grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: minmax(auto, 50%) 1fr;
+  max-width: 100%;
   label {
     margin: 0 0.75em 0 0;
     font-weight: 500;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
   span {
     color: #555;
   }
-  img {
+  a.img {
     grid-column: 1 / 3;
-    max-width: 100%;
+    img {
+      max-width: 100%;
+    }
   }
 }
 </style>

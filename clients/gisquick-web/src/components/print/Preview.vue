@@ -65,7 +65,7 @@ export default {
     visible: false
   }),
   computed: {
-    ...mapState(['project']),
+    ...mapState(['user', 'project']),
     size () {
       return {
         width: mmToPx(this.layout.width) / this.scaleRatio + 'px',
@@ -104,9 +104,11 @@ export default {
       const config = {
         dpi: 96,
         format: 'png',
-        layers: []
+        // qgis3 server doesn't like empty layers parameter!
+        layers: [this.project.overlays.list[0].name]
       }
       const params = createPrintParameters(this.$map, layout, extent, config)
+      params.gislab_author = this.user.username
       return axios.getUri({ url: this.project.config.ows_url, params })
     },
     scaleRatio () {

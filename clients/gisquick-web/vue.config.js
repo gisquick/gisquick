@@ -11,7 +11,7 @@ module.exports = {
     }
     : undefined,
   css: {
-    extract: process.env.CSS_EXTRACT !== 'False'
+    extract: process.env.NODE_ENV === 'production' && process.env.CSS_EXTRACT !== 'False'
   },
   chainWebpack: config => {
     const svgRule = config.module.rule('svg')

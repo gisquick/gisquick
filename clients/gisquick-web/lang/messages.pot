@@ -68,7 +68,7 @@ msgstr ""
 msgid "Forgot password?"
 msgstr ""
 
-#: ./src/App.vue:32
+#: ./src/App.vue:34
 msgid "Full screen"
 msgstr ""
 
@@ -76,7 +76,7 @@ msgstr ""
 msgid "Geometry"
 msgstr ""
 
-#: ./src/App.vue:41
+#: ./src/App.vue:43
 msgid "Help"
 msgstr ""
 
@@ -101,11 +101,11 @@ msgstr ""
 msgid "Layer"
 msgstr ""
 
-#: ./src/components/content-panel/ContentPanel.vue:57
+#: ./src/components/content-panel/ContentPanel.vue:58
 msgid "Layers"
 msgstr ""
 
-#: src/components/print/Print.vue:109
+#: src/components/print/Print.vue:111
 msgid "Layout"
 msgstr ""
 
@@ -117,13 +117,25 @@ msgstr ""
 msgid "Location"
 msgstr ""
 
-#: ./src/App.vue:20
+#: ./src/App.vue:22
 #: ./src/components/LoginDialog.vue:44
 msgid "Login"
 msgstr ""
 
-#: ./src/App.vue:26
+#: ./src/App.vue:17
+msgid "Logout"
+msgstr ""
+
+#: ./src/App.vue:28
 msgid "My profile"
+msgstr ""
+
+#: ./src/components/content-panel/BaseLayerOpacity.vue:5
+msgid "Opacity of base layer"
+msgstr ""
+
+#: ./src/components/content-panel/OverlaysOpacity.vue:5
+msgid "Opacity of overlay layers"
 msgstr ""
 
 #: src/components/AttributeFilter.vue:121
@@ -175,16 +187,12 @@ msgstr ""
 msgid "Table & Info Panel"
 msgstr ""
 
-#: ./src/components/content-panel/ContentPanel.vue:54
+#: ./src/components/content-panel/ContentPanel.vue:55
 msgid "Topics"
 msgstr ""
 
 #: ./src/components/measure/Measure.vue:77
 msgid "Total length"
-msgstr ""
-
-#: ./src/components/content-panel/OverlaysOpacity.vue:5
-msgid "Transparency of overlay layers"
 msgstr ""
 
 #: ./src/components/measure/Measure.vue:166
@@ -202,17 +210,17 @@ msgstr ""
 msgid "Zoom to"
 msgstr ""
 
-#: src/components/Map.vue:118
+#: src/components/Map.vue:112
 msgctxt "noun"
 msgid "Identification"
 msgstr ""
 
-#: src/components/Map.vue:123
+#: src/components/Map.vue:117
 msgctxt "noun"
 msgid "Measure"
 msgstr ""
 
-#: src/components/Map.vue:128
+#: src/components/Map.vue:122
 msgctxt "noun"
 msgid "Print"
 msgstr ""

@@ -2,7 +2,7 @@
   <v-layout row shrink mt-1 align-center>
     <v-tooltip top>
       <v-icon slot="activator">opacity</v-icon>
-      <translate>Opacity of overlay layers</translate>
+      <translate>Opacity of base layer</translate>
     </v-tooltip>
     <v-slider
       min="0"
@@ -31,7 +31,11 @@ export default {
   },
   methods: {
     updateOpacity () {
-      this.$map.overlay.setOpacity(this.opacity)
+      this.$map.getLayers().getArray()
+        .filter(l => l.get('type') === 'baselayer')
+        .forEach(l => {
+          l.setOpacity(this.opacity)
+        })
     }
   }
 }

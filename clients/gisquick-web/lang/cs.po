@@ -77,7 +77,7 @@ msgstr "Filtrovat viditelnou oblast"
 msgid "Forgot password?"
 msgstr "Zapomenuté heslo?"
 
-#: src/App.vue:32
+#: src/App.vue:34
 msgid "Full screen"
 msgstr "Celá obrazovka"
 
@@ -85,7 +85,7 @@ msgstr "Celá obrazovka"
 msgid "Geometry"
 msgstr "Geometrie"
 
-#: src/App.vue:41
+#: src/App.vue:43
 msgid "Help"
 msgstr "Nápověda (en)"
 
@@ -110,11 +110,11 @@ msgstr "Poslední segment"
 msgid "Layer"
 msgstr "Vrstva"
 
-#: src/components/content-panel/ContentPanel.vue:57
+#: src/components/content-panel/ContentPanel.vue:58
 msgid "Layers"
 msgstr "Vrstvy"
 
-#: src/components/print/Print.vue:109
+#: src/components/print/Print.vue:111
 msgid "Layout"
 msgstr "Rozložení"
 
@@ -126,13 +126,25 @@ msgstr "Legenda"
 msgid "Location"
 msgstr "Umístění"
 
-#: src/App.vue:20 src/components/LoginDialog.vue:44
+#: src/App.vue:22 src/components/LoginDialog.vue:44
 msgid "Login"
 msgstr "Přihlásit se"
 
-#: src/App.vue:26
+#: src/App.vue:17
+msgid "Logout"
+msgstr "Odhlásit se"
+
+#: src/App.vue:28
 msgid "My profile"
 msgstr "Můj profil"
+
+#: src/components/content-panel/BaseLayerOpacity.vue:5
+msgid "Opacity of base layer"
+msgstr "Viditelnost základních vrstev"
+
+#: src/components/content-panel/OverlaysOpacity.vue:5
+msgid "Opacity of overlay layers"
+msgstr "Viditelnost překryvných vrstev"
 
 #: src/components/AttributeFilter.vue:121
 msgid "Operator"
@@ -182,17 +194,13 @@ msgstr "Tabulka"
 msgid "Table & Info Panel"
 msgstr "Tabulka & Infopanel"
 
-#: src/components/content-panel/ContentPanel.vue:54
+#: src/components/content-panel/ContentPanel.vue:55
 msgid "Topics"
 msgstr "Témata"
 
 #: src/components/measure/Measure.vue:77
 msgid "Total length"
 msgstr "Celková délka"
-
-#: src/components/content-panel/OverlaysOpacity.vue:5
-msgid "Transparency of overlay layers"
-msgstr "Průhlednost překryvných vrstev"
 
 #: src/components/measure/Measure.vue:166 src/components/measure/Measure.vue:96
 msgid "Units"
@@ -207,17 +215,17 @@ msgstr "Uživatelské jméno"
 msgid "Zoom to"
 msgstr "Přiblížit"
 
-#: src/components/Map.vue:118
+#: src/components/Map.vue:112
 msgctxt "noun"
 msgid "Identification"
 msgstr "Identifikace"
 
-#: src/components/Map.vue:123
+#: src/components/Map.vue:117
 msgctxt "noun"
 msgid "Measure"
 msgstr "Měření"
 
-#: src/components/Map.vue:128
+#: src/components/Map.vue:122
 msgctxt "noun"
 msgid "Print"
 msgstr "Tisk"

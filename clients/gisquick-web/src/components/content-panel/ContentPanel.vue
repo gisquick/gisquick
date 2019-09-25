@@ -25,6 +25,7 @@
 
       <v-tab-item id="base">
         <scroll-area>
+          <base-layer-opacity class="opacity-tool mx-1 px-1 mt-2"/>
           <v-radio-group
             :value="visibleBaseLayerName"
             :mandatory="false"
@@ -105,10 +106,11 @@ import LayerItem from './LayerItem'
 import BaseLayerItem from './BaseLayerItem'
 import MapLegend from './Legend'
 import OverlaysOpacity from './OverlaysOpacity'
+import BaseLayerOpacity from './BaseLayerOpacity'
 
 export default {
   name: 'content-panel',
-  components: { BaseLayerItem, LayerItem, MapLegend, OverlaysOpacity },
+  components: { BaseLayerItem, LayerItem, MapLegend, OverlaysOpacity, BaseLayerOpacity },
   data () {
     return {
       activeMainTab: 'overlays',

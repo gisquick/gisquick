@@ -281,7 +281,7 @@ export default {
         })
     },
     openInfoPanel (item) {
-      this.infoPanel.featureIndex = this.features.indexOf(item)
+      this.infoPanel.selection.featureIndex = this.features.indexOf(item)
       this.infoPanel.visible = true
     }
   }

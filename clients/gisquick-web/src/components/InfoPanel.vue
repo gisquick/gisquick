@@ -93,7 +93,7 @@ export default {
       return this.layerFeatures && this.layerFeatures.layer
     },
     features () {
-      return this.layerFeatures && this.layerFeatures.features
+      return (this.layerFeatures && this.layerFeatures.features) || []
     },
     index () {
       return this.selected && this.selected.featureIndex

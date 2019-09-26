@@ -5,6 +5,7 @@
         :items="layersOptions"
         :value="selected.layer"
         @input="setActiveLayer"
+        :disabled="layersOptions.length < 2"
         class="my-0"
         hide-details
       />

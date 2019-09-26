@@ -17,7 +17,9 @@
       hide-actions
     >
       <template slot="headerCell" slot-scope="{ header }">
+        <span v-if="header.blank"/>
         <attribute-filter
+          v-else
           :label="header.text"
           :type="header.type"
           :filter="layerFilters[header.value]"
@@ -29,10 +31,16 @@
       <template slot="items" slot-scope="{ item }">
         <tr :class="{selected: zoomedFeatureId === item.id}">
           <td
-            class="icon px-3"
+            class="icon pl-3 pr-2"
             @click="zoomToFeature(item)"
           >
             <icon name="zoom-to"/>
+          </td>
+          <td
+            class="icon pl-2 pr-0"
+            @click="openInfoPanel(item)"
+          >
+            <icon name="circle-i-outline"/>
           </td>
           <td v-for="attr in layer.attributes" :key="attr.name">
             {{ item.properties[attr.name] }}
@@ -103,6 +111,16 @@
       </v-btn>
     </v-layout>
     <features-viewer :features="geometryFeatures" :color="[3, 169, 244]"/>
+    <portal to="right-panel">
+      <info-panel
+        v-if="infoPanel.visible"
+        class="ml-1 mb-2 elevation-3"
+        :data="[{features: infoPanel.olFeatures, layer}]"
+        :selected="infoPanel.selection"
+        @selection-change="infoPanel.selection = $event"
+        @close="infoPanel.visible = false"
+      />
+    </portal>
   </v-layout>
 </template>
 
@@ -112,23 +130,33 @@ import GeoJSON from 'ol/format/geojson'
 import TabsHeader from './TabsHeader'
 import AttributeFilter from './AttributeFilter'
 import FeaturesViewer from './ol/FeaturesViewer'
+import InfoPanel from './InfoPanel'
 
-const zoomToHeader = {
-  text: '',
-  value: '',
-  sortable: false,
-  width: 1
+function iconHeader (key) {
+  return {
+    text: key,
+    value: key,
+    sortable: false,
+    width: 1,
+    blank: true,
+    class: 'icon'
+  }
 }
 
 export default {
   name: 'attribute-table',
-  components: { TabsHeader, AttributeFilter, FeaturesViewer },
+  components: { TabsHeader, AttributeFilter, FeaturesViewer, InfoPanel },
   data () {
     return {
       loading: false,
       pagination: null,
       geometryFeatures: [],
-      zoomedFeatureId: null
+      zoomedFeatureId: null,
+      infoPanel: {
+        visible: false,
+        olFeatures: [],
+        selection: null
+      }
     }
   },
   computed: {
@@ -144,7 +172,7 @@ export default {
           align: 'left',
           sortable: false
         }))
-        return [zoomToHeader].concat(columns)
+        return [iconHeader('_z'), iconHeader('_i')].concat(columns)
       }
       return []
     },
@@ -216,6 +244,13 @@ export default {
         .then(resp => {
           this.loading = false
           this.$store.commit('attributeTable/features', resp.data.features)
+
+          const parser = new GeoJSON()
+          this.infoPanel.olFeatures = Object.freeze(parser.readFeatures(resp.data)) // { featureProjection: mapProjection }
+          this.infoPanel.selection = {
+            layer: this.layer.name,
+            featureIndex: 0
+          }
         })
         .catch(resp => {
           this.loading = false
@@ -244,6 +279,10 @@ export default {
           this.loading = false
           // TODO: error notification
         })
+    },
+    openInfoPanel (item) {
+      this.infoPanel.featureIndex = this.features.indexOf(item)
+      this.infoPanel.visible = true
     }
   }
 }
@@ -260,6 +299,9 @@ export default {
     tr {
       height: 2em;
       background-color: #ddd;
+      th.icon {
+        padding: 8px;
+      }
     }
     .v-datatable__progress {
       background-color: #fff;
@@ -313,5 +355,9 @@ export default {
     font-size: 13px;
     color: #555;
   }
+}
+.info-panel {
+  flex: 0 1 auto;
+  overflow: auto;
 }
 </style>

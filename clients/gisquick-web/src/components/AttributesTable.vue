@@ -49,7 +49,7 @@
       </template>
     </v-data-table>
     <v-layout class="row align-center bottom-panel pl-2">
-      <label class="mr-2 mt-1">Limit:</label>
+      <label class="mr-2 mt-1"><translate>Limit</translate>:</label>
       <v-text-field
         type="number"
         min="1"

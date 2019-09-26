@@ -15,7 +15,7 @@ msgstr ""
 msgid "Abstract"
 msgstr ""
 
-#: src/components/Identification.vue:101
+#: src/components/Identification.vue:102
 msgid "All visible layers"
 msgstr ""
 
@@ -60,7 +60,7 @@ msgstr ""
 msgid "Distance"
 msgstr ""
 
-#: src/components/AttributesTable.vue:156
+#: src/components/AttributesTable.vue:194
 msgid "Filter to visible area"
 msgstr ""
 
@@ -84,7 +84,7 @@ msgstr ""
 msgid "Identification"
 msgstr ""
 
-#: src/components/Identification.vue:113
+#: src/components/Identification.vue:114
 msgid "Info Panel"
 msgstr ""
 
@@ -97,7 +97,7 @@ msgstr ""
 msgid "Last segment"
 msgstr ""
 
-#: src/components/Identification.vue:131
+#: src/components/Identification.vue:132
 msgid "Layer"
 msgstr ""
 
@@ -111,6 +111,10 @@ msgstr ""
 
 #: ./src/components/content-panel/ContentPanel.vue:22
 msgid "Legend"
+msgstr ""
+
+#: ./src/components/AttributesTable.vue:52
+msgid "Limit"
 msgstr ""
 
 #: ./src/components/measure/Measure.vue:11
@@ -166,7 +170,7 @@ msgstr ""
 msgid "Print quality"
 msgstr ""
 
-#: ./src/components/AttributesTable.vue:92
+#: ./src/components/AttributesTable.vue:110
 msgid "Refresh"
 msgstr ""
 
@@ -179,11 +183,11 @@ msgstr ""
 msgid "Sign In to Continue"
 msgstr ""
 
-#: src/components/Identification.vue:109
+#: src/components/Identification.vue:110
 msgid "Table"
 msgstr ""
 
-#: src/components/Identification.vue:117
+#: src/components/Identification.vue:118
 msgid "Table & Info Panel"
 msgstr ""
 

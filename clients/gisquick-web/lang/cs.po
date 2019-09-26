@@ -25,7 +25,7 @@ msgstr "Druhá souřadnice"
 msgid "Abstract"
 msgstr "Popis"
 
-#: src/components/Identification.vue:101
+#: src/components/Identification.vue:102
 msgid "All visible layers"
 msgstr "Všechny viditelné vrstvy"
 
@@ -69,7 +69,7 @@ msgstr "Zobrazit autorská práva"
 msgid "Distance"
 msgstr "Vzdálenost"
 
-#: src/components/AttributesTable.vue:156
+#: src/components/AttributesTable.vue:194
 msgid "Filter to visible area"
 msgstr "Filtrovat viditelnou oblast"
 
@@ -93,7 +93,7 @@ msgstr "Nápověda (en)"
 msgid "Identification"
 msgstr "Identifikace"
 
-#: src/components/Identification.vue:113
+#: src/components/Identification.vue:114
 msgid "Info Panel"
 msgstr "Infopanel"
 
@@ -106,7 +106,7 @@ msgstr "Klíčová slova"
 msgid "Last segment"
 msgstr "Poslední segment"
 
-#: src/components/Identification.vue:131
+#: src/components/Identification.vue:132
 msgid "Layer"
 msgstr "Vrstva"
 
@@ -121,6 +121,10 @@ msgstr "Rozložení"
 #: src/components/content-panel/ContentPanel.vue:22
 msgid "Legend"
 msgstr "Legenda"
+
+#: src/components/AttributesTable.vue:52
+msgid "Limit"
+msgstr "Limit"
 
 #: src/components/measure/Measure.vue:11
 msgid "Location"
@@ -174,7 +178,7 @@ msgstr "Náhled před tiskem"
 msgid "Print quality"
 msgstr "Kvalita tisku"
 
-#: src/components/AttributesTable.vue:92
+#: src/components/AttributesTable.vue:110
 msgid "Refresh"
 msgstr "Obnovit"
 
@@ -186,11 +190,11 @@ msgstr "Měřítko"
 msgid "Sign In to Continue"
 msgstr "Přihlásit se"
 
-#: src/components/Identification.vue:109
+#: src/components/Identification.vue:110
 msgid "Table"
 msgstr "Tabulka"
 
-#: src/components/Identification.vue:117
+#: src/components/Identification.vue:118
 msgid "Table & Info Panel"
 msgstr "Tabulka & Infopanel"
 

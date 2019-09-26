@@ -40,7 +40,17 @@
         </tr>
       </template>
     </v-data-table>
-    <v-layout class="row align-center bottom-panel" xv-if="false">
+    <v-layout class="row align-center bottom-panel pl-2">
+      <label class="mr-2 mt-1">Limit:</label>
+      <v-text-field
+        type="number"
+        min="1"
+        max="1000"
+        :value="limit"
+        @input="$store.commit('attributeTable/limit', $event)"
+        class="limit"
+        hide-details
+      />
       <v-btn
         icon
         class="mx-1 my-0"
@@ -140,7 +150,7 @@ export default {
     },
     lastPage () {
       const { rowsPerPage, totalItems } = this.pagination
-      return Math.floor(totalItems / rowsPerPage) + 1
+      return Math.ceil(totalItems / rowsPerPage)
     },
     paginationRangeText () {
       const { page, rowsPerPage, totalItems } = this.pagination
@@ -288,6 +298,20 @@ export default {
     /deep/ .v-label {
       font-size: 85%!important;
     }
+  }
+  .v-text-field {
+    font-size: 14px;
+    margin-top: 0;
+  }
+  .limit {
+    max-width: 60px;
+    /deep/ input {
+      padding: 2px 0 2px 2px;
+    }
+  }
+  label {
+    font-size: 13px;
+    color: #555;
   }
 }
 </style>

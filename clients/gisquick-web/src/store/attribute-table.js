@@ -47,6 +47,9 @@ export default {
       const filter = state.filters[state.layer.name][attr]
       filter.comparator = null
       filter.value = null
+    },
+    limit (state, value) {
+      state.limit = Math.min(value, 1000)
     }
   }
 }

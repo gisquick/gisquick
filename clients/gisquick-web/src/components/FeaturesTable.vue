@@ -48,7 +48,6 @@
 </template>
 
 <script>
-import Extent from 'ol/extent'
 import TabsHeader from './TabsHeader'
 
 const zoomToHeader = {
@@ -130,6 +129,10 @@ export default {
     }
     td {
       height: 2.5em;
+      white-space: nowrap;
+      max-width: 500px;
+      overflow: hidden;
+      text-overflow: ellipsis;
       &.icon {
         cursor: pointer;
         .icon {

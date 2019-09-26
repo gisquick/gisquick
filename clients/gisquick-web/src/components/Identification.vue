@@ -46,6 +46,7 @@
           :data="layersFeatures"
           :selected="selection"
           @selection-change="selection = $event"
+          @close="$emit('close')"
         />
       </portal>
       <portal to="bottom-panel">
@@ -230,6 +231,12 @@ export default {
       if (this.pointer) {
         this.pointer.setMap(null)
       }
+      this.clearResults()
+    },
+    clearResults () {
+      this.selection = null
+      this.mapCoords = null
+      this.layersFeatures = []
     },
     categorize (features) {
       // (WFS layer name cannot contain space character)

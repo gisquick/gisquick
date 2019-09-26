@@ -25,9 +25,9 @@
       >
         <v-icon>navigate_next</v-icon>
       </v-btn>
-      <!-- <v-btn @click="$emit('close')" icon>
+      <v-btn @click="$emit('close')" icon>
         <v-icon>close</v-icon>
-      </v-btn> -->
+      </v-btn>
     </v-layout>
 
     <div

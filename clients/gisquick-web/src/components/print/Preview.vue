@@ -39,6 +39,13 @@
           class="map-border"
           :style="borderArea"
         />
+        <v-progress-linear
+          v-if="showProgressbar"
+          absolute
+          indeterminate
+          class="my-0"
+          height="3"
+        />
       </div>
     </v-layout>
   </div>
@@ -58,12 +65,15 @@ export default {
     dpi: Number,
     labelsData: Object
   },
-  data: () => ({
-    scale: 0,
-    width: 0,
-    height: 0,
-    visible: false
-  }),
+  data () {
+    return {
+      scale: 0,
+      width: 0,
+      height: 0,
+      visible: false,
+      showProgressbar: false
+    }
+  },
   computed: {
     ...mapState(['user', 'project']),
     size () {
@@ -227,12 +237,18 @@ export default {
     },
     download () {
       const url = this.printRequest()
+      this.showProgressbar = true
       this.$http.get(url, { responseType: 'blob' })
         .then(resp => {
+          this.showProgressbar = false
           const timeString = new Date().toISOString()
           const timeStamp = timeString.substring(11, 19).split(':').join('-')
           const filename = `${this.layout.name}_${timeStamp}.${this.format}`
           FileSaver.saveAs(resp.data, filename)
+        })
+        .catch(err => {
+          this.showProgressbar = false
+          console.error(err)
         })
     }
   }

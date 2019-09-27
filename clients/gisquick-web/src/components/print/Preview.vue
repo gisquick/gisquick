@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import axios from 'axios'
 import Observable from 'ol/observable'
 import FileSaver from 'file-saver'
@@ -76,6 +76,7 @@ export default {
   },
   computed: {
     ...mapState(['user', 'project']),
+    ...mapGetters(['visibleBaseLayer']),
     size () {
       return {
         width: mmToPx(this.layout.width) / this.scaleRatio + 'px',
@@ -217,9 +218,17 @@ export default {
         center[1] + resolution * height / 2
       ]
 
+      const layers = []
+      if (this.visibleBaseLayer.type === 'wms') {
+        const name = this.visibleBaseLayer.serverName || this.visibleBaseLayer.name
+        layers.push(name)
+      }
+      layers.push(...map.overlay.getSource().getVisibleLayers())
+
       const config = {
         dpi: this.dpi,
         format: this.format,
+        layers,
         ...opts
       }
       const copyrights = formatCopyrights(map.overlay.getSource().getAttributions())

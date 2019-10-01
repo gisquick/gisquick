@@ -155,14 +155,6 @@ export default Vue.component('layer-item', {
   }
   .item-container {
     .item {
-      position: relative;
-
-      &:hover {
-        background-color: #eee;
-      }
-      .v-input {
-        margin-top: 0;
-      }
       .v-btn {
         margin: 0;
         opacity: 0.45;

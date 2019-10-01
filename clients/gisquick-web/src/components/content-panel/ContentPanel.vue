@@ -63,14 +63,21 @@
                 :value="activeTopicIndex"
                 hide-details
               >
-                <v-radio
+                <div
+                  class="item-container"
                   v-for="(topic, index) in topics"
                   :key="index"
-                  :label="topic.title"
-                  :value="index"
-                  color="primary"
-                  @change="setTopic"
-                />
+                >
+                  <div class="item layout row">
+                    <v-radio
+                      :label="topic.title"
+                      :value="index"
+                      color="primary"
+                      class="flex"
+                      @change="setTopic"
+                    />
+                  </div>
+                </div>
               </v-radio-group>
             </scroll-area>
           </v-tab-item>
@@ -220,6 +227,24 @@ export default {
           background-color: $primary-color;
           font-weight: 600;
           border-color: darken($primary-color, 8%);
+        }
+      }
+    }
+  }
+
+  .item-container {
+    .item {
+      position: relative;
+
+      &:hover {
+        background-color: #eee;
+      }
+      .v-input {
+        margin-top: 0;
+      }
+      .v-radio {
+        label {
+          flex-grow: 1;
         }
       }
     }

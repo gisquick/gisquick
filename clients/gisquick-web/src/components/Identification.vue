@@ -66,7 +66,6 @@
 import { mapState } from 'vuex'
 import Polygon from 'ol/geom/polygon'
 import Circle from 'ol/geom/circle'
-import GML3 from 'ol/format/gml3'
 import GeoJSON from 'ol/format/geojson'
 import Observable from 'ol/observable'
 import Feature from 'ol/feature'
@@ -75,6 +74,7 @@ import FeaturesTable from './FeaturesTable'
 import InfoPanel from './InfoPanel'
 import PointMarker from './ol/PointMarker'
 import FeaturesViewer, { createStyle } from './ol/FeaturesViewer'
+import { getFeaturesQuery } from '@/featureinfo.js'
 
 const SelectedStyle = createStyle([3, 169, 244])
 
@@ -161,41 +161,16 @@ export default {
       // WFS GetFeature features identification
       const map = this.$map
       const mapProjection = map.getView().getProjection().getCode()
-      this.mapClickListener = map.on('singleclick', evt => {
-        // featuresViewer.removeAllFeatures()
 
+      this.mapClickListener = map.on('singleclick', evt => {
         const pixel = evt.pixel
         const coords = map.getCoordinateFromPixel(pixel)
         const pixelRadius = 8
         const radius = Math.abs(map.getCoordinateFromPixel([pixel[0] + pixelRadius, pixel[1]])[0] - coords[0])
-
-        const identifyPolygon = Polygon.fromCircle(new Circle(coords, radius), 6)
-        const identifyPolygonGml = new GML3().writeGeometryNode(identifyPolygon).innerHTML
+        const identifyGeom = Polygon.fromCircle(new Circle(coords, radius), 6)
         const layers = this.identificationLayer ? [this.identificationLayer] : this.queryableLayers.map(l => l.name)
 
-        const query = layers.map(name => [
-          `<gml:Query gml:typeName="${name.replace(/ /g, '')}">`,
-          ' <ogc:Filter>',
-          '  <ogc:Intersects>',
-          '   <ogc:PropertyName>geometry</ogc:PropertyName>',
-          `   ${identifyPolygonGml}`,
-          '  </ogc:Intersects>',
-          ' </ogc:Filter>',
-          '</gml:Query>'
-        ].join('\n')).join('\n')
-
-        // attributes like 'outputFormat' or 'maxFeatures' doesn't seems to have eny effect in GetFeature
-        const xml = [
-          '<GetFeature',
-          ' xmlns="http://www.opengis.net/wfs"',
-          ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"',
-          ' xmlns:gml="http://www.qgis.org/gml"',
-          ' xmlns:ogc="http://www.opengis.net/ogc"',
-          '>',
-          ` ${query}`,
-          '</GetFeature>'
-        ].join('\n')
-
+        const query = getFeaturesQuery(layers, identifyGeom)
         const params = {
           'VERSION': '1.1.0',
           'SERVICE': 'WFS',
@@ -203,7 +178,7 @@ export default {
           'OUTPUTFORMAT': 'GeoJSON',
           'MAXFEATURES': 10
         }
-        this.$http.post(this.project.config.ows_url, xml, { params, headers: { 'Content-Type': 'text/xml' } })
+        this.$http.post(this.project.config.ows_url, query, { params, headers: { 'Content-Type': 'text/xml' } })
           .then(resp => {
             const parser = new GeoJSON()
             const features = parser.readFeatures(resp.data, { featureProjection: mapProjection })

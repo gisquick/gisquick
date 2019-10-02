@@ -15,6 +15,7 @@
         :placeholder="placeholder"
         :value="filter.value"
         @input="$emit('input:value', $event)"
+        @keydown.enter="$emit('input:enter')"
         hide-details
       />
       <v-btn
@@ -107,8 +108,11 @@ export default {
     filter: Object
   },
   computed: {
+    baseType () {
+      return this.type.replace(/[\d|(|)]/g, '')
+    },
     operators () {
-      return Operators[this.type]
+      return Operators[this.baseType]
     },
     placeholder () {
       if (!this.filter.comparator) {

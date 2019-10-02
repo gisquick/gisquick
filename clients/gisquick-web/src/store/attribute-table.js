@@ -1,9 +1,8 @@
 import Vue from 'vue'
 export default {
-  strict: false,
   namespaced: true,
   state: {
-    limit: 50,
+    limit: 5,
     visibleAreaFilter: false,
     layer: null,
     filters: {},

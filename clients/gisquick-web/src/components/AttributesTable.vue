@@ -13,7 +13,6 @@
       :headers="headers"
       :items="features"
       :loading="loading"
-      :pagination.sync="pagination"
       hide-actions
     >
       <template slot="headerCell" slot-scope="{ header }">
@@ -25,11 +24,15 @@
           :filter="layerFilters[header.value]"
           @input:comparator="updateFilterComparator({ attr: header.value, comparator: $event })"
           @input:value="updateFilterValue({ attr: header.value, value: $event })"
+          @input:enter="fetchFeatures()"
           @clear="clearFilter(header.value)"
         />
       </template>
       <template slot="items" slot-scope="{ item }">
-        <tr :class="{selected: zoomedFeatureId === item.id}">
+        <tr
+          @click="selectedFeature = item"
+          :class="{selected: selectedFeature === item}"
+        >
           <td
             class="icon pl-3 pr-2"
             @click="zoomToFeature(item)"
@@ -38,60 +41,52 @@
           </td>
           <td
             class="icon pl-2 pr-0"
-            @click="openInfoPanel(item)"
+            @click="showInfoPanel = true"
           >
             <icon name="circle-i-outline"/>
           </td>
           <td v-for="attr in layer.attributes" :key="attr.name">
-            {{ item.properties[attr.name] }}
+            {{ item.get(attr.name) }}
           </td>
         </tr>
       </template>
     </v-data-table>
-    <v-layout class="row align-center bottom-panel pl-2">
-      <label class="mr-2 mt-1"><translate>Limit</translate>:</label>
-      <v-text-field
-        type="number"
-        min="1"
-        max="1000"
-        :value="limit"
-        @input="$store.commit('attributeTable/limit', $event)"
-        class="limit"
-        hide-details
-      />
-      <v-btn
-        icon
-        class="mx-1 my-0"
-        :disabled="pagination.page === 1"
-        @click="pagination.page = 1"
-      >
-        <v-icon>first_page</v-icon>
-      </v-btn>
-      <v-btn
-        icon
-        class="mx-1 my-0"
-        :disabled="pagination.page === 1"
-        @click="pagination.page--"
-      >
-        <v-icon>navigate_before</v-icon>
-      </v-btn>
-      <small v-text="paginationRangeText"/>
-      <v-btn
-        icon
-        class="mx-1 my-0"
-        :disabled="pagination.page === lastPage"
-        @click="pagination.page++"
-      >
-        <v-icon>navigate_next</v-icon>
-      </v-btn>
-      <v-btn
-        icon
-        class="mx-1 my-0"
-        :disabled="pagination.page === lastPage"
-        @click="pagination.page = lastPage"
-      >
-        <v-icon>last_page</v-icon>
-      </v-btn>
+    <v-layout class="row align-center bottom-panel pl-1">
+      <template v-if="pagination">
+        <v-btn
+          icon
+          class="mx-1 my-0"
+          :disabled="pagination.page === 1"
+          @click="setPage(1)"
+        >
+          <v-icon>first_page</v-icon>
+        </v-btn>
+        <v-btn
+          icon
+          class="mx-1 my-0"
+          :disabled="pagination.page === 1"
+          @click="setPage(pagination.page - 1)"
+        >
+          <v-icon>navigate_before</v-icon>
+        </v-btn>
+        <small v-text="paginationRangeText"/>
+        <v-btn
+          icon
+          class="mx-1 my-0"
+          :disabled="pagination.page === lastPage"
+          @click="setPage(pagination.page + 1)"
+        >
+          <v-icon>navigate_next</v-icon>
+        </v-btn>
+        <v-btn
+          icon
+          class="mx-1 my-0"
+          :disabled="pagination.page === lastPage"
+          @click="setPage(lastPage)"
+        >
+          <v-icon>last_page</v-icon>
+        </v-btn>
+      </template>
 
       <v-spacer/>
       <v-checkbox
@@ -105,20 +100,20 @@
       <v-btn
         flat
         class="my-0"
-        @click="fetchFeatures"
+        @click="fetchFeatures()"
       >
         <translate>Refresh</translate>
       </v-btn>
     </v-layout>
-    <features-viewer :features="geometryFeatures" :color="[3, 169, 244]"/>
+    <features-viewer :features="features"/>
     <portal to="right-panel">
       <info-panel
-        v-if="infoPanel.visible"
+        v-if="showInfoPanel"
         class="ml-1 mb-2 elevation-3"
-        :data="[{features: infoPanel.olFeatures, layer}]"
-        :selected="infoPanel.selection"
-        @selection-change="infoPanel.selection = $event"
-        @close="infoPanel.visible = false"
+        :data="[{features, layer}]"
+        :selected="infoPanelSelection"
+        @selection-change="selectedFeature = features[$event.featureIndex]"
+        @close="showInfoPanel = false"
       />
     </portal>
   </v-layout>
@@ -126,11 +121,13 @@
 
 <script>
 import { mapState, mapGetters, mapMutations } from 'vuex'
+import Polygon from 'ol/geom/polygon'
 import GeoJSON from 'ol/format/geojson'
 import TabsHeader from './TabsHeader'
 import AttributeFilter from './AttributeFilter'
-import FeaturesViewer from './ol/FeaturesViewer'
+import FeaturesViewer, { createStyle } from './ol/FeaturesViewer'
 import InfoPanel from './InfoPanel'
+import { getFeaturesQuery } from '@/featureinfo.js'
 
 function iconHeader (key) {
   return {
@@ -143,6 +140,8 @@ function iconHeader (key) {
   }
 }
 
+const SelectedStyle = createStyle([3, 169, 244])
+
 export default {
   name: 'attribute-table',
   components: { TabsHeader, AttributeFilter, FeaturesViewer, InfoPanel },
@@ -150,18 +149,13 @@ export default {
     return {
       loading: false,
       pagination: null,
-      geometryFeatures: [],
-      zoomedFeatureId: null,
-      infoPanel: {
-        visible: false,
-        olFeatures: [],
-        selection: null
-      }
+      selectedFeature: null,
+      showInfoPanel: false
     }
   },
   computed: {
     ...mapState(['project']),
-    ...mapState('attributeTable', ['limit', 'visibleAreaFilter', 'layer', 'features']),
+    ...mapState('attributeTable', ['page', 'limit', 'visibleAreaFilter', 'layer', 'features']),
     ...mapGetters('attributeTable', ['layerFilters']),
     headers () {
       if (this.layer.attributes) {
@@ -193,6 +187,12 @@ export default {
       return {
         FilterVisibleLabel: this.$gettext('Filter to visible area')
       }
+    },
+    infoPanelSelection () {
+      return this.selectedFeature && {
+        layer: this.layer.name,
+        featureIndex: this.features.indexOf(this.selectedFeature)
+      }
     }
   },
   watch: {
@@ -204,24 +204,18 @@ export default {
         }
       }
     },
-    features: {
-      immediate: true,
-      handler (features) {
-        this.pagination = {
-          page: 1,
-          rowsPerPage: 5,
-          totalItems: features.length
-        }
+    selectedFeature (feature, oldFeature) {
+      if (oldFeature) {
+        oldFeature.setStyle(null)
+      }
+      if (feature) {
+        feature.setStyle(SelectedStyle)
       }
     }
   },
   methods: {
     ...mapMutations('attributeTable', ['clearFilter', 'updateFilterComparator', 'updateFilterValue']),
-    fetchFeatures () {
-      this.loading = true
-      // convert to WFS layer name
-      const layerName = this.layer.name.replace(/ /g, '_')
-
+    async fetchFeatures (page = 1, lastQuery = false) {
       const filters = Object.entries(this.layerFilters)
         .filter(([name, filter]) => filter.comparator && filter.value)
         .map(([name, filter]) => ({
@@ -230,8 +224,61 @@ export default {
           value: filter.value
         }))
 
+      let query
+      if (lastQuery) {
+        query = this.pagination.query
+      } else {
+        let geom = null
+        if (this.visibleAreaFilter) {
+          geom = Polygon.fromExtent(this.$map.ext.visibleAreaExtent())
+        }
+        query = getFeaturesQuery([this.layer.name], geom, filters)
+      }
+
+      const baseParams = {
+        VERSION: '1.1.0',
+        SERVICE: 'WFS',
+        REQUEST: 'GetFeature',
+        OUTPUTFORMAT: 'GeoJSON'
+      }
+
+      const headers = { 'Content-Type': 'text/xml' }
+      let geojson, featuresCount
+      this.loading = true
+      try {
+        let params = { ...baseParams, resultType: 'hits' }
+        let resp = await this.$http.post(this.project.config.ows_url, query, { params, headers })
+        // fix invalid geojson from QGIS server (missing ',')
+        featuresCount = JSON.parse(resp.data.replace(/"\n/g, '",\n')).numberOfFeatures
+
+        params = {
+          ...baseParams,
+          STARTINDEX: (page - 1) * this.limit,
+          MAXFEATURES: this.limit
+        }
+        resp = await this.$http.post(this.project.config.ows_url, query, { params, headers })
+        geojson = resp.data
+      } catch (e) {
+        console.error(e)
+        return
+      } finally {
+        this.loading = false
+      }
+
+      const parser = new GeoJSON()
+      const featureProjection = this.$map.getView().getProjection().getCode()
+      const features = Object.freeze(parser.readFeatures(geojson, { featureProjection }))
+
+      this.$store.commit('attributeTable/features', features)
+      this.pagination = {
+        query,
+        page,
+        rowsPerPage: this.limit,
+        totalItems: featuresCount,
+      }
+      /*
       const wfsParams = {
-        layer: layerName,
+        layer: this.layer.name.replace(/ /g, '_'),
         maxfeatures: this.limit,
         filters,
         startindex: 0
@@ -243,46 +290,17 @@ export default {
       this.$http.post(`/filter/?PROJECT=${this.project.config.project}`, wfsParams)
         .then(resp => {
           this.loading = false
-          this.$store.commit('attributeTable/features', resp.data.features)
-
-          const parser = new GeoJSON()
-          this.infoPanel.olFeatures = Object.freeze(parser.readFeatures(resp.data)) // { featureProjection: mapProjection }
-          this.infoPanel.selection = {
-            layer: this.layer.name,
-            featureIndex: 0
-          }
         })
         .catch(resp => {
           this.loading = false
         })
+      */
+    },
+    setPage (page) {
+      this.fetchFeatures(page, true)
     },
     zoomToFeature (feature) {
-      const params = {
-        VERSION: '1.1.0',
-        SERVICE: 'WFS',
-        REQUEST: 'GetFeature',
-        OUTPUTFORMAT: 'GeoJSON',
-        FEATUREID: feature.id
-      }
-      this.loading = true
-      this.$http.get(this.project.config.ows_url, { params })
-        .then(resp => {
-          this.loading = false
-          const parser = new GeoJSON()
-          const featureProjection = this.$map.getView().getProjection().getCode()
-          const geomFeature = parser.readFeatures(resp.data, { featureProjection })[0]
-          this.geometryFeatures = Object.freeze([geomFeature])
-          this.$map.ext.zoomToFeature(geomFeature)
-          this.zoomedFeatureId = feature.id
-        })
-        .catch(err => {
-          this.loading = false
-          // TODO: error notification
-        })
-    },
-    openInfoPanel (item) {
-      this.infoPanel.selection.featureIndex = this.features.indexOf(item)
-      this.infoPanel.visible = true
+      this.$map.ext.zoomToFeature(feature)
     }
   }
 }

@@ -5,6 +5,7 @@ import Vuetify from 'vuetify'
 import 'url-polyfill'
 import PortalVue from 'portal-vue'
 import GetTextPlugin from 'vue-gettext'
+import { ReactiveRefs } from 'vue-reactive-refs'
 
 import http from './client'
 import store from './store/index'
@@ -26,6 +27,7 @@ Vue.config.productionTip = false
 
 Vue.use(PortalVue)
 Vue.use(Vuetify)
+Vue.use(ReactiveRefs)
 Vue.use(GetTextPlugin, { translations, defaultLanguage: 'en-us', muteLanguages: ['en-us'] })
 
 // register general purpose components globally

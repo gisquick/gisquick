@@ -12,7 +12,7 @@
       <map-attributions class="map-attributions"/>
     </div>
     <portal-target name="map-overlay" class="map-overlay"/>
-    <tools-menu :tools="tools"/>
+    <tools-menu :tools="toolsMenuItems"/>
 
     <v-btn
       dark
@@ -48,29 +48,12 @@
         class="main-panel"
       >
         <v-layout column>
-          <collapse-transition class="collapsible">
-            <div v-if="activeToolObj && activeToolObj.title">
-              <v-toolbar dark flat height="30">
-                <v-spacer/>
-                <h4>{{ activeToolObj.title }}</h4>
-                <v-spacer/>
-                <v-btn flat @click="$store.commit('activeTool', null)">
-                  <v-icon>close</v-icon>
-                </v-btn>
-              </v-toolbar>
-              <portal-target name="main-panel" transition="switch-transition"/>
-            </div>
-          </collapse-transition>
+          <portal-target name="main-panel-top"/>
           <content-panel/>
         </v-layout>
       </div>
     </transition>
-
-    <!-- Component of active tool -->
-    <div
-      :is="activeToolObj && activeToolObj.component"
-      @close="$store.commit('activeTool', null)"
-    />
+    <map-tools ref="tools"/>
   </div>
 </template>
 
@@ -87,15 +70,12 @@ import MapAttributions from './MapAttributions'
 import ToolsMenu from './ToolsMenu'
 import MapControl from './MapControl'
 import ScaleLine from './ol/ScaleLine'
-
-import AttributesTable from './AttributesTable'
-import Identification from './Identification'
-import Measure from './measure/Measure'
-import Print from './print/Print'
+import MapTools from './MapTools'
 
 export default {
   name: 'Map',
-  components: { ContentPanel, BottomToolbar, ScaleLine, MapAttributions, ToolsMenu, MapControl },
+  components: { ContentPanel, BottomToolbar, ScaleLine, MapAttributions, ToolsMenu, MapControl, MapTools },
+  refs: ['tools'],
   data () {
     return {
       panelVisible: true,
@@ -105,54 +85,14 @@ export default {
   computed: {
     ...mapState(['project', 'activeTool']),
     ...mapGetters(['visibleBaseLayer', 'visibleLayers']),
-    tools () {
-      return [
-        {
-          name: 'identification',
-          title: this.$pgettext('noun', 'Identification'),
-          icon: 'identification',
-          component: Identification
-        }, {
-          name: 'measure',
-          title: this.$pgettext('noun', 'Measure'),
-          icon: 'ruler',
-          component: Measure
-        }, {
-          name: 'print',
-          title: this.$pgettext('noun', 'Print'),
-          icon: 'printer',
-          component: Print,
-          disabled: !this.project.config.print_composers
-        }, {
-          name: 'attribute-table',
-          component: {
-            render (h) {
-              return <portal to="bottom-panel"><AttributesTable key="attribute-table" onClose={this.close}/></portal>
-            },
-            methods: {
-              close () {
-                this.$store.commit('activeTool', null)
-              }
-            }
-          }
-        }
-      ].filter(t => !t.disabled)
-    },
-    activeToolObj () {
-      return this.activeTool && this.tools.find(t => t.name === this.activeTool)
+    toolsMenuItems () {
+      const tools = (this.$refs.tools && this.$refs.tools.items) || []
+      return tools.filter(t => !t.disabled)
     }
   },
   watch: {
     visibleLayers: 'setVisibleLayers',
     visibleBaseLayer: 'setVisibleBaseLayer'
-    // activeTool: {
-    //   immediate: true,
-    //   handler (activeTool) {
-    //     if (!activeTool) {
-    //       this.$store.commit('activeTool', 'identification')
-    //     }
-    //   }
-    // }
   },
   created () {
     const mapConfig = {
@@ -176,6 +116,9 @@ export default {
       }
     }
     Vue.prototype.$map = this.map
+    if (process.env.NODE_ENV === 'development') {
+      window.olmap = this.map
+    }
   },
   mounted () {
     const map = this.map
@@ -186,6 +129,12 @@ export default {
       visibleAreaPadding: () => {
         const { top, right, bottom, left } = this.$refs.mapViewport.getBoundingClientRect()
         return [top, window.innerWidth - right, window.innerHeight - bottom, left]
+      },
+      visibleAreaExtent: () => {
+        const { top, right, bottom, left } = this.$refs.mapViewport.getBoundingClientRect()
+        const p1 = map.getCoordinateFromPixel([left, top])
+        const p2 = map.getCoordinateFromPixel([right, bottom])
+        return Extent.boundingExtent([p1, p2])
       },
       zoomToFeature: (feature, options = {}) => {
         const resolution = map.getView().getResolution()

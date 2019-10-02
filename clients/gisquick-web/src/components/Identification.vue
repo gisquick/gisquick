@@ -3,7 +3,8 @@
     <portal to="main-panel">
       <div class="pa-2" key="identification">
         <v-select
-          v-model="identificationLayer"
+          :value="identificationLayer"
+          @input="$emit('update:identificationLayer', $event)"
           :label="tr.Layer"
           item-text="title"
           item-value="name"
@@ -22,7 +23,7 @@
               v-for="mode in displayModes"
               :key="mode.text"
               class="checkable"
-              @click="displayMode = mode.value"
+              @click="$emit('update:displayMode', mode.value)"
             >
               <v-icon
                 class="check"
@@ -46,7 +47,7 @@
           :data="layersFeatures"
           :selected="selection"
           @selection-change="selection = $event"
-          @close="$emit('close')"
+          @close="clearResults"
         />
       </portal>
       <portal to="bottom-panel">
@@ -55,7 +56,7 @@
           :data="layersFeatures"
           :selected="selection"
           @selection-change="selection = $event"
-          @close="$emit('close')"
+          @close="clearResults"
         />
       </portal>
     </template>
@@ -78,19 +79,25 @@ import { getFeaturesQuery } from '@/featureinfo.js'
 
 const SelectedStyle = createStyle([3, 169, 244])
 
-const data = {
-  mapCoords: null,
-  identificationLayer: '',
-  layersFeatures: [],
-  selection: null,
-  displayMode: 'both'
-}
-
 export default {
   name: 'identification',
   components: { InfoPanel, FeaturesTable, PointMarker, FeaturesViewer },
+  props: {
+    identificationLayer: {
+      type: String,
+      default: ''
+    },
+    displayMode: {
+      type: String,
+      default: 'info-panel'
+    }
+  },
   data () {
-    return data
+    return {
+      mapCoords: null,
+      layersFeatures: [],
+      selection: null
+    }
   },
   computed: {
     ...mapState(['project']),
@@ -206,7 +213,6 @@ export default {
       if (this.pointer) {
         this.pointer.setMap(null)
       }
-      this.clearResults()
     },
     clearResults () {
       this.selection = null

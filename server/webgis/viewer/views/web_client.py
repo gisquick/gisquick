@@ -77,6 +77,7 @@ def map(request):
         data['user'] = get_user_data(request.user)
         data['project'] = get_project(request)
         data['app'] = {
+            'lang': settings.LANGUAGE_CODE,
             'version': webgis.VERSION,
             'reset_password_url': getattr(settings, 'RESET_PASSWORD_URL', '')
         }
@@ -101,3 +102,23 @@ def map(request):
         status=200,
         content_type="text/html"
     )
+
+def dev_vue_map(request):
+    if not request.user.is_authenticated():
+        user = models.GisquickUser.get_guest_user()
+        if user:
+            login(request, user)
+        else:
+            raise RuntimeError("Anonymous user is not configured")
+    else:
+        user = request.user
+    data = {
+        'app': {
+            'lang': settings.LANGUAGE_CODE,
+            'version': webgis.VERSION,
+            'reset_password_url': getattr(settings, 'RESET_PASSWORD_URL', '')
+        },
+        'project': get_project(request),
+        'user': get_user_data(user)
+    }
+    return JsonResponse(data)

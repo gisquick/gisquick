@@ -2,9 +2,9 @@ version: "2"
 services:
   qgisserver:
     restart: always
-    image: gisquick/qgis-server
+    image: gisquick/qgis-server:3.4
     volumes:
-      - ./_data/publish:/publish/
+      - ./_data/publish:/publish
     ports:
       - "9000:90"
 

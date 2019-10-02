@@ -1,0 +1,46 @@
+{
+  "name": "gisquick-web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "makemessages": "node lang/makemessages.js",
+    "translations": "gettext-compile --output src/lang/translations.json lang/cs.po"
+  },
+  "dependencies": {
+    "axios": "^0.19.0",
+    "core-js": "^2.6.5",
+    "file-saver": "^2.0.2",
+    "material-icons": "^0.3.1",
+    "md5": "^2.2.1",
+    "ol": "^4.6.5",
+    "portal-vue": "^2.1.5",
+    "proj4": "^2.5.0",
+    "simplebar": "2.5.1",
+    "url-polyfill": "^1.1.5",
+    "vue": "^2.6.10",
+    "vue-gettext": "^2.1.5",
+    "vue-reactive-refs": "0.0.2",
+    "vuetify": "1.1.17",
+    "vuex": "^3.1.1"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.9.0",
+    "@vue/cli-plugin-eslint": "^3.9.0",
+    "@vue/cli-service": "^3.9.0",
+    "@vue/eslint-config-standard": "^4.0.0",
+    "babel-eslint": "^10.0.1",
+    "easygettext": "^2.7.0",
+    "eslint": "^5.16.0",
+    "eslint-plugin-vue": "^5.0.0",
+    "gettext-extractor": "^3.5.1",
+    "node-sass": "^4.12.0",
+    "sass-loader": "^7.1.0",
+    "svg-sprite-loader": "^4.1.6",
+    "svgo": "^1.2.2",
+    "svgo-loader": "^2.2.1",
+    "vue-template-compiler": "^2.6.10"
+  }
+}

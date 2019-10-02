@@ -21,6 +21,7 @@ from webgis.libs.auth.decorators import basic_authentication
 def abs_project_path(project):
     return os.path.join(settings.GISQUICK_PROJECT_ROOT, project)
 
+@csrf_exempt
 @basic_authentication(realm="OWS API")
 def ows(request):
     params = {key.upper(): request.GET[key] for key in request.GET.keys()}
@@ -32,27 +33,33 @@ def ows(request):
     abs_project = abs_project_path(params.get('MAP'))
     url = set_query_parameters(url, {'MAP': abs_project})
 
-    owsrequest = urllib.request.Request(url)
+    if request.method == 'POST':
+        owsrequest = urllib.request.Request(url, request.body)
+    else:
+        owsrequest = urllib.request.Request(url)
     owsrequest.add_header("User-Agent", "Gisquick")
 
     resp_content = b""
-    with contextlib.closing(urllib.request.urlopen(owsrequest)) as resp:
-        while True:
-            data = resp.read()
-            if not data:
-                break
-            resp_content += data
+    try:
+        with contextlib.closing(urllib.request.urlopen(owsrequest)) as resp:
+            while True:
+                data = resp.read()
+                if not data:
+                    break
+                resp_content += data
 
-        if params.get('REQUEST', '') == 'GetCapabilities':
-            resp_content = resp_content.replace(
-                settings.GISQUICK_MAPSERVER_URL.encode(),
-                request.build_absolute_uri(request.path).encode()
-            )
+            if params.get('REQUEST', '') == 'GetCapabilities':
+                resp_content = resp_content.replace(
+                    settings.GISQUICK_MAPSERVER_URL.encode(),
+                    request.build_absolute_uri(request.path).encode()
+                )
 
-        content_type = resp.getheader('Content-Type')
-        status = resp.getcode()
-        return HttpResponse(resp_content, content_type=content_type, status=status)
-
+            content_type = resp.getheader('Content-Type')
+            status = resp.getcode()
+            return HttpResponse(resp_content, content_type=content_type, status=status)
+    except urllib.error.HTTPError as e:
+        # reason = e.read().decode("utf8")
+        return HttpResponse(e.read(), content_type=e.headers.get_content_type(), status=e.code)
 
 @login_required
 def tile(request, project_hash, publish, layers_hash=None, z=None, x=None, y=None, format=None):

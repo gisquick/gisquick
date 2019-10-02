@@ -1,4 +1,5 @@
 from django.conf.urls import url
+from django.conf import settings
 
 from webgis.viewer.views import web_client, map, api
 
@@ -20,3 +21,8 @@ urlpatterns = [
 #    url(r'^(?P<project_name>\w+)/$',
 #        web_client.MapRedirectView.as_view(), name='map_shortcut'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += [
+        url(r'^dev/map/$', web_client.dev_vue_map)
+    ]

@@ -40,7 +40,7 @@ def webgisfilter(mapserv, layer, maxfeatures=None, startindex=None, bbox=None,
     :rtype: dict
     """
 
-    mywfs = WebFeatureService(url=mapserv, version='1.0.0')
+    mywfs = WebFeatureService(url=mapserv, version='1.1.0')
     fes = None
     if filters:
         if bbox:
@@ -63,7 +63,10 @@ def webgisfilter(mapserv, layer, maxfeatures=None, startindex=None, bbox=None,
                                   maxfeatures=maxfeatures,
                                   startindex=startindex)
 
-    data = json.load(layer_data, encoding='utf8', strict=False)
+    output = layer_data.read()
+    if type(output) == bytes:
+        output = output.decode()
+    data = json.loads(output, encoding='utf8', strict=False)
 
     for feature in data['features']:
         feature.pop('geometry', None)

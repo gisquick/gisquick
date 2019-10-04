@@ -276,7 +276,7 @@ export default {
         query,
         page,
         rowsPerPage: this.limit,
-        totalItems: featuresCount,
+        totalItems: featuresCount
       }
       /*
       const wfsParams = {

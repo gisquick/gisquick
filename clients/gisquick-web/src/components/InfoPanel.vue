@@ -1,6 +1,6 @@
 <template>
   <v-layout class="column info-panel" v-if="feature">
-    <v-layout class="row align-center px-2 pb-1 toolbar">
+    <v-layout class="row align-center px-2 py-1 toolbar">
       <v-select
         :items="layersOptions"
         :value="selected.layer"

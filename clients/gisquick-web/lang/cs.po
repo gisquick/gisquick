@@ -25,7 +25,7 @@ msgstr "Druhá souřadnice"
 msgid "Abstract"
 msgstr "Popis"
 
-#: src/components/Identification.vue:102
+#: src/components/Identification.vue:109
 msgid "All visible layers"
 msgstr "Všechny viditelné vrstvy"
 
@@ -40,6 +40,14 @@ msgstr "Ověření se nezdařilo"
 #: src/components/content-panel/ContentPanel.vue:14
 msgid "Base Layers"
 msgstr "Základní vrstvy"
+
+#: src/components/AttributeFilter.vue:207
+msgid "between"
+msgstr "od - do"
+
+#: src/components/AttributeFilter.vue:204
+msgid "contain"
+msgstr "obsahuje"
 
 #: src/components/content-panel/ContentPanel.vue:5
 msgid "Content"
@@ -57,7 +65,7 @@ msgstr "Souřadnicové systémy"
 msgid "Coordinates"
 msgstr "Souřadnice"
 
-#: src/components/Identification.vue:19
+#: src/components/Identification.vue:20
 msgid "Display"
 msgstr "Zobrazení"
 
@@ -69,7 +77,19 @@ msgstr "Zobrazit autorská práva"
 msgid "Distance"
 msgstr "Vzdálenost"
 
-#: src/components/AttributesTable.vue:194
+#: src/components/AttributeFilter.vue:205
+msgid "empty"
+msgstr "nevyplněné hodnoty"
+
+#: src/components/AttributeFilter.vue:199
+msgid "equal to"
+msgstr "rovná se"
+
+#: src/components/AttributeFilter.vue:197
+msgid "Filter"
+msgstr "Filtr"
+
+#: src/components/AttributesTable.vue:189
 msgid "Filter to visible area"
 msgstr "Filtrovat viditelnou oblast"
 
@@ -85,6 +105,10 @@ msgstr "Celá obrazovka"
 msgid "Geometry"
 msgstr "Geometrie"
 
+#: src/components/AttributeFilter.vue:201
+msgid "greater than"
+msgstr "je větší"
+
 #: src/App.vue:43
 msgid "Help"
 msgstr "Nápověda (en)"
@@ -93,7 +117,7 @@ msgstr "Nápověda (en)"
 msgid "Identification"
 msgstr "Identifikace"
 
-#: src/components/Identification.vue:114
+#: src/components/Identification.vue:121
 msgid "Info Panel"
 msgstr "Infopanel"
 
@@ -106,7 +130,7 @@ msgstr "Klíčová slova"
 msgid "Last segment"
 msgstr "Poslední segment"
 
-#: src/components/Identification.vue:132
+#: src/components/Identification.vue:139
 msgid "Layer"
 msgstr "Vrstva"
 
@@ -122,9 +146,9 @@ msgstr "Rozložení"
 msgid "Legend"
 msgstr "Legenda"
 
-#: src/components/AttributesTable.vue:52
-msgid "Limit"
-msgstr "Limit"
+#: src/components/AttributeFilter.vue:202
+msgid "less than"
+msgstr "je menší"
 
 #: src/components/measure/Measure.vue:11
 msgid "Location"
@@ -142,6 +166,18 @@ msgstr "Odhlásit se"
 msgid "My profile"
 msgstr "Můj profil"
 
+#: src/components/AttributeFilter.vue:206
+msgid "not empty"
+msgstr "vyplněné hodnoty"
+
+#: src/components/AttributeFilter.vue:200
+msgid "not equal to"
+msgstr "nerovná se"
+
+#: src/components/AttributeFilter.vue:203
+msgid "one of"
+msgstr "jednu z hodnot"
+
 #: src/components/content-panel/BaseLayerOpacity.vue:5
 msgid "Opacity of base layer"
 msgstr "Viditelnost základních vrstev"
@@ -149,10 +185,6 @@ msgstr "Viditelnost základních vrstev"
 #: src/components/content-panel/OverlaysOpacity.vue:5
 msgid "Opacity of overlay layers"
 msgstr "Viditelnost překryvných vrstev"
-
-#: src/components/AttributeFilter.vue:121
-msgid "Operator"
-msgstr "Operátor"
 
 #: src/components/print/Print.vue:20
 msgid "Output format"
@@ -178,7 +210,7 @@ msgstr "Náhled před tiskem"
 msgid "Print quality"
 msgstr "Kvalita tisku"
 
-#: src/components/AttributesTable.vue:110
+#: src/components/AttributesTable.vue:106
 msgid "Refresh"
 msgstr "Obnovit"
 
@@ -190,11 +222,11 @@ msgstr "Měřítko"
 msgid "Sign In to Continue"
 msgstr "Přihlásit se"
 
-#: src/components/Identification.vue:110
+#: src/components/Identification.vue:117
 msgid "Table"
 msgstr "Tabulka"
 
-#: src/components/Identification.vue:118
+#: src/components/Identification.vue:125
 msgid "Table & Info Panel"
 msgstr "Tabulka & Infopanel"
 
@@ -219,17 +251,23 @@ msgstr "Uživatelské jméno"
 msgid "Zoom to"
 msgstr "Přiblížit"
 
-#: src/components/Map.vue:112
+#: src/components/MapTools.vue:43
 msgctxt "noun"
 msgid "Identification"
 msgstr "Identifikace"
 
-#: src/components/Map.vue:117
+#: src/components/MapTools.vue:55
 msgctxt "noun"
 msgid "Measure"
 msgstr "Měření"
 
-#: src/components/Map.vue:122
+#: src/components/MapTools.vue:63
 msgctxt "noun"
 msgid "Print"
 msgstr "Tisk"
+
+#~ msgid "Limit"
+#~ msgstr "Limit"
+
+#~ msgid "Operator"
+#~ msgstr "Operátor"

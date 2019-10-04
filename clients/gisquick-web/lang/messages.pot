@@ -15,7 +15,7 @@ msgstr ""
 msgid "Abstract"
 msgstr ""
 
-#: src/components/Identification.vue:102
+#: src/components/Identification.vue:109
 msgid "All visible layers"
 msgstr ""
 
@@ -30,6 +30,14 @@ msgstr ""
 
 #: ./src/components/content-panel/ContentPanel.vue:14
 msgid "Base Layers"
+msgstr ""
+
+#: src/components/AttributeFilter.vue:207
+msgid "between"
+msgstr ""
+
+#: src/components/AttributeFilter.vue:204
+msgid "contain"
 msgstr ""
 
 #: ./src/components/content-panel/ContentPanel.vue:5
@@ -48,7 +56,7 @@ msgstr ""
 msgid "Coordinates"
 msgstr ""
 
-#: ./src/components/Identification.vue:19
+#: ./src/components/Identification.vue:20
 msgid "Display"
 msgstr ""
 
@@ -60,7 +68,19 @@ msgstr ""
 msgid "Distance"
 msgstr ""
 
-#: src/components/AttributesTable.vue:194
+#: src/components/AttributeFilter.vue:205
+msgid "empty"
+msgstr ""
+
+#: src/components/AttributeFilter.vue:199
+msgid "equal to"
+msgstr ""
+
+#: src/components/AttributeFilter.vue:197
+msgid "Filter"
+msgstr ""
+
+#: src/components/AttributesTable.vue:189
 msgid "Filter to visible area"
 msgstr ""
 
@@ -76,6 +96,10 @@ msgstr ""
 msgid "Geometry"
 msgstr ""
 
+#: src/components/AttributeFilter.vue:201
+msgid "greater than"
+msgstr ""
+
 #: ./src/App.vue:43
 msgid "Help"
 msgstr ""
@@ -84,7 +108,7 @@ msgstr ""
 msgid "Identification"
 msgstr ""
 
-#: src/components/Identification.vue:114
+#: src/components/Identification.vue:121
 msgid "Info Panel"
 msgstr ""
 
@@ -97,7 +121,7 @@ msgstr ""
 msgid "Last segment"
 msgstr ""
 
-#: src/components/Identification.vue:132
+#: src/components/Identification.vue:139
 msgid "Layer"
 msgstr ""
 
@@ -113,8 +137,8 @@ msgstr ""
 msgid "Legend"
 msgstr ""
 
-#: ./src/components/AttributesTable.vue:52
-msgid "Limit"
+#: src/components/AttributeFilter.vue:202
+msgid "less than"
 msgstr ""
 
 #: ./src/components/measure/Measure.vue:11
@@ -134,16 +158,24 @@ msgstr ""
 msgid "My profile"
 msgstr ""
 
+#: src/components/AttributeFilter.vue:206
+msgid "not empty"
+msgstr ""
+
+#: src/components/AttributeFilter.vue:200
+msgid "not equal to"
+msgstr ""
+
+#: src/components/AttributeFilter.vue:203
+msgid "one of"
+msgstr ""
+
 #: ./src/components/content-panel/BaseLayerOpacity.vue:5
 msgid "Opacity of base layer"
 msgstr ""
 
 #: ./src/components/content-panel/OverlaysOpacity.vue:5
 msgid "Opacity of overlay layers"
-msgstr ""
-
-#: src/components/AttributeFilter.vue:121
-msgid "Operator"
 msgstr ""
 
 #: ./src/components/print/Print.vue:20
@@ -170,7 +202,7 @@ msgstr ""
 msgid "Print quality"
 msgstr ""
 
-#: ./src/components/AttributesTable.vue:110
+#: ./src/components/AttributesTable.vue:106
 msgid "Refresh"
 msgstr ""
 
@@ -183,11 +215,11 @@ msgstr ""
 msgid "Sign In to Continue"
 msgstr ""
 
-#: src/components/Identification.vue:110
+#: src/components/Identification.vue:117
 msgid "Table"
 msgstr ""
 
-#: src/components/Identification.vue:118
+#: src/components/Identification.vue:125
 msgid "Table & Info Panel"
 msgstr ""
 
@@ -214,17 +246,17 @@ msgstr ""
 msgid "Zoom to"
 msgstr ""
 
-#: src/components/Map.vue:112
+#: src/components/MapTools.vue:43
 msgctxt "noun"
 msgid "Identification"
 msgstr ""
 
-#: src/components/Map.vue:117
+#: src/components/MapTools.vue:55
 msgctxt "noun"
 msgid "Measure"
 msgstr ""
 
-#: src/components/Map.vue:122
+#: src/components/MapTools.vue:63
 msgctxt "noun"
 msgid "Print"
 msgstr ""

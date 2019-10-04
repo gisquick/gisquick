@@ -88,7 +88,7 @@ const Operators = {
     },
     {
       text: 'LIKE',
-      value: '~',
+      value: 'LIKE',
       placeholder: 'Text'
     },
     {

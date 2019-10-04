@@ -19,7 +19,7 @@ function SimpleFilter (name) {
 
 function LikeFilter (attribute, value) {
   return `
-    <ogc:PropertyIsLike wildCard="%" singleChar="_" escapeChar="\">
+    <ogc:PropertyIsLike wildCard="%" singleChar="_" escapeChar="\\">
       <ogc:PropertyName>${attribute}</ogc:PropertyName>
       <ogc:Literal>%${value}%</ogc:Literal>
     </ogc:PropertyIsLike>`
@@ -40,6 +40,22 @@ function BetweenFilter (attribute, value) {
     </ogc:PropertyIsBetween>`
 }
 
+function IsNullFilter (attribute) {
+  return `
+    <ogc:PropertyIsNull>
+      <ogc:PropertyName>${attribute}</ogc:PropertyName>
+    </ogc:PropertyIsNull>`
+}
+
+function IsNotNullFilter (attribute) {
+  return `
+    <ogc:Not>
+      <ogc:PropertyIsNull>
+        <ogc:PropertyName>${attribute}</ogc:PropertyName>
+      </ogc:PropertyIsNull>
+    </ogc:Not>`
+}
+
 const AttributeFilters = {
   '=': SimpleFilter('PropertyIsEqualTo'),
   '!=': SimpleFilter('PropertyIsNotEqualTo'),
@@ -47,9 +63,11 @@ const AttributeFilters = {
   '>=': SimpleFilter('PropertyIsGreaterThanOrEqualTo'),
   '<': SimpleFilter('PropertyIsLessThan'),
   '<=': SimpleFilter('PropertyIsLessThanOrEqualTo'),
-  '~': LikeFilter,
+  'LIKE': LikeFilter,
   'IN': InFilter,
-  'BETWEEN': BetweenFilter
+  'BETWEEN': BetweenFilter,
+  'IS NULL': IsNullFilter,
+  'IS NOT NULL': IsNotNullFilter
 }
 
 export function getFeaturesQuery (layers, geom, filters) {
@@ -74,7 +92,7 @@ export function getFeaturesQuery (layers, geom, filters) {
     rootFilter = `<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">${rootFilter}</ogc:Filter>`
   }
   const query = layers.map(name => [
-    `<gml:Query gml:typeName="${name.replace(/ /g, '')}">`,
+    `<gml:Query gml:typeName="${name.replace(/ /g, '_')}">`,
     rootFilter,
     '</gml:Query>'
   ].join('\n')).join('\n')

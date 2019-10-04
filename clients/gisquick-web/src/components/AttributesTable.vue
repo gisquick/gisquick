@@ -24,6 +24,7 @@
           :filter="layerFilters[header.value]"
           @input:comparator="updateFilterComparator({ attr: header.value, comparator: $event })"
           @input:value="updateFilterValue({ attr: header.value, value: $event })"
+          @update:error="updateFilterValidity({ attr: header.value, valid: !$event })"
           @input:enter="fetchFeatures()"
           @clear="clearFilter(header.value)"
         />
@@ -214,10 +215,11 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('attributeTable', ['clearFilter', 'updateFilterComparator', 'updateFilterValue']),
+    ...mapMutations('attributeTable', ['clearFilter', 'updateFilterComparator', 'updateFilterValue', 'updateFilterValidity']),
     async fetchFeatures (page = 1, lastQuery = false) {
       const filters = Object.entries(this.layerFilters)
-        .filter(([name, filter]) => filter.comparator && filter.value)
+        // .filter(([name, filter]) => filter.comparator && filter.value !== null)
+        .filter(([name, filter]) => filter.comparator && filter.valid)
         .map(([name, filter]) => ({
           attribute: name,
           operator: filter.comparator,
@@ -362,12 +364,6 @@ export default {
   .v-text-field {
     font-size: 14px;
     margin-top: 0;
-  }
-  .limit {
-    max-width: 60px;
-    /deep/ input {
-      padding: 2px 0 2px 2px;
-    }
   }
   label {
     font-size: 13px;

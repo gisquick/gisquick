@@ -1,4 +1,5 @@
 import Vue from 'vue'
+
 export default {
   namespaced: true,
   state: {
@@ -21,7 +22,8 @@ export default {
         layer.attributes.forEach(attr => {
           filters[attr.name] = {
             comparator: null,
-            value: null
+            value: null,
+            valid: false
           }
         })
         // state.filters[layer.name] = filters
@@ -42,10 +44,15 @@ export default {
       const filter = state.filters[state.layer.name][attr]
       filter.value = value
     },
+    updateFilterValidity (state, { attr, valid }) {
+      const filter = state.filters[state.layer.name][attr]
+      filter.valid = valid
+    },
     clearFilter (state, attr) {
       const filter = state.filters[state.layer.name][attr]
       filter.comparator = null
       filter.value = null
+      filter.valid = false
     },
     limit (state, value) {
       state.limit = Math.min(value, 1000)

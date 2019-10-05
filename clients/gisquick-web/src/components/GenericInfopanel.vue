@@ -33,7 +33,7 @@ const RawWidget = Widget((h, ctx) => (
 ))
 
 const FloatWidget = Widget((h, ctx) => (
-  <span>{ctx.props.value.toFixed(2)}</span>
+  <span>{ctx.props.value && ctx.props.value.toFixed(2)}</span>
 ))
 
 const UrlWidget = Widget((h, ctx) => (

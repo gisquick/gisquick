@@ -243,7 +243,7 @@ export default {
 .filter {
   font-weight: normal;
   .v-select {
-    width: auto;
+    min-width: 48px;
     flex: 0 0 auto;
     /deep/ .v-select__selections {
       height: 28px;

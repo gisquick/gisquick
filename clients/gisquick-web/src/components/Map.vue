@@ -313,6 +313,7 @@ export default {
     grid-column: 2 / 4;
     grid-row: 2 / 5;
     z-index: 2;
+    max-width: 100%;
   }
 }
 

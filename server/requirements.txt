@@ -1,4 +1,4 @@
-Django>=1.8.0,<1.9
+Django>=1.11.0,<1.12
 django-cors-headers==1.1.0
 Pillow>=2.9.0,<4.1
 OWSLib==0.14.0

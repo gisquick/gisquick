@@ -24,3 +24,9 @@ urlpatterns = [
 if settings.DEBUG:
     urlpatterns += staticfiles_urlpatterns()
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+try:
+    from {{ project_name }}.urls_custom import urlpatterns as custom_urlpatterns
+    urlpatterns += custom_urlpatterns
+except ImportError:
+    pass

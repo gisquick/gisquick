@@ -1,4 +1,4 @@
-FROM ubuntu:16.04
+FROM ubuntu:18.04
 
 
 # Install system packages
@@ -22,13 +22,13 @@ RUN pip3 install --no-cache-dir -r /tmp/requirements.txt && \
 
 
 # Create Gisquick Django project
-COPY server/conf /tmp/conf
+COPY server/webgis/conf /tmp/conf
 RUN mkdir -p /var/www/gisquick && \
     mkdir -p /var/log/django/ && \
     mkdir -p /var/log/gunicorn/ && \
     django-admin startproject --template=/tmp/conf/project_template/ djproject /var/www/gisquick/
 
-COPY settings_custom.py /var/www/gisquick/djproject/settings_custom.py
+COPY docker/django-dev/settings_custom.py /var/www/gisquick/djproject/settings_custom.py
 
 ENV PYTHONPATH $PYTHONPATH:/var/www/gisquick/
 ENV DJANGO_SETTINGS_MODULE djproject.settings
@@ -36,7 +36,7 @@ ENV LANG C.UTF-8
 
 
 # Configure Supervisor
-COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY docker/django-dev/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 
 VOLUME /var/www/gisquick/static/

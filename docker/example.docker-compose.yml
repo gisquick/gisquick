@@ -4,13 +4,13 @@ services:
     restart: always
     image: gisquick/qgis-server:3.4
     volumes:
-      - ./_data/publish:/publish
+      - ./_data/publish:/publish/
     ports:
       - "9000:90"
 
   django:
     restart: always
-    image: gisquick/django
+    image: gisquick/django:vue
     links:
       - qgisserver
     volumes:
@@ -21,6 +21,25 @@ services:
       - GUNICORN_WORKERS=2
       - GUNICORN_ERRORLOG=-
       - GUNICORN_ACCESSLOG=-
+      - DJANGO_LANGUAGE_CODE=en-us
+      - LANG=C.UTF-8
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "10"
+
+  go:
+    restart: always
+    image: gisquick/settings
+    volumes:
+      - ./_data/publish:/publish/
+    ports:
+      - "8001:8001"
+    environment:
+      - PROJECTS_DIR=/publish
+      - SERVER_URL=http://django:8000
+      - MAX_FILE_UPLOAD=50M
     logging:
       driver: json-file
       options:
@@ -29,7 +48,7 @@ services:
 
   nginx:
     restart: unless-stopped
-    image: gisquick/nginx
+    image: nginx
     links:
       - django
     volumes_from:
@@ -37,10 +56,13 @@ services:
     volumes:
       - ./_data/etc/letsencrypt/:/etc/letsencrypt/
       - ./_data/var/www/certbot/:/var/www/certbot/
+      - ./nginx-conf/:/etc/nginx/gisquick/
     ports:
+      - "80:80"
       - "443:443"
     environment:
       - NGINX_HOST=localhost
+    command: ["/bin/sh","-c", "envsubst '$$NGINX_HOST' < /etc/nginx/gisquick/conf.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"]
     logging:
       driver: json-file
       options:

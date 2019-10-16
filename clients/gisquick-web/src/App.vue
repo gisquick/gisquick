@@ -13,18 +13,18 @@
 
       <v-list>
         <v-list-tile v-if="user && !user.is_guest" @click="logout">
-          <v-list-tile-title>
+          <v-list-tile-title key="logout">
             <translate>Logout</translate>
           </v-list-tile-title>
         </v-list-tile>
         <v-list-tile v-else @click="showLogin = true">
-          <v-list-tile-title>
+          <v-list-tile-title key="login">
             <translate>Login</translate>
           </v-list-tile-title>
         </v-list-tile>
 
         <v-list-tile v-if="user && !user.is_guest" href="/user/">
-          <v-list-tile-title>
+          <v-list-tile-title key="profile">
             <translate>My profile</translate>
           </v-list-tile-title>
         </v-list-tile>

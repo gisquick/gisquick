@@ -24,7 +24,7 @@ msgstr ""
 msgid "Area"
 msgstr ""
 
-#: src/components/LoginDialog.vue:108
+#: src/components/LoginDialog.vue:118
 msgid "Authentication failed"
 msgstr ""
 
@@ -44,7 +44,7 @@ msgstr ""
 msgid "Content"
 msgstr ""
 
-#: ./src/components/LoginDialog.vue:55
+#: ./src/components/LoginDialog.vue:65
 msgid "Continue as Guest"
 msgstr ""
 
@@ -84,7 +84,7 @@ msgstr ""
 msgid "Filter to visible area"
 msgstr ""
 
-#: ./src/components/LoginDialog.vue:64
+#: ./src/components/LoginDialog.vue:74
 msgid "Forgot password?"
 msgstr ""
 
@@ -146,7 +146,7 @@ msgid "Location"
 msgstr ""
 
 #: ./src/App.vue:22
-#: ./src/components/LoginDialog.vue:44
+#: ./src/components/LoginDialog.vue:54
 msgid "Login"
 msgstr ""
 
@@ -186,12 +186,16 @@ msgstr ""
 msgid "Overlay Layers"
 msgstr ""
 
-#: src/components/LoginDialog.vue:94
+#: src/components/LoginDialog.vue:105
 msgid "Password"
 msgstr ""
 
 #: ./src/components/measure/Measure.vue:144
 msgid "Perimeter"
+msgstr ""
+
+#: ./src/components/LoginDialog.vue:25
+msgid "Permission denied"
 msgstr ""
 
 #: ./src/components/print/Preview.vue:13
@@ -236,7 +240,7 @@ msgstr ""
 msgid "Units"
 msgstr ""
 
-#: src/components/LoginDialog.vue:93
+#: src/components/LoginDialog.vue:104
 msgid "Username"
 msgstr ""
 

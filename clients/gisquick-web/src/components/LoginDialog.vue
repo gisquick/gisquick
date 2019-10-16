@@ -1,7 +1,7 @@
 <template>
   <v-dialog
     fullscreen scrollable
-    v-model="open"
+    :value="value"
     content-class="login-dialog"
   >
     <div class="bg-logo-container">
@@ -18,8 +18,18 @@
 
         <v-card-text class="pb-1">
           <p
+            v-if="permissionDenied"
+            class="text-xs-center red--text"
+            key="permission"
+          >
+            <translate>Permission denied</translate>
+          </p>
+          <p
             v-if="authenticationError"
-            class="text-xs-center red--text">{{ authenticationError }}
+            class="text-xs-center red--text"
+            key="error"
+          >
+            {{ authenticationError }}
           </p>
           <v-form ref="form" v-model="valid" :lazy-validation="true">
             <v-text-field
@@ -74,12 +84,13 @@
 export default {
   name: 'login-dialog',
   props: {
+    value: Boolean,
     loginRequired: Boolean,
+    permissionDenied: Boolean,
     passwordReset: String
   },
   data () {
     return {
-      open: true,
       authenticationError: '',
       valid: true,
       username: '',
@@ -102,7 +113,6 @@ export default {
         .then(resp => {
           this.authenticationError = null
           this.$emit('login', resp.data)
-          this.open = false
         })
         .catch(resp => {
           this.authenticationError = this.$gettext('Authentication failed')

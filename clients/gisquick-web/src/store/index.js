@@ -31,11 +31,11 @@ export default new Vuex.Store({
       state.user = user
     },
     project (state, project) {
-      if (!project || project.status === 401) {
+      if (!project) {
         state.project = null
         return
       }
-      const { base_layers: baseLayers, layers } = project
+      const { base_layers: baseLayers = [], layers = [] } = project
 
       const groups = [].concat(...layers.map(filterGroups))
       groups.forEach(l => { l.visible = true })

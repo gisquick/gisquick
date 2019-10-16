@@ -33,7 +33,7 @@ msgstr "Všechny viditelné vrstvy"
 msgid "Area"
 msgstr "Plocha"
 
-#: src/components/LoginDialog.vue:108
+#: src/components/LoginDialog.vue:118
 msgid "Authentication failed"
 msgstr "Ověření se nezdařilo"
 
@@ -53,7 +53,7 @@ msgstr "obsahuje"
 msgid "Content"
 msgstr "Obsah"
 
-#: src/components/LoginDialog.vue:55
+#: src/components/LoginDialog.vue:65
 msgid "Continue as Guest"
 msgstr "Pokračovat jako host"
 
@@ -93,7 +93,7 @@ msgstr "Filtr"
 msgid "Filter to visible area"
 msgstr "Filtrovat viditelnou oblast"
 
-#: src/components/LoginDialog.vue:64
+#: src/components/LoginDialog.vue:74
 msgid "Forgot password?"
 msgstr "Zapomenuté heslo?"
 
@@ -154,7 +154,7 @@ msgstr "je menší"
 msgid "Location"
 msgstr "Umístění"
 
-#: src/App.vue:22 src/components/LoginDialog.vue:44
+#: src/App.vue:22 src/components/LoginDialog.vue:54
 msgid "Login"
 msgstr "Přihlásit se"
 
@@ -194,13 +194,17 @@ msgstr "Výstupní formát"
 msgid "Overlay Layers"
 msgstr "Překryvné vrstvy"
 
-#: src/components/LoginDialog.vue:94
+#: src/components/LoginDialog.vue:105
 msgid "Password"
 msgstr "Heslo"
 
 #: src/components/measure/Measure.vue:144
 msgid "Perimeter"
 msgstr "Obvod"
+
+#: src/components/LoginDialog.vue:25
+msgid "Permission denied"
+msgstr "Přístup odepřen"
 
 #: src/components/print/Preview.vue:13
 msgid "Print Preview"
@@ -242,7 +246,7 @@ msgstr "Celková délka"
 msgid "Units"
 msgstr "Jednotky"
 
-#: src/components/LoginDialog.vue:93
+#: src/components/LoginDialog.vue:104
 msgid "Username"
 msgstr "Uživatelské jméno"
 

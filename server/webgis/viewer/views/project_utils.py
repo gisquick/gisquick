@@ -13,6 +13,7 @@ from django.http import HttpResponse, Http404
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext as _
+from django.utils import timezone
 
 import webgis
 from webgis.viewer import forms
@@ -84,19 +85,18 @@ def get_last_project_version(project):
         return clean_project_name(project_filename)
     return project
 
-def store_project_layers_info(project_key, publish, extent, resolutions, projection):
-    prefix = "{0}:{1}:".format(project_key, publish)
-    cache.set_many({
-        prefix+'extent': ','.join(map(str, extent)),
-        prefix+'resolutions': ','.join(map(str, resolutions)),
-        prefix+'projection': projection
-    })
+def store_project_info(project_key, publish, metadata):
+    key = "{0}:{1}:".format(project_key, publish)
+    subset_attrs = ["extent", "tile_resolutions", "projection", "authentication"]
+    info = {k: metadata.get(k, None) for k in subset_attrs}
+    cache.set(key, json.dumps(info), timeout=120)
+    return info
 
-def get_project_layers_info(project_key, publish, project=None):
+def get_project_info(project_key, publish, project=None):
     prefix = "{0}:{1}:".format(project_key, publish)
-    data = cache.get_many((prefix+'extent', prefix+'resolutions', prefix+'projection'))
+    data = cache.get(prefix)
     if data:
-        return { param.replace(prefix, ''): value for param, value in data.items() }
+        return json.loads(data)
     elif project:
         filename = "{0}_{1}.meta".format(clean_project_name(project), publish)
         metadata_filename = os.path.join(settings.GISQUICK_PROJECT_ROOT, filename)
@@ -109,17 +109,8 @@ def get_project_layers_info(project_key, publish, project=None):
         try:
             metadata = MetadataParser(metadata_filename)
             if int(metadata.publish_date_unix) == int(publish):
-                store_project_layers_info(
-                    project_key, publish,
-                    metadata.extent,
-                    metadata.tile_resolutions,
-                    metadata.projection['code']
-                )
-                return {
-                    'extent': metadata.extent,
-                    'resolutions': metadata.tile_resolutions,
-                    'projection': metadata.projection['code']
-                }
+                data = store_project_info(project_key, publish, metadata)
+                return data
         except Exception as e:
             pass
     return {}
@@ -235,7 +226,7 @@ def get_project(request):
     allow_anonymous = metadata.authentication == 'all' if project else True
     owner_authentication = metadata.authentication == 'owner' if project else False
 
-    if not allow_anonymous and (not request.user.is_authenticated() or request.user.is_guest):
+    if not allow_anonymous and not request.user.is_authenticated():
         project_data = _project_basic_data(metadata)
         project_data['status'] = 401
         return project_data
@@ -291,20 +282,8 @@ def get_project(request):
         context['layers'] = layers_tree
 
         if use_mapcache:
-            project_hash = hashlib.md5(project.encode('utf-8')).hexdigest()
-            project_layers_info = get_project_layers_info(project_hash, metadata.publish_date_unix)
-            if not project_layers_info:
-                store_project_layers_info(
-                    project_hash,
-                    metadata.publish_date_unix,
-                    metadata.extent,
-                    project_tile_resolutions,
-                    metadata.projection['code']
-                )
-
             context['mapcache_url'] = project_tile_url(project, metadata.publish_date_unix)
             context['legend_url'] = project_legend_url(project, metadata.publish_date_unix)
-
         else:
             context['legend_url'] = ows_url
         if metadata.vector_layers:
@@ -317,7 +296,7 @@ def get_project(request):
             'wms_url': urllib.parse.unquote(ows_url),
             'project_extent': metadata.extent,
             'zoom_extent': form.cleaned_data['EXTENT'] or metadata.zoom_extent,
-            'print_composers': metadata.composer_templates if not request.user.is_guest else None,
+            'print_composers': metadata.composer_templates if request.user.is_authenticated() else None,
             'info_panel': metadata.info_panel,
             'root_title': metadata.title,
             'author': metadata.contact_person,
@@ -343,17 +322,23 @@ def get_project(request):
             valid_until = datetime.datetime.strptime(metadata.message['valid_until'], "%d.%m.%Y").date()
             if datetime.date.today() <= valid_until:
                 context['message'] = metadata.message['text'].replace('\n', '<br />')
+
+        project_hash = hashlib.md5(project.encode('utf-8')).hexdigest()
+        project_info = get_project_info(project_hash, metadata.publish_date_unix)
+        # if not project_info:
+        store_project_info(project_hash, metadata.publish_date_unix, metadata)
+
         # Update projects registry
-        project_info = {
+        registry_info = {
             'plugin_version': metadata.plugin_version or '',
             'gislab_user': metadata.gislab_user,
-            'publish_date': datetime.datetime.fromtimestamp(metadata.publish_date_unix),
-            'last_display': datetime.datetime.now()
+            'publish_date': timezone.make_aware(datetime.datetime.fromtimestamp(metadata.publish_date_unix)),
+            'last_display': timezone.now()
         }
         try:
-            rows = models.Project_registry.objects.filter(project=project).update(**project_info)
+            rows = models.Project_registry.objects.filter(project=project).update(**registry_info)
             if not rows:
-                models.Project_registry(project=project, **project_info).save()
+                models.Project_registry(project=project, **registry_info).save()
         except:
             raise
     else:
@@ -453,11 +438,20 @@ def get_user_projects(request, username):
 
 
 def get_user_data(user):
+    if user.is_authenticated():
+        return {
+            'username': user.username,
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+            'full_name': user.get_full_name(),
+            'email': user.email,
+            'is_guest': False
+        }
     return {
-        'username': user.username,
-        'first_name': user.first_name,
-        'last_name': user.last_name,
-        'full_name': user.get_full_name(),
-        'email': user.email,
-        'is_guest': user.is_guest
+        'username': 'guest',
+        'first_name': '',
+        'last_name': '',
+        'full_name': 'guest',
+        'email': '',
+        'is_guest': True
     }

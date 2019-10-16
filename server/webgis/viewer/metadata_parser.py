@@ -14,3 +14,6 @@ class MetadataParser(object):
 
     def __getattr__(self, name):
         return self.metadata.get(name)
+
+    def get(self, name, *args):
+        return self.metadata.get(name, *args)

@@ -30,7 +30,6 @@ SECRET_KEY = '{{ secret_key }}'
 
 GISQUICK_PROJECT_ROOT = '/tmp/gislab-web'
 GISQUICK_MAPSERVER_URL = 'http://localhost:90/cgi-bin/qgis_mapserv.fcgi'
-GISQUICK_GUEST_USERNAME = 'guest'
 GISQUICK_HOMEPAGE = 'http://gisquick.org'
 GISQUICK_DOCUMENTATION_PAGE = 'http://gisquick.readthedocs.io/en/latest/user-manual/user-interface.html'
 

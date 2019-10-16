@@ -46,10 +46,7 @@ def client_login(request):
         if form.is_valid():
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
-            if username == "guest":
-                user = models.GisquickUser.get_guest_user()
-            else:
-                user = authenticate(username=username, password=password)
+            user = authenticate(username=username, password=password)
             if user:
                 try:
                     login(request, user)
@@ -68,12 +65,6 @@ def client_logout(request):
 def map(request):
     data = {}
     try:
-        if not request.user.is_authenticated():
-            user = models.GisquickUser.get_guest_user()
-            if user:
-                login(request, user)
-            else:
-                raise RuntimeError("Anonymous user is not configured")
         data['user'] = get_user_data(request.user)
         data['project'] = get_project(request)
         data['app'] = {
@@ -103,15 +94,7 @@ def map(request):
         content_type="text/html"
     )
 
-def dev_vue_map(request):
-    if not request.user.is_authenticated():
-        user = models.GisquickUser.get_guest_user()
-        if user:
-            login(request, user)
-        else:
-            raise RuntimeError("Anonymous user is not configured")
-    else:
-        user = request.user
+def dev_map(request):
     data = {
         'app': {
             'lang': settings.LANGUAGE_CODE,
@@ -119,6 +102,6 @@ def dev_vue_map(request):
             'reset_password_url': getattr(settings, 'RESET_PASSWORD_URL', '')
         },
         'project': get_project(request),
-        'user': get_user_data(user)
+        'user': get_user_data(request.user)
     }
     return JsonResponse(data)

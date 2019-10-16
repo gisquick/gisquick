@@ -5,23 +5,6 @@ from django.contrib.auth.models import AbstractUser
 
 class GisquickUser(AbstractUser):
 
-    @classmethod
-    def get_guest_user(cls):
-        if getattr(settings, 'GISQUICK_GUEST_USERNAME', None):
-            if not hasattr(cls, 'guest_user'):
-                guest_user = None
-                try:
-                    guest_user = GisquickUser.objects.get(username=settings.GISQUICK_GUEST_USERNAME)
-                    guest_user.backend = "django.contrib.auth.backends.ModelBackend"
-                except GisquickUser.DoesNotExist:
-                    pass
-                cls.guest_user = guest_user
-            return cls.guest_user
-
-    @property
-    def is_guest(self):
-        return self.username == getattr(settings, 'GISQUICK_GUEST_USERNAME', '')
-
     def get_profile(self):
         return None
 
@@ -38,12 +21,3 @@ class Project_registry(models.Model):
     gislab_user = models.CharField("gislab user", max_length=255)
     publish_date = models.DateTimeField("publish date")
     last_display = models.DateTimeField("last display", auto_now=True)
-
-
-from django.db import connection
-if GisquickUser._meta.db_table in connection.introspection.table_names():
-    guest_username = getattr(settings, 'GISQUICK_GUEST_USERNAME', '')
-    if guest_username:
-        user, created = GisquickUser.objects.get_or_create(username=guest_username, first_name=guest_username.title())
-        user.set_unusable_password()
-        user.save()

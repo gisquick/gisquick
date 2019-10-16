@@ -12,7 +12,6 @@ urlpatterns = [
     url(r"^ows/$", map.ows, name="ows"),
     url(r"^tile/(?P<project_hash>[^/]+)/(?P<publish>\d+)/tile/(?P<layers_hash>[^/]+)/(?P<z>\d+)/(?P<x>\d+)/(?P<y>\d+)\.(?P<format>\w+)$", map.tile, name="tile"),
     url(r"^legend/(?P<project_hash>[^/]+)/(?P<publish>\d+)/legend/(?P<layer_hash>[^/]+)/(?P<zoom>\d+)\.(?P<format>\w+)$", map.legend, name="legend"),
-    url(r"^vector/$", map.vector_layers, name="vectorlayers"),
     url(r"^filter/$", map.filterdata, name="filter"),
 
     url(r"^project.json$", api.project_json, name="project_json"),
@@ -24,5 +23,5 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += [
-        url(r'^dev/map/$', web_client.dev_vue_map)
+        url(r'^dev/map/$', web_client.dev_map)
     ]

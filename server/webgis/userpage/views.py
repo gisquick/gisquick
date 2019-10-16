@@ -27,7 +27,7 @@ logger = logging.getLogger('django')
 
 def user_projects(request, username):
     data = {}
-    if not request.user.is_authenticated() or request.user.is_guest:
+    if not request.user.is_authenticated():
         data['status'] = 401
     else:
         if not username:

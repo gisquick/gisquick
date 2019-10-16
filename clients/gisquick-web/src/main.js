@@ -59,6 +59,7 @@ initialize.then(data => {
   store.commit('app', data.app)
   store.commit('user', data.user)
   store.commit('project', data.project)
+  document.title = data.project.root_title
   const vm = new Vue({
     store,
     beforeCreate () {

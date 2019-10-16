@@ -98,6 +98,7 @@ export default {
         this.$http.project(project)
           .then(resp => {
             this.$store.commit('project', resp.data)
+            document.title = resp.data.root_title
           })
           .catch(err => {
             console.error(err)

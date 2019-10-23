@@ -445,7 +445,8 @@ def get_user_data(user):
             'last_name': user.last_name,
             'full_name': user.get_full_name(),
             'email': user.email,
-            'is_guest': False
+            'is_guest': False,
+            'is_superuser': user.is_superuser
         }
     return {
         'username': 'guest',
@@ -453,5 +454,6 @@ def get_user_data(user):
         'last_name': '',
         'full_name': 'guest',
         'email': '',
-        'is_guest': True
+        'is_guest': True,
+        'is_superuser': False
     }

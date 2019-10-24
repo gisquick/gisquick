@@ -41,7 +41,7 @@ def ows(request):
     params = {key.upper(): request.GET[key] for key in request.GET.keys()}
 
     ows_project = clean_project_name(params.get('MAP'))
-    project, timestamp = ows_project.rsplit("_", 1)
+    project, timestamp, *_ = ows_project.rsplit("_", 1) + [""]
     project_hash = hashlib.md5(project.encode('utf-8')).hexdigest()
     pi = get_project_info(project_hash, timestamp, project=ows_project)
     if not request.user.is_authenticated():

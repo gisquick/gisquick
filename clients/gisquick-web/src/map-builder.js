@@ -153,6 +153,12 @@ export class WebgisTileImage extends TileImage {
   }
 }
 
+function createAttribution (config) {
+  const html = config.url
+    ? `<a href="${config.url}" target="_blank">${config.title}</a>`
+    : config.title
+  return new Attribution({ html })
+}
 export function createQgisLayer (config) {
   const visibleLayers = config.overlays.filter(l => l.visible).map(l => l.name)
   const layersOrder = {}
@@ -160,12 +166,8 @@ export function createQgisLayer (config) {
 
   config.overlays.forEach(layer => {
     layersOrder[layer.name] = layer.drawing_order
-    const attribution = layer.attribution
-    if (attribution) {
-      const html = attribution.url
-        ? `<a href="${attribution.url}" target="_blank">${attribution.title}</a>`
-        : attribution.title
-      attributions[layer.name] = new Attribution({ html })
+    if (layer.attribution) {
+      attributions[layer.name] = createAttribution(layer.attribution)
     }
   })
 
@@ -209,7 +211,7 @@ export function createQgisLayer (config) {
   }
 }
 
-export function createBaseLayer (layerConfig) {
+export function createBaseLayer (layerConfig, projectConfig = {}) {
   switch (layerConfig.type) {
     case 'blank': {
       return new ImageLayer({
@@ -233,11 +235,32 @@ export function createBaseLayer (layerConfig) {
             FORMAT: layerConfig.format,
             TRANSPARENT: 'false'
           },
+          attributions: layerConfig.attribution ? [createAttribution(layerConfig.attribution)] : null,
           serverType: 'mapserver',
           ratio: 1.0
         }),
         extent: layerConfig.extent,
         visible: layerConfig.visible
+      })
+    }
+    // fallback to render layer by qgis server
+    case 'raster': {
+      return new ImageLayer({
+        visible: layerConfig.visible,
+        extent: layerConfig.extent,
+        source: new WebgisImageWMS({
+          resolutions: layerConfig.resolutions || projectConfig.resolutions,
+          url: projectConfig.owsUrl,
+          visibleLayers: [layerConfig.name],
+          layersAttributions: layerConfig.attributions,
+          params: {
+            LAYERS: layerConfig.name,
+            FORMAT: layerConfig.format,
+            TRANSPARENT: 'false'
+          },
+          serverType: 'qgis',
+          ratio: 1
+        })
       })
     }
   }
@@ -278,7 +301,7 @@ export function createMap (config, controlOpts = {}) {
   const overlay = createQgisLayer(config)
   if (config.baseLayers) {
     config.baseLayers.forEach(baseLayerCfg => {
-      const baseLayer = createBaseLayer(baseLayerCfg)
+      const baseLayer = createBaseLayer(baseLayerCfg, config)
       baseLayer.set('name', baseLayerCfg.name)
       baseLayer.set('type', 'baselayer')
       layers.push(baseLayer)

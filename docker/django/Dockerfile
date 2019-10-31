@@ -1,9 +1,11 @@
 FROM node:12-alpine AS webapp
 MAINTAINER Marcel Dancak "dancakm@gmail.com"
 
-COPY ./clients/gisquick-web/ /gisquick-web/
 WORKDIR /gisquick-web/
+COPY ./clients/gisquick-web/package*.json ./
 RUN npm install
+
+COPY ./clients/gisquick-web ./
 RUN npm run build
 
 
@@ -15,7 +17,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-setuptools \
     python3-pip \
     python3-owslib \
-    supervisor \
     sqlite3 \
     python3-psycopg2 \
     gdal-bin \
@@ -23,7 +24,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     postgresql-client \
     && rm -rf /var/lib/apt/lists/*
 
-RUN pip3 install --no-cache-dir 'gunicorn>=19.7,<19.8'
+RUN pip3 install --no-cache-dir 'gunicorn>=19.9,<20.0' && \
+    pip3 install --no-cache-dir 'supervisor>=4.1.0,<4.2.0'
 
 COPY ./server/ /gisquick/server/
 COPY --from=webapp /gisquick-web/dist/static/ /gisquick/server/webgis/viewer/static/
@@ -55,4 +57,4 @@ VOLUME /var/www/gisquick/media/
 VOLUME /var/www/gisquick/data/
 EXPOSE 8000
 
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+CMD ["supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]

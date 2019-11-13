@@ -1,5 +1,6 @@
 from django.http import JsonResponse, HttpResponse, Http404
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
 
 from webgis.viewer.views.project_utils import get_project, \
     get_user_projects, get_user_data, InvalidProjectException
@@ -28,6 +29,19 @@ def project_json(request):
 @login_required
 def projects_json(request):
     projects = get_user_projects(request, request.user.username)
+    data = {
+        'projects': projects,
+        'user': get_user_data(request.user)
+    }
+    return JsonResponse(data, safe=False)
+
+
+@login_required
+def user_projects_json(request, username):
+    if not request.user.is_superuser:
+        raise PermissionDenied
+
+    projects = get_user_projects(request, username)
     data = {
         'projects': projects,
         'user': get_user_data(request.user)

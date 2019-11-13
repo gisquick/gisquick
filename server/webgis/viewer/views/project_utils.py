@@ -108,10 +108,11 @@ def get_project_info(project_key, publish, project=None):
             )
         try:
             metadata = MetadataParser(metadata_filename)
-            if int(metadata.publish_date_unix) == int(publish):
+            if not publish or int(metadata.publish_date_unix) == int(publish):
                 data = store_project_info(project_key, publish, metadata)
                 return data
         except Exception as e:
+            print(str(e))
             pass
     return {}
 

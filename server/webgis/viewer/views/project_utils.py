@@ -146,13 +146,17 @@ def _layers_names(layers, result=None):
             }
     return result
 
+def published_layers(layers):
+    return [l for l in layers if 'publish' not in l or l['publish'] == True]
+
 def _convert_layers_names(layers, info):
     leafs = []
     groups = []
-    for layer in layers:
+    for layer in published_layers(layers):
         if 'layers' in layer:
+            group_layers = published_layers(_convert_layers_names(layer['layers'], info))
+            layer['layers'] = group_layers
             groups.append(layer)
-            layer['layers'] = _convert_layers_names(layer['layers'], info)
         else:
             layername = layer['name']
             layer['title'] = info[layername]['title']
@@ -256,7 +260,7 @@ def get_project(request):
         context['scales'] = metadata.scales
 
         # BASE LAYERS
-        baselayers_tree = _convert_layers_metadata(metadata.base_layers)
+        baselayers_tree = published_layers(_convert_layers_metadata(metadata.base_layers))
         base = form.cleaned_data['BASE']
         if base:
             # TODO:

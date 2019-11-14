@@ -258,7 +258,6 @@ export default {
 <style lang="scss" scoped>
 .info-panel {
   flex: 0 1 auto;
-  overflow: auto;
 }
 .v-menu {
   position: absolute;

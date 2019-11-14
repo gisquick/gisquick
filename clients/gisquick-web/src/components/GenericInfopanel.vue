@@ -74,7 +74,6 @@ export default {
 
 <style lang="scss" scoped>
 .grid {
-  transition: grid-template-columns 0.5s;
   display: grid;
   grid-template-columns: minmax(auto, 50%) 1fr;
   max-width: 100%;

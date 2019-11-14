@@ -372,6 +372,5 @@ export default {
 }
 .info-panel {
   flex: 0 1 auto;
-  overflow: auto;
 }
 </style>

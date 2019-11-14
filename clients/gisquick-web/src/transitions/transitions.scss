@@ -24,7 +24,6 @@
 }
 .switch-enter-active, .switch-leave-active {
   transition: all 0.5s ease;
-  /*overflow: hidden;*/
 }
 .switch-enter-active, .switch-leave-active {
   position: absolute;
@@ -35,11 +34,11 @@
 
 .switch-container {
   position: relative;
-  overflow: hidden;
 }
 .switch-active {
   will-change: height;
   transition: all 0.5s ease;
+  overflow: hidden;
 }
 
 

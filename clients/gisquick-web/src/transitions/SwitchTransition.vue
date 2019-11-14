@@ -41,6 +41,7 @@ export default {
       afterEnter: (el) => {
         this.$el.style.height = ''
         this.$el.classList.remove('switch-active')
+        this.$emit('switch-finished')
       }
     }
   }

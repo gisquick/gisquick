@@ -41,7 +41,7 @@
           v-else
           :layer="layer"
           :feature="feature"
-          class="mx-2"
+          class="mx-2 mt-2"
         />
       </scroll-area>
 

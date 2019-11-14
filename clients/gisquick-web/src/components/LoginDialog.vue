@@ -35,11 +35,13 @@
             <v-text-field
               v-model="username"
               :label="tr.Username"
+              placeholder=" "
               @keyup.enter="login"
             />
             <v-text-field
               v-model="password"
               :label="tr.Password"
+              placeholder=" "
               :append-icon="passwordVisible ? 'visibility_off' : 'visibility'"
               @click:append="passwordVisible = !passwordVisible"
               :type="passwordVisible ? 'text' : 'password'"

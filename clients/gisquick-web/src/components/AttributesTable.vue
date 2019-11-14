@@ -272,6 +272,9 @@ export default {
       const features = Object.freeze(parser.readFeatures(geojson, { featureProjection }))
 
       this.$store.commit('attributeTable/features', features)
+      if (this.selectedFeature) {
+        this.selectedFeature = features[0]
+      }
       this.pagination = {
         query,
         page,

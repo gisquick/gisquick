@@ -2,6 +2,7 @@
   <v-layout class="column my-1">
     <span v-text="label"/>
     <v-layout class="filter row" v-if="filters">
+       <!-- VSelect component inside VDataTable is causing errors on reloading (in development) -->
       <v-select
         :placeholder="tr.Filter"
         :items="filters"

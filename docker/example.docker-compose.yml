@@ -6,7 +6,7 @@ services:
     volumes:
       - ./_data/publish:/publish/
     ports:
-      - "9000:90"
+      - "90"
 
   django:
     restart: always
@@ -17,11 +17,13 @@ services:
       - ./_data/data/:/var/www/gisquick/data/
       - ./_data/media/:/var/www/qisquick/media/
       - ./_data/publish:/publish/
+    ports:
+      - "8000"
     environment:
       - GUNICORN_WORKERS=2
       - GUNICORN_ERRORLOG=-
       - GUNICORN_ACCESSLOG=-
-      - DJANGO_LANGUAGE_CODE=en-us
+      - DJANGO_LANGUAGE_CODE='en-us'
       - LANG=C.UTF-8
     logging:
       driver: json-file
@@ -35,11 +37,13 @@ services:
     volumes:
       - ./_data/publish:/publish/
     ports:
-      - "8001:8001"
+      - "8001"
     environment:
       - PROJECTS_DIR=/publish
       - SERVER_URL=http://django:8000
+      - MAPSERVER_URL=http://qgisserver:90/cgi-bin/qgis_mapserv.fcgi
       - MAX_FILE_UPLOAD=50M
+      - MAX_PROJECT_SIZE=200M
     logging:
       driver: json-file
       options:
@@ -54,9 +58,9 @@ services:
     volumes_from:
       - django:ro
     volumes:
-      - ./_data/etc/letsencrypt/:/etc/letsencrypt/
-      - ./_data/var/www/certbot/:/var/www/certbot/
       - ./nginx-conf/:/etc/nginx/gisquick/
+      - ./_data/etc/letsencrypt/:/etc/letsencrypt/
+      # - ./_data/var/www/certbot/:/var/www/certbot/
     ports:
       - "80:80"
       - "443:443"

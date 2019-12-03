@@ -29,9 +29,9 @@
           @clear="clearFilter(header.value)"
         />
       </template>
-      <template slot="items" slot-scope="{ item }">
+      <template slot="items" slot-scope="{ item, index }">
         <tr
-          @click="selectedFeature = item"
+          @click="selectedFeatureIndex = index"
           :class="{selected: selectedFeature === item}"
         >
           <td
@@ -113,7 +113,7 @@
         class="ml-1 mb-2 elevation-3"
         :data="[{features, layer}]"
         :selected="infoPanelSelection"
-        @selection-change="selectedFeature = features[$event.featureIndex]"
+        @selection-change="selectedFeatureIndex = $event.featureIndex"
         @close="showInfoPanel = false"
       />
     </portal>
@@ -150,7 +150,7 @@ export default {
     return {
       loading: false,
       pagination: null,
-      selectedFeature: null,
+      selectedFeatureIndex: null,
       showInfoPanel: false
     }
   },
@@ -189,10 +189,13 @@ export default {
         FilterVisibleLabel: this.$gettext('Filter to visible area')
       }
     },
+    selectedFeature () {
+      return this.features[this.selectedFeatureIndex]
+    },
     infoPanelSelection () {
       return this.selectedFeature && {
         layer: this.layer.name,
-        featureIndex: this.features.indexOf(this.selectedFeature)
+        featureIndex: this.selectedFeatureIndex
       }
     }
   },
@@ -273,7 +276,7 @@ export default {
 
       this.$store.commit('attributeTable/features', features)
       if (this.selectedFeature) {
-        this.selectedFeature = features[0]
+        this.selectedFeatureIndex = 0
       }
       this.pagination = {
         query,

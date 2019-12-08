@@ -145,7 +145,8 @@ export default {
 </script>
 
 <style lang="scss">
-@import './transitions/transitions.scss';
+@import './common.scss';
+@import './transitions.scss';
 
 html, body {
   margin: 0;

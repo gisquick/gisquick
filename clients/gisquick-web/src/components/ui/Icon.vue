@@ -1,11 +1,4 @@
 <script>
-const svgIcons = require.context('../../icons', false, /.*\.svg$/)
-
-function requireAll (requireContext) {
-  return requireContext.keys().map(requireContext)
-}
-requireAll(svgIcons)
-
 export default {
   functional: true,
   props: {

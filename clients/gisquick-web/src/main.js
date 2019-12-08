@@ -2,27 +2,29 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import Vuetify from 'vuetify'
-import 'url-polyfill'
+import 'material-icons/iconfont/material-icons.scss'
+import 'vuetify/dist/vuetify.min.css'
 import PortalVue from 'portal-vue'
 import GetTextPlugin from 'vue-gettext'
 import { ReactiveRefs } from 'vue-reactive-refs'
+import 'url-polyfill'
 
 import http from './client'
 import store from './store/index'
 import translations from './lang/translations.json'
 import App from './App'
-import Icon from './ui/Icon'
-import ScrollArea from './ui/ScrollArea'
-import TextSeparator from './ui/TextSeparator'
-import Collapsible from './transitions/Collapsible'
-import CollapseTransition from './transitions/CollapseTransition'
-import SwitchTransition from './transitions/SwitchTransition'
-import CollapseWidth from './transitions/CollapseWidth'
-import SlideTop from './transitions/SlideTop'
+import { Icon, ScrollArea, TextSeparator } from './components/ui'
+import {
+  Collapsible,
+  CollapseTransition,
+  CollapseWidth,
+  SwitchTransition,
+  SlideTop
+} from './components/transitions'
 
-import 'material-icons/iconfont/material-icons.scss'
-import 'vuetify/dist/vuetify.min.css'
-import './common.scss'
+// import all icons
+const svgIcons = require.context('../icons', false, /.*\.svg$/)
+svgIcons.keys().map(svgIcons)
 
 Vue.config.productionTip = false
 

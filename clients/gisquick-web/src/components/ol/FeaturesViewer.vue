@@ -1,7 +1,7 @@
 <script>
 import VectorSource from 'ol/source/vector'
 import VectorLayer from 'ol/layer/vector'
-import { createStyle } from '@/map/styles'
+import { simpleStyle } from '@/map/styles'
 
 export default {
   props: {
@@ -13,7 +13,10 @@ export default {
   },
   computed: {
     style () {
-      return createStyle(this.color)
+      return simpleStyle({
+        fill: this.color.concat(0.3),
+        stroke: this.color.concat(0.9)
+      })
     }
   },
   created () {

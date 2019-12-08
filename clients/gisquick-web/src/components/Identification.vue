@@ -75,10 +75,14 @@ import FeaturesTable from './FeaturesTable'
 import InfoPanel from './InfoPanel'
 import PointMarker from './ol/PointMarker'
 import FeaturesViewer from './ol/FeaturesViewer'
-import { createStyle } from '@/map/styles'
+import { simpleStyle } from '@/map/styles'
 import { getFeaturesQuery } from '@/map/featureinfo.js'
 
-const SelectedStyle = createStyle([3, 169, 244])
+const SelectedStyle = simpleStyle({
+  fill: [3, 169, 244, 0.4],
+  stroke: [3, 169, 244, 0.9],
+  strokeWidth: 3
+})
 
 export default {
   name: 'identification',

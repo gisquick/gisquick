@@ -128,7 +128,7 @@ import TabsHeader from './TabsHeader'
 import AttributeFilter from './AttributeFilter'
 import FeaturesViewer from './ol/FeaturesViewer'
 import InfoPanel from './InfoPanel'
-import { createStyle } from '@/map/styles'
+import { simpleStyle } from '@/map/styles'
 import { getFeaturesQuery } from '@/map/featureinfo.js'
 
 function iconHeader (key) {
@@ -142,7 +142,11 @@ function iconHeader (key) {
   }
 }
 
-const SelectedStyle = createStyle([3, 169, 244])
+const SelectedStyle = simpleStyle({
+  fill: [3, 169, 244, 0.4],
+  stroke: [3, 169, 244, 0.9],
+  strokeWidth: 3
+})
 
 export default {
   name: 'attribute-table',

@@ -63,7 +63,7 @@ import { mapState, mapGetters } from 'vuex'
 import Extent from 'ol/extent'
 import 'ol/ol.css'
 
-import { createMap } from '../map-builder'
+import { createMap } from '@/map/map-builder'
 import ContentPanel from './content-panel/ContentPanel'
 import BottomToolbar from './BottomToolbar'
 import MapAttributions from './MapAttributions'
@@ -107,7 +107,7 @@ export default {
       legendUrl: this.project.config.legend_url,
       mapcacheUrl: this.project.config.mapcache_url
     }
-    this.map = createMap(mapConfig, { zoom: false, attribution: false })
+    const map = createMap(mapConfig, { zoom: false, attribution: false })
     // this.setVisibleLayers(this.visibleLayers)
 
     this.$root.$panel = {
@@ -115,13 +115,13 @@ export default {
         this.statusBarVisible = visible
       }
     }
-    Vue.prototype.$map = this.map
+    Vue.prototype.$map = map
     if (process.env.NODE_ENV === 'development') {
-      window.olmap = this.map
+      window.olmap = map
     }
   },
   mounted () {
-    const map = this.map
+    const map = this.$map
     map.setTarget(this.$refs.mapEl)
 
     // extra map functions
@@ -156,17 +156,17 @@ export default {
       }
     }
     const extent = this.project.config.project_extent
-    const padding = this.map.ext.visibleAreaPadding()
-    this.map.getView().fit(extent, { padding })
+    const padding = map.ext.visibleAreaPadding()
+    map.getView().fit(extent, { padding })
   },
   methods: {
     setVisibleBaseLayer (layer) {
-      this.map.getLayers().getArray()
+      this.$map.getLayers().getArray()
         .filter(l => l.get('type') === 'baselayer')
         .forEach(l => l.setVisible(l.get('name') === layer.name))
     },
     setVisibleLayers (layers) {
-      this.map.overlay.getSource().setVisibleLayers(layers.map(l => l.name))
+      this.$map.overlay.getSource().setVisibleLayers(layers.map(l => l.name))
     }
   }
 }

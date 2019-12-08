@@ -126,9 +126,10 @@ import Polygon from 'ol/geom/polygon'
 import GeoJSON from 'ol/format/geojson'
 import TabsHeader from './TabsHeader'
 import AttributeFilter from './AttributeFilter'
-import FeaturesViewer, { createStyle } from './ol/FeaturesViewer'
+import FeaturesViewer from './ol/FeaturesViewer'
 import InfoPanel from './InfoPanel'
-import { getFeaturesQuery } from '@/featureinfo.js'
+import { createStyle } from '@/map/styles'
+import { getFeaturesQuery } from '@/map/featureinfo.js'
 
 function iconHeader (key) {
   return {

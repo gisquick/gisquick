@@ -74,8 +74,9 @@ import Feature from 'ol/feature'
 import FeaturesTable from './FeaturesTable'
 import InfoPanel from './InfoPanel'
 import PointMarker from './ol/PointMarker'
-import FeaturesViewer, { createStyle } from './ol/FeaturesViewer'
-import { getFeaturesQuery } from '@/featureinfo.js'
+import FeaturesViewer from './ol/FeaturesViewer'
+import { createStyle } from '@/map/styles'
+import { getFeaturesQuery } from '@/map/featureinfo.js'
 
 const SelectedStyle = createStyle([3, 169, 244])
 

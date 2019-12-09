@@ -63,11 +63,10 @@
         @keydown.delete="deleteSelectedNodes"
       />
       <modify-interaction
-        v-if="selectedNodes.length === 0"
+        v-if="selectedNodes.length < 2"
         key="nodes-modify"
-        :features="selected"
+        :features="nodesModifyFeatures"
         :ol-style="editStyle"
-        @modifystart="nodeModifyStart"
         @modifyend="nodeModifyEnd"
       />
     </template>
@@ -91,6 +90,9 @@ function LineStringNodesHandler (geom) {
   const nodes = points.map((p, pi) => new Feature({ geometry: new Point(p), index: pi }))
   return {
     nodes,
+    isValid () {
+      return this.nodes.length === geom.flatCoordinates.length / geom.stride
+    },
     deleteNodes (removeNodes) {
       const points = geom.getCoordinates()
       const indexes = removeNodes.map(f => f.get('index')).sort()
@@ -113,6 +115,9 @@ function PolygonNodesHandler (geom) {
   })
   return {
     nodes,
+    isValid () {
+      return this.nodes.length === (geom.flatCoordinates.length / geom.stride) - geom.getLinearRingCount()
+    },
     deleteNodes (removeNodes) {
       const newNodes = []
       const coords = geom.getCoordinates()
@@ -204,6 +209,9 @@ export default {
     },
     nodeFeature () {
       return this.nodeToolEnabled && !this.nodeToolDisabled && this.selected[0]
+    },
+    nodesModifyFeatures () {
+      return this.selected.concat(this.nodesFeatures)
     }
   },
   watch: {
@@ -272,23 +280,8 @@ export default {
       this.selectedNodes = ShallowArray()
       this.geomModified = true
     },
-    nodeModifyStart (e) {
-      const opts = {
-        layerFilter: l => l === this.layers.nodes,
-        hitTolerance: 10
-      }
-      const nodes = this.$map.getFeaturesAtPixel(e.mapBrowserEvent.pixel, opts)
-      const node = nodes && nodes[0]
-      this.editedNodeFeature = node
-      if (node) {
-        node.setGeometry(null) // hide edited node during movement
-      }
-    },
     nodeModifyEnd (e) {
-      const coord = e.mapBrowserEvent.coordinate
-      if (this.editedNodeFeature) {
-        this.editedNodeFeature.setGeometry(new Point(coord))
-      } else {
+      if (!this.nodesHandler.isValid()) {
         this.nodesHandler = NodesHandler(this.nodeFeature)
         this.nodesFeatures = ShallowArray(this.nodesHandler.nodes)
       }

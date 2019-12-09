@@ -107,6 +107,7 @@ function PolygonNodesHandler (geom) {
   const nodes = []
   geom.getCoordinates().forEach((ringCoords, ri) => {
     const rNodes = ringCoords.map((p, pi) => new Feature({ geometry: new Point(p), ring: ri, index: pi }))
+    rNodes.pop() // last point is the same as first one, so we don't need node for it
     ringsMap[ri] = rNodes
     nodes.push(...rNodes)
   })
@@ -122,6 +123,11 @@ function PolygonNodesHandler (geom) {
         ringsMap[ri] = ringsMap[ri].filter(f => !ringRemoveNodes.includes(f))
         ringsMap[ri].forEach((f, i) => f.set('index', i))
         newNodes.push(...ringsMap[ri])
+        // when first point was deleted, update last coord to the new first point
+        if (indexes[0] === 0) {
+          coords[ri].pop()
+          coords[ri].push(coords[ri][0])
+        }
       })
       geom.setCoordinates(coords)
       this.nodes = newNodes
@@ -157,7 +163,7 @@ export default {
       geomModified: false,
       layers: ShallowObj({
         geometry: null,
-        nodes: null,
+        nodes: null
       })
     }
   },

@@ -31,37 +31,61 @@
 
     <div class="content-layout">
       <scroll-area class="pb-2">
-        <div
-          v-if="customComponent"
-          :is="customComponent"
-          :feature="feature"
-          :layer="layer"
-        />
-        <generic-infopanel
-          v-else
-          :layer="layer"
-          :feature="feature"
-          class="mx-2 mt-2"
-        />
+        <switch-transition class="mt-2">
+          <feature-editor
+            v-if="editMode"
+            :feature="feature"
+            :layer="layer"
+          >
+            <template v-slot:form="{ fields }">
+              <generic-edit-form
+                :layer="layer"
+                :fields="fields"
+              />
+            </template>
+          </feature-editor>
+          <component
+            v-else-if="customComponent"
+            :is="customComponent"
+            :feature="feature"
+            :layer="layer"
+          />
+          <generic-infopanel
+            v-else
+            :layer="layer"
+            :feature="feature"
+            class="mx-2"
+          />
+        </switch-transition>
       </scroll-area>
 
+      <div class="bottom-area"/>
       <v-layout class="toolbar tools pl-1 align-end">
         <v-btn @click="zoomToFeature" dark icon small>
           <icon name="zoom-to"/>
         </v-btn>
+        <v-btn
+          v-if="layer.editable"
+          :class="{'primary--text': editMode}"
+          @click="editMode = !editMode"
+          icon dark
+        >
+          <v-icon>edit</v-icon>
+        </v-btn>
       </v-layout>
+      <portal-target
+        name="infopanel-tool"
+        class="toolbar left"
+        transition="collapse-transition"
+      />
     </div>
-
-    <portal-target
-      name="infopanel-tool"
-      class="toolbar left"
-      transition="collapse-transition"
-    />
   </v-layout>
 </template>
 
 <script>
 import GenericInfopanel from '@/components/GenericInfopanel'
+import FeatureEditor from '@/components/FeatureEditor'
+import GenericEditForm from '@/components/GenericEditForm'
 
 const cache = {}
 function externalComponent (url) {
@@ -87,10 +111,15 @@ function externalComponent (url) {
 
 export default {
   name: 'info-panel',
-  components: { GenericInfopanel },
+  components: { GenericInfopanel, GenericEditForm, FeatureEditor },
   props: {
     data: Array,
     selected: Object
+  },
+  data () {
+    return {
+      editMode: false
+    }
   },
   computed: {
     layersOptions () {
@@ -160,8 +189,8 @@ export default {
   overflow: hidden;
 
   .toolbar {
+    background-color: #ddd;
     &.top {
-      background-color: #ddd;
       border-bottom: 1px solid #aaa;
     }
     &.tools {
@@ -170,13 +199,36 @@ export default {
       justify-self: end;
       border-top-left-radius: 12px;
       border-bottom-left-radius: 12px;
+
+      grid-row: 1 / 3;
+      bottom: 2px;
+      margin-top: 1px;
       margin-bottom: 2px;
+      overflow: visible;
       background-color: rgba(#555, 0.5);
+      z-index: 1;
+    }
+    &.left {
+      justify-self: start;
+      grid-row: 2 / 3;
+      background-color: transparent;
+      > /deep/ div {
+        background-color: #eee;
+        border-top-right-radius: 6px;
+        border-bottom-right-radius: 6px;
+        border: 1px solid #ccc;
+      }
+      .icon, .v-icon {
+        opacity: 0.8;
+      }
     }
     .v-btn {
       margin: 0;
       height: 24px;
     }
+    // .v-divider--vertical {
+    //   height: 20px;
+    // }
     .icon {
       height: 18px;
       width: 18px;
@@ -184,12 +236,27 @@ export default {
   }
   .content-layout {
     overflow: hidden;
+    position: relative;
     display: grid;
-    grid-template-rows: 1fr;
+    grid-template-rows: 1fr minmax(0, auto);
     > * {
       grid-row: 1 / 2;
       grid-column: 1 / 2;
     }
   }
+  // .bottom-area {
+  //   grid-row: 2 / 3;
+  //   grid-column: 1 / 2;
+  //   background-color: #eee;
+  //   width: 100%;
+  //   height: 100%;
+  //   &:after {
+  //     content: "";
+  //     height: 1px;
+  //     width: 100%;
+  //     position: absolute;
+  //     background-color: #ccc;
+  //   }
+  // }
 }
 </style>

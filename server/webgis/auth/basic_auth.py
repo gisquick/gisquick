@@ -19,17 +19,14 @@ def is_authenticated(request):
         boolean
     """
     auth_string = request.META.get('HTTP_AUTHORIZATION', None)
-
     if not auth_string:
         return False
 
     (authmeth, auth) = auth_string.split(" ", 1)
-
     if not authmeth.lower() == 'basic':
         return False
 
     auth = base64.b64decode(auth.strip()).decode('utf-8')
-
     (username, password) = auth.split(':', 1)
 
     request.user = authenticate(username=username, password=password) or AnonymousUser()

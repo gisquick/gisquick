@@ -7,9 +7,9 @@ from django.conf import settings
 from django.core.management.base import BaseCommand
 
 from webgis.mapcache import Disk
-from webgis.viewer.models import Project_registry
-from webgis.viewer.metadata_parser import MetadataParser
-from webgis.viewer.views.project_utils import get_last_project_version
+from webgis.app.models import Project_registry
+from webgis.map.metadata_parser import MetadataParser
+from webgis.map.project import get_last_project_version
 
 
 class Command(BaseCommand):

@@ -8,20 +8,16 @@ import datetime
 
 from django.conf import settings
 from django.core.cache import cache
-from django.shortcuts import render
 from django.http import HttpResponse, Http404
-from django.contrib.auth import login
-from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext as _
 from django.utils import timezone
 
 import webgis
-from webgis.viewer import forms
-from webgis.viewer import models
-from webgis.viewer.metadata_parser import MetadataParser
+from webgis.map import forms
+from webgis.app.models import Project_registry
+from webgis.map.metadata_parser import MetadataParser
+from webgis.map.reverse import project_ows_url, project_tile_url, project_legend_url
 from webgis.libs.utils import set_query_parameters
-from webgis.viewer.views.reverse import project_ows_url, project_tile_url, \
-    project_legend_url, project_vectorlayers_url, map_url
 
 
 OSM_LAYER = {
@@ -231,7 +227,7 @@ def get_project(request):
     allow_anonymous = metadata.authentication == 'all' if project else True
     owner_authentication = metadata.authentication == 'owner' if project else False
 
-    if not allow_anonymous and not request.user.is_authenticated():
+    if not allow_anonymous and not request.user.is_authenticated:
         project_data = _project_basic_data(metadata)
         project_data['status'] = 401
         return project_data
@@ -291,8 +287,6 @@ def get_project(request):
             context['legend_url'] = project_legend_url(project, metadata.publish_date_unix)
         else:
             context['legend_url'] = ows_url
-        if metadata.vector_layers:
-            context['vectorlayers_url'] = project_vectorlayers_url(ows_project)
 
         context.update({
             'project': project,
@@ -301,7 +295,7 @@ def get_project(request):
             'wms_url': urllib.parse.unquote(ows_url),
             'project_extent': metadata.extent,
             'zoom_extent': form.cleaned_data['EXTENT'] or metadata.zoom_extent,
-            'print_composers': metadata.composer_templates if request.user.is_authenticated() else None,
+            'print_composers': metadata.composer_templates if request.user.is_authenticated else None,
             'info_panel': metadata.info_panel,
             'root_title': metadata.title,
             'author': metadata.contact_person,
@@ -341,9 +335,9 @@ def get_project(request):
             'last_display': timezone.now()
         }
         try:
-            rows = models.Project_registry.objects.filter(project=project).update(**registry_info)
+            rows = Project_registry.objects.filter(project=project).update(**registry_info)
             if not rows:
-                models.Project_registry(project=project, **registry_info).save()
+                Project_registry(project=project, **registry_info).save()
         except:
             raise
     else:
@@ -413,8 +407,6 @@ def get_user_projects(request, username):
                 metadata_filename = clean_project_name(ows_project_filename) + '.meta'
                 try:
                     metadata = MetadataParser(metadata_filename)
-                    url = set_query_parameters(map_url(), {'PROJECT': project})
-                    ows_url = project_ows_url(ows_project)
                     authentication = metadata.authentication
                     # backward compatibility with older version
                     if type(authentication) is dict:
@@ -426,9 +418,9 @@ def get_user_projects(request, username):
 
                     projects.append({
                         'title': metadata.title,
-                        'url': url,
                         'project': project,
-                        'ows_url': ows_url,
+                        'url': set_query_parameters('/', {'PROJECT': project}),
+                        'ows_url': project_ows_url(ows_project),
                         'cache': metadata.use_mapcache,
                         'authentication': authentication,
                         'publication_time_unix': int(metadata.publish_date_unix),
@@ -441,24 +433,3 @@ def get_user_projects(request, username):
                     pass
     return projects
 
-
-def get_user_data(user):
-    if user.is_authenticated():
-        return {
-            'username': user.username,
-            'first_name': user.first_name,
-            'last_name': user.last_name,
-            'full_name': user.get_full_name(),
-            'email': user.email,
-            'is_guest': False,
-            'is_superuser': user.is_superuser
-        }
-    return {
-        'username': 'guest',
-        'first_name': '',
-        'last_name': '',
-        'full_name': 'guest',
-        'email': '',
-        'is_guest': True,
-        'is_superuser': False
-    }

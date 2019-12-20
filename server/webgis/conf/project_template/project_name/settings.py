@@ -5,7 +5,7 @@ Django settings for Gisquick.
 import os
 import logging
 
-logger = logging.getLogger('django')
+logger = logging.getLogger('gisquick')
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
@@ -33,10 +33,6 @@ GISQUICK_MAPSERVER_URL = 'http://localhost:90/cgi-bin/qgis_mapserv.fcgi'
 GISQUICK_HOMEPAGE = 'http://gisquick.org'
 GISQUICK_DOCUMENTATION_PAGE = 'http://gisquick.readthedocs.io/en/latest/user-manual/user-interface.html'
 
-# Optional limit for maximal uploaded project files
-# Integer in bytes or string number in megabytes (50M)
-# GISQUICK_UPLOAD_MAX_SIZE = '10M'
-
 
 ### INTERNATIONALIZATION
 LANGUAGES = (
@@ -60,7 +56,7 @@ MEDIA_ROOT =  os.path.join(BASE_DIR, 'media/')
 
 
 ### SYSTEM CONFIGURATION
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.locale.LocaleMiddleware',
@@ -81,11 +77,9 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.staticfiles',
+    'django.contrib.messages',
     'django.contrib.admin',
-    'webgis.mapcache',
-    'webgis.viewer',
-    'webgis.userpage',
-    'webgis.mobile'
+    'webgis.app'
 )
 
 TEMPLATES = [
@@ -113,7 +107,7 @@ TEMPLATES = [
 ROOT_URLCONF = '{{ project_name }}.urls'
 WSGI_APPLICATION = '{{ project_name }}.wsgi.application'
 
-AUTH_USER_MODEL = 'viewer.GisquickUser'
+AUTH_USER_MODEL = 'app.User'
 
 
 ### CUSTOM SETTINGS
@@ -139,8 +133,7 @@ for k, v in os.environ.items():
                         v = int(v)
                 except ValueError:
                     # let it be a string
-                    if k != 'DJANGO_SETTINGS_MODULE':
-                        logger.warn('Warning: {0} - Invalid number value, converting to string'.format(k))
+                    pass
         key = k.split('_', 1)[1]
         globals()[key] = v
 

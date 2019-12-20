@@ -1,31 +1,21 @@
 import hashlib
 
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 from webgis.libs.utils import set_query_parameters
 
 
-def map_url():
-    return reverse('viewer:map')
-
 def project_ows_url(ows_project):
     return set_query_parameters(
-        reverse('viewer:ows'),
+        reverse('map:ows'),
         {'MAP': ows_project+'.qgs'}
-    )
-
-
-def project_vectorlayers_url(ows_project):
-    return set_query_parameters(
-        reverse('viewer:vectorlayers'),
-        {'PROJECT': ows_project}
     )
 
 
 def project_tile_url(project, timestamp):
     project_hash = hashlib.md5(project.encode('utf-8')).hexdigest()
     mapcache_url = reverse(
-        'viewer:tile',
+        'map:tile',
         kwargs={
             'project_hash': project_hash,
             'publish': timestamp,
@@ -42,7 +32,7 @@ def project_tile_url(project, timestamp):
 def project_legend_url(project, timestamp):
     project_hash = hashlib.md5(project.encode('utf-8')).hexdigest()
     legend_url = reverse(
-        'viewer:legend',
+        'map:legend',
         kwargs={
             'project_hash': project_hash,
             'publish': timestamp,

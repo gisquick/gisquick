@@ -6,7 +6,7 @@ from owslib.fes import PropertyIsEqualTo, And, Or, PropertyIsLike,\
         PropertyIsLessThanOrEqualTo, PropertyIsGreaterThanOrEqualTo
 
 from webgis.libs.utils import set_query_parameters
-from webgis.viewer.wfsfilter import webgisfilter, get_filter_fes
+from webgis.map.wfsfilter import webgisfilter, get_filter_fes
 
 
 class WfsFilterCase(TestCase):

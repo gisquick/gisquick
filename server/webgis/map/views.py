@@ -6,19 +6,19 @@ import contextlib
 import hashlib
 
 from django.conf import settings
-from django.http import HttpResponse, Http404
-from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse, JsonResponse, Http404
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.vary import vary_on_headers
 from django.core.exceptions import PermissionDenied
 
-from webgis.viewer.wfsfilter import webgisfilter
+from webgis.map.wfsfilter import webgisfilter
 from webgis.libs.utils import set_query_parameters
 from webgis.mapcache import get_tile_response, get_legendgraphic_response, \
     WmsLayer, TileNotFoundException
-from webgis.viewer.views.project_utils import clean_project_name, \
-    get_project_info, get_last_project_version
-from webgis.libs.auth import basic
+from webgis.map.project import clean_project_name, get_project, \
+    get_project_info, get_last_project_version, InvalidProjectException
+from webgis.auth import basic_auth
+from webgis.auth.decorators import login_required
 
 
 def abs_project_path(project):
@@ -28,11 +28,19 @@ def check_project_access(request, project, project_auth):
     if project_auth == "all":
         return True
     elif project_auth == "authenticated":
-        return request.user.is_authenticated()
+        return request.user.is_authenticated
     elif project_auth == "owner":
         project_owner = project.split('/', 1)[0]
-        return request.user.is_authenticated() and (project_owner == request.user.username or request.user.is_superuser)
+        return request.user.is_authenticated and (project_owner == request.user.username or request.user.is_superuser)
     return False
+
+
+def map_project(request):
+    try:
+        project_data = get_project(request)
+        return JsonResponse(project_data, status=project_data['status'])
+    except InvalidProjectException:
+        raise Http404
 
 
 @csrf_exempt
@@ -44,10 +52,10 @@ def ows(request):
     project, timestamp, *_ = ows_project.rsplit("_", 1) + [""]
     project_hash = hashlib.md5(project.encode('utf-8')).hexdigest()
     pi = get_project_info(project_hash, timestamp, project=ows_project)
-    if not request.user.is_authenticated():
-        basic.is_authenticated(request)
+    if not request.user.is_authenticated:
+        basic_auth.is_authenticated(request)
     if not check_project_access(request, project, pi['authentication']):
-        if not request.user.is_authenticated():
+        if not request.user.is_authenticated:
             response = HttpResponse('Authentication required', status=401)
             response['WWW-Authenticate'] = 'Basic realm=OWS API'
             return response
@@ -149,7 +157,6 @@ def legend(request, project_hash, publish, layer_hash=None, zoom=None, format=No
 
 
 @csrf_exempt
-@login_required
 def filterdata(request):
     """Handle filter requrest - using OGC WFS service
 
@@ -169,6 +176,7 @@ def filterdata(request):
 
     sent as HTTP POST request
     """
+    # TODO: use check_project_access
     if request.method == 'POST':
         project = request.GET['PROJECT']
         project = get_last_project_version(project) + '.qgs'

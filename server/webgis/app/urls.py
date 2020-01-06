@@ -1,9 +1,11 @@
-from django.conf.urls import url
+from django.urls import path, re_path
 
 from . import views
 
+app_name = "accounts"
+
 urlpatterns = [
-    url(r"^app/$", views.app, name="app"),
-    url(r"^projects/$", views.get_projects, name="get_projects"),
-    url(r"^projects/(?P<username>[^/]+)/$", views.user_projects, name="user_projects")
+    path("app/", views.app),
+    re_path(r"^projects/$", views.get_projects),
+    re_path(r"^projects/(?P<username>[^/]+)/$", views.user_projects)
 ]

@@ -3,35 +3,11 @@ Django settings for Gisquick.
 """
 
 import os
-import logging
 
-logger = logging.getLogger('gisquick')
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+ROOT_URLCONF = '{{ project_name }}.urls'
+WSGI_APPLICATION = '{{ project_name }}.wsgi.application'
 
-
-### DEBUG
-DEBUG = True
-
-
-### DATABASE
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'gisquick.sqlite3'),
-    }
-}
-
-
-### SECRET KEY
-SECRET_KEY = '{{ secret_key }}'
-
-
-### GISQUICK CONFIGURATION
-
-GISQUICK_PROJECT_ROOT = '/tmp/gislab-web'
-GISQUICK_MAPSERVER_URL = 'http://localhost:90/cgi-bin/qgis_mapserv.fcgi'
-GISQUICK_HOMEPAGE = 'http://gisquick.org'
-GISQUICK_DOCUMENTATION_PAGE = 'http://gisquick.readthedocs.io/en/latest/user-manual/user-interface.html'
+AUTH_USER_MODEL = 'app.User'
 
 
 ### INTERNATIONALIZATION
@@ -43,16 +19,6 @@ TIME_ZONE = 'Europe/Bratislava'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
-
-
-### OTHER
-ALLOWED_HOSTS = ['*']
-
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT =  os.path.join(BASE_DIR, 'media/')
 
 
 ### SYSTEM CONFIGURATION
@@ -67,11 +33,7 @@ MIDDLEWARE = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
 )
 
-# enable CORS requests
-CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOW_CREDENTIALS = True
-
-INSTALLED_APPS = (
+INSTALLED_APPS = [
     'corsheaders',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -80,7 +42,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.admin',
     'webgis.app'
-)
+]
 
 TEMPLATES = [
     {
@@ -104,37 +66,50 @@ TEMPLATES = [
     },
 ]
 
-ROOT_URLCONF = '{{ project_name }}.urls'
-WSGI_APPLICATION = '{{ project_name }}.wsgi.application'
+### OTHER
+ALLOWED_HOSTS = ['*']
 
-AUTH_USER_MODEL = 'app.User'
+# enable CORS requests
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
 
+GISQUICK_HOMEPAGE = 'http://gisquick.org'
+GISQUICK_DOCUMENTATION_PAGE = 'http://gisquick.readthedocs.io/en/latest/user-manual/user-interface.html'
+GISQUICK_ACCOUNTS_ENABLED = False
+GISQUICK_SQLITE_DB = None
 
 ### CUSTOM SETTINGS
-try:
-    from {{ project_name }}.settings_custom import *
-except ImportError:
-    pass
+from {{ project_name }}.custom import *
 
 
-### ENVIRONMENT VARIABLES SETTINGS
+### LOAD SETTINGS FROM ENVIRONMENT VARIABLES
 for k, v in os.environ.items():
-    if k.startswith("DJANGO_"):
+    if k.startswith("DJANGO_") or k.startswith("GISQUICK_"):
         if v:
-            if v[0] in ("'", '"'):
-                v = v[1:-1]
-            else:
-                try:
-                    if v in ('True', 'False'):
-                        v = True if v == 'True' else False
-                    elif '.' in v:
-                        v = float(v)
-                    else:
-                        v = int(v)
-                except ValueError:
-                    # let it be a string
-                    pass
-        key = k.split('_', 1)[1]
-        globals()[key] = v
+            try:
+                if v in ('True', 'False'):
+                    v = True if v == 'True' else False
+                elif '.' in v:
+                    v = float(v)
+                else:
+                    v = int(v)
+            except ValueError:
+                # let it be a string
+                pass
+        if k.startswith("DJANGO_"):
+            k = k.split('_', 1)[1]
+        globals()[k] = v
 
-# vim: set ts=8 sts=4 sw=4 et:
+
+### After settings
+if GISQUICK_ACCOUNTS_ENABLED:
+    INSTALLED_APPS += ['webgis.accounts']
+
+### DATABASE
+if GISQUICK_SQLITE_DB:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': GISQUICK_SQLITE_DB,
+        }
+    }

@@ -13,6 +13,7 @@ import http from './client'
 import store from './store/index'
 import translations from './lang/translations.json'
 import App from './App'
+import ServerError from './ServerError'
 import { Icon, ScrollArea, TextSeparator } from './components/ui'
 import {
   Collapsible,
@@ -45,23 +46,9 @@ Vue.component('slide-top-transition', SlideTop)
 
 Vue.prototype.$http = http
 
-if (process.env.NODE_ENV === 'development') {
-  var initialize = new Promise((resolve, reject) => {
-    http.get('/dev/map/' + location.search)
-      .then(resp => resolve(resp.data))
-      .catch(reject)
-  })
-} else {
-  initialize = new Promise(resolve => {
-    resolve(JSON.parse(document.getElementById('app-data').textContent))
-  })
-}
-
-initialize.then(data => {
+function createApp (data) {
   store.commit('app', data.app)
   store.commit('user', data.user)
-  store.commit('project', data.project)
-  document.title = data.project.root_title
   const vm = new Vue({
     store,
     beforeCreate () {
@@ -75,4 +62,20 @@ initialize.then(data => {
     vm.$language.current = data.app.lang
   }
   vm.$mount('#app')
-})
+}
+
+function errorPage (err) {
+  // const status = err && err.response && err.response.status
+  // let msg = 'Failed to initialize application'
+  // if (status === 502) {
+  //   msg = 'Server is currently not online, please try later.'
+  // }
+  const vm = new Vue({
+    render: h => h(ServerError)
+  })
+  vm.$mount('#app')
+}
+
+http.get('/api/app/')
+  .then(resp => createApp(resp.data))
+  .catch(err => errorPage(err))

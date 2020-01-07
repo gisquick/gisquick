@@ -50,16 +50,18 @@
       :value="showLogin"
       :login-required="projectStatus !== 200"
       :permission-denied="projectStatus === 403"
-      :password-reset="app.reset_password_url"
+      :password-reset-url="app.reset_password_url"
       @login="onLogin"
       @close="showLogin = false"
     />
+    <project-not-found v-if="projectStatus === 404"/>
     <projects-dialog v-if="showProjects" :projects="projects"/>
   </v-app>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import ProjectNotFound from './ProjectNotFound'
 import MapApp from './components/Map'
 import LoginDialog from './components/LoginDialog'
 import ProjectsDialog from './components/SelectProjectDialog'
@@ -68,7 +70,7 @@ import FullscreenMixin from './mixins/Fullscreen'
 export default {
   name: 'app',
   mixins: [FullscreenMixin],
-  components: { MapApp, LoginDialog, ProjectsDialog },
+  components: { ProjectNotFound, MapApp, LoginDialog, ProjectsDialog },
   data () {
     return {
       showProjects: false,
@@ -81,10 +83,13 @@ export default {
       return this.project && this.project.config.status
     }
   },
+  created () {
+    this.loadProject()
+  },
   mounted () {
     if (process.env.NODE_ENV === 'development' && !location.search) {
       // Show list of user projects
-      this.$http.get('/projects.json')
+      this.$http.get('/api/projects/')
         .then((resp) => {
           this.projects = resp.data.projects
           this.showProjects = true
@@ -96,10 +101,10 @@ export default {
     }
   },
   watch: {
-    project: {
+    projectStatus: {
       immediate: true,
-      handler (project) {
-        if (!project || project.config.status !== 200) {
+      handler (status) {
+        if (status === 401 || status === 403) {
           this.showLogin = true
         }
       }
@@ -110,16 +115,12 @@ export default {
       let project = new URLSearchParams(location.search).get('PROJECT')
       if (project) {
         this.$http.project(project)
-          .then(resp => {
-            this.$store.commit('project', resp.data)
-            document.title = resp.data.root_title
+          .then(data => {
+            this.$store.commit('project', data)
+            document.title = data.root_title
           })
-          .catch(err => {
-            console.error(err)
-            const project = err && err.response && err.response.data
-            if (project) {
-              this.$store.commit('project', project)
-            }
+          .catch(data => {
+            this.$store.commit('project', data)
           })
       }
     },

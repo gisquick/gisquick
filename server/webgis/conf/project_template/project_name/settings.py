@@ -105,11 +105,3 @@ for k, v in os.environ.items():
 if GISQUICK_ACCOUNTS_ENABLED:
     INSTALLED_APPS += ['webgis.accounts']
 
-### DATABASE
-if GISQUICK_SQLITE_DB:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': GISQUICK_SQLITE_DB,
-        }
-    }

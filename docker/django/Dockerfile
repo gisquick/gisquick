@@ -7,9 +7,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-pip \
     sqlite3 \
     python3-psycopg2 \
-    gdal-bin \
-    proj-bin \
-    postgresql-client \
     && rm -rf /var/lib/apt/lists/*
 
 RUN pip3 install --no-cache-dir 'gunicorn>=19.9,<20.0' && \

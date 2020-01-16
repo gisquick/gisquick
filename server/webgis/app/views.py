@@ -16,23 +16,12 @@ def app(request):
         'app': {
             'lang': settings.LANGUAGE_CODE,
             'version': webgis.VERSION,
-            'reset_password_url': getattr(settings, 'RESET_PASSWORD_URL', '')
+            'reset_password_url': '/api/accounts/reset_password/' if settings.GISQUICK_ACCOUNTS_ENABLED else ''
         },
         'user': get_user_data(request.user)
     }
     return JsonResponse(data)
 
-def map_app(request):
-    data = {
-        'app': {
-            'lang': settings.LANGUAGE_CODE,
-            'version': webgis.VERSION,
-            'reset_password_url': getattr(settings, 'RESET_PASSWORD_URL', '')
-        },
-        'user': get_user_data(request.user),
-        'project': get_project(request)
-    }
-    return JsonResponse(data)
 
 @login_required
 def get_projects(request):

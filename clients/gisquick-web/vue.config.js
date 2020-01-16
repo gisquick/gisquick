@@ -1,17 +1,13 @@
+const CompressionPlugin = require('compression-webpack-plugin')
+
 module.exports = {
-  outputDir: 'dist/static',
-  publicPath: process.env.NODE_ENV === 'production' ? '/static/' : '/',
-  pages: process.env.NODE_ENV === 'production'
-    ? {
-      index: {
-        entry: 'src/main.js',
-        template: 'index-prod.html',
-        filename: '../templates/index.html'
-      }
-    }
-    : undefined,
+  publicPath: process.env.NODE_ENV === 'production' ? '/map/' : '/',
+  assetsDir: 'static',
   css: {
     extract: process.env.NODE_ENV === 'production' && process.env.CSS_EXTRACT !== 'False'
+  },
+  configureWebpack: {
+    plugins: [new CompressionPlugin()]
   },
   chainWebpack: config => {
     const svgRule = config.module.rule('svg')
@@ -36,7 +32,7 @@ module.exports = {
       .use('file-loader')
       .loader('file-loader')
       .options({
-        name: 'img/[name].[hash:8].[ext]'
+        name: 'static/img/[name].[hash:8].[ext]'
       })
       .end()
       .end()
@@ -44,8 +40,8 @@ module.exports = {
 
   devServer: {
     proxy: {
-      '^/dev|^/login|^/logout|^/project.json|^/projects.json|^/ows|^/tile|^/legend|^/filter': {
-        target: 'http://localhost:8000'
+      '^/api': {
+        target: 'http://localhost'
       }
     }
   }

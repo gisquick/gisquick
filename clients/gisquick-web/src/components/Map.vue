@@ -297,8 +297,14 @@ export default {
     overflow: hidden;
     justify-content: flex-end;
   }
-  .map-overlay, .visible-container {
+  .visible-container {
     grid-column: 2 / 3;
+    grid-row: 1 / 2;
+    min-height: 0;
+    max-height: 100%;
+  }
+  .map-overlay {
+    grid-column: 2 / 4;
     grid-row: 1 / 2;
     min-height: 0;
     max-height: 100%;

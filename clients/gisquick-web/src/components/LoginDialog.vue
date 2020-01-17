@@ -11,8 +11,6 @@
       <v-card dark color="transparent">
         <v-layout column class="header">
           <img class="logo" src="../assets/login_text_logo.svg">
-          <!-- <h4>You're entering project</h4> -->
-          <!-- <h3>Project</h3> -->
           <h3><translate>Sign In to Continue</translate></h3>
         </v-layout>
 
@@ -31,31 +29,63 @@
           >
             {{ authenticationError }}
           </p>
-          <v-form ref="form" v-model="valid" :lazy-validation="true">
+          <form v-if="forgotPassword" @submit.prevent>
+            <div
+              class="note"
+              :class="{'red--text': passwordResetError}"
+            >
+              <v-icon v-if="passwordResetError" class="red--text">error</v-icon>
+              <v-icon v-if="passwordResetSuccess">check_circle</v-icon>
+              <span>{{ passwordResetText }}</span>
+            </div>
             <v-text-field
+              name="email"
+              type="email"
+              autocomplete="email"
+              :label="tr.Email"
+              v-model="email"
+              placeholder=" "
+              @keyup.enter="resetPassword"
+            />
+            <v-btn
+              key="reset-btn"
+              color="grey lighten-3"
+              class="mx-0"
+              :light="!!email && !passwordResetSuccess"
+              :disabled="!email || passwordResetSuccess"
+              @click="resetPassword"
+            >
+              <translate>Reset Password</translate>
+            </v-btn>
+          </form>
+          <form v-else>
+            <v-text-field
+              name="username"
               v-model="username"
               :label="tr.Username"
               placeholder=" "
               @keyup.enter="login"
+              autofocus
             />
             <v-text-field
+              name="password"
               v-model="password"
               :label="tr.Password"
               placeholder=" "
-              :append-icon="passwordVisible ? 'visibility_off' : 'visibility'"
+              :append-icon="passwordVisible ? 'visibility' : 'visibility_off'"
               @click:append="passwordVisible = !passwordVisible"
               :type="passwordVisible ? 'text' : 'password'"
               @keyup.enter="login"
             />
             <v-btn
-              light
               color="grey lighten-3"
               class="mx-0"
+              light
               @click="login"
             >
               <translate>Login</translate>
             </v-btn>
-          </v-form>
+          </form>
         </v-card-text>
         <v-layout class="row footer mx-3">
           <v-btn
@@ -68,12 +98,13 @@
           </v-btn>
           <v-spacer/>
           <v-btn
-            v-if="passwordReset"
-            :href="passwordReset"
+            v-if="passwordResetUrl"
+            @click="forgotPassword = !forgotPassword"
             color="grey"
             flat
           >
-            <translate>Forgot password?</translate>
+            <translate v-if="forgotPassword">Back to Login</translate>
+            <translate v-else key="forgot">Forgot password?</translate>
           </v-btn>
         </v-layout>
       </v-card>
@@ -82,35 +113,53 @@
 </template>
 
 <script>
-
+// chrome autofill behaviour can be troublemaker:
+// https://bugs.chromium.org/p/chromium/issues/detail?id=669724
 export default {
-  name: 'login-dialog',
+  name: 'LoginDialog',
   props: {
     value: Boolean,
     loginRequired: Boolean,
     permissionDenied: Boolean,
-    passwordReset: String
+    passwordResetUrl: String
   },
   data () {
     return {
+      formErrors: {},
       authenticationError: '',
-      valid: true,
       username: '',
       password: '',
-      passwordVisible: false
+      email: '',
+      passwordVisible: false,
+      passwordResetSuccess: false,
+      passwordResetError: false,
+      forgotPassword: false
     }
   },
   computed: {
     tr () {
       return {
         Username: this.$gettext('Username'),
-        Password: this.$gettext('Password')
+        Password: this.$gettext('Password'),
+        Email: this.$gettext('Email'),
+        PasswordResetInfo: this.$gettext(
+          'Enter your email address below and we will email instructions for setting a new password.'
+        ),
+        PasswordResetError: this.$gettext('Failed to process your request.'),
+        PasswordResetSuccess: this.$gettext('Email was sent to given email address.')
       }
+    },
+    passwordResetText () {
+      if (this.passwordResetError) {
+        return this.errors.email || this.tr.PasswordResetError
+      } else if (this.passwordResetSuccess) {
+        return this.tr.PasswordResetSuccess
+      }
+      return this.tr.PasswordResetInfo
     }
   },
   methods: {
     login () {
-      // if (this.$refs.form.validate()) {
       this.$http.login(this.username, this.password)
         .then(resp => {
           this.authenticationError = null
@@ -119,7 +168,20 @@ export default {
         .catch(resp => {
           this.authenticationError = this.$gettext('Authentication failed')
         })
-      // }
+    },
+    resetPassword () {
+      this.$http.post(this.passwordResetUrl, {email: this.email})
+        .then(() => {
+          this.passwordResetSuccess = true
+          this.passwordResetError = false
+        })
+        .catch(err => {
+          this.passwordResetError = true
+          this.passwordResetSuccess = false
+          if (err.response && err.response.data.email) {
+            this.errors = err.response.data
+          }
+        })
     }
   }
 }
@@ -162,6 +224,19 @@ export default {
       input:-webkit-autofill {
         -webkit-box-shadow: 0 0 0px 1000px #000 inset;
         -webkit-text-fill-color: #fff
+      }
+      .note {
+        font-size: 90%;
+        opacity: 0.8;
+        margin: 8px 0;
+        height: 52px;
+        .v-icon {
+          font-size: 20px;
+          margin-right: 6px;
+        }
+      }
+      .v-icon {
+        user-select: none;
       }
     }
     .footer {

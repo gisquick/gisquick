@@ -1,33 +1,14 @@
-## Server setup for development
-
-Note: Commands in this section are meant to run from root directory
-
-### Prepare server data
+## Docker build
 ```
-mkdir docker/_data
-mkdir docker/_data/data
-mkdir docker/_data/media
-mkdir docker/_data/publish
-```
-Copy Gisquick projects into ```docker/_data/publish/```
-
-### Start server in development mode
-```
-docker-compose -f docker/docker-compose-dev.yml up
+docker build -t gisquick/web-map .
 ```
 
-### Create superuser
-When docker container of the server is running, execute:
-```
-docker-compose -f docker/docker-compose-dev.yml exec django django-admin createsuperuser
-```
-You can create regular users from admin interface running on http://localhost:8000/admin
+## Setup for development
 
-
-Once you have django server configured, you can use docker-compose command to start/stop server service
-```
-docker-compose -f docker/docker-compose-dev.yml up|down|start|stop
-```
+In order to start development server, it is required to setup and run local Gisquick deployment.
+Default configuration expects Gisquick server to be running on http://localhost (port 80).
+For different setup you will have to update proxy server configuration in ```vue.config.js``` file.
+See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ## Project setup
 ```
@@ -44,14 +25,10 @@ npm run serve
 npm run build
 ```
 
-
 ### Lints and fixes files
 ```
 npm run lint
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
 
 
 ### Translations:

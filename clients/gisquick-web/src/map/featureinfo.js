@@ -19,7 +19,7 @@ function SimpleFilter (name) {
 
 function LikeFilter (attribute, value) {
   return `
-    <ogc:PropertyIsLike wildCard="%" singleChar="_" escapeChar="\\">
+    <ogc:PropertyIsLike wildCard="%" singleChar="_" escapeChar="\\" matchCase="false">
       <ogc:PropertyName>${attribute}</ogc:PropertyName>
       <ogc:Literal>%${value}%</ogc:Literal>
     </ogc:PropertyIsLike>`
@@ -73,7 +73,11 @@ const AttributeFilters = {
 export function getFeaturesQuery (layers, geom, filters) {
   const ogcFilters = []
   if (geom) {
-    const gmlGeom = new GML3().writeGeometryNode(geom).innerHTML
+    const gmlGeom = new GML3({
+      // QGIS WFS doesn't seems to work with multiSurface
+      multiSurface: false,
+      multiCurve: false
+    }).writeGeometryNode(geom).innerHTML
     const geomFilter = `
       <ogc:Intersects>
         <ogc:PropertyName>geometry</ogc:PropertyName>

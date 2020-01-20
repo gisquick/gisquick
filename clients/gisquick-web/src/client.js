@@ -27,11 +27,11 @@ HTTP.project = function (project) {
         if (err.response && err.response.data.status) {
           reject(err.response.data)
         } else {
-          reject({status: 500})
+          // eslint-disable-next-line prefer-promise-reject-errors
+          reject({ status: 500 })
         }
       })
   })
-
 }
 
 export default HTTP

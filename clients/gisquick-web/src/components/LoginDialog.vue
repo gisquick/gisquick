@@ -170,7 +170,7 @@ export default {
         })
     },
     resetPassword () {
-      this.$http.post(this.passwordResetUrl, {email: this.email})
+      this.$http.post(this.passwordResetUrl, { email: this.email })
         .then(() => {
           this.passwordResetSuccess = true
           this.passwordResetError = false

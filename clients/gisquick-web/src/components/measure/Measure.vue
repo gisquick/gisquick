@@ -215,7 +215,6 @@
 import Vue from 'vue'
 import { mapState } from 'vuex'
 import Extent from 'ol/extent'
-import { reactive } from '@/utils'
 // import DynamicHeight from '../../tabs-dynamic-height'
 import { projectionCoordinatesFormatter, LocationUnits, Units } from './units'
 import { LocationMeasure, DistanceMeasure, AreaMeasure } from './measure'
@@ -234,7 +233,7 @@ const data = {
     area: null
   },
   unitSystem: null,
-  expandedItem: null,
+  expandedItem: null
 }
 const measureTools = {
   location: LocationMeasure(),

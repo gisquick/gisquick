@@ -90,7 +90,7 @@ export default {
   components: { PrintPreview },
   data: () => state || ({
     layout: null,
-    format: 'png',
+    format: 'pdf',
     dpi: 96,
     labelsData: null,
     showPreview: false

@@ -2,6 +2,7 @@ import Map from 'ol/map'
 import View from 'ol/view'
 import ImageWMS from 'ol/source/imagewms'
 import TileImage from 'ol/source/tileimage'
+import TileWMS from 'ol/source/tilewms'
 import OSM from 'ol/source/osm'
 import ImageLayer from 'ol/layer/image'
 import TileLayer from 'ol/layer/tile'
@@ -12,6 +13,7 @@ import proj4 from 'proj4'
 import Attribution from 'ol/attribution'
 import Control from 'ol/control'
 import md5 from 'md5'
+import debounce from 'lodash/debounce'
 
 function createUrl (baseUrl, params = {}) {
   const url = new URL(baseUrl, location.origin)
@@ -205,7 +207,10 @@ export function createQgisLayer (config) {
           FORMAT: 'image/png'
         },
         serverType: 'qgis',
-        ratio: 1
+        ratio: 1,
+        imageLoadFunction: debounce(function(image, src) {
+          image.getImage().src = src
+        }, 90)
       })
     })
   }
@@ -226,18 +231,36 @@ export function createBaseLayer (layerConfig, projectConfig = {}) {
       })
     }
     case 'wms': {
-      return new ImageLayer({
-        source: new ImageWMS({
+      return new TileLayer({
+        // source: new ImageWMS({
+        //   url: layerConfig.url,
+        //   resolutions: layerConfig.resolutions,
+        //   params: {
+        //     LAYERS: layerConfig.wms_layers.join(','),
+        //     FORMAT: layerConfig.format,
+        //     TRANSPARENT: 'false'
+        //   },
+        //   attributions: layerConfig.attribution ? [createAttribution(layerConfig.attribution)] : null,
+        //   serverType: 'mapserver',
+        //   ratio: 1,
+        //   imageLoadFunction: debounce(function(image, src) {
+        //     image.getImage().src = src
+        //   }, 80)
+        // }),
+        source: new TileWMS({
           url: layerConfig.url,
-          resolutions: layerConfig.resolutions,
           params: {
             LAYERS: layerConfig.wms_layers.join(','),
             FORMAT: layerConfig.format,
             TRANSPARENT: 'false'
           },
           attributions: layerConfig.attribution ? [createAttribution(layerConfig.attribution)] : null,
-          serverType: 'mapserver',
-          ratio: 1.0
+          tileGrid: new TileGrid({
+            origin: Extent.getBottomLeft(layerConfig.extent),
+            resolutions: layerConfig.resolutions,
+            tileSize: 512
+          }),
+          hidpi: false
         }),
         extent: layerConfig.extent,
         visible: layerConfig.visible

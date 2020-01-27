@@ -233,7 +233,7 @@ const data = {
     area: null
   },
   unitSystem: null,
-  expandedItem: null,
+  expandedItem: null
 }
 const measureTools = {
   location: LocationMeasure(),

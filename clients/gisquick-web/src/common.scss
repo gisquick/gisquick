@@ -107,3 +107,10 @@
     height: 26px;
   }
 }
+
+.v-text-field {
+  // extra space to prevent text being cut below baseline
+  .v-messages__message {
+    margin-bottom: 1px;
+  }
+}

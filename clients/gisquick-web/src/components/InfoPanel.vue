@@ -36,6 +36,7 @@
             v-if="editMode"
             :feature="feature"
             :layer="layer"
+            @edit="$emit('edit')"
           >
             <template v-slot:form="{ fields }">
               <generic-edit-form

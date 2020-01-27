@@ -115,6 +115,7 @@
         :selected="infoPanelSelection"
         @selection-change="selectedFeatureIndex = $event.featureIndex"
         @close="showInfoPanel = false"
+        @edit="fetchFeatures(pagination.page, true)"
       />
     </portal>
   </v-layout>
@@ -279,10 +280,11 @@ export default {
       const featureProjection = this.$map.getView().getProjection().getCode()
       const features = Object.freeze(parser.readFeatures(geojson, { featureProjection }))
 
-      this.$store.commit('attributeTable/features', features)
-      if (this.selectedFeature) {
+      if (this.selectedFeature && !features.find(f => f.getId() === this.selectedFeature.getId())) {
         this.selectedFeatureIndex = 0
       }
+      this.$store.commit('attributeTable/features', features)
+
       this.pagination = {
         query,
         page,

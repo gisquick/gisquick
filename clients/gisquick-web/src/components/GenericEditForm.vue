@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import NumberField from '@/components/NumberField'
 
 export default {
   props: {
@@ -33,8 +34,11 @@ export default {
         const disabled = pkAttrs.includes(attr.name)
         if (attr.type === 'INTEGER' || attr.type === 'DOUBLE') {
           return {
-            component: 'v-text-field',
-            props: { type: 'number', disabled }
+            component: NumberField,
+            props: {
+              integer: attr.type === 'INTEGER',
+              disabled
+            }
           }
         }
         return {

@@ -42,7 +42,7 @@
           </td>
           <td
             class="icon pl-2 pr-0"
-            @click="showInfoPanel = true"
+            @click="newFeatureMode = false; showInfoPanel = true"
           >
             <icon name="circle-i-outline"/>
           </td>
@@ -52,6 +52,8 @@
         </tr>
       </template>
     </v-data-table>
+
+    <!-- Bottom toolbar -->
     <v-layout class="row align-center bottom-panel pl-1">
       <template v-if="pagination">
         <v-btn
@@ -87,8 +89,15 @@
         >
           <v-icon>last_page</v-icon>
         </v-btn>
+        <v-divider vertical/>
       </template>
-
+      <v-btn
+        icon
+        class="my-0"
+        @click="newFeatureMode = true"
+      >
+        <v-icon>add_circle_outline</v-icon>
+      </v-btn>
       <v-spacer/>
       <v-checkbox
         color="primary"
@@ -106,17 +115,6 @@
         <translate>Refresh</translate>
       </v-btn>
     </v-layout>
-    <!-- </v-layout> -->
-    <!-- <v-layout
-      v-else
-      key="minimized"
-      class="align-center xpy-1 justify-center"
-      xstyle="height: 31px"
-    > -->
-      <!-- <span>Attribute table</span> -->
-    <!-- </v-layout> -->
-    <!-- </collapse-transition> -->
-    <!-- </switch-transition> -->
 
     <features-viewer :features="features"/>
     <portal to="right-panel">
@@ -163,9 +161,11 @@ import GeoJSON from 'ol/format/geojson'
 import TabsHeader from './TabsHeader'
 import AttributeFilter from './AttributeFilter'
 import FeaturesViewer from './ol/FeaturesViewer'
+import NewFeatureEditor from '@/components/NewFeatureEditor'
 import InfoPanel from './InfoPanel'
 import { simpleStyle } from '@/map/styles'
 import { getFeaturesQuery } from '@/map/featureinfo.js'
+import { ShallowArray } from '@/utils'
 
 function iconHeader (key) {
   return {
@@ -186,13 +186,14 @@ const SelectedStyle = simpleStyle({
 
 export default {
   name: 'attribute-table',
-  components: { TabsHeader, AttributeFilter, FeaturesViewer, InfoPanel },
+  components: { TabsHeader, AttributeFilter, FeaturesViewer, InfoPanel, NewFeatureEditor },
   data () {
     return {
       loading: false,
       pagination: null,
       selectedFeatureIndex: null,
-      showInfoPanel: false
+      showInfoPanel: false,
+      newFeatureMode: false
     }
   },
   computed: {
@@ -313,6 +314,8 @@ export default {
 
       const parser = new GeoJSON()
       const featureProjection = this.$map.getView().getProjection().getCode()
+
+      // const features = ShallowArray(parser.readFeatures(geojson, { featureProjection }))
       const features = Object.freeze(parser.readFeatures(geojson, { featureProjection }))
 
       if (this.selectedFeature && !features.find(f => f.getId() === this.selectedFeature.getId())) {
@@ -332,6 +335,12 @@ export default {
     },
     zoomToFeature (feature) {
       this.$map.ext.zoomToFeature(feature)
+    },
+    newFeatureAdded () {
+      setTimeout(() => {
+        this.newFeatureMode = false
+      }, 1500)
+      this.fetchFeatures(this.pagination.page, true)
     }
   }
 }
@@ -398,8 +407,35 @@ export default {
     font-size: 13px;
     color: #555;
   }
+  .v-divider--vertical {
+    height: 75%;
+  }
 }
 .info-panel {
   flex: 0 1 auto;
+}
+.window {
+  overflow: hidden;
+  width: 20em;
+  border-radius: 3px;
+  border: 1px solid #aaa;
+  background-color: #fff;
+  position: relative;
+
+  .header {
+    background-color: #ddd;
+    border-bottom: 1px solid #aaa;
+    h3 {
+      font-size: 17px;
+      font-weight: 500;
+    }
+  }
+  .toolbar {
+    align-self: flex-start;
+    background-color: #eee;
+    border: 1px solid #ccc;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+  }
 }
 </style>

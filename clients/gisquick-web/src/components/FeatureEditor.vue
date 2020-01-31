@@ -5,9 +5,30 @@
       name="form"
       :fields="fields"
       :layer="layer"
-    />
+      :readonly="readonlyFields"
+    >
+      <generic-edit-form
+        :layer="layer"
+        :fields="fields"
+        :readonly="readonlyFields"
+      />
+    </slot>
     <portal to="infopanel-tool">
       <v-layout class="tools-container align-center pl-1">
+        <v-btn
+          :class="{'primary--text': editGeometry}"
+          @click="editGeometry = !editGeometry"
+          icon
+        >
+          <icon name="edit-geometry"/>
+        </v-btn>
+        <geometry-editor
+          v-if="editGeometry"
+          ref="geometryEditor"
+          :feature="editGeometryFeature"
+          :geometry-type="geomType"
+        />
+        <v-divider vertical/>
         <!-- <v-btn @click="deleteFeature" icon>
           <v-icon color="red darken-3">delete_forever</v-icon>
         </v-btn> -->
@@ -31,30 +52,18 @@
           </v-card>
         </v-menu>
         <v-btn
-          :class="{'primary--text': editGeometry}"
-          @click="editGeometry = !editGeometry"
-          icon
-        >
-          <icon name="edit-geometry"/>
-        </v-btn>
-        <geometry-editor
-          v-if="editGeometry"
-          ref="geometryEditor"
-          :feature="editGeometryFeature"
-        />
-        <v-btn
-          :disabled="!isModified"
+          :disabled="!isModified || !!status"
           @click="restore"
           icon
         >
-          <v-icon>restore</v-icon>
+          <v-icon color="orange">restore</v-icon>
         </v-btn>
         <v-btn
-          :disabled="!isModified || status === 'loading'"
+          :disabled="!isModified || !!status"
           @click="save"
           icon
         >
-          <v-icon>save</v-icon>
+          <v-icon color="teal">save</v-icon>
         </v-btn>
         <v-layout class="justify-center notification my-2">
           <transition name="fade">
@@ -83,11 +92,12 @@ import { mapState } from 'vuex'
 import omit from 'lodash/omit'
 import isEqual from 'lodash/isEqual'
 import Style from 'ol/style/style'
-import WFS from 'ol/format/wfs'
 import Feature from 'ol/feature'
 
+import { wfsTransaction } from '@/wfs'
 import { queuedUpdater } from '@/utils'
 import GeometryEditor from './GeometryEditor'
+import GenericEditForm from '@/components/GenericEditForm'
 import ProgressAction from './ProgressAction'
 
 
@@ -109,7 +119,7 @@ const HiddenStyle = new Style()
 
 export default {
   name: 'FeatureEditor',
-  components: { GeometryEditor, ProgressAction },
+  components: { GeometryEditor, GenericEditForm, ProgressAction },
   refs: ['geometryEditor'],
   props: {
     layer: Object,
@@ -126,6 +136,20 @@ export default {
   },
   computed: {
     ...mapState(['project']),
+    geomType () {
+      const geom = this.feature && this.feature.getGeometry()
+      if (geom) {
+        return geom.getType()
+      }
+      return {
+        POINT: 'MultiPoint',
+        LINE: 'MultiLineString',
+        POLYGON: 'MultiPolygon'
+      }[this.layer.geom_type]
+    },
+    readonlyFields () {
+      return this.layer.pk_attributes || []
+    },
     fieldsModified () {
       return !isEqual(this.fields, this.originalFields)
     },
@@ -165,7 +189,7 @@ export default {
         this.editGeometryFeature.setStyle(origStyle)
       }
     })
-    this.statusController = queuedUpdater(v  => { this.status = v })
+    this.statusController = queuedUpdater(v => { this.status = v })
   },
   beforeDestroy () {
     this.restore()
@@ -175,62 +199,18 @@ export default {
       this.fields = getFeatureFields(this.feature)
       this.editGeometry = false
     },
-    wfsEditRequest (inserts, updates, deletes) {
-      const wfs = new WFS()
-      const opts = {
-        featureNS: 'http://gisquick.org',
-        featurePrefix: '',
-        featureType: this.layer.name,
-        version: '1.1.0'
-      }
-      const nodeEl = wfs.writeTransaction(inserts, updates, deletes, opts)
-      const query = nodeEl.outerHTML
-      const httpOpts = {
-        params: {
-          'VERSION': '1.1.0',
-          'SERVICE': 'WFS'
-        },
-        headers: {
-          'Content-Type': 'text/xml'
-        }
-        // responseType: 'xml'
-      }
+    wfsTransaction (operations) {
       this.statusController.set('loading', 1000)
-      this.$http.post(this.project.config.ows_url, query, httpOpts)
-        .then(resp => {
-          const respXML = resp.request.responseXML
-          if (!respXML) {
-            throw new Error('Server error')
-          }
-          const check = {
-            TotalInserted: inserts.length,
-            TotalUpdated: updates.length,
-            TotalDeleted: deletes.length
-          }
-          Object.entries(check)
-            .filter(([tag, count]) => count > 0)
-            .forEach(([tag, count]) => {
-              const el = respXML.querySelector(tag)
-              const value = el && parseInt(el.textContent)
-              if (count !== value) {
-                throw new Error('Data update error')
-              }
-            })
-          this.statusController.set('success', 1500)
+      wfsTransaction(this.project.config.ows_url, this.layer.name, operations)
+        .then(async () => {
+          await this.statusController.set('success', 1500)
           this.statusController.set(null, 100)
-          this.$emit('edit')
+          const { updates = [], deletes = [] } = operations
+          updates.forEach(f => this.$emit('edit', f))
+          deletes.forEach(f => this.$emit('delete', f))
         })
         .catch(err => {
-          let msg = null
-          if (err.response) {
-            const info = err.response.request.responseXML.querySelector('ServiceException')
-            msg = info && info.textContent
-            // const el = respXML.querySelector('Message')
-            // const err = msg && msg.textContent
-          } else {
-            msg = err.message
-          }
-          this.errorMsg = msg || 'Error'
+          this.errorMsg = err.message || 'Error'
           this.statusController.set('error', 3000)
           this.statusController.set(null, 100)
         })
@@ -244,11 +224,10 @@ export default {
         f.setGeometry(newGeom)
       }
       f.setId(this.feature.getId())
-      const updates = [f]
-      this.wfsEditRequest([], updates, [])
+      this.wfsTransaction({ updates: [f] })
     },
     deleteFeature () {
-      this.wfsEditRequest([], [], [this.feature])
+      this.wfsTransaction({ deletes: [this.feature] })
     }
   }
 }
@@ -260,12 +239,9 @@ export default {
     margin: 3px 0;
     height: 24px;
   }
-}
-.v-snack {
-  padding: 0 8px 12px 8px;
-  /deep/ .v-snack__content {
-    height: auto;
-    padding: 8px 12px;
+  .v-divider--vertical {
+    height: 20px;
+    margin: 0 2px;
   }
 }
 .notification {

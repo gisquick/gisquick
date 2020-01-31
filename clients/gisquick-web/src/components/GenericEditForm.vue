@@ -19,7 +19,8 @@ import NumberField from '@/components/NumberField'
 export default {
   props: {
     layer: Object,
-    fields: Object
+    fields: Object,
+    readonly: Array
   },
   computed: {
     config () {
@@ -30,8 +31,7 @@ export default {
     },
     widgets () {
       return this.layer.attributes.map(attr => {
-        const pkAttrs = this.layer.pk_attributes || []
-        const disabled = pkAttrs.includes(attr.name)
+        const disabled = this.readonly && this.readonly.includes(attr.name)
         if (attr.type === 'INTEGER' || attr.type === 'DOUBLE') {
           return {
             component: NumberField,

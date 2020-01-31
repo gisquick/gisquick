@@ -1,5 +1,5 @@
 <template>
-  <div class="grid">
+  <div class="grid mx-2">
     <template v-for="(attr, index) in layer.attributes">
       <label :key="attr.name">{{ attr.alias || attr.name }}</label>
       <div

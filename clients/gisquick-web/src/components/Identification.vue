@@ -51,6 +51,7 @@
           :selected="selection"
           @selection-change="selection = $event"
           @close="clearResults"
+          @delete="onFeatureDeleted"
         />
       </portal>
       <portal to="bottom-panel">
@@ -80,6 +81,7 @@ import PointMarker from './ol/PointMarker'
 import FeaturesViewer from './ol/FeaturesViewer'
 import { simpleStyle } from '@/map/styles'
 import { getFeaturesQuery } from '@/map/featureinfo.js'
+import { ShallowArray } from '@/utils'
 
 const SelectedStyle = simpleStyle({
   fill: [3, 169, 244, 0.4],
@@ -208,8 +210,7 @@ export default {
 
             const categorizedFeatures = this.categorize(features)
             const items = this.tableData(categorizedFeatures)
-
-            this.layersFeatures = Object.freeze(items)
+            this.layersFeatures = items
             if (items.length) {
               this.selection = {
                 layer: items[0].layer.name,
@@ -264,8 +265,15 @@ export default {
         .filter(l => matchedLayers.includes(l.name))
         .map(l => ({
           layer: l,
-          features: groupedFeatures[l.name]
+          features: ShallowArray(groupedFeatures[l.name])
         }))
+    },
+    onFeatureDeleted (feature) {
+      this.resultItem.features = this.resultItem.features.filter(f => f !== feature)
+      // const index = this.displayedFeaures.indexOf(feature)
+      // if (index !== -1) {
+      //   this.displayedFeaures.splice(index, 1)
+      // }
     }
   }
 }

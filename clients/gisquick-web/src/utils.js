@@ -82,16 +82,18 @@ export function queuedUpdater (updateFn) {
     if (updateLoop !== null || queue.length === 0) {
       return
     }
-    const { value, minDuration } = queue.splice(0, 1)[0]
+    const { value, minDuration, cb } = queue.splice(0, 1)[0]
     const elapsed = performance.now() - lastUpdate
     if (elapsed > currentMinDuration) {
       updateFn(value)
+      cb && cb()
       lastUpdate = performance.now()
       currentMinDuration = minDuration
       checkQueue()
     } else {
       updateLoop = setTimeout(() => {
         updateFn(value)
+        cb && cb()
         lastUpdate = performance.now()
         currentMinDuration = minDuration
         updateLoop = null
@@ -101,8 +103,10 @@ export function queuedUpdater (updateFn) {
   }
   return {
     set (value, minDuration = 600) {
-      queue.push({ value, minDuration })
-      checkQueue()
+      return new Promise(resolve => {
+        queue.push({ value, minDuration, cb: resolve })
+        checkQueue()
+      })
     }
   }
 }

@@ -22,8 +22,8 @@ export default {
   computed: {
     allRules () {
       const typeCheck = this.integer
-        ? v => !isInteger(v) ? this.tr.NotValidInteger : true
-        : v => isNaN(v) ? this.tr.NotValidNumber : true
+        ? v => v && !isInteger(v) ? this.tr.NotValidInteger : true
+        : v => v && isNaN(v) ? this.tr.NotValidNumber : true
       return Array.isArray(this.rules) ? [typeCheck, ...this.rules] : [typeCheck]
     },
     proxyListeners () {
@@ -39,13 +39,16 @@ export default {
   },
   methods: {
     onInput (value) {
-      if (this.integer) {
-        if (isInteger(value)) {
-          value = parseInt(value)
-        }
-      } else {
-        if (!isNaN(value)) {
-          value = parseFloat(value)
+      if (value !== '') {
+        // conversion from String to Number
+        if (this.integer) {
+          if (isInteger(value)) {
+            value = parseInt(value)
+          }
+        } else {
+          if (!isNaN(value)) {
+            value = parseFloat(value)
+          }
         }
       }
       this.$emit('input', value)

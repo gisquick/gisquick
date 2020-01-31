@@ -76,6 +76,9 @@
 <script>
 import Feature from 'ol/feature'
 import Point from 'ol/geom/point'
+import MultiPoint from 'ol/geom/multipoint'
+import MultiPolygon from 'ol/geom/multipolygon'
+import MultiLineString from 'ol/geom/multilinestring'
 
 import VectorLayer from '@/components/ol/VectorLayer'
 import SelectInteraction from '@/components/ol/SelectInteraction'
@@ -84,6 +87,12 @@ import ModifyInteraction from '@/components/ol/ModifyInteraction'
 import { simpleStyle, highlightedStyle } from '@/map/styles'
 import { ShallowObj, ShallowArray } from '@/utils'
 
+
+const MultiGeomClasses = {
+  MultiPoint,
+  MultiPolygon,
+  MultiLineString
+}
 
 function LineStringNodesHandler (geom) {
   const points = geom.getCoordinates()
@@ -155,7 +164,11 @@ function NodesHandler (feature) {
 export default {
   components: { VectorLayer, SelectInteraction, DrawInteraction, ModifyInteraction },
   props: {
-    feature: Object
+    feature: Object,
+    geometryType: String,
+    /* output props */
+    // Used because $refs doesn't work nicely in all cases with Portal Vue and hot reload
+    editor: Object
   },
   data () {
     return {
@@ -174,7 +187,7 @@ export default {
   },
   computed: {
     geomType () {
-      return this.feature.getGeometry().getType()
+      return this.geometryType || this.feature.getGeometry().getType()
     },
     isMultiPart () {
       return this.geomType.startsWith('Multi')
@@ -214,6 +227,21 @@ export default {
       return this.selected.concat(this.nodesFeatures)
     }
   },
+  mounted () {
+    const editor = {
+      getGeometry: () => {
+        return this.getGeometry()
+      }
+    }
+    const setReference = ref => {
+      if (this.editor !== ref) {
+        this.$emit('update:editor', ref)
+      }
+    }
+    setReference(editor)
+    this.$watch('editor', value => setReference(editor))
+    this.$once('hook:beforeDestroy', () => setReference(null))
+  },
   watch: {
     feature: {
       immediate: true,
@@ -238,6 +266,9 @@ export default {
   },
   methods: {
     createGeomFeatures (feature) {
+      if (!feature || !feature.getGeometry()) {
+        return []
+      }
       const geom = feature.getGeometry().clone()
       const type = geom.getType()
       if (type.startsWith('Multi')) {
@@ -258,7 +289,10 @@ export default {
     },
     getGeometry () {
       if (this.isMultiPart) {
-        const GeomClass = this.feature.getGeometry().constructor
+        if (this.geomFeatures.length === 0) {
+          return null
+        }
+        const GeomClass = MultiGeomClasses[this.geomType]
         const geom = new GeomClass()
         const composeFn = 'append' + this.drawGeomType
         this.geomFeatures.forEach(f => {

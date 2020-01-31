@@ -4,6 +4,7 @@ import ImageWMS from 'ol/source/imagewms'
 import TileImage from 'ol/source/tileimage'
 import TileWMS from 'ol/source/tilewms'
 import OSM from 'ol/source/osm'
+import XYZ from 'ol/source/xyz'
 import ImageLayer from 'ol/layer/image'
 import TileLayer from 'ol/layer/tile'
 import TileGrid from 'ol/tilegrid/tilegrid'
@@ -232,21 +233,6 @@ export function createBaseLayer (layerConfig, projectConfig = {}) {
     }
     case 'wms': {
       return new TileLayer({
-        // source: new ImageWMS({
-        //   url: layerConfig.url,
-        //   resolutions: layerConfig.resolutions,
-        //   params: {
-        //     LAYERS: layerConfig.wms_layers.join(','),
-        //     FORMAT: layerConfig.format,
-        //     TRANSPARENT: 'false'
-        //   },
-        //   attributions: layerConfig.attribution ? [createAttribution(layerConfig.attribution)] : null,
-        //   serverType: 'mapserver',
-        //   ratio: 1,
-        //   imageLoadFunction: debounce(function(image, src) {
-        //     image.getImage().src = src
-        //   }, 80)
-        // }),
         source: new TileWMS({
           url: layerConfig.url,
           params: {
@@ -264,6 +250,15 @@ export function createBaseLayer (layerConfig, projectConfig = {}) {
         }),
         extent: layerConfig.extent,
         visible: layerConfig.visible
+      })
+    }
+    case 'xyz': {
+      return new TileLayer({
+        visible: layerConfig.visible,
+        source: new XYZ({
+          url: layerConfig.url,
+          attributions: layerConfig.attribution ? [createAttribution(layerConfig.attribution)] : null,
+        })
       })
     }
     // fallback to render layer by qgis server

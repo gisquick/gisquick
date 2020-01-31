@@ -36,26 +36,14 @@
             v-if="editMode"
             :feature="feature"
             :layer="layer"
-            @edit="$emit('edit')"
-          >
-            <template v-slot:form="{ fields }">
-              <generic-edit-form
-                :layer="layer"
-                :fields="fields"
-              />
-            </template>
-          </feature-editor>
-          <component
-            v-else-if="customComponent"
-            :is="customComponent"
-            :feature="feature"
-            :layer="layer"
+            @edit="$emit('edit', $event)"
+            @delete="$emit('delete', $event)"
           />
-          <generic-infopanel
+          <component
             v-else
-            :layer="layer"
+            :is="formComponent"
             :feature="feature"
-            class="mx-2"
+            :layer="layer"
           />
         </switch-transition>
       </scroll-area>
@@ -86,36 +74,16 @@
 <script>
 import GenericInfopanel from '@/components/GenericInfopanel'
 import FeatureEditor from '@/components/FeatureEditor'
-import GenericEditForm from '@/components/GenericEditForm'
-
-const cache = {}
-function externalComponent (url) {
-  if (cache[url]) {
-    return cache[url]
-  }
-
-  return new Promise((resolve, reject) => {
-    const name = url.split('/').reverse()[0].match(/^(.*?)\.umd/)[1]
-    const script = document.createElement('script')
-    script.async = true
-    script.addEventListener('load', () => {
-      cache[url] = window[name]
-      resolve(window[name])
-    })
-    script.addEventListener('error', () => {
-      reject(new Error(`Error loading ${url}`))
-    })
-    script.src = url
-    document.head.appendChild(script)
-  })
-}
+import { externalComponent } from '@/components-loader'
 
 export default {
   name: 'info-panel',
-  components: { GenericInfopanel, GenericEditForm, FeatureEditor },
+  components: { GenericInfopanel, FeatureEditor },
   props: {
-    data: Array,
-    selected: Object
+    selected: Object,
+    layer: Object,
+    features: Array,
+    layers: Array
   },
   data () {
     return {
@@ -124,19 +92,11 @@ export default {
   },
   computed: {
     layersOptions () {
-      return this.data.map(item => ({
-        text: item.layer.title || item.layer.name,
-        value: item.layer.name
+      const layers = this.layers || [this.layer]
+      return layers.map(layer => ({
+        text: layer.title || layer.name,
+        value: layer.name
       }))
-    },
-    layerFeatures () {
-      return this.selected && this.data.find(i => i.layer.name === this.selected.layer)
-    },
-    layer () {
-      return this.layerFeatures && this.layerFeatures.layer
-    },
-    features () {
-      return (this.layerFeatures && this.layerFeatures.features) || []
     },
     index () {
       return this.selected && this.selected.featureIndex
@@ -144,26 +104,15 @@ export default {
     feature () {
       return this.selected && this.features[this.index]
     },
-    customComponents () {
-      const components = {}
-      this.$store.state.project.overlays.list.filter(l => l.info_panel)
-        .forEach(l => {
-          components[l.name] = async () => {
-            const { resource, component } = l.info_panel
-            const mod = await externalComponent(resource)
-            return mod.__esModule ? mod.default[component] : mod
-          }
-        })
-      return components
-    },
-    /* Development */
-    // customComponents () {
-    //   return {
-    //     districts: () => import('@/extensions/Districts.vue')
-    //   }
-    // },
-    customComponent () {
-      return this.customComponents[this.layer.name]
+    formComponent () {
+      /* Development */
+      // return () => import('@/extensions/Districts.vue')
+
+      if (this.layer.info_panel) {
+        const { resource, component } = this.layer.info_panel
+        return () => externalComponent(resource, component)
+      }
+      return GenericInfopanel
     }
   },
   methods: {

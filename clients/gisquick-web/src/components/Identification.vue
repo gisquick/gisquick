@@ -43,8 +43,11 @@
       <portal to="right-panel">
         <info-panel
           v-if="displayMode === 'info-panel' || displayMode === 'both'"
-          class="ml-1 mb-2 elevation-3"
-          :data="layersFeatures"
+          class="mx-1 mb-2 elevation-3"
+          :features="displayedFeaures"
+          :layer="displayedLayer"
+          :layers="resultLayers"
+
           :selected="selection"
           @selection-change="selection = $event"
           @close="clearResults"
@@ -132,9 +135,17 @@ export default {
         }
       ]
     },
+    resultLayers () {
+      return this.layersFeatures.map(item => item.layer)
+    },
+    resultItem () {
+      return this.selection && this.layersFeatures.find(i => i.layer.name === this.selection.layer)
+    },
+    displayedLayer () {
+      return this.resultItem && this.resultItem.layer
+    },
     displayedFeaures () {
-      const item = this.selection && this.layersFeatures.find(i => i.layer.name === this.selection.layer)
-      return item && item.features
+      return this.resultItem && this.resultItem.features
     },
     selectedFeature () {
       return this.selection && this.displayedFeaures[this.selection.featureIndex]

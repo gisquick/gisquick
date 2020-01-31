@@ -106,16 +106,51 @@
         <translate>Refresh</translate>
       </v-btn>
     </v-layout>
+    <!-- </v-layout> -->
+    <!-- <v-layout
+      v-else
+      key="minimized"
+      class="align-center xpy-1 justify-center"
+      xstyle="height: 31px"
+    > -->
+      <!-- <span>Attribute table</span> -->
+    <!-- </v-layout> -->
+    <!-- </collapse-transition> -->
+    <!-- </switch-transition> -->
+
     <features-viewer :features="features"/>
     <portal to="right-panel">
+      <v-layout
+        v-if="newFeatureMode"
+        class="window column mx-1 mb-2 elevation-3"
+      >
+        <v-layout class="header align-center">
+          <h3 class="mx-2">New Feature</h3>
+          <v-spacer/>
+          <v-btn @click="newFeatureMode = false" icon small>
+            <v-icon>close</v-icon>
+          </v-btn>
+        </v-layout>
+        <scroll-area>
+          <new-feature-editor
+            :layer="layer"
+            toolbar-target="toolbar"
+            @edit="newFeatureAdded"
+          />
+        </scroll-area>
+        <portal-target name="toolbar" class="toolbar"/>
+      </v-layout>
+
       <info-panel
         v-if="showInfoPanel"
-        class="ml-1 mb-2 elevation-3"
-        :data="[{features, layer}]"
+        class="mx-1 mb-2 elevation-3"
+        :features="features"
+        :layer="layer"
         :selected="infoPanelSelection"
         @selection-change="selectedFeatureIndex = $event.featureIndex"
         @close="showInfoPanel = false"
         @edit="fetchFeatures(pagination.page, true)"
+        @delete="fetchFeatures(pagination.page, true)"
       />
     </portal>
   </v-layout>
@@ -291,25 +326,6 @@ export default {
         rowsPerPage: this.limit,
         totalItems: featuresCount
       }
-      /*
-      const wfsParams = {
-        layer: this.layer.name.replace(/ /g, '_'),
-        maxfeatures: this.limit,
-        filters,
-        startindex: 0
-      }
-      if (this.visibleAreaFilter) {
-        const size = this.$map.getSize()
-        wfsParams['bbox'] = this.$map.getView().calculateExtent(size)
-      }
-      this.$http.post(`/filter/?PROJECT=${this.project.config.project}`, wfsParams)
-        .then(resp => {
-          this.loading = false
-        })
-        .catch(resp => {
-          this.loading = false
-        })
-      */
     },
     setPage (page) {
       this.fetchFeatures(page, true)

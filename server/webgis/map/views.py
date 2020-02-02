@@ -20,6 +20,8 @@ from webgis.map.project import clean_project_name, get_project, \
 from webgis.auth import basic_auth
 from webgis.auth.decorators import login_required
 
+from . import convertors
+
 
 def abs_project_path(project):
     return os.path.join(settings.GISQUICK_PROJECT_ROOT, project)
@@ -49,6 +51,7 @@ def ows(request):
     params = {key.upper(): request.GET[key] for key in request.GET.keys()}
 
     ows_project = clean_project_name(params.get('MAP'))
+    output_format = params.get("OUTPUTFORMAT")
     project, timestamp, *_ = ows_project.rsplit("_", 1) + [""]
     project_hash = hashlib.md5(project.encode('utf-8')).hexdigest()
     pi = get_project_info(project_hash, timestamp, project=ows_project)
@@ -66,13 +69,20 @@ def ows(request):
         request.environ['QUERY_STRING']
     )
     abs_project = abs_project_path(params.get('MAP'))
-    url = set_query_parameters(url, {'MAP': abs_project})
+
+    query_params = {'MAP': abs_project} 
+
+    if output_format not in ["GeoJSON"]:
+        query_params["OUTPUTFORMAT"] = "GeoJSON"
+
+    url = set_query_parameters(url, query_params)
 
     if request.method == 'POST':
         owsrequest = urllib.request.Request(url, request.body)
     else:
         owsrequest = urllib.request.Request(url)
     owsrequest.add_header("User-Agent", "Gisquick")
+
 
     resp_content = b""
     try:
@@ -89,8 +99,13 @@ def ows(request):
                     request.build_absolute_uri(request.path).encode()
                 )
 
-            content_type = resp.getheader('Content-Type')
             status = resp.getcode()
+
+            if output_format != "GeoJSON":
+                content_type, resp_content = convert_content(resp_content, output_format)
+            else:
+                content_type = resp.getheader('Content-Type')
+
             return HttpResponse(resp_content, content_type=content_type, status=status)
     except urllib.error.HTTPError as e:
         # reason = e.read().decode("utf8")
@@ -206,3 +221,11 @@ def filterdata(request):
         return HttpResponse(json.dumps(result), content_type="application/json")
     else:
         raise Exception('No inputs specified, use POST method')
+
+def convert_content(data, target_format):
+    if target_format == "csv":
+        return "text/csv", convertors.geojson2csv(data)
+
+
+
+    

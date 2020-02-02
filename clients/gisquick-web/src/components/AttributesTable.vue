@@ -105,6 +105,9 @@
       >
         <translate>Refresh</translate>
       </v-btn>
+      <v-btn flat class="my-0" @click="exportFeatures(format='csv')" >
+        Export as .CSV
+      </v-btn>
     </v-layout>
     <features-viewer :features="features"/>
     <portal to="right-panel">
@@ -220,7 +223,7 @@ export default {
   },
   methods: {
     ...mapMutations('attributeTable', ['clearFilter', 'updateFilterComparator', 'updateFilterValue', 'updateFilterValidity']),
-    async fetchFeatures (page = 1, lastQuery = false) {
+    async fetchFeatures (page = 1, lastQuery = false, format = "GeoJSON") {
       const filters = Object.entries(this.layerFilters)
         // .filter(([name, filter]) => filter.comparator && filter.value !== null)
         .filter(([name, filter]) => filter.comparator && filter.valid)
@@ -245,7 +248,7 @@ export default {
         VERSION: '1.1.0',
         SERVICE: 'WFS',
         REQUEST: 'GetFeature',
-        OUTPUTFORMAT: 'GeoJSON'
+        OUTPUTFORMAT: format
       }
 
       const headers = { 'Content-Type': 'text/xml' }
@@ -304,6 +307,60 @@ export default {
           this.loading = false
         })
       */
+    },
+    async exportFeatures (format = "GeoJSON") {
+      const filters = Object.entries(this.layerFilters)
+        // .filter(([name, filter]) => filter.comparator && filter.value !== null)
+        .filter(([name, filter]) => filter.comparator && filter.valid)
+        .map(([name, filter]) => ({
+          attribute: name,
+          operator: filter.comparator,
+          value: filter.value
+        }))
+
+      let geom = null
+      let query
+      if (this.visibleAreaFilter) {
+          geom = Polygon.fromExtent(this.$map.ext.visibleAreaExtent())
+      }
+      query = getFeaturesQuery([this.layer.name], geom, filters)
+
+      const baseParams = {
+        VERSION: '1.1.0',
+        SERVICE: 'WFS',
+        REQUEST: 'GetFeature',
+        OUTPUTFORMAT: format
+      }
+
+      const headers = { 'Content-Type': 'text/xml' }
+      let output_data, featuresCount, contentType
+      this.loading = true
+      try {
+        let params = {
+          ...baseParams
+          // MAXFEATURES: this.limit
+        }
+        let resp = await this.$http.post(this.project.config.ows_url, query, { params, headers })
+        output_data = resp.data
+        contentType = resp.headers["content-type"]
+      } catch (e) {
+        console.error(e)
+        return
+      } finally {
+        this.loading = false
+      }
+
+
+      if (contentType == "GeoJSON") {
+        output_data = JSON.stringify(output_data)
+      }
+
+      let blob = new Blob([output_data], { type: contentType })
+      let link = document.createElement('a')
+      link.href = window.URL.createObjectURL(blob)
+      link.download = 'layer.geojson'
+      link.click()
+
     },
     setPage (page) {
       this.fetchFeatures(page, true)

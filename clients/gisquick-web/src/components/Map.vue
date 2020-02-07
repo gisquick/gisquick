@@ -213,7 +213,7 @@ export default {
   height: 100%;
   position: relative;
   display: grid;
-  grid-template-columns: auto 1fr minmax(0, auto);
+  grid-template-columns: auto 1fr auto;
   grid-template-rows: 1fr minmax(0, max-content) minmax(0, min-content) minmax(0, min-content);
   > * {
     position: relative;
@@ -223,6 +223,8 @@ export default {
     grid-column: 1 / 4;
     grid-row: 1 / 5;
     z-index: 0;
+    min-width: 0;
+    min-height: 0;
   }
   .right-container {
     grid-column: 3 / 4;
@@ -289,8 +291,8 @@ export default {
     justify-self: end;
   }
   .right-panel {
-    grid-column: 3 / 4;
-    grid-row: 1 / 2;
+    // grid-column: 3 / 4;
+    // grid-row: 1 / 2;
     z-index: 2;
     display: flex;
     flex-direction: column;
@@ -300,12 +302,14 @@ export default {
   .visible-container {
     grid-column: 2 / 3;
     grid-row: 1 / 2;
+    min-width: 0;
     min-height: 0;
     max-height: 100%;
   }
   .map-overlay {
     grid-column: 2 / 4;
     grid-row: 1 / 2;
+    min-width: 0;
     min-height: 0;
     max-height: 100%;
   }
@@ -319,6 +323,7 @@ export default {
     grid-column: 2 / 4;
     grid-row: 2 / 5;
     z-index: 2;
+    min-width: 0;
     max-width: 100%;
   }
 }

@@ -83,7 +83,7 @@ def get_last_project_version(project):
 
 def store_project_info(project_key, publish, metadata):
     key = "{0}:{1}:".format(project_key, publish)
-    subset_attrs = ["extent", "tile_resolutions", "projection", "authentication"]
+    subset_attrs = ["extent", "tile_resolutions", "projection", "authentication", "access_control"]
     info = {k: metadata.get(k, None) for k in subset_attrs}
     cache.set(key, json.dumps(info), timeout=120)
     return info
@@ -142,15 +142,15 @@ def _layers_names(layers, result=None):
             }
     return result
 
-def published_layers(layers):
+def _published_layers(layers):
     return [l for l in layers if 'publish' not in l or l['publish'] == True]
 
 def _convert_layers_names(layers, info):
     leafs = []
     groups = []
-    for layer in published_layers(layers):
+    for layer in _published_layers(layers):
         if 'layers' in layer:
-            group_layers = published_layers(_convert_layers_names(layer['layers'], info))
+            group_layers = _published_layers(_convert_layers_names(layer['layers'], info))
             layer['layers'] = group_layers
             groups.append(layer)
         else:
@@ -160,6 +160,24 @@ def _convert_layers_names(layers, info):
             layer.pop('serverName', None)
             leafs.append(layer)
     return leafs + groups
+
+def _filter_layers(layers, test):
+    filtered = []
+    for item in layers:
+        if 'layers' in item:
+            children = _filter_layers(item['layers'], test)
+            if children:
+                filtered.append({**item, "layers": children})
+        elif test(item):
+            filtered.append(item)
+    return filtered
+
+def _iterate_layers(layers):
+    for item in layers:
+        if 'layers' in item:
+            yield from _iterate_layers(item['layers'])
+        else:
+            yield item
 
 def _convert_topics(topics, info):
     for topic in topics:
@@ -188,6 +206,7 @@ def _convert_layers_metadata(layers):
                 layer['title'] = layer_title
             leafs.append(layer)
     return leafs + groups
+
 
 def get_project(request):
     ows_project = None
@@ -256,7 +275,7 @@ def get_project(request):
         context['scales'] = metadata.scales
 
         # BASE LAYERS
-        baselayers_tree = published_layers(_convert_layers_metadata(metadata.base_layers))
+        baselayers_tree = _published_layers(_convert_layers_metadata(metadata.base_layers))
         base = form.cleaned_data['BASE']
         if base:
             # TODO:
@@ -280,6 +299,32 @@ def get_project(request):
             # TODO:
             #update_layers(layers_tree, layers)
             pass
+
+        if metadata.access_control and metadata.access_control['enabled']:
+            # compute layers permissions for current user
+            layers_permissions = {}
+            for role in metadata.access_control['roles']:
+                if request.user.username in role['users']:
+                    for layername, role_permissions in role['permissions']['layers'].items():
+                        if layername not in layers_permissions:
+                            layers_permissions[layername] = {}
+                        for k, v in role_permissions.items():
+                            layers_permissions[layername][k] = layers_permissions[layername].get(k) or v
+
+            def check_layername_access(layername):
+                perms = layers_permissions.get(layername)
+                return perms and perms.get('view')
+
+            layers_tree = _filter_layers(layers_tree, lambda l: check_layername_access(l['name']))
+            # insert layer permissions information into layer data
+            for layer in _iterate_layers(layers_tree):
+                layer['permissions'] = layers_permissions.get(layer['name'])
+
+            # remove not allowed layers from topics and remove 'empty' topics
+            for topic in metadata.topics:
+                topic['visible_overlays'] = list(filter(check_layername_access, topic['visible_overlays']))
+            metadata.topics = list(filter(lambda t: t['visible_overlays'], metadata.topics))
+
         context['layers'] = layers_tree
 
         if use_mapcache:

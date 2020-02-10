@@ -4,6 +4,7 @@ import urllib.parse
 import urllib.request
 import contextlib
 import hashlib
+from lxml import etree
 
 from django.conf import settings
 from django.http import HttpResponse, JsonResponse, Http404
@@ -34,6 +35,14 @@ def check_project_access(request, project, project_auth):
         return request.user.is_authenticated and (project_owner == request.user.username or request.user.is_superuser)
     return False
 
+def check_layer_access(user, access_control, layer_name, permission):
+    for role in access_control['roles']:
+        if user.username in role['users']:
+            perms = role['permissions']['layers']
+            if perms[layer_name][permission]:
+                return True
+    return False
+
 
 def map_project(request):
     try:
@@ -60,6 +69,27 @@ def ows(request):
             response['WWW-Authenticate'] = 'Basic realm=OWS API'
             return response
         raise PermissionDenied
+
+    if params.get('SERVICE') == 'WFS' and params.get('REQUEST') != 'GetFeature':
+        access_control = pi.get('access_control')
+        if access_control and access_control['enabled']:
+            root = etree.fromstring(request.body.decode())
+
+            for elem in root.findall('.//{*}Insert'):
+                for child in elem.getchildren():
+                    layer_name = etree.QName(child).localname
+                    if not check_layer_access(request.user, access_control, layer_name, 'insert'):
+                        raise PermissionDenied
+
+            checks = [
+                ('.//{*}Update', 'update'),
+                ('.//{*}Delete', 'delete')
+            ]
+            for query_path, permission in checks:
+                for elem in root.findall(query_path):
+                    layer_name = elem.get('typeName').split(':')[-1]
+                    if not check_layer_access(request.user, access_control, layer_name, permission):
+                        raise PermissionDenied
 
     url = "{0}?{1}".format(
         settings.GISQUICK_MAPSERVER_URL.rstrip("/"),

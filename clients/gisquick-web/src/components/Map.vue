@@ -137,10 +137,14 @@ export default {
         return Extent.boundingExtent([p1, p2])
       },
       zoomToFeature: (feature, options = {}) => {
+        const geom = feature.getGeometry()
+        if (!geom) {
+          return
+        }
         const resolution = map.getView().getResolution()
         let padding = options.padding || map.ext.visibleAreaPadding()
-        if (feature.getGeometry().getType() === 'Point') {
-          const center = feature.getGeometry().getCoordinates()
+        if (geom.getType() === 'Point') {
+          const center = geom.getCoordinates()
           center[0] += (-padding[3] * resolution + padding[1] * resolution) / 2
           center[1] += (-padding[2] * resolution + padding[0] * resolution) / 2
           map.getView().animate({
@@ -148,7 +152,7 @@ export default {
             duration: 450
           })
         } else {
-          const extent = feature.getGeometry().getExtent()
+          const extent = geom.getExtent()
           // add 5% buffer (padding)
           const buffer = (map.getSize()[0] - padding[1] - padding[3]) * 0.05 * resolution
           map.getView().fit(Extent.buffer(extent, buffer), { duration: 450, padding })

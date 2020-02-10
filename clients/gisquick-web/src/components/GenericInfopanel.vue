@@ -75,7 +75,7 @@ export default {
 <style lang="scss" scoped>
 .grid {
   display: grid;
-  grid-template-columns: minmax(auto, 50%) 1fr;
+  grid-template-columns: auto auto;
   max-width: 100%;
   label {
     margin: 0 0.75em 0 0;
@@ -83,9 +83,13 @@ export default {
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+    min-width: 80px;
+    max-width: 150px;
   }
   span {
     color: #555;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   a.img {
     grid-column: 1 / 3;

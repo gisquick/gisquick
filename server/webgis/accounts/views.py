@@ -84,15 +84,13 @@ def activate_account(request, uidb64, token):
         return JsonResponse({"status": 405}, status=405)
 
     user = _get_user_by_uidb64(uidb64)
-    if user and user.is_active:
-        return JsonResponse({"status": 200})
+    if user is None or not token_generator.check_token(user, token):
+        return JsonResponse({"status": 400, "error": "Invalid activation uid/token"}, status=400)
 
-    if user is not None and token_generator.check_token(user, token):
-        if not user.is_active:
-            user.is_active = True
-            user.save()
-        return JsonResponse({"status": 200})
-    return JsonResponse({"status": 400, "error": "Invalid activation uid/token"}, status=400)
+    if not user.is_active:
+        user.is_active = True
+        user.save()
+    return JsonResponse({"status": 200})
 
 
 @csrf_exempt
@@ -130,7 +128,7 @@ def new_password(request, uidb64, token):
         return JsonResponse({"status": 405}, status=405)
 
     user = _get_user_by_uidb64(uidb64)
-    if user is None or token_generator.check_token(user, token):
+    if user is None or not token_generator.check_token(user, token):
         return JsonResponse({"status": 400, "error": "Invalid activation uid/token"}, status=400)
 
     data = None

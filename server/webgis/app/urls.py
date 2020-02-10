@@ -6,6 +6,7 @@ app_name = "app"
 
 urlpatterns = [
     path("app/", views.app),
-    re_path(r"^projects/$", views.get_projects),
+    path("users/", views.get_users),
+    path("projects/", views.get_projects),
     re_path(r"^projects/(?P<username>[^/]+)/$", views.user_projects)
 ]

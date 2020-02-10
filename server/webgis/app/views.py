@@ -3,6 +3,7 @@ import json
 from django.conf import settings
 from django.http import JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
+from django.contrib.auth import get_user_model
 
 import webgis
 from webgis.map.project import get_project, get_user_projects
@@ -39,6 +40,21 @@ def user_projects(request, username):
     data = {
         'projects': get_user_projects(request, username)
     }
+    return JsonResponse(data, safe=False)
+
+
+@login_required
+def get_users(request):
+    User = get_user_model()
+    data = []
+    for user in User.objects.all():
+        data.append({
+            "id": user.id,
+            "username": user.username,
+            "first_name": user.first_name,
+            "last_name": user.last_name,
+            "full_name": user.get_full_name()
+        })
     return JsonResponse(data, safe=False)
 
 

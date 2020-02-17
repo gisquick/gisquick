@@ -208,6 +208,16 @@ def _convert_layers_metadata(layers):
     return leafs + groups
 
 
+def check_role_access(user, role):
+    auth = role['auth']
+    if auth == 'all':
+        return True
+    if auth == 'authenticated':
+        return user.is_authenticated
+    elif auth == 'users':
+        return user.username in role['users']
+
+
 def get_project(request):
     ows_project = None
 
@@ -304,7 +314,7 @@ def get_project(request):
             # compute layers permissions for current user
             layers_permissions = {}
             for role in metadata.access_control['roles']:
-                if request.user.username in role['users']:
+                if check_role_access(request.user, role):
                     for layername, role_permissions in role['permissions']['layers'].items():
                         if layername not in layers_permissions:
                             layers_permissions[layername] = {}

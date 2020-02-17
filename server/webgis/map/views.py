@@ -16,7 +16,7 @@ from webgis.map.wfsfilter import webgisfilter
 from webgis.libs.utils import set_query_parameters
 from webgis.mapcache import get_tile_response, get_legendgraphic_response, \
     WmsLayer, TileNotFoundException
-from webgis.map.project import clean_project_name, get_project, \
+from webgis.map.project import clean_project_name, get_project, check_role_access, \
     get_project_info, get_last_project_version, InvalidProjectException
 from webgis.auth import basic_auth
 from webgis.auth.decorators import login_required
@@ -37,7 +37,7 @@ def check_project_access(request, project, project_auth):
 
 def check_layer_access(user, access_control, layer_name, permission):
     for role in access_control['roles']:
-        if user.username in role['users']:
+        if check_role_access(user, role):
             perms = role['permissions']['layers']
             if perms[layer_name][permission]:
                 return True

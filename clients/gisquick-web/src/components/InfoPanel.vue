@@ -54,7 +54,7 @@
           <icon name="zoom-to"/>
         </v-btn>
         <v-btn
-          v-if="layer.editable"
+          v-if="layerEditable"
           :class="{'primary--text': editMode}"
           @click="editMode = !editMode"
           icon dark
@@ -113,6 +113,10 @@ export default {
         return () => externalComponent(resource, component)
       }
       return GenericInfopanel
+    },
+    layerEditable () {
+      const { permissions = {} } = this.layer
+      return permissions.update || permissions.delete
     }
   },
   methods: {

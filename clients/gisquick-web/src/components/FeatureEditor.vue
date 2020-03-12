@@ -35,7 +35,7 @@
         <v-menu top fixed>
           <v-btn
             slot="activator"
-            :disabled="status === 'loading'"
+            :disabled="!permissions.delete || status === 'loading'"
             icon
           >
             <v-icon color="red darken-3">delete_forever</v-icon>
@@ -52,7 +52,7 @@
           </v-card>
         </v-menu>
         <v-btn
-          :disabled="!isModified || !!status"
+          :disabled="!permissions.update || !isModified || !!status"
           @click="restore"
           icon
         >
@@ -162,6 +162,9 @@ export default {
     },
     editGeometryFeature () {
       return this.editGeometry && this.feature
+    },
+    permissions () {
+      return this.layer.permissions || {}
     }
   },
   watch: {

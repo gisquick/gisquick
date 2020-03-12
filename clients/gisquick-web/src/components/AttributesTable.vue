@@ -92,9 +92,10 @@
         <v-divider vertical/>
       </template>
       <v-btn
-        icon
+        v-if="permissions.insert"
         class="my-0"
         @click="newFeatureMode = true"
+        icon
       >
         <v-icon>add_circle_outline</v-icon>
       </v-btn>
@@ -140,7 +141,7 @@
       </v-layout>
 
       <info-panel
-        v-if="showInfoPanel"
+        v-else-if="showInfoPanel"
         class="mx-1 mb-2 elevation-3"
         :features="features"
         :layer="layer"
@@ -239,6 +240,9 @@ export default {
         layer: this.layer.name,
         featureIndex: this.selectedFeatureIndex
       }
+    },
+    permissions () {
+      return this.layer.permissions || {}
     }
   },
   watch: {

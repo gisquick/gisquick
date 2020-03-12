@@ -1,23 +1,29 @@
 <template>
   <v-layout>
     <!-- Toolbar UI -->
-    <v-btn
-      @click="drawingEnabled = !drawingEnabled"
-      :class="{'primary--text': drawingEnabled}"
-      icon
-    >
-      <icon name="add-geometry"/>
-    </v-btn>
-    <v-btn
-      v-if="drawGeomType !== 'Point'"
-      :disabled="nodeToolDisabled"
-      @click="nodeToolEnabled = !nodeToolEnabled"
-      :class="{'primary--text': nodeToolEnabled}"
-      icon
-    >
-      <icon name="node-tool"/>
-    </v-btn>
-
+    <v-tooltip top>
+      <v-btn
+        slot="activator"
+        @click="drawingEnabled = !drawingEnabled"
+        :class="{'primary--text': drawingEnabled}"
+        icon
+      >
+        <icon name="add-geometry"/>
+      </v-btn>
+      <translate>Add geometry</translate>
+    </v-tooltip>
+    <v-tooltip v-if="drawGeomType !== 'Point'" top>
+      <v-btn
+        slot="activator"
+        :disabled="nodeToolDisabled"
+        @click="nodeToolEnabled = !nodeToolEnabled"
+        :class="{'primary--text': nodeToolEnabled}"
+        icon
+      >
+        <icon name="node-tool"/>
+      </v-btn>
+      <translate>Node tool</translate>
+    </v-tooltip>
     <!-- OpenLayers -->
     <vector-layer
       :ol-style="geomStyle"

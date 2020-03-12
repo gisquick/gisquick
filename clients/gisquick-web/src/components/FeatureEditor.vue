@@ -15,13 +15,17 @@
     </slot>
     <portal to="infopanel-tool">
       <v-layout class="tools-container align-center pl-1">
-        <v-btn
-          :class="{'primary--text': editGeometry}"
-          @click="editGeometry = !editGeometry"
-          icon
-        >
-          <icon name="edit-geometry"/>
-        </v-btn>
+        <v-tooltip top>
+          <v-btn
+            slot="activator"
+            :class="{'primary--text': editGeometry}"
+            @click="editGeometry = !editGeometry"
+            icon
+          >
+            <icon name="edit-geometry"/>
+          </v-btn>
+          <translate>Edit geometry</translate>
+        </v-tooltip>
         <geometry-editor
           v-if="editGeometry"
           ref="geometryEditor"
@@ -33,38 +37,53 @@
           <v-icon color="red darken-3">delete_forever</v-icon>
         </v-btn> -->
         <v-menu top fixed>
-          <v-btn
-            slot="activator"
-            :disabled="!permissions.delete || status === 'loading'"
-            icon
-          >
-            <v-icon color="red darken-3">delete_forever</v-icon>
-          </v-btn>
+          <v-tooltip slot="activator" top>
+            <v-btn
+              slot="activator"
+              :disabled="!permissions.delete || status === 'loading'"
+              icon
+            >
+              <v-icon color="red darken-3">delete_forever</v-icon>
+            </v-btn>
+            <translate>Delete object</translate>
+          </v-tooltip>
           <v-card>
             <v-card-text class="py-1 px-3 grey lighten-3">
-              <small><b>Delete current object?</b></small>
+              <small><b><translate>Delete current object?</translate></b></small>
             </v-card-text>
             <v-divider/>
             <v-card-actions class="py-1">
-              <v-btn small flat>No</v-btn>
-              <v-btn small flat color="primary" @click="deleteFeature">Yes</v-btn>
+              <v-btn small flat>
+                <translate>No</translate>
+              </v-btn>
+              <v-btn small flat color="primary" @click="deleteFeature">
+                <translate>Yes</translate>
+              </v-btn>
             </v-card-actions>
           </v-card>
         </v-menu>
-        <v-btn
-          :disabled="!permissions.update || !isModified || !!status"
-          @click="restore"
-          icon
-        >
-          <v-icon color="orange">restore</v-icon>
-        </v-btn>
-        <v-btn
-          :disabled="!isModified || !!status"
-          @click="save"
-          icon
-        >
-          <v-icon color="teal">save</v-icon>
-        </v-btn>
+        <v-tooltip top>
+          <v-btn
+            slot="activator"
+            :disabled="!permissions.update || !isModified || !!status"
+            @click="restore"
+            icon
+          >
+            <v-icon color="orange">restore</v-icon>
+          </v-btn>
+          <translate>Discard changes</translate>
+        </v-tooltip>
+        <v-tooltip top>
+          <v-btn
+            slot="activator"
+            :disabled="!isModified || !!status"
+            @click="save"
+            icon
+          >
+            <v-icon color="teal">save</v-icon>
+          </v-btn>
+          <translate>Save changes</translate>
+        </v-tooltip>
         <v-layout class="justify-center notification my-2">
           <transition name="fade">
             <v-layout

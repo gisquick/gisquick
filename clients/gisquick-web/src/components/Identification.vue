@@ -36,6 +36,7 @@
       </div>
     </portal>
 
+    <identify-pointer v-if="!editMode" @click="onClick"/>
     <features-viewer :features="displayedFeaures"/>
     <point-marker :coords="mapCoords"/>
 
@@ -47,8 +48,8 @@
           :features="displayedFeaures"
           :layer="displayedLayer"
           :layers="resultLayers"
-
           :selected="selection"
+          :editMode.sync="editMode"
           @selection-change="selection = $event"
           @close="clearResults"
           @delete="onFeatureDeleted"
@@ -89,9 +90,22 @@ const SelectedStyle = simpleStyle({
   strokeWidth: 3
 })
 
+const IdentifyPointer = {
+  mounted () {
+    const map = this.$map
+    map.getViewport().style.cursor = 'crosshair'
+    const key = map.on('singleclick', evt => this.$emit('click', evt))
+    this.$once('hook:beforeDestroy', () => {
+      Observable.unByKey(key)
+      map.getViewport().style.cursor = ''
+    })
+  },
+  render: h => null
+}
+
 export default {
   name: 'identification',
-  components: { InfoPanel, FeaturesTable, PointMarker, FeaturesViewer },
+  components: { InfoPanel, FeaturesTable, PointMarker, FeaturesViewer, IdentifyPointer },
   props: {
     identificationLayer: {
       type: String,
@@ -106,7 +120,8 @@ export default {
     return {
       mapCoords: null,
       layersFeatures: [],
-      selection: null
+      selection: null,
+      editMode: false
     }
   },
   computed: {
@@ -168,68 +183,42 @@ export default {
       }
     }
   },
-  mounted () {
-    this.activate()
-  },
-  activated () {
-    this.activate()
-  },
-  beforeDestroy () {
-    this.deactivate()
-  },
-  deactivated () {
-    this.deactivate()
-  },
   methods: {
-    activate () {
-      // register click events listener on map with
-      // WFS GetFeature features identification
-      const map = this.$map
-      const mapProjection = map.getView().getProjection().getCode()
+    onClick (evt) {
+      const { map, pixel } = evt
+      const coords = map.getCoordinateFromPixel(pixel)
+      const pixelRadius = 8
+      const radius = Math.abs(map.getCoordinateFromPixel([pixel[0] + pixelRadius, pixel[1]])[0] - coords[0])
+      const identifyGeom = Polygon.fromCircle(new Circle(coords, radius), 6)
+      const layers = this.identificationLayer ? [this.identificationLayer] : this.queryableLayers.map(l => l.name)
 
-      this.mapClickListener = map.on('singleclick', evt => {
-        const pixel = evt.pixel
-        const coords = map.getCoordinateFromPixel(pixel)
-        const pixelRadius = 8
-        const radius = Math.abs(map.getCoordinateFromPixel([pixel[0] + pixelRadius, pixel[1]])[0] - coords[0])
-        const identifyGeom = Polygon.fromCircle(new Circle(coords, radius), 6)
-        const layers = this.identificationLayer ? [this.identificationLayer] : this.queryableLayers.map(l => l.name)
-
-        const query = getFeaturesQuery(layers, identifyGeom)
-        const params = {
-          'VERSION': '1.1.0',
-          'SERVICE': 'WFS',
-          'REQUEST': 'GetFeature',
-          'OUTPUTFORMAT': 'GeoJSON',
-          'MAXFEATURES': 10
-        }
-        this.$http.post(this.project.config.ows_url, query, { params, headers: { 'Content-Type': 'text/xml' } })
-          .then(resp => {
-            const parser = new GeoJSON()
-            const features = parser.readFeatures(resp.data, { featureProjection: mapProjection })
-
-            const categorizedFeatures = this.categorize(features)
-            const items = this.tableData(categorizedFeatures)
-            this.layersFeatures = items
-            if (items.length) {
-              this.selection = {
-                layer: items[0].layer.name,
-                featureIndex: 0
-              }
-            } else {
-              this.selection = null
-            }
-          })
-        this.mapCoords = map.getCoordinateFromPixel(pixel)
-      })
-      map.getViewport().style.cursor = 'crosshair'
-    },
-    deactivate () {
-      Observable.unByKey(this.mapClickListener)
-      this.$map.getViewport().style.cursor = ''
-      if (this.pointer) {
-        this.pointer.setMap(null)
+      const query = getFeaturesQuery(layers, identifyGeom)
+      const params = {
+        'VERSION': '1.1.0',
+        'SERVICE': 'WFS',
+        'REQUEST': 'GetFeature',
+        'OUTPUTFORMAT': 'GeoJSON',
+        'MAXFEATURES': 10
       }
+      this.$http.post(this.project.config.ows_url, query, { params, headers: { 'Content-Type': 'text/xml' } })
+        .then(resp => {
+          const mapProjection = map.getView().getProjection().getCode()
+          const parser = new GeoJSON()
+          const features = parser.readFeatures(resp.data, { featureProjection: mapProjection })
+
+          const categorizedFeatures = this.categorize(features)
+          const items = this.tableData(categorizedFeatures)
+          this.layersFeatures = items
+          if (items.length) {
+            this.selection = {
+              layer: items[0].layer.name,
+              featureIndex: 0
+            }
+          } else {
+            this.selection = null
+          }
+        })
+      this.mapCoords = map.getCoordinateFromPixel(pixel)
     },
     clearResults () {
       this.selection = null

@@ -146,6 +146,7 @@
         :features="features"
         :layer="layer"
         :selected="infoPanelSelection"
+        :editMode.sync="editMode"
         @selection-change="selectedFeatureIndex = $event.featureIndex"
         @close="showInfoPanel = false"
         @edit="fetchFeatures(pagination.page, true)"
@@ -194,7 +195,8 @@ export default {
       pagination: null,
       selectedFeatureIndex: null,
       showInfoPanel: false,
-      newFeatureMode: false
+      newFeatureMode: false,
+      editMode: false
     }
   },
   computed: {

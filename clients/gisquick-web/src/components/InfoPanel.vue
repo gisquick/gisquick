@@ -56,7 +56,7 @@
         <v-btn
           v-if="layerEditable"
           :class="{'primary--text': editMode}"
-          @click="editMode = !editMode"
+          @click="$emit('update:editMode', !editMode)"
           icon dark
         >
           <v-icon>edit</v-icon>
@@ -83,12 +83,9 @@ export default {
     selected: Object,
     layer: Object,
     features: Array,
-    layers: Array
-  },
-  data () {
-    return {
-      editMode: false
-    }
+    layers: Array,
+    editMode: Boolean
+
   },
   computed: {
     layersOptions () {

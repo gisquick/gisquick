@@ -19,7 +19,6 @@ export function wfsTransaction (owsUrl, layername, { inserts = [], updates = [],
     headers: {
       'Content-Type': 'text/xml'
     }
-    // responseType: 'xml'
   }
   return new Promise((resolve, reject) => {
     http.post(owsUrl, query, httpOpts)
@@ -47,14 +46,19 @@ export function wfsTransaction (owsUrl, layername, { inserts = [], updates = [],
       })
       .catch(err => {
         if (err.response) {
-          const info = err.response.request.responseXML.querySelector('ServiceException')
-          const msg = info && info.textContent
+          let msg = null
+          if  (err.response.status === 403) {
+            msg = 'Permission denied'
+          } else if (err.response.request.responseXML) {
+            const info = err.response.request.responseXML.querySelector('ServiceException')
+            msg = info && info.textContent
           // const el = respXML.querySelector('Message')
           // const err = msg && msg.textContent
-          reject(new Error(msg || 'Error'))
-        } else {
-          reject(err)
+          }
+          // if (err.response.headers['content-type'] == 'application/json')
+          return reject(new Error(msg || 'Error'))
         }
+        reject(err)
       })
   })
 }

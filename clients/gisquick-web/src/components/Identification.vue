@@ -224,6 +224,7 @@ export default {
       this.selection = null
       this.mapCoords = null
       this.layersFeatures = []
+      this.editMode = false
     },
     categorize (features) {
       // (WFS layer name cannot contain space character)

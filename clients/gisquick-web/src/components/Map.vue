@@ -1,6 +1,15 @@
 <template>
   <div class="map-container">
     <div ref="mapEl" class="map"/>
+    <v-menu
+      bottom left
+      class="app-menu"
+    >
+      <v-btn dark fab slot="activator">
+        <v-icon>more_vert</v-icon>
+      </v-btn>
+      <app-menu/>
+    </v-menu>
 
     <!-- <collapse-transition class="status-bar"> -->
       <bottom-toolbar v-if="statusBarVisible" class="status-bar"/>
@@ -71,10 +80,11 @@ import ToolsMenu from './ToolsMenu'
 import MapControl from './MapControl'
 import ScaleLine from './ol/ScaleLine'
 import MapTools from './MapTools'
+import AppMenu from '@/components/AppMenu'
 
 export default {
   name: 'Map',
-  components: { ContentPanel, BottomToolbar, ScaleLine, MapAttributions, ToolsMenu, MapControl, MapTools },
+  components: { ContentPanel, BottomToolbar, ScaleLine, MapAttributions, ToolsMenu, MapControl, MapTools, AppMenu },
   refs: ['tools'],
   data () {
     return {
@@ -214,7 +224,9 @@ export default {
 
 .map-container {
   width: 100%;
-  height: 100%;
+  height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
   position: relative;
   display: grid;
   grid-template-columns: auto 1fr auto;
@@ -293,6 +305,13 @@ export default {
 
     align-self: end;
     justify-self: end;
+  }
+  .app-menu {
+    grid-column: 3 / 4;
+     grid-row: 1 / 2;
+     align-self: start;
+     justify-self: end;
+     margin: 0.5em;
   }
   .right-panel {
     // grid-column: 3 / 4;
@@ -398,4 +417,18 @@ export default {
   }*/
 }
 
+.app-menu {
+  .v-menu__activator {
+    .v-btn {
+      margin: 0;
+      width: 2.75em;
+      height: 2.75em;
+      border-radius: 20%;
+      opacity: 0.8;
+      .icon {
+        font-size: 1.75em;
+      }
+    }
+  }
+}
 </style>

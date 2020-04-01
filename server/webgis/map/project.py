@@ -20,15 +20,6 @@ from webgis.map.reverse import project_ows_url, project_tile_url, project_legend
 from webgis.libs.utils import set_query_parameters
 
 
-OSM_LAYER = {
-    'name': 'OpenStreetMap',
-    'type': 'osm',
-    'metadata': {
-        'abstract': 'OpenStreetMap (OSM) is a collaborative project to create a free editable map of the world.',
-        'keyword_list': 'free, collaborative, world map'
-    }
-}
-
 BLANK_LAYER = {
     'name': 'Blank Layer',
     'type': 'blank',
@@ -37,19 +28,6 @@ BLANK_LAYER = {
         'keyword_list': 'blank'
     }
 }
-
-OSM_RESOLUTIONS = [
-    156543.03390625, 78271.516953125, 39135.7584765625, 19567.87923828125,
-    9783.939619140625, 4891.9698095703125, 2445.9849047851562, 1222.9924523925781,
-    611.4962261962891, 305.74811309814453, 152.87405654907226, 76.43702827453613,
-    38.218514137268066, 19.109257068634033, 9.554628534317017, 4.777314267158508
-]
-
-OSM_SCALES = [
-    591657528, 295828764, 147914382, 73957191, 36978595, 18489298, 9244649,
-    4622324,2311162, 1155581, 577791, 288895, 144448, 72224, 36112, 18056,
-    9028, 4514, 2257
-]
 
 class InvalidProjectException(Exception):
     pass
@@ -227,30 +205,31 @@ def get_project(request):
 
     context = {}
     project = form.cleaned_data['PROJECT']
+    if not project:
+        raise Http404
 
-    if project:
-        project = clean_project_name(project)
-        ows_project_name = get_last_project_version(project)
-        if not ows_project_name:
-            raise Http404
+    project = clean_project_name(project)
+    ows_project_name = get_last_project_version(project)
+    if not ows_project_name:
+        raise Http404
 
-        ows_project = ows_project_name
+    ows_project = ows_project_name
 
-        metadata_filename = os.path.join(
-            settings.GISQUICK_PROJECT_ROOT,
-            ows_project_name + '.meta'
-        )
-        try:
-            metadata = MetadataParser(metadata_filename)
-        except:
-            raise InvalidProjectException
+    metadata_filename = os.path.join(
+        settings.GISQUICK_PROJECT_ROOT,
+        ows_project_name + '.meta'
+    )
+    try:
+        metadata = MetadataParser(metadata_filename)
+    except:
+        raise InvalidProjectException
 
-        if metadata.expiration:
-            expiration_date = datetime.datetime.strptime(metadata.expiration, "%d.%m.%Y").date()
-            if datetime.date.today() > expiration_date:
-                project_data = _project_basic_data(metadata)
-                project_data['status'] = 410
-                return project_data
+    if metadata.expiration:
+        expiration_date = datetime.datetime.strptime(metadata.expiration, "%d.%m.%Y").date()
+        if datetime.date.today() > expiration_date:
+            project_data = _project_basic_data(metadata)
+            project_data['status'] = 410
+            return project_data
 
     # Authentication
     allow_anonymous = metadata.authentication == 'all' if project else True
@@ -268,155 +247,132 @@ def get_project(request):
             project_data['status'] = 403
             return project_data
 
-    if project:
-        ows_url = project_ows_url(ows_project)
-        context['units'] = {
-            'meters': 'm',
-            'feet': 'ft',
-            'miles': 'mi',
-            'degrees': 'dd'
-        }[metadata.units] or 'dd'
-        use_mapcache = metadata.use_mapcache
-        #use_mapcache = False
-        project_tile_resolutions = metadata.tile_resolutions
+    ows_url = project_ows_url(ows_project)
+    context['units'] = {
+        'meters': 'm',
+        'feet': 'ft',
+        'miles': 'mi',
+        'degrees': 'dd'
+    }[metadata.units] or 'dd'
+    use_mapcache = metadata.use_mapcache
+    #use_mapcache = False
+    project_tile_resolutions = metadata.tile_resolutions
 
-        context['projection'] = metadata.projection
-        context['tile_resolutions'] = project_tile_resolutions
-        context['scales'] = metadata.scales
+    context['projection'] = metadata.projection
+    context['tile_resolutions'] = project_tile_resolutions
+    context['scales'] = metadata.scales
 
-        # BASE LAYERS
-        baselayers_tree = _published_layers(_convert_layers_metadata(metadata.base_layers))
-        base = form.cleaned_data['BASE']
-        if base:
-            # TODO:
-            #update_layers(baselayers_tree, base)
-            pass
+    # BASE LAYERS
+    baselayers_tree = _published_layers(_convert_layers_metadata(metadata.base_layers))
+    base = form.cleaned_data['BASE']
+    if base:
+        # TODO:
+        #update_layers(baselayers_tree, base)
+        pass
 
-        # ensure that a blank base layer is always used
-        if not baselayers_tree:
-            blank_layer = dict(BLANK_LAYER)
-            blank_layer['resolutions'] = project_tile_resolutions
-            baselayers_tree = [blank_layer]
-        context['base_layers'] = baselayers_tree
+    # ensure that a blank base layer is always used
+    if not baselayers_tree:
+        blank_layer = dict(BLANK_LAYER)
+        blank_layer['resolutions'] = project_tile_resolutions
+        baselayers_tree = [blank_layer]
+    context['base_layers'] = baselayers_tree
 
-        # OVERLAYS LAYERS
-        info = _layers_names(metadata.overlays)
-        _convert_topics(metadata.topics, info)
-        layers_tree = _convert_layers_names(metadata.overlays, info)
-        layers = form.cleaned_data['OVERLAY']
-        # override layers tree with LAYERS GET parameter if provided
-        if layers:
-            # TODO:
-            #update_layers(layers_tree, layers)
-            pass
+    # OVERLAYS LAYERS
+    info = _layers_names(metadata.overlays)
+    _convert_topics(metadata.topics, info)
+    layers_tree = _convert_layers_names(metadata.overlays, info)
+    layers = form.cleaned_data['OVERLAY']
+    # override layers tree with LAYERS GET parameter if provided
+    if layers:
+        # TODO:
+        #update_layers(layers_tree, layers)
+        pass
 
-        if metadata.access_control and metadata.access_control['enabled']:
-            # compute layers permissions for current user
-            layers_permissions = {}
-            for role in metadata.access_control['roles']:
-                if check_role_access(request.user, role):
-                    for layername, role_permissions in role['permissions']['layers'].items():
-                        if layername not in layers_permissions:
-                            layers_permissions[layername] = {}
-                        for k, v in role_permissions.items():
-                            layers_permissions[layername][k] = layers_permissions[layername].get(k) or v
+    if metadata.access_control and metadata.access_control['enabled']:
+        # compute layers permissions for current user
+        layers_permissions = {}
+        for role in metadata.access_control['roles']:
+            if check_role_access(request.user, role):
+                for layername, role_permissions in role['permissions']['layers'].items():
+                    if layername not in layers_permissions:
+                        layers_permissions[layername] = {}
+                    for k, v in role_permissions.items():
+                        layers_permissions[layername][k] = layers_permissions[layername].get(k) or v
 
-            def check_layername_access(layername):
-                perms = layers_permissions.get(layername)
-                return perms and perms.get('view')
+        def check_layername_access(layername):
+            perms = layers_permissions.get(layername)
+            return perms and perms.get('view')
 
-            layers_tree = _filter_layers(layers_tree, lambda l: check_layername_access(l['name']))
-            # insert layer permissions information into layer data
-            for layer in _iterate_layers(layers_tree):
-                layer['permissions'] = layers_permissions.get(layer['name'])
+        layers_tree = _filter_layers(layers_tree, lambda l: check_layername_access(l['name']))
+        # insert layer permissions information into layer data
+        for layer in _iterate_layers(layers_tree):
+            layer['permissions'] = layers_permissions.get(layer['name'])
 
-            # remove not allowed layers from topics and remove 'empty' topics
-            for topic in metadata.topics:
-                topic['visible_overlays'] = list(filter(check_layername_access, topic['visible_overlays']))
-            metadata.topics = list(filter(lambda t: t['visible_overlays'], metadata.topics))
+        # remove not allowed layers from topics and remove 'empty' topics
+        for topic in metadata.topics:
+            topic['visible_overlays'] = list(filter(check_layername_access, topic['visible_overlays']))
+        metadata.topics = list(filter(lambda t: t['visible_overlays'], metadata.topics))
 
-        context['layers'] = layers_tree
+    context['layers'] = layers_tree
 
-        if use_mapcache:
-            context['mapcache_url'] = project_tile_url(project, metadata.publish_date_unix)
-            context['legend_url'] = project_legend_url(project, metadata.publish_date_unix)
-        else:
-            context['legend_url'] = ows_url
-
-        context.update({
-            'project': project,
-            'ows_project': ows_project_name,
-            'ows_url': ows_url,
-            'wms_url': urllib.parse.unquote(ows_url),
-            'project_extent': metadata.extent,
-            'zoom_extent': form.cleaned_data['EXTENT'] or metadata.zoom_extent,
-            'print_composers': metadata.composer_templates if request.user.is_authenticated else None,
-            'info_panel': metadata.info_panel,
-            'root_title': metadata.title,
-            'author': metadata.contact_person,
-            'email': metadata.contact_mail,
-            'phone': metadata.contact_phone,
-            'organization': metadata.contact_organization,
-            'abstract': metadata.abstract,
-            'online_resource': metadata.online_resource,
-            'access_constrains': metadata.access_constrains,
-            'fees': metadata.fees,
-            'keyword_list': metadata.keyword_list,
-            'publish_user': metadata.gislab_user,
-            'publish_date': metadata.publish_date,
-            'publish_date_unix': int(metadata.publish_date_unix),
-            'expiration_date': metadata.expiration,
-            'selection_color': metadata.selection_color[:-2], #strip alpha channel,
-            'position_precision': metadata.position_precision,
-            'topics': metadata.topics,
-            'authentication': metadata.authentication,
-            'plugin_version': metadata.plugin_version
-        })
-        if metadata.message:
-            valid_until = datetime.datetime.strptime(metadata.message['valid_until'], "%d.%m.%Y").date()
-            if datetime.date.today() <= valid_until:
-                context['message'] = metadata.message['text'].replace('\n', '<br />')
-
-        project_hash = hashlib.md5(project.encode('utf-8')).hexdigest()
-        project_info = get_project_info(project_hash, metadata.publish_date_unix)
-        # if not project_info:
-        store_project_info(project_hash, metadata.publish_date_unix, metadata)
-
-        # Update projects registry
-        registry_info = {
-            'plugin_version': metadata.plugin_version or '',
-            'gislab_user': metadata.gislab_user,
-            'publish_date': timezone.make_aware(datetime.datetime.fromtimestamp(metadata.publish_date_unix)),
-            'last_display': timezone.now()
-        }
-        try:
-            rows = Project_registry.objects.filter(project=project).update(**registry_info)
-            if not rows:
-                Project_registry(project=project, **registry_info).save()
-        except:
-            raise
+    if use_mapcache:
+        context['mapcache_url'] = project_tile_url(project, metadata.publish_date_unix)
+        context['legend_url'] = project_legend_url(project, metadata.publish_date_unix)
     else:
-        context.update({
-            'project': 'empty',
-            'root_title': _('Empty Project'),
-            'project_extent': [-20037508.34, -20037508.34, 20037508.34, 20037508.34],
-            'tile_resolutions': OSM_RESOLUTIONS,
-            'scales': OSM_SCALES,
-            'projection': {
-                'code': 'EPSG:3857',
-                'is_geographic': False
-            },
-            'position_precision': {
-                'decimal_places': 2
-            },
-            'units': 'm',
-            'authentication': 'all',
-            'topics': [],
-            'layers': [],
-            'ows_url': ''
-        })
-        context['zoom_extent'] = form.cleaned_data['EXTENT'] or context['project_extent']
-        context['base_layers'] = [OSM_LAYER]
+        context['legend_url'] = ows_url
+
+    context.update({
+        'project': project,
+        'ows_project': ows_project_name,
+        'ows_url': ows_url,
+        'wms_url': urllib.parse.unquote(ows_url),
+        'project_extent': metadata.extent,
+        'zoom_extent': form.cleaned_data['EXTENT'] or metadata.zoom_extent,
+        'print_composers': metadata.composer_templates if request.user.is_authenticated else None,
+        'info_panel': metadata.info_panel,
+        'root_title': metadata.title,
+        'author': metadata.contact_person,
+        'email': metadata.contact_mail,
+        'phone': metadata.contact_phone,
+        'organization': metadata.contact_organization,
+        'abstract': metadata.abstract,
+        'online_resource': metadata.online_resource,
+        'access_constrains': metadata.access_constrains,
+        'fees': metadata.fees,
+        'keyword_list': metadata.keyword_list,
+        'publish_user': metadata.gislab_user,
+        'publish_date': metadata.publish_date,
+        'publish_date_unix': int(metadata.publish_date_unix),
+        'expiration_date': metadata.expiration,
+        'selection_color': metadata.selection_color[:-2], #strip alpha channel,
+        'position_precision': metadata.position_precision,
+        'topics': metadata.topics,
+        'authentication': metadata.authentication,
+        'plugin_version': metadata.plugin_version
+    })
+    if metadata.message:
+        valid_until = datetime.datetime.strptime(metadata.message['valid_until'], "%d.%m.%Y").date()
+        if datetime.date.today() <= valid_until:
+            context['message'] = metadata.message['text'].replace('\n', '<br />')
+
+    project_hash = hashlib.md5(project.encode('utf-8')).hexdigest()
+    project_info = get_project_info(project_hash, metadata.publish_date_unix)
+    # if not project_info:
+    store_project_info(project_hash, metadata.publish_date_unix, metadata)
+
+    # Update projects registry
+    registry_info = {
+        'plugin_version': metadata.plugin_version or '',
+        'gislab_user': metadata.gislab_user,
+        'publish_date': timezone.make_aware(datetime.datetime.fromtimestamp(metadata.publish_date_unix)),
+        'last_display': timezone.now()
+    }
+    try:
+        rows = Project_registry.objects.filter(project=project).update(**registry_info)
+        if not rows:
+            Project_registry(project=project, **registry_info).save()
+    except:
+        raise
 
     context['gislab_version'] = webgis.VERSION
     context['gislab_homepage'] = settings.GISQUICK_HOMEPAGE

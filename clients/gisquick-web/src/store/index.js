@@ -21,7 +21,8 @@ export default new Vuex.Store({
     app: null,
     user: null,
     project: null,
-    activeTool: null
+    activeTool: null,
+    showLogin: false
   },
   mutations: {
     app (state, app) {
@@ -70,6 +71,9 @@ export default new Vuex.Store({
         .forEach(l => {
           l.visible = layersNames.includes(l.name)
         })
+    },
+    showLogin (state, value) {
+      state.showLogin = value
     }
   },
   getters: {

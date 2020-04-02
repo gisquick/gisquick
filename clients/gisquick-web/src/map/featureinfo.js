@@ -117,3 +117,13 @@ export function getFeaturesQuery (layers, geom, filters) {
     '</GetFeature>'
   ].join('\n')
 }
+
+export function getFeatureByIdQuery (layer, feature) {
+  const [layername, id] = feature.getId().split('.', 2)
+  const filter = {
+    attribute: layer.pk_attributes[0],
+    operator: '=',
+    value: id
+  }
+  return getFeaturesQuery([layername], null, [filter])
+}

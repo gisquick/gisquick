@@ -15,7 +15,7 @@
     </slot>
     <portal to="infopanel-tool">
       <v-layout class="tools-container align-center pl-1">
-        <v-tooltip top>
+        <v-tooltip bottom>
           <v-btn
             slot="activator"
             :class="{'primary--text': editGeometry}"
@@ -37,7 +37,7 @@
           <v-icon color="red darken-3">delete_forever</v-icon>
         </v-btn> -->
         <v-menu top fixed>
-          <v-tooltip slot="activator" top>
+          <v-tooltip slot="activator" bottom>
             <v-btn
               slot="activator"
               :disabled="!permissions.delete || status === 'loading'"
@@ -62,7 +62,7 @@
             </v-card-actions>
           </v-card>
         </v-menu>
-        <v-tooltip top>
+        <v-tooltip bottom>
           <v-btn
             slot="activator"
             :disabled="!permissions.update || !isModified || !!status"
@@ -73,7 +73,7 @@
           </v-btn>
           <translate>Discard changes</translate>
         </v-tooltip>
-        <v-tooltip top>
+        <v-tooltip bottom>
           <v-btn
             slot="activator"
             :disabled="!isModified || !!status"

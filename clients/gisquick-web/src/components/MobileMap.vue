@@ -180,7 +180,7 @@ export default {
   position: relative;
   display: grid;
   grid-template-columns: 1fr auto;
-  grid-template-rows: auto 1fr;
+  grid-template-rows: minmax(auto, 75vh) 1fr;
   > * {
     position: relative;
   }
@@ -201,7 +201,6 @@ export default {
     max-height: 100%;
     margin: 0.5em;
     pointer-events: none;
-    max-height: 75%;
     > * {
       pointer-events: auto;
     }

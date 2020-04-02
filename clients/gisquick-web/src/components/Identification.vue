@@ -52,7 +52,8 @@
           :editMode.sync="editMode"
           @selection-change="selection = $event"
           @close="clearResults"
-          @delete="onFeatureDeleted"
+          @delete="onFeatureDelete"
+          @edit="onFeatureEdit"
         />
       </portal>
       <portal to="bottom-panel">
@@ -81,7 +82,7 @@ import InfoPanel from './InfoPanel'
 import PointMarker from './ol/PointMarker'
 import FeaturesViewer from './ol/FeaturesViewer'
 import { simpleStyle } from '@/map/styles'
-import { getFeaturesQuery } from '@/map/featureinfo.js'
+import { getFeaturesQuery, getFeatureByIdQuery } from '@/map/featureinfo.js'
 import { ShallowArray } from '@/utils'
 
 const SelectedStyle = simpleStyle({
@@ -184,41 +185,43 @@ export default {
     }
   },
   methods: {
-    onClick (evt) {
+    async getFeatures (query, params = {}) {
+      const config = {
+        params: {
+          'VERSION': '1.1.0',
+          'SERVICE': 'WFS',
+          'REQUEST': 'GetFeature',
+          'OUTPUTFORMAT': 'GeoJSON',
+          ...params
+        },
+        headers: { 'Content-Type': 'text/xml' }
+      }
+      const resp = await this.$http.post(this.project.config.ows_url, query, config)
+      const mapProjection = this.$map.getView().getProjection().getCode()
+      const parser = new GeoJSON()
+      return parser.readFeatures(resp.data, { featureProjection: mapProjection })
+    },
+    async onClick (evt) {
       const { map, pixel } = evt
+      this.mapCoords = map.getCoordinateFromPixel(pixel)
       const coords = map.getCoordinateFromPixel(pixel)
       const pixelRadius = 8
       const radius = Math.abs(map.getCoordinateFromPixel([pixel[0] + pixelRadius, pixel[1]])[0] - coords[0])
       const identifyGeom = Polygon.fromCircle(new Circle(coords, radius), 6)
       const layers = this.identificationLayer ? [this.identificationLayer] : this.queryableLayers.map(l => l.name)
-
       const query = getFeaturesQuery(layers, identifyGeom)
-      const params = {
-        'VERSION': '1.1.0',
-        'SERVICE': 'WFS',
-        'REQUEST': 'GetFeature',
-        'OUTPUTFORMAT': 'GeoJSON',
-        'MAXFEATURES': 10
+      const features = await this.getFeatures(query, { 'MAXFEATURES': 10 })
+      const categorizedFeatures = this.categorize(features)
+      const items = this.tableData(categorizedFeatures)
+      this.layersFeatures = items
+      if (items.length) {
+        this.selection = {
+          layer: items[0].layer.name,
+          featureIndex: 0
+        }
+      } else {
+        this.selection = null
       }
-      this.$http.post(this.project.config.ows_url, query, { params, headers: { 'Content-Type': 'text/xml' } })
-        .then(resp => {
-          const mapProjection = map.getView().getProjection().getCode()
-          const parser = new GeoJSON()
-          const features = parser.readFeatures(resp.data, { featureProjection: mapProjection })
-
-          const categorizedFeatures = this.categorize(features)
-          const items = this.tableData(categorizedFeatures)
-          this.layersFeatures = items
-          if (items.length) {
-            this.selection = {
-              layer: items[0].layer.name,
-              featureIndex: 0
-            }
-          } else {
-            this.selection = null
-          }
-        })
-      this.mapCoords = map.getCoordinateFromPixel(pixel)
     },
     clearResults () {
       this.selection = null
@@ -258,12 +261,23 @@ export default {
           features: ShallowArray(groupedFeatures[l.name])
         }))
     },
-    onFeatureDeleted (feature) {
+    onFeatureDelete (feature) {
       this.resultItem.features = this.resultItem.features.filter(f => f !== feature)
       // const index = this.displayedFeaures.indexOf(feature)
       // if (index !== -1) {
       //   this.displayedFeaures.splice(index, 1)
       // }
+    },
+    async onFeatureEdit (feature) {
+      const fid = feature.getId()
+      const index = this.resultItem.features.findIndex(f => f.getId() === fid)
+      const query = getFeatureByIdQuery(this.resultItem.layer, feature)
+      const features = await this.getFeatures(query)
+      const newFeature = features[0]
+      if (newFeature) {
+        // this.displayedFeaures.splice(index, 1, newFeature)
+        this.$set(this.displayedFeaures, index, newFeature)
+      }
     }
   }
 }

@@ -134,10 +134,12 @@ export default {
 .info-panel {
   position: relative;
   border-radius: 3px;
-  width: 23em;
   border: 1px solid #aaa;
   background-color: #fff;
   overflow: hidden;
+  @media (min-width: 600px) {
+    width: 23em;
+  }
 
   .toolbar {
     background-color: #ddd;
@@ -190,7 +192,7 @@ export default {
     position: relative;
     display: grid;
     grid-template-rows: 1fr minmax(0, auto);
-    > * {
+    /deep/ > * {
       grid-row: 1 / 2;
       grid-column: 1 / 2;
     }

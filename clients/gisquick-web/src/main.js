@@ -9,12 +9,15 @@ import GetTextPlugin from 'vue-gettext'
 import { ReactiveRefs } from 'vue-reactive-refs'
 import 'url-polyfill'
 
+import Swiper from './swiper'
 import http from './client'
 import store from './store/index'
 import translations from './lang/translations.json'
 import App from './App'
 import ServerError from './ServerError'
 import { Icon, ScrollArea, TextSeparator } from './components/ui'
+import BasicScrollArea from './components/ui/BasicScrollArea'
+
 import {
   Collapsible,
   CollapseTransition,
@@ -28,6 +31,13 @@ const svgIcons = require.context('../icons', false, /.*\.svg$/)
 svgIcons.keys().map(svgIcons)
 
 Vue.config.productionTip = false
+const mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent)
+window.env = {
+  mobile
+}
+if (mobile) {
+  Vue.use(Swiper)
+}
 
 Vue.use(PortalVue)
 Vue.use(Vuetify)
@@ -36,7 +46,7 @@ Vue.use(GetTextPlugin, { translations, defaultLanguage: 'en-us', muteLanguages: 
 
 // register general purpose components globally
 Vue.component('icon', Icon)
-Vue.component('scroll-area', ScrollArea)
+Vue.component('scroll-area', mobile ? BasicScrollArea : ScrollArea)
 Vue.component('text-separator', TextSeparator)
 Vue.component('v-collapsible', Collapsible)
 Vue.component('collapse-transition', CollapseTransition)

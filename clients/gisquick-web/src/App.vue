@@ -18,11 +18,17 @@
 import { mapState } from 'vuex'
 import IntroPage from '@/IntroPage.vue'
 import ProjectNotFound from './ProjectNotFound'
-import MapApp from './components/Map'
+import DesktopMap from '@/components/Map'
+import MobileMap from '@/components/MobileMap'
 import LoginDialog from './components/LoginDialog'
 
 export default {
-  components: { ProjectNotFound, LoginDialog, IntroPage, MapApp },
+  components: {
+    ProjectNotFound,
+    LoginDialog,
+    IntroPage,
+    MapApp: async () => window.env.mobile ? MobileMap : DesktopMap
+  },
   computed: {
     ...mapState(['app', 'user', 'project', 'showLogin']),
     projectPath () {

@@ -32,8 +32,13 @@
       </div>
     </v-layout>
     <v-divider/>
+    <v-progress-circular
+      v-if="loadingProjects"
+      class="my-4 mx-auto"
+      indeterminate
+    />
     <v-list
-      v-if="projects.length"
+      v-else-if="projects.length > 0"
       class="grow"
       two-line
     >
@@ -75,6 +80,7 @@ export default {
   components: { },
   data () {
     return {
+      loadingProjects: false,
       projects: []
     }
   },
@@ -88,11 +94,14 @@ export default {
     logout () {
       this.$http.logout().then(() => location.reload())
     },
-    fetchProjects () {
-      this.$http.get('/api/projects/')
-        .then((resp) => {
-          this.projects = resp.data.projects
-        })
+    async fetchProjects () {
+      this.loadingProjects = true
+      try {
+        const { data } = await this.$http.get('/api/projects/')
+        this.projects = data.projects
+      } finally {
+        this.loadingProjects = false
+      }
     },
     openProject (project) {
       location.search = `PROJECT=${project.project}`

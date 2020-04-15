@@ -61,7 +61,6 @@ import 'ol/ol.css'
 import { createMap } from '@/map/map-builder'
 import ContentPanel from './content-panel/ContentPanel'
 import MapAttributions from './MapAttributions'
-import ToolsMenu from './ToolsMenu'
 import MapControl from './MapControl'
 import ScaleLine from './ol/ScaleLine'
 import MapTools from './MapTools'
@@ -70,7 +69,7 @@ import SwipeContainer from '@/components/SwipeContainer'
 
 export default {
   name: 'Map',
-  components: { AppMenu, ContentPanel, ScaleLine, MapAttributions, ToolsMenu, MapControl, MapTools, SwipeContainer },
+  components: { AppMenu, ContentPanel, ScaleLine, MapAttributions, MapControl, MapTools, SwipeContainer },
   refs: ['tools'],
   data () {
     return {

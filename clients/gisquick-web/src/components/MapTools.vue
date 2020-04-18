@@ -28,10 +28,10 @@
 import Vue from 'vue'
 import { mapState } from 'vuex'
 
-import AttributesTable from './AttributesTable'
-import Identification from './Identification'
-import Measure from './measure/Measure'
-import Print from './print/Print'
+import AttributesTable from '@/components/AttributesTable.vue'
+import Identification from '@/components/Identification.vue'
+import Measure from '@/components/measure/Measure.vue'
+import Print from '@/components/print/Print.vue'
 
 export default {
   computed: {

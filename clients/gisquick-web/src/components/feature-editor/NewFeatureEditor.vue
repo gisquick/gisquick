@@ -56,9 +56,9 @@ import Feature from 'ol/feature'
 
 import { queuedUpdater, ShallowObj } from '@/utils'
 import { wfsTransaction } from '@/map/wfs'
-import GeometryEditor from './GeometryEditor'
-import GenericEditForm from './GenericEditForm'
-import ProgressAction from '@/components/ProgressAction'
+import GeometryEditor from './GeometryEditor.vue'
+import GenericEditForm from './GenericEditForm.vue'
+import ProgressAction from '@/components/ProgressAction.vue'
 
 export default {
   name: 'NewFeatureEditor',

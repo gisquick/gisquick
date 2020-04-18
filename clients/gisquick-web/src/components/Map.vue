@@ -73,14 +73,14 @@ import Extent from 'ol/extent'
 import 'ol/ol.css'
 
 import { createMap } from '@/map/map-builder'
-import ContentPanel from './content-panel/ContentPanel'
-import BottomToolbar from './BottomToolbar'
-import MapAttributions from './MapAttributions'
-import ToolsMenu from './ToolsMenu'
-import MapControl from './MapControl'
-import ScaleLine from './ol/ScaleLine'
-import MapTools from './MapTools'
-import AppMenu from '@/components/AppMenu'
+import ContentPanel from '@/components/content-panel/ContentPanel.vue'
+import BottomToolbar from '@/components/BottomToolbar.vue'
+import MapAttributions from '@/components/MapAttributions.vue'
+import ToolsMenu from '@/components/ToolsMenu.vue'
+import MapControl from '@/components/MapControl.vue'
+import ScaleLine from '@/components/ol/ScaleLine.vue'
+import MapTools from '@/components/MapTools.vue'
+import AppMenu from '@/components/AppMenu.vue'
 
 export default {
   name: 'Map',

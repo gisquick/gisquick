@@ -109,15 +109,15 @@
 <script>
 import difference from 'lodash/difference'
 import { mapState, mapGetters } from 'vuex'
-import LayerItem from './LayerItem'
-import BaseLayerItem from './BaseLayerItem'
-import MapLegend from './Legend'
-import OverlaysOpacity from './OverlaysOpacity'
-import BaseLayerOpacity from './BaseLayerOpacity'
+import './LayerItem.vue'
+import './BaseLayerItem.vue'
+import MapLegend from './Legend.vue'
+import OverlaysOpacity from './OverlaysOpacity.vue'
+import BaseLayerOpacity from './BaseLayerOpacity.vue'
 
 export default {
   name: 'content-panel',
-  components: { BaseLayerItem, LayerItem, MapLegend, OverlaysOpacity, BaseLayerOpacity },
+  components: { MapLegend, OverlaysOpacity, BaseLayerOpacity },
   data () {
     return {
       activeMainTab: 'overlays',

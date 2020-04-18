@@ -72,8 +72,8 @@
 </template>
 
 <script>
-import GenericInfopanel from '@/components/GenericInfopanel'
-import FeatureEditor from '@/components/feature-editor/FeatureEditor'
+import GenericInfopanel from '@/components/GenericInfopanel.vue'
+import FeatureEditor from '@/components/feature-editor/FeatureEditor.vue'
 import { externalComponent } from '@/components-loader'
 
 export default {

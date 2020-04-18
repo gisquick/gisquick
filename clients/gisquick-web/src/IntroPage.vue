@@ -43,8 +43,8 @@
 
 <script>
 import { mapState } from 'vuex'
+import UserDashboard from '@/UserDashboard.vue'
 import LoginDialog from '@/components/LoginDialog.vue'
-import UserDashboard from './UserDashboard.vue'
 
 export default {
   components: { LoginDialog, UserDashboard },

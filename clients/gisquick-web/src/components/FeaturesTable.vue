@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import TabsHeader from './TabsHeader'
+import TabsHeader from '@/components/TabsHeader.vue'
 
 const zoomToHeader = {
   text: '',

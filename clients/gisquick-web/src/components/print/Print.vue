@@ -81,7 +81,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import PrintPreview from './Preview'
+import PrintPreview from './Preview.vue'
 
 let state = null
 

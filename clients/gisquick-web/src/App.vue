@@ -17,10 +17,10 @@
 <script>
 import { mapState } from 'vuex'
 import IntroPage from '@/IntroPage.vue'
-import ProjectNotFound from './ProjectNotFound'
-import DesktopMap from '@/components/Map'
-import MobileMap from '@/components/MobileMap'
-import LoginDialog from './components/LoginDialog'
+import ProjectNotFound from '@/ProjectNotFound.vue'
+import DesktopMap from '@/components/Map.vue'
+import MobileMap from '@/components/MobileMap.vue'
+import LoginDialog from '@/components/LoginDialog.vue'
 
 export default {
   components: {

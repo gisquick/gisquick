@@ -59,13 +59,13 @@ import Extent from 'ol/extent'
 import 'ol/ol.css'
 
 import { createMap } from '@/map/map-builder'
-import ContentPanel from './content-panel/ContentPanel'
-import MapAttributions from './MapAttributions'
-import MapControl from './MapControl'
-import ScaleLine from './ol/ScaleLine'
-import MapTools from './MapTools'
-import AppMenu from '@/components/AppMenu'
-import SwipeContainer from '@/components/SwipeContainer'
+import ContentPanel from '@/components/content-panel/ContentPanel.vue'
+import MapAttributions from '@/components/MapAttributions.vue'
+import MapControl from '@/components/MapControl.vue'
+import ScaleLine from '@/components/ol/ScaleLine.vue'
+import MapTools from '@/components/MapTools.vue'
+import AppMenu from '@/components/AppMenu.vue'
+import SwipeContainer from '@/components/SwipeContainer.vue'
 
 export default {
   name: 'Map',

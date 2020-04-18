@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import NumberField from './NumberField'
+import NumberField from './NumberField.vue'
 
 export default {
   props: {

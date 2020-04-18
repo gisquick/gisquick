@@ -77,12 +77,12 @@ import GeoJSON from 'ol/format/geojson'
 import Observable from 'ol/observable'
 import Feature from 'ol/feature'
 
-import FeaturesTable from './FeaturesTable'
-import InfoPanel from './InfoPanel'
-import PointMarker from './ol/PointMarker'
-import FeaturesViewer from './ol/FeaturesViewer'
+import FeaturesTable from '@/components/FeaturesTable.vue'
+import InfoPanel from '@/components/InfoPanel.vue'
+import PointMarker from '@/components/ol/PointMarker.vue'
+import FeaturesViewer from '@/components/ol/FeaturesViewer.vue'
 import { simpleStyle } from '@/map/styles'
-import { getFeaturesQuery, getFeatureByIdQuery } from '@/map/featureinfo.js'
+import { getFeaturesQuery, getFeatureByIdQuery } from '@/map/featureinfo'
 import { ShallowArray } from '@/utils'
 
 const SelectedStyle = simpleStyle({

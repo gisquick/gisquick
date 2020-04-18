@@ -115,9 +115,9 @@ import Feature from 'ol/feature'
 
 import { wfsTransaction } from '@/map/wfs'
 import { queuedUpdater } from '@/utils'
-import GeometryEditor from './GeometryEditor'
-import GenericEditForm from './GenericEditForm'
-import ProgressAction from '@/components/ProgressAction'
+import GeometryEditor from './GeometryEditor.vue'
+import GenericEditForm from './GenericEditForm.vue'
+import ProgressAction from '@/components/ProgressAction.vue'
 
 
 function getFeatureFields (feature) {

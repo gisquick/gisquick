@@ -113,11 +113,11 @@ import isEqual from 'lodash/isEqual'
 import Style from 'ol/style/style'
 import Feature from 'ol/feature'
 
-import { wfsTransaction } from '@/wfs'
+import { wfsTransaction } from '@/map/wfs'
 import { queuedUpdater } from '@/utils'
 import GeometryEditor from './GeometryEditor'
-import GenericEditForm from '@/components/GenericEditForm'
-import ProgressAction from './ProgressAction'
+import GenericEditForm from './GenericEditForm'
+import ProgressAction from '@/components/ProgressAction'
 
 
 function getFeatureFields (feature) {

@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import NumberField from '@/components/NumberField'
+import NumberField from './NumberField'
 
 export default {
   props: {

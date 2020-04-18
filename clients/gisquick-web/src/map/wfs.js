@@ -47,7 +47,7 @@ export function wfsTransaction (owsUrl, layername, { inserts = [], updates = [],
       .catch(err => {
         if (err.response) {
           let msg = null
-          if  (err.response.status === 403) {
+          if (err.response.status === 403) {
             msg = 'Permission denied'
           } else if (err.response.request.responseXML) {
             const info = err.response.request.responseXML.querySelector('ServiceException')

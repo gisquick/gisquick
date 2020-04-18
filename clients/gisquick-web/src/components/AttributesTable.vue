@@ -90,15 +90,15 @@
           <v-icon>last_page</v-icon>
         </v-btn>
         <v-divider vertical/>
+        <v-btn
+          v-if="permissions.insert"
+          class="my-0"
+          @click="newFeatureMode = true"
+          icon
+        >
+          <v-icon>add_circle_outline</v-icon>
+        </v-btn>
       </template>
-      <v-btn
-        v-if="permissions.insert"
-        class="my-0"
-        @click="newFeatureMode = true"
-        icon
-      >
-        <v-icon>add_circle_outline</v-icon>
-      </v-btn>
       <v-spacer/>
       <v-checkbox
         color="primary"
@@ -163,7 +163,7 @@ import GeoJSON from 'ol/format/geojson'
 import TabsHeader from './TabsHeader'
 import AttributeFilter from './AttributeFilter'
 import FeaturesViewer from './ol/FeaturesViewer'
-import NewFeatureEditor from '@/components/NewFeatureEditor'
+import NewFeatureEditor from '@/components/feature-editor/NewFeatureEditor'
 import InfoPanel from './InfoPanel'
 import { simpleStyle } from '@/map/styles'
 import { getFeaturesQuery } from '@/map/featureinfo.js'

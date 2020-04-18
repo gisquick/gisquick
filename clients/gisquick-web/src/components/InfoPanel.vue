@@ -73,7 +73,7 @@
 
 <script>
 import GenericInfopanel from '@/components/GenericInfopanel'
-import FeatureEditor from '@/components/FeatureEditor'
+import FeatureEditor from '@/components/feature-editor/FeatureEditor'
 import { externalComponent } from '@/components-loader'
 
 export default {

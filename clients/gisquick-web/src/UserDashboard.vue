@@ -17,7 +17,7 @@
         </v-layout>
         <v-divider/>
         <v-layout align-center>
-          <v-btn href="/user" class="mx-0" icon small>
+          <v-btn href="/user/" class="mx-0" icon small>
             <v-icon color="secondary" size="22">settings</v-icon>
           </v-btn>
           <v-btn
@@ -61,7 +61,7 @@
       <p>
         Use QGIS with Gisquick plugin to prepare your map, and then publish it from your
         <v-btn
-          href="/user"
+          href="/user/"
           class="secondary text-capitalize"
           round small
         >

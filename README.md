@@ -15,9 +15,8 @@ Latest version of Gisquick is running on our [public instance](https://projects.
 If you would like to run it locally or your server, easiest way is to use our
 [Gisquick CLI](https://github.com/gislab-npo/gisquick-cli) tool.
 
-
 To keep track of substantial changes, planned features or new proposals, please
-use [Gisquick RFCs repository](https://github.com/gisquick-npo/gisquick-rfcs).
+use [Gisquick RFCs repository](https://github.com/gislab-npo/gisquick-rfcs).
 
 ## License
 

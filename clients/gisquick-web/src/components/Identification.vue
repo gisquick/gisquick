@@ -233,7 +233,7 @@ export default {
       // (WFS layer name cannot contain space character)
       const WfsToLayerName = {}
       this.queryableLayers.forEach(l => {
-        WfsToLayerName[l.name.replace(/ /g, '')] = l.name
+        WfsToLayerName[l.name.replace(/ /g, '_')] = l.name
       })
 
       // group features by layer name

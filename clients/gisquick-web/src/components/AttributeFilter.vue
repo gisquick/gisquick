@@ -219,7 +219,9 @@ export default {
     validateValue (value) {
       const valid = this.rules.every(validate => validate(value))
       if (valid) {
-        this.$emit('input:value', value)
+        if (value !== this.filter.value) {
+          this.$emit('input:value', value)
+        }
         this.$emit('update:error', false)
       } else {
         this.$emit('update:error', true)

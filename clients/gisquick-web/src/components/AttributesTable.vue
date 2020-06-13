@@ -108,12 +108,25 @@
         class="my-0"
         hide-details
       />
+      <v-tooltip top>
+        <v-btn
+          slot="activator"
+          icon
+          class="my-0"
+          @click="clearAllFilters"
+        >
+          <icon name="reset_filter" size="24"/>
+        </v-btn>
+        <translate>Clear attributes filters</translate>
+      </v-tooltip>
       <v-btn
-        flat
-        class="my-0"
+        small
+        depressed
+        color="primary"
         @click="fetchFeatures()"
       >
-        <translate>Refresh</translate>
+        <v-icon size="20" class="mr-1">filter_list</v-icon>
+        <translate>Filter</translate>
       </v-btn>
     </v-layout>
 
@@ -347,6 +360,13 @@ export default {
         this.newFeatureMode = false
       }, 1500)
       this.fetchFeatures(this.pagination.page, true)
+    },
+    clearAllFilters () {
+      Object.entries(this.layerFilters).forEach(([name, filter]) => {
+        if (filter.comparator !== null || filter.value !== null) {
+          this.clearFilter(name)
+        }
+      })
     }
   }
 }
@@ -415,6 +435,10 @@ export default {
   }
   .v-divider--vertical {
     height: 75%;
+  }
+  .icon {
+    width: 24px;
+    height: 24px;
   }
 }
 .info-panel {

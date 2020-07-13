@@ -1,4 +1,5 @@
 import os
+import re
 import json
 import urllib.parse
 import urllib.request
@@ -52,13 +53,20 @@ def map_project(request):
         raise Http404
 
 
+project_name_pattern = re.compile('(.+)_(\d{10})')
+def parse_project_name(name):
+    match = project_name_pattern.match(name)
+    if match:
+        return match.group(1), int(match.group(2))
+    return name, None
+
 @csrf_exempt
 @vary_on_headers('Authorization')
 def ows(request):
     params = {key.upper(): request.GET[key] for key in request.GET.keys()}
 
     ows_project = clean_project_name(params.get('MAP'))
-    project, timestamp, *_ = ows_project.rsplit("_", 1) + [""]
+    project, timestamp = parse_project_name(ows_project)
     project_hash = hashlib.md5(project.encode('utf-8')).hexdigest()
     pi = get_project_info(project_hash, timestamp, project=ows_project)
     if not request.user.is_authenticated:

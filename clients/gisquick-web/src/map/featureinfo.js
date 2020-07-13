@@ -70,7 +70,7 @@ const AttributeFilters = {
   'IS NOT NULL': IsNotNullFilter
 }
 
-export function getFeaturesQuery (layers, geom, filters) {
+function _layerFeaturesQuery (layer, geom, filters) {
   const ogcFilters = []
   if (geom) {
     const gmlGeom = new GML3({
@@ -85,27 +85,28 @@ export function getFeaturesQuery (layers, geom, filters) {
       </ogc:Intersects>`
     ogcFilters.push(geomFilter)
   }
-
   if (filters) {
     ogcFilters.push(...filters.map(f => AttributeFilters[f.operator](f.attribute, f.value)))
   }
-
   let rootFilter = ''
   if (ogcFilters.length > 0) {
     rootFilter = ogcFilters.length > 1 ? AndOperator(ogcFilters) : ogcFilters[0]
     rootFilter = `<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">${rootFilter}</ogc:Filter>`
   }
-  const query = layers.map(name => [
-    `<gml:Query gml:typeName="${name.replace(/ /g, '_')}">`,
+  return [
+    `<gml:Query gml:typeName="${layer.name.replace(/ /g, '_')}">`,
     rootFilter,
     '</gml:Query>'
-  ].join('\n')).join('\n')
+  ].join('\n')
+}
 
+function getFeatureQuery (...queries) {
   // const d = new DOMParser().parseFromString('<xml>' + query + '</xml>', 'text/xml')
   // console.log(d.documentElement)
   // console.log(new XMLSerializer().serializeToString(d.documentElement))
 
   // attributes like 'outputFormat' or 'maxFeatures' doesn't seems to have eny effect in GetFeature
+  const query = queries.join('\n')
   return [
     '<GetFeature',
     ' xmlns="http://www.opengis.net/wfs"',
@@ -118,12 +119,33 @@ export function getFeaturesQuery (layers, geom, filters) {
   ].join('\n')
 }
 
+export function layerFeaturesQuery (layer, geom, filters) {
+  return getFeatureQuery(_layerFeaturesQuery(layer, geom, filters))
+}
+
+export function layersFeaturesQuery (layers, geomFilter) {
+  const { geom, projection } = geomFilter
+  const geomsByProj = {
+    [projection]: geom
+  }
+  if (geomFilter) {
+    layers
+      .filter(l => l.projection !== projection)
+      .forEach(l => {
+        if (!geomsByProj[l.projection]) {
+          geomsByProj[l.projection] = geom.clone().transform(projection, l.projection)
+        }
+      })
+  }
+  return getFeatureQuery(...layers.map(l => _layerFeaturesQuery(l, geomsByProj[l.projection])))
+}
+
 export function getFeatureByIdQuery (layer, feature) {
-  const [layername, id] = feature.getId().split('.', 2)
+  const id = feature.getId().split('.', 2)[1]
   const filter = {
     attribute: layer.pk_attributes[0],
     operator: '=',
     value: id
   }
-  return getFeaturesQuery([layername], null, [filter])
+  return getFeatureQuery(_layerFeaturesQuery(layer, null, [filter]))
 }

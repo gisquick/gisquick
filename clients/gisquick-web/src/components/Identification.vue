@@ -82,7 +82,7 @@ import InfoPanel from '@/components/InfoPanel.vue'
 import PointMarker from '@/components/ol/PointMarker.vue'
 import FeaturesViewer from '@/components/ol/FeaturesViewer.vue'
 import { simpleStyle } from '@/map/styles'
-import { getFeaturesQuery, getFeatureByIdQuery } from '@/map/featureinfo'
+import { layersFeaturesQuery, getFeatureByIdQuery } from '@/map/featureinfo'
 import { ShallowArray } from '@/utils'
 
 const SelectedStyle = simpleStyle({
@@ -168,6 +168,9 @@ export default {
     selectedFeature () {
       return this.selection && this.displayedFeaures[this.selection.featureIndex]
     },
+    mapProjection () {
+      return this.$map.getView().getProjection().getCode()
+    },
     tr () {
       return {
         Layer: this.$gettext('Layer')
@@ -197,9 +200,8 @@ export default {
         headers: { 'Content-Type': 'text/xml' }
       }
       const resp = await this.$http.post(this.project.config.ows_url, query, config)
-      const mapProjection = this.$map.getView().getProjection().getCode()
       const parser = new GeoJSON()
-      return parser.readFeatures(resp.data, { featureProjection: mapProjection })
+      return parser.readFeatures(resp.data, { featureProjection: this.mapProjection })
     },
     async onClick (evt) {
       const { map, pixel } = evt
@@ -207,9 +209,14 @@ export default {
       const coords = map.getCoordinateFromPixel(pixel)
       const pixelRadius = 8
       const radius = Math.abs(map.getCoordinateFromPixel([pixel[0] + pixelRadius, pixel[1]])[0] - coords[0])
-      const identifyGeom = Polygon.fromCircle(new Circle(coords, radius), 6)
-      const layers = this.identificationLayer ? [this.identificationLayer] : this.queryableLayers.map(l => l.name)
-      const query = getFeaturesQuery(layers, identifyGeom)
+      const geom = {
+        geom: Polygon.fromCircle(new Circle(coords, radius), 6),
+        projection: this.mapProjection
+      }
+      const layers = this.identificationLayer
+        ? this.queryableLayers.filter(l => l.name === this.identificationLayer)
+        : this.queryableLayers
+      const query = layersFeaturesQuery(layers, geom)
       const features = await this.getFeatures(query, { 'MAXFEATURES': 10 })
       const categorizedFeatures = this.categorize(features)
       const items = this.tableData(categorizedFeatures)

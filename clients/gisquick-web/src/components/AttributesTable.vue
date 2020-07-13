@@ -179,7 +179,7 @@ import FeaturesViewer from '@/components/ol/FeaturesViewer.vue'
 import NewFeatureEditor from '@/components/feature-editor/NewFeatureEditor.vue'
 import InfoPanel from '@/components/InfoPanel.vue'
 import { simpleStyle } from '@/map/styles'
-import { getFeaturesQuery } from '@/map/featureinfo'
+import { layerFeaturesQuery } from '@/map/featureinfo'
 import { ShallowArray } from '@/utils'
 
 function iconHeader (key) {
@@ -281,6 +281,7 @@ export default {
   methods: {
     ...mapMutations('attributeTable', ['clearFilter', 'updateFilterComparator', 'updateFilterValue', 'updateFilterValidity']),
     async fetchFeatures (page = 1, lastQuery = false) {
+      const mapProjection = this.$map.getView().getProjection().getCode()
       const filters = Object.entries(this.layerFilters)
         // .filter(([name, filter]) => filter.comparator && filter.value !== null)
         .filter(([name, filter]) => filter.comparator && filter.valid)
@@ -296,9 +297,9 @@ export default {
       } else {
         let geom = null
         if (this.visibleAreaFilter) {
-          geom = Polygon.fromExtent(this.$map.ext.visibleAreaExtent())
+          geom = Polygon.fromExtent(this.$map.ext.visibleAreaExtent()).transform(mapProjection, this.layer.projection)
         }
-        query = getFeaturesQuery([this.layer.name], geom, filters)
+        query = layerFeaturesQuery(this.layer, geom, filters)
       }
 
       const baseParams = {
@@ -332,10 +333,9 @@ export default {
       }
 
       const parser = new GeoJSON()
-      const featureProjection = this.$map.getView().getProjection().getCode()
 
-      // const features = ShallowArray(parser.readFeatures(geojson, { featureProjection }))
-      const features = Object.freeze(parser.readFeatures(geojson, { featureProjection }))
+      // const features = ShallowArray(parser.readFeatures(geojson, { featureProjection: mapProjection }))
+      const features = Object.freeze(parser.readFeatures(geojson, { featureProjection: mapProjection }))
 
       if (this.selectedFeature && !features.find(f => f.getId() === this.selectedFeature.getId())) {
         this.selectedFeatureIndex = 0

@@ -192,6 +192,8 @@ def check_role_access(user, role):
         return True
     if auth == 'authenticated':
         return user.is_authenticated
+    if auth == 'anonymous':
+        return not user.is_authenticated
     elif auth == 'users':
         return user.username in role['users']
 

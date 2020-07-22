@@ -209,7 +209,7 @@ export function createQgisLayer (config) {
         },
         serverType: 'qgis',
         ratio: 1,
-        imageLoadFunction: debounce(function(image, src) {
+        imageLoadFunction: debounce((image, src) => {
           image.getImage().src = src
         }, 90)
       })
@@ -257,7 +257,7 @@ export function createBaseLayer (layerConfig, projectConfig = {}) {
         visible: layerConfig.visible,
         source: new XYZ({
           url: layerConfig.url,
-          attributions: layerConfig.attribution ? [createAttribution(layerConfig.attribution)] : null,
+          attributions: layerConfig.attribution ? [createAttribution(layerConfig.attribution)] : null
         })
       })
     }
@@ -351,4 +351,13 @@ export function createMap (config, controlOpts = {}) {
   }
 
   return map
+}
+
+export function registerProjections (projections) {
+  proj.setProj4(proj4)
+  Object.keys(projections).forEach(code => {
+    if (!proj.get(code)) {
+      proj4.defs(code, projections[code].proj4)
+    }
+  })
 }

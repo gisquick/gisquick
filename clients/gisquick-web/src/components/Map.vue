@@ -72,7 +72,7 @@ import { mapState, mapGetters } from 'vuex'
 import Extent from 'ol/extent'
 import 'ol/ol.css'
 
-import { createMap } from '@/map/map-builder'
+import { createMap, registerProjections } from '@/map/map-builder'
 import ContentPanel from '@/components/content-panel/ContentPanel.vue'
 import BottomToolbar from '@/components/BottomToolbar.vue'
 import MapAttributions from '@/components/MapAttributions.vue'
@@ -105,17 +105,21 @@ export default {
     visibleBaseLayer: 'setVisibleBaseLayer'
   },
   created () {
+    const { config } = this.project
+    if (config.projections) {
+      registerProjections(config.projections)
+    }
     const mapConfig = {
-      project: this.project.config.ows_project,
+      project: config.ows_project,
       baseLayers: this.project.baseLayers.list,
       overlays: this.project.overlays.list,
-      extent: this.project.config.project_extent,
-      projection: this.project.config.projection,
-      resolutions: this.project.config.tile_resolutions,
-      scales: this.project.config.scales,
-      owsUrl: this.project.config.ows_url,
-      legendUrl: this.project.config.legend_url,
-      mapcacheUrl: this.project.config.mapcache_url
+      extent: config.project_extent,
+      projection: config.projection,
+      resolutions: config.tile_resolutions,
+      scales: config.scales,
+      owsUrl: config.ows_url,
+      legendUrl: config.legend_url,
+      mapcacheUrl: config.mapcache_url
     }
     const map = createMap(mapConfig, { zoom: false, attribution: false })
     // this.setVisibleLayers(this.visibleLayers)

@@ -350,7 +350,8 @@ def get_project(request):
         'position_precision': metadata.position_precision,
         'topics': metadata.topics,
         'authentication': metadata.authentication,
-        'plugin_version': metadata.plugin_version
+        'plugin_version': metadata.plugin_version,
+        'projections': metadata.projections
     })
     if metadata.message:
         valid_until = datetime.datetime.strptime(metadata.message['valid_until'], "%d.%m.%Y").date()

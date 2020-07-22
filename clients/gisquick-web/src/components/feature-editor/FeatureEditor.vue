@@ -242,7 +242,12 @@ export default {
       const changedFields = difference(this.fields, this.originalFields)
       f.setProperties(changedFields)
       if (this.geomModified) {
-        const newGeom = this.$refs.geometryEditor.getGeometry()
+        let newGeom = this.$refs.geometryEditor.getGeometry()
+        const mapProjection = this.$map.getView().getProjection().getCode()
+        if (mapProjection !== this.layer.projection) {
+          newGeom = newGeom.clone()
+          newGeom.transform(mapProjection, this.layer.projection)
+        }
         f.setGeometry(newGeom)
       }
       f.setId(this.feature.getId())

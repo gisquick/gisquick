@@ -46,7 +46,7 @@
           >
             <icon name="circle-i-outline"/>
           </td>
-          <td v-for="attr in layer.attributes" :key="attr.name">
+          <td v-for="attr in attributes" :key="attr.name">
             {{ item.get(attr.name) }}
           </td>
         </tr>
@@ -170,6 +170,7 @@
 </template>
 
 <script>
+import keyBy from 'lodash/keyBy'
 import { mapState, mapGetters, mapMutations } from 'vuex'
 import Polygon from 'ol/geom/polygon'
 import GeoJSON from 'ol/format/geojson'
@@ -216,9 +217,16 @@ export default {
     ...mapState(['project']),
     ...mapState('attributeTable', ['page', 'limit', 'visibleAreaFilter', 'layer', 'features']),
     ...mapGetters('attributeTable', ['layerFilters']),
+    attributes () {
+      if (this.layer.attr_table_fields) {
+        const attrsMap = keyBy(this.layer.attributes, 'name')
+        return this.layer.attr_table_fields.map(name => attrsMap[name])
+      }
+      return this.layer.attributes
+    },
     headers () {
-      if (this.layer.attributes) {
-        const columns = this.layer.attributes.map(attr => ({
+      if (this.attributes) {
+        const columns = this.attributes.map(attr => ({
           text: attr.alias || attr.name,
           type: attr.type.toLowerCase(),
           value: attr.name,

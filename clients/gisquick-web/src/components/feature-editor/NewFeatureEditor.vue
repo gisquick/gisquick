@@ -80,7 +80,7 @@ export default {
   computed: {
     ...mapState(['project']),
     geomType () {
-      return {
+      return this.layer.wkb_type || {
         POINT: 'MultiPoint',
         LINE: 'MultiLineString',
         POLYGON: 'MultiPolygon'

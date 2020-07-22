@@ -1,23 +1,30 @@
 <template>
   <div class="grid mx-2">
-    <template v-for="(attr, index) in layer.attributes">
+    <template v-for="(attr, index) in attributes">
       <label :key="attr.name">{{ attr.alias || attr.name }}</label>
-      <div
-        :key="`val:${attr.name}`"
-        :is="widgets[index]"
-        :value="values[index]"
-      />
+      <slot :name="attr.name" :attr="attr">
+        <component
+          :is="widgets[index]"
+          :value="values[index]"
+        />
+      </slot>
     </template>
   </div>
 </template>
+
 <script>
+import keyBy from 'lodash/keyBy'
 
 function isUrl (val) {
   return /(https?:\/\/.*\.)/i.test(val)
 }
 
 function isImage (val) {
-  return val.match(/\.(jpeg|jpg|gif|png|svg|tiff)$/i) !== null
+  return val && val.match(/\.(jpeg|jpg|gif|png|svg|tiff)$/i) !== null
+}
+
+function isMediaImage (val) {
+  return val && val.startsWith('/media/') && isImage(val)
 }
 
 function Widget (render) {
@@ -50,16 +57,24 @@ export default {
     feature: Object
   },
   computed: {
+    attributes () {
+      if (this.layer.info_panel_fields) {
+        const attrsMap = keyBy(this.layer.attributes, 'name')
+        return this.layer.info_panel_fields.map(name => attrsMap[name])
+      }
+      return this.layer.attributes
+    },
     values () {
-      return this.layer.attributes.map(attr => this.feature.get(attr.name))
+      return this.attributes.map(attr => this.feature.get(attr.name))
     },
     widgets () {
-      return this.layer.attributes.map(attr => {
-        if (attr.type === 'INTEGER') {
+      return this.attributes.map(attr => {
+        const type = attr.type.split('(')[0]
+        if (type === 'INTEGER') {
           return RawWidget
-        } else if (attr.type === 'DOUBLE') {
+        } else if (type === 'DOUBLE') {
           return FloatWidget
-        } else if (attr.type === 'TEXT') {
+        } else if (type === 'TEXT') {
           const value = this.feature.get(attr.name)
           if (isUrl(value)) {
             return isImage(value) ? ImageWidget : UrlWidget

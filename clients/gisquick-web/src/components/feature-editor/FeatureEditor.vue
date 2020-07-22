@@ -160,7 +160,7 @@ export default {
       if (geom) {
         return geom.getType()
       }
-      return {
+      return this.layer.wkb_type || {
         POINT: 'MultiPoint',
         LINE: 'MultiLineString',
         POLYGON: 'MultiPolygon'

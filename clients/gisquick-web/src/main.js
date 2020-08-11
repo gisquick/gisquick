@@ -70,6 +70,7 @@ function createApp (data) {
   })
   if (data.app.lang) {
     vm.$language.current = data.app.lang
+    document.documentElement.setAttribute('lang', data.app.lang.split('-')[0])
   }
   vm.$mount('#app')
 }

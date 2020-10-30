@@ -353,6 +353,12 @@ def get_project(request):
         'plugin_version': metadata.plugin_version,
         'projections': metadata.projections
     })
+    project_dir = os.path.dirname(project)
+    scripts_infofile = os.path.join(settings.GISQUICK_PROJECT_ROOT, project_dir, 'static', 'scripts.json')
+    if os.path.exists(scripts_infofile):
+        with open(scripts_infofile) as json_file:
+            context['scripts'] = json.load(json_file)
+
     if metadata.message:
         valid_until = datetime.datetime.strptime(metadata.message['valid_until'], "%d.%m.%Y").date()
         if datetime.date.today() <= valid_until:

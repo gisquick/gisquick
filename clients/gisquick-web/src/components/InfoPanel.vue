@@ -85,7 +85,6 @@ export default {
     features: Array,
     layers: Array,
     editMode: Boolean
-
   },
   computed: {
     layersOptions () {
@@ -102,12 +101,8 @@ export default {
       return this.selected && this.features[this.index]
     },
     formComponent () {
-      /* Development */
-      // return () => import('@/extensions/Districts.vue')
-
-      if (this.layer.info_panel) {
-        const { resource, component } = this.layer.info_panel
-        return () => externalComponent(resource, component)
+      if (this.layer.infopanel_component) {
+        return externalComponent(this.layer.infopanel_component)
       }
       return GenericInfopanel
     },

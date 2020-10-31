@@ -20,9 +20,15 @@ HTTP.logout = function () {
 }
 
 HTTP.project = function (project) {
+  let extendProject
+  if (process.env.NODE_ENV === 'development') {
+    const dev = require('@/dev/index.js')
+    extendProject = dev.extendProject
+  }
+
   return new Promise((resolve, reject) => {
     HTTP.get(`/api/map/project/?PROJECT=${project}`)
-      .then(resp => resolve(resp.data))
+      .then(resp => resolve(extendProject ? extendProject(resp.data) : resp.data))
       .catch(err => {
         if (err.response && err.response.data.status) {
           reject(err.response.data)

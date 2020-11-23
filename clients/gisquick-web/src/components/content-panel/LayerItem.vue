@@ -49,7 +49,7 @@
           hide-details
         />
         <v-btn
-          v-if="layer.attributes && layer.attributes.length"
+          v-if="layer.queryable && layer.attributes && layer.attributes.length"
           :color="isAttributeTableActive ? 'primary' : ''"
           @click="showAttributesTable(layer)"
           flat icon

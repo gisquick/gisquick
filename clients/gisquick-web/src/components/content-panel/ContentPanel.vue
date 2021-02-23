@@ -121,7 +121,7 @@ export default {
   data () {
     return {
       activeMainTab: 'overlays',
-      activeSecondaryTab: 'layers',
+      activeSecondaryTab: '',
       expandedItems: {
         baselayer: '',
         overlay: ''
@@ -147,6 +147,9 @@ export default {
     activeTopicIndex () {
       return this.topics.indexOf(this.activeTopic)
     }
+  },
+  created () {
+    this.activeSecondaryTab = this.topics?.length ? 'topics' : 'layers'
   },
   methods: {
     setBaseLayer (baseLayer) {

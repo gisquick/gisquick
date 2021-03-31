@@ -48,3 +48,15 @@ def user_info(request):
         "user": get_user_data(request.user)
     }
     return JsonResponse(data)
+
+
+def is_authenticated(request):
+    if request.user.is_anonymous:
+        return HttpResponse('Unauthorized', status=401)
+    return HttpResponse()
+
+
+def is_admin(request):
+    if not request.user.is_staff:
+        return HttpResponse('Unauthorized', status=401)
+    return HttpResponse()

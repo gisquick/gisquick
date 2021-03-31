@@ -23,14 +23,14 @@ export function wfsTransaction (owsUrl, layername, { inserts = [], updates = [],
   return new Promise((resolve, reject) => {
     http.post(owsUrl, query, httpOpts)
       .then(resp => {
-        const respXML = resp.request.responseXML
-        if (!respXML) {
-          throw new Error('Server error')
-        }
+        // QGIS 3.4 used wrong tag name for totalInserted/totalUpdated/totalDeleted
+        const data = resp.data.replace(/TotalInserted/g, 'totalInserted').replace(/TotalUpdated/g, 'totalUpdated').replace(/TotalDeleted/g, 'totalDeleted')
+        const parser = new DOMParser()
+        const respXML = parser.parseFromString(data, 'text/xml')
         const check = {
-          TotalInserted: inserts.length,
-          TotalUpdated: updates.length,
-          TotalDeleted: deletes.length
+          totalInserted: inserts.length,
+          totalUpdated: updates.length,
+          totalDeleted: deletes.length
         }
         Object.entries(check)
           .filter(([tag, count]) => count > 0)

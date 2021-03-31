@@ -100,7 +100,7 @@ function _layerFeaturesQuery (layer, geom, filters) {
   ].join('\n')
 }
 
-function getFeatureQuery (...queries) {
+export function getFeatureQuery (...queries) {
   // const d = new DOMParser().parseFromString('<xml>' + query + '</xml>', 'text/xml')
   // console.log(d.documentElement)
   // console.log(new XMLSerializer().serializeToString(d.documentElement))

@@ -5,6 +5,7 @@ from django.core.exceptions import PermissionDenied
 from django.http import JsonResponse, HttpResponse, Http404
 from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import get_user_model
 
 from . import forms
 from webgis.auth.utils import get_user_data
@@ -25,27 +26,35 @@ def client_login(request):
         if form.is_valid():
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
-            user = authenticate(username=username, password=password)
-            if user:
+            if '@' in username:
+                User = get_user_model()
+                users = User.objects.filter(email=username)
+                if len(users) > 1:
+                    return HttpResponse('Conflict', status=409)
+                user = users[0] if users[0].check_password(password) else None
+            else:
+                user = authenticate(username=username, password=password)
+            if user and user.is_active:
                 try:
                     login(request, user)
+                    return JsonResponse(get_user_data(user))
                 except Exception as e:
-                    print (e)
-                return JsonResponse(get_user_data(user))
+                    pass
+            return HttpResponse('Authentication failed', status=401)
     logout(request)
-    return HttpResponse("Login Required", status=401)
+    return HttpResponse('Login Required', status=401)
 
 
 def client_logout(request):
     logout(request)
-    return HttpResponse(" ", status=200)
+    return HttpResponse(' ', status=200)
 
 
 def user_info(request):
     if request.user.is_anonymous:
         return HttpResponse('Unauthorized', status=401)
     data = {
-        "user": get_user_data(request.user)
+        'user': get_user_data(request.user)
     }
     return JsonResponse(data)
 

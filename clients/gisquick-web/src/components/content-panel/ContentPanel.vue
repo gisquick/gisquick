@@ -89,6 +89,7 @@
                 :layer="layer"
                 :expanded="expandedItems.overlay"
                 :depth="1"
+                :attribute-table-disabled="attributeTableDisabled"
                 @expanded="id => expandItem('overlay', id)"
               />
             </scroll-area>
@@ -118,6 +119,9 @@ import BaseLayerOpacity from './BaseLayerOpacity.vue'
 export default {
   name: 'content-panel',
   components: { MapLegend, OverlaysOpacity, BaseLayerOpacity },
+  props: {
+    attributeTableDisabled: Boolean
+  },
   data () {
     return {
       activeMainTab: 'overlays',

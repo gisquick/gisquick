@@ -44,7 +44,7 @@
         </v-layout>
         <v-divider/>
         <portal-target name="main-panel-top" class="main-panel-portal"/>
-        <content-panel/>
+        <content-panel attribute-table-disabled/>
       </v-layout>
     </swipe-container>
 

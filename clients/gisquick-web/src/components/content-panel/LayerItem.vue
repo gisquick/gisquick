@@ -29,6 +29,7 @@
           :layer="l"
           :expanded="expanded"
           :depth="depth + 1"
+          :attribute-table-disabled="attributeTableDisabled"
           @expanded="$emit('expanded', $event)"
         />
       </v-collapsible>
@@ -49,7 +50,7 @@
           hide-details
         />
         <v-btn
-          v-if="layer.queryable && layer.attributes && layer.attributes.length"
+          v-if="!attributeTableDisabled && layer.queryable && layer.attributes && layer.attributes.length"
           :color="isAttributeTableActive ? 'primary' : ''"
           @click="showAttributesTable(layer)"
           flat icon
@@ -97,6 +98,7 @@ import Vue from 'vue'
 
 export default Vue.component('layer-item', {
   props: {
+    attributeTableDisabled: Boolean,
     layer: Object,
     expanded: String,
     depth: Number

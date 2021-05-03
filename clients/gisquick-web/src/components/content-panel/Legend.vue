@@ -1,11 +1,21 @@
 <template>
-  <div>
-    <img
-      v-for="url in legendList"
-      :key="url"
-      :src="url"
-      alt=""
-    />
+  <div class="legend">
+    <template v-for="item in legendList">
+      <div
+        v-if="item.type === 'link'"
+        :key="item.layer.name"
+        class="item link px-2 py-2"
+      >
+        <strong v-text="item.layer.title"/>
+        <a target="_blank" :href="item.url">Link</a>
+      </div>
+      <img
+        v-else
+        :key="item.layer.name"
+        :src="item.url"
+        alt="Legend image"
+      />
+    </template>
   </div>
 </template>
 
@@ -24,7 +34,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['visibleLayers'])
+    ...mapGetters(['visibleBaseLayer', 'visibleLayers'])
   },
   watch: {
     visible (visible) {
@@ -52,8 +62,38 @@ export default {
     updateLegend () {
       const source = this.$map.overlay.getSource()
       const view = this.$map.getView()
-      this.legendList = this.visibleLayers.map(l => source.getLegendUrl(l.name, view))
+      const layers = [
+        this.visibleBaseLayer,
+        ...this.visibleLayers
+      ].filter(l => l && (l.legend_url || l.type === 'vector'))
+
+      this.legendList = layers.map(l => {
+        if (l.legend_url) {
+          return {
+            layer: l,
+            type: 'link',
+            url: l.legend_url
+          }
+        }
+        return {
+          layer: l,
+          type: 'image',
+          url: source.getLegendUrl(l.name, view)
+        }
+      })
     }
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.legend {
+  .item {
+    display: flex;
+    flex-direction: column;
+    &.link {
+      font-size: 14px;
+    }
+  }
+}
+</style>

@@ -54,6 +54,7 @@
 <script>
 import { mapState, mapGetters } from 'vuex'
 import axios from 'axios'
+import combineURLs from 'axios/lib/helpers/combineURLs'
 import Observable from 'ol/observable'
 import FileSaver from 'file-saver'
 import { mmToPx, createPrintParameters, formatCopyrights, scaleAnimation, openPrintWindow } from './utils'
@@ -219,7 +220,7 @@ export default {
       ]
 
       const layers = []
-      if (this.visibleBaseLayer.type === 'wms') {
+      if (this.visibleBaseLayer?.type === 'wms') {
         const name = this.visibleBaseLayer.serverName || this.visibleBaseLayer.name
         layers.push(name)
       }
@@ -238,7 +239,7 @@ export default {
         gislab_copyrights: copyrights,
         ...this.labelsData[layout.name]
       }
-      return axios.getUri({ url: this.project.config.ows_url, params })
+      return combineURLs(location.origin, axios.getUri({ url: this.project.config.ows_url, params }))
     },
     print () {
       const url = this.printRequest({ format: 'png' })

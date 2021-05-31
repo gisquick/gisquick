@@ -81,7 +81,7 @@ def get_project_info(project_key, publish, project=None):
                 "{0}.meta".format(clean_project_name(project))
             )
         try:
-            metadata = MetadataParser(metadata_filename)
+            metadata = load_metadata(metadata_filename)
             if not publish or int(metadata.publish_date_unix) == int(publish):
                 data = store_project_info(project_key, publish, metadata)
                 return data
@@ -159,7 +159,7 @@ def _iterate_layers(layers):
 
 def _convert_topics(topics, info):
     for topic in topics:
-        topic['visible_overlays'] = [info[name]['name'] for name in topic['visible_overlays']]
+        topic['visible_overlays'] = [info[name]['name'] for name in topic['visible_overlays'] if name in info]
 
 def _convert_layers_metadata(layers):
     """ Returns transformed layers tree.
@@ -198,6 +198,36 @@ def check_role_access(user, role):
         return user.username in role['users']
 
 
+def join_project_config(meta, opts):
+    layers = meta.pop('layers')
+    for layer in _iterate_layers(layers):
+        cfg = opts.layers[layer['id']]
+        attrs = cfg.pop('attributes', None)
+        layer.update(cfg)
+        if attrs and 'attributes' in layer:
+            for attr in layer['attributes']:
+                attr.update(attrs.get(attr['name'], {}))
+
+    meta.selection_color = '#ff0000'
+
+    meta.base_layers = [l for l in layers if l.get('id', l['name']) in opts.base_layers]
+    meta.overlays = [l for l in layers if l.get('id', l['name']) in opts.overlays]
+
+    omited_fields = ['base_layers', 'overlays', 'layers']
+    for key, val in opts.items():
+        if key not in omited_fields:
+            meta[key] = val
+    return meta
+
+
+def load_metadata (filename):
+    metadata = MetadataParser(filename)
+    if 'overlays' not in metadata:
+        settings_filename = os.path.splitext(filename)[0] + '.json'
+        opts = MetadataParser(settings_filename)
+        join_project_config(metadata, opts)
+    return metadata
+
 def get_project(request):
     ows_project = None
 
@@ -222,7 +252,8 @@ def get_project(request):
         ows_project_name + '.meta'
     )
     try:
-        metadata = MetadataParser(metadata_filename)
+        metadata = load_metadata(metadata_filename)
+        metadata.gislab_user = request.user.username
     except:
         raise InvalidProjectException
 
@@ -295,17 +326,17 @@ def get_project(request):
         layers_permissions = {}
         for role in metadata.access_control['roles']:
             if check_role_access(request.user, role):
-                for layername, role_permissions in role['permissions']['layers'].items():
-                    if layername not in layers_permissions:
-                        layers_permissions[layername] = {}
+                for layer_id, role_permissions in role['permissions']['layers'].items():
+                    if layer_id not in layers_permissions:
+                        layers_permissions[layer_id] = {}
                     for k, v in role_permissions.items():
-                        layers_permissions[layername][k] = layers_permissions[layername].get(k) or v
+                        layers_permissions[layer_id][k] = layers_permissions[layer_id].get(k) or v
 
-        def check_layername_access(layername):
-            perms = layers_permissions.get(layername)
+        def check_layername_access(layer_id):
+            perms = layers_permissions.get(layer_id)
             return perms and perms.get('view')
 
-        layers_tree = _filter_layers(layers_tree, lambda l: check_layername_access(l['name']))
+        layers_tree = _filter_layers(layers_tree, lambda l: check_layername_access(l['id']))
         # insert layer permissions information into layer data
         for layer in _iterate_layers(layers_tree):
             layer['permissions'] = layers_permissions.get(layer['name'])
@@ -426,7 +457,7 @@ def get_user_projects(request, username):
                 ows_project = clean_project_name(ows_project_filename[project_prefix_length:])
                 metadata_filename = clean_project_name(ows_project_filename) + '.meta'
                 try:
-                    metadata = MetadataParser(metadata_filename)
+                    metadata = load_metadata(metadata_filename)
                     authentication = metadata.authentication
                     # backward compatibility with older version
                     if type(authentication) is dict:

@@ -3,17 +3,22 @@
 import json
 
 
-class MetadataParser(object):
-
+class MetadataParser(dict):
     def __init__(self, filename):
-        self._read_metadata(filename)
-
-    def _read_metadata(self, filename):
         with open(filename, 'r') as f:
-            self.metadata = json.load(f)
+            super().__init__(json.load(f))
 
-    def __getattr__(self, name):
-        return self.metadata.get(name)
+    def __getattr__(self, key):
+        try:
+            return self[key]
+        except KeyError as k:
+            return None
 
-    def get(self, name, *args):
-        return self.metadata.get(name, *args)
+    def __setattr__(self, key, value):
+        self[key] = value
+
+    def __delattr__(self, key):
+        try:
+            del self[key]
+        except KeyError as k:
+            pass

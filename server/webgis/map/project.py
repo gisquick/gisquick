@@ -339,7 +339,7 @@ def get_project(request):
         layers_tree = _filter_layers(layers_tree, lambda l: check_layername_access(l['id']))
         # insert layer permissions information into layer data
         for layer in _iterate_layers(layers_tree):
-            layer['permissions'] = layers_permissions.get(layer['name'])
+            layer['permissions'] = layers_permissions.get(layer['id'])
 
         # remove not allowed layers from topics and remove 'empty' topics
         for topic in metadata.topics:

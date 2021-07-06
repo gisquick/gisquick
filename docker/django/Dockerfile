@@ -9,7 +9,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-psycopg2 \
     && rm -rf /var/lib/apt/lists/*
 
-RUN pip3 install --no-cache-dir 'gunicorn>=19.9,<20.0' && \
+RUN pip3 install --upgrade pip && \
+    pip3 install --no-cache-dir 'gunicorn>=19.9,<20.0' && \
     pip3 install --no-cache-dir 'supervisor>=4.1.0,<4.2.0'
 
 COPY ./server/ /gisquick/server/

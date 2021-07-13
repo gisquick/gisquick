@@ -30,11 +30,11 @@ HTTP.project = function (project) {
     HTTP.get(`/api/map/project/?PROJECT=${project}`)
       .then(resp => resolve(extendProject ? extendProject(resp.data) : resp.data))
       .catch(err => {
-        if (err.response && err.response.data.status) {
+        if (err.response?.data.status) {
           reject(err.response.data)
         } else {
           // eslint-disable-next-line prefer-promise-reject-errors
-          reject({ status: 500 })
+          reject({ status: err?.response.status || 500 })
         }
       })
   })

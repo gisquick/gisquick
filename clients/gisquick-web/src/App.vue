@@ -1,5 +1,5 @@
 <template>
-  <v-app id="app">
+  <div id="app">
     <intro-page v-if="!projectPath"/>
     <map-app v-if="projectStatus === 200"/>
     <login-dialog
@@ -11,7 +11,8 @@
       @close="$store.commit('showLogin', false)"
     />
     <project-not-found v-if="projectStatus === 404"/>
-  </v-app>
+    <popup-layer class="light"/>
+  </div>
 </template>
 
 <script>
@@ -21,9 +22,11 @@ import ProjectNotFound from '@/ProjectNotFound.vue'
 import DesktopMap from '@/components/Map.vue'
 import MobileMap from '@/components/MobileMap.vue'
 import LoginDialog from '@/components/LoginDialog.vue'
+import PopupLayer from '@/ui/PopupLayer.vue'
 
 export default {
   components: {
+    PopupLayer,
     ProjectNotFound,
     LoginDialog,
     IntroPage,
@@ -75,11 +78,25 @@ export default {
 </script>
 
 <style lang="scss">
-@import './common.scss';
+@import './theme.scss';
 @import './transitions.scss';
 
 html {
   overflow: auto;
-  font-size: 1em!important;
+  font-size: 16px;
+  font-family: Roboto,sans-serif;
+  line-height: 1.5;
+  word-spacing: 1px;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 </style>

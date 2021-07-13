@@ -3,7 +3,7 @@ import Vue from 'vue'
 export default {
   namespaced: true,
   state: {
-    limit: 5,
+    limit: 20,
     visibleAreaFilter: false,
     layer: null,
     filters: {},
@@ -16,18 +16,22 @@ export default {
   },
   mutations: {
     layer (state, layer) {
-      state.layer = layer
-      if (!state.filters[layer.name]) {
-        const filters = {}
-        layer.attributes.forEach(attr => {
-          filters[attr.name] = {
-            comparator: null,
-            value: null,
-            valid: false
-          }
-        })
-        // state.filters[layer.name] = filters
-        Vue.set(state.filters, layer.name, filters)
+      if (state.layer !== layer) {
+        state.layer = layer
+        state.features = []
+        if (!state.filters[layer.name]) {
+          const filters = {}
+          layer.attributes.forEach(attr => {
+            filters[attr.name] = {
+              active: false,
+              comparator: null,
+              value: null,
+              valid: false
+            }
+          })
+          // state.filters[layer.name] = filters
+          Vue.set(state.filters, layer.name, filters)
+        }
       }
     },
     features (state, features) {
@@ -35,6 +39,10 @@ export default {
     },
     visibleAreaFilter (state, visible) {
       state.visibleAreaFilter = visible
+    },
+    updateFilter (state, { attr, params }) {
+      const filter = state.filters[state.layer.name][attr]
+      Object.assign(filter, params)
     },
     updateFilterComparator (state, { attr, comparator }) {
       const filter = state.filters[state.layer.name][attr]

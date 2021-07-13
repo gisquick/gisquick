@@ -5,7 +5,8 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "vetur": "node ./docgen.js"
   },
   "dependencies": {
     "axios": "^0.21.1",
@@ -20,6 +21,7 @@
     "vue": "^2.6.11",
     "vue-gettext": "^2.1.12",
     "vue-reactive-refs": "0.0.2",
+    "vue2-touch-events": "^3.2.2",
     "vuetify": "^1.1.17",
     "vuex": "^3.6.2"
   },
@@ -34,6 +36,8 @@
     "node-sass": "^5.0.0",
     "sass-loader": "^10.1.1",
     "svgo": "^2.3.0",
+    "vue-docgen-api": "^4.38.2",
+    "vue-svg-loader": "^0.16.0",
     "vue-template-compiler": "^2.6.11"
   },
   "eslintConfig": {
@@ -54,5 +58,9 @@
     "> 1%",
     "last 2 versions",
     "not dead"
-  ]
+  ],
+  "vetur": {
+    "tags": "./vetur/tags.json",
+    "attributes": "./vetur/attributes.json"
+  }
 }

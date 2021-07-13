@@ -1,23 +1,24 @@
 <template>
-  <v-layout class="map-control column">
+  <div class="map-control f-col dark">
     <v-btn
-      icon
-      class="zoom-in"
+      class="zoom-in icon"
       @click="zoomIn"
     >
-      <v-icon>add</v-icon>
+      <v-icon name="plus"/>
     </v-btn>
     <v-btn
-      icon
-      class="zoom-out"
+      class="zoom-out icon"
       @click="zoomOut"
     >
-      <v-icon>remove</v-icon>
+      <v-icon name="minus"/>
     </v-btn>
-    <v-btn icon @click="zoomToMax">
-      <icon name="zoom-max"/>
+    <v-btn
+      class="icon"
+      @click="zoomToMax"
+    >
+      <v-icon name="zoom-max"/>
     </v-btn>
-  </v-layout>
+  </div>
 </template>
 
 <script>
@@ -53,23 +54,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../theme';
-
 .map-control {
-  .v-btn {
-    font-size: 1em;
-    background-color: $dark-color;
+  .btn {
+    background-color: var(--color-dark);
+    width: 32px;
+    height: 32px;
     margin: 2px;
-    color: white;
-    width: 2em;
-    height: 2em;
-    border-radius: 20%;
-    opacity: 0.85;
-    .icon {
-      width: 1.25em;
-      height: 1.25em;
-      fill: white;
-    }
+    border-radius: 6px;
+    opacity: 0.9;
     &.zoom-in {
       border-bottom-left-radius: 2px;
       border-bottom-right-radius: 2px;

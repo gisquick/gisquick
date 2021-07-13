@@ -1,15 +1,16 @@
 <template>
-  <v-layout
+  <div
     class="swipe-content"
     @transitionend.self="transitionend"
   >
-    <!-- <div> -->
-    <slot/>
-    <!-- </div> -->
-  </v-layout>
+    <back-button-listener v-if="visible" @back="hide"/>
+    <slot :visible="visible"/>
+  </div>
 </template>
 
 <script>
+import BackButtonListener from '@/ui/BackButtonListener'
+
 const Events = {
   pointerdown: {
     move: 'pointermove',
@@ -36,6 +37,7 @@ const Touch = {
 }
 
 export default {
+  components: { BackButtonListener },
   data () {
     return {
       visible: true
@@ -102,6 +104,12 @@ export default {
         }
         el.style.transition = ''
       }
+    },
+    hide () {
+      this.visible = false
+      const el = this.$el
+      el.style.transition = 'transform 0.5s cubic-bezier(.25,.8,.5,1)'
+      el.style.transform = `translate3d(-100%, 0, 0)`
     }
   }
 }

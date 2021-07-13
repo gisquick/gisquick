@@ -1,6 +1,6 @@
 
 <template>
-  <v-layout column>
+  <div class="f-col">
     <slot
       name="form"
       :fields="fields"
@@ -15,24 +15,24 @@
       :to="toolbarTarget"
       :disabled="!toolbarTarget"
     >
-      <v-layout class="tools-container align-center pl-1">
+      <div class="toolbar f-row-ac">
         <geometry-editor
           :editor.sync="references.geometryEditor"
           :geometry-type="geomType"
         />
-        <v-divider vertical/>
+        <div class="v-separator"/>
         <v-btn
+          class="icon"
           :disabled=" status === 'loading'"
           @click="save"
-          icon
         >
-          <v-icon color="teal">save</v-icon>
+          <v-icon color="green" name="save"/>
         </v-btn>
-        <v-layout class="justify-center notification my-2">
+        <div class="f-row f-justify-center notification my-2">
           <transition name="fade">
-            <v-layout
+            <div
               v-if="status"
-              class="notification-content elevation-3 align-center py-1 px-2 shrink"
+              class="notification-content elevation-3 f-row-ac px-2 f-shrink"
               :class="status === 'error' ? 'red darken-2' : 'grey darken-3'"
             >
               <progress-action
@@ -42,12 +42,12 @@
               <span v-if="status === 'loading'">Updating data</span>
               <span v-else-if="status === 'success'">Data updated</span>
               <span v-else>Error</span>
-            </v-layout>
+            </div>
           </transition>
-        </v-layout>
-      </v-layout>
+        </div>
+      </div>
     </portal>
-  </v-layout>
+  </div>
 </template>
 
 <script>
@@ -131,14 +131,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.tools-container {
-  /deep/ .v-btn {
-    margin: 3px 0;
-    height: 24px;
-  }
-  .v-divider--vertical {
-    height: 20px;
-    margin: 0 2px;
+.toolbar {
+  background-color: #e0e0e0;
+  border-top: 1px solid #bbb;
+  ::v-deep .btn.icon {
+    margin: 3px 2px;
+    width: 26px;
+    height: 26px;
   }
 }
 .notification {

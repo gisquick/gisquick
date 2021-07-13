@@ -1,6 +1,6 @@
 
 <template>
-  <v-layout v-if="feature" column>
+  <div v-if="feature" class="f-col">
     <slot
       name="form"
       :fields="fields"
@@ -12,83 +12,108 @@
         :fields="fields"
         :readonly="readonlyFields"
       />
+      <!-- <v-radio-btn val="loading" v-model="status" label="Loading"/>
+      <v-radio-btn val="success" v-model="status" label="Success"/>
+      <v-radio-btn val="error" v-model="status" label="Error"/>
+      <v-radio-btn val="" v-model="status" label="None"/> -->
+      <v-tooltip
+        align="c;bt"
+        content-class="notification my-2"
+        :value="!!status"
+      >
+        <div
+          class="content f-row-ac"
+          :class="status"
+        >
+          <progress-action
+            :status="status"
+            class="mr-2"
+          />
+          <span v-if="status === 'loading'">Updating data</span>
+          <span v-else-if="status === 'success'">Data updated</span>
+          <span v-else>Error</span>
+        </div>
+      </v-tooltip>
     </slot>
     <portal to="infopanel-tool">
-      <v-layout class="tools-container align-center pl-1">
-        <v-tooltip bottom>
-          <v-btn
-            slot="activator"
-            :class="{'primary--text': editGeometry}"
-            @click="editGeometry = !editGeometry"
-            icon
-          >
-            <icon name="edit-geometry"/>
-          </v-btn>
-          <translate>Edit geometry</translate>
-        </v-tooltip>
+      <div class="toolbar f-row-ac">
+        <v-btn
+          class="icon flat"
+          :color="editGeometry && 'primary'"
+          @click="editGeometry = !editGeometry"
+        >
+          <v-tooltip slot="tooltip">
+            <translate>Edit geometry</translate>
+          </v-tooltip>
+          <v-icon name="edit-geometry"/>
+        </v-btn>
         <geometry-editor
           v-if="editGeometry"
           ref="geometryEditor"
           :feature="editGeometryFeature"
           :geometry-type="geomType"
         />
-        <v-divider vertical/>
+        <div class="v-separator"/>
         <!-- <v-btn @click="deleteFeature" icon>
           <v-icon color="red darken-3">delete_forever</v-icon>
         </v-btn> -->
-        <v-menu top fixed>
-          <v-tooltip slot="activator" bottom>
+        <v-menu align="ll;bt">
+          <template v-slot:activator="{ toggle }">
             <v-btn
-              slot="activator"
+              aria-label="Delete object"
+              class="icon"
               :disabled="!permissions.delete || status === 'loading'"
-              icon
+              @click="toggle"
             >
-              <v-icon color="red darken-3">delete_forever</v-icon>
+              <v-icon color="red" name="delete_forever"/>
+              <v-tooltip slot="tooltip">
+                <translate>Delete object</translate>
+              </v-tooltip>
             </v-btn>
-            <translate>Delete object</translate>
-          </v-tooltip>
-          <v-card>
-            <v-card-text class="py-1 px-3 grey lighten-3">
-              <small><b><translate>Delete current object?</translate></b></small>
-            </v-card-text>
-            <v-divider/>
-            <v-card-actions class="py-1">
-              <v-btn small flat>
-                <translate>No</translate>
-              </v-btn>
-              <v-btn small flat color="primary" @click="deleteFeature">
-                <translate>Yes</translate>
-              </v-btn>
-            </v-card-actions>
-          </v-card>
+          </template>
+          <template v-slot:menu="{ close }">
+            <div class="prompt-menu popup-content light f-col">
+              <div class="header dark px-4">
+                <span class="title"><translate>Delete current object?</translate></span>
+              </div>
+              <hr/>
+              <div class="f-row-ac">
+                <v-btn class="small round outlined f-grow" color="#555" @click="close">
+                  <translate>No</translate>
+                </v-btn>
+                <v-btn class="small round f-grow" color="red" @click="deleteFeature">
+                  <translate>Yes</translate>
+                </v-btn>
+              </div>
+            </div>
+          </template>
         </v-menu>
-        <v-tooltip bottom>
-          <v-btn
-            slot="activator"
-            :disabled="!permissions.update || !isModified || !!status"
-            @click="restore"
-            icon
-          >
-            <v-icon color="orange">restore</v-icon>
-          </v-btn>
-          <translate>Discard changes</translate>
-        </v-tooltip>
-        <v-tooltip bottom>
-          <v-btn
-            slot="activator"
-            :disabled="!isModified || !!status"
-            @click="save"
-            icon
-          >
-            <v-icon color="teal">save</v-icon>
-          </v-btn>
-          <translate>Save changes</translate>
-        </v-tooltip>
-        <v-layout class="justify-center notification my-2">
+        <v-btn
+          class="icon"
+          :disabled="!permissions.update || !isModified || !!status"
+          @click="restore"
+        >
+          <v-tooltip slot="tooltip">
+            <translate>Discard changes</translate>
+          </v-tooltip>
+          <v-icon color="orange" name="restore"/>
+        </v-btn>
+        <v-btn
+          class="icon"
+          :disabled="!isModified || !!status"
+          @click="save"
+        >
+          <v-tooltip slot="tooltip">
+            <translate>Save changes</translate>
+          </v-tooltip>
+          <v-icon color="green" name="save"/>
+        </v-btn>
+
+        <!-- <div class="f-row f-justify-center notification my-2">
           <transition name="fade">
-            <v-layout
+            <div
               v-if="status"
-              class="notification-content elevation-3 align-center py-1 px-2 shrink"
+              class="notification-content elevation-3 f-row-ac py-1 px-2 f-shrink"
               :class="status === 'error' ? 'red darken-2' : 'grey darken-3'"
             >
               <progress-action
@@ -98,12 +123,12 @@
               <span v-if="status === 'loading'">Updating data</span>
               <span v-else-if="status === 'success'">Data updated</span>
               <span v-else>Error</span>
-            </v-layout>
+            </div>
           </transition>
-        </v-layout>
-      </v-layout>
+        </div> -->
+      </div>
     </portal>
-  </v-layout>
+  </div>
 </template>
 
 <script>
@@ -118,6 +143,7 @@ import { queuedUpdater } from '@/utils'
 import GeometryEditor from './GeometryEditor.vue'
 import GenericEditForm from './GenericEditForm.vue'
 import ProgressAction from '@/components/ProgressAction.vue'
+// import ProgressAction from '@/components/ProgressAction3.vue'
 
 
 function getFeatureFields (feature) {
@@ -261,14 +287,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.tools-container {
-  /deep/ .v-btn {
-    margin: 3px 0;
-    height: 24px;
-  }
-  .v-divider--vertical {
-    height: 20px;
-    margin: 0 2px;
+.toolbar {
+  background-color: #e0e0e0;
+  border-top: 1px solid #bbb;
+  ::v-deep .btn.icon {
+    margin: 3px 2px;
+    width: 26px;
+    height: 26px;
   }
 }
 .notification {
@@ -281,12 +306,26 @@ export default {
   svg {
     border: 1px solid currentColor;
     border-radius: 50%;
+    // color: var(--icon-color);
   }
-  .notification-content {
-    min-width: 150px;
-    transition: 0.3s all ease;
-    border-radius: 2px;
-    color: #fff;
+  .content {
+    width: 150px;
+    font-size: 14px;
+    border-radius: 0px;
+
+    &.error {
+      // color: var(--color-red);
+    }
+  }
+}
+.prompt-menu {
+  .header {
+    background-color: var(--color-dark);
+    white-space: nowrap;
+    .title {
+      font-size: 13px;
+      font-weight: 500;
+    }
   }
 }
 </style>

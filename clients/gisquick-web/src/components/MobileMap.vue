@@ -2,6 +2,37 @@
   <div class="map-container">
     <div ref="mapEl" class="map"/>
 
+    <swipe-container class="main-panel f-row">
+      <div class="panel-content f-col">
+        <div class="app-toolbar dark f-row-ac">
+          <v-btn
+            v-for="tool in toolsMenuItems"
+            :key="tool.name"
+            class="icon flat"
+            :color="activeTool === tool.name ? 'primary' : ''"
+            @click="$store.commit('activeTool', tool.name)"
+          >
+            <v-icon :name="tool.icon"/>
+          </v-btn>
+          <div class="f-grow"/>
+          <app-menu class="app-menu" align="rr;tb,bt">
+            <template v-slot:activator="{ toggle }">
+              <v-btn
+                aria-label="Menu"
+                class="icon flat"
+                @click="toggle"
+              >
+                <v-icon name="menu"/>
+              </v-btn>
+            </template>
+          </app-menu>
+        </div>
+        <hr/>
+        <portal-target name="main-panel-top" class="main-panel-portal"/>
+        <content-panel attribute-table-disabled/>
+      </div>
+    </swipe-container>
+
     <div ref="mapViewport" class="visible-container">
       <scale-line/>
       <map-attributions class="map-attributions"/>
@@ -9,56 +40,23 @@
     </div>
     <portal-target name="map-overlay" class="map-overlay"/>
 
-    <v-layout class="right-container column">
+    <div class="right-container f-col">
       <portal-target
         name="right-panel"
         class="right-panel"
         transition="slide-top-transition"
       />
-      <v-spacer/>
-    </v-layout>
-
-    <swipe-container class="main-panel">
-      <v-layout class="panel-content column">
-        <v-divider/>
-        <v-layout class="shrink toolbar grey darken-4">
-          <v-btn
-            v-for="tool in toolsMenuItems"
-            :key="tool.name"
-            @click="$store.commit('activeTool', tool.name)"
-            dark
-            icon
-          >
-            <icon :class="{'primary--text': activeTool === tool.name}" :name="tool.icon"/>
-          </v-btn>
-          <v-spacer/>
-          <v-menu
-            bottom left
-            class="app-menu"
-          >
-            <v-btn slot="activator" dark icon>
-              <v-icon>menu</v-icon>
-            </v-btn>
-            <app-menu/>
-          </v-menu>
-        </v-layout>
-        <v-divider/>
-        <portal-target name="main-panel-top" class="main-panel-portal"/>
-        <content-panel attribute-table-disabled/>
-      </v-layout>
-    </swipe-container>
+      <div class="f-grow"/>
+    </div>
 
     <map-tools ref="tools"/>
   </div>
 </template>
 
 <script>
-import Vue from 'vue'
-import { mapState, mapGetters } from 'vuex'
-import Extent from 'ol/extent'
-import 'ol/ol.css'
+import { mapState } from 'vuex'
 
-import { createMap } from '@/map/map-builder'
+import Map from '@/mixins/Map'
 import ContentPanel from '@/components/content-panel/ContentPanel.vue'
 import MapAttributions from '@/components/MapAttributions.vue'
 import MapControl from '@/components/MapControl.vue'
@@ -69,101 +67,23 @@ import SwipeContainer from '@/components/SwipeContainer.vue'
 
 export default {
   name: 'Map',
+  mixins: [Map],
   components: { AppMenu, ContentPanel, ScaleLine, MapAttributions, MapControl, MapTools, SwipeContainer },
   refs: ['tools'],
-  data () {
-    return {
-      panelVisible: true,
-      statusBarVisible: true
-    }
-  },
   computed: {
-    ...mapState(['user', 'project', 'activeTool']),
-    ...mapGetters(['visibleBaseLayer', 'visibleLayers']),
+    ...mapState(['activeTool']),
     toolsMenuItems () {
       const tools = (this.$refs.tools && this.$refs.tools.items) || []
       return tools.filter(t => !t.disabled && t.icon)
     }
   },
-  watch: {
-    visibleLayers: 'setVisibleLayers',
-    visibleBaseLayer: 'setVisibleBaseLayer'
-  },
   created () {
-    const mapConfig = {
-      project: this.project.config.ows_project,
-      baseLayers: this.project.baseLayers.list,
-      overlays: this.project.overlays.list,
-      extent: this.project.config.project_extent,
-      projection: this.project.config.projection,
-      resolutions: this.project.config.tile_resolutions,
-      scales: this.project.config.scales,
-      owsUrl: this.project.config.ows_url,
-      legendUrl: this.project.config.legend_url,
-      mapcacheUrl: this.project.config.mapcache_url
-    }
-    const map = createMap(mapConfig, { zoom: false, attribution: false })
-    // this.setVisibleLayers(this.visibleLayers)
-
     this.$root.$panel = {
-      setStatusBarVisible: (visible) => {
-        this.statusBarVisible = visible
-      }
+      setStatusBarVisible: () => {}
     }
-    Vue.prototype.$map = map
   },
   mounted () {
-    const map = this.$map
-    map.setTarget(this.$refs.mapEl)
-
-    // extra map functions
-    map.ext = {
-      visibleAreaPadding: () => {
-        const { top, right, bottom, left } = this.$refs.mapViewport.getBoundingClientRect()
-        return [top, window.innerWidth - right, window.innerHeight - bottom, left]
-      },
-      visibleAreaExtent: () => {
-        const { top, right, bottom, left } = this.$refs.mapViewport.getBoundingClientRect()
-        const p1 = map.getCoordinateFromPixel([left, top])
-        const p2 = map.getCoordinateFromPixel([right, bottom])
-        return Extent.boundingExtent([p1, p2])
-      },
-      zoomToFeature: (feature, options = {}) => {
-        const geom = feature.getGeometry()
-        if (!geom) {
-          return
-        }
-        const resolution = map.getView().getResolution()
-        let padding = options.padding || map.ext.visibleAreaPadding()
-        if (geom.getType() === 'Point') {
-          const center = geom.getCoordinates()
-          center[0] += (-padding[3] * resolution + padding[1] * resolution) / 2
-          center[1] += (-padding[2] * resolution + padding[0] * resolution) / 2
-          map.getView().animate({
-            center,
-            duration: 450
-          })
-        } else {
-          const extent = geom.getExtent()
-          // add 5% buffer (padding)
-          const buffer = (map.getSize()[0] - padding[1] - padding[3]) * 0.05 * resolution
-          map.getView().fit(Extent.buffer(extent, buffer), { duration: 450, padding })
-        }
-      }
-    }
-    const extent = this.project.config.project_extent
-    const padding = map.ext.visibleAreaPadding()
-    map.getView().fit(extent, { padding })
-  },
-  methods: {
-    setVisibleBaseLayer (layer) {
-      this.$map.getLayers().getArray()
-        .filter(l => l.get('type') === 'baselayer')
-        .forEach(l => l.setVisible(l.get('name') === layer.name))
-    },
-    setVisibleLayers (layers) {
-      this.$map.overlay.getSource().setVisibleLayers(layers.map(l => l.name))
-    }
+    this.$map.setTarget(this.$refs.mapEl)
   }
 }
 </script>
@@ -198,8 +118,14 @@ export default {
     // justify-items: center;
     min-height: 0;
     max-height: 100%;
-    margin: 0.5em;
+    margin: 8px;
     pointer-events: none;
+
+    ::v-deep * {
+      // prevent Swipe to go back navigation (Android)
+      touch-action: none;
+      overscroll-behavior-x: none; // maybe not needed
+    }
     > * {
       pointer-events: auto;
     }
@@ -246,7 +172,7 @@ export default {
   .main-panel {
     grid-column: 1 / 2;
     grid-row: 1 / 3;
-    z-index: 2;
+    z-index: 10;
     justify-self: start;
   }
   .map-overlay {
@@ -255,6 +181,7 @@ export default {
     min-width: 0;
     min-height: 0;
     max-height: 100%;
+    z-index: 1;
   }
 }
 
@@ -280,25 +207,26 @@ export default {
       flex: 1 1;
       overflow: hidden;
     }
-    .toolbar {
-      .icon {
-        width: 24px;
-        height: 24px;
+    .app-toolbar {
+      background-color: #212121;
+      height: 44px;
+      border: solid;
+      border-width: 1px 0;
+      border-color: var(--color-red);
+      border-color: rgba(#fff, 0.5);
+
+      .btn {
+        padding: 4px;
+        .icon {
+          width: 24px;
+          height: 24px;
+        }
       }
     }
-  }
-  /deep/ .v-toolbar {
-    h4 {
-      text-transform: uppercase;
-      font-size: 90%;
-    }
-    .v-btn {
-      height: 100%;
-      margin: 0;
-      min-width: 2em;
-      width: 2.25em;
-      position: absolute;
-      right: 0;
+    .app-menu {
+      .btn {
+        margin: 3px;
+      }
     }
   }
 }

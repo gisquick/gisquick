@@ -2,15 +2,17 @@
   <div>
     <portal to="main-panel-top">
       <collapse-transition class="collapsible">
-        <div v-if="activeToolObj && activeToolObj.title">
-          <v-toolbar dark flat height="30">
-            <v-spacer/>
-            <h4>{{ activeToolObj.title }}</h4>
-            <v-spacer/>
-            <v-btn flat @click="$store.commit('activeTool', null)">
-              <v-icon>close</v-icon>
-            </v-btn>
-          </v-toolbar>
+        <div v-if="activeToolObj && activeToolObj.title" class="f-col">
+          <div class="panel-header f-row-ac dark">
+            <span class="f-grow"/>
+            <span class="title">{{ activeToolObj.title }}</span>
+            <div class="actions f-grow f-row-ac f-justify-end">
+              <!-- <v-icon size="18" class="mx-2" name="settings"/> -->
+              <v-btn class="icon dense" @click="$store.commit('activeTool', null)">
+                <v-icon name="x"/>
+              </v-btn>
+            </div>
+          </div>
           <portal-target name="main-panel" transition="switch-transition"/>
         </div>
       </collapse-transition>
@@ -70,7 +72,7 @@ export default {
       return {
         name: 'attribute-table',
         component: {
-          render (h) {
+          render () {
             return (
               <portal to="bottom-panel">
                 <AttributesTable key="attribute-table" onClose={this.close}/>
@@ -99,3 +101,12 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.actions {
+  flex-basis: 0;
+  .btn {
+    padding: 0;
+  }
+}
+</style>

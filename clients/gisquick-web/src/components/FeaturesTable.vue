@@ -1,11 +1,16 @@
 <template>
-  <div>
+  <div
+    class="features-table light f-col"
+    :class="{resizing}"
+    :style="heightStyle"
+  >
     <!-- Header -->
-    <tabs-header @close="$emit('close')">
+    <tabs-header :minimized.sync="minimized" @close="$emit('close')">
       <template slot="tabs">
         <a
           v-for="item in data"
           :key="item.layer.name"
+          class="item"
           :class="{ active: layer === item.layer }"
           @click="setActiveLayer(item.layer)"
         >
@@ -13,48 +18,44 @@
         </a>
       </template>
     </tabs-header>
+    <div class="resize-area f-row-ac" @mousedown="resizeHandler"/>
 
     <!-- Table -->
-    <div class="table-container" v-if="layer">
-      <!-- <transition name="tabslide"> -->
-      <switch-transition>
-        <v-data-table
-          :key="layer.name"
-          :headers="headers"
-          :items="features"
-          hide-actions
-        >
-          <template slot="items" slot-scope="props">
-            <tr
-              :class="{selected: selected && selected.featureIndex === props.index}"
-              @click="selectFeature(props.index)"
-            >
-              <td
-                class="icon px-3"
-                @click="zoomToFeature(props.item)"
-              >
-                <icon name="zoom-to"/>
-              </td>
-              <td v-for="attr in layer.attributes" :key="attr.name">
-                {{ props.item.get(attr.name) }}
-              </td>
-            </tr>
-          </template>
-        </v-data-table>
-      </switch-transition>
-      <!-- </transition> -->
-    </div>
+    <switch-transition v-if="layer" class="table-wrapper f-col f-grow">
+      <v-table
+        class="f-grow"
+        :key="layer.name"
+        :columns="columns"
+        item-key="_id"
+        :items="tableData"
+        :selected="selectedFeatureId"
+        @row-click="selectFeature"
+      >
+        <template v-slot:cell(actions)="{ row }">
+          <v-btn class="icon flat m-0" @click="zoomToFeature(features[row])">
+            <v-icon name="zoom-to"/>
+          </v-btn>
+        </template>
+      </v-table>
+    </switch-transition>
   </div>
 </template>
 
 <script>
-import TabsHeader from '@/components/TabsHeader.vue'
+import clamp from 'lodash/clamp'
 
-const zoomToHeader = {
+// import TabsHeader from '@/components/TabsHeader1.vue'
+import TabsHeader from '@/components/TabsHeader.vue'
+import { eventCoord, DragHandler } from '@/events'
+
+
+const ActionsHeader = {
   text: '',
-  value: '',
+  key: 'actions',
   sortable: false,
-  width: 1
+  header: {
+    width: 1
+  }
 }
 
 export default {
@@ -63,89 +64,123 @@ export default {
     data: Array,
     selected: Object
   },
+  data () {
+    return {
+      height: 210,
+      minimized: false,
+      resizing: false
+    }
+  },
   computed: {
+    heightStyle () {
+      // const height = this.height + 'px'
+      const height = (this.minimized ? 1 : this.height) + 'px'
+      return {
+        height,
+        // minHeight: height,
+        // maxHeight: height
+      }
+    },
     layerFeatures () {
+      // todo: solve updating after every selection change
       if (this.selected) {
         return this.data.find(i => i.layer.name === this.selected.layer)
       }
       return null
     },
     layer () {
-      return this.layerFeatures && this.layerFeatures.layer
+      return this.layerFeatures?.layer
     },
     features () {
-      return this.layerFeatures && this.layerFeatures.features
+      return this.layerFeatures?.features
     },
-    headers () {
+    columns () {
       if (this.layer) {
         const columns = this.layer.attributes.map(attr => ({
-          text: attr.alias || attr.name,
-          value: attr.name,
+          label: attr.alias || attr.name,
+          key: attr.name,
           align: 'left',
           sortable: false
         }))
-        return [zoomToHeader].concat(columns)
+        return [ActionsHeader, ...columns]
       }
       return []
+    },
+    tableData () {
+      return this.features?.map(f => ({ _id: f.getId(), ...f.getProperties() }))
+    },
+    selectedFeatureId () {
+      return this.tableData?.[this.selected.featureIndex]._id
     }
   },
   methods: {
     setActiveLayer (layer) {
-      this.$emit('selection-change', { layer: layer.name, featureIndex: 0 })
+      this.$emit('selection-change', { layer: layer.name, featureIndex: 0 }) // todo: use feature ID
     },
-    selectFeature (featureIndex) {
+    selectFeature (item) {
+      const featureIndex = this.tableData.indexOf(item)
       this.$emit('selection-change', { layer: this.selected.layer, featureIndex })
     },
     zoomToFeature (feature) {
       this.$map.ext.zoomToFeature(feature)
+    },
+    resizeHandler (e) {
+      const originHeight = this.height
+      const originY = eventCoord(e)[1]
+      const maxHeight = window.innerHeight - 120
+      DragHandler(e, {
+        onStart: () => {
+          this.resizing = true
+        },
+        onMove: e => {
+          const y = eventCoord(e)[1]
+          const offset = y - originY
+          this.height = clamp(originHeight - offset, 0, maxHeight)
+        },
+        onEnd: () => {
+          this.resizing = false
+        }
+      })
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.table-container {
-  pointer-events: auto;
-  background-color: #fff;
-  box-shadow: 0 -5px 8px 0 rgba(0,0,0,.12), 0 -4px 4px -2px rgba(0,0,0,.18);
-}
-/deep/ table.v-table {
-  thead {
-    tr {
-      height: 2em;
-      background-color: #ddd;
-      th {
-        background-color: #ddd;
-        position: sticky;
-        top: 0;
-      }
-    }
+.features-table {
+  border-top: 1px solid #777;
+  font-size: 14px;
+  --icon-color: #555;
+  // max-height: 242px;
+  &:not(.resizing) {
+    transition: height 0.4s cubic-bezier(.25,.8,.5,1);
   }
-  tbody {
-    tr {
-      &.selected {
-        background-color: rgba(3,169,244, 0.25)!important;
-      }
+}
+.table-container {
+  align-self: stretch; // for fixed height
+  pointer-events: auto;
+  // box-shadow: 0 -5px 8px 0 rgba(0,0,0,.12), 0 -4px 4px -2px rgba(0,0,0,.18);
+  box-shadow: 0 -4px 6px -1px rgba(0,0,0,.18);
+  ::v-deep {
+    table {
+      border-bottom: 1px solid #ddd;
     }
     td {
-      height: 2.5em;
       white-space: nowrap;
-      max-width: 500px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      &.icon {
-        cursor: pointer;
-        .icon {
-          display: block;
-          width: 1.5em;
-          height: 1.5em;
-          color: #777;
-        }
-      }
     }
   }
 }
-
+.tabs-header {
+  position: absolute;
+  transform: translate(0, -100%);
+}
+.table-wrapper {
+  pointer-events: auto;
+  background-color: #fff;
+  // box-shadow: 0 -5px 8px 0 rgba(0,0,0,.12), 0 -4px 6px -2px rgba(0,0,0,.18);
+  box-shadow: 0 -4px 6px -1px rgba(0,0,0,.18);
+  overflow: hidden;
+}
 .tabslide-enter, .tabslide-leave-to {
   opacity: 0;
 }
@@ -157,5 +192,37 @@ export default {
 }
 .tabslide-leave-active {
   position: absolute;
+}
+.resize-area {
+  pointer-events: auto;
+  position: absolute;
+  width: 100%;
+  min-height: 10px;
+  margin-top: -5px;
+  cursor: row-resize;
+  z-index: 10;
+  user-select: none;
+  // background-color: rgba(200,0,0,0.3);
+  &::after {
+    content: "";
+    flex: 1;
+    height: 2px;
+    background-color: var(--color-primary);
+    transition: opacity 0.3s cubic-bezier(.25,.8,.5,1);
+    transition-delay: 0.1s;
+    opacity: 0;
+  }
+  &:hover {
+    &::after {
+      opacity: 1;
+    }
+  }
+}
+.scroll-container {
+  ::v-deep {
+    .scrollbar-track.vertical {
+      margin-top: 36px;
+    }
+  }
 }
 </style>

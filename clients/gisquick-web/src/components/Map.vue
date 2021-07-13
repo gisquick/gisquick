@@ -102,6 +102,13 @@ export default {
       return tools.filter(t => !t.disabled)
     }
   },
+  created () {
+    this.$root.$panel = {
+      setStatusBarVisible: (visible) => {
+        this.statusBarVisible = visible
+      }
+    }
+  },
   mounted () {
     this.$map.setTarget(this.$refs.mapEl)
   }

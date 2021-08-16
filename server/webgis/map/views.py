@@ -17,7 +17,7 @@ from webgis.map.wfsfilter import webgisfilter
 from webgis.libs.utils import set_query_parameters
 from webgis.mapcache import get_tile_response, get_legendgraphic_response, \
     WmsLayer, TileNotFoundException
-from webgis.map.project import clean_project_name, get_project, check_role_access, \
+from webgis.map.project import clean_project_name, get_project, filter_user_roles, \
     get_project_info, get_last_project_version, InvalidProjectException
 from webgis.auth import basic_auth
 from webgis.auth.decorators import login_required
@@ -36,12 +36,12 @@ def check_project_access(request, project, project_auth):
         return request.user.is_authenticated and (project_owner == request.user.username or request.user.is_superuser)
     return False
 
-def check_layer_access(user, access_control, layer_name, permission):
-    for role in access_control['roles']:
-        if check_role_access(user, role):
-            perms = role['permissions']['layers']
-            if perms[layer_name][permission]:
-                return True
+
+def check_layer_access(user_roles, layer_name, permission):
+    for role in user_roles:
+        perms = role['permissions']['layers']
+        if perms[layer_name][permission]:
+            return True
     return False
 
 
@@ -82,12 +82,14 @@ def ows(request):
         access_control = pi.get('access_control')
         if access_control and access_control['enabled']:
             root = etree.fromstring(request.body.decode())
+            user_roles = filter_user_roles(request.user, access_control['roles'])
 
             for elem in root.findall('.//{*}Insert'):
                 for child in elem.getchildren():
                     layer_name = etree.QName(child).localname
-                    if not check_layer_access(request.user, access_control, layer_name, 'insert'):
+                    if not check_layer_access(user_roles, layer_name, 'insert'):
                         raise PermissionDenied
+
 
             checks = [
                 ('.//{*}Update', 'update'),
@@ -96,7 +98,7 @@ def ows(request):
             for query_path, permission in checks:
                 for elem in root.findall(query_path):
                     layer_name = elem.get('typeName').split(':')[-1]
-                    if not check_layer_access(request.user, access_control, layer_name, permission):
+                    if not check_layer_access(user_roles, layer_name, permission):
                         raise PermissionDenied
 
     url = "{0}?{1}".format(

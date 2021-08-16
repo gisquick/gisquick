@@ -197,6 +197,10 @@ def check_role_access(user, role):
     elif auth == 'users':
         return user.username in role['users']
 
+def filter_user_roles(user, roles):
+    user_roles = [r for r in roles if r['auth'] != 'other' and check_role_access(user, r)]
+    return user_roles or [r for r in roles if r['auth'] == 'other']
+
 
 def get_project(request):
     ows_project = None
@@ -293,13 +297,12 @@ def get_project(request):
     if metadata.access_control and metadata.access_control['enabled']:
         # compute layers permissions for current user
         layers_permissions = {}
-        for role in metadata.access_control['roles']:
-            if check_role_access(request.user, role):
-                for layername, role_permissions in role['permissions']['layers'].items():
-                    if layername not in layers_permissions:
-                        layers_permissions[layername] = {}
-                    for k, v in role_permissions.items():
-                        layers_permissions[layername][k] = layers_permissions[layername].get(k) or v
+        for role in filter_user_roles(request.user, metadata.access_control['roles']):
+            for layername, role_permissions in role['permissions']['layers'].items():
+                if layername not in layers_permissions:
+                    layers_permissions[layername] = {}
+                for k, v in role_permissions.items():
+                    layers_permissions[layername][k] = layers_permissions[layername].get(k) or v
 
         def check_layername_access(layername):
             perms = layers_permissions.get(layername)

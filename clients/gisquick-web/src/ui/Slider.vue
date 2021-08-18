@@ -1,6 +1,7 @@
 <template>
   <div
     class="slider"
+    :disabled="disabled"
     :tabindex="disabled ? -1 : 0"
     @focus="onFocus"
     @blur="onBlur"
@@ -37,7 +38,7 @@
 
 <script>
 import clamp from 'lodash/clamp'
-import { blend, cssColor, interpolate } from './utils/colors'
+import { blend, hexToRgb, cssColor, interpolate } from './utils/colors'
 // import VTooltip from './Tooltip.vue'
 
 const Events = {
@@ -72,16 +73,18 @@ export default {
     hideRangeLabels: Boolean,
     colors: {
       type: Array,
-      default: () => []
+      default: () => ['primary']
     },
     format: Function,
     label: String,
+    lazy: Boolean,
     markerBlendColor: String
   },
   data () {
     return {
       focused: false,
-      dragging: false
+      dragging: false,
+      dragValue: null
     }
   },
   computed: {
@@ -102,11 +105,19 @@ export default {
     },
     valuePos () {
       const { min, max } = this.range
-      return this.validValue ? clamp((this.value - min) / (max - min), 0, 1) : 0
+      const value = this.dragValue !== null ? this.dragValue : this.value
+      return this.validValue ? clamp((value - min) / (max - min), 0, 1) : 0
+    },
+    cssColors () {
+      return this.colors.map(c => c.startsWith('#') ? c : `var(--color-${c})`)
+    },
+    rawColors () {
+      return this.colors.map(c => c.startsWith('#') ? hexToRgb(c) : `var(--color-${c}-rgb)`)
     },
     barStyle () {
+      const colors = this.colors.length === 1 ? new Array(2).fill(this.cssColors[0]) : this.cssColors
       return {
-        backgroundImage: `linear-gradient(to right, ${this.colors.join(',')})`
+        backgroundImage: `linear-gradient(to right, ${colors.join(',')})`
       }
     },
     coverStyle () {
@@ -115,6 +126,12 @@ export default {
       }
     },
     markerColor () {
+      if (this.colors.length === 1) {
+        return {
+          css: this.cssColors[0],
+          raw: this.rawColors[0]
+        }
+      }
       const val = (this.valuePos * (this.colors.length - 1))
       const c1 = this.colors[Math.floor(val)]
       const c2 = this.colors[Math.ceil(val)]
@@ -179,7 +196,10 @@ export default {
           // console.log('k', k)
         }
         const value = clamp(startValue + offset * k, this.range.min, this.range.max)
-        this.$emit('input', value)
+        this.dragValue = value
+        if (!this.lazy) {
+          this.$emit('input', value)
+        }
       }
       const onEnd = evt => {
         // console.log('slider: touch end')
@@ -187,10 +207,14 @@ export default {
         document.removeEventListener(Event.move, onMove)
         evt.stopPropagation()
         evt.preventDefault()
+        const value = this.dragValue // or comupte value from coords?
         this.dragging = false
+        this.dragValue = null
         if (!drag) {
           return
         }
+        this.$emit('input', value)
+        this.$emit('change', value)
       }
       // const onCancel = () => {
       //   console.log('slider: touch cancel')
@@ -209,6 +233,7 @@ export default {
       const offset = e.clientX - trackBounds.x
       const value = this.range.min + (offset / trackBounds.width) * (this.range.max - this.range.min)
       this.$emit('input', value)
+      this.$emit('change', value)
     }
   }
 }
@@ -286,6 +311,10 @@ export default {
         // transform: scale(1.2, 1.2);
       }
     }
+  }
+  &[disabled] {
+    pointer-events: none;
+    opacity: 0.5;
   }
 }
 </style>

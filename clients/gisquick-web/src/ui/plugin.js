@@ -3,8 +3,9 @@ import {
   VIcon,
   VCheckbox,
   VDialog,
-  VRadioBtn,
+  VLinearProgress,
   VMenu,
+  VRadioBtn,
   VSelect,
   VSlider,
   VSpinner,
@@ -22,8 +23,9 @@ export default {
     Vue.component('v-icon', VIcon)
     Vue.component('v-checkbox', VCheckbox)
     Vue.component('v-dialog', VDialog)
-    Vue.component('v-radio-btn', VRadioBtn)
+    Vue.component('v-linear-progress', VLinearProgress)
     Vue.component('v-menu', VMenu)
+    Vue.component('v-radio-btn', VRadioBtn)
     Vue.component('v-select', VSelect)
     Vue.component('v-slider', VSlider)
     Vue.component('v-spinner', VSpinner)

@@ -333,6 +333,9 @@ export default {
       this.visible = false
     },
     onDocumentClick (e) {
+      if (e.clientX < 0 || e.clientY < 0 || e.clientY > window.innerHeight) {
+        return // outside of page, ignore (mouse drag with release/mouseup outside)
+      }
       // e.composedPath().includes(this.$el)
       const popupEl = this.popupElement()
       if (!popupEl || !popupEl.contains(e.target)) {

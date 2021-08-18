@@ -100,7 +100,7 @@ a {
   min-width: 36px;
   font-family: inherit;
   font-size: inherit;
-  margin: 6px;
+  margin: var(--gutter, 6px);
   background-color: transparent;
 
   &::before {

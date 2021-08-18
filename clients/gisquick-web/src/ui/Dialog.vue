@@ -6,6 +6,7 @@
     :open.sync="open"
     :transition="transition"
     :popup-class="popupClass"
+    @update:open="close"
     @click:out="close"
     @keydown.esc="close"
     @closed="$emit('closed')"
@@ -68,8 +69,10 @@ export default {
   watch: {
     value: {
       immediate: true,
-      handler (open) {
-        open ? this.show() : this.close()
+      handler (val) {
+        if (val !== this.open) {
+          val ? this.show() : this.close()
+        }
       }
     }
   },

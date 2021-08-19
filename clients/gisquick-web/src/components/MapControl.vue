@@ -1,5 +1,19 @@
 <template>
   <div class="map-control f-col dark">
+    <transition name="fade">
+      <div v-if="compassVisible">
+        <v-btn
+          class="compass icon"
+          @click="resetNorth"
+        >
+          <v-icon
+            name="compass"
+            size="30"
+            :style="compassStyle"
+          />
+        </v-btn>
+      </div>
+    </transition>
     <v-btn
       class="zoom-in icon"
       @click="zoomIn"
@@ -24,17 +38,39 @@
 <script>
 import { mapState } from 'vuex'
 import ZoomControl from 'ol/control/zoom'
+import Observable from 'ol/observable'
 
 export default {
   name: 'map-control',
+  data () {
+    return {
+      rotation: 0
+    }
+  },
   computed: {
-    ...mapState(['project'])
+    ...mapState(['project']),
+    compassVisible () {
+      return this.rotation !== 0
+    },
+    compassStyle () {
+      return {
+        transform: `rotate(${this.rotation}rad)`
+      }
+    }
   },
   created () {
     this.zoom = Object.create(ZoomControl.prototype)
     Object.assign(this.zoom, {
       duration_: 250,
       getMap: () => this.$map
+    })
+  },
+  mounted () {
+    const listener = this.$map.getView().on('change:rotation', (e) => {
+      this.rotation = e.target.get(e.key)
+    })
+    this.$once('hook:beforeDestroy', () => {
+      Observable.unByKey(listener)
     })
   },
   methods: {
@@ -48,6 +84,9 @@ export default {
       const extent = this.project.config.project_extent
       const padding = this.$map.ext.visibleAreaPadding()
       this.$map.getView().fit(extent, { duration: 400, padding })
+    },
+    resetNorth () {
+      this.$map.getView().animate({ rotation: 0, duration: 300 })
     }
   }
 }

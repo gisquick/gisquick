@@ -40,7 +40,7 @@ export default {
       legendUrl: config.legend_url,
       mapcacheUrl: config.mapcache_url
     }
-    const map = createMap(mapConfig, { zoom: false, attribution: false })
+    const map = createMap(mapConfig, { zoom: false, attribution: false, rotate: false })
     // this.setVisibleLayers(this.visibleLayers)
 
     Vue.prototype.$map = map

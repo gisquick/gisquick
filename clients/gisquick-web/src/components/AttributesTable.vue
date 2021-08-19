@@ -462,6 +462,10 @@ export default {
     table {
       border-bottom: 1px solid #ddd;
     }
+    thead th[role="columnheader"] {
+      height: 39px;
+      padding-block: 5px;
+    }
     td {
       white-space: nowrap;
       max-width: 600px; // TODO: multiple sizes dependent by columns count
@@ -539,7 +543,7 @@ export default {
 .scroll-container {
   ::v-deep {
     .scrollbar-track.vertical {
-      margin-top: 41px;
+      margin-top: 40px;
     }
   }
 }

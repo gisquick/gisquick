@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="app f-col">
     <intro-page v-if="!projectPath"/>
     <map-app v-if="projectStatus === 200"/>
     <login-dialog
@@ -11,6 +11,7 @@
       @close="$store.commit('showLogin', false)"
     />
     <project-not-found v-if="projectStatus === 404"/>
+    <server-error v-if="projectStatus === 500"/>
     <popup-layer class="light"/>
   </div>
 </template>
@@ -23,6 +24,7 @@ import DesktopMap from '@/components/Map.vue'
 import MobileMap from '@/components/MobileMap.vue'
 import LoginDialog from '@/components/LoginDialog.vue'
 import PopupLayer from '@/ui/PopupLayer.vue'
+import ServerError from './ServerError.vue'
 
 export default {
   components: {
@@ -30,6 +32,7 @@ export default {
     ProjectNotFound,
     LoginDialog,
     IntroPage,
+    ServerError,
     MapApp: async () => window.env.mobile ? MobileMap : DesktopMap
   },
   computed: {
@@ -96,7 +99,5 @@ html {
 
 #app {
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
 }
 </style>

@@ -53,8 +53,10 @@ export default {
 
     const unbind = this.$swiper.bind({
       test: e => {
-        const x = Events[e.type].xPos(e)
-        return (this.visible && x > 260 && x < 310) || (!this.visible && x < 20)
+        if (el.parentElement.contains(e.target)) {
+          const x = Events[e.type].xPos(e)
+          return (this.visible && x > 260 && x < 310) || (!this.visible && x < 20)
+        }
       },
       start: e => {
         originX = Touch.xPos(e)

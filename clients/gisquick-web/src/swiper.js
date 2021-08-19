@@ -19,7 +19,7 @@ export default {
     }
     const onStart = e => {
       e.stopPropagation()
-      activeListener.start(e)
+      activeListener?.start(e)
     }
     const onEnd = e => {
       if (activeListener) {

@@ -10,7 +10,7 @@
             :key="tool.name"
             class="icon flat"
             :color="activeTool === tool.name ? 'primary' : ''"
-            @click="$store.commit('activeTool', tool.name)"
+            @click="toggleTool(tool)"
           >
             <v-icon :name="tool.icon"/>
           </v-btn>
@@ -84,6 +84,12 @@ export default {
   },
   mounted () {
     this.$map.setTarget(this.$refs.mapEl)
+  },
+  methods: {
+    toggleTool (tool) {
+      const value = this.activeTool !== tool.name ? tool.name : null
+      this.$store.commit('activeTool', value)
+    }
   }
 }
 </script>
@@ -123,7 +129,8 @@ export default {
 
     ::v-deep * {
       // prevent Swipe to go back navigation (Android)
-      touch-action: none;
+      // touch-action: none;
+      touch-action: pan-y;
       overscroll-behavior-x: none; // maybe not needed
     }
     > * {

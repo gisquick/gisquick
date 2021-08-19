@@ -65,7 +65,7 @@
         </div>
       </div>
     </transition>
-    <map-tools ref="tools"/>
+    <map-tools ref="tools" show-header/>
   </div>
 </template>
 

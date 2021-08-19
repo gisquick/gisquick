@@ -3,12 +3,15 @@
     <portal to="main-panel-top">
       <collapse-transition class="collapsible">
         <div v-if="activeToolObj && activeToolObj.title" class="f-col">
-          <div class="panel-header f-row-ac dark">
+          <div v-if="showHeader" class="panel-header f-row-ac dark">
             <span class="f-grow"/>
             <span class="title">{{ activeToolObj.title }}</span>
             <div class="actions f-grow f-row-ac f-justify-end">
               <!-- <v-icon size="18" class="mx-2" name="settings"/> -->
-              <v-btn class="icon dense" @click="$store.commit('activeTool', null)">
+              <v-btn
+                class="icon dense"
+                @click="$store.commit('activeTool', null)"
+              >
                 <v-icon name="x"/>
               </v-btn>
             </div>
@@ -36,6 +39,9 @@ import Measure from '@/components/measure/Measure.vue'
 import Print from '@/components/print/Print.vue'
 
 export default {
+  props: {
+    showHeader: Boolean
+  },
   computed: {
     ...mapState(['project', 'activeTool']),
 

@@ -8,6 +8,7 @@
       :readonly="readonlyFields"
     >
       <generic-edit-form
+        ref="editForm"
         :layer="layer"
         :fields="fields"
         :readonly="readonlyFields"
@@ -16,30 +17,12 @@
       <v-radio-btn val="success" v-model="status" label="Success"/>
       <v-radio-btn val="error" v-model="status" label="Error"/>
       <v-radio-btn val="" v-model="status" label="None"/> -->
-      <v-tooltip
-        align="c;bt"
-        content-class="notification my-2"
-        :value="!!status"
-      >
-        <div
-          class="content f-row-ac"
-          :class="status"
-        >
-          <progress-action
-            :status="status"
-            class="mr-2"
-          />
-          <span v-if="status === 'loading'">Updating data</span>
-          <span v-else-if="status === 'success'">Data updated</span>
-          <span v-else>Error</span>
-        </div>
-      </v-tooltip>
     </slot>
     <portal to="infopanel-tool">
       <div class="toolbar f-row-ac">
         <v-btn
           class="icon flat"
-          :color="editGeometry && 'primary'"
+          :color="editGeometry ? 'primary' : ''"
           @click="editGeometry = !editGeometry"
         >
           <v-tooltip slot="tooltip">
@@ -57,37 +40,18 @@
         <!-- <v-btn @click="deleteFeature" icon>
           <v-icon color="red darken-3">delete_forever</v-icon>
         </v-btn> -->
-        <v-menu align="ll;bt">
-          <template v-slot:activator="{ toggle }">
-            <v-btn
-              aria-label="Delete object"
-              class="icon"
-              :disabled="!permissions.delete || status === 'loading'"
-              @click="toggle"
-            >
-              <v-icon color="red" name="delete_forever"/>
-              <v-tooltip slot="tooltip">
-                <translate>Delete object</translate>
-              </v-tooltip>
-            </v-btn>
-          </template>
-          <template v-slot:menu="{ close }">
-            <div class="prompt-menu popup-content light f-col">
-              <div class="header dark px-4">
-                <span class="title"><translate>Delete current object?</translate></span>
-              </div>
-              <hr/>
-              <div class="f-row-ac">
-                <v-btn class="small round outlined f-grow" color="#555" @click="close">
-                  <translate>No</translate>
-                </v-btn>
-                <v-btn class="small round f-grow" color="red" @click="deleteFeature">
-                  <translate>Yes</translate>
-                </v-btn>
-              </div>
-            </div>
-          </template>
-        </v-menu>
+
+        <v-btn
+          aria-label="Delete object"
+          class="icon"
+          :disabled="!permissions.delete || status === 'loading'"
+          @click="showConfirmDelete = true"
+        >
+          <v-icon color="red" name="delete_forever"/>
+          <v-tooltip slot="tooltip">
+            <translate>Delete object</translate>
+          </v-tooltip>
+        </v-btn>
         <v-btn
           class="icon"
           :disabled="!permissions.update || !isModified || !!status"
@@ -108,26 +72,39 @@
           </v-tooltip>
           <v-icon color="green" name="save"/>
         </v-btn>
-
-        <!-- <div class="f-row f-justify-center notification my-2">
-          <transition name="fade">
-            <div
-              v-if="status"
-              class="notification-content elevation-3 f-row-ac py-1 px-2 f-shrink"
-              :class="status === 'error' ? 'red darken-2' : 'grey darken-3'"
-            >
-              <progress-action
-                :status="status"
-                class="mr-2"
-              />
-              <span v-if="status === 'loading'">Updating data</span>
-              <span v-else-if="status === 'success'">Data updated</span>
-              <span v-else>Error</span>
-            </div>
-          </transition>
-        </div> -->
       </div>
     </portal>
+
+    <transition name="fade">
+      <div v-if="status" class="overlay notification f-row">
+        <div
+          class="content shadow-2 f-row-ac p-2"
+          :class="status"
+        >
+          <progress-action class="mr-2" :status="status"/>
+          <translate v-if="status === 'loading'" key="pending">Updating data</translate>
+          <translate v-else-if="status === 'success'" key="success">Data updated</translate>
+          <translate v-else key="error">Error</translate>
+        </div>
+      </div>
+    </transition>
+    <transition name="fade">
+      <div v-if="showConfirmDelete" class="overlay delete-dialog f-col">
+        <!-- <div class="content shadow-2"> -->
+          <div class="header px-4">
+            <span class="title"><translate>Delete current object?</translate></span>
+          </div>
+          <div class="f-row-ac">
+            <v-btn class="small round f-grow" color="#777" @click="showConfirmDelete = false">
+              <translate>No</translate>
+            </v-btn>
+            <v-btn class="small round f-grow" color="red" @click="deleteFeature">
+              <translate>Yes</translate>
+            </v-btn>
+          </div>
+        <!-- </div> -->
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -143,8 +120,6 @@ import { queuedUpdater } from '@/utils'
 import GeometryEditor from './GeometryEditor.vue'
 import GenericEditForm from './GenericEditForm.vue'
 import ProgressAction from '@/components/ProgressAction.vue'
-// import ProgressAction from '@/components/ProgressAction3.vue'
-
 
 function getFeatureFields (feature) {
   return feature ? omit(feature.getProperties(), feature.getGeometryName()) : {}
@@ -176,7 +151,8 @@ export default {
       errorMsg: '',
       fields: null,
       originalFields: null,
-      editGeometry: false
+      editGeometry: false,
+      showConfirmDelete: false
     }
   },
   computed: {
@@ -247,25 +223,33 @@ export default {
       this.fields = getFeatureFields(this.feature)
       this.editGeometry = false
     },
-    wfsTransaction (operations) {
+    async wfsTransaction (operations) {
       this.statusController.set('loading', 1000)
-      wfsTransaction(this.project.config.ows_url, this.layer.name, operations)
-        .then(async () => {
-          await this.statusController.set('success', 1500)
-          this.statusController.set(null, 100)
-          const { updates = [], deletes = [] } = operations
-          updates.forEach(f => this.$emit('edit', f))
-          deletes.forEach(f => this.$emit('delete', f))
-        })
-        .catch(err => {
-          this.errorMsg = err.message || 'Error'
-          this.statusController.set('error', 3000)
-          this.statusController.set(null, 100)
-        })
+      try {
+        await wfsTransaction(this.project.config.ows_url, this.layer.name, operations)
+        // TODO: afterSave hook
+        await this.statusController.set('success', 1500)
+        this.statusController.set(null, 100)
+        const { updates = [], deletes = [] } = operations
+        updates.forEach(f => this.$emit('edit', f))
+        deletes.forEach(f => this.$emit('delete', f))
+      } catch (err) {
+        this.errorMsg = err.message || 'Error'
+        this.statusController.set('error', 3000)
+        this.statusController.set(null, 100)
+      }
     },
-    save () {
+    async save () {
       const f = new Feature()
-      const changedFields = difference(this.fields, this.originalFields)
+      const resolvedFields = {}
+      for (const name in this.fields) {
+        let value = this.fields[name]
+        if (typeof value === 'function') {
+          value = await value()
+        }
+        resolvedFields[name] = value
+      }
+      const changedFields = difference(resolvedFields, this.originalFields)
       f.setProperties(changedFields)
       if (this.geomModified) {
         let newGeom = this.$refs.geometryEditor.getGeometry()
@@ -279,8 +263,11 @@ export default {
       f.setId(this.feature.getId())
       this.wfsTransaction({ updates: [f] })
     },
-    deleteFeature () {
+    async deleteFeature () {
+      await this.$refs.editForm.beforeDelete?.()
       this.wfsTransaction({ deletes: [this.feature] })
+      await this.$refs.editForm.afterDelete?.()
+      this.showConfirmDelete = false
     }
   }
 }
@@ -296,13 +283,18 @@ export default {
     height: 26px;
   }
 }
-.notification {
+
+.overlay {
   position: absolute;
-  width: 100%;
-  bottom: 2em;
-  align-self: center;
-  text-align: center;
-  opacity: 0.8;
+  inset: 0;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+.notification {
+  background-color: rgba(0, 0, 0, 0.2);
+
+  // pointer-events: none;
   svg {
     border: 1px solid currentColor;
     border-radius: 50%;
@@ -311,21 +303,30 @@ export default {
   .content {
     width: 150px;
     font-size: 14px;
-    border-radius: 0px;
-
+    border-radius: 3px;
+    margin: 6px;
+    background-color: #444;
+    color: #fff;
+    transition: 0.4s ease;
     &.error {
-      // color: var(--color-red);
+      background-color: var(--color-red);
     }
   }
 }
-.prompt-menu {
-  .header {
-    background-color: var(--color-dark);
-    white-space: nowrap;
-    .title {
-      font-size: 13px;
-      font-weight: 500;
-    }
+.delete-dialog {
+  background-color: #f3f3f3;
+  // ver. 2 (with content wrapper)
+  // background-color: rgba(0,0,0, 0.3);
+  // .content {
+  //   background-color: #f3f3f3;
+  //   padding: 6px 12px;
+  //   border-radius: 2px;
+  // }
+  .title {
+    font-weight: 500;
+  }
+  .btn.small {
+    min-width: 70px;
   }
 }
 </style>

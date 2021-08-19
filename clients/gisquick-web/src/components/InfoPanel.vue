@@ -141,6 +141,7 @@ export default {
   }
 
   .toolbar {
+    flex-shrink: 0;
     &.top {
       background-color: #444;
       height: 36px;

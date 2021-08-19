@@ -3,7 +3,7 @@
     <!-- Toolbar UI -->
     <v-btn
       class="icon flat"
-      :color="drawingEnabled && 'primary'"
+      :color="drawingEnabled ? 'primary' : ''"
       @click="drawingEnabled = !drawingEnabled"
     >
       <v-tooltip slot="tooltip">
@@ -15,7 +15,7 @@
       v-if="drawGeomType !== 'Point'"
       :disabled="nodeToolDisabled"
       class="icon flat"
-      :color="nodeToolEnabled && 'primary'"
+      :color="nodeToolEnabled ? 'primary' : ''"
       @click="nodeToolEnabled = !nodeToolEnabled"
     >
       <v-tooltip slot="tooltip">

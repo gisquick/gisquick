@@ -1,5 +1,5 @@
 <template>
-  <div class="map-container">
+  <div class="map-container mobile">
     <div ref="mapEl" class="map"/>
 
     <swipe-container class="main-panel f-row">
@@ -13,6 +13,13 @@
             @click="toggleTool(tool)"
           >
             <v-icon :name="tool.icon"/>
+          </v-btn>
+          <v-btn
+            class="icon flat"
+            :color="geolocationEnabled ? 'primary' : ''"
+            @click="geolocationEnabled = !geolocationEnabled"
+          >
+            <v-icon name="target"/>
           </v-btn>
           <div class="f-grow"/>
           <app-menu class="app-menu" align="rr;tb,bt">
@@ -50,6 +57,7 @@
     </div>
 
     <map-tools ref="tools"/>
+    <location-tool v-if="geolocationEnabled"/>
   </div>
 </template>
 
@@ -64,12 +72,18 @@ import ScaleLine from '@/components/ol/ScaleLine.vue'
 import MapTools from '@/components/MapTools.vue'
 import AppMenu from '@/components/AppMenu.vue'
 import SwipeContainer from '@/components/SwipeContainer.vue'
+import LocationTool from '@/components/LocationTool.vue'
 
 export default {
   name: 'Map',
   mixins: [Map],
-  components: { AppMenu, ContentPanel, ScaleLine, MapAttributions, MapControl, MapTools, SwipeContainer },
+  components: { AppMenu, ContentPanel, ScaleLine, MapAttributions, MapControl, MapTools, SwipeContainer, LocationTool },
   refs: ['tools'],
+  data () {
+    return {
+      geolocationEnabled: false
+    }
+  },
   computed: {
     ...mapState(['activeTool']),
     toolsMenuItems () {

@@ -44,11 +44,14 @@ const UrlWidget = Widget((h, ctx) => (
 ))
 
 const ImageWidget = Widget((h, ctx) => {
-  if (!ctx.props.value) {
+  const src = ctx.props.value
+  if (!src) {
     return <span class="value"></span>
   }
-  const img = <a {...ctx.data} href={ctx.props.value} target="_blank" class="image"><img src={ctx.props.value}/></a>
-  return [<span class="value">{ctx.props.value}</span>, img]
+  return [
+    <a class="value" href={src} target="_blank">{src}</a>,
+    <v-image class="image" src={src}/>
+  ]
 })
 
 export default {
@@ -75,10 +78,10 @@ export default {
           return <span class="value"></span>
         }
         const url = root + ctx.props.value.replace('media/', '')
-        const img = <a href={url} target="_blank" class="image">
-          <img src={url}/>
-        </a>
-        return [<span class="value">{ctx.props.value}</span>, img]
+        return [
+          <a class="value" href={url} target="_blank">{ctx.props.value}</a>,
+          <v-image class="image" src={url}/>
+        ]
       })
     },
     widgets () {
@@ -132,6 +135,8 @@ export default {
   ::v-deep {
     .value {
       min-height: 28px;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
   // ver. 1
@@ -209,13 +214,19 @@ export default {
     text-decoration: none;
   }
   .image {
-    display: flex;
+    display: grid;
     // padding: 2px;
     border-bottom: 1px solid #e7e7e7;
     grid-column: 1 / 3;
+    width: 100%;
 
     // align-self: center;
     // justify-self: center;
+    ::v-deep .image-error {
+      height: 64px;
+      padding: 6px 0;
+      justify-self: center;
+    }
   }
 }
 </style>

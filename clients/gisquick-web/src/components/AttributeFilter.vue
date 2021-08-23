@@ -1,54 +1,49 @@
 <template>
-  <v-layout class="column my-1">
+  <div class="header f-row-ac">
     <span v-text="label"/>
-    <v-layout class="filter row" v-if="filters">
-       <!-- VSelect component inside VDataTable is causing errors on reloading (in development) -->
+    <div class="filter" v-if="filter.active && filters">
       <v-select
+        class="filled"
         :placeholder="tr.Filter"
         :items="filters"
         :value="filter.comparator"
         @input="$emit('input:comparator', $event)"
-        class="mt-0 mb-0 mr-1"
-        hide-details
       >
         <template v-slot:item="{ item }">
-          <div class="symbol">{{ item.text }}</div>
+          <div class="symbol mx-2">{{ item.text }}</div>
           <span
             v-if="tr.filters[item.value]"
-            class="description ml-3"
-          >
-            {{ tr.filters[item.value] }}
-          </span>
+            class="mx-2"
+            v-text="tr.filters[item.value]"
+          />
         </template>
       </v-select>
       <v-text-field
         v-if="selectedFilter && selectedFilter.inputType"
-        class="my-0 mr-1"
+        class="filled f-grow"
         :placeholder="placeholder"
         :value="filter.value"
         :type="selectedFilter.inputType"
         :disabled="!selectedFilter.inputType"
-        :rules="rules"
+        :color="isValid ? 'primary' : 'red'"
         @input="$emit('input:value', $event)"
-        @update:error="$emit('update:error', $event)"
         @keydown.enter="$emit('input:enter')"
-        hide-details
       />
       <v-text-field
         v-else
-        class="my-0 mr-1"
-        :placeholder="selectedFilter && selectedFilter.placeholder"
         disabled
+        class="filled f-grow"
+        :placeholder="selectedFilter && selectedFilter.placeholder"
       />
-      <v-btn
-        icon
-        class="mx-0 my-0"
-        @click="$emit('clear')"
-      >
-        <icon name="delete"/>
-      </v-btn>
-    </v-layout>
-  </v-layout>
+    </div>
+    <v-btn
+      class="icon flat ml-auto mr-0"
+      :color="filter.active ? 'primary' : ''"
+      @click="toggleFilter"
+    >
+      <v-icon name="filter" size="13"/>
+    </v-btn>
+  </div>
 </template>
 
 <script>
@@ -187,11 +182,14 @@ export default {
       return this.filter.comparator && this.filters.find(o => o.value === this.filter.comparator)
     },
     placeholder () {
-      return this.selectedFilter && this.selectedFilter.placeholder
+      return this.selectedFilter?.placeholder
     },
     rules () {
-      const validate = this.selectedFilter && this.selectedFilter.validate
+      const validate = this.selectedFilter?.validate
       return validate ? [validate] : []
+    },
+    isValid () {
+      return this.filter.comparator && this.rules.every(validate => validate(this.filter.value))
     },
     tr () {
       return {
@@ -211,21 +209,16 @@ export default {
     }
   },
   watch: {
-    rules () {
-      this.validateValue(this.filter.value)
+    isValid: {
+      immediate: true,
+      handler (valid) {
+        this.$emit('update:error', !valid)
+      }
     }
   },
   methods: {
-    validateValue (value) {
-      const valid = this.rules.every(validate => validate(value))
-      if (valid) {
-        if (value !== this.filter.value) {
-          this.$emit('input:value', value)
-        }
-        this.$emit('update:error', false)
-      } else {
-        this.$emit('update:error', true)
-      }
+    toggleFilter () {
+     this.$emit('input:active', !this.filter.active)
     }
   }
 }
@@ -234,46 +227,42 @@ export default {
 <style lang="scss" scoped>
 .symbol {
   min-width: 22px;
-  font-size: 16px;
+  font-size: 17px;
   background-color: #f5f5f5;
   border: 1px solid #e3e3e3;
   text-align: center;
 }
-.description {
-  opacity: 0.7;
-  margin-bottom: 1px;
-}
 .filter {
+  font-size: 14px;
   font-weight: normal;
-  .v-select {
-    min-width: 48px;
-    flex: 0 0 auto;
-    /deep/ .v-select__selections {
-      height: 28px;
-      max-width: 40px; // to make width compact
-      font-size: 16px;
-      ::placeholder {
-        font-size: 13px;
-      }
+  --icon-color: #777;
+  --fill-color: #fff;
+  flex-grow: 1;
+
+  display: flex;
+  align-items: center;
+
+  // display: grid;
+  // grid-template-columns: auto 1fr auto;
+
+  font-size: 13px;
+  .select {
+    ::v-deep .value {
+      font-size: 17px;
     }
   }
-  .v-text-field {
-    height: 28px;
-    font-size: 14px;
-    /deep/ input {
-      height: 28px;
+  .text-field {
+    min-width: 120px;
+    flex: 1 1 0;
+  }
+  .i-field ::v-deep {
+    .input {
+      height: 25px;
     }
-    &:not(.v-select) {
-      min-width: 100px;
-    }
   }
-  .v-btn {
-    height: 28px;
-  }
-  .icon {
-    width: 1.15em;
-    height: 1.15em;
-    opacity: 0.7;
-  }
+}
+.header, .filter {
+  gap: 6px;
+  --gutter: 0;
 }
 </style>

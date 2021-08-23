@@ -88,6 +88,9 @@ export default {
 
 <style lang="scss" scoped>
 .legend {
+  img {
+    display: block;
+  }
   .item {
     display: flex;
     flex-direction: column;

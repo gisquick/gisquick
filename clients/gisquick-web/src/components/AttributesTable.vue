@@ -1,148 +1,152 @@
 <template>
-  <v-layout column>
+  <div
+    class="attribute-table light f-col"
+    :class="{resizing}"
+    :style="heightStyle"
+  >
     <!-- Header -->
-    <tabs-header @close="$emit('close')">
-      <a slot="tabs" class="active">
+    <tabs-header :minimized.sync="minimized" @close="$emit('close')">
+      <a slot="tabs" class="item xactive">
         {{ layer.title }}
       </a>
     </tabs-header>
-
+    <div class="resize-area f-row-ac" @mousedown="resizeHandler"/>
     <!-- Table -->
-    <v-data-table
-      class="table-container"
-      :headers="headers"
-      :items="features"
+    <v-table
+      class="f-grow"
+      :columns="columns"
+      item-key="_id"
+      :items="tableData"
       :loading="loading"
-      hide-actions
+      :selected="selectedFeatureId"
+      @row-click="selectFeature"
     >
-      <template slot="headerCell" slot-scope="{ header }">
-        <span v-if="header.blank"/>
+      <template v-slot:header(actions)>
+        <!-- <v-menu>
+          <template v-slot:activator="{ toggle }">
+            <v-btn class="icon flat m-0" @click="toggle">
+              <v-icon name="menu"/>
+            </v-btn>
+          </template>
+        </v-menu> -->
+      </template>
+      <template v-slot:header(filter)="{ column }">
         <attribute-filter
-          v-else
-          :label="header.text"
-          :type="header.type"
-          :filter="layerFilters[header.value]"
-          @input:comparator="updateFilterComparator({ attr: header.value, comparator: $event })"
-          @input:value="updateFilterValue({ attr: header.value, value: $event })"
-          @update:error="updateFilterValidity({ attr: header.value, valid: !$event })"
+          :label="column.label"
+          :type="column.type"
+          :filter="layerFilters[column.key]"
+          @input:comparator="updateFilterComparator({ attr: column.key, comparator: $event })"
+          @input:value="updateFilterValue({ attr: column.key, value: $event })"
+          @input:active="toggleFilter(column.key, $event)"
+          @update:error="updateFilterValidity({ attr: column.key, valid: !$event })"
           @input:enter="fetchFeatures()"
-          @clear="clearFilter(header.value)"
+          @clear="clearFilter(column.key)"
         />
       </template>
-      <template slot="items" slot-scope="{ item, index }">
-        <tr
-          @click="selectedFeatureIndex = index"
-          :class="{selected: selectedFeature === item}"
-        >
-          <td
-            class="icon pl-3 pr-2"
-            @click="zoomToFeature(item)"
-          >
-            <icon name="zoom-to"/>
-          </td>
-          <td
-            class="icon pl-2 pr-0"
-            @click="newFeatureMode = false; showInfoPanel = true"
-          >
-            <icon name="circle-i-outline"/>
-          </td>
-          <td v-for="attr in attributes" :key="attr.name">
-            {{ item.get(attr.name) }}
-          </td>
-        </tr>
+      <template v-slot:cell(actions)="{ row }">
+        <div class="f-row-ac">
+          <v-btn class="icon flat m-0" @click="zoomToFeature(features[row])">
+            <v-icon name="zoom-to"/>
+          </v-btn>
+          <v-btn class="icon flat my-0 mr-0" @click="showInfoPanel = true">
+            <v-icon name="circle-i-outline"/>
+          </v-btn>
+        </div>
       </template>
-    </v-data-table>
+    </v-table>
+    <!-- <hr/> -->
+    <!-- <div class="f-grow"/> -->
 
     <!-- Bottom toolbar -->
-    <v-layout class="row align-center bottom-panel pl-1">
+    <div class="f-row-ac bottom-panel px-2">
       <template v-if="pagination">
         <v-btn
-          icon
-          class="mx-1 my-0"
+          class="icon"
           :disabled="pagination.page === 1"
           @click="setPage(1)"
         >
-          <v-icon>first_page</v-icon>
+          <v-icon name="first_page"/>
         </v-btn>
         <v-btn
-          icon
-          class="mx-1 my-0"
+          class="icon"
           :disabled="pagination.page === 1"
           @click="setPage(pagination.page - 1)"
         >
-          <v-icon>navigate_before</v-icon>
+          <!-- <v-icon name="arrow-left"/> -->
+          <v-icon name="navigate_before"/>
         </v-btn>
-        <small v-text="paginationRangeText"/>
+        <span v-text="paginationRangeText" class="mx-1"/>
         <v-btn
-          icon
-          class="mx-1 my-0"
+          class="icon"
           :disabled="pagination.page === lastPage"
           @click="setPage(pagination.page + 1)"
         >
-          <v-icon>navigate_next</v-icon>
+          <v-icon name="navigate_next"/>
         </v-btn>
         <v-btn
-          icon
-          class="mx-1 my-0"
+          class="icon"
           :disabled="pagination.page === lastPage"
           @click="setPage(lastPage)"
         >
-          <v-icon>last_page</v-icon>
+          <v-icon name="last_page"/>
         </v-btn>
-        <v-divider vertical/>
+        <div class="v-separator"/>
+        <v-select
+          class="inline filled"
+          label="Page size"
+          :value="limit"
+          :items="[5, 10, 20, 50]"
+          @input="updateLimit"
+        />
+        <div class="v-separator"/>
         <v-btn
           v-if="permissions.insert"
-          class="my-0"
+          class="icon"
           @click="newFeatureMode = true"
-          icon
         >
-          <v-icon>add_circle_outline</v-icon>
+          <v-icon name="attribute-table-add"/>
         </v-btn>
+
       </template>
-      <v-spacer/>
+      <div class="f-grow"/>
       <v-checkbox
         color="primary"
         :label="tr.FilterVisibleLabel"
-        :input-value="visibleAreaFilter"
-        @change="$store.commit('attributeTable/visibleAreaFilter', $event)"
-        class="my-0"
-        hide-details
+        :value="visibleAreaFilter"
+        @input="$store.commit('attributeTable/visibleAreaFilter', $event)"
       />
-      <v-tooltip top>
-        <v-btn
-          slot="activator"
-          icon
-          class="my-0"
-          @click="clearAllFilters"
-        >
-          <icon name="reset_filter" size="24"/>
-        </v-btn>
-        <translate>Clear attributes filters</translate>
-      </v-tooltip>
       <v-btn
-        small
-        depressed
+        slot="activator"
+        class="icon"
+        @click="clearAllFilters"
+      >
+        <v-tooltip slot="tooltip">
+          <translate>Clear attributes filters</translate>
+        </v-tooltip>
+        <v-icon name="reset_filter"/>
+      </v-btn>
+
+      <v-btn
         color="primary"
         @click="fetchFeatures()"
       >
-        <v-icon size="20" class="mr-1">filter_list</v-icon>
+        <v-icon name="filter_list" class="mr-2" size="15"/>
         <translate>Filter</translate>
       </v-btn>
-    </v-layout>
+    </div>
 
     <features-viewer :features="features"/>
     <portal to="right-panel">
-      <v-layout
+      <div
         v-if="newFeatureMode"
-        class="window column mx-1 mb-2 elevation-3"
+        class="window f-col mx-1 mb-2 shadow-2"
       >
-        <v-layout class="header align-center">
-          <h3 class="mx-2">New Feature</h3>
-          <v-spacer/>
-          <v-btn @click="newFeatureMode = false" icon small>
-            <v-icon>close</v-icon>
+        <div class="panel-header f-row-ac">
+          <span class="title mx-2 f-grow">New Feature</span>
+          <v-btn class="icon small" @click="newFeatureMode = false">
+            <v-icon name="x"/>
           </v-btn>
-        </v-layout>
+        </div>
         <scroll-area>
           <new-feature-editor
             :layer="layer"
@@ -151,11 +155,11 @@
           />
         </scroll-area>
         <portal-target name="toolbar" class="toolbar"/>
-      </v-layout>
+      </div>
 
       <info-panel
         v-else-if="showInfoPanel"
-        class="mx-1 mb-2 elevation-3"
+        class="mx-1 mb-2 shadow-2"
         :features="features"
         :layer="layer"
         :selected="infoPanelSelection"
@@ -166,14 +170,16 @@
         @delete="fetchFeatures(pagination.page, true)"
       />
     </portal>
-  </v-layout>
+  </div>
 </template>
 
 <script>
+import clamp from 'lodash/clamp'
 import keyBy from 'lodash/keyBy'
 import { mapState, mapGetters, mapMutations } from 'vuex'
 import Polygon from 'ol/geom/polygon'
 import GeoJSON from 'ol/format/geojson'
+// import TabsHeader from '@/components/TabsHeader1.vue'
 import TabsHeader from '@/components/TabsHeader.vue'
 import AttributeFilter from '@/components/AttributeFilter.vue'
 import FeaturesViewer from '@/components/ol/FeaturesViewer.vue'
@@ -181,16 +187,16 @@ import NewFeatureEditor from '@/components/feature-editor/NewFeatureEditor.vue'
 import InfoPanel from '@/components/InfoPanel.vue'
 import { simpleStyle } from '@/map/styles'
 import { layerFeaturesQuery } from '@/map/featureinfo'
-import { ShallowArray } from '@/utils'
+// import { ShallowArray } from '@/utils'
+import { eventCoord, DragHandler } from '@/events'
 
-function iconHeader (key) {
-  return {
-    text: key,
-    value: key,
-    sortable: false,
-    width: 1,
-    blank: true,
-    class: 'icon'
+
+const ActionsHeader = {
+  text: '',
+  key: 'actions',
+  sortable: false,
+  header: {
+    width: 1
   }
 }
 
@@ -207,16 +213,28 @@ export default {
     return {
       loading: false,
       pagination: null,
+      lastAttributesFilters: null,
       selectedFeatureIndex: null,
       showInfoPanel: false,
       newFeatureMode: false,
-      editMode: false
+      editMode: false,
+      height: 242,
+      minimized: false,
+      resizing: false
     }
   },
   computed: {
     ...mapState(['project']),
     ...mapState('attributeTable', ['page', 'limit', 'visibleAreaFilter', 'layer', 'features']),
     ...mapGetters('attributeTable', ['layerFilters']),
+    heightStyle () {
+      const height = (this.minimized ? 37 : this.height) + 'px'
+      return {
+        height,
+        // minHeight: height,
+        // maxHeight: height
+      }
+    },
     attributes () {
       if (this.layer.attr_table_fields) {
         const attrsMap = keyBy(this.layer.attributes, 'name')
@@ -224,18 +242,25 @@ export default {
       }
       return this.layer.attributes
     },
-    headers () {
+    columns () {
       if (this.attributes) {
         const columns = this.attributes.map(attr => ({
-          text: attr.alias || attr.name,
+          label: attr.alias || attr.name,
           type: attr.type.toLowerCase(),
-          value: attr.name,
+          key: attr.name,
+          header: {
+            slot: 'filter',
+            // class: 'py-1'
+          },
           align: 'left',
           sortable: false
         }))
-        return [iconHeader('_z'), iconHeader('_i')].concat(columns)
+        return [ActionsHeader, ...columns]
       }
       return []
+    },
+    tableData () {
+      return this.features?.map(f => ({ _id: f.getId(), ...f.getProperties() }))
     },
     lastPage () {
       const { rowsPerPage, totalItems } = this.pagination
@@ -258,6 +283,9 @@ export default {
     selectedFeature () {
       return this.features[this.selectedFeatureIndex]
     },
+    selectedFeatureId () {
+      return this.selectedFeature?.getId()
+    },
     infoPanelSelection () {
       return this.selectedFeature && {
         layer: this.layer.name,
@@ -271,7 +299,7 @@ export default {
   watch: {
     layer: {
       immediate: true,
-      handler (layer, old) {
+      handler (layer) {
         if (layer) {
           this.fetchFeatures()
         }
@@ -287,18 +315,9 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('attributeTable', ['clearFilter', 'updateFilterComparator', 'updateFilterValue', 'updateFilterValidity']),
+    ...mapMutations('attributeTable', ['updateFilter', 'clearFilter', 'updateFilterComparator', 'updateFilterValue', 'updateFilterValidity']),
     async fetchFeatures (page = 1, lastQuery = false) {
       const mapProjection = this.$map.getView().getProjection().getCode()
-      const filters = Object.entries(this.layerFilters)
-        // .filter(([name, filter]) => filter.comparator && filter.value !== null)
-        .filter(([name, filter]) => filter.comparator && filter.valid)
-        .map(([name, filter]) => ({
-          attribute: name,
-          operator: filter.comparator,
-          value: filter.value
-        }))
-
       let query
       if (lastQuery) {
         query = this.pagination.query
@@ -307,7 +326,15 @@ export default {
         if (this.visibleAreaFilter) {
           geom = Polygon.fromExtent(this.$map.ext.visibleAreaExtent()).transform(mapProjection, this.layer.projection)
         }
-        query = layerFeaturesQuery(this.layer, geom, filters)
+        this.lastAttributesFilters = Object.entries(this.layerFilters)
+          // .filter(([name, filter]) => filter.comparator && filter.value !== null)
+          .filter(([name, filter]) => filter.active && filter.comparator && filter.valid)
+          .map(([name, filter]) => ({
+            attribute: name,
+            operator: filter.comparator,
+            value: filter.value
+          }))
+        query = layerFeaturesQuery(this.layer, geom, this.lastAttributesFilters)
       }
 
       const baseParams = {
@@ -375,77 +402,101 @@ export default {
           this.clearFilter(name)
         }
       })
+    },
+    toggleFilter (attr, active) {
+      const refetch = active
+        ? this.layerFilters[attr].valid
+        : this.lastAttributesFilters.some(i => i.attribute === attr)
+      this.updateFilter({ attr, params: { active } })
+      if (refetch) {
+        this.fetchFeatures()
+      }
+    },
+    selectFeature (item) {
+      this.selectedFeatureIndex = this.tableData.indexOf(item)
+    },
+    updateLimit (value) {
+      this.$store.commit('attributeTable/limit', value)
+      this.fetchFeatures(1, true)
+    },
+    resizeHandler (e) {
+      if (this.minimized) {
+        return
+      }
+      const originHeight = this.height
+      const originY = eventCoord(e)[1]
+      const maxHeight = window.innerHeight - 120
+      DragHandler(e, {
+        onStart: () => {
+          this.resizing = true
+        },
+        onMove: e => {
+          const y = eventCoord(e)[1]
+          const offset = y - originY
+          this.height = clamp(originHeight - offset, 0, maxHeight)
+        },
+        onEnd: () => {
+          this.resizing = false
+        }
+      })
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.attribute-table {
+  font-size: 14px;
+  --icon-color: #555;
+  // max-height: 242px;
+  &:not(.resizing) {
+    transition: height 0.4s cubic-bezier(.25,.8,.5,1);
+  }
+}
 .table-container {
   pointer-events: auto;
-  background-color: #fff;
-  box-shadow: 0 -5px 8px 0 rgba(0,0,0,.12), 0 -4px 4px -2px rgba(0,0,0,.18);
-}
-/deep/ table.v-table {
-  thead {
-    tr {
-      height: 2em;
-      background-color: #ddd;
-      th.icon {
-        padding: 8px;
-      }
+  border-top: 1px solid #777;
+  // box-shadow: 0 -5px 8px 0 rgba(0,0,0,.12), 0 -4px 4px -2px rgba(0,0,0,.18);
+  box-shadow: 0 -4px 6px -1px rgba(0,0,0,.18);
+  ::v-deep {
+    table {
+      border-bottom: 1px solid #ddd;
     }
-    .v-datatable__progress {
-      background-color: #fff;
-      height: 3px!important;
-    }
-  }
-  tbody {
-    tr {
-      &.selected {
-        background-color: rgba(3,169,244, 0.25)!important;
-      }
+    thead th[role="columnheader"] {
+      height: 39px;
+      padding-block: 5px;
     }
     td {
-      height: 2.5em;
       white-space: nowrap;
-      max-width: 500px;
-      overflow: hidden;
+      max-width: 600px; // TODO: multiple sizes dependent by columns count
       text-overflow: ellipsis;
-      &.icon {
-        cursor: pointer;
-        .icon {
-          display: block;
-          color: #777;
-        }
-      }
+      overflow: hidden;
     }
   }
 }
 .bottom-panel {
-  height: 2.25em;
+  height: 36px;
   background-color: #fff;
+  // background-color: #f3f3f3;
+  background-color: #fafafa;
+  // background-image: linear-gradient(#fff, #fff);
+  // background-color: rgba(var(--color-primary-rgb), 0.1);
+  // background-image: linear-gradient(rgba(var(--color-primary-rgb), 0.1), transparent);
+  // background-image: linear-gradient(transparent, rgba(var(--color-primary-rgb), 0.08));
+  background-image: linear-gradient(rgba(#333, 0.06), transparent 85%, rgba(#333, 0.06));
   border-top: 1px solid #ccc;
   pointer-events: auto;
-  .v-input--checkbox {
-    flex: 0 0 auto;
-    /deep/ .v-label {
-      font-size: 85%!important;
+  font-size: 13px;
+
+  .btn {
+    max-height: 28px;
+    &.icon {
+      width: 24px;
+      height: 24px;
+      margin: 2px;
     }
   }
-  .v-text-field {
-    font-size: 14px;
-    margin-top: 0;
-  }
-  label {
-    font-size: 13px;
-    color: #555;
-  }
-  .v-divider--vertical {
-    height: 75%;
-  }
-  .icon {
-    width: 24px;
+  .i-field ::v-deep .input {
     height: 24px;
   }
 }
@@ -459,21 +510,41 @@ export default {
   border: 1px solid #aaa;
   background-color: #fff;
   position: relative;
-
-  .header {
-    background-color: #ddd;
-    border-bottom: 1px solid #aaa;
-    h3 {
-      font-size: 17px;
-      font-weight: 500;
+}
+.tabs-header {
+  position: absolute;
+  transform: translate(0, -100%);
+}
+.resize-area {
+  pointer-events: auto;
+  position: absolute;
+  width: 100%;
+  min-height: 10px;
+  margin-top: -5px;
+  cursor: row-resize;
+  z-index: 10;
+  user-select: none;
+  // background-color: rgba(200,0,0,0.3);
+  &::after {
+    content: "";
+    flex: 1;
+    height: 2px;
+    background-color: var(--color-primary);
+    transition: opacity 0.3s cubic-bezier(.25,.8,.5,1);
+    transition-delay: 0.1s;
+    opacity: 0;
+  }
+  &:hover {
+    &::after {
+      opacity: 1;
     }
   }
-  .toolbar {
-    align-self: flex-start;
-    background-color: #eee;
-    border: 1px solid #ccc;
-    border-top-right-radius: 6px;
-    border-bottom-right-radius: 6px;
+}
+.scroll-container {
+  ::v-deep {
+    .scrollbar-track.vertical {
+      margin-top: 40px;
+    }
   }
 }
 </style>

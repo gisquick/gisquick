@@ -1,37 +1,39 @@
 <template>
-  <v-layout class="column info-panel" v-if="feature">
-    <v-layout class="row align-center pl-2 pr-1 py-1 toolbar top">
+  <div class="f-col info-panel light" v-if="feature">
+    <div class="toolbar dark top f-row-ac">
       <v-select
-        :items="layersOptions"
-        :value="selected.layer"
-        @input="setActiveLayer"
+        class="flat f-grow my-0"
         :disabled="layersOptions.length < 2"
-        class="my-0"
-        hide-details
+        :items="layersOptions"
+        :value="selected ? selected.layer : layersOptions[0].value"
+        @input="setActiveLayer"
       />
       <v-btn
+        class="icon flat"
         :disabled="index === 0"
         @click="setSelected(index - 1)"
-        icon
       >
-        <v-icon>navigate_before</v-icon>
+        <v-icon name="arrow-left" size="16"/>
       </v-btn>
-      <span style="font-size: 14px">{{ index + 1 }}/{{ features.length }}</span>
+      <span v-if="selected" style="font-size: 14px">
+        {{ index + 1 }}/{{ features.length }}
+      </span>
+      <v-spinner v-else size="16" width="2"/>
       <v-btn
-        @click="setSelected(index + 1)"
+        class="icon flat"
         :disabled="index === features.length - 1"
-        icon
+        @click="setSelected(index + 1)"
       >
-        <v-icon>navigate_next</v-icon>
+        <v-icon name="arrow-right" size="16"/>
       </v-btn>
-      <v-btn @click="$emit('close')" icon small>
-        <v-icon>close</v-icon>
+      <v-btn @click="$emit('close')" class="icon flat">
+        <v-icon name="x"/>
       </v-btn>
-    </v-layout>
+    </div>
 
     <div class="content-layout">
-      <scroll-area class="pb-2">
-        <switch-transition class="mt-2">
+      <scroll-area>
+        <switch-transition>
           <feature-editor
             v-if="editMode"
             :feature="feature"
@@ -48,27 +50,26 @@
         </switch-transition>
       </scroll-area>
 
-      <div class="bottom-area"/>
-      <v-layout class="toolbar tools pl-1 align-end">
-        <v-btn @click="zoomToFeature" dark icon small>
-          <icon name="zoom-to"/>
+      <div class="toolbar tools dark f-row-ac">
+        <v-btn class="icon flat" @click="zoomToFeature">
+          <v-icon name="zoom-to"/>
         </v-btn>
         <v-btn
           v-if="layerEditable"
-          :class="{'primary--text': editMode}"
+          class="icon flat"
+          :color="editMode ? 'primary' : null"
           @click="$emit('update:editMode', !editMode)"
-          icon dark
         >
-          <v-icon>edit</v-icon>
+          <v-icon name="edit"/>
         </v-btn>
-      </v-layout>
+      </div>
       <portal-target
         name="infopanel-tool"
-        class="toolbar left"
+        class="toolbar-portal toolbar left"
         transition="collapse-transition"
       />
     </div>
-  </v-layout>
+  </div>
 </template>
 
 <script>
@@ -132,14 +133,23 @@ export default {
   border: 1px solid #aaa;
   background-color: #fff;
   overflow: hidden;
-  @media (min-width: 600px) {
-    width: 23em;
+  @media (max-width: 500px) {
+    width: calc(100vw - 24px);
+  }
+  @media (min-width: 501px) {
+    width: 400px;
   }
 
   .toolbar {
-    background-color: #ddd;
+    flex-shrink: 0;
     &.top {
-      border-bottom: 1px solid #aaa;
+      background-color: #444;
+      height: 36px;
+      line-height: 1;
+      --fill-color: transparent;
+      .i-field ::v-deep .input {
+        height: 28px;
+      }
     }
     &.tools {
       flex: 0 0 auto;
@@ -148,63 +158,40 @@ export default {
       border-top-left-radius: 12px;
       border-bottom-left-radius: 12px;
 
-      grid-row: 1 / 3;
       bottom: 2px;
       margin-top: 1px;
       margin-bottom: 2px;
+      padding-left: 6px;
       overflow: visible;
       background-color: rgba(#555, 0.5);
       z-index: 1;
-    }
-    &.left {
-      justify-self: start;
-      grid-row: 2 / 3;
-      background-color: transparent;
-      > /deep/ div {
-        background-color: #eee;
-        border-top-right-radius: 6px;
-        border-bottom-right-radius: 6px;
-        border: 1px solid #ccc;
-      }
-      .icon, .v-icon {
-        opacity: 0.8;
-      }
-    }
-    .v-btn {
-      margin: 0;
       height: 24px;
-    }
-    // .v-divider--vertical {
-    //   height: 20px;
-    // }
-    .icon {
-      height: 18px;
-      width: 18px;
+      .btn {
+        margin: 0 3px;
+      }
+      .icon {
+        width: 18px;
+        height: 18px;
+      }
     }
   }
   .content-layout {
     overflow: hidden;
     position: relative;
     display: grid;
-    grid-template-rows: 1fr minmax(0, auto);
-    /deep/ > * {
+    grid-template-rows: 1fr minmax(8px, auto);
+    .scroll-container {
       grid-row: 1 / 2;
       grid-column: 1 / 2;
     }
+    .tools {
+      grid-row: 1 / 3;
+      grid-column: 1 / 2;
+    }
+    .toolbar-portal {
+      grid-row: 2 / 3;
+      grid-column: 1 / 2;
+    }
   }
-  // .bottom-area {
-  //   grid-row: 2 / 3;
-  //   grid-column: 1 / 2;
-  //   background-color: #eee;
-  //   width: 100%;
-  //   height: 100%;
-  //   &:after {
-  //     content: "";
-  //     height: 1px;
-  //     width: 100%;
-  //     position: absolute;
-  //     background-color: #ccc;
-  //   }
-  // }
 }
 </style>

@@ -1,50 +1,41 @@
 <template>
   <div>
     <portal to="main-panel">
-      <div class="pa-2" key="identification">
+      <div class="identification-tool light f-row f-align-start" key="identification">
         <v-select
-          :value="identificationLayer"
-          @input="$emit('update:identificationLayer', $event)"
-          :label="tr.Layer"
+          class="flat f-grow"
+          label="Layer"
           item-text="title"
           item-value="name"
+          :value="identificationLayer"
           :items="options"
-          :hide-details="true"
+          @input="$emit('update:identificationLayer', $event)"
         />
-        <v-menu bottom left content-class="identification-menu">
-          <v-btn icon slot="activator">
-            <v-icon>more_vert</v-icon>
-          </v-btn>
-          <v-list>
-            <text-separator>
-              <translate>Display</translate>
-            </text-separator>
-            <v-list-tile
-              v-for="mode in displayModes"
-              :key="mode.text"
-              class="checkable"
-              @click="$emit('update:displayMode', mode.value)"
-            >
-              <v-icon
-                class="check"
-                v-show="mode.value === displayMode">check
-              </v-icon>
-              <v-list-tile-title>{{ mode.text }}</v-list-tile-title>
-            </v-list-tile>
-          </v-list>
+        <v-menu
+          aria-label="Nastavenia"
+          transition="slide-y"
+          align="rr;bb,tt"
+          :items="displayModes"
+          @confirm="$emit('update:displayMode', $event.value)"
+        >
+          <template v-slot:activator="{ toggle }">
+            <v-btn aria-label="Menu" class="icon small" @click="toggle">
+              <v-icon name="menu-dots"/>
+            </v-btn>
+          </template>
         </v-menu>
       </div>
     </portal>
 
     <identify-pointer v-if="!editMode" @click="onClick"/>
     <features-viewer :features="displayedFeaures"/>
-    <point-marker :coords="mapCoords"/>
+    <point-marker :coords="mapCoords" :error="error" :loading="loading"/>
 
     <template v-if="layersFeatures.length">
       <portal to="right-panel">
         <info-panel
           v-if="displayMode === 'info-panel' || displayMode === 'both'"
-          class="mx-1 mb-2 elevation-3"
+          class="mx-1 mb-2 shadow-2"
           :features="displayedFeaures"
           :layer="displayedLayer"
           :layers="resultLayers"
@@ -59,6 +50,7 @@
       <portal to="bottom-panel">
         <features-table
           v-if="displayMode === 'table' || displayMode === 'both'"
+          class="light"
           :data="layersFeatures"
           :selected="selection"
           @selection-change="selection = $event"
@@ -101,7 +93,7 @@ const IdentifyPointer = {
       map.getViewport().style.cursor = ''
     })
   },
-  render: h => null
+  render: () => null
 }
 
 export default {
@@ -122,7 +114,9 @@ export default {
       mapCoords: null,
       layersFeatures: [],
       selection: null,
-      editMode: false
+      editMode: false,
+      loading: false, // use TaskState & watchTask?
+      error: false
     }
   },
   computed: {
@@ -138,20 +132,12 @@ export default {
       return [allVisible].concat(this.queryableLayers)
     },
     displayModes () {
-      return [
-        {
-          text: this.$gettext('Table'),
-          value: 'table'
-        },
-        {
-          text: this.$gettext('Info Panel'),
-          value: 'info-panel'
-        },
-        {
-          text: this.$gettext('Table & Info Panel'),
-          value: 'both'
-        }
+      const options = [
+        { value: 'table', text: this.$gettext('Table') },
+        { value: 'info-panel', text: this.$gettext('Info Panel') },
+        { value: 'both', text: this.$gettext('Table & Info Panel') },
       ]
+      return options.map(item => ({ ...item, checked: this.displayMode === item.value }))
     },
     resultLayers () {
       return this.layersFeatures.map(item => item.layer)
@@ -199,9 +185,18 @@ export default {
         },
         headers: { 'Content-Type': 'text/xml' }
       }
-      const resp = await this.$http.post(this.project.config.ows_url, query, config)
-      const parser = new GeoJSON()
-      return parser.readFeatures(resp.data, { featureProjection: this.mapProjection })
+      this.loading = true
+      this.error = false
+      try {
+        const resp = await this.$http.post(this.project.config.ows_url, query, config)
+        const parser = new GeoJSON()
+        return parser.readFeatures(resp.data, { featureProjection: this.mapProjection })
+      } catch {
+        this.error = true
+        return []
+      } finally {
+        this.loading = false
+      }
     },
     async onClick (evt) {
       const { map, pixel } = evt
@@ -217,6 +212,7 @@ export default {
         ? this.queryableLayers.filter(l => l.name === this.identificationLayer)
         : this.queryableLayers
       const query = layersFeaturesQuery(layers, geom)
+
       const features = await this.getFeatures(query, { 'MAXFEATURES': 10 })
       const categorizedFeatures = this.categorize(features)
       const items = this.tableData(categorizedFeatures)
@@ -291,16 +287,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.identification-tool {
+  .menu {
+    .btn {
+      margin: 4px;
+    }
+  }
+}
 .info-panel {
   flex: 0 1 auto;
-}
-.v-menu {
-  position: absolute;
-  right: 0;
-  top: 0;
-  .v-menu__activator .v-btn {
-    color: #aaa;
-    margin: 0;
-  }
 }
 </style>

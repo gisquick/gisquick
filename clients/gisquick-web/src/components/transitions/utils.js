@@ -1,7 +1,7 @@
 export function afterHeightTransition (el, cb, timeout = 1000) {
   let called = false
-  var once = (e) => {
-    if (e.propertyName === 'height') {
+  var once = e => {
+    if (e.target === el && e.propertyName === 'height') {
       el.removeEventListener(e.type, once, false)
       called = true
       cb()
@@ -18,7 +18,7 @@ export function afterHeightTransition (el, cb, timeout = 1000) {
 }
 
 export function afterWidthTransition (el, cb) {
-  var once = (e) => {
+  var once = e => {
     if (e.propertyName === 'width') {
       el.removeEventListener(e.type, once, false)
       cb()

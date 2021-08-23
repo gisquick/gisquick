@@ -1,95 +1,141 @@
 <template>
-  <v-layout class="row header">
-    <v-layout class="row tabs">
+  <div class="tabs-header dark f-row">
+    <div class="tabs f-row-ac">
       <slot name="tabs"/>
-      <div class="tab-end"/>
-    </v-layout>
-    <v-spacer/>
-    <v-layout class="row tabs">
-      <div class="tab-start"/>
-      <v-btn icon @click="$emit('close')">
-        <v-icon small>close</v-icon>
+      <div class="separator"/>
+      <v-btn class="icon" @click="$emit('update:minimized', !minimized)">
+        <v-icon class="minimize" :class="{minimized}" name="arrow-down"/>
       </v-btn>
-    </v-layout>
-  </v-layout>
+      <v-btn class="icon" @click="$emit('close')">
+        <v-icon name="x"/>
+      </v-btn>
+      <div class="tab-end"/>
+      <!-- <svg class="tab-end2" viewBox="0 0 10 10" preserveAspectRatio="none">
+        <path d="M 6.8,0 L 10,0 L 10,10 L 0,10"/>
+      </svg> -->
+    </div>
+    <div class="f-grow"/>
+    <!-- <div class="tabs f-row">
+      <div class="tab-start"/>
+      <v-btn class="icon ml-0" @click="$emit('close')">
+        <v-icon name="x"/>
+      </v-btn>
+    </div> -->
+  </div>
 </template>
 
 <script>
 export default {
-
+  props: {
+    minimized: Boolean
+  }
 }
 </script>
 
 <style lang="scss" scoped>
-.header {
-  .v-btn {
-    height: 100%;
-    margin: 0;
-    width: 1.75em;
-    padding-right: 0.5em;
-  }
-  .spacer {
-    height: 1px;
-    align-self: flex-end;
-    background-color: #aaa;
-    // opacity: 0.99;
-    position: relative;
-  }
+.tabs-header {
+  --color-dark: #404040;
+  font-size: 13.5px;
   .tabs {
     pointer-events: auto;
     position: relative;
-    height: 1.8em;
-    background-color: #fff;
+    height: 28px;
+    background-color: var(--color-dark);
+
     box-shadow: -4px -4px 8px 0 rgba(0,0,0,.1), -3px -4px 4px -2px rgba(0,0,0,.12);
-    border: 1px solid #aaa;
     user-select: none;
     flex: 0 0 auto;
-    a {
+    background-color: var(--color-dark);
+
+    .item {
       position: relative;
-      padding: 0.25em 0.75em;
-      font-size: 0.813em;
+      padding: 4px 8px;
       font-weight: 500;
+      cursor: pointer;
+      &.active {
+        background-color: var(--color-primary);
+        // border: 1px solid var(--color-dark);
+        // color: var(--color-primary);
+        // &::after {
+        //   background-color: var(--color-primary);
+        //   position: absolute;
+        //   content: "";
+        //   left: 0;
+        //   right: 0;
+        //   bottom: 0px;
+        //   height: 3px;
+        // }
+      }
       &:not(.active) {
-        color: #606060;
+        // border: solid #ffffffaa;
+        // border-width: 0 1px;
+        &::after {
+          background-color: #ffffff77;
+          position: absolute;
+          content: "";
+          right: -1px;
+          top: 4px;
+          bottom: 4px;
+          width: 1px;
+        }
       }
-      &:not(:first-child)::before {
-        background-color: #ccc;
-        position: absolute;
-        content: "";
-        left: 0;
-        top: 10%;
-        bottom: 10%;
-        width: 1px;
-      }
+    }
+    .separator {
+      background-color: #ffffff77;
+      width: 1px;
+      margin: 4px;
+      height: calc(100% - 8px);
     }
     .tab-end {
       position: absolute;
       right: -10px;
-      top: -1px;
-      bottom: -1px;
+      top: 0;
+      bottom: 0;
       width: 15px;
       transform: skewX(20deg);
-      border: 1px solid #aaa;
-      border-width: 1px 1px 1px 0px;
       border-top-right-radius: 5px;
-      background-color: #fff;
-      box-shadow: 7px -4px 6px 0 rgba(0,0,0,.1), 4px 0 3px 0 rgba(0,0,0,.12);
+      background-color: var(--color-dark);
+      box-shadow: 5px -3px 5px 0 rgba(0,0,0,.12);
       box-sizing: border-box;
+    }
+    .tab-end2 {
+      position: absolute;
+      height: 100%;
+      right: -9px;
+      top: 0;
+      bottom: -4px;
+      width: 15px;
+      transform: skewX(20deg);
+      border-top-right-radius: 5px;
+      box-shadow: 5px -3px 5px 0 rgba(0,0,0,.12);
+      box-sizing: border-box;
+      path {
+        fill: var(--color-dark);
+      }
     }
     .tab-start {
       position: absolute;
       left: -10px;
-      top: -1px;
+      top: 0;
       bottom: -1px;
       width: 15px;
       transform: skewX(-20deg);
-      border: 1px solid #aaa;
-      border-width: 1px 0px 1px 1px;
       border-top-left-radius: 5px;
-      background-color: #fff;
-      box-shadow: -7px -4px 6px 0 rgba(0,0,0,.05), -4px 0 3px 0 rgba(0,0,0,.1);
+      background-color: var(--color-dark);
+      box-shadow: -5px -3px 5px 0 rgba(0,0,0,.12);
       box-sizing: border-box;
     }
+  }
+}
+.icon {
+  width: 16px;
+  height: 16px;
+}
+.minimize {
+  transition: transform 0.4s ease;
+  &.minimized {
+    // transform: rotate(180deg);
+    transform: rotateX(180deg);
   }
 }
 </style>

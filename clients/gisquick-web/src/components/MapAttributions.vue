@@ -1,23 +1,28 @@
 <template>
   <div>
-    <portal to="app-menu">
-      <v-list-tile @click="toggleAttributions">
-        <v-list-tile-title>
-          <translate>Display attributions</translate>
-        </v-list-tile-title>
-        <v-icon v-show="!attributionsHidden" class="ml-3">check</v-icon>
-      </v-list-tile>
-    </portal>
+    <menu-items :items="menuItems"/>
   </div>
 </template>
 
 <script>
 import Attribution from 'ol/control/attribution'
+import MenuItems from '@/components/MenuItems.vue'
 
 export default {
+  components: { MenuItems },
   data () {
     return {
       attributionsHidden: true
+    }
+  },
+  computed: {
+    menuItems () {
+      return [{
+        key: 'attributions',
+        text: this.$gettext('Display attributions'),
+        action: this.toggleAttributions,
+        activated: !this.attributionsHidden
+      }]
     }
   },
   mounted () {
@@ -36,9 +41,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-/deep/ .ol-attribution {
-  bottom: 0.25em;
-  right: 3em;
+::v-deep .ol-attribution {
+  bottom: 4px;
+  right: 48px;
   &.ol-collapsed {
     display: none;
   }

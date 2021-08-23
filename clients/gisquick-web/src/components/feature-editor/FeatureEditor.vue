@@ -1,6 +1,6 @@
 
 <template>
-  <v-layout v-if="feature" column>
+  <div v-if="feature" class="f-col">
     <slot
       name="form"
       :fields="fields"
@@ -8,102 +8,104 @@
       :readonly="readonlyFields"
     >
       <generic-edit-form
+        ref="editForm"
         :layer="layer"
         :fields="fields"
         :readonly="readonlyFields"
       />
+      <!-- <v-radio-btn val="loading" v-model="status" label="Loading"/>
+      <v-radio-btn val="success" v-model="status" label="Success"/>
+      <v-radio-btn val="error" v-model="status" label="Error"/>
+      <v-radio-btn val="" v-model="status" label="None"/> -->
     </slot>
     <portal to="infopanel-tool">
-      <v-layout class="tools-container align-center pl-1">
-        <v-tooltip bottom>
-          <v-btn
-            slot="activator"
-            :class="{'primary--text': editGeometry}"
-            @click="editGeometry = !editGeometry"
-            icon
-          >
-            <icon name="edit-geometry"/>
-          </v-btn>
-          <translate>Edit geometry</translate>
-        </v-tooltip>
+      <div class="toolbar f-row-ac">
+        <v-btn
+          class="icon flat"
+          :color="editGeometry ? 'primary' : ''"
+          @click="editGeometry = !editGeometry"
+        >
+          <v-tooltip slot="tooltip">
+            <translate>Edit geometry</translate>
+          </v-tooltip>
+          <v-icon name="edit-geometry"/>
+        </v-btn>
         <geometry-editor
           v-if="editGeometry"
           ref="geometryEditor"
           :feature="editGeometryFeature"
           :geometry-type="geomType"
         />
-        <v-divider vertical/>
+        <div class="v-separator"/>
         <!-- <v-btn @click="deleteFeature" icon>
           <v-icon color="red darken-3">delete_forever</v-icon>
         </v-btn> -->
-        <v-menu top fixed>
-          <v-tooltip slot="activator" bottom>
-            <v-btn
-              slot="activator"
-              :disabled="!permissions.delete || status === 'loading'"
-              icon
-            >
-              <v-icon color="red darken-3">delete_forever</v-icon>
-            </v-btn>
+
+        <v-btn
+          aria-label="Delete object"
+          class="icon"
+          :disabled="!permissions.delete || status === 'loading'"
+          @click="showConfirmDelete = true"
+        >
+          <v-icon color="red" name="delete_forever"/>
+          <v-tooltip slot="tooltip">
             <translate>Delete object</translate>
           </v-tooltip>
-          <v-card>
-            <v-card-text class="py-1 px-3 grey lighten-3">
-              <small><b><translate>Delete current object?</translate></b></small>
-            </v-card-text>
-            <v-divider/>
-            <v-card-actions class="py-1">
-              <v-btn small flat>
-                <translate>No</translate>
-              </v-btn>
-              <v-btn small flat color="primary" @click="deleteFeature">
-                <translate>Yes</translate>
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-menu>
-        <v-tooltip bottom>
-          <v-btn
-            slot="activator"
-            :disabled="!permissions.update || !isModified || !!status"
-            @click="restore"
-            icon
-          >
-            <v-icon color="orange">restore</v-icon>
-          </v-btn>
-          <translate>Discard changes</translate>
-        </v-tooltip>
-        <v-tooltip bottom>
-          <v-btn
-            slot="activator"
-            :disabled="!isModified || !!status"
-            @click="save"
-            icon
-          >
-            <v-icon color="teal">save</v-icon>
-          </v-btn>
-          <translate>Save changes</translate>
-        </v-tooltip>
-        <v-layout class="justify-center notification my-2">
-          <transition name="fade">
-            <v-layout
-              v-if="status"
-              class="notification-content elevation-3 align-center py-1 px-2 shrink"
-              :class="status === 'error' ? 'red darken-2' : 'grey darken-3'"
-            >
-              <progress-action
-                :status="status"
-                class="mr-2"
-              />
-              <span v-if="status === 'loading'">Updating data</span>
-              <span v-else-if="status === 'success'">Data updated</span>
-              <span v-else>Error</span>
-            </v-layout>
-          </transition>
-        </v-layout>
-      </v-layout>
+        </v-btn>
+        <v-btn
+          class="icon"
+          :disabled="!permissions.update || !isModified || !!status"
+          @click="restore"
+        >
+          <v-tooltip slot="tooltip">
+            <translate>Discard changes</translate>
+          </v-tooltip>
+          <v-icon color="orange" name="restore"/>
+        </v-btn>
+        <v-btn
+          class="icon"
+          :disabled="!isModified || !!status"
+          @click="save"
+        >
+          <v-tooltip slot="tooltip">
+            <translate>Save changes</translate>
+          </v-tooltip>
+          <v-icon color="green" name="save"/>
+        </v-btn>
+      </div>
     </portal>
-  </v-layout>
+
+    <transition name="fade">
+      <div v-if="status" class="overlay notification f-row">
+        <div
+          class="content shadow-2 f-row-ac p-2"
+          :class="status"
+        >
+          <progress-action class="mr-2" :status="status"/>
+          <translate v-if="status === 'loading'" key="pending">Updating data</translate>
+          <translate v-else-if="status === 'success'" key="success">Data updated</translate>
+          <translate v-else key="error">Error</translate>
+        </div>
+      </div>
+    </transition>
+    <transition name="fade">
+      <div v-if="showConfirmDelete" class="overlay delete-dialog f-col">
+        <!-- <div class="content shadow-2"> -->
+          <div class="header px-4">
+            <span class="title"><translate>Delete current object?</translate></span>
+          </div>
+          <div class="f-row-ac">
+            <v-btn class="small round f-grow" color="#777" @click="showConfirmDelete = false">
+              <translate>No</translate>
+            </v-btn>
+            <v-btn class="small round f-grow" color="red" @click="deleteFeature">
+              <translate>Yes</translate>
+            </v-btn>
+          </div>
+        <!-- </div> -->
+      </div>
+    </transition>
+  </div>
 </template>
 
 <script>
@@ -118,7 +120,6 @@ import { queuedUpdater } from '@/utils'
 import GeometryEditor from './GeometryEditor.vue'
 import GenericEditForm from './GenericEditForm.vue'
 import ProgressAction from '@/components/ProgressAction.vue'
-
 
 function getFeatureFields (feature) {
   return feature ? omit(feature.getProperties(), feature.getGeometryName()) : {}
@@ -150,7 +151,8 @@ export default {
       errorMsg: '',
       fields: null,
       originalFields: null,
-      editGeometry: false
+      editGeometry: false,
+      showConfirmDelete: false
     }
   },
   computed: {
@@ -221,25 +223,33 @@ export default {
       this.fields = getFeatureFields(this.feature)
       this.editGeometry = false
     },
-    wfsTransaction (operations) {
+    async wfsTransaction (operations) {
       this.statusController.set('loading', 1000)
-      wfsTransaction(this.project.config.ows_url, this.layer.name, operations)
-        .then(async () => {
-          await this.statusController.set('success', 1500)
-          this.statusController.set(null, 100)
-          const { updates = [], deletes = [] } = operations
-          updates.forEach(f => this.$emit('edit', f))
-          deletes.forEach(f => this.$emit('delete', f))
-        })
-        .catch(err => {
-          this.errorMsg = err.message || 'Error'
-          this.statusController.set('error', 3000)
-          this.statusController.set(null, 100)
-        })
+      try {
+        await wfsTransaction(this.project.config.ows_url, this.layer.name, operations)
+        // TODO: afterSave hook
+        await this.statusController.set('success', 1500)
+        this.statusController.set(null, 100)
+        const { updates = [], deletes = [] } = operations
+        updates.forEach(f => this.$emit('edit', f))
+        deletes.forEach(f => this.$emit('delete', f))
+      } catch (err) {
+        this.errorMsg = err.message || 'Error'
+        this.statusController.set('error', 3000)
+        this.statusController.set(null, 100)
+      }
     },
-    save () {
+    async save () {
       const f = new Feature()
-      const changedFields = difference(this.fields, this.originalFields)
+      const resolvedFields = {}
+      for (const name in this.fields) {
+        let value = this.fields[name]
+        if (typeof value === 'function') {
+          value = await value()
+        }
+        resolvedFields[name] = value
+      }
+      const changedFields = difference(resolvedFields, this.originalFields)
       f.setProperties(changedFields)
       if (this.geomModified) {
         let newGeom = this.$refs.geometryEditor.getGeometry()
@@ -253,40 +263,70 @@ export default {
       f.setId(this.feature.getId())
       this.wfsTransaction({ updates: [f] })
     },
-    deleteFeature () {
+    async deleteFeature () {
+      await this.$refs.editForm.beforeDelete?.()
       this.wfsTransaction({ deletes: [this.feature] })
+      await this.$refs.editForm.afterDelete?.()
+      this.showConfirmDelete = false
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.tools-container {
-  /deep/ .v-btn {
-    margin: 3px 0;
-    height: 24px;
-  }
-  .v-divider--vertical {
-    height: 20px;
-    margin: 0 2px;
+.toolbar {
+  background-color: #e0e0e0;
+  border-top: 1px solid #bbb;
+  ::v-deep .btn.icon {
+    margin: 3px 2px;
+    width: 26px;
+    height: 26px;
   }
 }
-.notification {
+
+.overlay {
   position: absolute;
-  width: 100%;
-  bottom: 2em;
-  align-self: center;
-  text-align: center;
-  opacity: 0.8;
+  inset: 0;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+.notification {
+  background-color: rgba(0, 0, 0, 0.2);
+
+  // pointer-events: none;
   svg {
     border: 1px solid currentColor;
     border-radius: 50%;
+    // color: var(--icon-color);
   }
-  .notification-content {
-    min-width: 150px;
-    transition: 0.3s all ease;
-    border-radius: 2px;
+  .content {
+    width: 150px;
+    font-size: 14px;
+    border-radius: 3px;
+    margin: 6px;
+    background-color: #444;
     color: #fff;
+    transition: 0.4s ease;
+    &.error {
+      background-color: var(--color-red);
+    }
+  }
+}
+.delete-dialog {
+  background-color: #f3f3f3;
+  // ver. 2 (with content wrapper)
+  // background-color: rgba(0,0,0, 0.3);
+  // .content {
+  //   background-color: #f3f3f3;
+  //   padding: 6px 12px;
+  //   border-radius: 2px;
+  // }
+  .title {
+    font-weight: 500;
+  }
+  .btn.small {
+    min-width: 70px;
   }
 }
 </style>

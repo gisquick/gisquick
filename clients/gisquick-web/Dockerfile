@@ -1,11 +1,10 @@
-FROM node:12-alpine AS webapp
-MAINTAINER Marcel Dancak "dancakm@gmail.com"
+FROM node:14-alpine AS webapp
 
 WORKDIR /gisquick-web/
 COPY package*.json ./
 RUN npm install
 COPY . .
-RUN npm run build
+RUN npm run build -- --modern
 
 
 FROM gisquick/webapp-container

@@ -1,5 +1,5 @@
 <template>
-  <v-layout class="column form">
+  <div class="f-col form light">
     <template v-for="(attr, index) in layer.attributes">
       <component
         :key="attr.name"
@@ -10,7 +10,7 @@
         class="mx-2"
       />
     </template>
-  </v-layout>
+  </div>
 </template>
 
 <script>
@@ -37,13 +37,14 @@ export default {
             component: NumberField,
             props: {
               integer: attr.type === 'INTEGER',
-              disabled
+              disabled,
+              class: 'filled'
             }
           }
         }
         return {
           component: 'v-text-field',
-          props: { disabled }
+          props: { disabled, class: 'filled' }
         }
       })
     }
@@ -53,12 +54,6 @@ export default {
 
 <style lang="scss" scoped>
 .form {
-  .v-text-field {
-    /deep/ {
-      .v-input__slot:before {
-        border-color: #ccc;
-      }
-    }
-  }
+  background-color: #f3f3f3;
 }
 </style>

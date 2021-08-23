@@ -19,6 +19,7 @@ export default {
   },
   created () {
     const nextFrame = (cb) => setTimeout(cb, 30)
+
     let leaveTransition
     this.transition = {
       leave: (el) => {
@@ -46,7 +47,22 @@ export default {
       },
       enter: (el) => {
         // const height = el.scrollHeight
-        const height = el.offsetHeight
+        let height = el.offsetHeight
+        let transitionStarted = false
+
+        let observer // TODO: reuse single ResizeObserver instance
+        if (typeof ResizeObserver !== 'undefined') {
+          observer = new ResizeObserver(entries => {
+            const entry = entries[0]
+            const borderBoxSize = Array.isArray(entry.borderBoxSize) ? entry.borderBoxSize[0] : entry.borderBoxSize
+            height = Math.round(borderBoxSize.blockSize)
+            if (transitionStarted) {
+              this.$el.style.height = height + 'px'
+            }
+          }, { box: 'border-box' })
+          observer.observe(el)
+        }
+
         // console.log('enter', el, height)
         let startHeight
         if (leaveTransition) {
@@ -67,10 +83,12 @@ export default {
             if (leaveTransition) {
               leaveTransition = null
             }
+            observer?.disconnect()
             this.$el.classList.remove('height-transition')
             this.$el.style.height = ''
           })
           this.$el.style.height = height + 'px'
+          transitionStarted = true
         })
       }
     }

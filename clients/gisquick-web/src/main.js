@@ -13,10 +13,10 @@ import store from './store/index'
 import translations from './lang/translations.json'
 import App from './App.vue'
 import ServerError from './ServerError.vue'
-
 import UI from './ui/plugin'
 import ScrollArea from './ui/ScrollArea.vue'
 import BasicScrollArea from './ui/BasicScrollArea.vue'
+import VImage from '@/components/image/Image.vue'
 import '@/assets/fonts/fonts.css'
 import '@/ui/base.scss'
 import '@/ui/layout.scss'
@@ -57,6 +57,7 @@ Vue.use(UI)
 Vue.component('scroll-area', mobile ? BasicScrollArea : ScrollArea)
 // Vue.component('scroll-area', BasicScrollArea)
 Vue.component('v-collapsible', Collapsible)
+Vue.component('v-image', VImage)
 Vue.component('collapse-transition', CollapseTransition)
 Vue.component('collapse-width-transition', CollapseWidth)
 Vue.component('switch-transition', SwitchTransition)

@@ -102,6 +102,7 @@ a {
   font-size: inherit;
   margin: var(--gutter, 6px);
   background-color: transparent;
+  box-sizing: border-box;
 
   &::before {
     content: "";
@@ -128,10 +129,11 @@ a {
     font-weight: 500;
     text-transform: uppercase;
     text-decoration: none;
-    padding: 0 16px;
+    padding: 0 12px;
     white-space: nowrap;
     &.round {
       border-radius: 18px;
+      padding: 0 16px;
     }
   }
   &:not(.flat) {

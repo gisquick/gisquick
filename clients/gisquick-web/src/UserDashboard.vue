@@ -32,7 +32,7 @@
     </div>
     <!-- <hr/> -->
 
-    <div class="content f-col f-grow">
+    <div class="content f-col f-grow light">
       <v-spinner
         v-if="loadingProjects"
         class="my-4 mx-auto"

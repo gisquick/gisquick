@@ -22,13 +22,13 @@
       @row-click="selectFeature"
     >
       <template v-slot:header(actions)>
-        <v-menu>
+        <!-- <v-menu>
           <template v-slot:activator="{ toggle }">
             <v-btn class="icon flat m-0" @click="toggle">
               <v-icon name="menu"/>
             </v-btn>
           </template>
-        </v-menu>
+        </v-menu> -->
       </template>
       <template v-slot:header(filter)="{ column }">
         <attribute-filter

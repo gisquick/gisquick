@@ -92,7 +92,7 @@
       <div v-if="showConfirmDelete" class="overlay delete-dialog f-col">
         <!-- <div class="content shadow-2"> -->
           <div class="header px-4">
-            <span class="title"><translate>Delete current object?</translate></span>
+            <translate class="title">Delete current object?</translate>
           </div>
           <div class="f-row-ac">
             <v-btn class="small round f-grow" color="#777" @click="showConfirmDelete = false">

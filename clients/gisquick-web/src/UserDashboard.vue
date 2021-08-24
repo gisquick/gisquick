@@ -1,7 +1,7 @@
 <template>
   <div class="user-dashboard f-col">
-    <div class="header f-row-ac xdark shadow-1">
-      <div class="headline mr-2">Projects</div>
+    <div class="header f-row-ac shadow-1">
+      <translate class="headline mr-2">Projects</translate>
       <div class="f-grow"/>
       <div class="user-card f-col f-justify-end f-shrink">
         <div class="f-row f-justify-end">
@@ -25,7 +25,7 @@
             @click="logout"
           >
             <v-icon name="exit_to_app" class="mr-2"/>
-            <span>Sign out</span>
+            <translate>Sign out</translate>
           </v-btn>
         </div>
       </div>
@@ -59,19 +59,19 @@
           />
         </a>
       </div>
-      <div v-else class="f-col-ac py-4">
-        <p class="py-4 title">You didn't publish any project yet!</p>
-        <p>
-          Use QGIS with Gisquick plugin to prepare your map, and then publish it from your</p>
-          <v-btn
-            href="/user/"
-            class="inline round small"
-            color="primary"
-          >
-            <v-icon name="settings" class="mr-2"/>
-            Profile
-          </v-btn>
-        <!-- </p> -->
+      <div v-else class="empty f-col-ac">
+        <translate class="py-4 title">You didn't publish any project yet!</translate>
+        <translate tag="p" class="my-4">
+          Use QGIS and Gisquick plugin to create your map, and then publish it from your profile page.
+        </translate>
+        <v-btn
+          href="/user/publish/"
+          class="inline round"
+          color="primary"
+        >
+          <v-icon name="qgis" class="mr-2"/>
+          <translate>Publish project</translate>
+        </v-btn>
       </div>
     </div>
   </div>
@@ -171,5 +171,12 @@ p {
   height: 30px;
   max-height: 30px;
   font-size: 14px;
+}
+.empty {
+  padding: 24px 12px;
+  .title {
+    font-size: 20px;
+    font-weight: 500;
+  }
 }
 </style>

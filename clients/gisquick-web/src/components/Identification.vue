@@ -4,7 +4,7 @@
       <div class="identification-tool light f-row f-align-start" key="identification">
         <v-select
           class="flat f-grow"
-          label="Layer"
+          :label="tr.Layer"
           item-text="title"
           item-value="name"
           :value="identificationLayer"
@@ -12,14 +12,18 @@
           @input="$emit('update:identificationLayer', $event)"
         />
         <v-menu
-          aria-label="Nastavenia"
+          :aria-label="tr.Menu"
           transition="slide-y"
           align="rr;bb,tt"
           :items="displayModes"
           @confirm="$emit('update:displayMode', $event.value)"
         >
           <template v-slot:activator="{ toggle }">
-            <v-btn aria-label="Menu" class="icon small" @click="toggle">
+            <v-btn
+              :aria-label="tr.Menu"
+              class="icon small"
+              @click="toggle"
+            >
               <v-icon name="menu-dots"/>
             </v-btn>
           </template>
@@ -159,7 +163,8 @@ export default {
     },
     tr () {
       return {
-        Layer: this.$gettext('Layer')
+        Layer: this.$gettext('Layer'),
+        Menu: this.$gettext('Menu')
       }
     }
   },

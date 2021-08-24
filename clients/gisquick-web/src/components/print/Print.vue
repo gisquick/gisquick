@@ -14,14 +14,14 @@
             :items="layouts"
           />
           <v-menu
-            aria-label="Nastavenia"
+            :aria-label="tr.Menu"
             transition="slide-y"
             align="rr;bb,tt"
             content-class="print"
             :items="menuItems"
           >
             <template v-slot:activator="{ toggle }">
-              <v-btn aria-label="Menu" class="icon small" @click="toggle">
+              <v-btn :aria-label="tr.Menu" class="icon small" @click="toggle">
                 <v-icon name="menu-dots"/>
               </v-btn>
             </template>
@@ -78,6 +78,11 @@ export default {
   }),
   computed: {
     ...mapState(['project']),
+    tr () {
+      return {
+        Menu: this.$gettext('Menu')
+      }
+    },
     formatMenuItems () {
       const action = i => {
         this.format = i.value
@@ -102,9 +107,9 @@ export default {
     },
     menuItems () {
       return [
-        { text: 'Output format', separator: true },
+        { text: this.$gettext('Output format'), separator: true },
         ...this.formatMenuItems,
-        { text: 'Print quality', separator: true },
+        { text: this.$gettext('Print quality'), separator: true },
         ...this.qualityMenuItems
       ]
     },

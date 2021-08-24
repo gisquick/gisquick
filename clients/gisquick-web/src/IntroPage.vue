@@ -3,30 +3,34 @@
     <div class="header f-col-ac f-justify-center px-2 shadow-2">
       <img src="./assets/login_text_logo.svg" class="logo my-4">
     </div>
-    <div v-if="userSignedIn" class="f-col dashboard">
+    <div v-if="userSignedIn" class="dashboard f-col f-grow">
       <user-dashboard/>
     </div>
     <template v-else>
       <div class="main f-col-ac f-justify-center light">
-        <p class="my-2">
+        <translate class="my-2">
           You will need to enter URL of existing project to see a map!
-        </p>
+        </translate>
         <img src="@/assets/map.svg" class="image my-2"/>
       </div>
       <div class="footer f-col-ac light">
         <div class="sign-info">
           <div class="section f-col mx-2 my-4">
-            <p class="text--secondary mb-4">
+            <translate class="text--secondary mb-4">
               Already registred? You can continue with Sign In to see list of your projects
-            </p>
-            <v-btn color="#444" @click="showLogin">Sign in</v-btn>
+            </translate>
+            <v-btn color="#444" @click="showLogin">
+              <translate>Sign in</translate>
+            </v-btn>
           </div>
           <div class="divider"/>
           <div class="section f-col mx-2 my-4">
-            <p class="text--secondary mb-4">
+            <translate class="text--secondary mb-4">
               New to Gisquick? Create a new account if you want to publish your own maps!
-            </p>
-            <v-btn color="primary" href="/accounts/signup/">Sign up</v-btn>
+            </translate>
+            <v-btn color="primary" href="/accounts/signup/">
+              <translate>Sign up</translate>
+            </v-btn>
           </div>
         </div>
       </div>
@@ -95,9 +99,6 @@ export default {
     padding: 12px;
     flex-grow: 1;
     flex-basis: 0;
-    p {
-      color: #333;
-    }
   }
   .dashboard {
     background-color: rgba(var(--color-primary-rgb), 0.25);

@@ -14,13 +14,13 @@
               <span class="value">{{ location.coord2 }}</span>
             </div>
             <v-menu
-              aria-label="Nastavenia"
+              :aria-label="tr.Menu"
               transition="slide-y"
               align="rr;bb,tt"
               :items="locationMenuItems"
             >
               <template v-slot:activator="{ toggle }">
-                <v-btn aria-label="Menu" class="icon small" @click="toggle">
+                <v-btn :aria-label="tr.Menu" class="icon small" @click="toggle">
                   <v-icon name="menu-dots"/>
                 </v-btn>
               </template>
@@ -39,13 +39,13 @@
               <span class="value">{{ distance.total }}</span>
             </div>
             <v-menu
-              aria-label="Nastavenia"
+              :aria-label="tr.Menu"
               transition="slide-y"
               align="rr;bb,tt"
               :items="distanceMenuItems"
             >
               <template v-slot:activator="{ toggle }">
-                <v-btn aria-label="Menu" class="icon small" @click="toggle">
+                <v-btn :aria-label="tr.Menu" class="icon small" @click="toggle">
                   <v-icon name="menu-dots"/>
                 </v-btn>
               </template>
@@ -72,13 +72,13 @@
               <span class="value">{{ area.area }}</span>
             </div>
             <v-menu
-              aria-label="Nastavenia"
+              :aria-label="tr.Menu"
               transition="slide-y"
               align="rr;bb,tt"
               :items="areaMenuItems"
             >
               <template v-slot:activator="{ toggle }">
-                <v-btn aria-label="Menu" class="icon small" @click="toggle">
+                <v-btn :aria-label="tr.Menu" class="icon small" @click="toggle">
                   <v-icon name="menu-dots"/>
                 </v-btn>
               </template>
@@ -139,6 +139,11 @@ export default {
   },
   computed: {
     ...mapState(['project']),
+    tr () {
+      return {
+        Menu: this.$gettext('Menu')
+      }
+    },
     availableUnits () {
       return Units
     },
@@ -181,21 +186,21 @@ export default {
           // disabled: !this.location.feature,
           action: () => this.zoomTo(this.location.feature)
         },
-        { separator: true, text: 'Coordinate systems' },
+        { separator: true, text: this.$gettext('Coordinate systems') },
         ...csItems
       ]
     },
     distanceMenuItems () {
       return [
         { text: this.$gettext('Zoom to'), icon: 'zoom-to', action: () => this.zoomTo(this.distance.feature) },
-        { separator: true, text: 'Units' },
+        { separator: true, text: this.$gettext('Units') },
         ...this.createUnitsMenu('length')
       ]
     },
     areaMenuItems () {
       return [
         { text: this.$gettext('Zoom to'), icon: 'zoom-to', action: () => this.zoomTo(this.distance.feature) },
-        { separator: true, text: 'Units' },
+        { separator: true, text: this.$gettext('Units') },
         ...this.createUnitsMenu('area')
       ]
     }

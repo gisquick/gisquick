@@ -7,8 +7,8 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "vetur": "node ./docgen.js",
-    "makemessages": "node lang/makemessages.js",
-    "translations": "gettext-compile --output src/lang/translations.json lang/cs.po"
+    "makemessages": "node gettext/makemessages.js",
+    "compilemessages": "node gettext/compilemessages.js"
   },
   "dependencies": {
     "axios": "^0.21.1",
@@ -37,6 +37,7 @@
     "eslint-plugin-vue": "^6.2.2",
     "gettext-extractor": "^3.5.3",
     "node-sass": "^5.0.0",
+    "pofile": "^1.1.1",
     "sass-loader": "^10.1.1",
     "svgo": "^2.3.0",
     "vue-docgen-api": "^4.38.2",

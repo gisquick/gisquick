@@ -38,11 +38,11 @@ npm run lint
 npm run makemessages
 ```
 
-2. Update translations (lang/[lang-code].po), e.g. open .po file in Poedit and select Catalog -> Update from POT file... -> select lang/messages.pot file
+2. Update translations (i18n/[locale-code].po), e.g. open .po file in Poedit and select Catalog -> Update from POT file... -> select i18n/messages.pot file
 
-3. Compile translations into JSON
+3. Compile translations into JSON fromat
 ```
-npm run translations
+npm run compilemessages
 ```
 
 ### Build selected components as library module

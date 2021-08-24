@@ -6,7 +6,9 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "vetur": "node ./docgen.js"
+    "vetur": "node ./docgen.js",
+    "makemessages": "node lang/makemessages.js",
+    "translations": "gettext-compile --output src/lang/translations.json lang/cs.po"
   },
   "dependencies": {
     "axios": "^0.21.1",
@@ -33,6 +35,7 @@
     "compression-webpack-plugin": "^6.1.1",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
+    "gettext-extractor": "^3.5.3",
     "node-sass": "^5.0.0",
     "sass-loader": "^10.1.1",
     "svgo": "^2.3.0",

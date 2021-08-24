@@ -17,7 +17,7 @@
         <div class="sign-info">
           <div class="section f-col mx-2 my-4">
             <translate class="text--secondary mb-4">
-              Already registred? You can continue with Sign In to see list of your projects
+              Already registered? You can continue with Sign In to see list of your projects
             </translate>
             <v-btn color="#444" @click="showLogin">
               <translate>Sign in</translate>

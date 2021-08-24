@@ -2,53 +2,74 @@ msgid ""
 msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 
-#: ./src/components/measure/Measure.vue:28
+#: ./src/components/measure/Measure.vue:9
 msgid "1st coordinate"
 msgstr ""
 
-#: ./src/components/measure/Measure.vue:31
+#: ./src/components/measure/Measure.vue:13
 msgid "2nd coordinate"
 msgstr ""
 
-#: ./src/components/content-panel/BaseLayerItem.vue:57
-#: ./src/components/content-panel/LayerItem.vue:78
+#: ./src/components/content-panel/BaseLayersTree.vue:44
+#: ./src/components/content-panel/LayersTree.vue:74
+#: ./src/components/content-panel/TopicsList.vue:36
 msgid "Abstract"
 msgstr ""
 
-#: src/components/Identification.vue:109
+#: ./src/components/feature-editor/GeometryEditor.vue:10
+msgid "Add geometry"
+msgstr ""
+
+#: src/components/Identification.vue:133
 msgid "All visible layers"
 msgstr ""
 
-#: ./src/components/measure/Measure.vue:147
-#: ./src/components/measure/Measure.vue:19
+#: ./src/IntroPage.vue:19
+msgid "Already registered? You can continue with Sign In to see list of your projects"
+msgstr ""
+
+#: ./src/components/measure/Measure.vue:71
+#: src/components/measure/Measure.vue:171
 msgid "Area"
 msgstr ""
 
-#: src/components/LoginDialog.vue:118
+#: ./src/components/LoginDialog.vue:28
 msgid "Authentication failed"
 msgstr ""
 
-#: ./src/components/content-panel/ContentPanel.vue:14
+#: ./src/components/LoginDialog.vue:113
+msgid "Back to Login"
+msgstr ""
+
+#: src/components/content-panel/ContentPanel.vue:100
 msgid "Base Layers"
 msgstr ""
 
-#: src/components/AttributeFilter.vue:207
+#: src/components/AttributeFilter.vue:206
 msgid "between"
 msgstr ""
 
-#: src/components/AttributeFilter.vue:204
+#: ./src/components/AttributesTable.vue:124
+msgid "Clear attributes filters"
+msgstr ""
+
+#: ./src/components/LocationTool.vue:20
+msgid "Close"
+msgstr ""
+
+#: src/components/AttributeFilter.vue:203
 msgid "contain"
 msgstr ""
 
-#: ./src/components/content-panel/ContentPanel.vue:5
+#: ./src/components/content-panel/ContentPanel.vue:4
 msgid "Content"
 msgstr ""
 
-#: ./src/components/LoginDialog.vue:65
+#: ./src/components/LoginDialog.vue:106
 msgid "Continue as Guest"
 msgstr ""
 
-#: ./src/components/measure/Measure.vue:51
+#: src/components/measure/Measure.vue:189
 msgid "Coordinate systems"
 msgstr ""
 
@@ -56,117 +77,186 @@ msgstr ""
 msgid "Coordinates"
 msgstr ""
 
-#: ./src/components/Identification.vue:20
-msgid "Display"
+#: ./src/components/feature-editor/FeatureEditor.vue:86
+#: ./src/components/feature-editor/NewFeatureEditor.vue:41
+msgid "Data updated"
 msgstr ""
 
-#: ./src/components/MapAttributions.vue:6
+#: ./src/components/feature-editor/FeatureEditor.vue:95
+msgid "Delete current object?"
+msgstr ""
+
+#: ./src/components/feature-editor/FeatureEditor.vue:52
+msgid "Delete object"
+msgstr ""
+
+#: ./src/components/feature-editor/FeatureEditor.vue:61
+msgid "Discard changes"
+msgstr ""
+
+#: src/components/MapAttributions.vue:22
 msgid "Display attributions"
 msgstr ""
 
-#: ./src/components/measure/Measure.vue:15
+#: src/components/measure/Measure.vue:170
 msgid "Distance"
 msgstr ""
 
-#: src/components/AttributeFilter.vue:205
+#: ./src/components/feature-editor/FeatureEditor.vue:29
+msgid "Edit geometry"
+msgstr ""
+
+#: src/components/LoginDialog.vue:154
+msgid "Email"
+msgstr ""
+
+#: src/components/LoginDialog.vue:159
+msgid "Email was sent to given email address."
+msgstr ""
+
+#: src/components/AttributeFilter.vue:204
 msgid "empty"
 msgstr ""
 
-#: src/components/AttributeFilter.vue:199
+#: src/components/LoginDialog.vue:155
+msgid "Enter your email address below and we will email instructions for setting a new password."
+msgstr ""
+
+#: src/components/AttributeFilter.vue:198
 msgid "equal to"
 msgstr ""
 
-#: src/components/AttributeFilter.vue:197
+#: ./src/components/feature-editor/FeatureEditor.vue:87
+#: ./src/components/feature-editor/NewFeatureEditor.vue:42
+msgid "Error"
+msgstr ""
+
+#: src/components/LoginDialog.vue:158
+msgid "Failed to process your request."
+msgstr ""
+
+#: ./src/components/AttributesTable.vue:134
+#: src/components/AttributeFilter.vue:196
 msgid "Filter"
 msgstr ""
 
-#: src/components/AttributesTable.vue:189
+#: src/components/AttributesTable.vue:280
 msgid "Filter to visible area"
 msgstr ""
 
-#: ./src/components/LoginDialog.vue:74
+#: ./src/components/LoginDialog.vue:114
 msgid "Forgot password?"
 msgstr ""
 
-#: ./src/App.vue:34
+#: src/components/AppMenu.vue:57
 msgid "Full screen"
 msgstr ""
 
-#: ./src/components/content-panel/LayerItem.vue:70
+#: src/components/LocationTool.vue:85
+msgid "Geolocation Error"
+msgstr ""
+
+#: ./src/components/content-panel/LayersTree.vue:68
 msgid "Geometry"
 msgstr ""
 
-#: src/components/AttributeFilter.vue:201
+#: src/components/AttributeFilter.vue:200
 msgid "greater than"
 msgstr ""
 
-#: ./src/App.vue:43
+#: src/components/AppMenu.vue:62
 msgid "Help"
 msgstr ""
 
-#: ./src/components/content-panel/LayerItem.vue:74
+#: ./src/components/content-panel/LayersTree.vue:71
 msgid "Identification"
 msgstr ""
 
-#: src/components/Identification.vue:121
+#: src/components/Identification.vue:141
 msgid "Info Panel"
 msgstr ""
 
-#: ./src/components/content-panel/BaseLayerItem.vue:60
-#: ./src/components/content-panel/LayerItem.vue:82
+#: ./src/components/content-panel/BaseLayersTree.vue:47
+#: ./src/components/content-panel/LayersTree.vue:77
 msgid "Keywords list"
 msgstr ""
 
-#: ./src/components/measure/Measure.vue:74
+#: ./src/components/measure/Measure.vue:34
 msgid "Last segment"
 msgstr ""
 
-#: src/components/Identification.vue:139
+#: src/components/Identification.vue:166
 msgid "Layer"
 msgstr ""
 
-#: ./src/components/content-panel/ContentPanel.vue:58
+#: src/components/content-panel/ContentPanel.vue:108
 msgid "Layers"
 msgstr ""
 
-#: src/components/print/Print.vue:111
+#: src/components/print/Print.vue:127
 msgid "Layout"
 msgstr ""
 
-#: ./src/components/content-panel/ContentPanel.vue:22
+#: src/components/content-panel/ContentPanel.vue:102
 msgid "Legend"
 msgstr ""
 
-#: src/components/AttributeFilter.vue:202
+#: src/components/AttributeFilter.vue:201
 msgid "less than"
 msgstr ""
 
-#: ./src/components/measure/Measure.vue:11
+#: src/components/measure/Measure.vue:169
 msgid "Location"
 msgstr ""
 
-#: ./src/App.vue:22
-#: ./src/components/LoginDialog.vue:54
+#: ./src/components/LoginDialog.vue:97
+#: src/components/AppMenu.vue:47
 msgid "Login"
 msgstr ""
 
-#: ./src/App.vue:17
+#: src/components/AppMenu.vue:36
 msgid "Logout"
 msgstr ""
 
-#: ./src/App.vue:28
+#: src/components/Identification.vue:167
+#: src/components/measure/Measure.vue:144
+#: src/components/print/Print.vue:83
+msgid "Menu"
+msgstr ""
+
+#: src/components/AppMenu.vue:40
 msgid "My profile"
 msgstr ""
 
-#: src/components/AttributeFilter.vue:206
+#: ./src/IntroPage.vue:28
+msgid "New to Gisquick? Create a new account if you want to publish your own maps!"
+msgstr ""
+
+#: ./src/components/feature-editor/FeatureEditor.vue:99
+msgid "No"
+msgstr ""
+
+#: ./src/components/feature-editor/GeometryEditor.vue:22
+msgid "Node tool"
+msgstr ""
+
+#: src/components/AttributeFilter.vue:205
 msgid "not empty"
 msgstr ""
 
-#: src/components/AttributeFilter.vue:200
+#: src/components/AttributeFilter.vue:199
 msgid "not equal to"
 msgstr ""
 
-#: src/components/AttributeFilter.vue:203
+#: src/components/feature-editor/NumberField.vue:36
+msgid "Not valid integer number"
+msgstr ""
+
+#: src/components/feature-editor/NumberField.vue:35
+msgid "Not valid number"
+msgstr ""
+
+#: src/components/AttributeFilter.vue:202
 msgid "one of"
 msgstr ""
 
@@ -178,36 +268,48 @@ msgstr ""
 msgid "Opacity of overlay layers"
 msgstr ""
 
-#: ./src/components/print/Print.vue:20
+#: src/components/print/Print.vue:110
 msgid "Output format"
 msgstr ""
 
-#: ./src/components/content-panel/ContentPanel.vue:18
+#: src/components/content-panel/ContentPanel.vue:101
 msgid "Overlay Layers"
 msgstr ""
 
-#: src/components/LoginDialog.vue:105
+#: src/components/LoginDialog.vue:153
 msgid "Password"
 msgstr ""
 
-#: ./src/components/measure/Measure.vue:144
+#: ./src/components/measure/Measure.vue:67
 msgid "Perimeter"
 msgstr ""
 
-#: ./src/components/LoginDialog.vue:25
+#: ./src/components/LoginDialog.vue:23
 msgid "Permission denied"
 msgstr ""
 
-#: ./src/components/print/Preview.vue:13
+#: ./src/components/print/Preview.vue:12
 msgid "Print Preview"
 msgstr ""
 
-#: ./src/components/print/Print.vue:35
+#: src/components/print/Print.vue:112
 msgid "Print quality"
 msgstr ""
 
-#: ./src/components/AttributesTable.vue:106
-msgid "Refresh"
+#: ./src/UserDashboard.vue:4
+msgid "Projects"
+msgstr ""
+
+#: ./src/UserDashboard.vue:73
+msgid "Publish project"
+msgstr ""
+
+#: ./src/components/LoginDialog.vue:61
+msgid "Reset Password"
+msgstr ""
+
+#: ./src/components/feature-editor/FeatureEditor.vue:71
+msgid "Save changes"
 msgstr ""
 
 #: ./src/components/BottomToolbar.vue:6
@@ -215,52 +317,85 @@ msgstr ""
 msgid "Scale"
 msgstr ""
 
-#: ./src/components/LoginDialog.vue:16
+#: ./src/IntroPage.vue:23
+msgid "Sign in"
+msgstr ""
+
+#: ./src/components/LoginDialog.vue:14
 msgid "Sign In to Continue"
 msgstr ""
 
-#: src/components/Identification.vue:117
+#: ./src/UserDashboard.vue:28
+msgid "Sign out"
+msgstr ""
+
+#: ./src/IntroPage.vue:32
+msgid "Sign up"
+msgstr ""
+
+#: src/components/Identification.vue:140
 msgid "Table"
 msgstr ""
 
-#: src/components/Identification.vue:125
+#: src/components/Identification.vue:142
 msgid "Table & Info Panel"
 msgstr ""
 
-#: ./src/components/content-panel/ContentPanel.vue:55
+#: src/components/content-panel/ContentPanel.vue:107
 msgid "Topics"
 msgstr ""
 
-#: ./src/components/measure/Measure.vue:77
+#: ./src/components/measure/Measure.vue:38
 msgid "Total length"
 msgstr ""
 
-#: ./src/components/measure/Measure.vue:166
-#: ./src/components/measure/Measure.vue:96
+#: src/components/measure/Measure.vue:196
+#: src/components/measure/Measure.vue:203
 msgid "Units"
 msgstr ""
 
-#: src/components/LoginDialog.vue:104
-msgid "Username"
+#: ./src/components/feature-editor/FeatureEditor.vue:85
+#: ./src/components/feature-editor/NewFeatureEditor.vue:40
+msgid "Updating data"
 msgstr ""
 
-#: ./src/components/measure/Measure.vue:161
-#: ./src/components/measure/Measure.vue:46
-#: ./src/components/measure/Measure.vue:91
+#: ./src/UserDashboard.vue:64
+msgid "Use QGIS and Gisquick plugin to create your map, and then publish it from your profile page."
+msgstr ""
+
+#: src/components/LoginDialog.vue:152
+msgid "Username / Email"
+msgstr ""
+
+#: ./src/components/feature-editor/FeatureEditor.vue:102
+msgid "Yes"
+msgstr ""
+
+#: ./src/UserDashboard.vue:63
+msgid "You didn't publish any project yet!"
+msgstr ""
+
+#: ./src/IntroPage.vue:11
+msgid "You will need to enter URL of existing project to see a map!"
+msgstr ""
+
+#: src/components/measure/Measure.vue:184
+#: src/components/measure/Measure.vue:195
+#: src/components/measure/Measure.vue:202
 msgid "Zoom to"
 msgstr ""
 
-#: src/components/MapTools.vue:43
+#: src/components/MapTools.vue:51
 msgctxt "noun"
 msgid "Identification"
 msgstr ""
 
-#: src/components/MapTools.vue:55
+#: src/components/MapTools.vue:63
 msgctxt "noun"
 msgid "Measure"
 msgstr ""
 
-#: src/components/MapTools.vue:63
+#: src/components/MapTools.vue:71
 msgctxt "noun"
 msgid "Print"
 msgstr ""

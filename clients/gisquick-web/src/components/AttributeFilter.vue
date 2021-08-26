@@ -41,6 +41,9 @@
       :color="filter.active ? 'primary' : ''"
       @click="toggleFilter"
     >
+      <v-tooltip slot="tooltip">
+        <translate>Filter by attribute value</translate>
+      </v-tooltip>
       <v-icon name="filter" size="13"/>
     </v-btn>
   </div>
@@ -264,5 +267,9 @@ export default {
 .header, .filter {
   gap: 6px;
   --gutter: 0;
+}
+.btn {
+  width: 20px;
+  height: 20px;
 }
 </style>

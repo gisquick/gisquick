@@ -20,6 +20,10 @@ msgstr ""
 msgid "Add geometry"
 msgstr ""
 
+#: ./src/components/AttributesTable.vue:108
+msgid "Add new feature"
+msgstr ""
+
 #: src/components/Identification.vue:133
 msgid "All visible layers"
 msgstr ""
@@ -45,11 +49,11 @@ msgstr ""
 msgid "Base Layers"
 msgstr ""
 
-#: src/components/AttributeFilter.vue:206
+#: src/components/AttributeFilter.vue:209
 msgid "between"
 msgstr ""
 
-#: ./src/components/AttributesTable.vue:124
+#: ./src/components/AttributesTable.vue:127
 msgid "Clear attributes filters"
 msgstr ""
 
@@ -57,7 +61,7 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
-#: src/components/AttributeFilter.vue:203
+#: src/components/AttributeFilter.vue:206
 msgid "contain"
 msgstr ""
 
@@ -114,7 +118,7 @@ msgstr ""
 msgid "Email was sent to given email address."
 msgstr ""
 
-#: src/components/AttributeFilter.vue:204
+#: src/components/AttributeFilter.vue:207
 msgid "empty"
 msgstr ""
 
@@ -122,7 +126,7 @@ msgstr ""
 msgid "Enter your email address below and we will email instructions for setting a new password."
 msgstr ""
 
-#: src/components/AttributeFilter.vue:198
+#: src/components/AttributeFilter.vue:201
 msgid "equal to"
 msgstr ""
 
@@ -135,12 +139,16 @@ msgstr ""
 msgid "Failed to process your request."
 msgstr ""
 
-#: ./src/components/AttributesTable.vue:134
-#: src/components/AttributeFilter.vue:196
+#: ./src/components/AttributesTable.vue:137
+#: src/components/AttributeFilter.vue:199
 msgid "Filter"
 msgstr ""
 
-#: src/components/AttributesTable.vue:280
+#: ./src/components/AttributeFilter.vue:45
+msgid "Filter by attribute value"
+msgstr ""
+
+#: src/components/AttributesTable.vue:283
 msgid "Filter to visible area"
 msgstr ""
 
@@ -160,7 +168,7 @@ msgstr ""
 msgid "Geometry"
 msgstr ""
 
-#: src/components/AttributeFilter.vue:200
+#: src/components/AttributeFilter.vue:203
 msgid "greater than"
 msgstr ""
 
@@ -201,7 +209,7 @@ msgstr ""
 msgid "Legend"
 msgstr ""
 
-#: src/components/AttributeFilter.vue:201
+#: src/components/AttributeFilter.vue:204
 msgid "less than"
 msgstr ""
 
@@ -228,6 +236,10 @@ msgstr ""
 msgid "My profile"
 msgstr ""
 
+#: ./src/components/AttributesTable.vue:148
+msgid "New Feature"
+msgstr ""
+
 #: ./src/IntroPage.vue:28
 msgid "New to Gisquick? Create a new account if you want to publish your own maps!"
 msgstr ""
@@ -240,11 +252,11 @@ msgstr ""
 msgid "Node tool"
 msgstr ""
 
-#: src/components/AttributeFilter.vue:205
+#: src/components/AttributeFilter.vue:208
 msgid "not empty"
 msgstr ""
 
-#: src/components/AttributeFilter.vue:199
+#: src/components/AttributeFilter.vue:202
 msgid "not equal to"
 msgstr ""
 
@@ -256,7 +268,7 @@ msgstr ""
 msgid "Not valid number"
 msgstr ""
 
-#: src/components/AttributeFilter.vue:202
+#: src/components/AttributeFilter.vue:205
 msgid "one of"
 msgstr ""
 
@@ -274,6 +286,10 @@ msgstr ""
 
 #: src/components/content-panel/ContentPanel.vue:101
 msgid "Overlay Layers"
+msgstr ""
+
+#: src/components/AttributesTable.vue:284
+msgid "Page size"
 msgstr ""
 
 #: src/components/LoginDialog.vue:153

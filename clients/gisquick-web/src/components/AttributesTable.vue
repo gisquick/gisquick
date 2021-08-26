@@ -93,7 +93,7 @@
         <div class="v-separator"/>
         <v-select
           class="inline filled"
-          label="Page size"
+          :label="tr.PageSize"
           :value="limit"
           :items="[5, 10, 20, 50]"
           @input="updateLimit"
@@ -104,6 +104,9 @@
           class="icon"
           @click="newFeatureMode = true"
         >
+          <v-tooltip slot="tooltip">
+            <translate>Add new feature</translate>
+          </v-tooltip>
           <v-icon name="attribute-table-add"/>
         </v-btn>
 
@@ -142,7 +145,7 @@
         class="window f-col mx-1 mb-2 shadow-2"
       >
         <div class="panel-header f-row-ac">
-          <span class="title mx-2 f-grow">New Feature</span>
+          <translate class="title mx-2 f-grow">New Feature</translate>
           <v-btn class="icon small" @click="newFeatureMode = false">
             <v-icon name="x"/>
           </v-btn>
@@ -277,7 +280,8 @@ export default {
     },
     tr () {
       return {
-        FilterVisibleLabel: this.$gettext('Filter to visible area')
+        FilterVisibleLabel: this.$gettext('Filter to visible area'),
+        PageSize: this.$gettext('Page size')
       }
     },
     selectedFeature () {

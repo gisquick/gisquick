@@ -30,6 +30,10 @@ msgstr "Popis"
 msgid "Add geometry"
 msgstr "Přidat geometrii"
 
+#: src/components/AttributesTable.vue:108
+msgid "Add new feature"
+msgstr "Přidat nový objekt"
+
 #: src/components/Identification.vue:133
 msgid "All visible layers"
 msgstr "Všechny viditelné vrstvy"
@@ -56,11 +60,11 @@ msgstr "Zpět k přihlášení"
 msgid "Base Layers"
 msgstr "Základní vrstvy"
 
-#: src/components/AttributeFilter.vue:206
+#: src/components/AttributeFilter.vue:209
 msgid "between"
 msgstr "od - do"
 
-#: src/components/AttributesTable.vue:124
+#: src/components/AttributesTable.vue:127
 msgid "Clear attributes filters"
 msgstr "Vymazat filtry atributů"
 
@@ -68,7 +72,7 @@ msgstr "Vymazat filtry atributů"
 msgid "Close"
 msgstr "Zavřít"
 
-#: src/components/AttributeFilter.vue:203
+#: src/components/AttributeFilter.vue:206
 msgid "contain"
 msgstr "obsahuje"
 
@@ -125,7 +129,7 @@ msgstr "Email"
 msgid "Email was sent to given email address."
 msgstr "Email byl odeslán na zadanou adresu."
 
-#: src/components/AttributeFilter.vue:204
+#: src/components/AttributeFilter.vue:207
 msgid "empty"
 msgstr "nevyplněné hodnoty"
 
@@ -137,7 +141,7 @@ msgstr ""
 "Zadejte svou emailovou adresu a my Vám zašleme pokyny pro nastavení nového "
 "hesla."
 
-#: src/components/AttributeFilter.vue:198
+#: src/components/AttributeFilter.vue:201
 msgid "equal to"
 msgstr "rovná se"
 
@@ -150,12 +154,16 @@ msgstr "Chyba"
 msgid "Failed to process your request."
 msgstr "Zpracování vašeho požadavku se nezdařilo."
 
-#: src/components/AttributesTable.vue:134
-#: src/components/AttributeFilter.vue:196
+#: src/components/AttributesTable.vue:137
+#: src/components/AttributeFilter.vue:199
 msgid "Filter"
 msgstr "Filtr"
 
-#: src/components/AttributesTable.vue:280
+#: src/components/AttributeFilter.vue:45
+msgid "Filter by attribute value"
+msgstr "Filtrovat podle hodnoty atributu"
+
+#: src/components/AttributesTable.vue:283
 msgid "Filter to visible area"
 msgstr "Filtrovat viditelnou oblast"
 
@@ -175,7 +183,7 @@ msgstr "Geolokační chyba"
 msgid "Geometry"
 msgstr "Geometrie"
 
-#: src/components/AttributeFilter.vue:200
+#: src/components/AttributeFilter.vue:203
 msgid "greater than"
 msgstr "je větší"
 
@@ -216,7 +224,7 @@ msgstr "Rozložení"
 msgid "Legend"
 msgstr "Legenda"
 
-#: src/components/AttributeFilter.vue:201
+#: src/components/AttributeFilter.vue:204
 msgid "less than"
 msgstr "je menší"
 
@@ -241,6 +249,10 @@ msgstr "Menu"
 msgid "My profile"
 msgstr "Můj profil"
 
+#: src/components/AttributesTable.vue:148
+msgid "New Feature"
+msgstr "Nový objekt"
+
 #: src/IntroPage.vue:28
 msgid ""
 "New to Gisquick? Create a new account if you want to publish your own maps!"
@@ -252,13 +264,13 @@ msgstr "Ne"
 
 #: src/components/feature-editor/GeometryEditor.vue:22
 msgid "Node tool"
-msgstr ""
+msgstr "Editace bodů"
 
-#: src/components/AttributeFilter.vue:205
+#: src/components/AttributeFilter.vue:208
 msgid "not empty"
 msgstr "vyplněné hodnoty"
 
-#: src/components/AttributeFilter.vue:199
+#: src/components/AttributeFilter.vue:202
 msgid "not equal to"
 msgstr "nerovná se"
 
@@ -270,7 +282,7 @@ msgstr "Neplatné celé číslo"
 msgid "Not valid number"
 msgstr "Neplatné číslo"
 
-#: src/components/AttributeFilter.vue:202
+#: src/components/AttributeFilter.vue:205
 msgid "one of"
 msgstr "jednu z hodnot"
 
@@ -289,6 +301,10 @@ msgstr "Výstupní formát"
 #: src/components/content-panel/ContentPanel.vue:101
 msgid "Overlay Layers"
 msgstr "Překryvné vrstvy"
+
+#: src/components/AttributesTable.vue:284
+msgid "Page size"
+msgstr "Počet řádků"
 
 #: src/components/LoginDialog.vue:153
 msgid "Password"

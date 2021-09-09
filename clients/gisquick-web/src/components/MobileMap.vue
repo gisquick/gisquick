@@ -96,9 +96,6 @@ export default {
       setStatusBarVisible: () => {}
     }
   },
-  mounted () {
-    this.$map.setTarget(this.$refs.mapEl)
-  },
   methods: {
     toggleTool (tool) {
       const value = this.activeTool !== tool.name ? tool.name : null

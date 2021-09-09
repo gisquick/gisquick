@@ -108,9 +108,6 @@ export default {
         this.statusBarVisible = visible
       }
     }
-  },
-  mounted () {
-    this.$map.setTarget(this.$refs.mapEl)
   }
 }
 </script>

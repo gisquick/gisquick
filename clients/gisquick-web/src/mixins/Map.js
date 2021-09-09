@@ -50,6 +50,7 @@ export default {
   },
   mounted () {
     const map = this.$map
+    map.setTarget(this.$refs.mapEl)
 
     // extra map functions
     map.ext = {

@@ -13,8 +13,11 @@ RUN pip3 install --upgrade pip && \
     pip3 install --no-cache-dir 'gunicorn>=19.9,<20.0' && \
     pip3 install --no-cache-dir 'supervisor>=4.1.0,<4.2.0'
 
+
+COPY ./server/requirements.txt /tmp/
+RUN pip3 install --no-cache-dir -r /tmp/requirements.txt
+
 COPY ./server/ /gisquick/server/
-RUN pip3 install --no-cache-dir -r /gisquick/server/requirements.txt
 
 # Create Gisquick Django project
 RUN echo "VERSION = '${version}'" > /gisquick/server/webgis/__init__.py && \

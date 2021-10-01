@@ -1,0 +1,77 @@
+.layers-tree {
+  .item {
+    padding-right: 6px;
+    &.group {
+      &[depth="0"] {
+        background-color: #bbb;
+        border: solid #999;
+        border-width: 1px 0;
+      }
+      &[depth="1"] {
+        background-color: #ddd;
+        border: solid #bbb;
+        border-width: 1px 0;
+      }
+      .label {
+        font-weight: 500;
+      }
+      .toggle {
+        padding: 6px 8px;
+        stroke: #555;
+        stroke-width: 2;
+        transition: .3s cubic-bezier(.25,.8,.5,1);
+        cursor: pointer;
+        &.expanded {
+          transform: rotate(90deg);
+        }
+        .tr {
+          transition: inherit;
+        }
+      }
+    }
+    &.layer {
+      &:hover {
+        background-color: #eee;
+      }
+      .toggle {
+        transition: .3s cubic-bezier(.25,.8,.5,1);
+      }
+      &.expanded {
+        background-color: rgba(25, 118, 210, 0.15);
+        .toggle {
+          transform: rotate(180deg);
+        }
+      }
+      .btn {
+        // color: #999;
+        margin: 1px;
+      }
+    }
+  }
+  ::v-deep .group-items {
+    &.disabled {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+    // &:not(.visible) {
+    //   opacity: 0.5;
+    //   pointer-events: none;
+    // }
+  }
+}
+
+.metadata {
+  font-size: 13px;
+  background-color: rgba(25, 118, 210, 0.05);
+  .label {
+    font-weight: bold;
+    margin-right: 6px;
+    &::after {
+      content: ":";
+    }
+  }
+  .icon {
+    width: 15px;
+    height: 15px;
+  }
+}

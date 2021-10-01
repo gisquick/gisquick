@@ -5,25 +5,23 @@
     <div class="preview-bg top"/>
     <div class="preview-bg bottom"/>
 
-    <v-layout class="center column shrink">
+    <div class="f-col f-shrink center column shrink">
 
-      <v-toolbar dark flat height="30">
-        <span class="scale flex"><translate>Scale</translate> 1: {{ scale }}</span>
-        <v-spacer/>
-          <translate tag="h1">Print Preview</translate>
-        <v-spacer/>
-        <v-layout class="controls">
-          <v-btn icon @click="print">
-            <icon name="printer"/>
+      <div class="panel-header f-row-ac">
+        <span class="scale mx-2"><translate>Scale</translate> 1: {{ scale }}</span>
+        <translate class="title">Print Preview</translate>
+        <div class="controls f-row-ac f-justify-end">
+          <v-btn class="icon" @click="print">
+            <v-icon name="printer"/>
           </v-btn>
-          <v-btn icon @click="download">
-            <icon name="download"/>
+          <v-btn class="icon" @click="download">
+            <v-icon name="download"/>
           </v-btn>
-          <v-btn icon @click="$emit('close')">
-            <icon name="x"/>
+          <v-btn class="icon" @click="$emit('close')">
+            <v-icon name="x"/>
           </v-btn>
-        </v-layout>
-      </v-toolbar>
+        </div>
+      </div>
 
       <div
         ref="templateEl"
@@ -47,7 +45,7 @@
           height="3"
         />
       </div>
-    </v-layout>
+    </div>
   </div>
 </template>
 
@@ -266,7 +264,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../theme.scss';
 
 .print-preview {
   display: grid;
@@ -304,28 +301,17 @@ export default {
     }
   }
 }
-.v-toolbar {
-  .scale {
-    font-size: 90%;
-    position: absolute;
-    left: 0.5em;
-  }
+.panel-header {
   pointer-events: auto;
-  h1 {
-    font-size: 1em;
+  .scale {
+    font-size: 14px;
   }
-  .controls {
-    position: absolute;
-    right: 0;
+  .scale, .controls {
+    flex-basis: 0;
+    flex-grow: 1;
   }
-  .v-btn {
-    margin: 0;
-    width: 32px;
-    height: 30px;
-  }
-  .icon {
-    width: 20px;
-    height: 20px;
+  .title {
+    font-size: 15px;
   }
 }
 
@@ -340,7 +326,7 @@ export default {
   }
   .map-border {
     position: absolute;
-    border: 2px solid $primary-color;
+    border: 2px solid var(--color-primary);
   }
 }
 </style>

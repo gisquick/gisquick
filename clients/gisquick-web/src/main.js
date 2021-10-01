@@ -1,22 +1,27 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
-import Vuetify from 'vuetify'
-import 'material-icons/iconfont/material-icons.scss'
-import 'vuetify/dist/vuetify.min.css'
 import PortalVue from 'portal-vue'
 import GetTextPlugin from 'vue-gettext'
 import { ReactiveRefs } from 'vue-reactive-refs'
+import Vue2TouchEvents from 'vue2-touch-events'
 import 'url-polyfill'
 
 import Swiper from './swiper'
 import http from './client'
 import store from './store/index'
-import translations from './lang/translations.json'
-import App from './App'
-import ServerError from './ServerError'
-import { Icon, ScrollArea, TextSeparator } from './components/ui'
-import BasicScrollArea from './components/ui/BasicScrollArea'
+import App from './App.vue'
+import ServerError from './ServerError.vue'
+import UI from './ui/plugin'
+import ScrollArea from './ui/ScrollArea.vue'
+import BasicScrollArea from './ui/BasicScrollArea.vue'
+import VImage from '@/components/image/Image.vue'
+import translations from './translations'
+import '@/assets/fonts/fonts.css'
+import '@/ui/base.scss'
+import '@/ui/layout.scss'
+import '@/ui/transitions/transitions.scss'
+import '@/backhandler'
 
 import {
   Collapsible,
@@ -39,16 +44,20 @@ if (mobile) {
   Vue.use(Swiper)
 }
 
+Vue.use(Vue2TouchEvents, {
+  disableClick: true,
+  swipeTolerance: 30
+})
 Vue.use(PortalVue)
-Vue.use(Vuetify)
 Vue.use(ReactiveRefs)
 Vue.use(GetTextPlugin, { translations, defaultLanguage: 'en-us', muteLanguages: ['en-us'] })
 
 // register general purpose components globally
-Vue.component('icon', Icon)
+Vue.use(UI)
 Vue.component('scroll-area', mobile ? BasicScrollArea : ScrollArea)
-Vue.component('text-separator', TextSeparator)
+// Vue.component('scroll-area', BasicScrollArea)
 Vue.component('v-collapsible', Collapsible)
+Vue.component('v-image', VImage)
 Vue.component('collapse-transition', CollapseTransition)
 Vue.component('collapse-width-transition', CollapseWidth)
 Vue.component('switch-transition', SwitchTransition)
@@ -61,11 +70,7 @@ function createApp (data) {
   store.commit('user', data.user)
   const vm = new Vue({
     store,
-    beforeCreate () {
-      // globally change default props of some components
-      Vue.component('v-checkbox').options.props.ripple.default = false
-      Vue.component('v-btn').options.props.ripple.default = false
-    },
+    // render: h => null
     render: h => h(App)
   })
   if (data.app.lang) {

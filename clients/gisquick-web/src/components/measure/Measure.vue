@@ -1,211 +1,97 @@
 <template>
   <portal to="main-panel">
-    <div class="measure-form" key="measure">
-      <v-tabs
-        icons-and-text
-        v-model="type"
-        @input="onTabChange"
-      >
-        <v-tabs-slider color="primary"/>
-        <v-tab href="#location">
-          <translate>Location</translate>
-          <icon name="point"/>
-        </v-tab>
-        <v-tab href="#distance">
-          <translate>Distance</translate>
-          <icon name="line"/>
-        </v-tab>
-        <v-tab href="#area">
-          <translate>Area</translate>
-          <icon name="polygon"/>
-        </v-tab>
-
-        <v-tabs-items style="{height: tabHeight}">
-          <v-tab-item id="location">
-            <v-layout column pt-3 pb-1>
-              <v-layout row>
-                <v-flex class="label px-1 xs6">
-                  <translate>1st coordinate</translate>
-                </v-flex>
-                <v-flex class="label px-1 xs6">
-                  <translate>2nd coordinate</translate>
-                </v-flex>
-              </v-layout>
-              <v-layout row>
-                <v-flex class="field mx-1 xs6">{{ location.coord1 }}</v-flex>
-                <v-flex class="field mx-1 xs6">{{ location.coord2 }}</v-flex>
-              </v-layout>
-            </v-layout>
-            <v-menu bottom left content-class="measure">
-              <v-btn icon slot="activator">
-                <v-icon>more_vert</v-icon>
-              </v-btn>
-              <v-list>
-                <v-list-tile @click="zoomTo(location.feature)">
-                  <v-list-tile-title>
-                    <translate>Zoom to</translate>
-                  </v-list-tile-title>
-                  <icon name="zoom-to"/>
-                </v-list-tile>
-                <text-separator>
-                  <translate>Coordinate systems</translate>
-                </text-separator>
-                <v-list-tile
-                  v-for="format in coordinateSystems"
-                  :key="format.name"
-                  class="checkable"
-                  @click="location.setFormat(format)"
-                >
-                  <v-icon
-                    class="check"
-                    v-text="'check'"
-                    v-show="location.format.name === format.name"
-                  />
-                  <v-list-tile-title>{{ format.name }}</v-list-tile-title>
-                </v-list-tile>
-              </v-list>
+    <div class="measure-form f-col light" key="measure">
+      <v-tabs-header :items="tabsItems" v-model="type"/>
+      <v-tabs class="mt-1" :items="tabsItems" v-model="type">
+        <template v-slot:location>
+          <div class="f-row">
+            <div class="field f-col">
+              <translate class="label">1st coordinate</translate>
+              <span class="value">{{ location.coord1 }}</span>
+            </div>
+            <div class="field f-col">
+              <translate class="label">2nd coordinate</translate>
+              <span class="value">{{ location.coord2 }}</span>
+            </div>
+            <v-menu
+              :aria-label="tr.Menu"
+              transition="slide-y"
+              align="rr;bb,tt"
+              :items="locationMenuItems"
+            >
+              <template v-slot:activator="{ toggle }">
+                <v-btn :aria-label="tr.Menu" class="icon small" @click="toggle">
+                  <v-icon name="menu-dots"/>
+                </v-btn>
+              </template>
             </v-menu>
-          </v-tab-item>
+          </div>
+        </template>
 
-          <v-tab-item id="distance">
-            <v-layout column pt-3 pb-1>
-              <v-layout row>
-                <v-flex class="label px-1">
-                  <translate>Last segment</translate>
-                  </v-flex>
-                <v-flex class="label px-1">
-                  <translate>Total length</translate>
-                </v-flex>
-              </v-layout>
-              <v-layout row>
-                <v-flex class="field mx-1 xs6">{{ distance.lastSegment }}</v-flex>
-                <v-flex class="field mx-1 xs6">{{ distance.total }}</v-flex>
-              </v-layout>
-              <v-menu bottom left content-class="measure">
-                <v-btn icon slot="activator">
-                  <v-icon>more_vert</v-icon>
+        <template v-slot:distance>
+          <div class="f-row">
+            <div class="field f-col">
+              <translate class="label">Last segment</translate>
+              <span class="value">{{ distance.lastSegment }}</span>
+            </div>
+            <div class="field f-col">
+              <translate class="label">Total length</translate>
+              <span class="value">{{ distance.total }}</span>
+            </div>
+            <v-menu
+              :aria-label="tr.Menu"
+              transition="slide-y"
+              align="rr;bb,tt"
+              :items="distanceMenuItems"
+            >
+              <template v-slot:activator="{ toggle }">
+                <v-btn :aria-label="tr.Menu" class="icon small" @click="toggle">
+                  <v-icon name="menu-dots"/>
                 </v-btn>
-                <v-list>
-                  <v-list-tile @click="zoomTo(distance.feature)">
-                    <v-list-tile-title>
-                      <translate>Zoom to</translate>
-                    </v-list-tile-title>
-                    <icon name="zoom-to"/>
-                  </v-list-tile>
-                  <text-separator>
-                    <translate>Units</translate>
-                  </text-separator>
-                  <template v-for="(system, i) in availableUnits">
-                    <v-list-tile
-                      :key="`group_${i}`"
-                      class="checkable"
-                      :class="{expanded: expandedItem === `D${i}`}"
-                      @click="setUnits(system)"
-                    >
-                      <v-icon
-                        class="check"
-                        v-text="'check'"
-                        v-show="unitSystem === system"
-                      />
-                      <v-list-tile-title>{{ system.name }}</v-list-tile-title>
-                      <v-btn icon
-                        @click.stop="toggleExpanded(`D${i}`)">
-                        <v-icon class="expand">keyboard_arrow_down</v-icon>
-                      </v-btn>
-                    </v-list-tile>
-                    <v-collapsible
-                      :key="i"
-                      v-show="expandedItem === `D${i}`"
-                    >
-                      <v-list-tile
-                        v-for="unit in system.length"
-                        :key="unit.name"
-                        class="checkable nested"
-                        @click="setUnits(system, unit)"
-                      >
-                        <v-icon
-                          class="check"
-                          v-text="'check_circle'"
-                          v-show="formatter.length === unit.length"
-                        />
-                        <v-list-tile-title>{{ unit.name }}</v-list-tile-title>
-                      </v-list-tile>
-                    </v-collapsible>
-                  </template>
-                </v-list>
-              </v-menu>
-            </v-layout>
-          </v-tab-item>
+              </template>
+              <template v-slot:item-prepend(group-check)="{ item }">
+                <v-icon :name="item.checked ? 'check' : ''" class="m-2"/>
+              </template>
+              <template v-slot:item(check)="{ item }">
+                <span style="margin-left: 24px" class="f-grow" v-text="item.text"/>
+                <v-icon :name="item.checked ? 'dot' : ''" class="p-2"/>
+                <!-- <v-icon v-if="item.checked" name="dot" class="m-2"/> -->
+              </template>
+            </v-menu>
+          </div>
+        </template>
 
-          <v-tab-item id="area">
-            <v-layout column pt-3 pb-1>
-              <v-layout row>
-                <v-flex class="label px-1">
-                  <translate>Perimeter</translate>
-                </v-flex>
-                <v-flex class="label px-1">
-                  <translate>Area</translate>
-                </v-flex>
-              </v-layout>
-              <v-layout row>
-                <v-flex class="field mx-1 xs6">{{ area.perimeter }}</v-flex>
-                <v-flex class="field mx-1 xs6">{{ area.area }}</v-flex>
-              </v-layout>
-              <v-menu bottom left content-class="measure">
-                <v-btn icon slot="activator">
-                  <v-icon>more_vert</v-icon>
+        <template v-slot:area>
+          <div class="f-row">
+            <div class="field f-col">
+              <translate class="label">Perimeter</translate>
+              <span class="value">{{ area.perimeter }}</span>
+            </div>
+            <div class="field f-col">
+              <translate class="label">Area</translate>
+              <span class="value">{{ area.area }}</span>
+            </div>
+            <v-menu
+              :aria-label="tr.Menu"
+              transition="slide-y"
+              align="rr;bb,tt"
+              :items="areaMenuItems"
+            >
+              <template v-slot:activator="{ toggle }">
+                <v-btn :aria-label="tr.Menu" class="icon small" @click="toggle">
+                  <v-icon name="menu-dots"/>
                 </v-btn>
-                <v-list>
-                  <v-list-tile @click="zoomTo(area.feature)">
-                    <v-list-tile-title>
-                      <translate>Zoom to</translate>
-                    </v-list-tile-title>
-                    <icon name="zoom-to"/>
-                  </v-list-tile>
-                  <text-separator>
-                    <translate>Units</translate>
-                  </text-separator>
-                  <template v-for="(system, i) in availableUnits">
-                    <v-list-tile
-                      :key="`group_${i}`"
-                      class="checkable"
-                      :class="{expanded: expandedItem === `A${i}`}"
-                      @click="setUnits(system)"
-                    >
-                      <v-icon
-                        class="check"
-                        v-text="'check'"
-                        v-show="unitSystem === system"
-                      />
-                      <v-list-tile-title>{{ system.name }}</v-list-tile-title>
-                      <v-btn icon @click.stop="toggleExpanded(`A${i}`)">
-                        <v-icon class="expand">keyboard_arrow_down</v-icon>
-                      </v-btn>
-                    </v-list-tile>
-                    <v-collapsible
-                      :key="i"
-                      v-show="expandedItem === `A${i}`"
-                    >
-                      <v-list-tile
-                        v-for="unit in system.area"
-                        :key="unit.name"
-                        class="checkable nested"
-                        @click="setUnits(system, unit)"
-                      >
-                        <v-icon
-                          class="check"
-                          v-text="'check_circle'"
-                          v-show="formatter.area === unit.area"
-                        />
-                        <v-list-tile-title>{{ unit.name }}</v-list-tile-title>
-                      </v-list-tile>
-                    </v-collapsible>
-                  </template>
-                </v-list>
-              </v-menu>
-            </v-layout>
-          </v-tab-item>
-        </v-tabs-items>
+              </template>
+              <template v-slot:item-prepend(group-check)="{ item }">
+                <v-icon :name="item.checked ? 'check' : ''" class="m-2"/>
+              </template>
+              <template v-slot:item(check)="{ item }">
+                <span style="margin-left: 24px" class="f-grow" v-text="item.text"/>
+                <v-icon :name="item.checked ? 'dot' : ''" class="p-2"/>
+              </template>
+            </v-menu>
+          </div>
+        </template>
       </v-tabs>
     </div>
   </portal>
@@ -215,6 +101,10 @@
 import Vue from 'vue'
 import { mapState } from 'vuex'
 import Extent from 'ol/extent'
+
+import VTabs from '@/ui/Tabs.vue'
+import VTabsHeader from '@/ui/TabsHeader.vue'
+
 // import DynamicHeight from '../../tabs-dynamic-height'
 import { projectionCoordinatesFormatter, LocationUnits, Units } from './units'
 import { LocationMeasure, DistanceMeasure, AreaMeasure } from './measure'
@@ -227,13 +117,12 @@ function observable (obj, ...attrs) {
 let activeTool
 
 const data = {
-  type: '',
+  type: 'location',
   formatter: {
     length: null,
     area: null
   },
-  unitSystem: null,
-  expandedItem: null
+  unitSystem: null
 }
 const measureTools = {
   location: LocationMeasure(),
@@ -243,12 +132,18 @@ const measureTools = {
 
 export default {
   name: 'measure',
+  components: { VTabs, VTabsHeader },
   // mixins: [DynamicHeight],
   data () {
     return data
   },
   computed: {
     ...mapState(['project']),
+    tr () {
+      return {
+        Menu: this.$gettext('Menu')
+      }
+    },
     availableUnits () {
       return Units
     },
@@ -268,6 +163,46 @@ export default {
     },
     area () {
       return observable(measureTools.area, 'area', 'perimeter')
+    },
+    tabsItems () {
+      return [
+        { key: 'location', icon: 'point', label: this.$gettext('Location') },
+        { key: 'distance', icon: 'line', label: this.$gettext('Distance') },
+        { key: 'area', icon: 'polygon', label: this.$gettext('Area') },
+      ]
+    },
+    locationMenuItems () {
+      const csItems = this.coordinateSystems.map(cs => ({
+        text: cs.name,
+        key: cs.name,
+        slot: 'check',
+        checked: this.location.format.name === cs.name,
+        action: () => this.location.setFormat(cs)
+      }))
+      return [
+        {
+          text: this.$gettext('Zoom to'),
+          icon: 'zoom-to',
+          // disabled: !this.location.feature,
+          action: () => this.zoomTo(this.location.feature)
+        },
+        { separator: true, text: this.$gettext('Coordinate systems') },
+        ...csItems
+      ]
+    },
+    distanceMenuItems () {
+      return [
+        { text: this.$gettext('Zoom to'), icon: 'zoom-to', action: () => this.zoomTo(this.distance.feature) },
+        { separator: true, text: this.$gettext('Units') },
+        ...this.createUnitsMenu('length')
+      ]
+    },
+    areaMenuItems () {
+      return [
+        { text: this.$gettext('Zoom to'), icon: 'zoom-to', action: () => this.zoomTo(this.distance.feature) },
+        { separator: true, text: this.$gettext('Units') },
+        ...this.createUnitsMenu('area')
+      ]
     }
   },
   created () {
@@ -284,25 +219,41 @@ export default {
       activeTool.activate(this.$map)
     }
   },
-  activated () {
-    console.log('measure activated')
-  },
   deactivated () {
     this.deactivate()
+  },
+  watch: {
+    type: {
+      immediate: true,
+      handler: 'onTabChange'
+    }
   },
   methods: {
     onTabChange (tab) {
       if (activeTool !== this[tab]) {
-        // this.tabChanged(tab) // for dynamic height animation
-        if (activeTool) {
-          activeTool.deactivate()
-        }
+        activeTool?.deactivate()
         activeTool = this[tab]
         activeTool.activate(this.$map)
       }
     },
-    toggleExpanded (item) {
-      this.expandedItem = this.expandedItem === item ? null : item
+    createUnitsMenu (type) {
+      return this.availableUnits.map((system, i) => {
+        const subitems = system[type].map(unit => ({
+          text: unit.name,
+          key: `${i}-${unit.name}`,
+          slot: 'check',
+          checked: this.unitSystem === system && this.formatter[type] === unit[type],
+          action: () => this.setUnits(system, unit)
+        }))
+        return {
+          text: system.name,
+          key: `group_${i}`,
+          slot: 'group-check',
+          checked: this.unitSystem === system,
+          action: () => this.setUnits(system),
+          items: subitems
+        }
+      })
     },
     setUnits (unitSystem, unit = {}) {
       if (unitSystem !== this.unitSystem) {
@@ -332,29 +283,31 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .measure-form {
-  .v-tabs__items {
-    will-change: height;
-    transition: height .35s cubic-bezier(.25,.8,.5,1);
-  }
-  .label {
-    opacity: 0.55;
-    font-size: 0.75em;
+  min-width: 0;
+  max-width: 100%;
+  .menu {
+    align-self: flex-start;
+    .btn {
+      margin: 4px;
+    }
   }
   .field {
-    font-size: 0.875em;
-    height: 2.5em;
-    line-height: 3em;
-    border-bottom: 1px solid #ccc;
-  }
-  .v-menu {
-    position: absolute;
-    right: 0;
-    top: 0;
-    .v-menu__activator .v-btn {
-      color: #aaa;
-      margin: 0;
+    flex: 1;
+    margin: 6px;
+    .label {
+      color: #777;
+      font-size: 12px;
+      user-select: none;
+    }
+    .value {
+      display: flex;
+      align-items: flex-end;
+      font-size: 14px;
+      height: 30px;
+      white-space: nowrap;
+      border-bottom: 1px solid #ccc;
     }
   }
 }

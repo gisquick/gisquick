@@ -1,34 +1,38 @@
 <template>
-  <v-speed-dial
-    v-model="open"
-    :open-on-hover="false"
-    direction="bottom"
-    transition="scale-transition"
-  >
+  <div class="tools-menu f-col f-justify-start">
     <v-btn
-      slot="activator"
+      :color="color"
+      class="icon"
       v-model="open"
-      fab dark
+      @click="open = !open"
     >
-      <v-icon>menu</v-icon>
-      <v-icon>close</v-icon>
+      <transition name="menu">
+        <v-icon v-if="open" key="x" name="x"/>
+        <v-icon v-else name="menu"/>
+      </transition>
     </v-btn>
 
-    <v-btn
-      v-for="tool in menuTools"
-      :key="tool.name"
-      @click="activate(tool)"
-      fab dark
-    >
-      <icon :name="tool.icon"/>
-    </v-btn>
-  </v-speed-dial>
+    <transition name="menu-items">
+      <div class="items f-col" v-if="open">
+        <v-btn
+          v-for="tool in menuTools"
+          :key="tool.name"
+          :color="$store.state.activeTool === tool.name ? 'primary' : color"
+          class="icon"
+          :class="{active: $store.state.activeTool === tool.name}"
+          @click="activate(tool)"
+        >
+          <v-icon :name="tool.icon" size="24"/>
+        </v-btn>
+      </div>
+    </transition>
+  </div>
 </template>
 
 <script>
-
 export default {
   props: {
+    color: String,
     tools: Array
   },
   data () {
@@ -44,21 +48,63 @@ export default {
   methods: {
     activate (tool) {
       this.$store.commit('activeTool', tool.name)
+      this.open = false
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.v-speed-dial {
-  .v-btn--floating {
-    border-radius: 20%;
-    width: 2.75em;
-    height: 2.75em;
+.tools-menu {
+  margin: 3px;
+  .btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    margin: 4px;
   }
-  svg.icon {
-    width: 24px;
-    height: 24px;
+}
+.menu-enter-active {
+  transition: all .4s ease;
+}
+.menu-leave-active {
+  transition: all .4s ease;
+  position: absolute;
+}
+.menu-enter, .menu-leave-to {
+  opacity: 0;
+  // transform: rotate(90deg);
+}
+.menu-leave-to {
+  transform: rotate(90deg);
+}
+.menu-enter {
+  transform: rotate(-90deg);
+}
+
+.menu-items-enter-active, .menu-items-leave-active {
+  transition: all .4s ease;
+  will-change: transform;
+}
+.menu-items-enter, .menu-items-leave-to {
+  .btn {
+    opacity: 0;
+    transform: translate3d(0, -10px, 0) scale3d(0.1, 0.1, 0.1);
+  }
+}
+.items {
+  .btn {
+    // will-change: transform;
+    backface-visibility: hidden;
+  }
+  :nth-child(2) {
+    transition-delay: 0.05s;
+  }
+  :nth-child(3) {
+    transition-delay: 0.1s;
+  }
+  :nth-child(4) {
+    transition-delay: 0.15s;
   }
 }
 </style>

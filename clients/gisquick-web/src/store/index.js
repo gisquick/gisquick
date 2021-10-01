@@ -22,7 +22,8 @@ export default new Vuex.Store({
     user: null,
     project: null,
     activeTool: null,
-    showLogin: false
+    showLogin: false,
+    baseLayerName: null
   },
   mutations: {
     app (state, app) {
@@ -44,6 +45,7 @@ export default new Vuex.Store({
       state.project = {
         config: project,
         baseLayers: {
+          groups: [].concat(...baseLayers.map(filterGroups)),
           tree: baseLayers,
           list: layersList({ layers: baseLayers })
         },
@@ -58,9 +60,7 @@ export default new Vuex.Store({
       state.activeTool = name
     },
     visibleBaseLayer (state, name) {
-      state.project.baseLayers.list.forEach(l => {
-        l.visible = l.name === name
-      })
+      state.baseLayerName = name
     },
     layerVisibility (state, { layer, visible }) {
       layer.visible = visible
@@ -78,7 +78,7 @@ export default new Vuex.Store({
   },
   getters: {
     visibleBaseLayer: state => {
-      return state.project && state.project.baseLayers.list.find(l => l.visible)
+      return state.project?.baseLayers?.list.find(l => l.name === state.baseLayerName)
     },
     visibleLayers: state => {
       if (!state.project) {

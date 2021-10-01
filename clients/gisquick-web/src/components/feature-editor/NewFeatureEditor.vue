@@ -1,6 +1,6 @@
 
 <template>
-  <v-layout column>
+  <div class="f-col">
     <slot
       name="form"
       :fields="fields"
@@ -15,39 +15,35 @@
       :to="toolbarTarget"
       :disabled="!toolbarTarget"
     >
-      <v-layout class="tools-container align-center pl-1">
+      <div class="toolbar f-row-ac">
         <geometry-editor
           :editor.sync="references.geometryEditor"
           :geometry-type="geomType"
         />
-        <v-divider vertical/>
+        <div class="v-separator"/>
         <v-btn
+          class="icon"
           :disabled=" status === 'loading'"
           @click="save"
-          icon
         >
-          <v-icon color="teal">save</v-icon>
+          <v-icon color="green" name="save"/>
         </v-btn>
-        <v-layout class="justify-center notification my-2">
-          <transition name="fade">
-            <v-layout
-              v-if="status"
-              class="notification-content elevation-3 align-center py-1 px-2 shrink"
-              :class="status === 'error' ? 'red darken-2' : 'grey darken-3'"
-            >
-              <progress-action
-                :status="status"
-                class="mr-2"
-              />
-              <span v-if="status === 'loading'">Updating data</span>
-              <span v-else-if="status === 'success'">Data updated</span>
-              <span v-else>Error</span>
-            </v-layout>
-          </transition>
-        </v-layout>
-      </v-layout>
+      </div>
     </portal>
-  </v-layout>
+    <transition name="fade">
+      <div v-if="status" class="notification f-row">
+        <div
+          class="content shadow-2 f-row-ac p-2"
+          :class="status"
+        >
+          <progress-action class="mr-2" :status="status"/>
+          <translate v-if="status === 'loading'" key="pending">Updating data</translate>
+          <translate v-else-if="status === 'success'" key="success">Data updated</translate>
+          <translate v-else key="error">Error</translate>
+        </div>
+      </div>
+    </transition>
+  </div>
 </template>
 
 <script>
@@ -131,32 +127,38 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.tools-container {
-  /deep/ .v-btn {
-    margin: 3px 0;
-    height: 24px;
-  }
-  .v-divider--vertical {
-    height: 20px;
-    margin: 0 2px;
+.toolbar {
+  background-color: #e0e0e0;
+  border-top: 1px solid #bbb;
+  ::v-deep .btn.icon {
+    margin: 3px 2px;
+    width: 26px;
+    height: 26px;
   }
 }
 .notification {
   position: absolute;
-  width: 100%;
-  bottom: 2em;
-  align-self: center;
-  text-align: center;
-  opacity: 0.8;
+  inset: 0;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  background-color: rgba(0, 0, 0, 0.2);
   svg {
     border: 1px solid currentColor;
     border-radius: 50%;
+    // color: var(--icon-color);
   }
-  .notification-content {
-    min-width: 150px;
-    transition: 0.3s all ease;
-    border-radius: 2px;
+  .content {
+    width: 150px;
+    font-size: 14px;
+    border-radius: 3px;
+    margin: 6px;
+    background-color: #444;
     color: #fff;
+    transition: 0.4s ease;
+    &.error {
+      background-color: var(--color-red);
+    }
   }
 }
 </style>

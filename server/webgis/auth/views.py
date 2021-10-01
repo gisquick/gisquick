@@ -28,10 +28,10 @@ def client_login(request):
             password = form.cleaned_data['password']
             if '@' in username:
                 User = get_user_model()
-                users = User.objects.filter(email=username)
+                users = User.objects.filter(email__iexact=username)
                 if len(users) > 1:
                     return HttpResponse('Conflict', status=409)
-                user = users[0] if users[0].check_password(password) else None
+                user = users[0] if users and users[0].check_password(password) else None
             else:
                 user = authenticate(username=username, password=password)
             if user and user.is_active:

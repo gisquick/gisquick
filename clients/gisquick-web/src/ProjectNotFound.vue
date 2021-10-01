@@ -1,20 +1,31 @@
 <template>
-  <v-layout class="column fill-height align-center py-3">
-    <v-spacer/>
+  <div class="page f-col-ac light">
+    <div class="f-grow"/>
     <img src="@/assets/text_logo.svg" class="logo my-4"/>
-    <h1 class="grey--text text--darken-2">Map Not Found!</h1>
+    <h1 class="">Map Not Found!</h1>
     <img src="@/assets/map_not_exist.svg" class="image my-4"/>
-    <v-spacer/>
-    <v-spacer/>
-  </v-layout>
+    <div class="f-grow"/>
+    <div class="f-grow"/>
+  </div>
 </template>
 
 <style lang="scss" scoped>
+.page {
+  min-height: 100vh;
+  padding: 16px;
+  text-align: center;
+  gap: 16px;
+}
 .logo {
-  height: 50px;
-  width: auto;
+  flex: 0 1 50px;
+  max-width: 100%;
+  min-height: 10px;
+  object-fit: contain;
 }
 .image {
-  height: 170px;
+  height: 180px;
+}
+h1 {
+  font-size: clamp(22px, 3vw, 32px);
 }
 </style>

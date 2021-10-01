@@ -1,29 +1,29 @@
 <template>
-  <v-layout>
+  <div class="f-row">
     <!-- Toolbar UI -->
-    <v-tooltip top>
-      <v-btn
-        slot="activator"
-        @click="drawingEnabled = !drawingEnabled"
-        :class="{'primary--text': drawingEnabled}"
-        icon
-      >
-        <icon name="add-geometry"/>
-      </v-btn>
-      <translate>Add geometry</translate>
-    </v-tooltip>
-    <v-tooltip v-if="drawGeomType !== 'Point'" top>
-      <v-btn
-        slot="activator"
-        :disabled="nodeToolDisabled"
-        @click="nodeToolEnabled = !nodeToolEnabled"
-        :class="{'primary--text': nodeToolEnabled}"
-        icon
-      >
-        <icon name="node-tool"/>
-      </v-btn>
-      <translate>Node tool</translate>
-    </v-tooltip>
+    <v-btn
+      class="icon flat"
+      :color="drawingEnabled ? 'primary' : ''"
+      @click="drawingEnabled = !drawingEnabled"
+    >
+      <v-tooltip slot="tooltip">
+        <translate>Add geometry</translate>
+      </v-tooltip>
+      <v-icon name="add-geometry"/>
+    </v-btn>
+    <v-btn
+      v-if="drawGeomType !== 'Point'"
+      :disabled="nodeToolDisabled"
+      class="icon flat"
+      :color="nodeToolEnabled ? 'primary' : ''"
+      @click="nodeToolEnabled = !nodeToolEnabled"
+    >
+      <v-tooltip slot="tooltip">
+        <translate>Node tool</translate>
+      </v-tooltip>
+      <v-icon name="node-tool"/>
+    </v-btn>
+
     <!-- OpenLayers -->
     <vector-layer
       :ol-style="geomStyle"
@@ -76,7 +76,7 @@
         @modifyend="nodeModifyEnd"
       />
     </template>
-  </v-layout>
+  </div>
 </template>
 
 <script>

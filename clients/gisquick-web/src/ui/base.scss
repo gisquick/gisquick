@@ -1,0 +1,225 @@
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+  margin: 0;
+}
+::-moz-focus-inner {
+  border:0;
+}
+
+:root {
+  --gutter: 6px;
+}
+
+.popup-container {
+  &.align-bb {
+    // margin-top: 1px;
+  }
+  &.align-tt {
+    margin-bottom: 4px;
+    .anchor svg {
+      filter: drop-shadow(0 -1px 2px rgba(0,0,0,0.4));
+    }
+  }
+  .anchor {
+    svg {
+      fill: #fff;
+      filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2));
+    }
+  }
+  &.popup-autocomplete, &.popup-select {
+    font-size: 14px;
+  }
+  &.dialog {
+    overflow: auto;
+    --gutter-x: 36px;
+    --gutter-y: 20px;
+    &:not(.fullscreen) {
+      margin: 8px;
+      max-height: calc(100% - 16px);
+      align-self: center;
+      justify-self: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2), 0 3px 3px rgba(0,0,0,0.15);
+    }
+    &.fullscreen {
+      width: 100%;
+      height: 100%;
+    }
+    @media (max-width: 600px) {
+      --gutter-x: 6px;
+      --gutter-y: 8px;
+    }
+  }
+  // &.popup-menu {
+  //   @media (max-width: 400px) {
+  //     left: 0!important;
+  //     right: 0!important;
+  //     margin: 0;
+  //   }
+  // }
+  &.tooltip {
+    font-size: 13px;
+    max-width: 300px;
+    // color: var(--color-dark-blue);
+  }
+}
+.popup-content {
+  border-radius: 3px;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.2), 0 2px 2px rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12);
+  outline: none;
+  background-color: var(--popup-bg);
+  // border: 1px solid #999;
+  // border: 1px solid #bbb;
+}
+
+.popup-list {
+  // background-color: #fff;
+  color: #393E46;
+  --icon-color: #6a6a6a;
+  overflow: auto;
+  overscroll-behavior: contain;
+  min-width: inherit;
+  font-size: 14px;
+  padding: 3px 0;
+  @media (min-width: 600px) {
+    max-height: 70vh;
+    max-width: 500px;
+  }
+  .separator {
+    font-size: 13px;
+    opacity: 0.75;
+  }
+  .item {
+    min-width: 200px;
+    // padding: 0 12px;
+    padding: 0 2px;
+    min-height: 36px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    outline: none;
+    text-decoration: none;
+    // font-weight: bold;
+    color: inherit;
+
+    transition: all .2s cubic-bezier(.25,.8,.25,1);
+    &.selected {
+      color: var(--color);
+      --icon-color: var(--color);
+      font-weight: 500;
+    }
+    &.highlighted {
+      background-color: #eee;
+    }
+    &:not(:first-child):not(.highlighted) {
+      border-top-color: rgba(#D3D3D3, 0.25);
+    }
+    .icon-box {
+      display: flex;
+      align-items: center;
+      background-color: var(--color-primary);
+      border-radius: 3px;
+      height: 32px;
+    }
+    &[aria-disabled] {
+      color: #aaa;
+      pointer-events: none;
+    }
+  }
+}
+.popup-container {
+  &.grow-enter-active, &.grow-leave-active {
+    transition: .3s cubic-bezier(.25,.8,.5,1);
+    overflow: hidden!important;
+    > * {
+      overflow: hidden!important;
+    }
+  }
+}
+
+.light {
+  color: #2c3036;
+  --icon-color: #444;
+  --fill-color: rgba(255, 255, 255, 0.8);
+  --border-color: #bbb;
+  --tooltip-bg: #555;
+  --tooltip-color: #fff;
+  --popup-bg:#fff;
+}
+
+.dark {
+  color: #fff;
+  --icon-color: #fff;
+  --fill-color: rgba(0, 0, 0, 0.8);
+  --border-color: #fff;
+  --tooltip-bg: #bbb;
+  --tooltip-color: #333;
+  --popup-bg: #333;
+
+  .popup-list {
+    color: #fff;
+    background-color: #222831;
+  }
+}
+
+hr {
+  border-width: 0;
+  border-bottom: 1px solid var(--border-color);
+  // border-bottom: 1px solid;
+}
+
+// .toolbar {
+//   // min-height: 30px;
+//   height: 30px;
+//   flex-shrink: 0;
+//   &.dark {
+//     background-color: var(--color-dark);
+//   }
+//   .title {
+//     text-transform: uppercase;
+//     font-weight: bold;
+//     font-size: 15px;
+//   }
+// }
+
+// Vertical separator
+.v-separator {
+  align-self: stretch;
+  background-color: #77777744;
+  width: 1px;
+  flex-shrink: 0;
+  margin: 6px 4px;
+}
+
+button {
+  padding: 0;
+  color: inherit;
+}
+
+.card {
+  margin: 6px;
+  box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.15);
+  border-radius: 3px;
+}
+
+.shadow-1 {
+  box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.15);
+}
+
+.shadow-2 {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2), 0 3px 3px rgba(0,0,0,0.15);
+}
+
+.panel-header {
+  background-color: var(--color-dark);
+  color: #fff;
+  height: 30px;
+  flex-shrink: 0;
+
+  .title {
+    text-transform: uppercase;
+    font-weight: 500;
+    font-size: 15px;
+  }
+}

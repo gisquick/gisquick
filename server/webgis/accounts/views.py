@@ -42,8 +42,11 @@ def _get_user_by_uidb64(uidb64):
 
 
 def check_login_availability(request):
-    params = ("username", "email")
-    query_params = { param: request.GET[param] for param in params if request.GET.get(param) }
+    query_params = {
+        "username": request.GET.get("username"),
+        "email__iexact": request.GET.get("email")
+    }
+    query_params = { k: v for (k, v) in query_params.items() if v }
     if len(query_params) == 0:
         return JsonResponse({"available": False}, status=400)
     return JsonResponse({"available": not User.objects.filter(**query_params).exists()})

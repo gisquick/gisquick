@@ -1,66 +1,47 @@
 <template>
   <div>
     <portal to="main-panel">
-      <div class="print-form pa-2" key="print">
-        <v-select
-          v-model="layout"
-          :label="tr.Layout"
-          item-text="name"
-          :return-object="true"
-          :items="layouts"
-          hide-details
-        />
-        <v-menu bottom left content-class="print">
-          <v-btn icon slot="activator">
-            <v-icon>more_vert</v-icon>
-          </v-btn>
-          <v-list>
-
-            <text-separator>
-              <translate>Output format</translate>
-            </text-separator>
-            <v-list-tile
-              v-for="value in ['pdf', 'png']"
-              :key="value"
-              class="checkable"
-              @click="format = value"
-            >
-              <v-icon class="check" v-show="format === value">
-                check
-              </v-icon>
-              <v-list-tile-title>{{ value }}</v-list-tile-title>
-            </v-list-tile>
-
-            <text-separator>
-              <translate>Print quality</translate>
-            </text-separator>
-            <v-list-tile
-              v-for="value in [96, 150, 300]"
-              :key="value"
-              class="checkable"
-              @click="dpi = value"
-            >
-              <v-icon class="check" v-show="dpi === value">
-                check
-              </v-icon>
-              <v-list-tile-title>{{ value }} dpi</v-list-tile-title>
-            </v-list-tile>
-          </v-list>
-        </v-menu>
+      <div class="print-form f-col light" key="print">
+        <div class="f-row">
+          <v-select
+            class="flat f-grow"
+            :label="tr.Layout"
+            v-model="layout"
+            :placeholder="tr.Layout"
+            item-text="name"
+            :item-value="null"
+            :return-object="true"
+            :items="layouts"
+          />
+          <v-menu
+            :aria-label="tr.Menu"
+            transition="slide-y"
+            align="rr;bb,tt"
+            content-class="print"
+            :items="menuItems"
+          >
+            <template v-slot:activator="{ toggle }">
+              <v-btn :aria-label="tr.Menu" class="icon small" @click="toggle">
+                <v-icon name="menu-dots"/>
+              </v-btn>
+            </template>
+          </v-menu>
+        </div>
 
         <collapse-transition>
           <form v-if="layout">
             <switch-transition>
-              <v-layout column :key="layout.name">
+              <div class="f-col" :key="layout.name">
                 <v-text-field
                   v-for="label in visibleLabels"
                   :key="label"
-                  :label="label"
+                  class="flat"
+                  :placeholder="label"
                   :name="label"
+                  :label="label"
                   v-model="labelsData[layout.name][label]"
-                  hide-details
                 />
-              </v-layout>
+              </div>
             </switch-transition>
           </form>
         </collapse-transition>
@@ -97,6 +78,41 @@ export default {
   }),
   computed: {
     ...mapState(['project']),
+    tr () {
+      return {
+        Menu: this.$gettext('Menu')
+      }
+    },
+    formatMenuItems () {
+      const action = i => {
+        this.format = i.value
+      }
+      return ['pdf', 'png'].map(value => ({
+        value,
+        text: value,
+        checked: this.format === value,
+        action
+      }))
+    },
+    qualityMenuItems () {
+      const action = i => {
+        this.dpi = i.value
+      }
+      return [96, 150, 300].map(value => ({
+        value,
+        text: `${value} dpi`,
+        checked: this.dpi === value,
+        action
+      }))
+    },
+    menuItems () {
+      return [
+        { text: this.$gettext('Output format'), separator: true },
+        ...this.formatMenuItems,
+        { text: this.$gettext('Print quality'), separator: true },
+        ...this.qualityMenuItems
+      ]
+    },
     layouts () {
       return this.project.config.print_composers
     },
@@ -159,21 +175,10 @@ export default {
 
 <style lang="scss">
 .print-form {
-  display: flex;
-  flex-direction: column;
-
-  > .v-menu {
-    position: absolute;
-    right: 0;
-    top: 0;
-    .v-menu__activator .v-btn {
-      color: #aaa;
-      margin: 0;
+  .menu {
+    .btn {
+      margin: 4px;
     }
-  }
-
-  .v-input {
-    padding-bottom: 2px;
   }
 }
 </style>

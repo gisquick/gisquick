@@ -1,0 +1,198 @@
+.f-row {
+  display: flex;
+  flex-direction: row;
+}
+.f-row-ac {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.f-col {
+  display: flex;
+  flex-direction: column;
+}
+.f-col-ac {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.f-col-as {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.f-grow {
+  flex-grow: 1;
+}
+.f-align-start {
+  align-items: flex-start;
+}
+.f-align-end {
+  align-items: flex-end;
+}
+.f-align-center {
+  align-items: center;
+}
+.f-justify-start {
+  justify-content: flex-start;
+}
+.f-justify-end {
+  justify-content: flex-end;
+}
+.f-justify-center {
+  justify-content: center;
+}
+.f-space-between {
+  justify-content: space-between;
+}
+.f-wrap {
+  flex-wrap: wrap;
+}
+.text-center {
+  text-align: center!important;
+}
+.text-left {
+  text-align: left!important;
+}
+.text-right {
+  text-align: right!important;
+}
+
+$gutter-1: 4px;
+$gutter-2: 6px;
+$gutter-4: 12px;
+
+.p-1 {
+  padding: $gutter-1!important;
+}
+.px-1 {
+  padding-right: $gutter-1!important;
+  padding-left: $gutter-1!important;
+}
+.py-1 {
+  padding-top: $gutter-1!important;
+  padding-bottom: $gutter-1!important;
+}
+.m-1 {
+  margin: $gutter-1!important;
+}
+.mx-1 {
+  margin-right: $gutter-1!important;
+  margin-left: $gutter-1!important;
+}
+
+.my-2 {
+  margin-top: $gutter-2!important;
+  margin-bottom: $gutter-2!important;
+}
+.p-2 {
+  padding: $gutter-2!important;
+}
+.px-2 {
+  padding-right: $gutter-2!important;
+  padding-left: $gutter-2!important;
+}
+.py-2 {
+  padding-top: $gutter-2!important;
+  padding-bottom: $gutter-2!important;
+}
+.m-2 {
+  margin: $gutter-2!important;
+}
+.mx-2 {
+  margin-right: $gutter-2!important;
+  margin-left: $gutter-2!important;
+}
+.my-2 {
+  margin-top: $gutter-2!important;
+  margin-bottom: $gutter-2!important;
+}
+.mr-2 {
+  margin-right: $gutter-2!important;
+}
+.ml-2 {
+  margin-left: $gutter-2!important;
+}
+.mb-2 {
+  margin-bottom: $gutter-2!important;
+}
+.mt-2 {
+  margin-top: $gutter-2!important;
+}
+
+.p-4 {
+  padding: $gutter-4!important;
+}
+.px-4 {
+  padding-right: $gutter-4!important;
+  padding-left: $gutter-4!important;
+}
+.py-4 {
+  padding-top: $gutter-4!important;
+  padding-bottom: $gutter-4!important;
+}
+.m-4 {
+  margin: $gutter-4!important;
+}
+.mx-4 {
+  margin-right: $gutter-4!important;
+  margin-left: $gutter-4!important;
+}
+.my-4 {
+  margin-top: $gutter-4!important;
+  margin-bottom: $gutter-4!important;
+}
+.mr-4 {
+  margin-right: $gutter-4!important;
+}
+.ml-4 {
+  margin-left: $gutter-4!important;
+}
+.mt-4 {
+  margin-top: $gutter-4!important;
+}
+.mb-4 {
+  margin-bottom: $gutter-4!important;
+}
+.mx-auto {
+  margin-left: auto!important;
+  margin-right: auto!important;
+}
+.my-auto {
+  margin-top: auto!important;
+  margin-bottom: auto!important;
+}
+.ml-auto {
+  margin-left: auto!important;
+}
+.m-0 {
+  margin: 0!important
+}
+.mx-0 {
+  margin-left: 0!important;
+  margin-right: 0!important;
+}
+.ml-0 {
+  margin-left: 0!important;
+}
+.mr-0 {
+  margin-right: 0!important;
+}
+.my-0 {
+  margin-top: 0!important;
+  margin-bottom: 0!important;
+}
+.mt-0 {
+  margin-top: 0!important;
+}
+.mb-0 {
+  margin-bottom: 0!important;
+}
+
+.scrollable {
+  overflow: auto;
+}
+
+.hidden {
+  display: none!important;
+}

@@ -1,39 +1,76 @@
 <template>
-  <v-layout class="map-control column">
+  <div class="map-control f-col dark">
+    <transition name="fade">
+      <div v-if="compassVisible">
+        <v-btn
+          class="compass icon"
+          @click="resetNorth"
+        >
+          <v-icon
+            name="compass"
+            size="30"
+            :style="compassStyle"
+          />
+        </v-btn>
+      </div>
+    </transition>
     <v-btn
-      icon
-      class="zoom-in"
+      class="zoom-in icon"
       @click="zoomIn"
     >
-      <v-icon>add</v-icon>
+      <v-icon name="plus"/>
     </v-btn>
     <v-btn
-      icon
-      class="zoom-out"
+      class="zoom-out icon"
       @click="zoomOut"
     >
-      <v-icon>remove</v-icon>
+      <v-icon name="minus"/>
     </v-btn>
-    <v-btn icon @click="zoomToMax">
-      <icon name="zoom-max"/>
+    <v-btn
+      class="icon"
+      @click="zoomToMax"
+    >
+      <v-icon name="zoom-max"/>
     </v-btn>
-  </v-layout>
+  </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import ZoomControl from 'ol/control/zoom'
+import Observable from 'ol/observable'
 
 export default {
   name: 'map-control',
+  data () {
+    return {
+      rotation: 0
+    }
+  },
   computed: {
-    ...mapState(['project'])
+    ...mapState(['project']),
+    compassVisible () {
+      return this.rotation !== 0
+    },
+    compassStyle () {
+      return {
+        transform: `rotate(${this.rotation}rad)`
+      }
+    }
   },
   created () {
     this.zoom = Object.create(ZoomControl.prototype)
     Object.assign(this.zoom, {
       duration_: 250,
       getMap: () => this.$map
+    })
+  },
+  mounted () {
+    const listener = this.$map.getView().on('change:rotation', (e) => {
+      this.rotation = e.target.get(e.key)
+    })
+    this.$once('hook:beforeDestroy', () => {
+      Observable.unByKey(listener)
     })
   },
   methods: {
@@ -47,29 +84,23 @@ export default {
       const extent = this.project.config.project_extent
       const padding = this.$map.ext.visibleAreaPadding()
       this.$map.getView().fit(extent, { duration: 400, padding })
+    },
+    resetNorth () {
+      this.$map.getView().animate({ rotation: 0, duration: 300 })
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import '../theme';
-
 .map-control {
-  .v-btn {
-    font-size: 1em;
-    background-color: $dark-color;
+  .btn {
+    background-color: var(--color-dark);
+    width: 32px;
+    height: 32px;
     margin: 2px;
-    color: white;
-    width: 2em;
-    height: 2em;
-    border-radius: 20%;
-    opacity: 0.85;
-    .icon {
-      width: 1.25em;
-      height: 1.25em;
-      fill: white;
-    }
+    border-radius: 6px;
+    opacity: 0.9;
     &.zoom-in {
       border-bottom-left-radius: 2px;
       border-bottom-right-radius: 2px;

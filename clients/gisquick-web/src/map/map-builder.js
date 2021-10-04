@@ -3,6 +3,7 @@ import View from 'ol/view'
 import ImageWMS from 'ol/source/imagewms'
 import TileImage from 'ol/source/tileimage'
 import TileWMS from 'ol/source/tilewms'
+// import BingMaps from 'ol/source/bingmaps'
 import OSM from 'ol/source/osm'
 import XYZ from 'ol/source/xyz'
 import ImageLayer from 'ol/layer/image'
@@ -218,70 +219,75 @@ export function createQgisLayer (config) {
 }
 
 export function createBaseLayer (layerConfig, projectConfig = {}) {
-  switch (layerConfig.type) {
-    case 'blank': {
-      return new ImageLayer({
-        extent: layerConfig.extent,
-        visible: layerConfig.visible
-      })
-    }
-    case 'osm': {
-      return new TileLayer({
-        source: new OSM(),
-        visible: layerConfig.visible
-      })
-    }
-    case 'wms': {
-      return new TileLayer({
-        source: new TileWMS({
-          url: layerConfig.url,
-          params: {
-            LAYERS: layerConfig.wms_layers.join(','),
-            FORMAT: layerConfig.format,
-            TRANSPARENT: 'false'
-          },
-          attributions: layerConfig.attribution ? [createAttribution(layerConfig.attribution)] : null,
-          tileGrid: new TileGrid({
-            origin: Extent.getBottomLeft(layerConfig.extent),
-            resolutions: layerConfig.resolutions,
-            tileSize: 512
-          }),
-          hidpi: false
-        }),
-        extent: layerConfig.extent,
-        visible: layerConfig.visible
-      })
-    }
-    case 'xyz': {
-      return new TileLayer({
-        visible: layerConfig.visible,
-        source: new XYZ({
-          url: layerConfig.url,
-          attributions: layerConfig.attribution ? [createAttribution(layerConfig.attribution)] : null
-        })
-      })
-    }
-    // fallback to render layer by qgis server
-    case 'raster': {
-      return new ImageLayer({
-        visible: layerConfig.visible,
-        extent: layerConfig.extent,
-        source: new WebgisImageWMS({
+  const { type, provider_type } = layerConfig
+  if (type === 'blank') {
+    return new ImageLayer({
+      extent: layerConfig.extent,
+      visible: layerConfig.visible
+    })
+  } else if (type === 'osm') {
+    return new TileLayer({
+      source: new OSM(),
+      visible: layerConfig.visible
+    })
+  } else if (type === 'wms' || provider_type === 'wms') {
+    return new TileLayer({
+      source: new TileWMS({
+        url: layerConfig.url,
+        params: {
+          LAYERS: layerConfig.wms_layers.join(','),
+          FORMAT: layerConfig.format,
+          TRANSPARENT: 'false'
+        },
+        attributions: layerConfig.attribution ? [createAttribution(layerConfig.attribution)] : null,
+        tileGrid: new TileGrid({
+          origin: Extent.getBottomLeft(layerConfig.extent),
           resolutions: layerConfig.resolutions || projectConfig.resolutions,
-          url: projectConfig.owsUrl,
-          visibleLayers: [layerConfig.name],
-          layersAttributions: layerConfig.attributions,
-          params: {
-            LAYERS: layerConfig.name,
-            FORMAT: layerConfig.format,
-            TRANSPARENT: 'false'
-          },
-          serverType: 'qgis',
-          ratio: 1
-        })
+          tileSize: 512
+        }),
+        hidpi: false
+      }),
+      extent: layerConfig.extent,
+      visible: layerConfig.visible
+    })
+  } else if (type === 'xyz') {
+    return new TileLayer({
+      visible: layerConfig.visible,
+      source: new XYZ({
+        url: layerConfig.url,
+        attributions: layerConfig.attribution ? [createAttribution(layerConfig.attribution)] : null
       })
-    }
-  }
+    })
+  } /* else if (type === 'bing') {
+    return new TileLayer({
+      visible: layerConfig.visible,
+      preload: Infinity,
+      source: new BingMaps({
+        key: layerConfig.apiKey,
+        imagerySet: layerConfig.imagerySet,
+        // use maxZoom 19 to see stretched tiles instead of the BingMaps "no photos at this zoom level" tiles
+        maxZoom: 19
+      })
+    })
+  } */
+  // fallback to render layer by qgis server
+  return new ImageLayer({
+    visible: layerConfig.visible,
+    extent: layerConfig.extent,
+    source: new WebgisImageWMS({
+      resolutions: layerConfig.resolutions || projectConfig.resolutions,
+      url: projectConfig.owsUrl,
+      visibleLayers: [layerConfig.name],
+      layersAttributions: layerConfig.attributions,
+      params: {
+        LAYERS: layerConfig.name,
+        FORMAT: layerConfig.format,
+        TRANSPARENT: 'false'
+      },
+      serverType: 'qgis',
+      ratio: 1
+    })
+  })
 }
 
 const handleMapBrowserEvent = Map.prototype.handleMapBrowserEvent

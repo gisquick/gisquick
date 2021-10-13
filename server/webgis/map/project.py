@@ -157,9 +157,23 @@ def _iterate_layers(layers):
         else:
             yield item
 
-def _convert_topics(topics, info):
+def flat_layers_list(layers):
+    res = []
+    for item in layers:
+        if 'layers' in item:
+            res.extend(flat_layers_list(item['layers']))
+        else:
+            res.append(item)
+    return res
+
+
+def _convert_topics(topics, layers_tree):
+    layers_list = flat_layers_list(layers_tree)
+    index = { l['id']: l for l in layers_list } # index layers by id
+
     for topic in topics:
-        topic['visible_overlays'] = [info[name]['name'] for name in topic['visible_overlays'] if name in info]
+        layers = [ index[l_id] for l_id in topic['visible_overlays'] if l_id in index]
+        topic['visible_overlays'] = [l['name'] for l in layers if not l['hidden']]
 
 def _convert_layers_metadata(layers):
     """ Returns transformed layers tree.
@@ -316,7 +330,6 @@ def get_project(request):
 
     # OVERLAYS LAYERS
     info = _layers_names(metadata.overlays)
-    _convert_topics(metadata.topics, info)
     layers_tree = _convert_layers_names(metadata.overlays, info)
     layers = form.cleaned_data['OVERLAY']
     # override layers tree with LAYERS GET parameter if provided
@@ -348,6 +361,7 @@ def get_project(request):
         for topic in metadata.topics:
             topic['visible_overlays'] = list(filter(check_layername_access, topic['visible_overlays']))
         metadata.topics = list(filter(lambda t: t['visible_overlays'], metadata.topics))
+        _convert_topics(metadata.topics, layers_tree)
 
     context['layers'] = layers_tree
 

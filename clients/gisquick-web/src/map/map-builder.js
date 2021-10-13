@@ -362,8 +362,11 @@ export function createMap (config, controlOpts = {}) {
 export function registerProjections (projections) {
   proj.setProj4(proj4)
   Object.keys(projections).forEach(code => {
-    if (!proj.get(code)) {
-      proj4.defs(code, projections[code].proj4)
+    if (code && !proj.get(code)) {
+      const def = projections[code].proj4
+      if (def) {
+        proj4.defs(code, def)
+      }
     }
   })
 }

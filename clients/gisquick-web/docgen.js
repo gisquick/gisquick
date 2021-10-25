@@ -32,7 +32,7 @@ const convertToKebabCase = str => (
 
 const listComponents = async () => {
   // Glob for your components.
-  const files = await glob('src/components/ui/**/*.vue');
+  const files = await glob('src/ui/**/*.vue');
   return files;
 };
 
@@ -95,6 +95,9 @@ const gen = async () => {
   const docs = await Promise.all(componentDocsPromises);
   const [tags, attributes] = parseDocs(docs);
 
+  if (!fs.existsSync('vetur')) {
+    fs.mkdirSync('vetur');
+  }
   fs.writeFileSync('vetur/tags.json', JSON.stringify(tags, null, 2));
   fs.writeFileSync('vetur/attributes.json', JSON.stringify(attributes, null, 2));
 };

@@ -9,11 +9,16 @@
       :class="contentClass"
       :style="containerStyle"
       @scroll="recalculate"
+      v-on="$listeners"
     >
       <slot/>
     </div>
 
-    <div ref="trackY" class="scrollbar-track vertical">
+    <div
+      ref="trackY"
+      class="scrollbar-track vertical"
+      :style="trackStyleY"
+    >
       <div
         class="scrollbar"
         :class="{active: activeScroll}"
@@ -21,7 +26,11 @@
         @mousedown="verticalDrag"
       />
     </div>
-    <div ref="trackX" class="scrollbar-track horizontal">
+    <div
+      ref="trackX"
+      class="scrollbar-track horizontal"
+      :style="trackStyleX"
+    >
       <div
         class="scrollbar"
         :class="{active: activeScroll}"
@@ -75,12 +84,16 @@ export default {
       activeScroll: false,
       scrollbarStyleY: {
         top: 0,
-        height: 0,
-        display: 'none'
+        height: 0
       },
       scrollbarStyleX: {
         left: 0,
-        width: 0,
+        width: 0
+      },
+      trackStyleX: {
+        display: 'none'
+      },
+      trackStyleY: {
         display: 'none'
       }
     }
@@ -128,7 +141,7 @@ export default {
       this.scrollRatioY = (scrollHeight - clientHeight) / (trackSizeY - scrollbarSizeY)
       this.scrollbarStyleY.top = ((trackSizeY - scrollbarSizeY) * positionY) + 'px'
       this.scrollbarStyleY.height = scrollbarSizeY + 'px'
-      this.scrollbarStyleY.display = scrollHeight > clientHeight ? '' : 'none'
+      this.trackStyleY.display = scrollHeight > clientHeight ? '' : 'none'
 
       // horizontal
       const { clientWidth, scrollWidth, scrollLeft } = this.$refs.scrollContent
@@ -139,7 +152,7 @@ export default {
       this.scrollRatioX = (scrollWidth - clientWidth) / (trackSizeX - scrollbarSizeX)
       this.scrollbarStyleX.left = ((trackSizeX - scrollbarSizeX) * positionX) + 'px'
       this.scrollbarStyleX.width = scrollbarSizeX + 'px'
-      this.scrollbarStyleX.display = scrollWidth > clientWidth ? '' : 'none'
+      this.trackStyleX.display = scrollWidth > clientWidth ? '' : 'none'
     },
     dragHandler (evt, coordIndex, scrollAttr, scrollRatio) {
       const origin = {

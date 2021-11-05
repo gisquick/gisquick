@@ -11,7 +11,7 @@
       class="html-layer"
       :style="overlayStyle"
     >
-      <img v-if="image" :src="image.src"/>
+      <img v-if="image && !loading" :src="image.src"/>
     </div>
     <slot :viewer="this"/>
   </div>
@@ -29,7 +29,8 @@ export default {
   },
   data () {
     return {
-      image: null
+      image: null,
+      loading: false
     }
   },
   watch: {
@@ -37,9 +38,10 @@ export default {
       immediate: true,
       async handler (src) {
         if (src) {
+          this.loading = true
           const img = new Image()
           img.src = src
-          await img.decode()
+          await img.decode() // consider error handling
           this.image = Object.freeze({
             src,
             width: img.naturalWidth,
@@ -47,6 +49,7 @@ export default {
           })
           this.animationActive = false
           this.resetView()
+          this.loading = false
           setTimeout(() => {
             this.animationActive = true
           }, 60)

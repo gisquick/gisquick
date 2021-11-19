@@ -6,9 +6,9 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "vetur": "node ./docgen.js",
+    "compilemessages": "node gettext/compilemessages.js",
     "makemessages": "node gettext/makemessages.js",
-    "compilemessages": "node gettext/compilemessages.js"
+    "vetur": "node ./docgen.js"
   },
   "dependencies": {
     "axios": "^0.21.1",
@@ -27,16 +27,16 @@
     "vuex": "^3.6.2"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "~4.5.0",
-    "@vue/cli-plugin-eslint": "~4.5.0",
-    "@vue/cli-service": "~4.5.0",
+    "@vue/cli-plugin-babel": "^4.5.15",
+    "@vue/cli-plugin-eslint": "^4.5.15",
+    "@vue/cli-service": "^4.5.15",
     "babel-eslint": "^10.1.0",
     "compression-webpack-plugin": "^6.1.1",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
     "gettext-extractor": "^3.5.3",
-    "node-sass": "^5.0.0",
     "pofile": "^1.1.1",
+    "sass": "^1.43.4",
     "sass-loader": "^10.1.1",
     "svgo": "^2.3.0",
     "vue-docgen-api": "^4.38.2",

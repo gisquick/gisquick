@@ -85,6 +85,9 @@ export default {
           const buffer = (map.getSize()[0] - padding[1] - padding[3]) * 0.05 * resolution
           map.getView().fit(Extent.buffer(extent, buffer), { duration: 450, padding })
         }
+      },
+      refreshOverlays () {
+        map.overlay.getSource().refresh()
       }
     }
     const extent = this.project.config.zoom_extent || this.project.config.project_extent

@@ -270,11 +270,24 @@ export default {
         }))
     },
     onFeatureDelete (feature) {
-      this.resultItem.features = this.resultItem.features.filter(f => f !== feature)
-      // const index = this.displayedFeaures.indexOf(feature)
-      // if (index !== -1) {
-      //   this.displayedFeaures.splice(index, 1)
-      // }
+      this.editMode = false
+      // update list of features and selection
+      const currentLayerFeatures = this.resultItem.features.filter(f => f !== feature)
+      if (currentLayerFeatures.length) {
+        this.resultItem.features = currentLayerFeatures
+        this.selection.featureIndex = 0
+      } else {
+        this.layersFeatures = this.layersFeatures.filter(i => i.layer !== this.resultItem)
+        if (this.layersFeatures.length) {
+          this.selection = {
+            layer: this.layersFeatures[0].layer.name,
+            featureIndex: 0
+          }
+        } else {
+          this.selection = null
+        }
+      }
+      this.$map.ext.refreshOverlays()
     },
     async onFeatureEdit (feature) {
       const fid = feature.getId()
@@ -286,6 +299,7 @@ export default {
         // this.displayedFeaures.splice(index, 1, newFeature)
         this.$set(this.displayedFeaures, index, newFeature)
       }
+      this.$map.ext.refreshOverlays()
     }
   }
 }

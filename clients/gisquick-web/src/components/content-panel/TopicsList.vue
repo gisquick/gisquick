@@ -53,11 +53,19 @@ export default {
   },
   computed: {
     ...mapState(['project']),
+    hiddenLayers () {
+      return this.project.overlays.list.filter(l => l.hidden).map(l => l.name)
+    },
     topics () {
       return this.project.config.topics
+      const { topics } = this.project.config
+      return topics.map(t => ({
+        ...t,
+        visible_overlays: t.visible_overlays.filter(n => !this.hiddenLayers.includes(n))
+      }))
     },
     activeTopic () {
-      // this ignores layers in not visible groups
+      // this ignores layers in hidden groups
       const visibleLayers = this.project.overlays.list.filter(l => l.visible && !l.hidden).map(l => l.name)
       return this.topics.find(t => t.visible_overlays.length === visibleLayers.length && difference(t.visible_overlays, visibleLayers).length === 0)
     },

@@ -1,5 +1,5 @@
 <template>
-  <div class="i-field" :style="colorVars">
+  <div class="i-field" :style="styles">
     <label
       v-if="label"
       @click="focus"
@@ -21,8 +21,14 @@ export default {
     color: String
   },
   computed: {
-    colorVars () {
-      return this.color && colorVars(this.color)
+    baseColorStyle () {
+      return this.color ? colorVars(this.color) : {}
+    },
+    statusStyle () {
+      return this.error ? colorVars('red', 'status-color') : {}
+    },
+    styles () {
+      return { ...this.baseColorStyle, ...this.statusStyle }
     }
   }
 }

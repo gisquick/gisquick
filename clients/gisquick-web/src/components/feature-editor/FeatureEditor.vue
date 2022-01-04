@@ -12,6 +12,7 @@
         :layer="layer"
         :fields="fields"
         :readonly="readonlyFields"
+        :status.sync="formStatus"
       />
       <!-- <v-radio-btn val="loading" v-model="status" label="Loading"/>
       <v-radio-btn val="success" v-model="status" label="Success"/>
@@ -64,7 +65,7 @@
         </v-btn>
         <v-btn
           class="icon"
-          :disabled="!isModified || !!status"
+          :disabled="!isModified || !!status || formStatus === 'error'"
           @click="save"
         >
           <v-tooltip slot="tooltip">
@@ -152,7 +153,8 @@ export default {
       fields: null,
       originalFields: null,
       editGeometry: false,
-      showConfirmDelete: false
+      showConfirmDelete: false,
+      formStatus: null
     }
   },
   computed: {

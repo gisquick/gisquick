@@ -361,8 +361,8 @@ def get_project(request):
         for topic in metadata.topics:
             topic['visible_overlays'] = list(filter(check_layername_access, topic['visible_overlays']))
         metadata.topics = list(filter(lambda t: t['visible_overlays'], metadata.topics))
-        _convert_topics(metadata.topics, layers_tree)
 
+    _convert_topics(metadata.topics, layers_tree)
     context['layers'] = layers_tree
 
     if use_mapcache:

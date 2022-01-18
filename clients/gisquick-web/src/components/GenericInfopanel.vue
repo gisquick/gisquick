@@ -38,6 +38,10 @@ const FloatWidget = Widget((h, ctx) => (
   <span {...ctx.data}>{ctx.props.value && ctx.props.value.toFixed(2)}</span>
 ))
 
+const BoolWidget = Widget((h, ctx) => (
+  <div class="f-row-ac" {...ctx.data}><v-icon name={ctx.props.value ? 'check' : 'dash'}/></div>
+))
+
 // TODO: translate 'link' (check <translate> component in JSX)
 const UrlWidget = Widget((h, ctx) => (
   <a {...ctx.data} href={ctx.props.value} target="_blank">link</a>
@@ -91,6 +95,8 @@ export default {
           return RawWidget
         } else if (type === 'DOUBLE') {
           return FloatWidget
+        } else if (type === 'BOOL') {
+          return BoolWidget
         } else if (type === 'TEXT') {
           if (attr.content_type === 'url') {
             return UrlWidget

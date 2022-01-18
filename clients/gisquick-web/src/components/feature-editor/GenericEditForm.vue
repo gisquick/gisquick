@@ -63,6 +63,9 @@ export default {
     widgets () {
       return this.layer.attributes.map(attr => {
         const disabled = this.readonly && this.readonly.includes(attr.name)
+        if (attr.type === 'BOOL') {
+          return { component: 'v-checkbox', disabled }
+        }
         if (attr.type === 'INTEGER' || attr.type === 'DOUBLE') {
           const integerType = attr.type === 'INTEGER'
           return {

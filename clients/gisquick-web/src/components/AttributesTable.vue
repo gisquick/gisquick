@@ -375,10 +375,8 @@ export default {
 
       // const features = ShallowArray(parser.readFeatures(geojson, { featureProjection: mapProjection }))
       const features = Object.freeze(parser.readFeatures(geojson, { featureProjection: mapProjection }))
-
-      if (this.selectedFeature && !features.find(f => f.getId() === this.selectedFeature.getId())) {
-        this.selectedFeatureIndex = 0
-      }
+      const selectedIndex = this.selectedFeature ? features.findIndex(f => f.getId() === this.selectedFeature.getId()) : -1
+      this.selectedFeatureIndex = selectedIndex !== -1 ? selectedIndex : 0
       this.$store.commit('attributeTable/features', features)
 
       this.pagination = {

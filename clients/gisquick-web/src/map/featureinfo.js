@@ -26,12 +26,18 @@ function LikeFilter (attribute, value) {
 }
 
 function InFilter (attribute, value) {
-  const items = value.split(',').map(v => SimpleFilter('PropertyIsEqualTo')(attribute, v))
+  const values = Array.isArray(value) ? value : value.split(',').map(v => v.trim())
+  const items = values.map(v => SimpleFilter('PropertyIsEqualTo')(attribute, v))
   return items.length > 1 ? OrOperator(items) : items[0]
 }
 
-function BetweenFilter (attribute, value) {
-  const [ lower, upper ] = value.split(',')
+function NotInFilter (attribute, value) {
+  const values = Array.isArray(value) ? value : value.split(',').map(v => v.trim())
+  const items = values.map(v => SimpleFilter('PropertyIsNotEqualTo')(attribute, v))
+  return items.length > 1 ? AndOperator(items) : items[0]
+}
+
+function BetweenFilter (attribute, lower, upper) {
   return `
     <ogc:PropertyIsBetween>
       <ogc:PropertyName>${attribute}</ogc:PropertyName>
@@ -57,18 +63,75 @@ function IsNotNullFilter (attribute) {
 }
 
 const AttributeFilters = {
+  'DATE_EQUAL': (attribute, value) => BetweenFilter(attribute, value, value),
+  'DATE_BETWEEN': (attribute, value) => BetweenFilter(attribute, value?.since, value?.until),
+  // 'SINCE': (attribute, value) => BetweenFilter(attribute, value, 'null'),
+  'SINCE': (attribute, value) => BetweenFilter(attribute, value, '9999-12-31'),
+  'UNTIL': (attribute, value) => BetweenFilter(attribute, '0', value,),
   '=': SimpleFilter('PropertyIsEqualTo'),
   '!=': SimpleFilter('PropertyIsNotEqualTo'),
   '>': SimpleFilter('PropertyIsGreaterThan'),
+  // '>': DateFilter('PropertyIsGreaterThan'),
   '>=': SimpleFilter('PropertyIsGreaterThanOrEqualTo'),
   '<': SimpleFilter('PropertyIsLessThan'),
+  // '<': DateFilter('PropertyIsGreaterThan'),
   '<=': SimpleFilter('PropertyIsLessThanOrEqualTo'),
   'LIKE': LikeFilter,
   'IN': InFilter,
-  'BETWEEN': BetweenFilter,
+  'NOT IN': NotInFilter,
+  'BETWEEN': (attr, value) => BetweenFilter(attr, ...value.split(',')),
   'IS NULL': IsNullFilter,
   'IS NOT NULL': IsNotNullFilter
 }
+
+// WFS Date filtering
+// https://geoserver-users.narkive.com/ZOYYXEHw/ogc-filter-on-datetime-field
+// https://stackoverflow.com/questions/23998614/wfs-getfeature-query-with-time-parameter-does-not-filter-in-geoserver
+
+// function DateFilter (name) {
+//   return (attribute, value) => `
+//     <ogc:${name}>
+//       <ogc:PropertyName>${attribute}</ogc:PropertyName>
+//       <ogc:Function name="dateParse">
+//         <ogc:Literal>yyyy-MM-dd</ogc:Literal>
+//         <ogc:Literal>${value}</ogc:Literal>
+//       </ogc:Function>
+//     </ogc:${name}>`
+// }
+
+// const testQuery = `
+// <ogc:PropertyIsBetween>
+// <ogc:PropertyName>datetime</ogc:PropertyName>
+// <ogc:LowerBoundary>
+// <ogc:Literal>2006-12-14T12:08:13</ogc:Literal>
+// </ogc:LowerBoundary>
+// <ogc:UpperBoundary>
+// <ogc:Literal>2026-12-14T12:08:13</ogc:Literal>
+// </ogc:UpperBoundary>
+// </ogc:PropertyIsBetween>`
+
+// const testQuery = `
+// <ogc:PropertyIsBetween>
+// <ogc:PropertyName>date</ogc:PropertyName>
+// <ogc:LowerBoundary>
+// <ogc:Literal>2006-12-14</ogc:Literal>
+// </ogc:LowerBoundary>
+// <ogc:UpperBoundary>
+// <ogc:Literal>2026-12-14</ogc:Literal>
+// </ogc:UpperBoundary>
+// </ogc:PropertyIsBetween>`
+
+// const testQuery = `
+// <ogc:PropertyIsGreaterThan>
+// <ogc:PropertyName>datetime</ogc:PropertyName>
+// <ogc:Literal>2006-12-14T12:08:13</ogc:Literal>
+// </ogc:PropertyIsGreaterThan>`
+
+// const testQuery = `
+// <ogc:PropertyIsNull>
+// <ogc:PropertyName>date</ogc:PropertyName>
+// </ogc:PropertyIsNull>
+// `
 
 function _layerFeaturesQuery (layer, geom, filters, propertyNames = []) {
   const ogcFilters = []
@@ -93,6 +156,7 @@ function _layerFeaturesQuery (layer, geom, filters, propertyNames = []) {
     rootFilter = ogcFilters.length > 1 ? AndOperator(ogcFilters) : ogcFilters[0]
     rootFilter = `<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">${rootFilter}</ogc:Filter>`
   }
+  // rootFilter = `<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">${testQuery}</ogc:Filter>`
   return [
     `<gml:Query gml:typeName="${layer.name.replace(/ /g, '_')}">`,
     propertyNames.map(n => `<ogc:PropertyName>${n}</ogc:PropertyName>`).join('\n'),
@@ -131,7 +195,7 @@ export function layersFeaturesQuery (layers, geomFilter) {
   }
   if (geomFilter) {
     layers
-      .filter(l => l.projection !== projection)
+      .filter(l => l.projection && l.projection !== projection)
       .forEach(l => {
         if (!geomsByProj[l.projection]) {
           geomsByProj[l.projection] = geom.clone().transform(projection, l.projection)

@@ -19,6 +19,8 @@
 <script>
 import mapValues from 'lodash/mapValues'
 import TextField from './TextField.vue'
+import DateField from '@/ui/DateField.vue'
+import { valueMapItems } from '@/adapters/attributes'
 
 function isIntegerString (strValue) {
   return /^-?\d+$/.test(strValue)
@@ -63,8 +65,28 @@ export default {
     widgets () {
       return this.layer.attributes.map(attr => {
         const disabled = this.readonly && this.readonly.includes(attr.name)
+        if (attr.widget === 'ValueMap') {
+          return {
+            component: 'v-select',
+            props: {
+              class: 'filled',
+              items: valueMapItems(attr)
+            }
+          }
+        }
         if (attr.type === 'BOOL') {
-          return { component: 'v-checkbox', disabled }
+          return { component: 'v-checkbox', props: { disabled } }
+        }
+        if (attr.type === 'DATE') {
+          return {
+            component: DateField,
+            props: {
+              disabled,
+              placeholder: attr.config?.display_format,
+              displayFormat: attr.config?.display_format,
+              valueFormat: attr.config?.field_format || 'yyyy-MM-dd'
+            }
+          }
         }
         if (attr.type === 'INTEGER' || attr.type === 'DOUBLE') {
           const integerType = attr.type === 'INTEGER'

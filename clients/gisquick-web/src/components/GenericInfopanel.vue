@@ -7,6 +7,8 @@
           <component
             :is="widgets[index]"
             :value="values[index]"
+            :layer="layer"
+            :attribute="attr"
             class="value"
           />
         </slot>
@@ -17,6 +19,10 @@
 
 <script>
 import keyBy from 'lodash/keyBy'
+import round from 'lodash/round'
+import format from 'date-fns/format'
+import parse from 'date-fns/parse'
+import { valueMapItems } from '@/adapters/attributes'
 
 function isAbsoluteUrl (val) {
   return /(https?:\/\/.*\.)/i.test(val)
@@ -35,7 +41,7 @@ const RawWidget = Widget((h, ctx) => (
 ))
 
 const FloatWidget = Widget((h, ctx) => (
-  <span {...ctx.data}>{ctx.props.value && ctx.props.value.toFixed(2)}</span>
+  <span {...ctx.data}>{Number.isFinite(ctx.props.value) ? round(ctx.props.value, 2) : ctx.props.value}</span>
 ))
 
 const BoolWidget = Widget((h, ctx) => (
@@ -57,6 +63,46 @@ const ImageWidget = Widget((h, ctx) => {
     <v-image class="image" src={src}/>
   ]
 })
+
+export const DateWidget = Widget((h, ctx) => {
+  let { value } = ctx.props
+  const cfg = ctx.data.attrs?.attribute?.config
+  if (value && cfg && cfg.display_format && cfg.field_format) {
+    const date = parse(value, cfg.field_format, new Date())
+    value = format(date, cfg.display_format)
+  }
+  return <span {...ctx.data}>{value}</span>
+})
+
+// or define as factory function with attribute as argument?
+export const DateTimeWidget = Widget((h, ctx) => {
+  let { value } = ctx.props
+  if (value) {
+    const cfg = ctx.data.attrs?.attribute?.config
+    const displayFormat = cfg?.display_format || 'yyyy-MM-dd HH:mm:ss'
+    const date = cfg?.field_format ? parse(value, cfg.field_format, new Date()) : new Date(value)
+    value = format(date, displayFormat)
+  }
+  return <span {...ctx.data}>{value}</span>
+})
+
+export const ValueMapWidget = {
+  name: 'ValueMapWidget',
+  props: {
+    attribute: Object,
+    // layer: Object,
+    value: {}
+  },
+  computed: {
+    map () {
+      const items = valueMapItems(this.attribute)
+      return items.reduce((data, item) => (data[item.value] = item.text, data), {})
+    }
+  },
+  render () {
+    return <span>{this.map[this.value]}</span>
+  }
+}
 
 export default {
   props: {
@@ -91,6 +137,9 @@ export default {
     widgets () {
       return this.attributes.map(attr => {
         const type = attr.type.split('(')[0]
+        if (attr.widget === 'ValueMap') {
+          return ValueMapWidget
+        }
         if (type === 'INTEGER') {
           return RawWidget
         } else if (type === 'DOUBLE') {
@@ -108,6 +157,10 @@ export default {
             }
             return this.mediaWidget
           }
+        } else if (type === 'DATE') {
+          return DateWidget
+        } else if (type === 'DATETIME' || type === 'TIMESTAMP') {
+          return DateTimeWidget
         }
         return RawWidget
       })

@@ -40,27 +40,15 @@ export default {
     visibleAreaFilter (state, visible) {
       state.visibleAreaFilter = visible
     },
-    updateFilter (state, { attr, params }) {
-      const filter = state.filters[state.layer.name][attr]
-      Object.assign(filter, params)
-    },
-    updateFilterComparator (state, { attr, comparator }) {
-      const filter = state.filters[state.layer.name][attr]
-      filter.comparator = comparator
-    },
-    updateFilterValue (state, { attr, value }) {
-      const filter = state.filters[state.layer.name][attr]
-      filter.value = value
-    },
-    updateFilterValidity (state, { attr, valid }) {
-      const filter = state.filters[state.layer.name][attr]
-      filter.valid = valid
+    updateFilter (state, { layer, attr, filter }) {
+      Vue.set(state.filters[layer], attr, filter)
     },
     clearFilter (state, attr) {
       const filter = state.filters[state.layer.name][attr]
       filter.comparator = null
       filter.value = null
       filter.valid = false
+      filter.active = false
     },
     limit (state, value) {
       state.limit = Math.min(value, 1000)

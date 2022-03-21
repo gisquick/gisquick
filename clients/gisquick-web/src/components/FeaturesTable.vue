@@ -36,6 +36,14 @@
             <v-icon name="zoom-to"/>
           </v-btn>
         </template>
+        <template v-for="(slot, name) in slots" v-slot:[`cell(${name})`]="{ item }">
+          <component
+            :key="name"
+            :is="slot.component"
+            :attribute="slot.attribute"
+            :value="item[name]"
+          />
+        </template>
       </v-table>
     </switch-transition>
   </div>
@@ -46,6 +54,7 @@ import clamp from 'lodash/clamp'
 
 // import TabsHeader from '@/components/TabsHeader1.vue'
 import TabsHeader from '@/components/TabsHeader.vue'
+import { DateWidget, ValueMapWidget } from '@/components/GenericInfopanel.vue'
 import { eventCoord, DragHandler } from '@/events'
 
 
@@ -111,6 +120,21 @@ export default {
     },
     selectedFeatureId () {
       return this.tableData?.[this.selected.featureIndex]._id
+    },
+    slots () {
+      const slots = {}
+      this.layer.attributes.forEach(attr => {
+        let widget
+        if (attr.widget === 'ValueMap') {
+          widget = ValueMapWidget
+        } else if (attr.type === 'date') { // and also attr.widget === 'DateTime' ?
+          widget = DateWidget
+        }
+        if (widget) {
+          slots[attr.name] = { component: widget, attribute: attr }
+        }
+      })
+      return slots
     }
   },
   methods: {

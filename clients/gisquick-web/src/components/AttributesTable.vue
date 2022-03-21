@@ -32,14 +32,11 @@
       </template>
       <template v-slot:header(filter)="{ column }">
         <attribute-filter
+          :attribute="column.attr"
           :label="column.label"
           :type="column.type"
           :filter="layerFilters[column.key]"
-          @input:comparator="updateFilterComparator({ attr: column.key, comparator: $event })"
-          @input:value="updateFilterValue({ attr: column.key, value: $event })"
-          @input:active="toggleFilter(column.key, $event)"
-          @update:error="updateFilterValidity({ attr: column.key, valid: !$event })"
-          @input:enter="fetchFeatures()"
+          @change="onFilterChange(column.key, $event)"
           @clear="clearFilter(column.key)"
         />
       </template>
@@ -52,6 +49,14 @@
             <v-icon name="circle-i-outline"/>
           </v-btn>
         </div>
+      </template>
+      <template v-for="(slot, name) in slots" v-slot:[`cell(${name})`]="{ item }">
+        <component
+          :key="name"
+          :is="slot.component"
+          :attribute="slot.attribute"
+          :value="item[name]"
+        />
       </template>
     </v-table>
     <!-- <hr/> -->
@@ -179,6 +184,7 @@
 <script>
 import clamp from 'lodash/clamp'
 import keyBy from 'lodash/keyBy'
+import isEqual from 'lodash/isEqual'
 import { mapState, mapGetters, mapMutations } from 'vuex'
 import Polygon from 'ol/geom/polygon'
 import GeoJSON from 'ol/format/geojson'
@@ -188,6 +194,7 @@ import AttributeFilter from '@/components/AttributeFilter.vue'
 import FeaturesViewer from '@/components/ol/FeaturesViewer.vue'
 import NewFeatureEditor from '@/components/feature-editor/NewFeatureEditor.vue'
 import InfoPanel from '@/components/InfoPanel.vue'
+import { DateWidget, ValueMapWidget } from '@/components/GenericInfopanel.vue'
 import { simpleStyle } from '@/map/styles'
 import { layerFeaturesQuery } from '@/map/featureinfo'
 // import { ShallowArray } from '@/utils'
@@ -248,19 +255,24 @@ export default {
     columns () {
       if (this.attributes) {
         const columns = this.attributes.map(attr => ({
-          label: attr.alias || attr.name,
-          type: attr.type.toLowerCase(),
+          attr,
           key: attr.name,
           header: {
-            slot: 'filter',
-            // class: 'py-1'
-          },
-          align: 'left',
-          sortable: false
+            slot: 'filter'
+          }
         }))
         return [ActionsHeader, ...columns]
       }
       return []
+    },
+    activeFilters () {
+      return Object.entries(this.layerFilters)
+        .filter(([_, filter]) => filter.active && filter.valid)
+        .map(([name, filter]) => ({
+          attribute: name,
+          operator: filter.comparator,
+          value: filter.value
+        }))
     },
     tableData () {
       return this.features?.map(f => ({ _id: f.getId(), ...f.getProperties() }))
@@ -298,6 +310,21 @@ export default {
     },
     permissions () {
       return this.layer.permissions || {}
+    },
+    slots () {
+      const slots = {}
+      this.attributes.forEach(attr => {
+        let widget
+        if (attr.widget === 'ValueMap') {
+          widget = ValueMapWidget
+        } else if (attr.type === 'date') { // and also attr.widget === 'DateTime' ?
+          widget = DateWidget
+        }
+        if (widget) {
+          slots[attr.name] = { component: widget, attribute: attr }
+        }
+      })
+      return slots
     }
   },
   watch: {
@@ -316,10 +343,17 @@ export default {
       if (feature) {
         feature.setStyle(SelectedStyle)
       }
+    },
+    activeFilters (val, old) {
+      if (!isEqual(val, old)) {
+        // console.log('activeFilters:watch', JSON.stringify(old), JSON.stringify(val))
+        this.fetchFeatures()
+      }
+      // console.log('activeFilters:watch', JSON.stringify(old), JSON.stringify(val))
     }
   },
   methods: {
-    ...mapMutations('attributeTable', ['updateFilter', 'clearFilter', 'updateFilterComparator', 'updateFilterValue', 'updateFilterValidity']),
+    ...mapMutations('attributeTable', ['updateFilter', 'clearFilter']),
     async fetchFeatures (page = 1, lastQuery = false) {
       const mapProjection = this.$map.getView().getProjection().getCode()
       let query
@@ -338,7 +372,9 @@ export default {
             operator: filter.comparator,
             value: filter.value
           }))
+        // console.log(JSON.stringify(this.lastAttributesFilters))
         query = layerFeaturesQuery(this.layer, geom, this.lastAttributesFilters)
+        // console.log(query)
       }
 
       const baseParams = {
@@ -375,6 +411,7 @@ export default {
 
       // const features = ShallowArray(parser.readFeatures(geojson, { featureProjection: mapProjection }))
       const features = Object.freeze(parser.readFeatures(geojson, { featureProjection: mapProjection }))
+
       const selectedIndex = this.selectedFeature ? features.findIndex(f => f.getId() === this.selectedFeature.getId()) : -1
       this.selectedFeatureIndex = selectedIndex !== -1 ? selectedIndex : 0
       this.$store.commit('attributeTable/features', features)
@@ -406,14 +443,10 @@ export default {
         }
       })
     },
-    toggleFilter (attr, active) {
-      const refetch = active
-        ? this.layerFilters[attr].valid
-        : this.lastAttributesFilters.some(i => i.attribute === attr)
-      this.updateFilter({ attr, params: { active } })
-      if (refetch) {
-        this.fetchFeatures()
-      }
+    onFilterChange (attr, filter) {
+      // console.log('onFilterChange', attr, filter)
+      const current = this.layerFilters[attr]
+      this.updateFilter({ layer: this.layer.name, attr, filter })
     },
     selectFeature (item) {
       this.selectedFeatureIndex = this.tableData.indexOf(item)

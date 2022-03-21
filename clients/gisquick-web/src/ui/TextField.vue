@@ -148,7 +148,7 @@ export default {
       return this.color && colorVars(this.color)
     },
     inputValue () {
-      const value = this.value || ''
+      const value = this.value ?? ''
       if (this.displayFormat) {
         return formatValue(value, this.displayFormat)
       }
@@ -164,7 +164,7 @@ export default {
   },
   watch: {
     focused (v) {
-      this.$emit(v ? 'focus' : 'blur', 'xx')
+      this.$emit(v ? 'focus' : 'blur')
     },
     inputValue (v) {
       this.$refs.inputEl.value = v
@@ -257,10 +257,11 @@ export default {
   display: flex;
   align-items: center;
   min-width: 0;
+  line-height: normal; // (nice center alignment of span and input elements)
 
   outline: none;
   &.multiline {
-    height: 200px;
+    height: auto;
   }
   input, textarea {
     display: inline-block;
@@ -285,6 +286,9 @@ export default {
   textarea {
     resize: none;
     min-height: 100%;
+  }
+  input[type="file"] {
+    opacity: 0;
   }
 }
 </style>

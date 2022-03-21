@@ -210,7 +210,9 @@ export default {
             staticClass: 'popup-container',
             class: popupClasses,
             style: [popupStyle, contentStyle],
-            tabindex,
+            attrs: {
+              tabindex
+            },
             on: {
               click: _this.onClick
             }

@@ -12,6 +12,7 @@ const TagsMap = {
   Icon: 'VIcon',
   Checkbox: 'VCheckbox',
   Dialog: 'VDialog',
+  LinearProgress: 'VLinearProgress',
   Menu: 'VMenu',
   RadioButton: 'VRadioBtn',
   Select: 'VSelect',

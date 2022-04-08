@@ -43,14 +43,14 @@
       >
         <a
           v-for="project in projects"
-          :key="project.project"
-          :href="`?PROJECT=${project.project}`"
+          :key="project.name"
+          :href="`?PROJECT=${project.name}`"
           class="item f-col f-align-start f-justify-center"
         >
-          <div class="title" v-text="project.title"/>
+          <div class="title" v-text="project.title || project.name"/>
           <small
             class="text--secondary"
-            v-text="project.publication_time"
+            v-text="formtDate(project.created)"
           />
           <v-icon
             v-if="project.authentication === 'owner'"
@@ -80,6 +80,19 @@
 <script>
 import { mapState } from 'vuex'
 
+function toDate (v) {
+  return typeof v === 'string' ? new Date(v) : v
+}
+const dateFormatter = new Intl.DateTimeFormat('en-US', { dateStyle: 'medium' })
+
+function oldApiProjects (data) {
+  return data.projects.map(({ project, publication_time, ...rest }) => ({
+    name: project,
+    created: publication_time,
+    ...rest
+  }))
+}
+
 export default {
   components: { },
   data () {
@@ -102,13 +115,16 @@ export default {
       this.loadingProjects = true
       try {
         const { data } = await this.$http.get('/api/projects/')
-        this.projects = data.projects
+        this.projects = Array.isArray(data) ? data : oldApiProjects(data) // compatibility with old API
       } finally {
         this.loadingProjects = false
       }
     },
     openProject (project) {
-      location.search = `PROJECT=${project.project}`
+      location.search = `PROJECT=${project.name}`
+    },
+    formtDate (d) {
+      return dateFormatter.format(toDate(d))
     }
   }
 }

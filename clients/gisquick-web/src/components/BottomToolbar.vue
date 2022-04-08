@@ -29,11 +29,13 @@ export default {
     this.updateScale()
     this.listener = this.$map.getView().on('change:resolution', this.updateScale)
 
+    const precision = this.project.config.position_precision
+      ? this.project.config.position_precision.decimal_places // old API
+      : this.project.config.units.position_precision // new API
+
     // Setup updating of mouse pointer coordinates on map (in map units)
     this.positionControl = new MousePosition({
-      coordinateFormat: coordinate.createStringXY(
-        this.project.config.position_precision.decimal_places
-      ),
+      coordinateFormat: coordinate.createStringXY(precision ?? 2),
       target: this.$refs.coords
     })
     this.$map.addControl(this.positionControl)

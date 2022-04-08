@@ -103,7 +103,8 @@ export default {
     },
     formComponent () {
       if (this.layer.infopanel_component) {
-        return externalComponent(this.layer.infopanel_component)
+        const project = this.$store.state.project.config
+        return externalComponent(project, this.layer.infopanel_component)
       }
       return GenericInfopanel
     },

@@ -1,6 +1,5 @@
 
 import Vue from 'vue'
-import store from '@/store'
 
 const cache = {}
 const pending = {}
@@ -40,17 +39,19 @@ async function getComponent (url, component) {
   })
 }
 
-export function externalComponent (name) {
+export function externalComponent (project, cname) {
   // check registred components first (used mostly in development mode)
-  const cmp = Vue.component(name)
+  const cmp = Vue.component(cname)
   if (cmp) {
     return cmp
   }
-  const { scripts, project } = store.state.project.config
-  const mod = Object.values(scripts).find(i => i.components.includes(name))
-
-  // const mod = scripts.find(i => i.components.includes(name))
-  const dir = project.split('/').slice(0, 2).join('/')
-  const resource = `/api/project/static/${dir}/${mod.path}`
-  return () => getComponent(resource, name)
+  const mod = Object.values(project.scripts).find(i => i.components.includes(cname))
+  let resource
+  if (project.project) { // old API
+    const dir = project.project.split('/').slice(0, 2).join('/')
+    resource = `/api/project/static/${dir}/${mod.path}`
+  } else { // new API
+    resource = `/api/project/static/${project.name}/${mod.path}`
+  }
+  return () => getComponent(resource, cname)
 }

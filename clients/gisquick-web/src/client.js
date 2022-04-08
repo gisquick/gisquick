@@ -27,7 +27,11 @@ HTTP.project = function (project) {
   }
 
   return new Promise((resolve, reject) => {
-    HTTP.get(`/api/map/project/?PROJECT=${project}`)
+    const parts = project.split('/').length
+    const url = parts === 3
+      ? `/api/map/project/?PROJECT=${project}` // old API
+      : `/api/map/project/${project}` // new API
+    HTTP.get(url)
       .then(resp => resolve(extendProject ? extendProject(resp.data) : resp.data))
       .catch(err => {
         if (err.response?.data.status) {

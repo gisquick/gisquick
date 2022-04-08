@@ -30,7 +30,7 @@ msgstr "Popis"
 msgid "Add geometry"
 msgstr "Přidat geometrii"
 
-#: src/components/AttributesTable.vue:108
+#: src/components/AttributesTable.vue:113
 msgid "Add new feature"
 msgstr "Přidat nový objekt"
 
@@ -44,13 +44,29 @@ msgid ""
 "projects"
 msgstr ""
 
+#: src/components/feature-editor/MediaImageField.vue:203
+msgid "Apply"
+msgstr "Aplikovat"
+
+#: src/ui/DatePicker.vue:175
+msgid "April"
+msgstr "Duben"
+
 #: src/components/measure/Measure.vue:71 src/components/measure/Measure.vue:171
 msgid "Area"
 msgstr "Plocha"
 
+#: src/ui/DatePicker.vue:179
+msgid "August"
+msgstr "Srpen"
+
 #: src/components/LoginDialog.vue:28
 msgid "Authentication failed"
 msgstr "Ověření se nezdařilo"
+
+#: src/ui/MobileDialog.vue:17
+msgid "Back"
+msgstr "Zpátky"
 
 #: src/components/LoginDialog.vue:113
 msgid "Back to Login"
@@ -60,11 +76,16 @@ msgstr "Zpět k přihlášení"
 msgid "Base Layers"
 msgstr "Základní vrstvy"
 
-#: src/components/AttributeFilter.vue:209
+#: src/components/AttributeFilter.vue:275
+#: src/components/AttributeFilter.vue:287
 msgid "between"
 msgstr "od - do"
 
-#: src/components/AttributesTable.vue:127
+#: src/components/feature-editor/MediaImageField.vue:207
+msgid "Cancel"
+msgstr "Zrušit"
+
+#: src/components/AttributesTable.vue:132
 msgid "Clear attributes filters"
 msgstr "Vymazat filtry atributů"
 
@@ -72,7 +93,7 @@ msgstr "Vymazat filtry atributů"
 msgid "Close"
 msgstr "Zavřít"
 
-#: src/components/AttributeFilter.vue:206
+#: src/components/AttributeFilter.vue:284
 msgid "contain"
 msgstr "obsahuje"
 
@@ -92,20 +113,24 @@ msgstr "Souřadnicové systémy"
 msgid "Coordinates"
 msgstr "Souřadnice"
 
-#: src/components/feature-editor/FeatureEditor.vue:86
+#: src/components/feature-editor/FeatureEditor.vue:87
 #: src/components/feature-editor/NewFeatureEditor.vue:41
 msgid "Data updated"
 msgstr "Údaje aktualizovány"
 
-#: src/components/feature-editor/FeatureEditor.vue:95
+#: src/ui/DatePicker.vue:183
+msgid "December"
+msgstr "Prosinec"
+
+#: src/components/feature-editor/FeatureEditor.vue:96
 msgid "Delete current object?"
 msgstr "Smazat aktuální objekt?"
 
-#: src/components/feature-editor/FeatureEditor.vue:52
+#: src/components/feature-editor/FeatureEditor.vue:53
 msgid "Delete object"
 msgstr "Odstranit objekt"
 
-#: src/components/feature-editor/FeatureEditor.vue:61
+#: src/components/feature-editor/FeatureEditor.vue:62
 msgid "Discard changes"
 msgstr "Zrušit změny"
 
@@ -117,7 +142,7 @@ msgstr "Zobrazit autorská práva"
 msgid "Distance"
 msgstr "Vzdálenost"
 
-#: src/components/feature-editor/FeatureEditor.vue:29
+#: src/components/feature-editor/FeatureEditor.vue:30
 msgid "Edit geometry"
 msgstr "Upravit geometrii"
 
@@ -129,7 +154,7 @@ msgstr "Email"
 msgid "Email was sent to given email address."
 msgstr "Email byl odeslán na zadanou adresu."
 
-#: src/components/AttributeFilter.vue:207
+#: src/components/AttributeFilter.vue:285
 msgid "empty"
 msgstr "nevyplněné hodnoty"
 
@@ -141,11 +166,12 @@ msgstr ""
 "Zadejte svou emailovou adresu a my Vám zašleme pokyny pro nastavení nového "
 "hesla."
 
-#: src/components/AttributeFilter.vue:201
+#: src/components/AttributeFilter.vue:274
+#: src/components/AttributeFilter.vue:278
 msgid "equal to"
 msgstr "rovná se"
 
-#: src/components/feature-editor/FeatureEditor.vue:87
+#: src/components/feature-editor/FeatureEditor.vue:88
 #: src/components/feature-editor/NewFeatureEditor.vue:42
 msgid "Error"
 msgstr "Chyba"
@@ -154,22 +180,35 @@ msgstr "Chyba"
 msgid "Failed to process your request."
 msgstr "Zpracování vašeho požadavku se nezdařilo."
 
-#: src/components/AttributesTable.vue:137
-#: src/components/AttributeFilter.vue:199
+#: src/ui/DatePicker.vue:173
+msgid "February"
+msgstr "Únor"
+
+#: src/components/AttributesTable.vue:142
+#: src/components/AttributeFilter.vue:272
 msgid "Filter"
 msgstr "Filtr"
 
-#: src/components/AttributeFilter.vue:45
+#: src/components/AttributeFilter.vue:68
 msgid "Filter by attribute value"
 msgstr "Filtrovat podle hodnoty atributu"
 
-#: src/components/AttributesTable.vue:283
+#: src/components/AttributesTable.vue:312
 msgid "Filter to visible area"
 msgstr "Filtrovat viditelnou oblast"
 
 #: src/components/LoginDialog.vue:114
 msgid "Forgot password?"
 msgstr "Zapomenuté heslo?"
+
+#: src/components/feature-editor/MediaImageField.vue:40
+#: src/components/feature-editor/MediaImageField.vue:73
+msgid "Format"
+msgstr ""
+
+#: src/ui/DatePicker.vue:167
+msgid "Friday"
+msgstr "Pátek"
 
 #: src/components/AppMenu.vue:57
 msgid "Full screen"
@@ -183,7 +222,7 @@ msgstr "Geolokační chyba"
 msgid "Geometry"
 msgstr "Geometrie"
 
-#: src/components/AttributeFilter.vue:203
+#: src/components/AttributeFilter.vue:280
 msgid "greater than"
 msgstr "je větší"
 
@@ -198,6 +237,30 @@ msgstr "Identifikace"
 #: src/components/Identification.vue:141
 msgid "Info Panel"
 msgstr "Infopanel"
+
+#: src/components/AttributeFilter.vue:290
+msgid "Integer"
+msgstr "Celé číslo"
+
+#: src/components/AttributeFilter.vue:292
+msgid "Integer,Integer"
+msgstr "Celé číslo,Celé číslo"
+
+#: src/components/AttributeFilter.vue:291
+msgid "Integer,Integer,..."
+msgstr "Celé číslo,..."
+
+#: src/ui/DatePicker.vue:172
+msgid "January"
+msgstr "Leden"
+
+#: src/ui/DatePicker.vue:178
+msgid "July"
+msgstr "Červenec"
+
+#: src/ui/DatePicker.vue:177
+msgid "June"
+msgstr "Červen"
 
 #: src/components/content-panel/BaseLayersTree.vue:47
 #: src/components/content-panel/LayersTree.vue:77
@@ -216,7 +279,7 @@ msgstr "Vrstva"
 msgid "Layers"
 msgstr "Vrstvy"
 
-#: src/components/print/Print.vue:127
+#: src/components/print/Print.vue:84
 msgid "Layout"
 msgstr "Rozložení"
 
@@ -224,7 +287,7 @@ msgstr "Rozložení"
 msgid "Legend"
 msgstr "Legenda"
 
-#: src/components/AttributeFilter.vue:204
+#: src/components/AttributeFilter.vue:281
 msgid "less than"
 msgstr "je menší"
 
@@ -240,16 +303,28 @@ msgstr "Přihlásit se"
 msgid "Logout"
 msgstr "Odhlásit se"
 
+#: src/ui/DatePicker.vue:174
+msgid "March"
+msgstr "Březen"
+
+#: src/ui/DatePicker.vue:176
+msgid "May"
+msgstr "Květen"
+
 #: src/components/Identification.vue:167 src/components/measure/Measure.vue:144
 #: src/components/print/Print.vue:83
 msgid "Menu"
 msgstr "Menu"
 
+#: src/ui/DatePicker.vue:163
+msgid "Monday"
+msgstr "Pondělí"
+
 #: src/components/AppMenu.vue:40
 msgid "My profile"
 msgstr "Můj profil"
 
-#: src/components/AttributesTable.vue:148
+#: src/components/AttributesTable.vue:153
 msgid "New Feature"
 msgstr "Nový objekt"
 
@@ -258,7 +333,7 @@ msgid ""
 "New to Gisquick? Create a new account if you want to publish your own maps!"
 msgstr ""
 
-#: src/components/feature-editor/FeatureEditor.vue:99
+#: src/components/feature-editor/FeatureEditor.vue:100
 msgid "No"
 msgstr "Ne"
 
@@ -266,23 +341,49 @@ msgstr "Ne"
 msgid "Node tool"
 msgstr "Editace bodů"
 
-#: src/components/AttributeFilter.vue:208
+#: src/components/AttributeFilter.vue:286
 msgid "not empty"
 msgstr "vyplněné hodnoty"
 
-#: src/components/AttributeFilter.vue:202
+#: src/components/AttributeFilter.vue:279
 msgid "not equal to"
 msgstr "nerovná se"
 
-#: src/components/feature-editor/NumberField.vue:36
+#: src/components/AttributeFilter.vue:283
+msgid "not in"
+msgstr "neobsahují"
+
+#: src/components/feature-editor/GenericEditForm.vue:70
+#: src/components/feature-editor/NumberField.vue:48
 msgid "Not valid integer number"
 msgstr "Neplatné celé číslo"
 
-#: src/components/feature-editor/NumberField.vue:35
+#: src/components/feature-editor/GenericEditForm.vue:69
+#: src/components/feature-editor/NumberField.vue:47
 msgid "Not valid number"
 msgstr "Neplatné číslo"
 
-#: src/components/AttributeFilter.vue:205
+#: src/ui/DatePicker.vue:182
+msgid "November"
+msgstr "Listopad"
+
+#: src/components/AttributeFilter.vue:293
+msgid "Number"
+msgstr "Číslo"
+
+#: src/components/AttributeFilter.vue:295
+msgid "Number,Number"
+msgstr "Číslo,Číslo"
+
+#: src/components/AttributeFilter.vue:294
+msgid "Number,Number,..."
+msgstr "Číslo,..."
+
+#: src/ui/DatePicker.vue:181
+msgid "October"
+msgstr "Říjen"
+
+#: src/components/AttributeFilter.vue:282
 msgid "one of"
 msgstr "jednu z hodnot"
 
@@ -294,7 +395,7 @@ msgstr "Viditelnost základních vrstev"
 msgid "Opacity of overlay layers"
 msgstr "Viditelnost překryvných vrstev"
 
-#: src/components/print/Print.vue:110
+#: src/components/print/Print.vue:111
 msgid "Output format"
 msgstr "Výstupní formát"
 
@@ -302,7 +403,7 @@ msgstr "Výstupní formát"
 msgid "Overlay Layers"
 msgstr "Překryvné vrstvy"
 
-#: src/components/AttributesTable.vue:284
+#: src/components/AttributesTable.vue:313
 msgid "Page size"
 msgstr "Počet řádků"
 
@@ -322,7 +423,7 @@ msgstr "Přístup odepřen"
 msgid "Print Preview"
 msgstr "Náhled před tiskem"
 
-#: src/components/print/Print.vue:112
+#: src/components/print/Print.vue:113
 msgid "Print quality"
 msgstr "Kvalita tisku"
 
@@ -338,13 +439,31 @@ msgstr "Publikovat projekt"
 msgid "Reset Password"
 msgstr "Obnovit heslo"
 
-#: src/components/feature-editor/FeatureEditor.vue:71
+#: src/components/feature-editor/MediaImageField.vue:196
+#: src/components/feature-editor/MediaImageField.vue:48
+#: src/components/feature-editor/MediaImageField.vue:79
+msgid "Resolution"
+msgstr ""
+
+#: src/ui/DatePicker.vue:168
+msgid "Saturday"
+msgstr "Sobota"
+
+#: src/components/feature-editor/FeatureEditor.vue:72
 msgid "Save changes"
 msgstr "Uložit změny"
 
 #: src/components/BottomToolbar.vue:6 src/components/print/Preview.vue:11
 msgid "Scale"
 msgstr "Měřítko"
+
+#: src/components/feature-editor/MediaImageField.vue:114
+msgid "Select Image"
+msgstr ""
+
+#: src/ui/DatePicker.vue:180
+msgid "September"
+msgstr "Září"
 
 #: src/IntroPage.vue:23
 msgid "Sign in"
@@ -362,6 +481,20 @@ msgstr "Odhlásit se"
 msgid "Sign up"
 msgstr "Zaregistrovat se"
 
+#: src/components/AttributeFilter.vue:276
+msgid "since"
+msgstr "od"
+
+#: src/components/feature-editor/MediaImageField.vue:192
+#: src/components/feature-editor/MediaImageField.vue:44
+#: src/components/feature-editor/MediaImageField.vue:76
+msgid "Size"
+msgstr ""
+
+#: src/ui/DatePicker.vue:169
+msgid "Sunday"
+msgstr "Neděle"
+
 #: src/components/Identification.vue:140
 msgid "Table"
 msgstr "Tabulka"
@@ -369,6 +502,14 @@ msgstr "Tabulka"
 #: src/components/Identification.vue:142
 msgid "Table & Info Panel"
 msgstr "Tabulka & Infopanel"
+
+#: src/components/AttributeFilter.vue:296
+msgid "Text,Text,..."
+msgstr "Text,Text,..."
+
+#: src/ui/DatePicker.vue:166
+msgid "Thursday"
+msgstr "Čtvrtek"
 
 #: src/components/content-panel/ContentPanel.vue:107
 msgid "Topics"
@@ -378,15 +519,27 @@ msgstr "Témata"
 msgid "Total length"
 msgstr "Celková délka"
 
+#: src/ui/DatePicker.vue:164
+msgid "Tuesday"
+msgstr "Úterý"
+
 #: src/components/measure/Measure.vue:196
 #: src/components/measure/Measure.vue:203
 msgid "Units"
 msgstr "Jednotky"
 
-#: src/components/feature-editor/FeatureEditor.vue:85
+#: src/components/AttributeFilter.vue:277
+msgid "until"
+msgstr "do"
+
+#: src/components/feature-editor/FeatureEditor.vue:86
 #: src/components/feature-editor/NewFeatureEditor.vue:40
 msgid "Updating data"
 msgstr "Data se aktualizují"
+
+#: src/components/feature-editor/MediaImageField.vue:100
+msgid "Uploading"
+msgstr ""
 
 #: src/UserDashboard.vue:64
 msgid ""
@@ -398,7 +551,11 @@ msgstr ""
 msgid "Username / Email"
 msgstr "Uživatelské jméno / Heslo"
 
-#: src/components/feature-editor/FeatureEditor.vue:102
+#: src/ui/DatePicker.vue:165
+msgid "Wednesday"
+msgstr "Středa"
+
+#: src/components/feature-editor/FeatureEditor.vue:103
 msgid "Yes"
 msgstr "Ano"
 
@@ -430,6 +587,12 @@ msgstr "Měření"
 msgctxt "noun"
 msgid "Print"
 msgstr "Tisk"
+
+#~ msgid "Mon"
+#~ msgstr "Pon"
+
+#~ msgid "Sat"
+#~ msgstr "Sob"
 
 #~ msgid "Display"
 #~ msgstr "Zobrazení"

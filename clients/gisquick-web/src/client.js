@@ -19,6 +19,18 @@ HTTP.logout = function () {
   return HTTP.get('/api/auth/logout/')
 }
 
+// temporary compatibility with old API
+function projectBackwardCompatibility (config) {
+  let { projection, projections } = config
+  if (!projections) {
+    config.projections = { [projection.code]: projection }
+  }
+  if (typeof projection !== 'string') {
+    config.projection = projection.code
+  }
+  return config
+}
+
 HTTP.project = function (project) {
   let extendProject
   if (process.env.NODE_ENV === 'development') {
@@ -32,7 +44,7 @@ HTTP.project = function (project) {
       ? `/api/map/project/?PROJECT=${project}` // old API
       : `/api/map/project/${project}` // new API
     HTTP.get(url)
-      .then(resp => resolve(extendProject ? extendProject(resp.data) : resp.data))
+      .then(resp => resolve(projectBackwardCompatibility(extendProject ? extendProject(resp.data) : resp.data)))
       .catch(err => {
         if (err.response?.data.status) {
           reject(err.response.data)

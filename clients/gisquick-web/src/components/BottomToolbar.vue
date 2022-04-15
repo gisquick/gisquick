@@ -4,7 +4,7 @@
       <img src="../assets/text_logo.svg">
     </div>
     <label><translate>Scale</translate> 1: {{ scale }}</label>
-    <label>{{ project.config.projection.code }}</label>
+    <label>{{ project.config.projection }}</label>
     <label>
       <translate>Coordinates</translate>: <span ref="coords"></span>
     </label>

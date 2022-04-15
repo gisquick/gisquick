@@ -184,7 +184,7 @@ export function createQgisLayer (config) {
         tilesUrl: config.mapcacheUrl,
         legendUrl: config.legendUrl,
         owsUrl: config.owsUrl,
-        projection: config.projection.code,
+        projection: config.projection,
         tileGrid: new TileGrid({
           origin: Extent.getBottomLeft(config.extent),
           resolutions: config.resolutions,
@@ -314,11 +314,9 @@ Map.prototype.handleMapBrowserEvent = function (evt) {
  * @param {Object} controlOpts ol control options
  */
 export function createMap (config, controlOpts = {}) {
-  let projection = proj.get(config.projection.code)
+  const projection = proj.get(config.projection)
   if (!projection) {
-    proj.setProj4(proj4)
-    proj4.defs(config.projection.code, config.projection.proj4)
-    projection = proj.get(config.projection.code)
+    throw new Error(`Invalid or unknown map projection: ${config.projection}`)
   }
 
   const layers = []

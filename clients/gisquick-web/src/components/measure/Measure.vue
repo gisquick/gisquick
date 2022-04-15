@@ -148,7 +148,7 @@ export default {
       return Units
     },
     coordinateSystems () {
-      if (this.project.config.projection.code !== 'EPSG:4326') {
+      if (this.project.config.projection !== 'EPSG:4326') {
         const proj = this.$map.getView().getProjection()
         const projFormat = projectionCoordinatesFormatter(proj, this.project.config.position_precision.decimal_places)
         return [projFormat].concat(LocationUnits)

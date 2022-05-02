@@ -157,8 +157,11 @@ const BoolItems = [
 ]
 
 const Filters = {
-  integer: createNumericFilters('Integer', Validators.Integer),
-  double: createNumericFilters('Number', Validators.Number),
+  int: createNumericFilters('Integer', Validators.Integer), // new API
+  float: createNumericFilters('Number', Validators.Number), // new API
+
+  integer: createNumericFilters('Integer', Validators.Integer), // old API
+  double: createNumericFilters('Number', Validators.Number), // old API
   text: [
     TextFilter('LIKE', 'Text'),
     TextFilter('=', 'Text'),

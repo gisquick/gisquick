@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <div class="generic-infopanel">
     <div class="fields">
       <template v-for="(attr, index) in attributes">
         <span class="label" :key="attr.name">{{ attr.alias || attr.name }}</span>
@@ -170,7 +170,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.content {
+.generic-infopanel {
   padding: 6px;
 }
 .fields {

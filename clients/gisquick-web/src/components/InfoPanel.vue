@@ -1,5 +1,5 @@
 <template>
-  <div class="f-col info-panel light" v-if="feature">
+  <div v-if="feature" class="f-col info-panel light">
     <div class="toolbar dark top f-row-ac">
       <v-select
         class="flat f-grow my-0"
@@ -46,6 +46,7 @@
             :is="formComponent"
             :feature="feature"
             :layer="layer"
+            :project="$store.state.project.config"
           />
         </switch-transition>
       </scroll-area>
@@ -136,9 +137,12 @@ export default {
   overflow: hidden;
   @media (max-width: 500px) {
     width: calc(100vw - 24px);
+    max-width: calc(100vw - 24px);
   }
   @media (min-width: 501px) {
-    width: 400px;
+    .generic-infopanel {
+      width: 400px;
+    }
   }
 
   .toolbar {

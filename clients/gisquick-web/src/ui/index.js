@@ -1,6 +1,7 @@
 import VIcon from './Icon.vue'
 import VBtn from './Button.vue'
 import VCheckbox from './Checkbox.vue'
+import VDateField from './DateField.vue'
 import VDialog from './Dialog.vue'
 import VLinearProgress from './LinearProgress.vue'
 import VMenu from './Menu.vue'
@@ -19,6 +20,7 @@ export {
   VBtn,
   VIcon,
   VCheckbox,
+  VDateField,
   VDialog,
   VLinearProgress,
   VMenu,

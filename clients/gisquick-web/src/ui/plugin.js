@@ -2,6 +2,7 @@ import {
   VBtn,
   VIcon,
   VCheckbox,
+  VDateField,
   VDialog,
   VLinearProgress,
   VMenu,
@@ -22,6 +23,7 @@ export default {
     Vue.component('v-btn', VBtn)
     Vue.component('v-icon', VIcon)
     Vue.component('v-checkbox', VCheckbox)
+    Vue.component('v-date-field', VDateField)
     Vue.component('v-dialog', VDialog)
     Vue.component('v-linear-progress', VLinearProgress)
     Vue.component('v-menu', VMenu)

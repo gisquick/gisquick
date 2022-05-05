@@ -19,7 +19,6 @@
 <script>
 import mapValues from 'lodash/mapValues'
 import TextField from './TextField.vue'
-import DateField from '@/ui/DateField.vue'
 import { valueMapItems } from '@/adapters/attributes'
 
 function isIntegerString (strValue) {
@@ -79,7 +78,7 @@ export default {
         }
         if (attr.type === 'DATE') {
           return {
-            component: DateField,
+            component: 'v-date-field',
             props: {
               disabled,
               placeholder: attr.config?.display_format,

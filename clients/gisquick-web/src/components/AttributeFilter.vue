@@ -47,7 +47,6 @@
 </template>
 
 <script>
-import DateField from '@/ui/DateField.vue'
 import DateRange from '@/components/DateRange.vue'
 import { valueMapItems } from '@/adapters/attributes'
 
@@ -89,7 +88,7 @@ const Widgets = {
     params: { items, multiple }
   }),
   Date: (valueFormat) => ({
-    widget: 'date-field',
+    widget: 'v-date-field',
     params: { valueFormat }
     // params: { valueFormat: 'yyyy-MM-dd' }
     // params: { valueFormat: "yyyy-MM-dd'T'HH:mm:ss" }
@@ -207,7 +206,6 @@ function dateFilters (attribute) {
 
 export default {
   name: 'attribute-filter',
-  components: { DateField },
   props: {
     attribute: Object,
     filter: Object

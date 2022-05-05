@@ -1,12 +1,12 @@
 <template>
   <div style="display: contents">
-    <date-field
+    <v-date-field
       :color="color"
       :value-format="valueFormat"
       :value="since"
       @input="sinceChanged"
     />
-    <date-field
+    <v-date-field
       :color="color"
       :value-format="valueFormat"
       :value="until"
@@ -16,10 +16,8 @@
 </template>
 
 <script>
-import DateField from '@/ui/DateField.vue'
 
 export default {
-  components: { DateField },
   props: {
     color: String,
     value: {},

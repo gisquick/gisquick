@@ -106,8 +106,9 @@ export const ValueMapWidget = {
 
 export default {
   props: {
+    feature: Object,
     layer: Object,
-    feature: Object
+    project: Object
   },
   computed: {
     attributes () {
@@ -121,8 +122,7 @@ export default {
       return this.attributes.map(attr => this.feature?.get(attr.name))
     },
     mediaWidget () {
-      const projectPath = this.$store.state.project.config.project
-      const root = `/api/project/media/${projectPath.substring(0, projectPath.lastIndexOf('/'))}/`
+      const root = `/api/project/media/${this.project.name}/`
       return Widget((h, ctx) => {
         if (!ctx.props.value) {
           return <span class="value"></span>
@@ -136,15 +136,13 @@ export default {
     },
     widgets () {
       return this.attributes.map(attr => {
-        const type = attr.type.split('(')[0]
+        const type = attr.type.split('(')[0]?.toLowerCase()
         if (attr.widget === 'ValueMap') {
           return ValueMapWidget
         }
-        if (type === 'INTEGER') {
-          return RawWidget
-        } else if (type === 'DOUBLE') {
+        if (type === 'double' || type === 'float') {
           return FloatWidget
-        } else if (type === 'BOOL') {
+        } else if (type === 'bool') {
           return BoolWidget
         } else if (type === 'TEXT') {
           if (attr.content_type === 'url') {
@@ -157,9 +155,9 @@ export default {
             }
             return this.mediaWidget
           }
-        } else if (type === 'DATE') {
+        } else if (type === 'date') {
           return DateWidget
-        } else if (type === 'DATETIME' || type === 'TIMESTAMP') {
+        } else if (type === 'datetime' || type === 'TIMESTAMP') {
           return DateTimeWidget
         }
         return RawWidget

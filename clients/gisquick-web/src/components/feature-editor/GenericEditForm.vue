@@ -1,5 +1,5 @@
 <template>
-  <div class="f-col form light">
+  <div class="generic-edit-form f-col light">
     <template v-for="(attr, index) in layer.attributes">
       <slot :name="attr.name" :attr="attr">
         <component
@@ -64,6 +64,7 @@ export default {
     widgets () {
       return this.layer.attributes.map(attr => {
         const disabled = this.readonly && this.readonly.includes(attr.name)
+        const type = attr.type.split('(')[0]?.toLowerCase()
         if (attr.widget === 'ValueMap') {
           return {
             component: 'v-select',
@@ -73,10 +74,10 @@ export default {
             }
           }
         }
-        if (attr.type === 'BOOL') {
+        if (type === 'bool') {
           return { component: 'v-checkbox', props: { disabled } }
         }
-        if (attr.type === 'DATE') {
+        if (type === 'date') {
           return {
             component: 'v-date-field',
             props: {
@@ -87,8 +88,8 @@ export default {
             }
           }
         }
-        if (attr.type === 'INTEGER' || attr.type === 'DOUBLE') {
-          const integerType = attr.type === 'INTEGER'
+        if (type === 'integer' || type === 'double' || type === 'int' || type === 'float') {
+          const integerType = type === 'integer' || type === 'int'
           return {
             component: TextField,
             props: {
@@ -136,7 +137,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.form {
+.generic-edit-form {
   background-color: #f3f3f3;
 }
 </style>

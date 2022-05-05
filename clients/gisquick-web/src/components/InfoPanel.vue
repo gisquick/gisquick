@@ -36,6 +36,7 @@
         <switch-transition>
           <feature-editor
             v-if="editMode"
+            class="edit-form"
             :feature="feature"
             :layer="layer"
             @edit="$emit('edit', $event)"
@@ -140,7 +141,7 @@ export default {
     max-width: calc(100vw - 24px);
   }
   @media (min-width: 501px) {
-    .generic-infopanel {
+    .generic-infopanel, .edit-form {
       width: 400px;
     }
   }

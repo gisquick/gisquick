@@ -12,6 +12,24 @@ function filterGroups (node) {
   return node.layers ? [node].concat(...node.layers.map(filterGroups)) : []
 }
 
+export function filterLayers (items, test) {
+  const list = []
+  items.forEach(item => {
+    if (item.layers) {
+      const children = filterLayers(item.layers, test)
+      if (children.length) {
+        list.push({
+          ...item,
+          layers: children
+        })
+      }
+    } else if (test(item)) {
+      list.push(item)
+    }
+  })
+  return list
+}
+
 export default new Vuex.Store({
   strict: process.env.NODE_ENV === 'development',
   modules: {
@@ -51,7 +69,7 @@ export default new Vuex.Store({
         },
         overlays: {
           groups,
-          tree: layers,
+          tree: filterLayers(layers, l => !l.hidden),
           list: layersList({ layers })
         }
       }
@@ -86,7 +104,7 @@ export default new Vuex.Store({
       }
       const { groups, list: layers } = state.project.overlays
       const excluded = [].concat(...groups.filter(g => !g.visible).map(layersList))
-      return layers.filter(l => l.visible && !excluded.includes(l))
+      return layers.filter(l => l.drawing_order > -1 && l.visible && !excluded.includes(l))
     }
   }
 })

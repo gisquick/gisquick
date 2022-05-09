@@ -1,6 +1,8 @@
 .layers-tree {
   .item {
     padding-right: 6px;
+    word-break: break-word;
+    line-height: 1.25;
     &.group {
       &[depth="0"] {
         background-color: #bbb;
@@ -45,6 +47,11 @@
       .btn {
         // color: #999;
         margin: 1px;
+      }
+    }
+    .checkbox {
+      ::v-deep .check {
+        margin-right: 6px;
       }
     }
   }

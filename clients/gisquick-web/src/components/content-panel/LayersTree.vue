@@ -30,19 +30,25 @@
     </template>
     <template v-slot:leaf="{ item }">
       <!-- <div class="f-col"> -->
-        <div v-if="!item.hidden" class="item layer f-row-ac" :class="{expanded: expandedLayer === item}">
+        <div class="item layer f-row-ac" :class="{expanded: expandedLayer === item}">
           <v-checkbox
+            v-if="item.drawing_order > -1"
             class="f-grow"
             :label="item.title || item.name"
             :value="item.visible"
             @input="setLayerVisibility(item, $event)"
           />
+          <div v-else class="f-row-ac m-2">
+            <v-icon class="mr-2" name="map_off"/>
+            <span v-text="item.title || item.name"/>
+          </div>
+          <!-- <span v-else class="p-2" v-text="item.title || item.name"/> -->
           <v-btn
             v-if="!attributeTableDisabled && item.queryable && item.attributes && item.attributes.length"
             :active="activeTool === 'attribute-table' && attributeTable.layer === item"
             class="icon flat small"
             :color="activeTool === 'attribute-table' && attributeTable.layer === item ? 'primary' : ''"
-            :disabled="!item.visible"
+            :disabled="!item.visible && item.drawing_order > -1"
             @click="showAttributesTable(item)"
           >
             <v-icon name="attribute-table" size="12"/>

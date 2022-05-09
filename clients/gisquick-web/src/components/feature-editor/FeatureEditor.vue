@@ -5,13 +5,11 @@
       name="form"
       :fields="fields"
       :layer="layer"
-      :readonly="readonlyFields"
     >
       <generic-edit-form
         ref="editForm"
         :layer="layer"
         :fields="fields"
-        :readonly="readonlyFields"
         :status.sync="formStatus"
       />
       <!-- <v-radio-btn val="loading" v-model="status" label="Loading"/>
@@ -169,9 +167,6 @@ export default {
         LINE: 'MultiLineString',
         POLYGON: 'MultiPolygon'
       }[this.layer.geom_type]
-    },
-    readonlyFields () {
-      return this.layer.pk_attributes || []
     },
     fieldsModified () {
       return !isEqual(this.fields, this.originalFields)

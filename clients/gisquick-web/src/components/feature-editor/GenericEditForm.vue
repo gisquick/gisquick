@@ -34,8 +34,7 @@ function toNumber (v) {
 export default {
   props: {
     layer: Object,
-    fields: Object,
-    readonly: Array
+    fields: Object
   },
   data () {
     return {
@@ -63,7 +62,7 @@ export default {
     },
     widgets () {
       return this.layer.attributes.map(attr => {
-        const disabled = this.readonly && this.readonly.includes(attr.name)
+        const disabled = attr.constrains?.includes('readonly')
         const type = attr.type.split('(')[0]?.toLowerCase()
         if (attr.widget === 'ValueMap') {
           return {

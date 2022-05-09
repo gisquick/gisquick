@@ -65,7 +65,7 @@ export default {
       const layers = [
         this.visibleBaseLayer,
         ...this.visibleLayers
-      ].filter(l => l && (l.legend_url || l.type === 'vector'))
+      ].filter(l => l && l.drawing_order > -1)
 
       this.legendList = layers.map(l => {
         if (l.legend_url) {

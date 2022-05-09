@@ -119,7 +119,7 @@ export default {
       return this.layer.attributes
     },
     values () {
-      return this.attributes.map(attr => this.feature?.get(attr.name))
+      return this.attributes.map(attr => this.feature?.getFormatted(attr.name))
     },
     mediaWidget () {
       const root = `/api/project/media/${this.project.name}/`

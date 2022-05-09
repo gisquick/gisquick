@@ -199,6 +199,7 @@ import { simpleStyle } from '@/map/styles'
 import { layerFeaturesQuery } from '@/map/featureinfo'
 // import { ShallowArray } from '@/utils'
 import { eventCoord, DragHandler } from '@/events'
+import { formatFeatures } from '@/formatters'
 
 
 const ActionsHeader = {
@@ -275,7 +276,11 @@ export default {
         }))
     },
     tableData () {
-      return this.features?.map(f => ({ _id: f.getId(), ...f.getProperties() }))
+      return this.features?.map(f => ({
+        _id: f.getId(),
+        ...f.getProperties(),
+        ...f.getFormattedProperties()
+      }))
     },
     lastPage () {
       const { rowsPerPage, totalItems } = this.pagination
@@ -410,7 +415,8 @@ export default {
       const parser = new GeoJSON()
 
       // const features = ShallowArray(parser.readFeatures(geojson, { featureProjection: mapProjection }))
-      const features = Object.freeze(parser.readFeatures(geojson, { featureProjection: mapProjection }))
+      let features = parser.readFeatures(geojson, { featureProjection: mapProjection })
+      features = Object.freeze(formatFeatures(this.project, this.layer, features))
 
       const selectedIndex = this.selectedFeature ? features.findIndex(f => f.getId() === this.selectedFeature.getId()) : -1
       this.selectedFeatureIndex = selectedIndex !== -1 ? selectedIndex : 0

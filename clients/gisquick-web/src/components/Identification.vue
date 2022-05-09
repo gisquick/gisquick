@@ -80,6 +80,7 @@ import FeaturesViewer from '@/components/ol/FeaturesViewer.vue'
 import { simpleStyle } from '@/map/styles'
 import { layersFeaturesQuery, getFeatureByIdQuery } from '@/map/featureinfo'
 import { ShallowArray } from '@/utils'
+import { formatFeatures } from '@/formatters'
 
 const SelectedStyle = simpleStyle({
   fill: [3, 169, 244, 0.4],
@@ -266,7 +267,7 @@ export default {
         .filter(l => matchedLayers.includes(l.name))
         .map(l => ({
           layer: l,
-          features: ShallowArray(groupedFeatures[l.name])
+          features: ShallowArray(formatFeatures(this.project, l, groupedFeatures[l.name]))
         }))
     },
     onFeatureDelete (feature) {
@@ -294,6 +295,7 @@ export default {
       const index = this.resultItem.features.findIndex(f => f.getId() === fid)
       const query = getFeatureByIdQuery(this.resultItem.layer, feature)
       const features = await this.getFeatures(query)
+      formatFeatures(this.project, this.displayedLayer, features)
       const newFeature = features[0]
       if (newFeature) {
         // this.displayedFeaures.splice(index, 1, newFeature)

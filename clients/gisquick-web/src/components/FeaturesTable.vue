@@ -116,7 +116,11 @@ export default {
       return []
     },
     tableData () {
-      return this.features?.map(f => ({ _id: f.getId(), ...f.getProperties() }))
+      return this.features?.map(f => ({
+        _id: f.getId(),
+        ...f.getProperties(),
+        ...f.getFormattedProperties()
+      }))
     },
     selectedFeatureId () {
       return this.tableData?.[this.selected.featureIndex]._id

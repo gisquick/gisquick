@@ -38,7 +38,7 @@
             :value="item.visible"
             @input="setLayerVisibility(item, $event)"
           />
-          <div v-else class="f-row-ac m-2">
+          <div v-else class="f-row-ac m-2 f-grow">
             <v-icon class="mr-2" name="map_off"/>
             <span v-text="item.title || item.name"/>
           </div>

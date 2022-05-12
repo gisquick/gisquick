@@ -43,7 +43,8 @@ export default {
     this.marker = createMarker()
     this.overlay = new Overlay({
       element: this.marker.$el,
-      positioning: 'bottom-center'
+      positioning: 'bottom-center',
+      stopEvent: false
     })
     this.updatePosition(this.coords)
     this.overlay.setMap(map)

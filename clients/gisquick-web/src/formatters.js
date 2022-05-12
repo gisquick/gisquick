@@ -9,7 +9,10 @@ export function createFormatter (params) {
     // or (new Intl.NumberFormat()).resolvedOptions().locale
     // https://stackoverflow.com/questions/673905/how-to-determine-users-locale-within-browser
   }
-  return new Intl.NumberFormat(locale, config)
+  const nf = new Intl.NumberFormat(locale, config)
+  return {
+    format: v => Number.isFinite(v) ? nf.format(v) : v
+  }
 }
 
 function createProjectFormatters (project) {
@@ -41,7 +44,7 @@ export function formatFeatures (project, layer, features) {
     project.formatters = createProjectFormatters(project)
   }
   const layerFormatters = mapValues(
-    keyBy(layer.attributes.filter(attr => attr.format), 'name'),
+    keyBy(layer.attributes?.filter(attr => attr.format), 'name'),
     attr => project.formatters[attr.format]
   )
   _formatFeatures(features, layerFormatters)

@@ -204,13 +204,3 @@ export function layersFeaturesQuery (layers, geomFilter) {
   }
   return getFeatureQuery(...layers.map(l => _layerFeaturesQuery(l, geomsByProj[l.projection])))
 }
-
-export function getFeatureByIdQuery (layer, feature) {
-  const id = feature.getId().split('.', 2)[1]
-  const filter = {
-    attribute: layer.pk_attributes[0],
-    operator: '=',
-    value: id
-  }
-  return getFeatureQuery(_layerFeaturesQuery(layer, null, [filter]))
-}

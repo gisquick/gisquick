@@ -67,6 +67,15 @@ const ActionsHeader = {
   }
 }
 
+function createColumn (field) {
+  return {
+    label: field.alias || field.name,
+    key: field.name,
+    align: 'left',
+    sortable: false
+  }
+}
+
 export default {
   components: { TabsHeader },
   props: {
@@ -104,14 +113,11 @@ export default {
       return this.layerFeatures?.features
     },
     columns () {
-      if (this.layer) {
-        const columns = this.layer.attributes.map(attr => ({
-          label: attr.alias || attr.name,
-          key: attr.name,
-          align: 'left',
-          sortable: false
-        }))
-        return [ActionsHeader, ...columns]
+      if (this.layer?.attributes) {
+        return [ActionsHeader, ...this.layer.attributes.map(createColumn)]
+      } else if (this.layer?.bands) {
+        const fields = this.layer.bands.map(name => ({ name }))
+        return fields.map(createColumn)
       }
       return []
     },
@@ -127,7 +133,7 @@ export default {
     },
     slots () {
       const slots = {}
-      this.layer.attributes.forEach(attr => {
+      this.layer.attributes?.forEach(attr => {
         let widget
         if (attr.widget === 'ValueMap') {
           widget = ValueMapWidget

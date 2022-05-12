@@ -33,7 +33,11 @@
 
     <identify-pointer v-if="!editMode" @click="onClick"/>
     <features-viewer :features="displayedFeaures"/>
-    <point-marker :coords="mapCoords" :error="error" :loading="loading"/>
+    <point-marker
+      :coords="mapCoords"
+      :error="!!tasks.fetchFeatures.error"
+      :loading="tasks.fetchFeatures.pending"
+    />
 
     <template v-if="layersFeatures.length">
       <portal to="right-panel">
@@ -67,6 +71,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import partition from 'lodash/partition'
 import Polygon from 'ol/geom/polygon'
 import Circle from 'ol/geom/circle'
 import GeoJSON from 'ol/format/geojson'
@@ -78,9 +83,10 @@ import InfoPanel from '@/components/InfoPanel.vue'
 import PointMarker from '@/components/ol/PointMarker.vue'
 import FeaturesViewer from '@/components/ol/FeaturesViewer.vue'
 import { simpleStyle } from '@/map/styles'
-import { layersFeaturesQuery, getFeatureByIdQuery } from '@/map/featureinfo'
+import { layersFeaturesQuery } from '@/map/featureinfo'
 import { ShallowArray } from '@/utils'
 import { formatFeatures } from '@/formatters'
+import { TaskState, watchTask } from '@/tasks'
 
 const SelectedStyle = simpleStyle({
   fill: [3, 169, 244, 0.4],
@@ -120,8 +126,9 @@ export default {
       layersFeatures: [],
       selection: null,
       editMode: false,
-      loading: false, // use TaskState & watchTask?
-      error: false
+      tasks: {
+        fetchFeatures: TaskState()
+      }
     }
   },
   computed: {
@@ -180,52 +187,79 @@ export default {
     }
   },
   methods: {
-    async getFeatures (query, params = {}) {
+    readFeatures (data) {
+      const parser = new GeoJSON()
+      return parser.readFeatures(data, { featureProjection: this.mapProjection })
+    },
+    async getFeaturesByWFS (query, params = {}) {
       const config = {
         params: {
-          'VERSION': '1.1.0',
-          'SERVICE': 'WFS',
-          'REQUEST': 'GetFeature',
-          'OUTPUTFORMAT': 'GeoJSON',
+          VERSION: '1.1.0',
+          SERVICE: 'WFS',
+          REQUEST: 'GetFeature',
+          OUTPUTFORMAT: 'GeoJSON',
           ...params
         },
         headers: { 'Content-Type': 'text/xml' }
       }
-      this.loading = true
-      this.error = false
-      try {
-        const resp = await this.$http.post(this.project.config.ows_url, query, config)
-        const parser = new GeoJSON()
-        return parser.readFeatures(resp.data, { featureProjection: this.mapProjection })
-      } catch {
-        this.error = true
-        return []
-      } finally {
-        this.loading = false
+      const { data } = await this.$http.post(this.project.config.ows_url, query, config)
+      return this.readFeatures(data)
+    },
+    async getFeatureInfo (evt, layers) {
+      const { map, coordinate } = evt
+      const r = map.getView().getResolution()
+      const s = map.overlay.getSource()
+      const layersParam = layers.map(l => l.name).join(',')
+      const params = {
+        INFO_FORMAT: 'application/json', // 'application/vnd.ogc.gml'
+        LAYERS: layersParam,
+        QUERY_LAYERS: layersParam,
+        FEATURE_COUNT: layers.length
       }
+      const projCode = map.getView().getProjection().getCode()
+      const url = s.getGetFeatureInfoUrl(coordinate, r, projCode, params)
+      // const qParams = new URLSearchParams(u.split('?', 2)[1])
+      // this.$http.get(url)
+      // this.$http.get(this.project.config.ows_url, { params: qParams })
+      const { data } = await this.$http.get(url)
+      return this.readFeatures(data)
+
     },
     async onClick (evt) {
-      const { map, pixel } = evt
-      this.mapCoords = map.getCoordinateFromPixel(pixel)
-      const coords = map.getCoordinateFromPixel(pixel)
-      const pixelRadius = 8
-      const radius = Math.abs(map.getCoordinateFromPixel([pixel[0] + pixelRadius, pixel[1]])[0] - coords[0])
-      const geom = {
-        geom: Polygon.fromCircle(new Circle(coords, radius), 6),
-        projection: this.mapProjection
-      }
+      const { map, pixel, coordinate } = evt
+      this.mapCoords = coordinate
+
       const layers = this.identificationLayer
         ? this.queryableLayers.filter(l => l.name === this.identificationLayer)
         : this.queryableLayers
-      const query = layersFeaturesQuery(layers, geom)
 
-      const features = await this.getFeatures(query, { 'MAXFEATURES': 10 })
+      const [wfsLayers, fiLayers] = partition(layers, l => l.attributes)
+      const tasks = []
+      if (fiLayers.length) {
+        tasks.push(this.getFeatureInfo(evt, fiLayers))
+      }
+      if (wfsLayers.length) {
+        const pixelRadius = 8
+        const radius = Math.abs(map.getCoordinateFromPixel([pixel[0] + pixelRadius, pixel[1]])[0] - coordinate[0])
+        const geom = {
+          geom: Polygon.fromCircle(new Circle(coordinate, radius), 6),
+          projection: this.mapProjection
+        }
+        const query = layersFeaturesQuery(wfsLayers, geom)
+        tasks.push(this.getFeaturesByWFS(query, { 'MAXFEATURES': 10 }))
+      }
+      const task = Promise.allSettled(tasks)
+      const res = await watchTask(task, this.tasks.fetchFeatures)
+      this.tasks.fetchFeatures.error = res.some(i => i.status === 'rejected')
+      const features = [].concat(...res.filter(i => i.value).map(i => i.value))
       const categorizedFeatures = this.categorize(features)
       const items = this.tableData(categorizedFeatures)
       this.layersFeatures = items
       if (items.length) {
+        const selectedLayer = this.selection?.layer
+        const index = selectedLayer ? Math.max(0, items.findIndex(i => i.layer.name === selectedLayer)) : 0
         this.selection = {
-          layer: items[0].layer.name,
+          layer: items[index].layer.name,
           featureIndex: 0
         }
       } else {
@@ -251,7 +285,7 @@ export default {
         features.forEach(feature => {
           if (feature instanceof Feature) {
             const fid = feature.getId()
-            const layer = WfsToLayerName[fid.substring(0, fid.lastIndexOf('.'))]
+            const layer = WfsToLayerName[fid.substring(0, fid.lastIndexOf('.'))] ?? fid
             if (!layersFeatures[layer]) {
               layersFeatures[layer] = []
             }
@@ -293,15 +327,26 @@ export default {
     async onFeatureEdit (feature) {
       const fid = feature.getId()
       const index = this.resultItem.features.findIndex(f => f.getId() === fid)
-      const query = getFeatureByIdQuery(this.resultItem.layer, feature)
-      const features = await this.getFeatures(query)
-      formatFeatures(this.project, this.displayedLayer, features)
-      const newFeature = features[0]
-      if (newFeature) {
-        // this.displayedFeaures.splice(index, 1, newFeature)
-        this.$set(this.displayedFeaures, index, newFeature)
+
+      const params = {
+        VERSION: '1.1.0',
+        SERVICE: 'WFS',
+        REQUEST: 'GetFeature',
+        OUTPUTFORMAT: 'GeoJSON',
+        FEATUREID: feature.getId()
       }
-      this.$map.ext.refreshOverlays()
+      const task = this.$http.get(this.project.config.ows_url, { params })
+      const resp = await watchTask(task, this.tasks.fetchFeatures)
+      if (this.tasks.fetchFeatures.success) {
+        const features = this.readFeatures(resp.data)
+        formatFeatures(this.project, this.displayedLayer, features)
+        const newFeature = features[0]
+        if (newFeature) {
+          // this.displayedFeaures.splice(index, 1, newFeature)
+          this.$set(this.displayedFeaures, index, newFeature)
+        }
+        this.$map.ext.refreshOverlays()
+      }
     }
   }
 }

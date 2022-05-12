@@ -1,7 +1,7 @@
 <template>
   <div class="generic-infopanel">
     <div class="fields">
-      <template v-for="(attr, index) in attributes">
+      <template v-for="(attr, index) in fields">
         <span class="label" :key="attr.name">{{ attr.alias || attr.name }}</span>
         <slot :name="attr.name" :attr="attr">
           <component
@@ -111,15 +111,21 @@ export default {
     project: Object
   },
   computed: {
-    attributes () {
-      if (this.layer.info_panel_fields) {
-        const attrsMap = keyBy(this.layer.attributes, 'name')
-        return this.layer.info_panel_fields.map(name => attrsMap[name])
+    fields () {
+      const { attributes, bands, info_panel_fields } = this.layer
+      if (attributes) {
+        if (info_panel_fields) {
+          const attrsMap = keyBy(attributes, 'name')
+          return info_panel_fields.map(name => attrsMap[name])
+        }
+        return attributes
+      } else if (bands) {
+        return bands.map(name => ({ name, type: 'text' }))
       }
-      return this.layer.attributes
+      return []
     },
     values () {
-      return this.attributes.map(attr => this.feature?.getFormatted(attr.name))
+      return this.fields.map(attr => this.feature?.getFormatted(attr.name))
     },
     mediaWidget () {
       const root = `/api/project/media/${this.project.name}/`
@@ -135,7 +141,7 @@ export default {
       })
     },
     widgets () {
-      return this.attributes.map(attr => {
+      return this.fields.map(attr => {
         const type = attr.type.split('(')[0]?.toLowerCase()
         if (attr.widget === 'ValueMap') {
           return ValueMapWidget

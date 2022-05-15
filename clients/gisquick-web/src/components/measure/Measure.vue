@@ -150,7 +150,10 @@ export default {
     coordinateSystems () {
       if (this.project.config.projection !== 'EPSG:4326') {
         const proj = this.$map.getView().getProjection()
-        const projFormat = projectionCoordinatesFormatter(proj, this.project.config.position_precision.decimal_places)
+        const precision = this.project.config.position_precision
+          ? this.project.config.position_precision.decimal_places // old API
+          : this.project.config.units.position_precision // new API
+        const projFormat = projectionCoordinatesFormatter(proj, precision)
         return [projFormat].concat(LocationUnits)
       }
       return LocationUnits

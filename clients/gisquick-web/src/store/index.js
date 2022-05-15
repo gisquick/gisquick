@@ -80,6 +80,9 @@ export default new Vuex.Store({
     visibleBaseLayer (state, name) {
       state.baseLayerName = name
     },
+    groupVisibility (state, { group, visible }) {
+      group.visible = visible
+    },
     layerVisibility (state, { layer, visible }) {
       layer.visible = visible
     },

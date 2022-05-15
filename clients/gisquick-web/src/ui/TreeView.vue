@@ -38,23 +38,23 @@ export default {
     indendStyle (depth) {
       return this.indent ? { paddingLeft: `${this.numIndent * depth}px` } : null
     },
-    renderGroup (h, item, depth) {
+    renderGroup (h, group, depth) {
       const style = this.indendStyle(depth)
       let groupContent = null
-      const groupKey = item[this.itemKey]
+      const groupKey = group[this.itemKey]
       const expanded = this.expanded?.[groupKey]
       if (expanded) {
-        const contentData = this.groupContentAttrs?.(item)
-        const children = item[this.itemChildren].map(item => this.isGroup(item) ? this.renderGroup(h, item, depth + 1) : this.renderLeaf(h, item, depth + 1))
+        const contentData = this.groupContentAttrs?.(group)
+        const children = group[this.itemChildren].map(item => this.isGroup(item) ? this.renderGroup(h, item, depth + 1) : this.renderLeaf(h, item, group, depth + 1))
         // groupContent = <div class="group-items f-col" key={`gi-${groupKey}`} {...contentData}>{children}</div>
         groupContent = h('div', { staticClass: 'group-items f-col', ...contentData }, children)
       }
 
       // const contentData = this.groupContentAttrs?.(item)
-      // const children = item[this.itemChildren].map(item => this.isGroup(item) ? this.renderGroup(h, item, depth + 1) : this.renderLeaf(h, item, depth + 1))
+      // const children = item[this.itemChildren].map(item => this.isGroup(item) ? this.renderGroup(h, item, depth + 1) : this.renderLeaf(h, item, group, depth + 1))
       // groupContent = <div vShow={expanded} class="group-items f-col" key={`gi-${groupKey}`} {...contentData}>{children}</div>
 
-      const groupItem = this.$scopedSlots.group({ item, depth, style })
+      const groupItem = this.$scopedSlots.group({ group, depth, style })
       if (style) {
         // addStyle(groupItem[0], style)
       }
@@ -73,9 +73,9 @@ export default {
       //   </div>
       // )
     },
-    renderLeaf (h, item, depth) {
+    renderLeaf (h, item, group, depth) {
       const style = this.indendStyle(depth)
-      const cmp = this.$scopedSlots.leaf({ item, depth, style })
+      const cmp = this.$scopedSlots.leaf({ item, group, depth, style })
       if (style) {
         // addStyle(cmp[0], style)
       }
@@ -83,7 +83,7 @@ export default {
     }
   },
   render (h) {
-    const children = this.items.map(item => this.isGroup(item) ? this.renderGroup(h, item, 0) : this.renderLeaf(h, item, 0))
+    const children = this.items.map(item => this.isGroup(item) ? this.renderGroup(h, item, 0) : this.renderLeaf(h, item, null, 0))
     return (
       <div class="tree-view f-col">
         {children}

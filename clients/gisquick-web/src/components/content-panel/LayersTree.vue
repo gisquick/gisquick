@@ -7,28 +7,28 @@
     :expanded="expanded"
     :group-content-attrs="groupContentAttributes"
   >
-    <template v-slot:group="{ item, depth }">
+    <template v-slot:group="{ group, depth }">
       <div class="item group f-row-ac" :depth="depth">
         <svg
           width="16"
           viewBox="0 0 16 16"
           role="button"
           class="toggle icon"
-          :class="{expanded: expanded[item.name]}"
-          @click="toggleGroup(item)"
+          :class="{expanded: expanded[group.name]}"
+          @click="toggleGroup(group)"
         >
           <path d="M 8,1 L 8,15"/>
-          <path class="tr" :d="expanded[item.name] ? 'M 8,8 L 8,8' : 'M 1,8 L 15,8'"/>
+          <path class="tr" :d="expanded[group.name] ? 'M 8,8 L 8,8' : 'M 1,8 L 15,8'"/>
         </svg>
-        <span class="label f-grow" v-text="item.name"/>
+        <span class="label f-grow" v-text="group.name"/>
         <v-switch
           class="round"
-          :value="item.visible"
-          @input="setLayerVisibility(item, $event)"
+          :value="group.visible"
+          @input="setGroupVisibility(group, $event)"
         />
       </div>
     </template>
-    <template v-slot:leaf="{ item }">
+    <template v-slot:leaf="{ item, group }">
       <!-- <div class="f-col"> -->
         <div class="item layer f-row-ac" :class="{expanded: expandedLayer === item}">
           <v-checkbox
@@ -36,7 +36,7 @@
             class="f-grow"
             :label="item.title || item.name"
             :value="item.visible"
-            @input="setLayerVisibility(item, $event)"
+            @input="setLayerVisibility(item, group, $event)"
           />
           <div v-else class="f-row-ac m-2 f-grow">
             <v-icon class="mr-2" name="map_off"/>
@@ -116,7 +116,14 @@ export default {
     toggleLayerInfo (layer) {
       this.expandedLayer = this.expandedLayer !== layer ? layer : null
     },
-    setLayerVisibility (layer, visible) {
+    setGroupVisibility (group, visible) {
+      this.$store.commit('groupVisibility', { group, visible })
+    },
+    setLayerVisibility (layer, group, visible) {
+      if (group?.mutually_exclusive) {
+        const offLayers = group.layers.filter(l => l.visible && l !== layer)
+        offLayers.forEach(l => this.$store.commit('layerVisibility', { layer: l, visible: false }))
+      }
       this.$store.commit('layerVisibility', { layer, visible })
     },
     groupContentAttributes (item) {

@@ -15,13 +15,13 @@
       :items="items"
       :expanded="expanded"
     >
-      <template v-slot:group="{ item }">
+      <template v-slot:group="{ group }">
         <div
           role="menuitem"
           class="item group f-row-ac"
-          :class="{highlighted: highlighted === item, expanded: expanded[item.key]}"
-          @click="onClick(item)"
-          @mouseover="highlighted = item"
+          :class="{highlighted: highlighted === group, expanded: expanded[group.key]}"
+          @click="onClick(group)"
+          @mouseover="highlighted = group"
         >
           <v-icon
             role="button"
@@ -29,16 +29,16 @@
             color="#777"
             name="arrow-down"
             size="12"
-            @click.stop="toggleExpand(item)"
+            @click.stop="toggleExpand(group)"
           />
-          <span class="label f-grow" v-text="item.text"/>
+          <span class="label f-grow" v-text="group.text"/>
           <slot
-            :name="item.slot ? `item-prepend(${item.slot})` : 'item-prepend'"
-            :item="item"
+            :name="group.slot ? `item-prepend(${group.slot})` : 'item-prepend'"
+            :item="group"
           />
         </div>
       </template>
-      <template v-slot:leaf="{ item, style }">
+      <template v-slot:leaf="{ item }">
         <template v-if="item.separator">
           <div v-if="item.text" class="separator f-row-ac">
             <hr class="f-grow"/>

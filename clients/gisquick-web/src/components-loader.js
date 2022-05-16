@@ -51,7 +51,7 @@ export function externalComponent (project, cname) {
     const dir = project.project.split('/').slice(0, 2).join('/')
     resource = `/api/project/static/${dir}/${mod.path}`
   } else { // new API
-    resource = `/api/project/static/${project.name}/${mod.path}`
+    resource = `/api/project/web/${project.name}/${mod.path}`
   }
   return () => getComponent(resource, cname)
 }

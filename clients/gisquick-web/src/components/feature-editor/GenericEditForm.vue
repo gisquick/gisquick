@@ -18,8 +18,11 @@
 
 <script>
 import mapValues from 'lodash/mapValues'
+// import NumberField from './NumberField.vue'
 import TextField from './TextField.vue'
+import MediaImageField from './MediaImageField.vue'
 import { valueMapItems } from '@/adapters/attributes'
+
 
 function isIntegerString (strValue) {
   return /^-?\d+$/.test(strValue)
@@ -34,7 +37,8 @@ function toNumber (v) {
 export default {
   props: {
     layer: Object,
-    fields: Object
+    fields: Object,
+    project: Object
   },
   data () {
     return {
@@ -42,11 +46,15 @@ export default {
     }
   },
   computed: {
-    config () {
-      return this.$store.state.project.config
-    },
-    owsUrl () {
-      return this.config.ows_url
+    mediaImage () {
+      return {
+        component: MediaImageField,
+        props: {
+          url: null,
+          accept: 'image/*',
+          location: this.layer.name
+        }
+      }
     },
     tr () {
       return {
@@ -70,6 +78,16 @@ export default {
             props: {
               class: 'filled',
               items: valueMapItems(attr)
+            }
+          }
+        } else if (attr.widget === 'MediaImage') {
+          const url = `/api/project/file/${this.project.name}`
+          return {
+            component: MediaImageField,
+            props: {
+              url,
+              location: `web/${this.layer.name}`,
+              disabled // TODO: implement
             }
           }
         }
@@ -98,6 +116,13 @@ export default {
               disabled
             }
           }
+          // return {
+          //   component: NumberField,
+          //   props: {
+          //     integer: type === 'integer',
+          //     disabled
+          //   }
+          // }
         }
         return {
           component: TextField,

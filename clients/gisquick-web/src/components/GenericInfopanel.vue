@@ -22,6 +22,8 @@ import keyBy from 'lodash/keyBy'
 import round from 'lodash/round'
 import format from 'date-fns/format'
 import parse from 'date-fns/parse'
+import path from 'path'
+
 import { valueMapItems } from '@/adapters/attributes'
 
 function isAbsoluteUrl (val) {
@@ -128,12 +130,12 @@ export default {
       return this.fields.map(attr => this.feature?.getFormatted(attr.name))
     },
     mediaWidget () {
-      const root = `/api/project/media/${this.project.name}/`
+      const root = `/api/project/file/${this.project.name}`
       return Widget((h, ctx) => {
         if (!ctx.props.value) {
           return <span class="value"></span>
         }
-        const url = root + ctx.props.value.replace('media/', '')
+        const url = path.join(root, ctx.props.value)
         return [
           <a class="value" href={url} target="_blank">{ctx.props.value}</a>,
           <v-image class="image" src={url}/>
@@ -143,28 +145,36 @@ export default {
     widgets () {
       return this.fields.map(attr => {
         const type = attr.type.split('(')[0]?.toLowerCase()
+
         if (attr.widget === 'ValueMap') {
           return ValueMapWidget
+        } else if (attr.widget === 'Hyperlink') {
+          return UrlWidget
+        } else if (attr.widget === 'Image') {
+          return ImageWidget
+        } else if (attr.widget === 'MediaImage') {
+          return this.mediaWidget
         }
+        if (type === 'bool') {
+          return BoolWidget
+        } else if (type === 'date') {
+          return DateWidget
+        } else if (type === 'datetime' || type === 'timestamp') {
+          return DateTimeWidget
+        }
+        // old API
         if (type === 'double' || type === 'float') {
           return FloatWidget
-        } else if (type === 'bool') {
-          return BoolWidget
-        } else if (type === 'TEXT') {
+        } else if (type === 'text') {
           if (attr.content_type === 'url') {
             return UrlWidget
           } else if (attr.content_type?.startsWith('media;image/')) {
-            // TODO: create special content_type for regular image files
             const value = this.feature?.get(attr.name)
             if (isAbsoluteUrl(value)) {
               return ImageWidget
             }
             return this.mediaWidget
           }
-        } else if (type === 'date') {
-          return DateWidget
-        } else if (type === 'datetime' || type === 'TIMESTAMP') {
-          return DateTimeWidget
         }
         return RawWidget
       })

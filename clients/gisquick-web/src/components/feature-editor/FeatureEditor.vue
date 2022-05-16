@@ -10,6 +10,7 @@
         ref="editForm"
         :layer="layer"
         :fields="fields"
+        :project="project"
         :status.sync="formStatus"
       />
       <!-- <v-radio-btn val="loading" v-model="status" label="Loading"/>
@@ -108,7 +109,6 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
 import omit from 'lodash/omit'
 import isEqual from 'lodash/isEqual'
 import Style from 'ol/style/style'
@@ -142,7 +142,8 @@ export default {
   refs: ['geometryEditor'],
   props: {
     layer: Object,
-    feature: Object
+    feature: Object,
+    project: Object
   },
   data () {
     return {
@@ -156,7 +157,6 @@ export default {
     }
   },
   computed: {
-    ...mapState(['project']),
     geomType () {
       const geom = this.feature && this.feature.getGeometry()
       if (geom) {
@@ -223,7 +223,7 @@ export default {
     async wfsTransaction (operations) {
       this.statusController.set('loading', 1000)
       try {
-        await wfsTransaction(this.project.config.ows_url, this.layer.name, operations)
+        await wfsTransaction(this.project.ows_url, this.layer.name, operations)
         // TODO: afterSave hook
         await this.statusController.set('success', 1500)
         this.statusController.set(null, 100)

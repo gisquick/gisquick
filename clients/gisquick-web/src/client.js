@@ -56,4 +56,6 @@ HTTP.project = function (project) {
   })
 }
 
+HTTP.CancelToken = axios.CancelToken
+HTTP.isCancel = axios.isCancel
 export default HTTP

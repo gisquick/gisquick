@@ -39,6 +39,7 @@
             class="edit-form"
             :feature="feature"
             :layer="layer"
+            :project="$store.state.project.config"
             @edit="$emit('edit', $event)"
             @delete="$emit('delete', $event)"
           />

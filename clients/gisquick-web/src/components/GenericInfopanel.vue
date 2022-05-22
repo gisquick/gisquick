@@ -130,7 +130,7 @@ export default {
       return this.fields.map(attr => this.feature?.getFormatted(attr.name))
     },
     mediaWidget () {
-      const root = `/api/project/file/${this.project.name}`
+      const root = `/api/project/media/${this.project.name}`
       return Widget((h, ctx) => {
         if (!ctx.props.value) {
           return <span class="value"></span>

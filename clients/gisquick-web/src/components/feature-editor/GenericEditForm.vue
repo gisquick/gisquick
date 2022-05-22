@@ -81,7 +81,7 @@ export default {
             }
           }
         } else if (attr.widget === 'MediaImage') {
-          const url = `/api/project/file/${this.project.name}`
+          const url = `/api/project/media/${this.project.name}`
           return {
             component: MediaImageField,
             props: {

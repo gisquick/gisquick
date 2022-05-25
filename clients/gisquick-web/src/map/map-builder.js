@@ -219,18 +219,30 @@ export function createQgisLayer (config) {
 }
 
 export function createBaseLayer (layerConfig, projectConfig = {}) {
-  const { type, provider_type } = layerConfig
+  console.log(layerConfig)
+  const { source, type, provider_type } = layerConfig
   if (type === 'blank') {
     return new ImageLayer({
       extent: layerConfig.extent,
       visible: layerConfig.visible
     })
-  } else if (type === 'osm') {
+  }
+  if (type === 'osm') {
     return new TileLayer({
       source: new OSM(),
       visible: layerConfig.visible
     })
-  } else if (type === 'wms' || provider_type === 'wms') {
+  }
+  if (type === 'xyz' || source?.type === 'xyz') {
+    return new TileLayer({
+      visible: layerConfig.visible,
+      source: new XYZ({
+        url: layerConfig.url,
+        attributions: layerConfig.attribution ? [createAttribution(layerConfig.attribution)] : null
+      })
+    })
+  }
+  if (type === 'wms' || provider_type === 'wms') {
     return new TileLayer({
       source: new TileWMS({
         url: layerConfig.url,
@@ -250,15 +262,8 @@ export function createBaseLayer (layerConfig, projectConfig = {}) {
       extent: layerConfig.extent,
       visible: layerConfig.visible
     })
-  } else if (type === 'xyz') {
-    return new TileLayer({
-      visible: layerConfig.visible,
-      source: new XYZ({
-        url: layerConfig.url,
-        attributions: layerConfig.attribution ? [createAttribution(layerConfig.attribution)] : null
-      })
-    })
-  } /* else if (type === 'bing') {
+  }
+  /* else if (type === 'bing') {
     return new TileLayer({
       visible: layerConfig.visible,
       preload: Infinity,

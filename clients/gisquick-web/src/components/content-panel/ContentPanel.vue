@@ -27,7 +27,8 @@
           @touchstart.native.stop=""
           @touchend.native.stop=""
         />
-        <text-tabs-header :items="overlaysTabs" v-model="activeSecondaryTab"/>
+        <text-tabs-header v-if="overlaysTabs.length > 1" :items="overlaysTabs" v-model="activeSecondaryTab"/>
+        <div v-else class="mt-2"/>
         <v-tabs
           class="secondary-tabs f-grow"
           :items="overlaysTabs"
@@ -95,18 +96,24 @@ export default {
     topics () {
       return this.project.config.topics
     },
+    hasTopics () {
+      return this.topics?.length > 0
+    },
+    hasBaseLayers () {
+      return this.project.baseLayers.list.length > 0
+    },
     tabsItems () {
       return [
-        { key: 'base', icon: 'base-layer', label: this.$gettext('Base Layers') },
+        this.hasBaseLayers && { key: 'base', icon: 'base-layer', label: this.$gettext('Base Layers') },
         { key: 'overlays', icon: 'overlays', label: this.$gettext('Overlay Layers') },
         { key: 'legend', icon: 'legend', label: this.$gettext('Legend') }
-      ]
+      ].filter(i => i)
     },
     overlaysTabs () {
       return [
-        { key: 'topics', label: this.$gettext('Topics') },
+        this.hasTopics && { key: 'topics', label: this.$gettext('Topics') },
         { key: 'layers', label: this.$gettext('Layers') }
-      ]
+      ].filter(i => i)
     }
   },
   created () {

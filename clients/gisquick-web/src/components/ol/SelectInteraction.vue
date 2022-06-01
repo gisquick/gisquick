@@ -1,6 +1,6 @@
 <script>
-import Select from 'ol/interaction/select'
-import Collection from 'ol/collection'
+import Select from 'ol/interaction/Select'
+import Collection from 'ol/Collection'
 
 import { keyListener, updateLock, ShallowArray } from '@/utils'
 

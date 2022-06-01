@@ -111,8 +111,8 @@
 <script>
 import omit from 'lodash/omit'
 import isEqual from 'lodash/isEqual'
-import Style from 'ol/style/style'
-import Feature from 'ol/feature'
+import Style from 'ol/style/Style'
+import Feature from 'ol/Feature'
 
 import { wfsTransaction } from '@/map/wfs'
 import { queuedUpdater } from '@/utils'

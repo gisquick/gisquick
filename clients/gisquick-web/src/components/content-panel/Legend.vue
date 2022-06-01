@@ -21,7 +21,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import Observable from 'ol/observable'
+import { unByKey } from 'ol/Observable'
 import debounce from 'lodash/debounce'
 
 export default {
@@ -55,7 +55,7 @@ export default {
           this.updateLegend()
         }
       } else if (this.listener) {
-        Observable.unByKey(this.listener)
+        unByKey(this.listener)
         this.listener = null
       }
     },

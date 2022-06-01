@@ -72,11 +72,11 @@
 <script>
 import { mapState } from 'vuex'
 import partition from 'lodash/partition'
-import Polygon from 'ol/geom/polygon'
-import Circle from 'ol/geom/circle'
-import GeoJSON from 'ol/format/geojson'
-import Observable from 'ol/observable'
-import Feature from 'ol/feature'
+import { fromCircle } from 'ol/geom/Polygon'
+import Circle from 'ol/geom/Circle'
+import GeoJSON from 'ol/format/GeoJSON'
+import Feature from 'ol/Feature'
+import { unByKey } from 'ol/Observable'
 
 import FeaturesTable from '@/components/FeaturesTable.vue'
 import InfoPanel from '@/components/InfoPanel.vue'
@@ -100,7 +100,7 @@ const IdentifyPointer = {
     map.getViewport().style.cursor = 'crosshair'
     const key = map.on('singleclick', evt => this.$emit('click', evt))
     this.$once('hook:beforeDestroy', () => {
-      Observable.unByKey(key)
+      unByKey(key)
       map.getViewport().style.cursor = ''
     })
   },
@@ -217,7 +217,7 @@ export default {
         FEATURE_COUNT: layers.length
       }
       const projCode = map.getView().getProjection().getCode()
-      const url = s.getGetFeatureInfoUrl(coordinate, r, projCode, params)
+      const url = s.getFeatureInfoUrl(coordinate, r, projCode, params)
       // const qParams = new URLSearchParams(u.split('?', 2)[1])
       // this.$http.get(url)
       // this.$http.get(this.project.config.ows_url, { params: qParams })
@@ -242,7 +242,7 @@ export default {
         const pixelRadius = 8
         const radius = Math.abs(map.getCoordinateFromPixel([pixel[0] + pixelRadius, pixel[1]])[0] - coordinate[0])
         const geom = {
-          geom: Polygon.fromCircle(new Circle(coordinate, radius), 6),
+          geom: fromCircle(new Circle(coordinate, radius), 6),
           projection: this.mapProjection
         }
         const query = layersFeaturesQuery(wfsLayers, geom)

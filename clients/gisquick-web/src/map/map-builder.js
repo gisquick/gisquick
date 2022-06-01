@@ -1,19 +1,19 @@
-import Map from 'ol/map'
-import View from 'ol/view'
-import ImageWMS from 'ol/source/imagewms'
-import TileImage from 'ol/source/tileimage'
-import TileWMS from 'ol/source/tilewms'
-// import BingMaps from 'ol/source/bingmaps'
-import OSM from 'ol/source/osm'
-import XYZ from 'ol/source/xyz'
-import ImageLayer from 'ol/layer/image'
-import TileLayer from 'ol/layer/tile'
-import TileGrid from 'ol/tilegrid/tilegrid'
-import Extent from 'ol/extent'
-import proj from 'ol/proj'
+import Map from 'ol/Map'
+import View from 'ol/View'
+import ImageWMS from 'ol/source/ImageWMS'
+import TileImage from 'ol/source/TileImage'
+import TileWMS from 'ol/source/TileWMS'
+// import BingMaps from 'ol/source/BingMaps'
+import OSM from 'ol/source/OSM'
+import XYZ from 'ol/source/XYZ'
+import ImageLayer from 'ol/layer/Image'
+import TileLayer from 'ol/layer/Tile'
+import TileGrid from 'ol/tilegrid/TileGrid'
+import { getCenter, getBottomLeft } from 'ol/extent'
+import { get as getProj } from 'ol/proj'
+import { register } from 'ol/proj/proj4'
 import proj4 from 'proj4'
-import Attribution from 'ol/attribution'
-import Control from 'ol/control'
+import { defaults as defaultControls } from 'ol/control'
 import md5 from 'md5'
 import debounce from 'lodash/debounce'
 
@@ -51,15 +51,7 @@ export class WebgisImageWMS extends ImageWMS {
 
     // update attributions
     if (this.layersAttributions) {
-      const attributions = []
-      const htmlAttributions = []
-      orderedLayers.forEach(layername => {
-        const attribution = this.layersAttributions[layername]
-        if (attribution && htmlAttributions.indexOf(attribution.getHTML()) === -1) {
-          attributions.push(attribution)
-          htmlAttributions.push(attribution.getHTML())
-        }
-      })
+      const attributions = orderedLayers.map(layername => this.layersAttributions[layername]).filter(v => v)
       this.setAttributions(attributions)
     }
     this.updateParams({ LAYERS: orderedLayers.join(',') })
@@ -106,20 +98,12 @@ export class WebgisTileImage extends TileImage {
     orderedLayers.sort((l2, l1) => this.layersOrder[l1] - this.layersOrder[l2])
     this.visibleLayers = orderedLayers
     const layersNames = orderedLayers.join(',')
-    this.tileUrlTemplate = `${this.tilesUrl}${md5(layersNames)}/{z}/{x}/{y}.png?PROJECT=${this.project}&LAYERS=${layersNames}`
+    this.tileUrlTemplate = `${this.tilesUrl}${md5(layersNames)}/{z}/{x}/{y}?PROJECT=${this.project}&LAYERS=${layersNames}`
     this.tileCache.clear()
 
     // update attributions
     if (this.layersAttributions) {
-      const attributions = []
-      const htmlAttributions = []
-      orderedLayers.forEach(layername => {
-        const attribution = this.layersAttributions[layername]
-        if (attribution && htmlAttributions.indexOf(attribution.getHTML()) === -1) {
-          attributions.push(attribution)
-          htmlAttributions.push(attribution.getHTML())
-        }
-      })
+      const attributions = orderedLayers.map(layername => this.layersAttributions[layername]).filter(v => v)
       this.setAttributions(attributions)
     }
     this.changed()
@@ -161,7 +145,8 @@ function createAttribution (config) {
   const html = config.url
     ? `<a href="${config.url}" target="_blank">${config.title}</a>`
     : config.title
-  return new Attribution({ html })
+  return html
+  // return new Attribution({ html })
 }
 export function createQgisLayer (config) {
   const visibleLayers = config.overlays.filter(l => l.visible).map(l => l.name)
@@ -186,7 +171,7 @@ export function createQgisLayer (config) {
         owsUrl: config.owsUrl,
         projection: config.projection,
         tileGrid: new TileGrid({
-          origin: Extent.getBottomLeft(config.extent),
+          origin: getBottomLeft(config.extent),
           resolutions: config.resolutions,
           tileSize: 256
         }),
@@ -219,7 +204,6 @@ export function createQgisLayer (config) {
 }
 
 export function createBaseLayer (layerConfig, projectConfig = {}) {
-  console.log(layerConfig)
   const { source, type, provider_type } = layerConfig
   if (type === 'blank') {
     return new ImageLayer({
@@ -253,7 +237,7 @@ export function createBaseLayer (layerConfig, projectConfig = {}) {
         },
         attributions: layerConfig.attribution ? [createAttribution(layerConfig.attribution)] : null,
         tileGrid: new TileGrid({
-          origin: Extent.getBottomLeft(layerConfig.extent),
+          origin: getBottomLeft(layerConfig.extent),
           resolutions: layerConfig.resolutions || projectConfig.resolutions,
           tileSize: 512
         }),
@@ -319,7 +303,7 @@ Map.prototype.handleMapBrowserEvent = function (evt) {
  * @param {Object} controlOpts ol control options
  */
 export function createMap (config, controlOpts = {}) {
-  const projection = proj.get(config.projection)
+  const projection = getProj(config.projection)
   if (!projection) {
     throw new Error(`Invalid or unknown map projection: ${config.projection}`)
   }
@@ -340,12 +324,15 @@ export function createMap (config, controlOpts = {}) {
     layers,
     view: new View({
       projection: projection,
-      center: Extent.getCenter(config.extent),
+      center: getCenter(config.extent),
       zoom: 0,
       resolutions: config.resolutions,
-      extent: projection.getExtent() || config.extent
+      constrainResolution: true,
+      extent: projection.getExtent() || config.extent,
+      constrainOnlyCenter: true,
+      smoothExtentConstraint: false
     }),
-    controls: Control.defaults(controlOpts)
+    controls: defaultControls(controlOpts)
   })
   map.overlay = overlay
 
@@ -363,13 +350,10 @@ export function createMap (config, controlOpts = {}) {
 }
 
 export function registerProjections (projections) {
-  proj.setProj4(proj4)
-  Object.keys(projections).forEach(code => {
-    if (code && !proj.get(code)) {
-      const def = projections[code].proj4
-      if (def) {
-        proj4.defs(code, def)
-      }
+  Object.entries(projections).forEach(([code, def]) => {
+    if (code && !getProj(code)) {
+      proj4.defs(code, def.proj4)
     }
   })
+  register(proj4)
 }

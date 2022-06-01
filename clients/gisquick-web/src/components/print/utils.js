@@ -1,5 +1,5 @@
-import Easing from 'ol/easing'
-import Observable from 'ol/observable'
+import { inAndOut } from 'ol/easing'
+import { unByKey } from 'ol/Observable'
 
 export function mmToPx (value) {
   return parseInt((96 * value) / 25.4)
@@ -32,7 +32,7 @@ export function createPrintParameters (map, layout, extent, config) {
 
 export function formatCopyrights (copyrights) {
   const formatted = copyrights
-    .map(attribution => attribution.getHTML().replace('<a ', '<span ').replace('</a>', '</span>'))
+    .map(attribution => attribution.replace('<a ', '<span ').replace('</a>', '</span>'))
     .join('<span>&nbsp;|&nbsp;</span>')
 
   const cssStyles = [
@@ -82,10 +82,11 @@ export function openPrintWindow (layout, url) {
 
 export function scaleAnimation (map, opts) {
   const mapEl = map.getViewport()
+  mapEl.style.transformOrigin = 'top left'
 
   const start = opts.start || Date.now()
   const duration = opts.duration || 450
-  const easing = opts.easing || Easing.inAndOut
+  const easing = opts.easing || inAndOut
   const startScale = opts.from
   const endScale = opts.to
 
@@ -95,8 +96,11 @@ export function scaleAnimation (map, opts) {
     if (evt.frameState.time < start + duration) {
       t = easing((evt.frameState.time - start) / duration)
     }
-
     const scale = startScale + (endScale - startScale) * t
+    const percScale = 100 * scale + '%'
+    mapEl.style.width = percScale
+    mapEl.style.height = percScale
+    mapEl.style.transform = `scale(${1 / scale}, ${1 / scale})`
     map.setSize([window.innerWidth * scale, window.innerHeight * scale])
 
     if (t === 1) {
@@ -106,10 +110,9 @@ export function scaleAnimation (map, opts) {
         mapEl.style.height = percScale
         mapEl.style.transform = `scale(${1 / scale}, ${1 / scale})`
       }, 50)
-      Observable.unByKey(listener)
+      unByKey(listener)
     }
   }
-  mapEl.style.transformOrigin = 'top left'
   listener = map.on('postcompose', animate)
   map.render()
 }

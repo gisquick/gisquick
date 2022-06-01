@@ -1,5 +1,5 @@
 
-import GML3 from 'ol/format/gml3'
+import GML3 from 'ol/format/GML3'
 
 function OrOperator (filters) {
   return '<ogc:Or>' + filters.join('\n') + '</ogc:Or>'

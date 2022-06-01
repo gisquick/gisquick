@@ -37,8 +37,8 @@
 
 <script>
 import { mapState } from 'vuex'
-import ZoomControl from 'ol/control/zoom'
-import Observable from 'ol/observable'
+import { unByKey } from 'ol/Observable'
+import ZoomControl from 'ol/control/Zoom'
 
 export default {
   name: 'map-control',
@@ -70,7 +70,7 @@ export default {
       this.rotation = e.target.get(e.key)
     })
     this.$once('hook:beforeDestroy', () => {
-      Observable.unByKey(listener)
+      unByKey(listener)
     })
   },
   methods: {

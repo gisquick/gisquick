@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import ScaleLine from 'ol/control/scaleline'
+import ScaleLine from 'ol/control/ScaleLine'
 
 export default {
   mounted () {

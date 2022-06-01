@@ -1,4 +1,4 @@
-import WFS from 'ol/format/wfs'
+import WFS from 'ol/format/WFS'
 import http from '@/client'
 
 export function wfsTransaction (owsUrl, layername, { inserts = [], updates = [], deletes = [] }) {

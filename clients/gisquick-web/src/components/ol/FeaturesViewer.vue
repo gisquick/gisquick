@@ -1,6 +1,6 @@
 <script>
-import VectorSource from 'ol/source/vector'
-import VectorLayer from 'ol/layer/vector'
+import VectorSource from 'ol/source/Vector'
+import VectorLayer from 'ol/layer/Vector'
 import { simpleStyle } from '@/map/styles'
 
 export default {

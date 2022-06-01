@@ -1,6 +1,6 @@
 <script>
-import Draw from 'ol/interaction/draw'
-import Collection from 'ol/collection'
+import Draw from 'ol/interaction/Draw'
+import Collection from 'ol/Collection'
 
 export default {
   props: {

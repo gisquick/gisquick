@@ -1,16 +1,17 @@
-import VectorSource from 'ol/source/vector'
-import VectorLayer from 'ol/layer/vector'
-import Style from 'ol/style/style'
-import Fill from 'ol/style/fill'
-import Stroke from 'ol/style/stroke'
-import Circle from 'ol/style/circle'
-import Draw from 'ol/interaction/draw'
-import Observable from 'ol/observable'
-import Sphere from 'ol/sphere'
-import Feature from 'ol/feature'
-import Point from 'ol/geom/point'
-import LineString from 'ol/geom/linestring'
-import olLength from 'ol/geom/flat/length'
+import VectorSource from 'ol/source/Vector'
+import VectorLayer from 'ol/layer/Vector'
+import Style from 'ol/style/Style'
+import Fill from 'ol/style/Fill'
+import Stroke from 'ol/style/Stroke'
+import Circle from 'ol/style/Circle'
+import Draw from 'ol/interaction/Draw'
+import { unByKey } from 'ol/Observable'
+import Observable from 'ol/Observable'
+import { getArea, getLength } from 'ol/sphere'
+import Feature from 'ol/Feature'
+import Point from 'ol/geom/Point'
+import LineString from 'ol/geom/LineString'
+import { linearRingLength } from 'ol/geom/flat/length'
 import throttle from 'lodash/throttle'
 
 function labelRenderer (pixel, state) {
@@ -160,13 +161,13 @@ export function DistanceMeasure () {
     // line coordinates except the last
     const coords = base.feature.getGeometry().getCoordinates().slice(0, -1)
     const partial = new LineString(coords)
-    base._partial = projection.isGlobal() ? Sphere.getLength(partial, { projection }) : partial.getLength()
+    base._partial = projection.isGlobal() ? getLength(partial, { projection }) : partial.getLength()
   }
 
   function measure () {
     const projection = base.map.getView().getProjection()
     const geom = base.feature.getGeometry()
-    base._total = projection.isGlobal() ? Sphere.getLength(geom, { projection }) : geom.getLength()
+    base._total = projection.isGlobal() ? getLength(geom, { projection }) : geom.getLength()
 
     base.total = base.format.length(base._total)
     base.lastSegment = base.format.length(base._total - base._partial)
@@ -191,8 +192,8 @@ export function DistanceMeasure () {
 
   base.draw.on('drawend', evt => {
     measurePartial()
-    Observable.unByKey(moveListener)
-    Observable.unByKey(clickListener)
+    unByKey(moveListener)
+    unByKey(clickListener)
   })
 
   return Object.assign(base, {
@@ -234,11 +235,11 @@ export function AreaMeasure () {
     const pointsCount = geom.getLinearRing(0).getCoordinates().length
     if (pointsCount > 3) {
       if (projection.isGlobal()) {
-        base._area = Sphere.getArea(geom, { projection })
-        base._perimeter = Sphere.getLength(geom, { projection })
+        base._area = getArea(geom, { projection })
+        base._perimeter = getLength(geom, { projection })
       } else {
         base._area = geom.getArea()
-        base._perimeter = olLength.linearRing(geom.getFlatCoordinates(), 0, pointsCount * 2, 2)
+        base._perimeter = linearRingLength(geom.getFlatCoordinates(), 0, pointsCount * 2, 2)
       }
     }
     base.area = base.format.area(base._area)
@@ -258,7 +259,7 @@ export function AreaMeasure () {
   })
 
   base.draw.on('drawend', evt => {
-    Observable.unByKey(moveListener)
+    unByKey(moveListener)
   })
 
   return Object.assign(base, {

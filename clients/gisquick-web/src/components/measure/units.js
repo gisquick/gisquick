@@ -1,5 +1,5 @@
-import Proj from 'ol/proj'
-import Coordinate from 'ol/coordinate'
+import { toLonLat } from 'ol/proj'
+import { toStringHDMS } from 'ol/coordinate'
 
 export function projectionCoordinatesFormatter (projection, precision = 3) {
   return {
@@ -19,12 +19,12 @@ export const LocationUnits = [
   {
     name: 'EPSG:4326 (degrees)',
     format (coords, proj) {
-      return Proj.toLonLat(coords, proj).map(v => `${v.toFixed(6)} °`).reverse()
+      return toLonLat(coords, proj).map(v => `${v.toFixed(6)} °`).reverse()
     }
   }, {
     name: 'EPSG:4326 (HDMS)',
     format (coords, proj) {
-      return Coordinate.toStringHDMS(Proj.toLonLat(coords, proj))
+      return toStringHDMS(toLonLat(coords, proj))
         .replace('N ', 'N;')
         .replace('S ', 'S;')
         .split(';')

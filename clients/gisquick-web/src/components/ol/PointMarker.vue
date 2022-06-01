@@ -1,6 +1,6 @@
 <script>
 import Vue from 'vue'
-import Overlay from 'ol/overlay'
+import Overlay from 'ol/Overlay'
 
 import Spinner from '@/ui/Spinner.vue'
 import Poi from '@/assets/poi.svg?inline'

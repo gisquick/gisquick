@@ -80,11 +80,11 @@
 </template>
 
 <script>
-import Feature from 'ol/feature'
-import Point from 'ol/geom/point'
-import MultiPoint from 'ol/geom/multipoint'
-import MultiPolygon from 'ol/geom/multipolygon'
-import MultiLineString from 'ol/geom/multilinestring'
+import Feature from 'ol/Feature'
+import Point from 'ol/geom/Point'
+import MultiPoint from 'ol/geom/MultiPoint'
+import MultiPolygon from 'ol/geom/MultiPolygon'
+import MultiLineString from 'ol/geom/MultiLineString'
 
 import VectorLayer from '@/components/ol/VectorLayer.vue'
 import SelectInteraction from '@/components/ol/SelectInteraction.vue'

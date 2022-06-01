@@ -1,7 +1,7 @@
 
 <script>
-import Modify from 'ol/interaction/modify'
-import Collection from 'ol/collection'
+import Modify from 'ol/interaction/Modify'
+import Collection from 'ol/Collection'
 
 export default {
   props: {

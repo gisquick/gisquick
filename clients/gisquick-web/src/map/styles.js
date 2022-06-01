@@ -1,7 +1,7 @@
-import Style from 'ol/style/style'
-import Fill from 'ol/style/fill'
-import Stroke from 'ol/style/stroke'
-import Circle from 'ol/style/circle'
+import Style from 'ol/style/Style'
+import Fill from 'ol/style/Fill'
+import Stroke from 'ol/style/Stroke'
+import Circle from 'ol/style/Circle'
 
 export function simpleStyle (params = {}) {
   let fill, stroke

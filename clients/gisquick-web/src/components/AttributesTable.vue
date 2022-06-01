@@ -186,8 +186,8 @@ import clamp from 'lodash/clamp'
 import keyBy from 'lodash/keyBy'
 import isEqual from 'lodash/isEqual'
 import { mapState, mapGetters, mapMutations } from 'vuex'
-import Polygon from 'ol/geom/polygon'
-import GeoJSON from 'ol/format/geojson'
+import { fromExtent } from 'ol/geom/Polygon'
+import GeoJSON from 'ol/format/GeoJSON'
 // import TabsHeader from '@/components/TabsHeader1.vue'
 import TabsHeader from '@/components/TabsHeader.vue'
 import AttributeFilter from '@/components/AttributeFilter.vue'
@@ -367,7 +367,7 @@ export default {
       } else {
         let geom = null
         if (this.visibleAreaFilter) {
-          geom = Polygon.fromExtent(this.$map.ext.visibleAreaExtent()).transform(mapProjection, this.layer.projection)
+          geom = fromExtent(this.$map.ext.visibleAreaExtent()).transform(mapProjection, this.layer.projection)
         }
         this.lastAttributesFilters = Object.entries(this.layerFilters)
           // .filter(([name, filter]) => filter.comparator && filter.value !== null)

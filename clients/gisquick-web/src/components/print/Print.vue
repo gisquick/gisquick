@@ -9,8 +9,7 @@
             v-model="layout"
             :placeholder="tr.Layout"
             item-text="name"
-            :item-value="null"
-            :return-object="true"
+            item-value=""
             :items="layouts"
           />
           <v-menu
@@ -49,7 +48,7 @@
     </portal>
     <portal to="map-overlay">
       <print-preview
-        v-if="showPreview"
+        v-if="layout && showPreview"
         :layout="layout"
         :format="format"
         :dpi="dpi"
@@ -80,7 +79,8 @@ export default {
     ...mapState(['project']),
     tr () {
       return {
-        Menu: this.$gettext('Menu')
+        Menu: this.$gettext('Menu'),
+        Layout: this.$gettext('Layout')
       }
     },
     formatMenuItems () {
@@ -121,11 +121,6 @@ export default {
         return this.layout.labels.filter(label => !label.startsWith('gislab_'))
       }
       return []
-    },
-    tr () {
-      return {
-        Layout: this.$gettext('Layout')
-      }
     }
   },
   created () {

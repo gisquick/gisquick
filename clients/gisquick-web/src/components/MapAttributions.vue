@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import Attribution from 'ol/control/attribution'
+import Attribution from 'ol/control/Attribution'
 import MenuItems from '@/components/MenuItems.vue'
 
 export default {

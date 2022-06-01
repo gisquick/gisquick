@@ -37,12 +37,11 @@
           class="map-border"
           :style="borderArea"
         />
-        <v-progress-linear
+        <v-linear-progress
           v-if="showProgressbar"
-          absolute
-          indeterminate
-          class="my-0"
+          class="m-0"
           height="3"
+          indeterminate
         />
       </div>
     </div>
@@ -53,7 +52,7 @@
 import { mapState, mapGetters } from 'vuex'
 import axios from 'axios'
 import combineURLs from 'axios/lib/helpers/combineURLs'
-import Observable from 'ol/observable'
+import { unByKey } from 'ol/Observable'
 import FileSaver from 'file-saver'
 import { mmToPx, createPrintParameters, formatCopyrights, scaleAnimation, openPrintWindow } from './utils'
 
@@ -157,7 +156,7 @@ export default {
   },
   beforeDestroy () {
     this.setScale(1)
-    Observable.unByKey(this.listener)
+    unByKey(this.listener)
     window.removeEventListener('resize', this.updateSize)
   },
   methods: {
@@ -167,28 +166,30 @@ export default {
     },
     setScale (ratio) {
       const map = this.$map
-      // const mapEl = this.$map.getViewport()
-      // const percScale = Math.round(100 * ratio) + '%'
+      const mapEl = this.$map.getViewport()
+      const percScale = Math.round(100 * ratio) + '%'
 
-      // mapEl.style.transformOrigin = 'top left'
-      // mapEl.style.width = percScale
-      // mapEl.style.height = percScale
-      // mapEl.style.transform = `scale(${1 / ratio}, ${1 / ratio})`
-      // map.setSize([window.innerWidth * ratio, window.innerHeight * ratio])
+      mapEl.style.transformOrigin = 'top left'
+      mapEl.style.width = percScale
+      mapEl.style.height = percScale
+      mapEl.style.transform = `scale(${1 / ratio}, ${1 / ratio})`
+      map.setSize([window.innerWidth * ratio, window.innerHeight * ratio])
 
-      scaleAnimation(map, { from: this.prevScale || 1, to: ratio })
-      this.prevScale = ratio
+      // scaleAnimation(map, { from: this.prevScale || 1, to: ratio })
+      // this.prevScale = ratio
 
       if (ratio !== 1) {
         if (!map.transformBrowserEvent) {
           map.transformBrowserEvent = evt => {
             const scale = this.scaleRatio
-            evt.pixel[0] = evt.pixel[0] * scale
-            evt.pixel[1] = evt.pixel[1] * scale
-            evt.coordinate = map.getCoordinateFromPixel(evt.pixel)
-            if (evt.pointerEvent) {
-              evt.pointerEvent.clientX = evt.pointerEvent.screenX * scale
-              evt.pointerEvent.clientY = evt.pointerEvent.screenY * scale
+            // evt.pixel[0] = evt.pixel[0] * scale
+            // evt.pixel[1] = evt.pixel[1] * scale
+            // evt.coordinate = map.getCoordinateFromPixel(evt.pixel)
+            if (!evt.originalEvent._transformed) {
+              const { clientX, clientY } = evt.originalEvent
+              Object.defineProperty(evt.originalEvent, 'clientX', { value: Math.round(clientX * scale ), configurable: true, enumerable: true })
+              Object.defineProperty(evt.originalEvent, 'clientY', { value: Math.round(clientY * scale), configurable: true, enumerable: true })
+              Object.defineProperty(evt.originalEvent, '_transformed', { value: true, configurable: true, enumerable: true })
             }
           }
         }
@@ -230,7 +231,8 @@ export default {
         layers,
         ...opts
       }
-      const copyrights = formatCopyrights(map.overlay.getSource().getAttributions())
+      const attributions = map.overlay.getSource().getAttributions()()
+      const copyrights = formatCopyrights(attributions)
       const params = {
         ...createPrintParameters(map, layout, extent, config),
         // TODO: other hidden labels

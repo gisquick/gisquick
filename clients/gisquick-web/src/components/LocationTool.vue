@@ -25,11 +25,11 @@
 </template>
 
 <script>
-import Feature from 'ol/feature'
-import Point from 'ol/geom/point'
-import Geolocation from 'ol/geolocation'
-import Observable from 'ol/observable'
+import Feature from 'ol/Feature'
+import Point from 'ol/geom/Point'
+import Geolocation from 'ol/Geolocation'
 import VectorLayer from '@/components/ol/VectorLayer.vue'
+import { unByKey } from 'ol/Observable'
 
 import { ShallowObj, ShallowArray } from '@/utils'
 import { simpleStyle, highlightedStyle } from '@/map/styles'
@@ -73,9 +73,9 @@ export default {
     const errorKey = geolocation.on('error', this.showError)
     // this.showError({ xmessage: 'GPS error' })
     this.$once('hook:beforeDestroy', () => {
-      Observable.unByKey(changePosKey)
-      Observable.unByKey(changeAccuracyKey)
-      Observable.unByKey(errorKey)
+      unByKey(changePosKey)
+      unByKey(changeAccuracyKey)
+      unByKey(errorKey)
     })
     this.setPosition(geolocation.getPosition())
     this.setAccuracyGeom(geolocation.getAccuracyGeometry())

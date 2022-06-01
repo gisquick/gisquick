@@ -13,9 +13,9 @@
 
 <script>
 import { mapState } from 'vuex'
-import Observable from 'ol/observable'
-import MousePosition from 'ol/control/mouseposition'
-import coordinate from 'ol/coordinate'
+import { unByKey } from 'ol/Observable'
+import { createStringXY } from 'ol/coordinate'
+import MousePosition from 'ol/control/MousePosition'
 
 export default {
   name: 'bottom-toolbar',
@@ -35,13 +35,13 @@ export default {
 
     // Setup updating of mouse pointer coordinates on map (in map units)
     this.positionControl = new MousePosition({
-      coordinateFormat: coordinate.createStringXY(precision ?? 2),
+      coordinateFormat: createStringXY(precision ?? 2),
       target: this.$refs.coords
     })
     this.$map.addControl(this.positionControl)
   },
   beforeDestroy () {
-    Observable.unByKey(this.listener)
+    unByKey(this.listener)
   },
   methods: {
     updateScale () {

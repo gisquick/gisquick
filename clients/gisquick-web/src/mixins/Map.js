@@ -1,7 +1,8 @@
-import 'ol/ol.css'
-import Extent from 'ol/extent'
 import Vue from 'vue'
 import { mapState, mapGetters } from 'vuex'
+import mapKeys from 'lodash/mapKeys'
+import { boundingExtent, buffer as bufferExtent } from 'ol/extent'
+import 'ol/ol.css'
 
 import { createMap, registerProjections } from '@/map/map-builder'
 
@@ -47,6 +48,11 @@ export default {
     if (process.env.NODE_ENV === 'development') {
       window.olmap = map
     }
+    this.queryParams = mapKeys(Object.fromEntries(new URLSearchParams(location.search)), (v, k) => k.toLowerCase())
+    if (this.queryParams.overlays) {
+      const visibleLayers = this.queryParams.overlays.split(',')
+      this.$store.commit('visibleLayers', visibleLayers)
+    }
   },
   mounted () {
     const map = this.$map
@@ -62,7 +68,7 @@ export default {
         const { top, right, bottom, left } = this.$refs.mapViewport.getBoundingClientRect()
         const p1 = map.getCoordinateFromPixel([left, top])
         const p2 = map.getCoordinateFromPixel([right, bottom])
-        return Extent.boundingExtent([p1, p2])
+        return boundingExtent([p1, p2])
       },
       zoomToFeature: (feature, options = {}) => {
         const geom = feature.getGeometry()
@@ -83,14 +89,15 @@ export default {
           const extent = geom.getExtent()
           // add 5% buffer (padding)
           const buffer = (map.getSize()[0] - padding[1] - padding[3]) * 0.05 * resolution
-          map.getView().fit(Extent.buffer(extent, buffer), { duration: 450, padding })
+          map.getView().fit(bufferExtent(extent, buffer), { duration: 450, padding })
         }
       },
       refreshOverlays () {
         map.overlay.getSource().refresh()
       }
     }
-    const extent = this.project.config.zoom_extent || this.project.config.project_extent
+    const extentParam = this.queryParams.extent?.split(',').map(parseFloat)
+    const extent = extentParam || this.project.config.zoom_extent || this.project.config.project_extent
     const padding = map.ext.visibleAreaPadding()
     map.getView().fit(extent, { padding })
   },

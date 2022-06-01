@@ -1,7 +1,7 @@
 <script>
-import VectorSource from 'ol/source/vector'
-import VectorLayer from 'ol/layer/vector'
-import Collection from 'ol/collection'
+import VectorSource from 'ol/source/Vector'
+import VectorLayer from 'ol/layer/Vector'
+import Collection from 'ol/Collection'
 
 import { updateLock, ShallowArray } from '@/utils'
 

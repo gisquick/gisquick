@@ -1,5 +1,9 @@
 <template>
-  <div class="linear-progress" :style="barStyle">
+  <div
+    class="linear-progress"
+    :class="{indeterminate}"
+    :style="barStyle"
+  >
     <div class="progress" :style="progressStyle"/>
   </div>
 </template>
@@ -14,6 +18,7 @@ export default {
       type: String,
       default: 'primary'
     },
+    indeterminate: Boolean,
     min: {
       type: Number,
       default: 0
@@ -50,7 +55,7 @@ export default {
       }
     },
     progressStyle () {
-      return {
+      return !this.indeterminate && {
         width: `${this.valuePos * 100}%`
       }
     }
@@ -64,13 +69,29 @@ export default {
   position: relative;
   background-color: #aaa;
   margin: 6px;
-  // overflow: hidden;
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.12);
   .progress {
     border-radius: inherit;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
     background-color: var(--color);
+  }
+  &.indeterminate {
+    overflow: hidden;
+    background-color: #ccc;
+    .progress {
+      width: 100%;
+      background: linear-gradient(90deg, rgba(#ffffff, 0.1), var(--color-primary), rgba(#ffffff, 0.2));
+      animation: 1.3s cubic-bezier(.25,.5,.25,0.7) infinite progress-anim;
+    }
+  }
+}
+@keyframes progress-anim {
+  0% {
+    transform: translate(-100%, 0) scale(0.7, 1);
+  }
+  100% {
+    transform: translate(100%, 0) scale(1, 1);
   }
 }
 </style>

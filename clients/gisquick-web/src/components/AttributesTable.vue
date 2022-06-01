@@ -508,9 +508,14 @@ export default {
     table {
       border-bottom: 1px solid #ddd;
     }
-    thead th[role="columnheader"] {
-      height: 39px;
-      padding-block: 5px;
+    thead {
+      th[role="columnheader"] {
+        height: 40px;
+        padding-block: 5px;
+      }
+      tr.progress th {
+        top: 40px!important;
+      }
     }
     td {
       white-space: nowrap;

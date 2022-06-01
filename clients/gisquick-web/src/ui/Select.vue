@@ -172,18 +172,18 @@ export default {
       return colorVars(this.color)
     },
     simpleItems () {
-      return this.items.some(i => !Object.prototype.hasOwnProperty.call(i, this.itemText))
+      return this.items.some(i => !Object.prototype.hasOwnProperty.call(i, this.itemText)) // ?? getItemValue
     },
     normItems () {
       return this.simpleItems ? this.items.map(v => ({ [this.itemText]: v?.toString() || '', [this.itemValue]: v })) : this.items
     },
     selection () {
       if (this.multiple) {
-        const items = this.value?.map(v => this.normItems.find(i => i[this.itemValue] === v)) || []
+        const items = this.value?.map(v => this.normItems.find(i => this.getItemValue(i) === v)) || []
         const texts = items.map(i => i[this.itemText])
         return { items: new Set(items), text: texts.join(', ') }
       }
-      const index = this.normItems.findIndex(i => i[this.itemValue] === this.value)
+      const index = this.normItems.findIndex(i => this.getItemValue(i) === this.value)
       if (index !== -1) {
         const item = this.normItems[index]
         return { index, item, items: new Set().add(item), text: item[this.itemText] }
@@ -200,6 +200,9 @@ export default {
     this.listId = `select-list-${counter++}`
   },
   methods: {
+    getItemValue (item) {
+      return this.itemValue ? item[this.itemValue] : item
+    },
     focusComponent () {
       if (!this.disabled) {
         // this.$el.focus()
@@ -291,7 +294,7 @@ export default {
       item && this.selectItem(item)
     },
     selectItem (item) {
-      let value = item[this.itemValue]
+      let value = this.getItemValue(item)
       if (this.multiple) {
         if (this.value?.includes(value)) {
           value = this.value.filter(v => v !== value)

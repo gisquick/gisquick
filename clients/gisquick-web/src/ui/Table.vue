@@ -24,9 +24,6 @@
             </slot>
           </th>
         </tr>
-        <!-- <div v-if="loading" class="loading-bar">
-          <div class="highlight"/>
-        </div> -->
         <tr class="progress">
           <th :colspan="columns.length">
             <div v-if="loading" class="loading-bar">
@@ -382,7 +379,7 @@ export default {
         padding: 0;
         border: none;
         position: sticky;
-        top: 42px;
+        top: 36px;
       }
     }
   }
@@ -445,71 +442,26 @@ export default {
 }
 .loading-bar {
   position: absolute;
-  height: 3px;
+  height: 4px;
   left: 0;
   right: 0;
-  // background-color: rgba(var(--color-primary-rgb), 0.2);
-  margin-top: -4px;
-  // z-index: 10;
-  // background: linear-gradient(90deg,#ffd33d,#ea4aaa 17%,#b34bff 34%,#01feff 51%,#ffd33d 68%,#ea4aaa 85%,#b34bff);
-  // background: linear-gradient(90deg,var(--color-primary),rgba(#ffffff, 0.2), var(--color-primary));
-  // background: linear-gradient(90deg,rgba(#ffffff, 0.2), var(--color-primary), rgba(#ffffff, 0.2));
-  // animation: 2s linear infinite progress-animation;
-  // background-size: 300% 100%;
+  top: -4px;
   overflow: hidden;
   .highlight {
-    // animation: 3s cubic-bezier(0.4, 0, 0.2, 1) infinite running-progress;
-    // animation: 3s cubic-bezier(0.4, 0, 0.2, 1) infinite slide2;
-    // background-color: var(--color-primary);
     position: absolute;
     left: 0;
     right: 0;
-    animation: 1s ease infinite progress;
-    background: linear-gradient(90deg,rgba(#ffffff, 0.2), var(--color-primary), rgba(#ffffff, 0.2));
-    // display: none;
+    animation: 1.3s ease infinite progress-anim;
+    background: linear-gradient(90deg, rgba(#ffffff, 0.1), var(--color-primary), rgba(#ffffff, 0.2));
     height: inherit;
   }
 }
-@keyframes progress-animation {
-  0% {
-    background-position: -100%;
-  }
-  100% {
-    background-position: 100%;
-  }
-}
-@keyframes progress {
+@keyframes progress-anim {
   0% {
     transform: translate(-100%, 0) scale(0.7, 1);
   }
   100% {
     transform: translate(100%, 0) scale(1, 1);
   }
-}
-
-@keyframes slide2 {
-  0% {
-    transform: translate(-100%, 0) scale(0.7, 1);
-  }
-  100% {
-    transform: translate(70%, 0) scale(0, 1);
-  }
-}
-
-@keyframes slide {
-  0% {
-    transform: translate(-100%, 0) scale(0.75, 1);
-  }
-  60% {
-    transform: translate(25%, 0) scale(0.35, 1);
-  }
-  100% {
-    transform: translate(100%, 0) scale(1, 1);
-  }
-}
-@keyframes running-progress {
-  0% { margin-left: 0px; margin-right: 100%; }
-  50% { margin-left: 25%; margin-right: 0%; }
-  100% { margin-left: 100%; margin-right: 0; }
 }
 </style>

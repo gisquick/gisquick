@@ -102,7 +102,7 @@ export default {
     containerStyle () {
       return {
         marginBottom: `-${this.scrollbarSize}px`,
-        marginRight: '-15px'
+        marginRight: `-${this.scrollbarSize}px`
       }
       // flexbox version
       // const size = `calc(100% + ${this.scrollbarSize}px)`
@@ -195,6 +195,7 @@ export default {
   grid-template-rows: minmax(0, 100%);
   // min-height: 0;
   // height: 100%;
+  scrollbar-color: transparent transparent; // hide native scrollbar in Firefox
 }
 
 .scrollbar-track {
@@ -204,7 +205,7 @@ export default {
     top: 0;
     right: 0;
     bottom: 0;
-    width: 11px;
+    width: 12px;
     .scrollbar {
       min-height: 10px;
       right: 0;

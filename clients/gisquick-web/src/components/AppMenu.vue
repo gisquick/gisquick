@@ -57,6 +57,11 @@ export default {
           text: this.$gettext('Full screen'),
           action: this.toggleFullscreen,
           activated: this.fullscreen
+        },
+        {
+          key: 'permalink',
+          text: this.$gettext('Permalink'),
+          action: this.createPermalink
         }, {
           key: 'help',
           text: this.$gettext('Help'),
@@ -90,6 +95,10 @@ export default {
       const link = 'http://gisquick.readthedocs.io/en/latest/user-manual/user-interface.html'
       // const link = this.project.gislab_documentation
       window.open(link, 'Gisquick Documentation', params)
+    },
+    createPermalink () {
+      const permalink = this.$map.ext.createPermalink()
+      navigator.clipboard.writeText(permalink)
     }
   }
 }

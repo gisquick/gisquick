@@ -3,6 +3,7 @@ import { mapState, mapGetters } from 'vuex'
 import mapKeys from 'lodash/mapKeys'
 import { boundingExtent, buffer as bufferExtent } from 'ol/extent'
 import 'ol/ol.css'
+import axios from 'axios'
 
 import { createMap, registerProjections } from '@/map/map-builder'
 
@@ -49,6 +50,9 @@ export default {
       window.olmap = map
     }
     this.queryParams = mapKeys(Object.fromEntries(new URLSearchParams(location.search)), (v, k) => k.toLowerCase())
+    if (this.queryParams.baselayer) {
+      this.$store.commit('visibleBaseLayer', this.queryParams.baselayer)
+    }
     if (this.queryParams.overlays) {
       const visibleLayers = this.queryParams.overlays.split(',')
       this.$store.commit('visibleLayers', visibleLayers)
@@ -94,6 +98,17 @@ export default {
       },
       refreshOverlays () {
         map.overlay.getSource().refresh()
+      },
+      createPermalink () {
+        const extent = map.ext.visibleAreaExtent()
+        const overlays = this.visibleLayers.filter(l => !l.hidden).map(l => l.name)
+        const params = {
+          extent: extent.join(','),
+          overlays: overlays.join(','),
+          baselayer: this.visibleBaseLayer?.name,
+          activeTool: this.activeTool
+        }
+        return axios.getUri({url: location.href, params })
       }
     }
     const extentParam = this.queryParams.extent?.split(',').map(parseFloat)

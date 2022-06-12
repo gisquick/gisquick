@@ -48,7 +48,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import Feature from 'ol/feature'
+import Feature from 'ol/Feature'
 
 import { queuedUpdater, ShallowObj } from '@/utils'
 import { wfsTransaction } from '@/map/wfs'

@@ -217,8 +217,8 @@
 
 <script>
 import Path from 'path'
-import WFS from 'ol/format/wfs'
-import EqualTo from 'ol/format/filter/equalto'
+import WFS from 'ol/format/WFS'
+import EqualTo from 'ol/format/filter/EqualTo'
 
 import InputField from '@/ui/InputField.vue'
 import ImageEditor from '@/components/image/ImageEditor.vue'

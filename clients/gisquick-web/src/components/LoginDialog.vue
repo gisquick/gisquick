@@ -10,7 +10,7 @@
       <div class="content">
         <div class="card dark">
           <div class="login-header f-col-ac">
-            <img class="logo my-2" src="../assets/login_text_logo.svg">
+            <img class="logo my-2" src="../assets/text_logo_dark.svg">
             <h1><translate>Sign In to Continue</translate></h1>
           </div>
 

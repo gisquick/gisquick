@@ -1,7 +1,7 @@
 <template>
   <div class="page f-grow">
     <div class="header f-col-ac f-justify-center px-2 shadow-2">
-      <img src="./assets/login_text_logo.svg" class="logo my-4">
+      <img src="./assets/text_logo_dark.svg" class="logo my-4">
     </div>
     <div v-if="userSignedIn" class="dashboard f-col f-grow">
       <user-dashboard/>

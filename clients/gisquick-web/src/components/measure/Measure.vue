@@ -100,7 +100,7 @@
 <script>
 import Vue from 'vue'
 import { mapState } from 'vuex'
-import Extent from 'ol/extent'
+import { getCenter } from 'ol/extent'
 
 import VTabs from '@/ui/Tabs.vue'
 import VTabsHeader from '@/ui/TabsHeader.vue'
@@ -272,7 +272,7 @@ export default {
     zoomTo (feature) {
       if (feature) {
         this.$map.getView().animate({
-          center: Extent.getCenter(feature.getGeometry().getExtent()),
+          center: getCenter(feature.getGeometry().getExtent()),
           duration: 450
         })
       }

@@ -51,6 +51,7 @@
 
 <script>
 import clamp from 'lodash/clamp'
+import keyBy from 'lodash/keyBy'
 
 // import TabsHeader from '@/components/TabsHeader1.vue'
 import TabsHeader from '@/components/TabsHeader.vue'
@@ -112,9 +113,16 @@ export default {
     features () {
       return this.layerFeatures?.features
     },
+    attributes () {
+      if (this.layer?.attr_table_fields) {
+        const attrsMap = keyBy(this.layer.attributes, 'name')
+        return this.layer.attr_table_fields.map(name => attrsMap[name])
+      }
+      return this.layer?.attributes
+    },
     columns () {
-      if (this.layer?.attributes) {
-        return [ActionsHeader, ...this.layer.attributes.map(createColumn)]
+      if (this.attributes) {
+        return [ActionsHeader, ...this.attributes.map(createColumn)]
       } else if (this.layer?.bands) {
         const fields = this.layer.bands.map(name => ({ name }))
         return fields.map(createColumn)

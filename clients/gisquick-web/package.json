@@ -18,6 +18,7 @@
     "material-icons": "^0.6.3",
     "md5": "^2.3.0",
     "ol": "^6.14.1",
+    "ol-mapbox-style": "^8.1.2",
     "portal-vue": "^2.1.7",
     "proj4": "^2.7.2",
     "url-polyfill": "^1.1.12",

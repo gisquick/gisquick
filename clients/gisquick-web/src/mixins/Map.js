@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import { mapState, mapGetters } from 'vuex'
+import has from 'lodash/has'
 import mapKeys from 'lodash/mapKeys'
 import { boundingExtent, buffer as bufferExtent } from 'ol/extent'
 import 'ol/ol.css'
@@ -21,13 +22,9 @@ export default {
     if (config.projections) {
       registerProjections(config.projections)
     }
-    const visibleBaseLayer = this.project.baseLayers.list.find(l => l.visible) || this.project.baseLayers.list[0]
-    if (visibleBaseLayer) {
-      this.$store.commit('visibleBaseLayer', visibleBaseLayer.name)
-      this.project.baseLayers.list
-        .forEach(l => {
-          l.visible = l === visibleBaseLayer
-        })
+    this.queryParams = mapKeys(Object.fromEntries(new URLSearchParams(location.search)), (v, k) => k.toLowerCase())
+    if (this.queryParams.overlays) {
+      this.$store.commit('visibleLayers', this.queryParams.overlays.split(','))
     }
 
     const mapConfig = {
@@ -43,19 +40,22 @@ export default {
       mapcacheUrl: config.mapcache_url
     }
     const map = createMap(mapConfig, { zoom: false, attribution: false, rotate: false })
-    // this.setVisibleLayers(this.visibleLayers)
-
     Vue.prototype.$map = map
     if (process.env.NODE_ENV === 'development') {
       window.olmap = map
     }
-    this.queryParams = mapKeys(Object.fromEntries(new URLSearchParams(location.search)), (v, k) => k.toLowerCase())
-    if (this.queryParams.baselayer) {
-      this.$store.commit('visibleBaseLayer', this.queryParams.baselayer)
+
+    // base layer need to be initialized after ol map is created
+    let visibleBaseLayer
+    if (has(this.queryParams, 'baselayer')) { // baselayer can be empty string
+      visibleBaseLayer = this.project.baseLayers.list.find(l => l.name === this.queryParams.baselayer)
+    } else {
+      visibleBaseLayer = this.project.baseLayers.list.find(l => l.visible)
     }
-    if (this.queryParams.overlays) {
-      const visibleLayers = this.queryParams.overlays.split(',')
-      this.$store.commit('visibleLayers', visibleLayers)
+    if (this.visibleBaseLayer !== visibleBaseLayer) {
+      this.$store.commit('visibleBaseLayer', visibleBaseLayer?.name)
+    } else {
+      this.setVisibleBaseLayer(visibleBaseLayer)
     }
   },
   mounted () {
@@ -99,13 +99,13 @@ export default {
       refreshOverlays () {
         map.overlay.getSource().refresh()
       },
-      createPermalink () {
+      createPermalink: () => {
         const extent = map.ext.visibleAreaExtent()
         const overlays = this.visibleLayers.filter(l => !l.hidden).map(l => l.name)
         const params = {
           extent: extent.join(','),
           overlays: overlays.join(','),
-          baselayer: this.visibleBaseLayer?.name,
+          baselayer: this.visibleBaseLayer?.name ?? '',
           activeTool: this.activeTool
         }
         return axios.getUri({url: location.href, params })
@@ -117,10 +117,14 @@ export default {
     map.getView().fit(extent, { padding })
   },
   methods: {
-    setVisibleBaseLayer (layer) {
-      this.$map.getLayers().getArray()
-        .filter(l => l.get('type') === 'baselayer')
-        .forEach(l => l.setVisible(l.get('name') === layer.name))
+    async setVisibleBaseLayer (layer) {
+      this.$map?.getLayers().getArray()
+        .filter(l => l.get('type') === 'baselayer' && l.get('name') !== layer?.name)
+        .forEach(l => l.setVisible(false))
+      if (layer) {
+        const baseLayer = await this.$map.getBaseLayer(layer.name)
+        baseLayer.setVisible(true)
+      }
     },
     setVisibleLayers (layers) {
       this.$map.overlay.getSource().setVisibleLayers(layers.map(l => l.name))

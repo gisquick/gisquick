@@ -16,6 +16,7 @@ import proj4 from 'proj4'
 import { defaults as defaultControls } from 'ol/control'
 import md5 from 'md5'
 import debounce from 'lodash/debounce'
+import { wmtsSource } from './wmts'
 
 function createUrl (baseUrl, params = {}) {
   const url = new URL(baseUrl, location.origin)
@@ -203,53 +204,62 @@ export function createQgisLayer (config) {
   }
 }
 
-export function createBaseLayer (layerConfig, projectConfig = {}) {
+export async function createBaseLayer (layerConfig, projectConfig = {}) {
   const { source, type, provider_type } = layerConfig
+  const attributions = layerConfig.attribution ? [createAttribution(layerConfig.attribution)] : null
+
   if (type === 'blank') {
     return new ImageLayer({
-      extent: layerConfig.extent,
-      visible: layerConfig.visible
+      extent: layerConfig.extent
     })
   }
   if (type === 'osm') {
     return new TileLayer({
-      source: new OSM(),
-      visible: layerConfig.visible
+      source: new OSM()
     })
+  }
+  if (provider_type === 'vectortile') {
+    const vc = await import(/* webpackChunkName: "vectortile" */ './vector-tile.js')
+    return vc.createLayer(layerConfig)
   }
   if (type === 'xyz' || source?.type === 'xyz') {
     return new TileLayer({
-      visible: layerConfig.visible,
       source: new XYZ({
         url: layerConfig.url,
-        attributions: layerConfig.attribution ? [createAttribution(layerConfig.attribution)] : null
+        attributions
       })
     })
   }
   if (type === 'wms' || provider_type === 'wms') {
-    return new TileLayer({
-      source: new TileWMS({
+    let olSource
+    if (source.tileMatrixSet) {
+      // const wmts = await import(/* webpackChunkName: "wmts" */ './wmts.js')
+      // olSource = await wmts.wmtsSource(projectConfig.project, layerConfig, attributions)
+      olSource = await wmtsSource(projectConfig.project, layerConfig, attributions)
+    } else {
+      olSource = new TileWMS({
         url: layerConfig.url,
         params: {
           LAYERS: layerConfig.wms_layers.join(','),
           FORMAT: layerConfig.format,
           TRANSPARENT: 'false'
         },
-        attributions: layerConfig.attribution ? [createAttribution(layerConfig.attribution)] : null,
+        attributions,
         tileGrid: new TileGrid({
           origin: getBottomLeft(layerConfig.extent),
           resolutions: layerConfig.resolutions || projectConfig.resolutions,
           tileSize: 512
         }),
         hidpi: false
-      }),
-      extent: layerConfig.extent,
-      visible: layerConfig.visible
+      })
+    }
+    return new TileLayer({
+      source: olSource,
+      extent: layerConfig.extent
     })
   }
   /* else if (type === 'bing') {
     return new TileLayer({
-      visible: layerConfig.visible,
       preload: Infinity,
       source: new BingMaps({
         key: layerConfig.apiKey,
@@ -261,7 +271,6 @@ export function createBaseLayer (layerConfig, projectConfig = {}) {
   } */
   // fallback to render layer by qgis server
   return new ImageLayer({
-    visible: layerConfig.visible,
     extent: layerConfig.extent,
     source: new WebgisImageWMS({
       resolutions: layerConfig.resolutions || projectConfig.resolutions,
@@ -310,14 +319,6 @@ export function createMap (config, controlOpts = {}) {
 
   const layers = []
   const overlay = createQgisLayer(config)
-  if (config.baseLayers) {
-    config.baseLayers.forEach(baseLayerCfg => {
-      const baseLayer = createBaseLayer(baseLayerCfg, config)
-      baseLayer.set('name', baseLayerCfg.name)
-      baseLayer.set('type', 'baselayer')
-      layers.push(baseLayer)
-    })
-  }
   layers.push(overlay)
 
   const map = new Map({
@@ -335,6 +336,19 @@ export function createMap (config, controlOpts = {}) {
     controls: defaultControls(controlOpts)
   })
   map.overlay = overlay
+
+  const baseLayers = {}
+  map.getBaseLayer = async (name) => {
+    if (!baseLayers[name]) {
+      const layerConfig = config.baseLayers.find(c => c.name === name)
+      const baseLayer = await createBaseLayer(layerConfig, config)
+      baseLayer.set('type', 'baselayer')
+      baseLayer.set('name', layerConfig.name)
+      map.getLayers().insertAt(0, baseLayer)
+      baseLayers[name] = baseLayer
+    }
+    return baseLayers[name]
+  }
 
   // define getScale method for map's view object
   // (using scales from project metadata)

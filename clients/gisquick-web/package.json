@@ -26,7 +26,8 @@
     "vue-gettext": "^2.1.12",
     "vue-reactive-refs": "0.0.2",
     "vue2-touch-events": "^3.2.2",
-    "vuex": "^3.6.2"
+    "vuex": "^3.6.2",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.5.15",

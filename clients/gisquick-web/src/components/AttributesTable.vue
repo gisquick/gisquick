@@ -114,7 +114,15 @@
           </v-tooltip>
           <v-icon name="attribute-table-add"/>
         </v-btn>
-
+        <v-btn
+          v-if="attributesToExport.length"
+          color="primary"
+          :disabled="!attributesToExport.length"
+          @click="exportFeatures"
+        >
+          <v-icon name="download" size="14" class="mr-2"/>
+          <translate>Export</translate>
+        </v-btn>
       </template>
       <div class="f-grow"/>
       <v-checkbox
@@ -200,6 +208,8 @@ import { layerFeaturesQuery } from '@/map/featureinfo'
 // import { ShallowArray } from '@/utils'
 import { eventCoord, DragHandler } from '@/events'
 import { formatFeatures } from '@/formatters'
+import { valueMapItems } from '@/adapters/attributes'
+import { downloadExcel } from '@/xlsx-export'
 
 
 const ActionsHeader = {
@@ -224,7 +234,7 @@ export default {
     return {
       loading: false,
       pagination: null,
-      lastAttributesFilters: null,
+      lastQueryParams: null,
       selectedFeatureIndex: null,
       showInfoPanel: false,
       newFeatureMode: false,
@@ -298,7 +308,8 @@ export default {
     tr () {
       return {
         FilterVisibleLabel: this.$gettext('Filter to visible area'),
-        PageSize: this.$gettext('Page size')
+        PageSize: this.$gettext('Page size'),
+        link: this.$gettext('link')
       }
     },
     selectedFeature () {
@@ -330,6 +341,13 @@ export default {
         }
       })
       return slots
+    },
+    attributesToExport () {
+      if (this.layer.export_fields) {
+        const attrsMap = keyBy(this.layer.attributes, 'name')
+        return this.layer.export_fields.map(n => attrsMap[n])
+      }
+      return []
     }
   },
   watch: {
@@ -359,27 +377,31 @@ export default {
   },
   methods: {
     ...mapMutations('attributeTable', ['updateFilter', 'clearFilter']),
+    getFeaturesQueryParams () {
+      const filters = Object.entries(this.layerFilters)
+        // .filter(([name, filter]) => filter.comparator && filter.value !== null)
+        .filter(([name, filter]) => filter.active && filter.comparator && filter.valid)
+        .map(([name, filter]) => ({
+          attribute: name,
+          operator: filter.comparator,
+          value: filter.value
+        }))
+      let geom = null
+      if (this.visibleAreaFilter) {
+        const mapProjection = this.$map.getView().getProjection().getCode()
+        geom = fromExtent(this.$map.ext.visibleAreaExtent()).transform(mapProjection, this.layer.projection)
+      }
+      return { geom, filters }
+    },
     async fetchFeatures (page = 1, lastQuery = false) {
       const mapProjection = this.$map.getView().getProjection().getCode()
       let query
       if (lastQuery) {
         query = this.pagination.query
       } else {
-        let geom = null
-        if (this.visibleAreaFilter) {
-          geom = fromExtent(this.$map.ext.visibleAreaExtent()).transform(mapProjection, this.layer.projection)
-        }
-        this.lastAttributesFilters = Object.entries(this.layerFilters)
-          // .filter(([name, filter]) => filter.comparator && filter.value !== null)
-          .filter(([name, filter]) => filter.active && filter.comparator && filter.valid)
-          .map(([name, filter]) => ({
-            attribute: name,
-            operator: filter.comparator,
-            value: filter.value
-          }))
-        // console.log(JSON.stringify(this.lastAttributesFilters))
-        query = layerFeaturesQuery(this.layer, geom, this.lastAttributesFilters)
-        // console.log(query)
+        this.lastQueryParams = this.getFeaturesQueryParams()
+        const { geom, filters } = this.lastQueryParams
+        query = layerFeaturesQuery(this.layer, geom, filters)
       }
 
       const baseParams = {
@@ -485,6 +507,35 @@ export default {
     onFeatureEdit () {
       this.$map.ext.refreshOverlays()
       this.fetchFeatures(this.pagination.page, true)
+    },
+    async exportFeatures () {
+      const params = {
+        VERSION: '1.1.0',
+        SERVICE: 'WFS',
+        REQUEST: 'GetFeature',
+        OUTPUTFORMAT: 'GeoJSON',
+        STARTINDEX: 0
+      }
+      const headers = { 'Content-Type': 'text/xml' }
+      const attrsNames = this.attributesToExport.map(a => a.name)
+      const { geom, filters } = this.lastQueryParams
+      const query = layerFeaturesQuery(this.layer, geom, filters, attrsNames)
+      const { data } = await this.$http.post(this.project.config.ows_url, query, { params, headers })
+      const header = this.attributesToExport.map(a => a.alias || a.name)
+
+      const formatters = this.attributesToExport.map(attr => {
+        if (attr.widget === 'Hyperlink') {
+          return v => ({ v: this.tr.link, l: { Target: v } })
+        }
+        if (attr.widget === 'ValueMap') {
+          const items = valueMapItems(attr)
+          const map = items.reduce((data, item) => (data[item.value] = item.text, data), {})
+          return v => map[v]
+        }
+        return v => v
+      })
+      const rows = data.features.map(f => attrsNames.map((n, i) => formatters[i](f.properties[n])))
+      downloadExcel(header, rows, this.layer.title, this.layer.title)
     }
   }
 }

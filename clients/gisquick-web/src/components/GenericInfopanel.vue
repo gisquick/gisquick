@@ -7,7 +7,6 @@
           <component
             :is="widgets[index]"
             :value="values[index]"
-            :layer="layer"
             :attribute="attr"
             class="value"
           />
@@ -33,7 +32,10 @@ function isAbsoluteUrl (val) {
 function Widget (render) {
   return {
     functional: true,
-    props: ['value'],
+    props: {
+      attribute: Object,
+      value: {}
+    },
     render
   }
 }
@@ -52,7 +54,9 @@ const BoolWidget = Widget((h, ctx) => (
 
 // TODO: translate 'link' (check <translate> component in JSX)
 const UrlWidget = Widget((h, ctx) => (
-  <a {...ctx.data} href={ctx.props.value} target="_blank">link</a>
+  ctx.props.value
+    ? <translate {...ctx.data} tag="a" href={ctx.props.value} target="_blank">link</translate>
+    : <span {...ctx.data}/>
 ))
 
 const ImageWidget = Widget((h, ctx) => {
@@ -71,7 +75,11 @@ export const DateWidget = Widget((h, ctx) => {
   const cfg = ctx.data.attrs?.attribute?.config
   if (value && cfg && cfg.display_format && cfg.field_format) {
     const date = parse(value, cfg.field_format, new Date())
-    value = format(date, cfg.display_format)
+    try {
+      value = format(date, cfg.display_format)
+    } catch (err) {
+      console.error(`DateWidget: failed to format value: ${value} (${err})`)
+    }
   }
   return <span {...ctx.data}>{value}</span>
 })
@@ -83,7 +91,11 @@ export const DateTimeWidget = Widget((h, ctx) => {
     const cfg = ctx.data.attrs?.attribute?.config
     const displayFormat = cfg?.display_format || 'yyyy-MM-dd HH:mm:ss'
     const date = cfg?.field_format ? parse(value, cfg.field_format, new Date()) : new Date(value)
-    value = format(date, displayFormat)
+    try {
+      value = format(date, displayFormat)
+    } catch (err) {
+      console.error(`DateTimeWidget: failed to format value: ${value} (${err})`)
+    }
   }
   return <span {...ctx.data}>{value}</span>
 })
@@ -92,7 +104,6 @@ export const ValueMapWidget = {
   name: 'ValueMapWidget',
   props: {
     attribute: Object,
-    // layer: Object,
     value: {}
   },
   computed: {

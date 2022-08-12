@@ -81,10 +81,10 @@
                 </div>
               </template>
             </v-menu>
-            <v-btn class="icon small" :disabled="!!error" @click="openEditor()">
+            <v-btn class="icon small" :disabled="disabled || !!error" @click="openEditor()">
               <v-icon name="tune"/>
             </v-btn>
-            <v-btn class="icon small" @click="deleteImage()">
+            <v-btn class="icon small" :disabled="disabled" @click="deleteImage()">
               <v-icon name="delete_forever"/>
             </v-btn>
           </div>
@@ -107,6 +107,7 @@
       <v-btn
         v-else
         class="image-input"
+        :disabled="disabled"
         :class="{mobile: isMobileDevice}"
         color="#555"
         @click="selectFile"
@@ -271,6 +272,7 @@ export default {
     label: String,
     layer: String,
     value: [String, Function],
+    disabled: Boolean,
     accept: {
       type: String,
       default: 'image/*'

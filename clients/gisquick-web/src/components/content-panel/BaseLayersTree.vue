@@ -24,12 +24,11 @@
     </template>
     <template v-slot:leaf="{ item }">
       <div class="item layer f-row-ac" :class="{expanded: expandedLayer === item}">
-        <v-radio-btn
+        <v-checkbox
           class="f-grow"
           :label="item.title || item.name"
-          :val="item.name"
-          :value="value"
-          @input="$emit('input', item.name)"
+          :value="value === item.name"
+          @input="$emit('input', value === item.name ? null : item.name)"
         />
         <v-btn class="icon flat small" @click="toggleLayerInfo(item)">
           <v-icon

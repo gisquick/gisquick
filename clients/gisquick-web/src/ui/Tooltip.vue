@@ -159,7 +159,8 @@ export default {
 
 <style lang="scss" scoped>
 .tooltip-box {
-  padding: 8px;
+  display: flex;
+  padding: 4px;
   position: relative;
   border-radius: 3px;
   white-space: pre-line;

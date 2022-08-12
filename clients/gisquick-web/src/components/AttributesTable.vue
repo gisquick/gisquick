@@ -202,7 +202,7 @@ import AttributeFilter from '@/components/AttributeFilter.vue'
 import FeaturesViewer from '@/components/ol/FeaturesViewer.vue'
 import NewFeatureEditor from '@/components/feature-editor/NewFeatureEditor.vue'
 import InfoPanel from '@/components/InfoPanel.vue'
-import { DateWidget, ValueMapWidget } from '@/components/GenericInfopanel.vue'
+import { DateWidget, ValueMapWidget, BoolWidget, UrlWidget, createImageWidget, mediaUrlFormat } from '@/components/GenericInfopanel.vue'
 import { simpleStyle } from '@/map/styles'
 import { layerFeaturesQuery } from '@/map/featureinfo'
 // import { ShallowArray } from '@/utils'
@@ -333,8 +333,16 @@ export default {
         let widget
         if (attr.widget === 'ValueMap') {
           widget = ValueMapWidget
+        } else if (attr.widget === 'Hyperlink') {
+          widget = UrlWidget
+        } else if (attr.widget === 'Image') {
+          widget = createImageWidget()
+        } else if (attr.widget === 'MediaImage') {
+          widget = createImageWidget(mediaUrlFormat(this.project.config.name))
         } else if (attr.type === 'date') { // and also attr.widget === 'DateTime' ?
           widget = DateWidget
+        } else if (attr.type === 'bool') {
+          widget = BoolWidget
         }
         if (widget) {
           slots[attr.name] = { component: widget, attribute: attr }
@@ -573,6 +581,10 @@ export default {
       max-width: 600px; // TODO: multiple sizes dependent by columns count
       text-overflow: ellipsis;
       overflow: hidden;
+      a {
+        color: var(--color-primary);
+        text-decoration: none;
+      }
     }
   }
 }

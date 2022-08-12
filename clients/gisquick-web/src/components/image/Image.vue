@@ -11,7 +11,7 @@
         :src="src"
         @error="onError"
         @load="onLoad"
-        @click="open = true"
+        @click="openViewer"
       />
     </slot>
     <v-dialog content-class="fullscreen f-col" v-model="open">

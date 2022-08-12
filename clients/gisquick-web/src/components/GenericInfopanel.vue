@@ -48,18 +48,18 @@ const FloatWidget = Widget((h, ctx) => (
   <span {...ctx.data}>{Number.isFinite(ctx.props.value) ? round(ctx.props.value, 2) : ctx.props.value}</span>
 ))
 
-const BoolWidget = Widget((h, ctx) => (
+export const BoolWidget = Widget((h, ctx) => (
   <div class="f-row-ac" {...ctx.data}><v-icon name={ctx.props.value ? 'check' : 'dash'}/></div>
 ))
 
 // TODO: translate 'link' (check <translate> component in JSX)
-const UrlWidget = Widget((h, ctx) => (
+export const UrlWidget = Widget((h, ctx) => (
   ctx.props.value
-    ? <translate {...ctx.data} tag="a" href={ctx.props.value} target="_blank">link</translate>
+    ? <translate {...ctx.data} class="hyperlink" tag="a" href={ctx.props.value} target="_blank">link</translate>
     : <span {...ctx.data}/>
 ))
 
-const ImageWidget = Widget((h, ctx) => {
+export const ImageWidget = Widget((h, ctx) => {
   const src = ctx.props.value
   if (!src) {
     return <span class="value"></span>
@@ -69,6 +69,34 @@ const ImageWidget = Widget((h, ctx) => {
     <v-image class="image" src={src}/>
   ]
 })
+
+export function mediaUrlFormat (projectName) {
+  const root = `/api/project/media/${projectName}`
+  return value => path.join(root, value)
+}
+
+export function createImageWidget (createUrl) {
+  return Widget((h, ctx) => {
+    const src = ctx.props.value
+    if (!src) {
+      return <span class="value"></span>
+    }
+    const url = createUrl ? createUrl(src) : src
+    return <v-image class="image" src={url} scopedSlots={{
+      default: props => (
+        <div class="f-row-ac">
+          <v-btn class="icon flat m-0">
+            <v-icon name="photo" onClick={props.openViewer}/>
+            <v-tooltip slot="tooltip" align="ll,rr,c;tt,bb" content-class="tooltip dark image">
+              <img style="width:100%; max-width: 300px; max-height:300px" src={url}/>
+            </v-tooltip>
+          </v-btn>
+          <a class="value ml-2" href={url} target="_blank">{src}</a>
+        </div>
+      )
+    }}/>
+  })
+}
 
 export const DateWidget = Widget((h, ctx) => {
   let { value } = ctx.props
@@ -141,11 +169,11 @@ export default {
       return this.fields.map(attr => this.feature?.getFormatted(attr.name))
     },
     mediaWidget () {
-      const root = `/api/project/media/${this.project.name}`
       return Widget((h, ctx) => {
         if (!ctx.props.value) {
           return <span class="value"></span>
         }
+        const root = `/api/project/media/${this.project.name}`
         const url = path.join(root, ctx.props.value)
         return [
           <a class="value" href={url} target="_blank">{ctx.props.value}</a>,
@@ -311,6 +339,14 @@ export default {
       padding: 6px 0;
       justify-self: center;
     }
+  }
+}
+</style>
+
+<style lang="scss">
+.tooltip.image {
+  .tooltip-box {
+    padding: 2px;
   }
 }
 </style>

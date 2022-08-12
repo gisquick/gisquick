@@ -267,6 +267,9 @@ export default {
       }
     })
   },
+  beforeDestroy () {
+    console.log('image editor: before destroy')
+  },
   methods: {
     canvasEl () {
       return this.$refs.canvas

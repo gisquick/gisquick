@@ -52,10 +52,11 @@
 <script>
 import clamp from 'lodash/clamp'
 import keyBy from 'lodash/keyBy'
+import { mapState } from 'vuex'
 
 // import TabsHeader from '@/components/TabsHeader1.vue'
 import TabsHeader from '@/components/TabsHeader.vue'
-import { DateWidget, ValueMapWidget } from '@/components/GenericInfopanel.vue'
+import { DateWidget, ValueMapWidget, BoolWidget, UrlWidget, createImageWidget, mediaUrlFormat } from '@/components/GenericInfopanel.vue'
 import { eventCoord, DragHandler } from '@/events'
 
 
@@ -91,6 +92,7 @@ export default {
     }
   },
   computed: {
+    ...mapState(['project']),
     heightStyle () {
       // const height = this.height + 'px'
       const height = (this.minimized ? 1 : this.height) + 'px'
@@ -141,12 +143,20 @@ export default {
     },
     slots () {
       const slots = {}
-      this.layer.attributes?.forEach(attr => {
+      this.attributes.forEach(attr => {
         let widget
         if (attr.widget === 'ValueMap') {
           widget = ValueMapWidget
+        } else if (attr.widget === 'Hyperlink') {
+          widget = UrlWidget
+        } else if (attr.widget === 'Image') {
+          widget = createImageWidget()
+        } else if (attr.widget === 'MediaImage') {
+          widget = createImageWidget(mediaUrlFormat(this.project.config.name))
         } else if (attr.type === 'date') { // and also attr.widget === 'DateTime' ?
           widget = DateWidget
+        } else if (attr.type === 'bool') {
+          widget = BoolWidget
         }
         if (widget) {
           slots[attr.name] = { component: widget, attribute: attr }
@@ -209,6 +219,13 @@ export default {
     }
     td {
       white-space: nowrap;
+      max-width: 600px; // TODO: multiple sizes dependent by columns count
+      text-overflow: ellipsis;
+      overflow: hidden;
+      a {
+        color: var(--color-primary);
+        text-decoration: none;
+      }
     }
   }
 }

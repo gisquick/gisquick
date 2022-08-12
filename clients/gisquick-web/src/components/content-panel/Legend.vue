@@ -34,12 +34,19 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['visibleBaseLayer', 'visibleLayers'])
+    ...mapGetters(['visibleBaseLayer', 'visibleLayers']),
+    legendLayers () {
+      return [
+        this.visibleBaseLayer,
+        ...this.visibleLayers
+      ].filter(l => l && !l.legend_disabled && l.drawing_order > -1)
+    }
   },
   watch: {
     visible (visible) {
       this.setActive(visible)
-    }
+    },
+    legendLayers: 'updateLegend'
   },
   mounted () {
     this.setActive(this.visible)
@@ -60,14 +67,12 @@ export default {
       }
     },
     updateLegend () {
+      if (!this.visible) {
+        return
+      }
       const source = this.$map.overlay.getSource()
       const view = this.$map.getView()
-      const layers = [
-        this.visibleBaseLayer,
-        ...this.visibleLayers
-      ].filter(l => l && l.drawing_order > -1)
-
-      this.legendList = layers.map(l => {
+      this.legendList = this.legendLayers.map(l => {
         if (l.legend_url) {
           return {
             layer: l,

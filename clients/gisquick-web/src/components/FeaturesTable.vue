@@ -143,7 +143,7 @@ export default {
     },
     slots () {
       const slots = {}
-      this.attributes.forEach(attr => {
+      this.attributes?.forEach(attr => {
         let widget
         if (attr.widget === 'ValueMap') {
           widget = ValueMapWidget

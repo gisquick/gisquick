@@ -17,6 +17,7 @@
       :columns="columns"
       item-key="_id"
       :items="tableData"
+      :error="loadingError"
       :loading="loading"
       :selected="selectedFeatureId"
       @row-click="selectFeature"
@@ -233,6 +234,7 @@ export default {
   data () {
     return {
       loading: false,
+      loadingError: false,
       pagination: null,
       lastQueryParams: null,
       selectedFeatureIndex: null,
@@ -422,6 +424,7 @@ export default {
       const headers = { 'Content-Type': 'text/xml' }
       let geojson, featuresCount
       this.loading = true
+      this.loadingError = false
       try {
         let params = { ...baseParams, resultType: 'hits' }
         let resp = await this.$http.post(this.project.config.ows_url, query, { params, headers })
@@ -437,6 +440,7 @@ export default {
         geojson = resp.data
       } catch (e) {
         console.error(e)
+        this.loadingError = this.$gettext('Failed to load data')
         return
       } finally {
         this.loading = false

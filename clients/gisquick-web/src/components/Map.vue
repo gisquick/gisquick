@@ -25,6 +25,12 @@
     </div>
     <portal-target name="map-overlay" class="map-overlay"/>
     <tools-menu :tools="toolsMenuItems" color="dark"/>
+    <transition name="fade">
+      <div v-if="status.overlays.loading || status.baseLayer.loading" class="status f-row-ac m-2">
+        <v-spinner width="2" size="18"/>
+        <translate class="mx-2">Loading</translate>
+      </div>
+    </transition>
 
     <v-btn
       aria-label="Toggle panel"
@@ -273,6 +279,19 @@ export default {
     z-index: 2;
     min-width: 0;
     max-width: 100%;
+  }
+  .status {
+    grid-column: 1 / 4;
+    grid-row: 1 / 2;
+    align-self: start;
+    justify-self: center;
+    z-index: 1;
+    min-width: 0;
+    max-width: 100%;
+    background-color: rgba(var(--color-dark-rgb), 0.85);
+    color: #fff;
+    border-radius: 4px;
+    padding: 2px 4px;
   }
 }
 

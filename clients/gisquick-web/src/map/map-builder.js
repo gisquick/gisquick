@@ -220,7 +220,7 @@ export async function createBaseLayer (layerConfig, projectConfig = {}) {
   }
   if (provider_type === 'vectortile') {
     const vc = await import(/* webpackChunkName: "vectortile" */ './vector-tile.js')
-    return vc.createLayer(layerConfig)
+    return await vc.createLayer(layerConfig)
   }
   if (type === 'xyz' || source?.type === 'xyz') {
     return new TileLayer({

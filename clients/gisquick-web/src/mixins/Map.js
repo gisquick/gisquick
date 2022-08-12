@@ -3,12 +3,31 @@ import { mapState, mapGetters } from 'vuex'
 import has from 'lodash/has'
 import mapKeys from 'lodash/mapKeys'
 import { boundingExtent, buffer as bufferExtent } from 'ol/extent'
+import { unByKey } from 'ol/Observable'
 import 'ol/ol.css'
 import axios from 'axios'
 
 import { createMap, registerProjections } from '@/map/map-builder'
 
+function getTileKey (tile) {
+  return tile.tileCoord.join('/')
+}
+
 export default {
+  data () {
+    return {
+      status: {
+        baseLayer: {
+          loading: false,
+          error: false
+        },
+        overlays: {
+          loading: false,
+          error: false
+        }
+      }
+    }
+  },
   computed: {
     ...mapState(['project']),
     ...mapGetters(['visibleBaseLayer', 'visibleLayers'])
@@ -57,6 +76,7 @@ export default {
     } else {
       this.setVisibleBaseLayer(visibleBaseLayer)
     }
+    this.registerStatusListener(map.overlay, this.status.overlays)
   },
   mounted () {
     const map = this.$map
@@ -124,10 +144,62 @@ export default {
       if (layer) {
         const baseLayer = await this.$map.getBaseLayer(layer.name)
         baseLayer.setVisible(true)
+        this.unregisterBaseLayerListener?.()
+        this.unregisterBaseLayerListener = this.registerStatusListener(baseLayer, this.status.baseLayer)
       }
     },
     setVisibleLayers (layers) {
       this.$map.overlay.getSource().setVisibleLayers(layers.map(l => l.name))
+    },
+    registerStatusListener (olLayer, status) {
+      const source = olLayer.getSource()
+      if (source.getTileLoadFunction) {
+        this.registerTilesStatusListener(source, status)
+      } else {
+        this.registerImageStatusListener(source, status)
+      }
+    },
+    registerImageStatusListener (source, status) {
+      const l1 = source.on('imageloadstart', () => {
+        status.loading = true
+      })
+      const l2 = source.on('imageloadend', () => {
+        status.error = false
+        status.loading = false
+      })
+      const l3 = source.on('imageloaderror', () => {
+        status.error = true
+        status.loading = false
+      })
+      // unregister function
+      return () => {
+        status.error = false
+        status.loading = false
+        unByKey([l1, l2, l3])
+      }
+    },
+    registerTilesStatusListener (source, status) {
+      const tiles = new Set()
+      const l1 = source.on('tileloadstart', e => {
+        tiles.add(getTileKey(e.tile))
+        status.loading = true
+      })
+      const l2 = source.on('tileloadend', e => {
+        tiles.delete(getTileKey(e.tile))
+        status.loading = tiles.size > 0
+        // status.loading = !isEmpty(e.target.tileLoadingKeys_)
+      })
+      const l3 = source.on('tileloaderror', e => {
+        tiles.delete(getTileKey(e.tile))
+        status.loading = tiles.size > 0
+        // status.loading = !isEmpty(e.target.tileLoadingKeys_)
+      })
+      // unregister function
+      return () => {
+        status.error = false
+        status.loading = false
+        unByKey([l1, l2, l3])
+      }
     }
   }
 }

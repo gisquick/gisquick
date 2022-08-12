@@ -18,17 +18,17 @@ export function vectorTileLayer (layerConfig) {
   })
 }
 
-export function mapboxLayerFromURL (url) {
+export async function mapboxLayerFromURL (url) {
   const layer = new VectorTileLayer({ declutter: true })
-  applyStyle(layer, url)
+  await applyStyle(layer, url)
   return layer
 }
 
-export function createLayer (layerConfig) {
+export async function createLayer (layerConfig) {
   const { custom } = layerConfig
 
   if (custom?.style_url) {
-    return mapboxLayerFromURL(custom?.style_url)
+    return await mapboxLayerFromURL(custom?.style_url)
   }
   return vectorTileLayer(layerConfig)
 }

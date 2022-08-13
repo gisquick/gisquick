@@ -15,7 +15,7 @@
     <popup-content
       backhandler
       persistent
-      type="Menu"
+      type="menu"
       :transition="transition"
       :open.sync="open"
       :bounds="bounds"

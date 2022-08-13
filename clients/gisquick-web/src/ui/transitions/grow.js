@@ -1,11 +1,11 @@
 export default function growTransition (transition) {
   function clearStyle (el) {
-    // console.log('clearStyle')
     el.style.width = ''
     el.style.height = ''
     // el.style.transition = ''
     // el.style.overflow = ''
     el.children[0].style.width = ''
+    el.children[0].style.height = ''
 
     // el.classList.remove('grow-enter-active', 'grow-leave-active')
 

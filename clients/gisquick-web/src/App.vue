@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="app f-col">
     <intro-page v-if="!projectPath"/>
-    <map-app v-if="projectStatus === 200"/>
+    <map-app v-if="projectStatus === 200" :key="projectKey"/>
     <login-dialog
       :value="showLogin"
       :login-required="projectStatus !== 200"
@@ -10,7 +10,7 @@
       @login="onLogin"
       @close="$store.commit('showLogin', false)"
     />
-    <project-not-found v-if="projectStatus === 404"/>
+    <project-not-found v-if="projectStatus === 400 || projectStatus === 404"/>
     <server-error v-if="projectStatus === 500"/>
     <popup-layer class="light"/>
   </div>
@@ -35,6 +35,11 @@ export default {
     ServerError,
     MapApp: async () => window.env.mobile ? MobileMap : DesktopMap
   },
+  data () {
+    return {
+      projectKey: 0
+    }
+  },
   computed: {
     ...mapState(['app', 'user', 'project', 'showLogin']),
     projectPath () {
@@ -55,6 +60,9 @@ export default {
           this.$store.commit('showLogin', true)
         }
       }
+    },
+    project () {
+      this.projectKey++
     }
   },
   methods: {

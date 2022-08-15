@@ -71,7 +71,7 @@
         </div>
       </div>
     </transition>
-    <map-tools ref="tools" show-header/>
+    <map-tools ref="tools" show-header hidden-identification/>
   </div>
 </template>
 

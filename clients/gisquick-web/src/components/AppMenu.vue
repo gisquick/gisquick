@@ -2,6 +2,7 @@
   <v-menu
     :items="items"
     v-bind="$attrs"
+    align="rr;bb"
   >
     <template
       v-for="(index, name) in $scopedSlots"

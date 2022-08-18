@@ -9,6 +9,7 @@
       <generic-edit-form
         ref="editForm"
         :layer="layer"
+        :initial="originalFields"
         :fields="fields"
         :project="project"
         :status.sync="formStatus"
@@ -223,11 +224,16 @@ export default {
     async wfsTransaction (operations) {
       this.statusController.set('loading', 1000)
       try {
+        const { updates = [], deletes = [] } = operations
         await wfsTransaction(this.project.ows_url, this.layer.name, operations)
-        // TODO: afterSave hook
+        for (const f of updates) {
+          await this.$refs.editForm.afterFeatureUpdated?.(f)
+        }
+        for (const f of deletes) {
+          await this.$refs.editForm.afterFeatureDeleted?.(f)
+        }
         await this.statusController.set('success', 1500)
         this.statusController.set(null, 100)
-        const { updates = [], deletes = [] } = operations
         updates.forEach(f => this.$emit('edit', f))
         deletes.forEach(f => this.$emit('delete', f))
       } catch (err) {
@@ -242,7 +248,13 @@ export default {
       for (const name in this.fields) {
         let value = this.fields[name]
         if (typeof value === 'function') {
-          value = await value()
+          try {
+            value = await value()
+          } catch (err) {
+            // this.statusController.set('error', 3000)
+            // this.statusController.set(null, 100)
+            return
+          }
         }
         resolvedFields[name] = value
       }
@@ -258,12 +270,12 @@ export default {
         f.setGeometry(newGeom)
       }
       f.setId(this.feature.getId())
+      await this.$refs.editForm.beforeFeatureUpdated?.(f)
       this.wfsTransaction({ updates: [f] })
     },
     async deleteFeature () {
-      await this.$refs.editForm.beforeDelete?.()
+      await this.$refs.editForm.beforeFeatureDeleted?.(this.feature)
       this.wfsTransaction({ deletes: [this.feature] })
-      await this.$refs.editForm.afterDelete?.()
       this.showConfirmDelete = false
     }
   }

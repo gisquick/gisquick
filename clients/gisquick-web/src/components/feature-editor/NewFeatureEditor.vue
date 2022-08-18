@@ -9,6 +9,7 @@
       <generic-edit-form
         :layer="layer"
         :fields="fields"
+        :project="project.config"
       />
     </slot>
     <portal
@@ -99,15 +100,25 @@ export default {
     this.statusController = queuedUpdater(v => { this.status = v })
   },
   methods: {
-    save () {
-      console.log('save')
+    async save () {
       const f = new Feature()
       const geom = this.references.geometryEditor.getGeometry()
-      f.setProperties(this.fields)
+      const resolvedFields = {}
+      for (const name in this.fields) {
+        let value = this.fields[name]
+        if (typeof value === 'function') {
+          try {
+            value = await value()
+          } catch (err) {
+            // this.statusController.set('error', 3000)
+            // this.statusController.set(null, 100)
+            return
+          }
+        }
+        resolvedFields[name] = value
+      }
+      f.setProperties(resolvedFields)
       f.setGeometry(geom)
-      console.log({ ...this.fields })
-      console.log(geom)
-      console.log(geom && geom.flatCoordinates)
 
       this.statusController.set('loading', 1000)
       wfsTransaction(this.project.config.ows_url, this.layer.name, { inserts: [f] })

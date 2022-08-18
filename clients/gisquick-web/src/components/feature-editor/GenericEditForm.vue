@@ -6,6 +6,7 @@
           :key="attr.name"
           ref="widget"
           :is="widgets[index].component"
+          :initial="initial && initial[attr.name]"
           :label="attr.alias || attr.name"
           :status.sync="statuses[attr.name]"
           v-model="fields[attr.name]"
@@ -38,6 +39,7 @@ export default {
   props: {
     layer: Object,
     fields: Object,
+    initial: Object,
     project: Object
   },
   data () {
@@ -146,15 +148,17 @@ export default {
     }
   },
   methods: {
-    async beforeDelete () {
-      for (const w of this.$refs.widget) {
-        await w.beforeFeatureDeleted?.()
-      }
+    async beforeFeatureUpdated (f) {
+      await Promise.all(this.$refs.widget.map(w => w.beforeFeatureUpdated?.(f)))
     },
-    async afterDelete () {
-      for (const w of this.$refs.widget) {
-        await w.afterFeatureDeleted?.()
-      }
+    async afterFeatureUpdated (f) {
+      await Promise.all(this.$refs.widget.map(w => w.afterFeatureUpdated?.(f)))
+    },
+    async beforeFeatureDeleted (f) {
+      await Promise.all(this.$refs.widget.map(w => w.beforeFeatureDeleted?.(f)))
+    },
+    async afterFeatureDeleted (f) {
+      await Promise.all(this.$refs.widget.map(w => w.afterFeatureDeleted?.(f)))
     }
   }
 }

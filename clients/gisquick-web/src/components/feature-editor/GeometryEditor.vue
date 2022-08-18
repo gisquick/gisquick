@@ -299,7 +299,7 @@ export default {
           return null
         }
         const GeomClass = MultiGeomClasses[this.geomType]
-        const geom = new GeomClass()
+        const geom = new GeomClass([])
         const composeFn = 'append' + this.drawGeomType
         this.geomFeatures.forEach(f => {
           geom[composeFn](f.getGeometry())

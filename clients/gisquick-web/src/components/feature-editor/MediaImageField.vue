@@ -270,7 +270,7 @@ export default {
     url: String,
     location: String,
     label: String,
-    layer: String,
+    initial: String,
     value: [String, Function],
     disabled: Boolean,
     accept: {
@@ -282,7 +282,6 @@ export default {
     return {
       error: null,
       focused: false,
-      initial: null,
       newImage: null,
       imageInfo: null,
       uploading: false,
@@ -325,15 +324,12 @@ export default {
     }
   },
   watch: {
-    value: {
+    initial: {
       immediate: true,
-      handler (value) {
+      handler () {
         this.error = false
-        if (typeof value === 'string') {
-          this.initial = value
-          this.newImage = null
-          this.imageInfo = null
-        }
+        this.newImage = null
+        this.imageInfo = null
       }
     },
     newImage (n, o) {
@@ -355,9 +351,7 @@ export default {
       this.$refs.cameraInput.click()
     },
     deleteImage () {
-      console.log('delete')
-      getWfs('districts', 'attr', this.value)
-      // this.$http.delete(this.url)
+      // getWfs('districts', 'attr', this.value)
       this.$emit('input', '')
     },
     setNewImage (image) {
@@ -385,7 +379,11 @@ export default {
           return data
         } catch (err) {
           if (!this.$http.isCancel(err)) {
-            this.error = 'Failed to upload file'
+            if (err.response?.status === 413) {
+              this.error = this.$gettext('Project size limit reached')
+            } else {
+              this.error = this.$gettext('Failed to upload file')
+            }
           }
           throw err
         } finally {
@@ -397,7 +395,6 @@ export default {
       this.$emit('input', upload)
     },
     cancelUpload () {
-      console.log('cancelUpload', this.value)
       this.value.cancel?.()
     },
     async onChange (e) {
@@ -423,7 +420,7 @@ export default {
       })
     },
     toggleCrop () {
-      this.crop = this.crop ? null :  { left: 0, top: 0, right: 1, bottom: 1 }
+      this.crop = this.crop ? null : { left: 0, top: 0, right: 1, bottom: 1 }
     },
     onImageLoadError (e) {
       this.error = 'Failed to load image'
@@ -489,15 +486,17 @@ export default {
       this.newImage = null
       this.$emit('input', this.initial)
     },
-    beforeFeatureDeleted () {
-      // const url = Path.join('/api/project/media/', this.location, this.initial)
-      const url = Path.join(this.url, this.initial)
-      console.log('prepare to delete media image:', url)
-    },
     afterFeatureDeleted () {
-      console.log('delete media image!')
-      // /api/project/media/{user}/{directory}/*
-      // this.$http.delete()
+      if (this.initial) {
+        const url = Path.join(this.url, this.initial)
+        this.$http.delete(url)
+      }
+    },
+    afterFeatureUpdated (f) {
+      if (this.initial && this.initial !== this.value) {
+        const url = Path.join(this.url, this.initial)
+        this.$http.delete(url) // not returning promise, so error will not cause save failure
+      }
     }
   }
 }

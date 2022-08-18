@@ -21,6 +21,8 @@ export default {
       type: String,
       default: 'items'
     },
+    itemsData: Object,
+    baseIndent: [String, Number],
     indent: {
       type: [String, Number],
       default: 26
@@ -28,6 +30,9 @@ export default {
     groupContentAttrs: Function
   },
   computed: {
+    numBaseIndent () {
+      return parseInt(this.baseIndent)
+    },
     numIndent () {
       return parseInt(this.indent)
     }
@@ -42,7 +47,7 @@ export default {
         : Boolean(this.expanded?.[group[this.itemKey]])
     },
     indendStyle (depth) {
-      return this.indent ? { paddingLeft: `${this.numIndent * depth}px` } : null
+      return this.indent ? { paddingLeft: `${this.numBaseIndent + this.numIndent * depth}px` } : null
     },
     renderGroup (h, group, depth) {
       const style = this.indendStyle(depth)
@@ -81,7 +86,12 @@ export default {
     },
     renderLeaf (h, item, group, depth) {
       const style = this.indendStyle(depth)
-      const cmp = this.$scopedSlots.leaf({ item, group, depth, style })
+      const props = { item, group, depth, style }
+      if (this.itemsData) {
+        props.data = this.itemsData[item[this.itemKey]]
+        // Object.assign(props, this.itemsData[item[this.itemKey]])
+      }
+      const cmp = this.$scopedSlots.leaf(props)
       if (style) {
         // addStyle(cmp[0], style)
       }

@@ -3,7 +3,8 @@
     class="layers-tree"
     item-key="name"
     item-children="layers"
-    :items="layers"
+    :items="layers.tree"
+    :items-data="layersInfo"
     :expanded="expanded"
     :group-content-attrs="groupContentAttributes"
   >
@@ -28,7 +29,7 @@
         />
       </div>
     </template>
-    <template v-slot:leaf="{ item, group }">
+    <template v-slot:leaf="{ item, group, data }">
       <!-- <div class="f-col"> -->
         <div class="item layer f-row-ac" :class="{expanded: expandedLayer === item}">
           <v-checkbox
@@ -69,19 +70,27 @@
         <collapse-transition>
           <div
             v-if="expandedLayer === item"
-            class="metadata px-2 py-1"
+            class="metadata f-col px-2 py-1"
           >
-            <translate class="label">Geometry</translate>
-            <v-icon :name="item.geom_type ? item.geom_type.toLowerCase() : 'raster'"/>
-            <br/>
-            <translate class="label">Identification</translate>
-            <v-icon :name="item.queryable ? 'check' : 'dash'"/>
-            <br/>
-            <translate class="label">Abstract</translate>
-            <span>{{ item.metadata.abstract }}</span>
-            <br/>
-            <translate class="label">Keywords list</translate>
-            <span>{{ item.metadata.keyword_list }}</span>
+            <p>
+              <translate class="label">Type</translate>
+              <template v-if="item.type === 'VectorLayer'">
+                <span v-text="data.type"/>
+                <span class="px-2">
+                  <v-icon :name="data.icon"/>
+                  <v-tooltip>{{ item.wkb_type || item.geom_type }}</v-tooltip>
+                </span>
+              </template>
+              <span v-else v-text="data.type"/>
+            </p>
+            <p>
+              <translate class="label">Identification</translate>
+              <v-icon :name="item.queryable ? 'check' : 'dash'"/>
+            <p/>
+            <p v-if="item.metadata.abstract">
+              <translate class="label">Abstract</translate>
+              <span v-text="item.metadata.abstract"/>
+            </p>
           </div>
         </collapse-transition>
       <!-- </div> -->
@@ -92,11 +101,35 @@
 <script>
 import { mapState } from 'vuex'
 
+const VectorIcons = {
+  NoGeometry: 'attribute-table',
+  Point: 'point',
+  PointZ: 'point',
+  MultiPoint: 'point',
+  MultiPointZ: 'point',
+  LineString: 'line',
+  LineStringZ: 'line',
+  MultiLineString: 'line',
+  MultiLineStringZ: 'line',
+  Polygon: 'polygon',
+  PolygonZ: 'polygon',
+  MultiPolygon: 'polygon',
+  MultiPolygonZ: 'polygon'
+}
+
+function geometryIcon (layer) {
+   if (layer.type === 'VectorLayer') {
+    // mix of new and old API
+    return layer.wkb_type ? VectorIcons[layer.wkb_type] : layer.geom_type?.toLowerCase()
+  }
+  return ''
+}
+
 export default {
   props: {
     attributeTableDisabled: Boolean,
     expanded: Object,
-    layers: Array
+    layers: Object
   },
   data () {
     return {
@@ -105,7 +138,14 @@ export default {
     }
   },
   computed: {
-    ...mapState(['activeTool', 'attributeTable'])
+    ...mapState(['activeTool', 'attributeTable']),
+    layersInfo () {
+      const layerMetadata = l => ({
+        icon: geometryIcon(l),
+        type: l.type.replace('Layer', '')
+      })
+      return this.layers.list.reduce((res, l) => (res[l.name] = layerMetadata(l), res), {})
+    }
   },
   methods: {
     toggleGroup (group) {

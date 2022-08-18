@@ -70,6 +70,8 @@
 .metadata {
   font-size: 13px;
   background-color: rgba(25, 118, 210, 0.05);
+  word-wrap: break-word;
+  white-space: pre-wrap;
   .label {
     font-weight: bold;
     margin-right: 6px;

@@ -1,6 +1,6 @@
 <template>
   <div class="generic-edit-form f-col light">
-    <template v-for="(attr, index) in layer.attributes">
+    <template v-for="(attr, index) in attributes">
       <slot :name="attr.name" :attr="attr">
         <component
           :key="attr.name"
@@ -18,6 +18,7 @@
 </template>
 
 <script>
+import keyBy from 'lodash/keyBy'
 import mapValues from 'lodash/mapValues'
 // import NumberField from './NumberField.vue'
 import TextField from './TextField.vue'
@@ -48,6 +49,14 @@ export default {
     }
   },
   computed: {
+    attributes () {
+      const { attributes, info_panel_fields } = this.layer
+      if (info_panel_fields) {
+        const attrsMap = keyBy(attributes, 'name')
+        return info_panel_fields.map(name => attrsMap[name])
+      }
+      return attributes
+    },
     mediaImage () {
       return {
         component: MediaImageField,
@@ -71,7 +80,7 @@ export default {
       return v => v && isNaN(v) ? this.tr.NotValidNumber : ''
     },
     widgets () {
-      return this.layer.attributes.map(attr => {
+      return this.attributes.map(attr => {
         const disabled = attr.constrains?.includes('readonly')
         const type = attr.type.split('(')[0]?.toLowerCase()
         if (attr.widget === 'ValueMap') {

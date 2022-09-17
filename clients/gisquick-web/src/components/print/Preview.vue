@@ -219,9 +219,8 @@ export default {
       ]
 
       const layers = []
-      if (this.visibleBaseLayer?.type === 'wms') {
-        const name = this.visibleBaseLayer.serverName || this.visibleBaseLayer.name
-        layers.push(name)
+      if (this.visibleBaseLayer?.name) {
+        layers.push(this.visibleBaseLayer.name)
       }
       layers.push(...map.overlay.getSource().getVisibleLayers())
 

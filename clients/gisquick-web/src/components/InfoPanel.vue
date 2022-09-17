@@ -106,8 +106,12 @@ export default {
     },
     formComponent () {
       if (this.layer.infopanel_component) {
-        const project = this.$store.state.project.config
-        return externalComponent(project, this.layer.infopanel_component)
+        try {
+          const project = this.$store.state.project.config
+          return externalComponent(project, this.layer.infopanel_component)
+        } catch (err) {
+          console.error(`Failed to load infopanel component: ${this.layer.infopanel_component}`)
+        }
       }
       return GenericInfopanel
     },

@@ -12,7 +12,7 @@
               v-text="user.full_name"
             />
           </div>
-          <v-icon name="account_circle" size="28" class="m-2"/>
+          <v-icon name="account" size="28" class="m-2"/>
         </div>
         <hr/>
         <div class="f-row-ac">

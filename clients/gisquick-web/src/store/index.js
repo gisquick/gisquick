@@ -57,8 +57,10 @@ export default new Vuex.Store({
       }
       const { base_layers: baseLayers = [], layers = [] } = project
 
-      const groups = [].concat(...layers.map(filterGroups))
-      groups.forEach(l => { l.visible = true })
+      const overlaysTree = filterLayers(layers, l => !l.hidden)
+      const groups = [].concat(...overlaysTree.map(filterGroups))
+      // groups.forEach(l => { l.visible = true })
+      groups.forEach(l => Vue.set(l, 'visible', true))
 
       state.project = {
         config: project,
@@ -69,7 +71,7 @@ export default new Vuex.Store({
         },
         overlays: {
           groups,
-          tree: filterLayers(layers, l => !l.hidden),
+          tree: overlaysTree,
           list: layersList({ layers })
         }
       }

@@ -44,11 +44,12 @@ export default {
   },
   watch: {
     index (index, prev) {
-      // console.log(prev, '->', index)
-      this.placeholderVisible = index > prev
       this.visible = this.items.map((item, i) => i === index || i === prev)
-      this.transform = index > prev ? -2 : 0
-      this.animation = true
+      if (prev !== -1) {
+        this.placeholderVisible = index > prev
+        this.transform = index > prev ? -2 : 0
+        this.animation = true
+      }
     }
   },
   created () {

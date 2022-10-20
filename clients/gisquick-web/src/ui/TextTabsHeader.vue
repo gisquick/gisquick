@@ -6,6 +6,7 @@
       role="button"
       class="tab"
       :class="{active: value === item.key}"
+      :style="colorVars"
       @click="$emit('input', item.key)"
     >
       <span v-text="item.label"/>
@@ -14,10 +15,21 @@
 </template>
 
 <script>
+import { colorVars } from './utils/colors'
+
 export default {
   props: {
+    color: {
+      type: String,
+      default: 'primary'
+    },
     items: Array,
     value: {}
+  },
+  computed: {
+    colorVars () {
+      return this.color && colorVars(this.color)
+    }
   }
 }
 </script>
@@ -45,8 +57,8 @@ export default {
     }
     &.active {
       color: #fff;
-      background-color: var(--color-primary);
-      border-color: var(--color-primary);
+      background-color: var(--color);
+      border-color: var(--color);
     }
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <div id="app" class="app f-col">
-    <intro-page v-if="!projectPath"/>
+    <intro-page v-if="!projectName"/>
     <map-app v-if="projectStatus === 200" :key="projectKey"/>
     <login-dialog
       :value="showLogin"
@@ -42,8 +42,8 @@ export default {
   },
   computed: {
     ...mapState(['app', 'user', 'project', 'showLogin']),
-    projectPath () {
-      return new URLSearchParams(location.search).get('PROJECT')
+    projectName () {
+      return new URLSearchParams(location.search).get('PROJECT') || this.app.landing_project
     },
     projectStatus () {
       return this.project && this.project.config.status
@@ -67,9 +67,8 @@ export default {
   },
   methods: {
     loadProject () {
-      let project = new URLSearchParams(location.search).get('PROJECT')
-      if (project) {
-        this.$http.project(project)
+      if (this.projectName) {
+        this.$http.project(this.projectName)
           .then(data => {
             this.$store.commit('project', data)
             document.title = data.root_title

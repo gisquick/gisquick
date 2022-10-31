@@ -10,6 +10,7 @@
     @input="onInput"
   >
     <template v-slot:append>
+      <slot name="append"/>
       <v-btn
         v-if="!disabled"
         class="clear icon flat"
@@ -27,6 +28,7 @@
 export default {
   props: {
     disabled: Boolean,
+    initial: [String, Number],
     transform: Function,
     value: [String, Number],
     validator: Function

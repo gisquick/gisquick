@@ -10,4 +10,4 @@ RUN npm run build -- --modern
 FROM gisquick/webapp-container
 
 COPY --from=webapp /gisquick-web/dist/ /var/www
-CMD /bin/true
+CMD ["copy-assets", "/var/www", "/assets/map"]

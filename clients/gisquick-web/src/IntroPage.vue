@@ -1,10 +1,10 @@
 <template>
   <div class="page f-grow">
-    <div class="header f-col-ac f-justify-center px-2 shadow-2">
-      <!-- <img src="./assets/text_logo_dark.svg" class="logo my-4"/> -->
-      <svg-logo class="logo my-4"/>
-    </div>
     <template v-if="!userSignedIn">
+      <div class="header f-col-ac f-justify-center px-2 shadow-2">
+        <!-- <img src="./assets/text_logo_dark.svg" class="logo my-4"/> -->
+        <svg-logo class="logo my-4"/>
+      </div>
       <div class="main f-col-ac f-justify-center light">
         <translate tag="h1" class="my-4"> Welcome to the Gisquick </translate>
         <translate tag="h2" class="my-4">
@@ -37,9 +37,12 @@
         </div>
       </div>
     </template>
-    <div v-else-if="showUserProjects" class="dashboard f-col f-grow">
-      <user-dashboard/>
-    </div>
+    <template v-else-if="showUserProjects">
+      <div class="header-small f-col-ac f-justify-center p-2 shadow-2">
+        <svg-logo class="my-2" height="32"/>
+      </div>
+      <user-dashboard class="f-col f-grow"/>
+    </template>
   </div>
 </template>
 
@@ -116,6 +119,9 @@ export default {
     background-color: #333;
     height: 120px;
   }
+  .header-small {
+    background-color: #333;
+  }
   .main {
     max-width: 960px;
     justify-self: center; // grid
@@ -159,10 +165,6 @@ export default {
       align-self: center;
       justify-self: end;
     }
-  }
-  .dashboard {
-    background-color: #eee;
-    // background-color: rgba(var(--color-primary-rgb), 0.23);
   }
   .user-dashboard {
     width: 100%;

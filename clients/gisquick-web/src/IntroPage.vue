@@ -63,9 +63,14 @@ export default {
       return this.userSignedIn && process.env.NODE_ENV === 'development'
     }
   },
-  created () {
-    if (this.userSignedIn && process.env.NODE_ENV !== 'development') {
-      this.showUserProfile()
+  watch: {
+    userSignedIn: {
+      immediate: true,
+      handler (userSignedIn) {
+        if (userSignedIn && process.env.NODE_ENV !== 'development') {
+          this.showUserProfile()
+        }
+      }
     }
   },
   methods: {
@@ -74,11 +79,6 @@ export default {
     },
     showLogin () {
       this.$store.commit('showLogin', true)
-    },
-    onLogin (user) {
-      this.$store.commit('user', user)
-      this.$store.commit('showLogin', false)
-      this.showUserProfile()
     }
   }
 }

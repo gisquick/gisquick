@@ -1,18 +1,17 @@
 <template>
   <div class="page f-grow">
     <div class="header f-col-ac f-justify-center px-2 shadow-2">
-      <img src="./assets/text_logo_dark.svg" class="logo my-4" />
+      <!-- <img src="./assets/text_logo_dark.svg" class="logo my-4"/> -->
+      <svg-logo class="logo my-4"/>
     </div>
-    <div v-if="showUserProjects" class="dashboard f-col f-grow">
-      <user-dashboard />
-    </div>
-    <template v-else>
+    <template v-if="!userSignedIn">
       <div class="main f-col-ac f-justify-center light">
         <translate tag="h1" class="my-4"> Welcome to the Gisquick </translate>
         <translate tag="h2" class="my-4">
           Web platform for publishing your maps from QGIS desktop
         </translate>
-        <img src="@/assets/map.svg" class="image my-2" />
+        <!-- <img src="@/assets/map.svg" class="image my-2"/> -->
+        <svg-map class="image my-2"/>
       </div>
       <div class="footer f-col-ac light">
         <div class="sign-info">
@@ -25,7 +24,7 @@
               <translate>Sign in</translate>
             </v-btn>
           </div>
-          <div class="divider" />
+          <div class="divider"/>
           <div class="section f-col mx-2 my-4">
             <translate class="text--secondary mb-4">
               New to Gisquick? Create a new account if you want to publish your
@@ -38,15 +37,20 @@
         </div>
       </div>
     </template>
+    <div v-else-if="showUserProjects" class="dashboard f-col f-grow">
+      <user-dashboard/>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import UserDashboard from '@/UserDashboard.vue'
+import SvgLogo from '@/assets/text_logo_dark.svg?inline'
+import SvgMap from '@/assets/map.svg?inline'
 
 export default {
-  components: { UserDashboard },
+  components: { UserDashboard, SvgLogo, SvgMap },
   computed: {
     ...mapState(['app', 'user']),
     userSignedIn () {
@@ -58,16 +62,20 @@ export default {
   },
   created () {
     if (this.userSignedIn && process.env.NODE_ENV !== 'development') {
-      window.location.replace(`${location.origin}/user/`)
+      this.showUserProfile()
     }
   },
   methods: {
+    showUserProfile () {
+      window.location.replace(`${location.origin}/user/`)
+    },
     showLogin () {
       this.$store.commit('showLogin', true)
     },
     onLogin (user) {
       this.$store.commit('user', user)
       this.$store.commit('showLogin', false)
+      this.showUserProfile()
     }
   }
 }

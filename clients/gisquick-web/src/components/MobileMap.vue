@@ -56,7 +56,7 @@
       <div class="f-grow"/>
     </div>
 
-    <map-tools ref="tools"/>
+    <map-tools ref="tools" hidden-identification/>
     <location-tool v-if="geolocationEnabled"/>
   </div>
 </template>

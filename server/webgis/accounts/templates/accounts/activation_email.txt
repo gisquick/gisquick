@@ -1,8 +1,0 @@
-Hi {{ user.get_full_name }},
-
-Welcome to Gisquick! To activate your account, please click on the following link: {{ site_url }}/accounts/activate/?uid={{ uid }}&token={{ token }}
-
-If you received this email in error, you can safely ignore this email.
-
-
-Best Regards, Gisquick Team

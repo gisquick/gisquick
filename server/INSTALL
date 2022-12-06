@@ -1,8 +1,0 @@
-Install webgis Python module:
-=============================
-$ python setup.py install
-
-
-Create Django project:
-======================
-$ django-admin.py startproject --template=webgis/conf/project_template/ <project name> [<project directory>]

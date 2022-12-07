@@ -3,41 +3,43 @@
     <div ref="mapEl" class="map"/>
 
     <swipe-container class="main-panel f-row">
-      <div class="panel-content f-col">
-        <div class="app-toolbar dark f-row-ac">
-          <v-btn
-            v-for="tool in toolsMenuItems"
-            :key="tool.name"
-            class="icon flat"
-            :color="activeTool === tool.name ? 'primary' : ''"
-            @click="toggleTool(tool)"
-          >
-            <v-icon :name="tool.icon"/>
-          </v-btn>
-          <v-btn
-            class="icon flat"
-            :color="geolocationEnabled ? 'primary' : ''"
-            @click="geolocationEnabled = !geolocationEnabled"
-          >
-            <v-icon name="target"/>
-          </v-btn>
-          <div class="f-grow"/>
-          <app-menu class="app-menu" align="rr;tb,bt">
-            <template v-slot:activator="{ toggle }">
-              <v-btn
-                aria-label="Menu"
-                class="icon flat"
-                @click="toggle"
-              >
-                <v-icon name="menu"/>
-              </v-btn>
-            </template>
-          </app-menu>
+      <template v-slot="{ visible }">
+        <div v-show="visible" class="panel-content f-col">
+          <div class="app-toolbar dark f-row-ac">
+            <v-btn
+              v-for="tool in toolsMenuItems"
+              :key="tool.name"
+              class="icon flat"
+              :color="activeTool === tool.name ? 'primary' : ''"
+              @click="toggleTool(tool)"
+            >
+              <v-icon :name="tool.icon"/>
+            </v-btn>
+            <v-btn
+              class="icon flat"
+              :color="geolocationEnabled ? 'primary' : ''"
+              @click="geolocationEnabled = !geolocationEnabled"
+            >
+              <v-icon name="target"/>
+            </v-btn>
+            <div class="f-grow"/>
+            <app-menu class="app-menu" align="rr;tb,bt">
+              <template v-slot:activator="{ toggle }">
+                <v-btn
+                  aria-label="Menu"
+                  class="icon flat"
+                  @click="toggle"
+                >
+                  <v-icon name="menu"/>
+                </v-btn>
+              </template>
+            </app-menu>
+          </div>
+          <hr/>
+          <portal-target name="main-panel-top" class="main-panel-portal"/>
+          <content-panel attribute-table-disabled/>
         </div>
-        <hr/>
-        <portal-target name="main-panel-top" class="main-panel-portal"/>
-        <content-panel attribute-table-disabled/>
-      </div>
+      </template>
     </swipe-container>
 
     <div ref="mapViewport" class="visible-container">

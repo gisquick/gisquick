@@ -103,6 +103,10 @@ html {
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
 }
+body {
+  overscroll-behavior-x: none;
+  touch-action: none;
+}
 
 #app {
   min-height: 100vh;

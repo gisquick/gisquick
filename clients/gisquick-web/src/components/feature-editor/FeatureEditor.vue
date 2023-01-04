@@ -263,7 +263,7 @@ export default {
       if (this.geomModified) {
         let newGeom = this.$refs.geometryEditor.getGeometry()
         const mapProjection = this.$map.getView().getProjection().getCode()
-        if (mapProjection !== this.layer.projection) {
+        if (newGeom && mapProjection !== this.layer.projection) {
           newGeom = newGeom.clone()
           newGeom.transform(mapProjection, this.layer.projection)
         }

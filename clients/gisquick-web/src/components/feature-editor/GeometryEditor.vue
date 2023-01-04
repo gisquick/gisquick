@@ -307,7 +307,7 @@ export default {
         return geom
       }
       const f = this.geomFeatures[0]
-      return f && f.getGeometry()
+      return f?.getGeometry() ?? null
     },
     deleteSelectedFeatures () {
       this.geomFeatures = ShallowArray(this.geomFeatures.filter(f => !this.selected.includes(f)))

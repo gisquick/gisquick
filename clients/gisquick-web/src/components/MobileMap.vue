@@ -59,6 +59,11 @@
     </div>
 
     <map-tools ref="tools" hidden-identification/>
+    <transition name="fade">
+      <div v-if="status.overlays.loading || status.baseLayer.loading" class="status f-row-ac m-2 shadow-2">
+        <v-spinner color="primary" width="3" size="20"/>
+      </div>
+    </transition>
     <location-tool v-if="geolocationEnabled"/>
   </div>
 </template>
@@ -202,6 +207,18 @@ export default {
     min-height: 0;
     max-height: 100%;
     z-index: 1;
+  }
+  .status {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+    align-self: start;
+    justify-self: end;
+    z-index: 10;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    color: var(--color-primary);
+    padding: 4px;
   }
 }
 

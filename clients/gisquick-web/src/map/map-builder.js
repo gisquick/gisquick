@@ -333,7 +333,8 @@ export function createMap (config, controlOpts = {}) {
       constrainOnlyCenter: true,
       smoothExtentConstraint: false
     }),
-    controls: defaultControls(controlOpts)
+    controls: defaultControls(controlOpts),
+    moveTolerance: 10
   })
   map.overlay = overlay
 

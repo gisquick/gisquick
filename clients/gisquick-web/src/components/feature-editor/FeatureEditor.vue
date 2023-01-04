@@ -8,6 +8,7 @@
     >
       <generic-edit-form
         ref="editForm"
+        class="f-grow"
         :layer="layer"
         :initial="originalFields"
         :fields="fields"
@@ -284,8 +285,6 @@ export default {
 
 <style lang="scss" scoped>
 .toolbar {
-  background-color: #e0e0e0;
-  border-top: 1px solid #bbb;
   ::v-deep .btn.icon {
     margin: 3px 2px;
     width: 26px;

@@ -7,6 +7,7 @@
       :layer="layer"
     >
       <generic-edit-form
+        class="f-grow"
         :layer="layer"
         :fields="fields"
         :project="project.config"
@@ -139,8 +140,6 @@ export default {
 
 <style lang="scss" scoped>
 .toolbar {
-  background-color: #e0e0e0;
-  border-top: 1px solid #bbb;
   ::v-deep .btn.icon {
     margin: 3px 2px;
     width: 26px;

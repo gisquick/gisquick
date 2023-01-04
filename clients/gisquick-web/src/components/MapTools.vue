@@ -30,28 +30,30 @@
 </template>
 
 <script>
-import Vue from 'vue'
 import { mapState } from 'vuex'
 
 import AttributesTable from '@/components/AttributesTable.vue'
 import Identification from '@/components/Identification.vue'
 import Measure from '@/components/measure/Measure.vue'
 import Print from '@/components/print/Print.vue'
+import MobileAttributesTable from '@/components/MobileAttributesTable.vue'
 
 export default {
   props: {
     showHeader: Boolean,
-    hiddenIdentification: Boolean
+    hiddenIdentification: Boolean,
+    mobile: Boolean
+  },
+  data () {
+    return {
+      identificationSettings: {
+        identificationLayer: '',
+        displayMode: 'both'
+      }
+    }
   },
   computed: {
     ...mapState(['project', 'activeTool']),
-
-    identificationSettings () {
-      return Vue.observable({
-        identificationLayer: '',
-        displayMode: 'both'
-      })
-    },
     identificationTool () {
       return {
         name: 'identification',
@@ -86,6 +88,15 @@ export default {
       }
     },
     attributeTableTool () {
+      if (this.mobile) {
+        return {
+          name: 'attribute-table',
+          title: this.$gettext('Attributes Table'),
+          icon: 'attribute-table2',
+          component: MobileAttributesTable,
+          disabled: false
+        }
+      }
       return {
         name: 'attribute-table',
         component: {

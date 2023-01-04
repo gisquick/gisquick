@@ -33,6 +33,7 @@
       </template>
       <template v-slot:header(filter)="{ column }">
         <attribute-filter
+          class="f-row-ac"
           :attribute="column.attr"
           :label="column.label"
           :type="column.type"
@@ -130,7 +131,7 @@
         color="primary"
         :label="tr.FilterVisibleLabel"
         :value="visibleAreaFilter"
-        @input="$store.commit('attributeTable/visibleAreaFilter', $event)"
+        @input="updateVisibleAreaFilter"
       />
       <v-btn
         slot="activator"
@@ -270,6 +271,7 @@ export default {
         const columns = this.attributes.map(attr => ({
           attr,
           key: attr.name,
+          label: attr.alias || attr.name,
           header: {
             slot: 'filter'
           }
@@ -353,7 +355,7 @@ export default {
       return slots
     },
     attributesToExport () {
-      if (this.layer.export_fields) {
+      if (this.layer?.export_fields) {
         const attrsMap = keyBy(this.layer.attributes, 'name')
         return this.layer.export_fields.map(n => attrsMap[n])
       }
@@ -495,6 +497,10 @@ export default {
       this.$store.commit('attributeTable/limit', value)
       this.fetchFeatures(1, true)
     },
+    updateVisibleAreaFilter (enabled) {
+      this.$store.commit('attributeTable/visibleAreaFilter', enabled)
+      this.fetchFeatures()
+    },
     resizeHandler (e) {
       if (this.minimized) {
         return
@@ -628,6 +634,10 @@ export default {
   border: 1px solid #aaa;
   background-color: #fff;
   position: relative;
+  .toolbar {
+    background-color: #e0e0e0;
+    border-top: 1px solid #bbb;
+  }
 }
 .tabs-header {
   position: absolute;

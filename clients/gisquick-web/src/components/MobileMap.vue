@@ -58,7 +58,7 @@
       <div class="f-grow"/>
     </div>
 
-    <map-tools ref="tools" hidden-identification/>
+    <map-tools ref="tools" hidden-identification mobile/>
     <transition name="fade">
       <div v-if="status.overlays.loading || status.baseLayer.loading" class="status f-row-ac m-2 shadow-2">
         <v-spinner color="primary" width="3" size="20"/>
@@ -70,7 +70,6 @@
 
 <script>
 import { mapState } from 'vuex'
-
 import Map from '@/mixins/Map'
 import ContentPanel from '@/components/content-panel/ContentPanel.vue'
 import MapAttributions from '@/components/MapAttributions.vue'
@@ -102,6 +101,15 @@ export default {
     this.$root.$panel = {
       setStatusBarVisible: () => {}
     }
+  },
+  mounted () {
+    const setHeightStyle = () => {
+      const vh = window.innerHeight / 100
+      document.documentElement.style.setProperty('--vh', `${vh}px`)
+    }
+    window.addEventListener('resize', setHeightStyle)
+    setHeightStyle()
+    this.$once('hook:beforeDestroy', () => window.removeEventListener('resize', setHeightStyle))
   },
   methods: {
     toggleTool (tool) {
@@ -142,14 +150,13 @@ export default {
     // justify-items: center;
     min-height: 0;
     max-height: 100%;
-    margin: 8px;
+    margin: 3px 0px 8px 18px;
     pointer-events: none;
 
     ::v-deep * {
       // prevent Swipe to go back navigation (Android)
       // touch-action: none;
-      touch-action: pan-y;
-      overscroll-behavior-x: none; // maybe not needed
+      // touch-action: pan-y;
     }
     > * {
       pointer-events: auto;
@@ -246,6 +253,7 @@ export default {
     }
     .app-toolbar {
       background-color: #212121;
+      background-color: var(--color-dark);
       height: 44px;
       border: solid;
       border-width: 1px 0;
@@ -263,6 +271,13 @@ export default {
     .app-menu {
       .btn {
         margin: 3px;
+      }
+    }
+    ::v-deep .panel-header {
+      height: 22px;
+      .title {
+        font-size: 12px;
+        letter-spacing: 1px;
       }
     }
   }

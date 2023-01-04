@@ -91,7 +91,6 @@ export default {
         }
       },
       end: e => {
-        console.log(e, 'moveStarted', moveStarted)
         if (!moveStarted) {
           return
         }

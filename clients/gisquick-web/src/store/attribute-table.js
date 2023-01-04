@@ -11,7 +11,7 @@ export default {
   },
   getters: {
     layerFilters (state) {
-      return state.layer && state.filters[state.layer.name]
+      return (state.layer && state.filters[state.layer.name]) ?? {}
     }
   },
   mutations: {

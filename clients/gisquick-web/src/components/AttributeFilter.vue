@@ -1,7 +1,10 @@
 <template>
-  <div class="header f-row-ac">
-    <span v-text="attribute.alias || attribute.name"/>
-    <div class="filter" v-if="filter.active && filters">
+  <div class="attr-filter" :class="classes">
+    <span class="label" v-text="attribute.alias || attribute.name"/>
+    <div
+      v-if="filters"
+      class="filter"
+    >
       <v-select
         class="filled operator"
         :placeholder="tr.Filter"
@@ -208,9 +211,16 @@ export default {
   name: 'attribute-filter',
   props: {
     attribute: Object,
-    filter: Object
+    filter: Object,
+    mobile: Boolean
   },
   computed: {
+    classes () {
+      return {
+        active: this.filter.active,
+        mobile: this.mobile
+      }
+    },
     symbolAttrs () {
       return SymbolAttrs
     },
@@ -269,6 +279,13 @@ export default {
           TextList: this.$gettext('Text,Text,...')
         }
       }
+    }
+  },
+  created () {
+    if (this.mobile && this.filter.active && !this.filter.comparator) {
+      const comparator = this.filters[0]?.value
+      const newValue = this.filterState(comparator, this.filter.value, true)
+      this.$emit('change', newValue)
     }
   },
   methods: {
@@ -350,7 +367,22 @@ export default {
     }
   }
 }
-.header, .filter {
+.attr-filter {
+  &:not(.active) {
+    &.mobile {
+      .filter {
+        opacity: 0.4;
+        pointer-events: none;
+      }
+    }
+    &:not(.mobile) {
+      .filter {
+        display: none;
+      }
+    }
+  }
+}
+.attr-filter, .filter {
   gap: 6px;
   --gutter: 0;
 }

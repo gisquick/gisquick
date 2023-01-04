@@ -1,43 +1,33 @@
 <template>
   <div class="user-dashboard f-col">
-    <div class="header f-row-ac shadow-1">
+    <div class="header f-row-ac light shadow-1">
       <div class="f-col mr-2 light">
-        <translate class="headline mx-2">Projects</translate>
-        <v-text-field class="filled" placeholder="Search" v-model="filter">
+        <v-text-field class="filled" :placeholder="tr.Search" v-model="filter">
           <template v-slot:append>
-            <v-icon name="magnifier" class="mx-2"/>
+            <v-btn v-if="filter" class="icon flat" @click="filter = ''">
+              <v-icon name="x"/>
+            </v-btn>
+            <v-icon v-else name="magnifier" class="mx-2"/>
           </template>
         </v-text-field>
       </div>
       <div class="f-grow"/>
-      <div class="user-card f-col f-justify-end f-shrink">
-        <div class="f-row f-justify-end">
-          <div class="username f-col f-justify-center f-align-end f-grow mx-1">
-            <div v-text="user.username"/>
-            <div
-              v-if="user.username !== user.full_name"
-              v-text="user.full_name"
-            />
-          </div>
-          <v-icon name="account" size="25" class="m-2 mt-0"/>
-        </div>
-        <hr/>
-        <div class="f-row-ac">
-          <v-btn href="/user/" class="icon flat">
-            <v-icon name="settings" size="22"/>
-          </v-btn>
+      <div class="username" v-text="user.username"/>
+      <v-menu
+        align="rr;bb,tt"
+        :items="mainMenu"
+      >
+        <template v-slot:activator="{ toggle }">
           <v-btn
-            color="#444"
-            class="round medium"
-            @click="logout"
+            :aria-label="tr.Menu"
+            class="icon round p-1"
+            @click="toggle"
           >
-            <v-icon name="exit_to_app" class="mr-2"/>
-            <translate>Sign out</translate>
+            <v-icon name="account" size="24"/>
           </v-btn>
-        </div>
-      </div>
+        </template>
+      </v-menu>
     </div>
-    <!-- <hr/> -->
 
     <div class="content f-col f-grow light">
       <v-spinner
@@ -66,12 +56,23 @@
             <div class="projection badge">{{ p.projection }}</div>
           </div>
           <div class="time-info f-col">
-            <div>Created: <span :title="p.created.datetime" v-text="p.created.date"/></div>
-            <div>Updated: <span :title="p.updated.datetime" v-text="p.updated.date"/></div>
+            <div class="item">
+              <span class="label">Created:</span>
+              <span :title="p.created.datetime" v-text="p.created.date"/>
+              <!-- <v-icon name="upload" size="18"/> -->
+            </div>
+            <div class="item">
+              <span class="label">Updated:</span>
+              <span :title="p.updated.datetime" v-text="p.updated.date"/>
+              <!-- <v-icon name="edit" size="18"/> -->
+            </div>
+          </div>
+          <div class="time-info-m">
+            <span>{{ p.created.date }}<template v-if="p.updated.date !== p.created.date"> / {{ p.updated.date }}</template></span>
           </div>
           <div class="badge auth dark">
-            <span class="uppercase" v-text="p.authentication"/>
-            <v-icon v-if="p.authentication !== 'public'" name="lock" size="16"/>
+            <span class="text uppercase" v-text="p.authentication"/>
+            <v-icon v-if="p.authentication" :name="authIcons[p.authentication]" size="16"/>
           </div>
         </div>
       </div>
@@ -149,6 +150,34 @@ export default {
       }
       return orderBy(projects, 'title', 'asc')
     },
+    authIcons () {
+      return {
+        private: 'lock',
+        public: 'globe',
+        users: 'users'
+      }
+    },
+    mainMenu () {
+      return [
+        {
+          key: 'profile',
+          text: this.$gettext('My profile'),
+          icon: 'settings',
+          link: '/user/'
+        }, {
+          key: 'logout',
+          text: this.$gettext('Logout'),
+          icon: 'exit_to_app',
+          action: this.logout
+        }
+      ]
+    },
+    tr () {
+      return {
+        Menu: this.$gettext('Menu'),
+        Search: this.$pgettext('noun', 'Search')
+      }
+    }
   },
   mounted () {
     this.fetchProjects()
@@ -183,17 +212,9 @@ export default {
 <style lang="scss" scoped>
 .header {
   background-color: #ddd;
-  // background-color: rgba(var(--color-primary-rgb), 0.23);
   border: 1px solid #bbb;
-  color: #333;
-  --border-color: #999;
-  --icon-color: #444;
-  padding: 6px 8px 4px 2px;
   text-align: left;
-  .headline {
-    font-size: 20px;
-    font-weight: 500;
-  }
+  font-size: 15px;
 }
 .content {
   border: solid #ccc;
@@ -218,47 +239,118 @@ export default {
     padding: 4px 8px;
     margin: 3px 8px 6px 8px;
     background-color: #fff;
-    .map-link {
-      grid-row: 1 / 3;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      img {
-        max-height: 120px;
-        max-width: 100%;
-        width: auto;
-        height: auto;
-      }
-      svg {
-        height: 120px;
-      }
+  }
+  .map-link {
+    grid-row: 1 / 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img {
+      max-height: 120px;
+      max-width: 100%;
+      width: auto;
+      height: auto;
     }
-    .project-link {
-      justify-self: start;
-      text-decoration: none;
-      color: var(--color-primary);
-      .title {
-        font-size: 20px;
-      }
-      .name {
-        font-weight: 500;
-      }
+    svg {
+      height: auto;
+      max-height: 120px;
     }
-    .details {
-      font-size: 13px;
+  }
+  .project-link {
+    justify-self: start;
+    text-decoration: none;
+    color: var(--color-primary);
+    .title {
+      font-size: 20px;
+    }
+    .name {
       font-weight: 500;
-      color: #555;
-      grid-column: 2 / 3;
     }
+  }
+  .details {
+    font-size: 13px;
+    font-weight: 500;
+    color: #555;
+    grid-column: 2 / 3;
   }
   .time-info {
     text-align: right;
     font-size: 13.5px;
+    .item {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      .icon {
+        margin-left: 4px;
+      }
+    }
+    .label {
+      margin-right: 5px;
+      font-weight: 500;
+      opacity: 0.9;
+    }
   }
   .auth {
     grid-area: 1 / 3 / 2 / 4;
     align-self: start;
     justify-self: end;
+    .icon {
+      margin-left: 4px;
+    }
+  }
+  @media (min-width: 561px) {
+    .time-info-m {
+      display: none;
+    }
+  }
+  @media (max-width: 560px) {
+    .card {
+      grid-template-columns: 100px 1fr auto;
+      font-size: 15px;
+      gap: 0px;
+      padding: 2px;
+      margin: 4px 0;
+      border-radius: 0;
+    }
+    .map-link {
+      margin-left: 2px;
+      align-items: start;
+    }
+    .project-link {
+      grid-area: 1 / 2 / 2 / 3;
+      line-height: 1.35;
+      .title {
+        font-size: 17px;
+      }
+    }
+    .details {
+      grid-area: 2 / 2 / 3 / 4;
+      align-self: end;
+      .badge {
+        // margin-bottom: 0;
+        font-size: 12px;
+      }
+    }
+    .time-info {
+      display: none;
+    }
+    .time-info-m {
+      font-size: 12px;
+      grid-area: 2 / 2 / 3 / 4;
+      align-self: end;
+      justify-self: end;
+      margin: 6px 4px;
+    }
+    .auth.badge {
+      background-color: transparent;
+      --icon-color: #555;
+      padding: 0;
+      grid-area: 1 / 3 / 2 / 4;
+      margin-inline: 3px;
+      .text {
+        display: none;
+      }
+    }
   }
 }
 p {

@@ -11,7 +11,7 @@
           Web platform for publishing your maps from QGIS desktop
         </translate>
         <!-- <img src="@/assets/map.svg" class="image my-2"/> -->
-        <svg-map class="image my-2"/>
+        <svg-map class="map-img my-2" height="220"/>
       </div>
       <div class="footer f-col-ac light">
         <div class="sign-info">
@@ -60,7 +60,7 @@ export default {
       return this.user && !this.user.is_guest
     },
     showUserProjects () {
-      return this.userSignedIn && process.env.NODE_ENV === 'development'
+      return this.userSignedIn && (process.env.NODE_ENV === 'development' || window.env.mobile)
     }
   },
   watch: {
@@ -106,6 +106,7 @@ export default {
   display: flex;
   flex-direction: column;
   background-color: #eee;
+  overflow: auto;
 
   h1 {
     font-weight: 500;
@@ -116,11 +117,11 @@ export default {
     font-size: 25px;
   }
   .header {
-    background-color: #333;
+    background-color: var(--color-dark);
     height: 120px;
   }
   .header-small {
-    background-color: #333;
+    background-color: var(--color-dark);
   }
   .main {
     max-width: 960px;
@@ -132,6 +133,7 @@ export default {
     flex-grow: 1;
     flex-basis: 0;
   }
+
   .footer {
     background-color: #ddd;
     padding: 12px;
@@ -175,6 +177,23 @@ export default {
     @media (min-width: 960px) {
       margin-top: 12px;
       margin-bottom: 12px;
+    }
+  }
+  @media (max-width: 600px) {
+    h1 {
+      font-size: 28px;
+    }
+    h2 {
+      font-size: 20px;
+    }
+    .header {
+      height: 72px;
+    }
+    .logo {
+      max-height: 36px;
+    }
+    .map-img {
+      height: 200px;
     }
   }
 }

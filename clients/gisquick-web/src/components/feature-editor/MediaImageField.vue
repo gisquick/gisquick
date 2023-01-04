@@ -651,7 +651,7 @@ export default {
       .tools {
         grid-row: 1 / 2;
         justify-content: center;
-        background-color: #222;
+        background-color: #242424;
         color: #fff;
         --icon-color: #fff;
         border-bottom: 1px solid #555;
@@ -659,7 +659,7 @@ export default {
       }
       .actions {
         grid-row: 3 / 4;
-        background-color: #222;
+        background-color: #242424;
         justify-content: space-between;
         // justify-content: flex-end;
         border-top: 1px solid #555;

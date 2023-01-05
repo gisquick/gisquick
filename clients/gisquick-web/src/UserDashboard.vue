@@ -57,12 +57,12 @@
           </div>
           <div class="time-info f-col">
             <div class="item">
-              <span class="label">Created:</span>
+              <translate class="label">Created</translate>
               <span :title="p.created.datetime" v-text="p.created.date"/>
               <!-- <v-icon name="upload" size="18"/> -->
             </div>
             <div class="item">
-              <span class="label">Updated:</span>
+              <translate class="label">Updated</translate>
               <span :title="p.updated.datetime" v-text="p.updated.date"/>
               <!-- <v-icon name="edit" size="18"/> -->
             </div>
@@ -288,6 +288,9 @@ export default {
       margin-right: 5px;
       font-weight: 500;
       opacity: 0.9;
+      &::after {
+        content: ":";
+      }
     }
   }
   .auth {

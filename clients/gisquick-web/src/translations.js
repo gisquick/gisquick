@@ -1,5 +1,7 @@
-import i18n_cs from '@/assets/i18n/cs.json'
+import path from 'path'
+const translations = require.context('./assets/i18n', false, /.*\.json$/)
 
-export default {
-  cs: i18n_cs
-}
+export default translations.keys().reduce((data, fname) => {
+  data[path.basename(fname).replace('.json', '')] = translations(fname)
+  return data
+}, {})

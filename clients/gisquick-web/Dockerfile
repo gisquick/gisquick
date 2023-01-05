@@ -4,6 +4,7 @@ WORKDIR /gisquick-web/
 COPY package*.json ./
 RUN npm install
 COPY . .
+RUN npm run compilemessages
 RUN npm run build -- --modern
 
 

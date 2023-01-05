@@ -7,10 +7,13 @@ const compile = require('./gettext-compile.js')
 const srcDir = 'i18n'
 const destDir = 'src/assets/i18n'
 
-fs.readdirSync(srcDir)
+const sources = fs.readdirSync(srcDir)
   .filter(p => path.extname(p) === '.po')
   .map(p => path.join(srcDir, p))
-  .forEach(file => {
+
+if (sources.length) {
+  fs.mkdirSync(destDir, { recursive: true })
+  sources.forEach(file => {
     const name = path.basename(file, '.po')
     const dest = path.join(destDir, `${name}.json`)
     const poContents = fs.readFileSync(file, { encoding: 'utf-8' }).toString()
@@ -18,3 +21,4 @@ fs.readdirSync(srcDir)
     console.log(`generating ${dest}`)
     fs.writeFileSync(dest, JSON.stringify(data.messages))
   })
+}

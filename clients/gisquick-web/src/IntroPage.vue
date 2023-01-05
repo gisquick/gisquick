@@ -67,14 +67,14 @@ export default {
     userSignedIn: {
       immediate: true,
       handler (userSignedIn) {
-        if (userSignedIn && process.env.NODE_ENV !== 'development') {
-          this.showUserProfile()
+        if (userSignedIn && process.env.NODE_ENV !== 'development' && !window.env.mobile) {
+          this.redirectToUserProfile()
         }
       }
     }
   },
   methods: {
-    showUserProfile () {
+    redirectToUserProfile () {
       window.location.replace(`${location.origin}/user/`)
     },
     showLogin () {

@@ -204,6 +204,7 @@ export default {
       grid-column: 1 / 2;
       background-color: #e0e0e0;
       border-top: 1px solid #bbb;
+      align-self: end;
     }
   }
 }

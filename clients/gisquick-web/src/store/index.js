@@ -41,7 +41,8 @@ export default new Vuex.Store({
     project: null,
     activeTool: null,
     showLogin: false,
-    baseLayerName: null
+    baseLayerName: null,
+    location: null
   },
   mutations: {
     app (state, app) {
@@ -97,6 +98,9 @@ export default new Vuex.Store({
     },
     showLogin (state, value) {
       state.showLogin = value
+    },
+    location (state, location) {
+      state.location = location
     }
   },
   getters: {

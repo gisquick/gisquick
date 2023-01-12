@@ -15,6 +15,13 @@
       </div>
     </transition>
     <v-btn
+      v-if="location"
+      class="icon"
+      @click="zoomToLocation"
+    >
+      <v-icon name="target-center"/>
+    </v-btn>
+    <v-btn
       class="zoom-in icon"
       @click="zoomIn"
     >
@@ -48,7 +55,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['project']),
+    ...mapState(['project', 'location']),
     compassVisible () {
       return this.rotation !== 0
     },
@@ -87,6 +94,9 @@ export default {
     },
     resetNorth () {
       this.$map.getView().animate({ rotation: 0, duration: 300 })
+    },
+    zoomToLocation () {
+      this.$map.getView().animate({ center: this.location.position, duration: 400 })
     }
   }
 }

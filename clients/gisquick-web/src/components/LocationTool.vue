@@ -68,14 +68,27 @@ export default {
       projection: this.$map.getView().getProjection()
     })
 
-    const changePosKey = geolocation.on('change:position', e => this.setPosition(e.target.getPosition()))
-    const changeAccuracyKey = geolocation.on('change:accuracyGeometry', e => this.setAccuracyGeom(e.target.getAccuracyGeometry()))
+    const changeKey = geolocation.on('change', e => {
+      const data = e.target.getProperties()
+      const location = {
+        accuracy: data.accuracy,
+        altitude: data.altitude,
+        altitudeAccuracy: data.altitudeAccuracy,
+        heading: data.heading,
+        speed: data.speed,
+        position: data.position?.slice()
+      }
+      this.setPosition(data.position)
+      this.setAccuracyGeom(e.target.getAccuracyGeometry())
+      this.$store.commit('location', location)
+    })
+
     const errorKey = geolocation.on('error', this.showError)
     // this.showError({ xmessage: 'GPS error' })
     this.$once('hook:beforeDestroy', () => {
-      unByKey(changePosKey)
-      unByKey(changeAccuracyKey)
+      unByKey(changeKey)
       unByKey(errorKey)
+      this.$store.commit('location', null)
     })
     this.setPosition(geolocation.getPosition())
     this.setAccuracyGeom(geolocation.getAccuracyGeometry())

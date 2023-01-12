@@ -10,7 +10,7 @@
         ref="editForm"
         class="f-grow"
         :layer="layer"
-        :initial="originalFields"
+        :initial="initialFields"
         :fields="fields"
         :project="project"
         :status.sync="formStatus"
@@ -115,6 +115,7 @@ import omit from 'lodash/omit'
 import isEqual from 'lodash/isEqual'
 import Style from 'ol/style/Style'
 import Feature from 'ol/Feature'
+import format from 'date-fns/format'
 
 import { wfsTransaction } from '@/map/wfs'
 import { queuedUpdater } from '@/utils'
@@ -152,7 +153,7 @@ export default {
       status: '',
       errorMsg: '',
       fields: null,
-      originalFields: null,
+      initialFields: null,
       editGeometry: false,
       showConfirmDelete: false,
       formStatus: null
@@ -171,7 +172,7 @@ export default {
       }[this.layer.geom_type]
     },
     fieldsModified () {
-      return !isEqual(this.fields, this.originalFields)
+      return !isEqual(this.fields, this.initialFields)
     },
     geomModified () {
       const editor = this.$refs.geometryEditor
@@ -192,7 +193,7 @@ export default {
       immediate: true,
       handler (feature, old) {
         this.fields = getFeatureFields(feature)
-        this.originalFields = getFeatureFields(feature)
+        this.initialFields = getFeatureFields(feature)
       }
     }
   },
@@ -243,8 +244,18 @@ export default {
         this.statusController.set(null, 100)
       }
     },
-    async save () {
+    createFeature (fields) {
+      const properties = { ...fields }
+      Object.entries(properties).forEach(([name, value]) => {
+        if (typeof value === 'boolean') {
+          properties[name] = value ? '1' : '0'
+        }
+      })
       const f = new Feature()
+      f.setProperties(properties)
+      return f
+    },
+    async resolveFields (operation) {
       const resolvedFields = {}
       for (const name in this.fields) {
         let value = this.fields[name]
@@ -259,8 +270,27 @@ export default {
         }
         resolvedFields[name] = value
       }
-      const changedFields = difference(resolvedFields, this.originalFields)
-      f.setProperties(changedFields)
+      this.layer.attributes.filter(a => a.widget === 'Autofill').forEach(a => {
+        if (a.config.operations?.includes(operation)) {
+          let value
+          if (a.config.value === 'user') {
+            value = this.$store.state.user.username
+          } else if (a.config.value === 'current_datetime') {
+            value = new Date().toISOString()
+          } else if (a.config.value === 'current_date') {
+            value = format(new Date(), a.config?.field_format || 'yyyy-MM-dd')
+          } else {
+            return
+          }
+          resolvedFields[a.name] = value
+        }
+      })
+      return resolvedFields
+    },
+    async save () {
+      const resolvedFields = await this.resolveFields('update')
+      const changedFields = difference(resolvedFields, this.initialFields)
+      const f = this.createFeature(changedFields)
       if (this.geomModified) {
         let newGeom = this.$refs.geometryEditor.getGeometry()
         const mapProjection = this.$map.getView().getProjection().getCode()

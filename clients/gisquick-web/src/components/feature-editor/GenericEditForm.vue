@@ -83,6 +83,10 @@ export default {
       return this.attributes.map(attr => {
         const disabled = attr.constrains?.includes('readonly')
         const type = attr.type.split('(')[0]?.toLowerCase()
+
+        if (attr.widget === 'Autofill') {
+          return {}
+        }
         if (attr.widget === 'ValueMap') {
           return {
             component: 'v-select',

@@ -141,7 +141,7 @@ export default {
         }
         return {
           component: TextField,
-          props: { disabled }
+          props: { disabled, multiline: attr.config?.IsMultiline, rows: 3 }
         }
       })
     },

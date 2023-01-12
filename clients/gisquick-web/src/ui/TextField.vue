@@ -283,7 +283,7 @@ export default {
   //     -webkit-appearance: none;
   //   }
   // }
-  textarea {
+  textarea[noresize] {
     resize: none;
     min-height: 100%;
   }

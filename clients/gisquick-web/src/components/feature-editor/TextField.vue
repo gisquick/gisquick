@@ -64,6 +64,7 @@ export default {
 <style lang="scss" scoped>
 .btn.clear {
   margin: 0;
+  margin-bottom: auto;
   width: 26px;
   height: 26px;
 }

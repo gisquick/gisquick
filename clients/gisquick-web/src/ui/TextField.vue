@@ -25,9 +25,7 @@
         ref="inputEl"
         v-bind="$attrs"
         :name="name"
-        :autocomplete="autocomplete"
         :disabled="disabled"
-        :readonly="readonly === undefined ? !focused : readonly"
         @pointerup="updateCaretPosition"
         @input="onInput"
         @change="onChange"
@@ -116,7 +114,6 @@ export default {
     autofocus: Boolean,
     value: [String, Number],
     name: String,
-    autocomplete: String,
     error: String,
     color: {
       type: String,
@@ -125,10 +122,6 @@ export default {
     disabled: Boolean,
     label: String,
     lazy: Boolean,
-    readonly: {
-      type: Boolean,
-      default: undefined
-    },
     trim: Boolean,
     multiline: Boolean,
     displayFormat: String,
@@ -283,6 +276,9 @@ export default {
   //     -webkit-appearance: none;
   //   }
   // }
+  textarea {
+    line-height: 1.3;
+  }
   textarea[noresize] {
     resize: none;
     min-height: 100%;

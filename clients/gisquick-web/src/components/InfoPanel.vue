@@ -37,6 +37,7 @@
           <feature-editor
             v-if="editMode"
             class="edit-form"
+            toolbar-target="infopanel-tool"
             :feature="feature"
             :layer="layer"
             :project="$store.state.project.config"

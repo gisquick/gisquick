@@ -20,7 +20,7 @@
       <v-radio-btn val="error" v-model="status" label="Error"/>
       <v-radio-btn val="" v-model="status" label="None"/> -->
     </slot>
-    <portal to="infopanel-tool">
+    <portal :to="toolbarTarget">
       <div class="toolbar f-row-ac">
         <v-btn
           class="icon flat"
@@ -146,7 +146,8 @@ export default {
   props: {
     layer: Object,
     feature: Object,
-    project: Object
+    project: Object,
+    toolbarTarget: String
   },
   data () {
     return {

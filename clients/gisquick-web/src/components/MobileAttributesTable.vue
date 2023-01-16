@@ -35,7 +35,7 @@
             <new-feature-editor
               class="f-grow"
               :layer="layer"
-              toolbar-target="toolbar"
+              toolbar-target="mat-toolbar"
               @edit="mNewFeatureAdded"
             />
           </template>
@@ -142,6 +142,7 @@
             <translate class="data-label" key="edit">Edit feature</translate>
             <feature-editor
               class="edit-form f-grow"
+              toolbar-target="mat-toolbar"
               :feature="selectedFeature"
               :layer="layer"
               :project="$store.state.project.config"
@@ -157,15 +158,8 @@
           </div>
         </transition> -->
 
-        <div v-if="mode === 'edit'" class="bottom-bar f-row-ac">
-          <portal-target name="infopanel-tool" class="f-grow"/>
-          <v-btn @click="mode = 'view'">
-            <translate>Cancel</translate>
-          </v-btn>
-        </div>
-
-        <div v-if="mode === 'add'" class="bottom-bar f-row-ac">
-          <portal-target name="toolbar" class="f-grow"/>
+        <div v-if="mode === 'edit' || mode === 'add'" class="bottom-bar f-row-ac">
+          <portal-target name="mat-toolbar" class="f-grow"/>
           <v-btn @click="mode = 'view'">
             <translate>Cancel</translate>
           </v-btn>
@@ -207,28 +201,8 @@
     </portal>
     <features-viewer :features="features"/>
     <portal to="right-panel">
-      <div
-        v-if="newFeatureMode"
-        class="window f-col mx-1 mb-2 shadow-2"
-      >
-        <div class="panel-header f-row-ac">
-          <translate class="title mx-2 f-grow">New Feature</translate>
-          <v-btn class="icon small" @click="newFeatureMode = false">
-            <v-icon name="x"/>
-          </v-btn>
-        </div>
-        <scroll-area>
-          <new-feature-editor
-            :layer="layer"
-            toolbar-target="toolbar"
-            @edit="newFeatureAdded"
-          />
-        </scroll-area>
-        <portal-target name="toolbar" class="toolbar"/>
-      </div>
-
       <info-panel
-        v-else-if="showInfoPanel"
+        v-if="showInfoPanel"
         class="mx-1 mb-2 shadow-2"
         :features="features"
         :layer="layer"

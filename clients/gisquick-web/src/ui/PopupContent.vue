@@ -5,6 +5,7 @@
         <div
           v-if="backdrop"
           class="popup-backdrop"
+          :class="backdropClass"
           v-backdrop-scroll
         >
           <div/>
@@ -112,6 +113,7 @@ export default {
     align: String,
     arrowStyle: Boolean,
     backdrop: Boolean,
+    backdropClass: [String, Array, Object],
     backhandler: Boolean,
     bounds: Object,
     interactive: {
@@ -224,7 +226,10 @@ export default {
           const listeners = {
             // enter: _this.enter,
             // enter: (el) => setTimeout(() =>_this.enter(el), 0),
-            enter: (el) => setTimeout(_this.enter, 0, el),
+            enter: (el) => {
+              el.style.opacity = '0'
+              setTimeout(_this.enter, 0, el)
+            },
             afterLeave: _this.leave
           }
           if (_this.transitionHooks) {
@@ -324,13 +329,16 @@ export default {
       this._openBounds = this.$el.getBoundingClientRect()
       this._updatePosition(el)
       this.popupBounds = elementBounds(el)
+      this.$ui.addPopup(this._uid, this.$el, el)
       this.$emit('opened', { target: el })
       this.visible = true
       this.initialized = true
+      el.style.opacity = ''
     },
     leave () {
       this.contentStyle = {}
       this.alignment = null
+      this.$ui.removePopup(this._uid)
       this.$emit('closed')
       this.visible = false
     },

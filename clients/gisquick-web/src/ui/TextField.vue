@@ -14,8 +14,6 @@
       :disabled="disabled"
       :tabindex="disabled ? -1 : 0"
       @click="onClick"
-      @mousedown="onMouseDown"
-      @mouseup="onMouseUp"
       @focus="focus"
     >
       <slot name="prepend"/>
@@ -25,13 +23,11 @@
         ref="inputEl"
         v-bind="$attrs"
         :name="name"
-        :disabled="disabled"
+        :disabled="disabled || inputDisabled"
         @pointerup="updateCaretPosition"
         @input="onInput"
         @change="onChange"
-        @focus="onInputFocus"
         @blur="onInputBlur"
-        @ontouchstart="focused = true"
         @keyup="updateCaretPosition"
         @keydown="$emit('keydown', $event)"
       />
@@ -43,6 +39,7 @@
 <script>
 import { colorVars } from './utils/colors'
 import InputField from './InputField.vue'
+import Focusable from '@/ui/mixins/Focusable'
 
 const FormatSymbols = {
   N: /[0-9]/,
@@ -108,6 +105,7 @@ function formatValue2 (value, mask) {
 */
 
 export default {
+  mixins: [Focusable],
   components: { InputField },
   inheritAttrs: false,
   props: {
@@ -120,6 +118,7 @@ export default {
       default: 'primary'
     },
     disabled: Boolean,
+    inputDisabled: Boolean,
     label: String,
     lazy: Boolean,
     trim: Boolean,
@@ -127,11 +126,6 @@ export default {
     displayFormat: String,
     validChars: String
     // valueFormat: String
-  },
-  data () {
-    return {
-      focused: false
-    }
   },
   computed: {
     inputTag () {
@@ -170,33 +164,19 @@ export default {
     }
   },
   methods: {
-    onMouseDown (e) {
-      this.preventBlur = true
-    },
-    onMouseUp () {
-      this.preventBlur = false
-    },
     focus (e) {
-      if (this.disabled || !this.$refs.inputEl) {
+      if (this.disabled || this.inputDisabled || !this.$refs.inputEl) {
         return
       }
       if (!this.focused) {
-        this.focused = true
         this.$refs.inputEl.value = this.inputValue
       }
       this.$refs.inputEl.focus()
     },
-    onInputFocus () {
-      if (!this.focused) {
-        this.focused = true
-      }
-    },
     onInputBlur (e) {
-      // if (this.preventBlur || this.$el.contains(e.relatedTarget)) {
       if (this.$el.contains(e.relatedTarget)) {
         return
       }
-      this.focused = false
       if (this.$refs.inputEl) {
         this.$refs.inputEl.value = this.inputValue
       }

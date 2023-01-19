@@ -2,9 +2,11 @@
   <v-text-field
     ref="textField"
     class="filled date-field"
+    :focused="focused"
     valid-chars="[0-9.]"
     :value="textValue"
     v-bind="$attrs"
+    :input-disabled="menuOpened"
     @change="onTextChage"
     @focus="$emit('focus')"
     @blur="$emit('blur')"
@@ -16,9 +18,10 @@
         transition="slide-y"
         align="rr;bb,tt"
         content-class="popup-content popup-menu light"
+        @closed="menuOpened = false"
       >
         <template v-slot:activator="{ open }">
-          <div class="btn" @click="open">
+          <div class="btn" @click="[menuOpened = true, open()]">
             <v-icon name="calendar"/>
           </div>
         </template>
@@ -41,6 +44,7 @@ import parse from 'date-fns/parse'
 import isAfter from 'date-fns/isAfter'
 
 import VDatePicker, { toDate } from '@/ui/DatePicker.vue'
+import Focusable from '@/ui/mixins/Focusable'
 
 // function utcToLocalDate (d) {
 //   return new Date(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate())
@@ -71,6 +75,7 @@ import VDatePicker, { toDate } from '@/ui/DatePicker.vue'
 
 export default {
   name: 'DateField',
+  mixins: [ Focusable ],
   components: { VDatePicker },
   props: {
     // ISO string or Date
@@ -86,7 +91,8 @@ export default {
   // inheritAttrs: false,
   data () {
     return {
-      textValue: ''
+      textValue: '',
+      menuOpened: false
     }
   },
   computed: {
@@ -170,7 +176,11 @@ export default {
       this.$emit('input', this.formatValue(v))
     },
     isValidDate (date) {
-      return date && date.getFullYear() > 1000
+      try {
+        return date && date.getFullYear() > 1000
+      } catch (err) {
+        return false
+      }
     }
   }
 }

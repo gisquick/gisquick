@@ -167,7 +167,7 @@ export default {
         }, {
           key: 'logout',
           text: this.$gettext('Logout'),
-          icon: 'exit_to_app',
+          icon: 'logout',
           action: this.logout
         }
       ]

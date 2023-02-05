@@ -1,17 +1,18 @@
 const fs = require('fs')
 const path = require('path')
-const { extendDefaultPlugins, optimize } = require('svgo')
-const svg2js = require('svgo/lib/svgo/svg2js')
-const js2svg = require('svgo/lib/svgo/js2svg')
-const JsAPI = require('svgo/lib/svgo/jsAPI')
+const { optimize } = require('svgo')
+const { parseSvg } = require('svgo/lib/parser')
+const { stringifySvg } = require('svgo/lib/stringifier')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 const opts = {
-  plugins: extendDefaultPlugins([
+  plugins: [
+    'preset-default',
     { name: 'removeDoctype', active: true },
     { name: 'removeDesc', active: true },
     { name: 'mergePaths', active: true },
     { name: 'removeDimensions', active: true } // important
-  ])
+  ]
 }
 
 async function buildSprite (dirPath) {
@@ -21,7 +22,7 @@ async function buildSprite (dirPath) {
     const svgPath = path.join(dirPath, filename)
     const data = fs.readFileSync(svgPath, 'utf8') 
     const result = await optimize(data, opts)
-    const el = svg2js(result.data)
+    const el = parseSvg(result.data)
     const svg = el.children[0]
     svg.name = 'symbol'
     svg.attributes = {
@@ -30,9 +31,8 @@ async function buildSprite (dirPath) {
     }
     symbols.push(svg)
   }
-  const svg = new JsAPI({
-    type: 'root',
-    children: [new JsAPI({
+  const data = {
+    children: [{
       type: 'element',
       name: 'svg',
       attributes: {
@@ -40,16 +40,17 @@ async function buildSprite (dirPath) {
         'xmlns:xlink': 'http://www.w3.org/1999/xlink',
         'width': 0,
         'height': 0,
-        'style': 'position: absolute'
+        'style': 'position: absolute;'
       },
-      children: [new JsAPI({
+      children: [{
         type: 'element',
         name: 'defs',
+        attributes: {},
         children: symbols
-      })]
-    })]
-  })
-  return js2svg(svg).data
+      }]
+    }]
+  }
+  return stringifySvg(data)
 }
 
 class SpritePlugin {
@@ -60,19 +61,26 @@ class SpritePlugin {
     compiler.hooks
       .compilation
       .tap('SpritePlugin', compilation => {
-        if (compilation.hooks.htmlWebpackPluginBeforeHtmlGeneration) {
-          compilation.hooks.htmlWebpackPluginBeforeHtmlGeneration
-            .tapAsync('SpritePlugin', async (htmlPluginData, callback) => {
-              try {
-                const svgSprite = await buildSprite(this.options.path)
-                htmlPluginData.plugin.options.svgSprite = svgSprite // <%= htmlWebpackPlugin.options.svgSprite %>
-                // htmlPluginData.assets.svgSprite = svgSprite // <%= htmlWebpackPlugin.files.svgSprite %>
-              } catch (err) {
-                console.error(err)
-              }
-              callback(null, htmlPluginData)
-            })
-        }
+        HtmlWebpackPlugin.getHooks(compilation).beforeEmit.tapAsync('SpritePlugin',
+          async (data, cb) => {
+            const svgSprite = await buildSprite(this.options.path)
+            // data.html = data.html.replace('<!-- svg-sprite -->', svgSprite)
+            data.html = data.html.replace('<svg-sprite/>', svgSprite)
+            cb(null, data)
+          }
+        )
+
+        // HtmlWebpackPlugin.getHooks(compilation).beforeAssetTagGeneration.tapAsync('SpritePlugin', async (htmlPluginData, callback) => {
+        //   try {
+        //     const svgSprite = await buildSprite(this.options.path)
+        //     htmlPluginData.plugin.options.meta.svgSprite = svgSprite // <%= htmlWebpackPlugin.options.meta.svgSprite %>
+        //     // htmlPluginData.plugin.options.svgSprite = svgSprite // <%= htmlWebpackPlugin.options.svgSprite %>
+        //     // htmlPluginData.assets.svgSprite = svgSprite // <%= htmlWebpackPlugin.files.svgSprite %>
+        //   } catch (err) {
+        //     console.error(err)
+        //   }
+        //   callback(null, htmlPluginData)
+        // })
       })
   }
 }

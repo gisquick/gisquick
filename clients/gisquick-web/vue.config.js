@@ -1,7 +1,8 @@
+const { defineConfig } = require('@vue/cli-service')
 const CompressionPlugin = require('compression-webpack-plugin')
 const SpritePlugin = require('./svg-sprite.js')
 
-module.exports = {
+module.exports = defineConfig({
   lintOnSave: 'warning',
   publicPath: process.env.NODE_ENV === 'production' ? '/map/' : '/',
   assetsDir: 'static',
@@ -9,44 +10,46 @@ module.exports = {
     extract: process.env.NODE_ENV === 'production' && process.env.CSS_EXTRACT !== 'False'
   },
   configureWebpack: {
+    resolve: {
+      fallback: {
+        path: require.resolve('path-browserify'),
+        https: require.resolve('agent-base')
+      }
+    },
     plugins: [
       new CompressionPlugin(),
       new SpritePlugin({ path: './icons' })
     ]
   },
   chainWebpack: config => {
+    // https://github.com/damianstasik/vue-svg-loader/issues/185
     const svgRule = config.module.rule('svg')
-    svgRule.uses.clear()
 
-    config.module
-      .rule('svg')
+    // Remove regular svg config from root rules list
+    config.module.rules.delete('svg')
 
-      .oneOf('inline-svg')
+    config.module.rule('svg')
+      // Use svg component rule
+      .oneOf('svg_as_component')
         .resourceQuery(/inline/)
-        .use('babel')
+        .test(/\.(svg)(\?.*)?$/)
+        .use('babel-loader')
           .loader('babel-loader')
           .end()
         .use('vue-svg-loader')
           .loader('vue-svg-loader')
           .end()
         .end()
-
-      .oneOf('other')
-        .use('file-loader')
-          .loader('file-loader')
-          .options({
-            name: 'static/img/[name].[hash:8].[ext]'
-          })
-          .end()
+      // Otherwise use original svg rule
+      .oneOf('svg_as_regular')
+        .merge(svgRule.toConfig())
         .end()
+
   },
   devServer: {
-    before (app) {
-      // const npm_argv = JSON.parse(process.env.npm_config_argv).original
-      if (process.env.WEBPACK_DEV_SERVER) {
-        const ErrorsModule = require('./proxy-interceptors.js')
-        app.use('/', ErrorsModule({ config: './proxy-errors.js'}))
-      }
+    onBeforeSetupMiddleware (devServer) {
+      const ErrorsModule = require('./proxy-interceptors.js')
+      devServer.app.use('/', ErrorsModule({ config: './proxy-errors.js'}))
     },
     proxy: {
       '^/api': {
@@ -67,4 +70,4 @@ module.exports = {
       }
     }
   }
-}
+})

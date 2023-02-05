@@ -14,7 +14,7 @@ import { get as getProj } from 'ol/proj'
 import { register } from 'ol/proj/proj4'
 import proj4 from 'proj4'
 import { defaults as defaultControls } from 'ol/control'
-import md5 from 'md5'
+// import md5 from 'md5'
 import debounce from 'lodash/debounce'
 import { wmtsSource } from './wmts'
 

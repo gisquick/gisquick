@@ -5,7 +5,6 @@ import PortalVue from 'portal-vue'
 import GetTextPlugin from 'vue-gettext'
 import { ReactiveRefs } from 'vue-reactive-refs'
 import Vue2TouchEvents from 'vue2-touch-events'
-import 'url-polyfill'
 
 import Swiper from './swiper'
 import http from './client'

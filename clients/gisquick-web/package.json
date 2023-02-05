@@ -11,61 +11,43 @@
     "vetur": "node ./docgen.js"
   },
   "dependencies": {
-    "axios": "^0.21.1",
-    "core-js": "^3.6.5",
-    "date-fns": "^2.28.0",
+    "agent-base": "^6.0.2",
+    "axios": "0.27",
+    "core-js": "^3.8.3",
+    "date-fns": "^2.29.3",
     "file-saver": "^2.0.5",
     "idb-keyval": "^6.2.0",
-    "material-icons": "^0.6.3",
-    "md5": "^2.3.0",
-    "ol": "^6.14.1",
-    "ol-mapbox-style": "^8.1.2",
-    "portal-vue": "^2.1.7",
-    "proj4": "^2.7.2",
-    "url-polyfill": "^1.1.12",
-    "vue": "^2.6.11",
+    "ol": "6.14.1",
+    "ol-mapbox-style": "8.1.2",
+    "path-browserify": "^1.0.1",
+    "portal-vue": "2",
+    "proj4": "^2.8.1",
+    "register-service-worker": "^1.7.2",
+    "vue": "^2.6.14",
     "vue-gettext": "^2.1.12",
-    "vue-reactive-refs": "0.0.2",
+    "vue-reactive-refs": "^0.0.2",
     "vue2-touch-events": "^3.2.2",
     "vuex": "^3.6.2",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^4.5.15",
-    "@vue/cli-plugin-eslint": "^4.5.15",
-    "@vue/cli-service": "^4.5.15",
-    "babel-eslint": "^10.1.0",
-    "compression-webpack-plugin": "^6.1.1",
-    "eslint": "^6.7.2",
-    "eslint-plugin-vue": "^6.2.2",
-    "gettext-extractor": "^3.5.3",
-    "pofile": "^1.1.1",
-    "sass": "^1.43.4",
-    "sass-loader": "^10.1.1",
-    "svgo": "^2.3.0",
-    "vue-docgen-api": "^4.38.2",
+    "@babel/core": "^7.12.16",
+    "@babel/eslint-parser": "^7.12.16",
+    "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-plugin-eslint": "~5.0.0",
+    "@vue/cli-plugin-vuex": "~5.0.0",
+    "@vue/cli-service": "~5.0.0",
+    "compression-webpack-plugin": "^10.0.0",
+    "eslint": "^7.32.0",
+    "eslint-plugin-vue": "^8.0.3",
+    "gettext-extractor": "^3.6.1",
+    "sass": "^1.57.1",
+    "sass-loader": "^13.2.0",
+    "svgo": "^3.0.2",
+    "vue-docgen-api": "^4.56.2",
     "vue-svg-loader": "^0.16.0",
-    "vue-template-compiler": "^2.6.11"
+    "vue-template-compiler": "^2.6.14"
   },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/essential",
-      "eslint:recommended"
-    ],
-    "parserOptions": {
-      "parser": "babel-eslint"
-    },
-    "rules": {}
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not dead"
-  ],
   "vetur": {
     "tags": "./vetur/tags.json",
     "attributes": "./vetur/attributes.json"

@@ -1,4 +1,4 @@
-FROM node:14-alpine AS webapp
+FROM node:16-alpine AS webapp
 
 WORKDIR /gisquick-web/
 COPY package*.json ./

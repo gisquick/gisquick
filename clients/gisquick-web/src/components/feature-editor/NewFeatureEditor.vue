@@ -120,6 +120,7 @@ export default {
         if (typeof value === 'function') {
           try {
             value = await value()
+            this.fields[name] = value
           } catch (err) {
             // this.statusController.set('error', 3000)
             // this.statusController.set(null, 100)

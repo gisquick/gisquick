@@ -218,14 +218,14 @@ export default {
     }
   },
   async created () {
-    this.$watch(vm => [vm.inputImage, vm.scale, vm.quality], async (params, old) => {
-      const [ image, scale, quality ] = params
+    this.$watch(vm => [vm.inputImage, vm.scale, vm.quality, vm.format], async (params, old) => {
+      const [ image, scale, quality, format ] = params
       if (!image) return
 
       // this.animationActive = false
       // if (Number.isFinite(scale) && Number.isFinite(quality))
       if (scale && quality) {
-        const { data, width, height } = await resizeImage(image.img, this.format, scale, quality)
+        const { data, width, height } = await resizeImage(image.img, format, scale, quality)
         const src = URL.createObjectURL(data)
         const img = new Image()
         img.src = src

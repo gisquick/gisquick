@@ -70,9 +70,24 @@ export const ImageWidget = Widget((h, ctx) => {
   ]
 })
 
-export function mediaUrlFormat (projectName) {
-  const root = `/api/project/media/${projectName}`
-  return value => path.join(root, value)
+export function mediaUrl (project, layer, attr) {
+  let location = attr.config?.directory || `web/${layer.name}`
+  let baseDir = ''
+  const relativeDepth = attr.config?.relative_depth ?? 0
+  if (relativeDepth) {
+    const parts = location.split('/')
+    baseDir = parts.slice(0, relativeDepth).join('/')
+    location = parts.slice(relativeDepth).join('/')
+  }
+  return {
+    base: path.join('/api/project/media/', project, baseDir),
+    location
+  }
+}
+
+export function mediaUrlFormat (project, layer, attr) {
+  const { base } = mediaUrl(project, layer, attr)
+  return value => path.join(base, value)
 }
 
 export function createImageWidget (createUrl) {
@@ -145,6 +160,21 @@ export const ValueMapWidget = {
   }
 }
 
+export function createMediaImageWidget (project, layer, attr) {
+  const { base } = mediaUrl(project, layer, attr)
+  return Widget((h, ctx) => {
+    const { value } = ctx.props
+    if (!value) {
+      return <span class="value"></span>
+    }
+    const url = path.join(base, value)
+    return [
+      <a class="value" href={url} target="_blank">{value}</a>,
+      <v-image class="image" src={url}/>
+    ]
+  })
+}
+
 export default {
   props: {
     feature: Object,
@@ -168,19 +198,6 @@ export default {
     values () {
       return this.fields.map(attr => this.feature?.getFormatted(attr.name))
     },
-    mediaWidget () {
-      return Widget((h, ctx) => {
-        if (!ctx.props.value) {
-          return <span class="value"></span>
-        }
-        const root = `/api/project/media/${this.project.name}`
-        const url = path.join(root, ctx.props.value)
-        return [
-          <a class="value" href={url} target="_blank">{ctx.props.value}</a>,
-          <v-image class="image" src={url}/>
-        ]
-      })
-    },
     widgets () {
       return this.fields.map(attr => {
         const type = attr.type.split('(')[0]?.toLowerCase()
@@ -192,7 +209,7 @@ export default {
         } else if (attr.widget === 'Image') {
           return ImageWidget
         } else if (attr.widget === 'MediaImage') {
-          return this.mediaWidget
+          return createMediaImageWidget(this.project.name, this.layer, attr)
         }
         if (type === 'bool') {
           return BoolWidget
@@ -212,7 +229,7 @@ export default {
             if (isAbsoluteUrl(value)) {
               return ImageWidget
             }
-            return this.mediaWidget
+            return createMediaImageWidget(this.project.name, this.layer, attr)
           }
         }
         return RawWidget

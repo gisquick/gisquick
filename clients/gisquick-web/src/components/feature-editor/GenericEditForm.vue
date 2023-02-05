@@ -24,7 +24,7 @@ import mapValues from 'lodash/mapValues'
 import TextField from './TextField.vue'
 import MediaImageField from './MediaImageField.vue'
 import { valueMapItems } from '@/adapters/attributes'
-
+import { mediaUrl } from '@/components/GenericInfopanel.vue'
 
 function isIntegerString (strValue) {
   return /^-?\d+$/.test(strValue)
@@ -57,16 +57,6 @@ export default {
       }
       return attributes
     },
-    mediaImage () {
-      return {
-        component: MediaImageField,
-        props: {
-          url: null,
-          accept: 'image/*',
-          location: this.layer.name
-        }
-      }
-    },
     tr () {
       return {
         NotValidNumber: this.$gettext('Not valid number'),
@@ -96,13 +86,15 @@ export default {
             }
           }
         } else if (attr.widget === 'MediaImage') {
-          const url = `/api/project/media/${this.project.name}`
+          const { base: url, location } = mediaUrl(this.project.name, this.layer, attr)
           return {
             component: MediaImageField,
             props: {
               url,
-              location: `web/${this.layer.name}`,
-              disabled // TODO: implement
+              location,
+              filename: attr.config?.filename || '<random>',
+              maxResolution: attr.config?.max_resolution,
+              disabled
             }
           }
         }

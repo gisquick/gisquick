@@ -2,7 +2,6 @@
   <input-field
     class="image-field"
     :class="{focused}"
-    :focus="focus"
     :label="label"
     :error="error || ''"
   >
@@ -36,18 +35,22 @@
               <v-icon name="x"/>
             </v-btn>
           </div>
-          <div class="ml-2">
+          <div class="mx-2">
             <translate class="label">Format</translate>
             <span v-text="newImageInfo.format"/>
           </div>
-          <div class="ml-2">
+          <div class="mx-2">
             <translate class="label">Size</translate>
             <span v-text="newImageInfo.filesize"/>
           </div>
-          <div class="ml-2">
+          <div class="mx-2">
             <translate class="label">Resolution</translate>
             <span v-text="newImageInfo.resolution"/>
           </div>
+          <p v-if="resizeRequired" class="notification mx-2">
+            <v-icon name="circle-i-outline" size="16" color="orange"/>
+            <translate>Image will be saved in lower resolution</translate>
+          </p>
         </div>
       </template>
       <template v-else-if="currentImage">
@@ -222,7 +225,8 @@ import WFS from 'ol/format/WFS'
 import EqualTo from 'ol/format/filter/EqualTo'
 
 import InputField from '@/ui/InputField.vue'
-import ImageEditor from '@/components/image/ImageEditor.vue'
+import ImageEditor, { resizeImage } from '@/components/image/ImageEditor.vue'
+import Focusable from '@/ui/mixins/Focusable'
 import PhotoSvg from '@/assets/photo.svg?inline'
 
 function getWfs (layername, attrname, value) {
@@ -265,10 +269,14 @@ export function formatFileSize (value, unit) {
 
 export default {
   name: 'MediaUploadField',
+  mixins: [ Focusable ],
   components: { InputField, ImageEditor, PhotoSvg },
   props: {
     url: String,
     location: String,
+    filename: String,
+    format: String,
+    maxResolution: Number,
     label: String,
     initial: String,
     value: [String, Function],
@@ -281,7 +289,6 @@ export default {
   data () {
     return {
       error: null,
-      focused: false,
       newImage: null,
       imageInfo: null,
       uploading: false,
@@ -298,11 +305,6 @@ export default {
     currentImage () {
       if (this.value && typeof this.value === 'string') {
         return Path.join(this.url, this.value)
-
-        // return Path.join(this.url, this.value.replace('media/', ''))
-        // const projectPath = this.$store.state.project.config.project
-        // const root = `/api/project/media/${projectPath.substring(0, projectPath.lastIndexOf('/'))}/`
-        // return root + this.value.replace('media/', '')
       }
       return null
     },
@@ -321,6 +323,13 @@ export default {
     },
     isMobileDevice () {
       return window.env.mobile
+    },
+    resizeRequired () {
+      if (this.newImage && this.maxResolution) {
+        const imgRes = this.newImage.width * this.newImage.height / 1000000
+        return imgRes > this.maxResolution
+      }
+      return false
     }
   },
   watch: {
@@ -340,9 +349,6 @@ export default {
     this.newImage?.free?.()
   },
   methods: {
-    focus () {
-      console.log('focus: TODO')
-    },
     selectFile (e) {
       const src = e.target.getAttribute('data-src') || 'input'
       this.$refs[src]?.click()
@@ -354,15 +360,47 @@ export default {
       // getWfs('districts', 'attr', this.value)
       this.$emit('input', '')
     },
+    formatFilename (template, filename) {
+      let name = template
+      if (name.endsWith('<filename>')) {
+        name = name.replace('<filename>', filename)
+      } else if (name.includes('<filename>')) {
+        const ext = Path.extname(filename)
+        if (ext) {
+          name = name.replace('<filename>', filename.slice(0, filename.lastIndexOf(ext)))
+        }
+      }
+      if (!Path.extname(name)) {
+        name += Path.extname(filename)
+      }
+      return name
+    },
     setNewImage (image) {
       // const filename = image.filename ? Path.join(this.location, image.filename) : this.initial
-      const filename = image.filename ? image.filename : this.initial
+      let filename = image.filename ? image.filename : this.initial
+
       const upload = async () => {
+        let data = image.data
+
+        const changeFormat = (this.format && this.format !== image.data.type)
+        const imgRes = image.width * image.height / 1000000
+        const scale = this.maxResolution && imgRes > this.maxResolution ? Math.sqrt(this.maxResolution / imgRes) : 1
+        if (scale !== 1 || changeFormat) {
+          const img = new Image()
+          img.src = image.src
+          await img.decode()
+          const res = await resizeImage(img, this.format || image.data.type, scale, 0.85)
+          data = res.data
+          if (changeFormat) {
+            filename = filenamee.slice(0, filename.lastIndexOf('.')) + this.format.replace('image/', '.')
+          }
+        }
+
         this.progress = 0
         this.uploading = true
         const form = new FormData()
-        // form.append(filename, image.data, filename)
-        form.append("file", image.data, filename)
+        // or use real filename as name parameter (first argument)?
+        form.append('file', data, this.formatFilename(this.filename, filename))
         const source = this.$http.CancelToken.source()
         upload.cancel = () => source.cancel('')
         try {
@@ -376,7 +414,7 @@ export default {
               // layer: this.location
             }
           })
-          return data
+          return Path.join(this.location, data.filename)
         } catch (err) {
           if (!this.$http.isCancel(err)) {
             if (err.response?.status === 413) {
@@ -398,15 +436,34 @@ export default {
       this.value.cancel?.()
     },
     async onChange (e) {
-      const file = e.target.files[0]
+      let file = e.target.files[0]
       e.target.value = ''
       if (!file) {
         return
       }
-      const src = URL.createObjectURL(file)
-      const img = new Image()
+      let src = URL.createObjectURL(file)
+      let img = new Image()
       img.src = src
       await img.decode()
+
+      // Resize to max. resolution immediately. Not suitable for post-cropping of the image.
+      // const changeFormat = (this.format && this.format !== file.type)
+      // const imgRes = img.naturalWidth * img.naturalHeight / 1000000
+      // const scale = this.maxResolution && imgRes > this.maxResolution ? Math.sqrt(this.maxResolution / imgRes) : 1
+      // if (scale !== 1 || changeFormat) {
+      //   URL.revokeObjectURL(src)
+      //   const { data } = await resizeImage(img, this.format || file.type, scale, 0.85)
+      //   if (changeFormat) {
+      //     data.name = file.name.slice(0, file.name.lastIndexOf('.')) + this.format.replace('image/', '.')
+      //   } else {
+      //     data.name = file.name
+      //   }
+      //   file = data
+      //   src = URL.createObjectURL(data)
+      //   img = new Image()
+      //   img.src = src
+      //   await img.decode()
+      // }
       this.setNewImage({
         src,
         data: file,
@@ -418,6 +475,7 @@ export default {
           URL.revokeObjectURL(this.src)
         }
       })
+      this.error = false
     },
     toggleCrop () {
       this.crop = this.crop ? null : { left: 0, top: 0, right: 1, bottom: 1 }
@@ -492,7 +550,7 @@ export default {
         this.$http.delete(url)
       }
     },
-    afterFeatureUpdated (f) {
+    async afterFeatureUpdated (f) {
       if (this.initial && this.initial !== this.value) {
         const url = Path.join(this.url, this.initial)
         this.$http.delete(url) // not returning promise, so error will not cause save failure
@@ -506,6 +564,7 @@ export default {
 .i-field.image-field {
   font-size: 14px;
   color: #555;
+  --color: var(--color-primary);
   // align-self: flex-start;
 }
 
@@ -584,6 +643,18 @@ export default {
       position: absolute;
       top: 4px;
       right: 0;
+    }
+  }
+  .notification {
+    line-height: 1;
+    color: var(--color-orange);
+    .icon {
+      vertical-align: top;
+      margin-right: 3px;
+    }
+    span {
+      padding-block: 2px;
+      vertical-align: middle;
     }
   }
 }
@@ -692,6 +763,7 @@ export default {
     .label {
       text-transform: uppercase;
       font-size: 12px;
+      opacity: 0.8;
     }
     .value {
       font-weight: 500;

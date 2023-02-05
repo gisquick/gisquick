@@ -2,7 +2,7 @@
   <div class="i-field" :style="styles">
     <label
       v-if="label"
-      @click="focus"
+      @click="focus ? focus() : null"
       v-text=label
     />
     <slot/>

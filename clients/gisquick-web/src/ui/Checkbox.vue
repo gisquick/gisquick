@@ -74,7 +74,7 @@ export default {
       default: true
     },
     val: {},
-    value: [Boolean, Array]
+    value: {}
   },
   data () {
     return {

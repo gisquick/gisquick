@@ -93,6 +93,7 @@
                 selected: selection.items.has(item)
               }"
               :aria-disabled="item.disabled"
+              :disabled="item.disabled"
               @click="selectItem(item)"
               @mouseover="onMouseOver(index)"
             >
@@ -294,6 +295,9 @@ export default {
       item && this.selectItem(item)
     },
     selectItem (item) {
+      if (item.disabled) {
+        return
+      }
       let value = this.getItemValue(item)
       if (this.multiple) {
         if (this.value?.includes(value)) {

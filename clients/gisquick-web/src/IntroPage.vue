@@ -93,12 +93,7 @@ export default {
   object-fit: contain;
 }
 .page {
-  /* possible fixes for issue with filling height (1fr) in chrome inside flexbox with flex-grow:1 */
-  min-height: inherit;
-  // min-height: 100vh;
-  // height: 1px;
-  // height: 100vh;
-
+  min-height: calc(var(--vh, 1vh) * 100);
   text-align: center;
   // display: grid;
   // grid-template-rows: 120px 1fr auto;

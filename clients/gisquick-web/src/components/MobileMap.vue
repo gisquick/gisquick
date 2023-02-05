@@ -70,6 +70,8 @@
 
 <script>
 import { mapState } from 'vuex'
+import debounce from 'lodash/debounce'
+
 import Map from '@/mixins/Map'
 import ContentPanel from '@/components/content-panel/ContentPanel.vue'
 import MapAttributions from '@/components/MapAttributions.vue'
@@ -103,13 +105,9 @@ export default {
     }
   },
   mounted () {
-    const setHeightStyle = () => {
-      const vh = window.innerHeight / 100
-      document.documentElement.style.setProperty('--vh', `${vh}px`)
-    }
-    window.addEventListener('resize', setHeightStyle)
-    setHeightStyle()
-    this.$once('hook:beforeDestroy', () => window.removeEventListener('resize', setHeightStyle))
+    const updateMapSize = debounce(() => this.$map.updateSize(), 100)
+    window.addEventListener('resize', updateMapSize)
+    this.$once('hook:beforeDestroy', () => window.removeEventListener('resize', updateMapSize))
   },
   methods: {
     toggleTool (tool) {
@@ -127,7 +125,8 @@ export default {
 
 .map-container {
   width: 100%;
-  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
+  // height: 100vh; // allow to hide browser's address bar, but makes UI slightly worse
   position: relative;
   display: grid;
   grid-template-columns: 1fr auto;

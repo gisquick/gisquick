@@ -52,6 +52,17 @@ export default {
   created () {
     this.loadProject()
   },
+  mounted () {
+    if (window.env.mobile) {
+      const setHeightStyle = () => {
+        const vh = window.innerHeight / 100
+        document.documentElement.style.setProperty('--vh', `${vh}px`)
+      }
+      window.addEventListener('resize', setHeightStyle)
+      setHeightStyle()
+      this.$once('hook:beforeDestroy', () => window.removeEventListener('resize', setHeightStyle))
+    }
+  },
   watch: {
     projectStatus: {
       immediate: true,
@@ -106,9 +117,5 @@ html {
 body {
   overscroll-behavior-x: none;
   touch-action: none;
-}
-
-#app {
-  min-height: 100vh;
 }
 </style>

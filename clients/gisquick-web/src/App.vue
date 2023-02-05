@@ -25,6 +25,7 @@ import MobileMap from '@/components/MobileMap.vue'
 import LoginDialog from '@/components/LoginDialog.vue'
 import PopupLayer from '@/ui/PopupLayer.vue'
 import ServerError from './ServerError.vue'
+import projectsHistory from '@/projects-history'
 
 export default {
   components: {
@@ -83,6 +84,7 @@ export default {
           .then(data => {
             this.$store.commit('project', data)
             document.title = data.root_title
+            projectsHistory.push(this.projectName)
           })
           .catch(data => {
             this.$store.commit('project', data)

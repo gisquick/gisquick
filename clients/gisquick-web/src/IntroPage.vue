@@ -60,7 +60,8 @@ export default {
       return this.user && !this.user.is_guest
     },
     showUserProjects () {
-      return this.userSignedIn && (process.env.NODE_ENV === 'development' || window.env.mobile)
+      return true
+      // return this.userSignedIn && (process.env.NODE_ENV === 'development' || window.env.mobile)
     }
   },
   watch: {
@@ -74,9 +75,9 @@ export default {
     }
   },
   methods: {
-    redirectToUserProfile () {
-      window.location.replace(`${location.origin}/user/`)
-    },
+    // redirectToUserProfile () {
+    //   window.location.replace(`${location.origin}/user/`)
+    // },
     showLogin () {
       this.$store.commit('showLogin', true)
     }

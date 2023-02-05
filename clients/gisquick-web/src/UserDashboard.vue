@@ -1,6 +1,6 @@
 <template>
-  <div class="user-dashboard f-col">
-    <div class="header f-row-ac light shadow-1">
+  <div class="user-dashboard f-col light">
+    <div class="header f-row-ac shadow-1">
       <div class="f-col mr-2 light">
         <v-text-field class="filled" :placeholder="tr.Search" v-model="filter">
           <template v-slot:append>
@@ -28,7 +28,11 @@
         </template>
       </v-menu>
     </div>
-
+    <tabs-header
+      :items="projectsTabs"
+      :value="tab"
+      @input="setTab"
+    />
     <div class="content f-col f-grow light">
       <v-spinner
         v-if="loadingProjects"
@@ -44,11 +48,11 @@
           :key="p.name"
           class="card"
         >
-          <a class="map-link" :href="`/?PROJECT=${p.name}`">
+          <a class="map-link" :href="`?PROJECT=${p.name}`">
             <img v-if="p.thumbnail" :src="`/api/project/thumbnail/${p.name}`"/>
             <map-img v-else/>
           </a>
-          <a :href="`/?PROJECT=${p.name}`" class="project-link f-col px-2">
+          <a :href="`?PROJECT=${p.name}`" class="project-link f-col px-2">
             <span v-text="p.title" class="title"/>
             <span v-text="p.name" class="name"/>
           </a>
@@ -77,7 +81,7 @@
         </div>
       </div>
 
-      <div v-else class="empty f-col-ac">
+      <div v-else-if="tab === 'user'" class="empty f-col-ac">
         <translate class="py-4 title">You didn't publish any project yet!</translate>
         <translate tag="p" class="my-4">
           Use QGIS and Gisquick plugin to create your map, and then publish it from your profile page.
@@ -92,6 +96,24 @@
         </v-btn>
       </div>
     </div>
+    <v-dialog ref="openDialog">
+      <div class="open-dialog f-col p-2">
+        <v-text-field
+          class="filled"
+          label="Project name"
+          v-model="projectName"
+          @keydown.enter="openProject(projectName)"
+        />
+        <div class="f-row-ac">
+          <v-btn class="f-grow" @click="$refs.openDialog.close()">
+            <translate>Close</translate>
+          </v-btn>
+          <v-btn class="f-grow" :disabled="!projectName" color="primary" @click="openProject(projectName)">
+            <translate>Open</translate>
+          </v-btn>
+        </div>
+      </div>
+    </v-dialog>
   </div>
 </template>
 
@@ -99,7 +121,9 @@
 import { mapState } from 'vuex'
 import orderBy from 'lodash/orderBy'
 import MapImg from '@/assets/map.svg?inline'
+import TabsHeader from '@/ui/TabsHeader.vue'
 import { sanitize, escapeRegExp, removeDiacritics } from '@/ui/utils/text'
+import projectsHistory from '@/projects-history'
 
 function toDate (v) {
   return typeof v === 'string' ? new Date(v) : v
@@ -122,16 +146,22 @@ function oldApiProjects (data) {
 }
 
 export default {
-  components: { MapImg },
+  components: { MapImg, TabsHeader },
   data () {
     return {
       loadingProjects: false,
-      projects: [],
-      filter: ''
+      userProjects: [],
+      filter: '',
+      tab: '',
+      projectName: '',
+      recentProjects: []
     }
   },
   computed: {
     ...mapState(['app', 'user']),
+    projects () {
+      return this.tab === 'user' ? this.userProjects : this.recentProjects
+    },
     formattedProjects () {
       return this.projects.map(({ created, last_update, ...data }) => ({
         ...data,
@@ -144,6 +174,9 @@ export default {
       if (this.filter) {
         const regex = new RegExp(escapeRegExp(sanitize(removeDiacritics(this.filter))), 'i')
         projects = projects.filter(p => regex.test(removeDiacritics(p.title)) || regex.test(removeDiacritics(p.name)))
+      }
+      if (this.tab === 'recent') {
+        return projects
       }
       if (this.sortBy) {
         return orderBy(projects, this.sortBy || 'title', this.sortDir)
@@ -177,10 +210,27 @@ export default {
         Menu: this.$gettext('Menu'),
         Search: this.$pgettext('noun', 'Search')
       }
+    },
+    projectsTabs () {
+      return [
+        {
+          key: 'user',
+          label: this.$gettext('My Projects'),
+          icon: 'account'
+        }, {
+          key: 'recent',
+          label: this.$gettext('Recent'),
+          icon: 'restore'
+        }, {
+          key: 'open',
+          label: this.$gettext('Open'),
+          icon: 'plus'
+        }
+      ]
     }
   },
-  mounted () {
-    this.fetchProjects()
+  created () {
+    this.setTab('user')
   },
   methods: {
     formatDate (d) {
@@ -197,13 +247,43 @@ export default {
       this.loadingProjects = true
       try {
         const { data } = await this.$http.get('/api/projects/')
-        this.projects = Array.isArray(data) ? data : oldApiProjects(data) // compatibility with old API
+        this.userProjects = Array.isArray(data) ? data : oldApiProjects(data) // compatibility with old API
+      } finally {
+        this.loadingProjects = false
+      }
+    },
+    async fetchProjectsInfo (projects) {
+      this.loadingProjects = true
+      try {
+        const params = { projects: projects.join(',') }
+        const { data } = await this.$http.get('/api/projects/', { params })
+        if (data.length < projects.length) {
+          // clean from not existing projects
+          const lt = new Set(data.map(p => p.name))
+          projectsHistory.setProjectsHistory(projects.filter(n => lt.has(n)))
+        }
+        this.recentProjects = data
       } finally {
         this.loadingProjects = false
       }
     },
     openProject (project) {
-      location.search = `PROJECT=${project.name}`
+      location.search = `PROJECT=${project}`
+    },
+    async setTab (tab) {
+      if (tab === 'open') {
+        this.$refs.openDialog.show()
+      } else {
+        this.tab = tab
+        if (tab === 'user') {
+          this.fetchProjects()
+        } else if (tab === 'recent') {
+          const recent = await projectsHistory.getProjectsHistory()
+          if (recent.length) {
+            this.fetchProjectsInfo(recent)
+          }
+        }
+      }
     }
   }
 }
@@ -387,5 +467,37 @@ p {
     font-size: 13px;
     font-weight: 500;
   }
+}
+.tabs-header {
+  border-inline: 1px solid #bbb;
+  border-bottom: 1px solid #e3e3e3;
+  background-color: #f6f6f6;
+}
+@media (max-width: 600px) {
+  .user-dashboard {
+    padding-bottom: 44px;
+  }
+  .content {
+    border: none;
+  }
+  .tabs-header {
+    position: fixed;
+    bottom: 0;
+    height: 44px;
+    width: 100%;
+    background-color: #fff;
+    border-inline: none;
+    border-bottom: none;
+    border-top: 1px solid #ddd;
+    box-shadow: 1px -1px 5px rgba(0, 0, 0, 0.15);
+    padding-top: 2px;
+    ::v-deep .slider {
+      top: 0;
+      bottom: auto;
+    }
+  }
+}
+.open-dialog {
+  min-width: 300px;
 }
 </style>

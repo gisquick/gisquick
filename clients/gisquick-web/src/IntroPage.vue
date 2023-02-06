@@ -65,14 +65,14 @@ export default {
     }
   },
   watch: {
-    userSignedIn: {
-      immediate: true,
-      handler (userSignedIn) {
-        if (userSignedIn && process.env.NODE_ENV !== 'development' && !window.env.mobile) {
-          this.redirectToUserProfile()
-        }
-      }
-    }
+    // userSignedIn: {
+    //   immediate: true,
+    //   handler (userSignedIn) {
+    //     if (userSignedIn && process.env.NODE_ENV !== 'development' && !window.env.mobile) {
+    //       this.redirectToUserProfile()
+    //     }
+    //   }
+    // }
   },
   methods: {
     // redirectToUserProfile () {

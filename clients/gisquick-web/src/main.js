@@ -30,10 +30,6 @@ import {
   SlideTop
 } from './components/transitions'
 
-// import all icons
-const svgIcons = require.context('../icons', false, /.*\.svg$/)
-svgIcons.keys().map(svgIcons)
-
 Vue.config.productionTip = false
 const mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent)
 window.env = {

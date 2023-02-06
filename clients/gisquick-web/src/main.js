@@ -6,6 +6,7 @@ import GetTextPlugin from 'vue-gettext'
 import { ReactiveRefs } from 'vue-reactive-refs'
 import Vue2TouchEvents from 'vue2-touch-events'
 
+import './registerServiceWorker'
 import Swiper from './swiper'
 import http from './client'
 import store from './store/index'

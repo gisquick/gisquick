@@ -8,7 +8,8 @@
       <img
         v-if="!error"
         :alt="alt"
-        :src="src"
+        :src="thumbnail || src"
+        v-bind="$attrs"
         @error="onError"
         @load="onLoad"
         @click="openViewer"
@@ -45,9 +46,11 @@ import BrokenPhotoSvg from '@/assets/photo-broken.svg?inline'
 
 export default {
   components: { ImageViewer, BrokenPhotoSvg },
+  inheritAttrs: false,
   props: {
     alt: String,
-    src: String
+    src: String,
+    thumbnail: String
   },
   data () {
     return {

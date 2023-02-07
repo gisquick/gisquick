@@ -103,7 +103,7 @@ export function createImageWidget (createUrl) {
           <v-btn class="icon flat m-0">
             <v-icon name="photo" onClick={props.openViewer}/>
             <v-tooltip slot="tooltip" align="ll,rr,c;tt,bb" content-class="tooltip dark image">
-              <img style="width:100%; max-width: 300px; max-height:300px" src={url}/>
+              <img style="width:100%; max-width: 300px; max-height:300px" src={`${url}?thumbnail=true`}/>
             </v-tooltip>
           </v-btn>
           <a class="value ml-2" href={url} target="_blank">{src}</a>
@@ -168,9 +168,11 @@ export function createMediaImageWidget (project, layer, attr) {
       return <span class="value"></span>
     }
     const url = path.join(base, value)
+    const thumbnailUrl = `${url}?thumbnail=true`
+    const srcset = window.devicePixelRatio > 1 ? `${thumbnailUrl} ${Math.min(2, window.devicePixelRatio)}x` : null
     return [
       <a class="value" href={url} target="_blank">{value}</a>,
-      <v-image class="image" src={url}/>
+      <v-image class="image" src={url} srcset={srcset} thumbnail={thumbnailUrl}/>
     ]
   })
 }
@@ -349,8 +351,8 @@ export default {
     grid-column: 1 / 3;
     width: 100%;
 
-    // align-self: center;
-    // justify-self: center;
+    // justify-content: end;
+    justify-content: center;
     ::v-deep .image-error {
       height: 64px;
       padding: 6px 0;

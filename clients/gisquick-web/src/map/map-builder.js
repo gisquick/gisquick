@@ -40,7 +40,7 @@ export class WebgisImageWMS extends ImageWMS {
       LAYERFONTSIZE: '10',
       LAYERFONTBOLD: 'true',
       ITEMFONTSIZE: '11',
-      ICONLABELSPACE: '6'
+      ICONLABELSPACE: '3'
     }
     this.legendUrl = createUrl(opts.url, legendParams)
     this.setVisibleLayers(opts.visibleLayers || [])
@@ -63,9 +63,14 @@ export class WebgisImageWMS extends ImageWMS {
     return this.visibleLayers
   }
 
-  getLegendUrl (layername, view) {
+  getLegendUrl (layername, view, opts) {
     this.legendUrl.searchParams.set('LAYER', layername)
     this.legendUrl.searchParams.set('SCALE', Math.round(view.getScale()))
+    if (opts) {
+      for (const [k, v] of Object.entries(opts)) {
+        this.legendUrl.searchParams.set(k, v)
+      }
+    }
     return this.legendUrl.href
   }
 }
@@ -118,7 +123,7 @@ export class WebgisTileImage extends TileImage {
     return this.visibleLayers
   }
 
-  getLegendUrl (layername, view) {
+  getLegendUrl (layername, view, opts = {}) {
     var zoomLevel = this.getTileGrid().getZForResolution(view.getResolution())
 
     const baseUrl = `${this.legendUrl}${md5(layername)}/${zoomLevel}.png`
@@ -133,10 +138,11 @@ export class WebgisTileImage extends TileImage {
       LAYERFONTSIZE: 10,
       LAYERFONTBOLD: 'true',
       ITEMFONTSIZE: 11,
-      ICONLABELSPACE: 6,
+      ICONLABELSPACE: 3,
       PROJECT: this.project,
       LAYER: layername,
-      SCALE: Math.round(view.getScale())
+      SCALE: Math.round(view.getScale()),
+      ...opts
     }
     return createUrl(baseUrl, params).href
   }

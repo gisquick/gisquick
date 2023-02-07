@@ -13,7 +13,8 @@
         v-else
         :key="item.layer.name"
         :src="item.url"
-        alt="Legend image"
+        :srcset="item.srcset"
+        :alt="item.layer.title"
       />
     </template>
   </div>
@@ -40,6 +41,9 @@ export default {
         this.visibleBaseLayer,
         ...this.visibleLayers
       ].filter(l => l && !l.legend_disabled && l.drawing_order > -1)
+    },
+    dpi () {
+      return window.devicePixelRatio > 1 ? Math.round(92 * window.devicePixelRatio) : null
     }
   },
   watch: {
@@ -80,10 +84,13 @@ export default {
             url: l.legend_url
           }
         }
+        const opts = this.dpi ? { DPI: this.dpi } : null
+        const url = source.getLegendUrl(l.name, view, opts)
         return {
           layer: l,
           type: 'image',
-          url: source.getLegendUrl(l.name, view)
+          url,
+          srcset: window.devicePixelRatio > 1 ? `${url} ${window.devicePixelRatio}x` : null
         }
       })
     }

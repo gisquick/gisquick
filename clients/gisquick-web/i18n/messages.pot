@@ -10,6 +10,10 @@ msgstr ""
 msgid "2nd coordinate"
 msgstr ""
 
+#: ./src/App.vue:20
+msgid "A new version of the map application is available"
+msgstr ""
+
 #: ./src/components/content-panel/BaseLayersTree.vue:43
 #: ./src/components/content-panel/LayersTree.vue:91
 #: ./src/components/content-panel/TopicsList.vue:36
@@ -21,7 +25,7 @@ msgid "Add geometry"
 msgstr ""
 
 #: ./src/components/AttributesTable.vue:115
-#: src/components/MobileAttributesTable.vue:304
+#: src/components/MobileAttributesTable.vue:278
 msgid "Add new feature"
 msgstr ""
 
@@ -35,7 +39,7 @@ msgid ""
 "your projects"
 msgstr ""
 
-#: ./src/components/feature-editor/MediaImageField.vue:204
+#: ./src/components/feature-editor/MediaImageField.vue:207
 msgid "Apply"
 msgstr ""
 
@@ -48,7 +52,7 @@ msgstr ""
 msgid "Area"
 msgstr ""
 
-#: src/components/MobileAttributesTable.vue:356
+#: src/components/MobileAttributesTable.vue:330
 msgid "Attributes"
 msgstr ""
 
@@ -81,18 +85,18 @@ msgstr ""
 msgid "between"
 msgstr ""
 
-#: ./src/components/feature-editor/MediaImageField.vue:208
-#: ./src/components/MobileAttributesTable.vue:163
-#: ./src/components/MobileAttributesTable.vue:170
+#: ./src/components/feature-editor/MediaImageField.vue:211
+#: ./src/components/MobileAttributesTable.vue:164
 msgid "Cancel"
 msgstr ""
 
 #: ./src/components/AttributesTable.vue:142
-#: src/components/MobileAttributesTable.vue:349
+#: src/components/MobileAttributesTable.vue:323
 msgid "Clear attributes filters"
 msgstr ""
 
 #: ./src/components/LocationTool.vue:20
+#: ./src/UserDashboard.vue:109
 msgid "Close"
 msgstr ""
 
@@ -116,7 +120,7 @@ msgstr ""
 msgid "Coordinates"
 msgstr ""
 
-#: ./src/UserDashboard.vue:60
+#: ./src/UserDashboard.vue:64
 msgid "Created"
 msgstr ""
 
@@ -157,7 +161,7 @@ msgstr ""
 msgid "Distance"
 msgstr ""
 
-#: src/components/MobileAttributesTable.vue:377
+#: src/components/MobileAttributesTable.vue:351
 msgid "Edit"
 msgstr ""
 
@@ -198,7 +202,7 @@ msgid "Error"
 msgstr ""
 
 #: ./src/components/AttributesTable.vue:126
-#: src/components/MobileAttributesTable.vue:311
+#: src/components/MobileAttributesTable.vue:285
 msgid "Export"
 msgstr ""
 
@@ -210,7 +214,7 @@ msgstr ""
 msgid "Failed to process your request."
 msgstr ""
 
-#: src/components/feature-editor/MediaImageField.vue:385
+#: src/components/feature-editor/MediaImageField.vue:423
 msgid "Failed to upload file"
 msgstr ""
 
@@ -235,8 +239,8 @@ msgstr ""
 msgid "Forgot password?"
 msgstr ""
 
-#: ./src/components/feature-editor/MediaImageField.vue:40
-#: ./src/components/feature-editor/MediaImageField.vue:73
+#: ./src/components/feature-editor/MediaImageField.vue:39
+#: ./src/components/feature-editor/MediaImageField.vue:76
 msgid "Format"
 msgstr ""
 
@@ -244,11 +248,11 @@ msgstr ""
 msgid "Friday"
 msgstr ""
 
-#: src/components/AppMenu.vue:58
+#: src/components/AppMenu.vue:60
 msgid "Full screen"
 msgstr ""
 
-#: src/components/LocationTool.vue:85
+#: src/components/LocationTool.vue:98
 msgid "Geolocation Error"
 msgstr ""
 
@@ -256,7 +260,7 @@ msgstr ""
 msgid "greater than"
 msgstr ""
 
-#: src/components/AppMenu.vue:68
+#: src/components/AppMenu.vue:70
 msgid "Help"
 msgstr ""
 
@@ -264,8 +268,12 @@ msgstr ""
 msgid "Identification"
 msgstr ""
 
+#: ./src/components/feature-editor/MediaImageField.vue:52
+msgid "Image will be saved in lower resolution"
+msgstr ""
+
 #: src/components/Identification.vue:149
-#: src/components/MobileAttributesTable.vue:371
+#: src/components/MobileAttributesTable.vue:345
 msgid "Info Panel"
 msgstr ""
 
@@ -302,7 +310,7 @@ msgid "Last segment"
 msgstr ""
 
 #: src/components/Identification.vue:174
-#: src/components/MobileAttributesTable.vue:267
+#: src/components/MobileAttributesTable.vue:241
 msgid "Layer"
 msgstr ""
 
@@ -335,12 +343,12 @@ msgid "Location"
 msgstr ""
 
 #: ./src/components/LoginDialog.vue:97
-#: src/components/AppMenu.vue:48
+#: src/components/AppMenu.vue:49
 msgid "Login"
 msgstr ""
 
 #: src/components/AppMenu.vue:37
-#: src/UserDashboard.vue:169
+#: src/UserDashboard.vue:202
 msgid "Logout"
 msgstr ""
 
@@ -354,9 +362,9 @@ msgstr ""
 
 #: src/components/Identification.vue:175
 #: src/components/measure/Measure.vue:144
-#: src/components/MobileAttributesTable.vue:269
+#: src/components/MobileAttributesTable.vue:243
 #: src/components/print/Print.vue:82
-#: src/UserDashboard.vue:177
+#: src/UserDashboard.vue:210
 msgid "Menu"
 msgstr ""
 
@@ -364,13 +372,16 @@ msgstr ""
 msgid "Monday"
 msgstr ""
 
-#: src/components/AppMenu.vue:41
-#: src/UserDashboard.vue:164
+#: src/components/AppMenu.vue:42
+#: src/UserDashboard.vue:197
 msgid "My profile"
 msgstr ""
 
+#: src/UserDashboard.vue:218
+msgid "My Projects"
+msgstr ""
+
 #: ./src/components/AttributesTable.vue:163
-#: ./src/components/MobileAttributesTable.vue:215
 #: ./src/components/MobileAttributesTable.vue:34
 msgid "New Feature"
 msgstr ""
@@ -405,12 +416,16 @@ msgstr ""
 msgid "not in"
 msgstr ""
 
-#: src/components/feature-editor/GenericEditForm.vue:73
+#: ./src/App.vue:25
+msgid "Not now"
+msgstr ""
+
+#: src/components/feature-editor/GenericEditForm.vue:63
 #: src/components/feature-editor/NumberField.vue:48
 msgid "Not valid integer number"
 msgstr ""
 
-#: src/components/feature-editor/GenericEditForm.vue:72
+#: src/components/feature-editor/GenericEditForm.vue:62
 #: src/components/feature-editor/NumberField.vue:47
 msgid "Not valid number"
 msgstr ""
@@ -456,7 +471,7 @@ msgid "Overlay Layers"
 msgstr ""
 
 #: src/components/AttributesTable.vue:315
-#: src/components/MobileAttributesTable.vue:316
+#: src/components/MobileAttributesTable.vue:290
 msgid "Page size"
 msgstr ""
 
@@ -468,7 +483,7 @@ msgstr ""
 msgid "Perimeter"
 msgstr ""
 
-#: src/components/AppMenu.vue:64
+#: src/components/AppMenu.vue:66
 msgid "Permalink"
 msgstr ""
 
@@ -484,21 +499,25 @@ msgstr ""
 msgid "Print quality"
 msgstr ""
 
-#: src/components/feature-editor/MediaImageField.vue:383
+#: src/components/feature-editor/MediaImageField.vue:421
 msgid "Project size limit reached"
 msgstr ""
 
-#: ./src/UserDashboard.vue:91
+#: ./src/UserDashboard.vue:95
 msgid "Publish project"
+msgstr ""
+
+#: src/UserDashboard.vue:222
+msgid "Recent"
 msgstr ""
 
 #: ./src/components/LoginDialog.vue:61
 msgid "Reset Password"
 msgstr ""
 
-#: ./src/components/feature-editor/MediaImageField.vue:197
-#: ./src/components/feature-editor/MediaImageField.vue:48
-#: ./src/components/feature-editor/MediaImageField.vue:79
+#: ./src/components/feature-editor/MediaImageField.vue:200
+#: ./src/components/feature-editor/MediaImageField.vue:47
+#: ./src/components/feature-editor/MediaImageField.vue:82
 msgid "Resolution"
 msgstr ""
 
@@ -515,11 +534,11 @@ msgstr ""
 msgid "Scale"
 msgstr ""
 
-#: ./src/components/feature-editor/MediaImageField.vue:115
+#: ./src/components/feature-editor/MediaImageField.vue:118
 msgid "Select Image"
 msgstr ""
 
-#: src/components/MobileAttributesTable.vue:268
+#: src/components/MobileAttributesTable.vue:242
 msgid "Select layer"
 msgstr ""
 
@@ -543,9 +562,9 @@ msgstr ""
 msgid "since"
 msgstr ""
 
-#: ./src/components/feature-editor/MediaImageField.vue:193
-#: ./src/components/feature-editor/MediaImageField.vue:44
-#: ./src/components/feature-editor/MediaImageField.vue:76
+#: ./src/components/feature-editor/MediaImageField.vue:196
+#: ./src/components/feature-editor/MediaImageField.vue:43
+#: ./src/components/feature-editor/MediaImageField.vue:79
 msgid "Size"
 msgstr ""
 
@@ -594,7 +613,7 @@ msgstr ""
 msgid "until"
 msgstr ""
 
-#: ./src/UserDashboard.vue:65
+#: ./src/UserDashboard.vue:69
 msgid "Updated"
 msgstr ""
 
@@ -603,11 +622,11 @@ msgstr ""
 msgid "Updating data"
 msgstr ""
 
-#: ./src/components/feature-editor/MediaImageField.vue:100
+#: ./src/components/feature-editor/MediaImageField.vue:103
 msgid "Uploading"
 msgstr ""
 
-#: ./src/UserDashboard.vue:82
+#: ./src/UserDashboard.vue:86
 msgid "Use QGIS and Gisquick plugin to create your map, and then publish it from your profile page."
 msgstr ""
 
@@ -631,14 +650,14 @@ msgstr ""
 msgid "Yes"
 msgstr ""
 
-#: ./src/UserDashboard.vue:81
+#: ./src/UserDashboard.vue:85
 msgid "You didn't publish any project yet!"
 msgstr ""
 
 #: src/components/measure/Measure.vue:187
 #: src/components/measure/Measure.vue:198
 #: src/components/measure/Measure.vue:205
-#: src/components/MobileAttributesTable.vue:365
+#: src/components/MobileAttributesTable.vue:339
 msgid "Zoom to"
 msgstr ""
 
@@ -657,7 +676,18 @@ msgctxt "noun"
 msgid "Print"
 msgstr ""
 
-#: src/UserDashboard.vue:178
+#: src/UserDashboard.vue:211
 msgctxt "noun"
 msgid "Search"
+msgstr ""
+
+#: ./src/UserDashboard.vue:112
+#: src/UserDashboard.vue:226
+msgctxt "verb"
+msgid "Open"
+msgstr ""
+
+#: ./src/App.vue:28
+msgctxt "verb"
+msgid "Update"
 msgstr ""

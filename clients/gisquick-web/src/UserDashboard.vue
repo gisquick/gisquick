@@ -109,7 +109,7 @@
             <translate>Close</translate>
           </v-btn>
           <v-btn class="f-grow" :disabled="!projectName" color="primary" @click="openProject(projectName)">
-            <translate>Open</translate>
+            <translate translate-context="verb">Open</translate>
           </v-btn>
         </div>
       </div>
@@ -223,7 +223,7 @@ export default {
           icon: 'restore'
         }, {
           key: 'open',
-          label: this.$gettext('Open'),
+          label: this.$pgettext('verb', 'Open'),
           icon: 'plus'
         }
       ]

@@ -20,6 +20,10 @@ msgstr "První souřadnice"
 msgid "2nd coordinate"
 msgstr "Druhá souřadnice"
 
+#: src/App.vue:20
+msgid "A new version of the map application is available"
+msgstr "K dispozici je nová verze mapové aplikace"
+
 #: src/components/content-panel/BaseLayersTree.vue:43
 #: src/components/content-panel/LayersTree.vue:91
 #: src/components/content-panel/TopicsList.vue:36
@@ -31,7 +35,7 @@ msgid "Add geometry"
 msgstr "Přidat geometrii"
 
 #: src/components/AttributesTable.vue:115
-#: src/components/MobileAttributesTable.vue:304
+#: src/components/MobileAttributesTable.vue:278
 msgid "Add new feature"
 msgstr "Přidat nový objekt"
 
@@ -45,7 +49,7 @@ msgid ""
 "your projects"
 msgstr ""
 
-#: src/components/feature-editor/MediaImageField.vue:204
+#: src/components/feature-editor/MediaImageField.vue:207
 msgid "Apply"
 msgstr "Aplikovat"
 
@@ -57,7 +61,7 @@ msgstr "Duben"
 msgid "Area"
 msgstr "Plocha"
 
-#: src/components/MobileAttributesTable.vue:356
+#: src/components/MobileAttributesTable.vue:330
 msgid "Attributes"
 msgstr "Atributy"
 
@@ -90,18 +94,17 @@ msgstr "Základní vrstvy"
 msgid "between"
 msgstr "od - do"
 
-#: src/components/feature-editor/MediaImageField.vue:208
-#: src/components/MobileAttributesTable.vue:163
-#: src/components/MobileAttributesTable.vue:170
+#: src/components/feature-editor/MediaImageField.vue:211
+#: src/components/MobileAttributesTable.vue:164
 msgid "Cancel"
 msgstr "Zrušit"
 
 #: src/components/AttributesTable.vue:142
-#: src/components/MobileAttributesTable.vue:349
+#: src/components/MobileAttributesTable.vue:323
 msgid "Clear attributes filters"
 msgstr "Vymazat filtry atributů"
 
-#: src/components/LocationTool.vue:20
+#: src/components/LocationTool.vue:20 src/UserDashboard.vue:109
 msgid "Close"
 msgstr "Zavřít"
 
@@ -125,7 +128,7 @@ msgstr "Souřadnicové systémy"
 msgid "Coordinates"
 msgstr "Souřadnice"
 
-#: src/UserDashboard.vue:60
+#: src/UserDashboard.vue:64
 msgid "Created"
 msgstr "Vytvořeno"
 
@@ -166,7 +169,7 @@ msgstr "Zobrazit autorská práva"
 msgid "Distance"
 msgstr "Vzdálenost"
 
-#: src/components/MobileAttributesTable.vue:377
+#: src/components/MobileAttributesTable.vue:351
 msgid "Edit"
 msgstr "Upravit"
 
@@ -210,7 +213,7 @@ msgid "Error"
 msgstr "Chyba"
 
 #: src/components/AttributesTable.vue:126
-#: src/components/MobileAttributesTable.vue:311
+#: src/components/MobileAttributesTable.vue:285
 msgid "Export"
 msgstr "Export"
 
@@ -222,7 +225,7 @@ msgstr "Data se nepodařilo načíst"
 msgid "Failed to process your request."
 msgstr "Zpracování vašeho požadavku se nezdařilo."
 
-#: src/components/feature-editor/MediaImageField.vue:385
+#: src/components/feature-editor/MediaImageField.vue:423
 msgid "Failed to upload file"
 msgstr "Nahrání souboru se nezdařilo"
 
@@ -247,8 +250,8 @@ msgstr "Filtrovat viditelnou oblast"
 msgid "Forgot password?"
 msgstr "Zapomenuté heslo?"
 
-#: src/components/feature-editor/MediaImageField.vue:40
-#: src/components/feature-editor/MediaImageField.vue:73
+#: src/components/feature-editor/MediaImageField.vue:39
+#: src/components/feature-editor/MediaImageField.vue:76
 msgid "Format"
 msgstr "Formát"
 
@@ -256,11 +259,11 @@ msgstr "Formát"
 msgid "Friday"
 msgstr "Pátek"
 
-#: src/components/AppMenu.vue:58
+#: src/components/AppMenu.vue:60
 msgid "Full screen"
 msgstr "Celá obrazovka"
 
-#: src/components/LocationTool.vue:85
+#: src/components/LocationTool.vue:98
 msgid "Geolocation Error"
 msgstr "Geolokační chyba"
 
@@ -268,7 +271,7 @@ msgstr "Geolokační chyba"
 msgid "greater than"
 msgstr "je větší"
 
-#: src/components/AppMenu.vue:68
+#: src/components/AppMenu.vue:70
 msgid "Help"
 msgstr "Nápověda (en)"
 
@@ -276,8 +279,12 @@ msgstr "Nápověda (en)"
 msgid "Identification"
 msgstr "Identifikace"
 
+#: src/components/feature-editor/MediaImageField.vue:52
+msgid "Image will be saved in lower resolution"
+msgstr "Obrázek bude uložen v nižším rozlišení"
+
 #: src/components/Identification.vue:149
-#: src/components/MobileAttributesTable.vue:371
+#: src/components/MobileAttributesTable.vue:345
 msgid "Info Panel"
 msgstr "Infopanel"
 
@@ -314,7 +321,7 @@ msgid "Last segment"
 msgstr "Poslední segment"
 
 #: src/components/Identification.vue:174
-#: src/components/MobileAttributesTable.vue:267
+#: src/components/MobileAttributesTable.vue:241
 msgid "Layer"
 msgstr "Vrstva"
 
@@ -346,11 +353,11 @@ msgstr "Načítám"
 msgid "Location"
 msgstr "Umístění"
 
-#: src/components/LoginDialog.vue:97 src/components/AppMenu.vue:48
+#: src/components/LoginDialog.vue:97 src/components/AppMenu.vue:49
 msgid "Login"
 msgstr "Přihlásit se"
 
-#: src/components/AppMenu.vue:37 src/UserDashboard.vue:169
+#: src/components/AppMenu.vue:37 src/UserDashboard.vue:202
 msgid "Logout"
 msgstr "Odhlásit se"
 
@@ -363,8 +370,8 @@ msgid "May"
 msgstr "Květen"
 
 #: src/components/Identification.vue:175 src/components/measure/Measure.vue:144
-#: src/components/MobileAttributesTable.vue:269
-#: src/components/print/Print.vue:82 src/UserDashboard.vue:177
+#: src/components/MobileAttributesTable.vue:243
+#: src/components/print/Print.vue:82 src/UserDashboard.vue:210
 msgid "Menu"
 msgstr "Menu"
 
@@ -372,12 +379,15 @@ msgstr "Menu"
 msgid "Monday"
 msgstr "Pondělí"
 
-#: src/components/AppMenu.vue:41 src/UserDashboard.vue:164
+#: src/components/AppMenu.vue:42 src/UserDashboard.vue:197
 msgid "My profile"
 msgstr "Můj profil"
 
+#: src/UserDashboard.vue:218
+msgid "My Projects"
+msgstr "Moje projekty"
+
 #: src/components/AttributesTable.vue:163
-#: src/components/MobileAttributesTable.vue:215
 #: src/components/MobileAttributesTable.vue:34
 msgid "New Feature"
 msgstr "Nový objekt"
@@ -412,12 +422,16 @@ msgstr "nerovná se"
 msgid "not in"
 msgstr "neobsahují"
 
-#: src/components/feature-editor/GenericEditForm.vue:73
+#: src/App.vue:25
+msgid "Not now"
+msgstr "Teď ne"
+
+#: src/components/feature-editor/GenericEditForm.vue:63
 #: src/components/feature-editor/NumberField.vue:48
 msgid "Not valid integer number"
 msgstr "Neplatné celé číslo"
 
-#: src/components/feature-editor/GenericEditForm.vue:72
+#: src/components/feature-editor/GenericEditForm.vue:62
 #: src/components/feature-editor/NumberField.vue:47
 msgid "Not valid number"
 msgstr "Neplatné číslo"
@@ -463,7 +477,7 @@ msgid "Overlay Layers"
 msgstr "Překryvné vrstvy"
 
 #: src/components/AttributesTable.vue:315
-#: src/components/MobileAttributesTable.vue:316
+#: src/components/MobileAttributesTable.vue:290
 msgid "Page size"
 msgstr "Počet řádků"
 
@@ -475,7 +489,7 @@ msgstr "Heslo"
 msgid "Perimeter"
 msgstr "Obvod"
 
-#: src/components/AppMenu.vue:64
+#: src/components/AppMenu.vue:66
 msgid "Permalink"
 msgstr "Permalink"
 
@@ -491,21 +505,25 @@ msgstr "Náhled před tiskem"
 msgid "Print quality"
 msgstr "Kvalita tisku"
 
-#: src/components/feature-editor/MediaImageField.vue:383
+#: src/components/feature-editor/MediaImageField.vue:421
 msgid "Project size limit reached"
 msgstr ""
 
-#: src/UserDashboard.vue:91
+#: src/UserDashboard.vue:95
 msgid "Publish project"
 msgstr "Publikovat projekt"
+
+#: src/UserDashboard.vue:222
+msgid "Recent"
+msgstr "Nedávné"
 
 #: src/components/LoginDialog.vue:61
 msgid "Reset Password"
 msgstr "Obnovit heslo"
 
-#: src/components/feature-editor/MediaImageField.vue:197
-#: src/components/feature-editor/MediaImageField.vue:48
-#: src/components/feature-editor/MediaImageField.vue:79
+#: src/components/feature-editor/MediaImageField.vue:200
+#: src/components/feature-editor/MediaImageField.vue:47
+#: src/components/feature-editor/MediaImageField.vue:82
 msgid "Resolution"
 msgstr "Rozlišení"
 
@@ -521,11 +539,11 @@ msgstr "Uložit změny"
 msgid "Scale"
 msgstr "Měřítko"
 
-#: src/components/feature-editor/MediaImageField.vue:115
+#: src/components/feature-editor/MediaImageField.vue:118
 msgid "Select Image"
 msgstr "Vyberte Obrázek"
 
-#: src/components/MobileAttributesTable.vue:268
+#: src/components/MobileAttributesTable.vue:242
 msgid "Select layer"
 msgstr "Vyberte vrstvu"
 
@@ -549,9 +567,9 @@ msgstr "Zaregistrovat se"
 msgid "since"
 msgstr "od"
 
-#: src/components/feature-editor/MediaImageField.vue:193
-#: src/components/feature-editor/MediaImageField.vue:44
-#: src/components/feature-editor/MediaImageField.vue:76
+#: src/components/feature-editor/MediaImageField.vue:196
+#: src/components/feature-editor/MediaImageField.vue:43
+#: src/components/feature-editor/MediaImageField.vue:79
 msgid "Size"
 msgstr "Velikost"
 
@@ -600,7 +618,7 @@ msgstr "Jednotky"
 msgid "until"
 msgstr "do"
 
-#: src/UserDashboard.vue:65
+#: src/UserDashboard.vue:69
 msgid "Updated"
 msgstr "Aktualizováno"
 
@@ -609,11 +627,11 @@ msgstr "Aktualizováno"
 msgid "Updating data"
 msgstr "Data se aktualizují"
 
-#: src/components/feature-editor/MediaImageField.vue:100
+#: src/components/feature-editor/MediaImageField.vue:103
 msgid "Uploading"
 msgstr "Nahrávám"
 
-#: src/UserDashboard.vue:82
+#: src/UserDashboard.vue:86
 msgid ""
 "Use QGIS and Gisquick plugin to create your map, and then publish it from "
 "your profile page."
@@ -639,14 +657,14 @@ msgstr ""
 msgid "Yes"
 msgstr "Ano"
 
-#: src/UserDashboard.vue:81
+#: src/UserDashboard.vue:85
 msgid "You didn't publish any project yet!"
 msgstr ""
 
 #: src/components/measure/Measure.vue:187
 #: src/components/measure/Measure.vue:198
 #: src/components/measure/Measure.vue:205
-#: src/components/MobileAttributesTable.vue:365
+#: src/components/MobileAttributesTable.vue:339
 msgid "Zoom to"
 msgstr "Přiblížit"
 
@@ -665,10 +683,20 @@ msgctxt "noun"
 msgid "Print"
 msgstr "Tisk"
 
-#: src/UserDashboard.vue:178
+#: src/UserDashboard.vue:211
 msgctxt "noun"
 msgid "Search"
 msgstr "Vyhledávání"
+
+#: src/UserDashboard.vue:112 src/UserDashboard.vue:226
+msgctxt "verb"
+msgid "Open"
+msgstr "Otevřít"
+
+#: src/App.vue:28
+msgctxt "verb"
+msgid "Update"
+msgstr "Aktualizovat"
 
 #, fuzzy
 #~| msgid "New Feature"
@@ -677,9 +705,6 @@ msgstr "Vyhledávání"
 
 #~ msgid "Geometry"
 #~ msgstr "Geometrie"
-
-#~ msgid "Projects"
-#~ msgstr "Projekty"
 
 #~ msgid "Sign out"
 #~ msgstr "Odhlásit se"

@@ -25,7 +25,7 @@
               <translate>Not now</translate>
             </v-btn>
             <v-btn class="small round mx-4" color="green" @click="refreshApp">
-              <translate>Update</translate>
+              <translate translate-context="verb">Update</translate>
             </v-btn>
           </div>
         </div>

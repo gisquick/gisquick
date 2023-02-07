@@ -350,6 +350,12 @@ export default {
     border-bottom: 1px solid #e7e7e7;
     grid-column: 1 / 3;
     width: 100%;
+    background-color: var(--color-dark);
+    ::v-deep img {
+      border: solid #ddd;
+      border-width: 0 0.5px;
+    }
+    border-radius: 3px;
 
     // justify-content: end;
     justify-content: center;

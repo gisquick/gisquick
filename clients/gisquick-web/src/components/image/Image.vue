@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div :class="{error}">
     <slot :open-viewer="openViewer">
       <slot v-if="loading" name="loading"/>
       <slot v-else-if="error" name="error">
-        <broken-photo-svg class="image-error" fill="var(--color-red)"/>
+        <broken-photo-svg class="image-error p-2" fill="var(--color-red)"/>
       </slot>
       <img
         v-if="!error"

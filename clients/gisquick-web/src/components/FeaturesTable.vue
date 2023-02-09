@@ -152,7 +152,7 @@ export default {
         } else if (attr.widget === 'Image') {
           widget = createImageWidget()
         } else if (attr.widget === 'MediaImage') {
-          widget = createImageWidget(mediaUrlFormat(this.project.config.name))
+          widget = createImageWidget(mediaUrlFormat(this.project.config.name, this.layer, attr))
         } else if (attr.type === 'date') { // and also attr.widget === 'DateTime' ?
           widget = DateWidget
         } else if (attr.type === 'bool') {

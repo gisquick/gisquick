@@ -73,6 +73,11 @@ export class WebgisImageWMS extends ImageWMS {
     }
     return this.legendUrl.href
   }
+
+  refresh () {
+    // prevent caching in the browser by additional GET parameter updated on every change
+    this.updateParams({ rev: this.getRevision() })
+  }
 }
 
 export class WebgisTileImage extends TileImage {

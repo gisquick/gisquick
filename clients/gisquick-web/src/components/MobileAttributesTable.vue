@@ -276,7 +276,7 @@ export default {
       return [
         {
           text: this.$gettext('Add new feature'),
-          disabled: !this.layer,
+          disabled: !this.layer || !this.layer.permissions?.insert,
           icon: 'attribute-table-add',
           action: () => {
             this.mode = 'add'

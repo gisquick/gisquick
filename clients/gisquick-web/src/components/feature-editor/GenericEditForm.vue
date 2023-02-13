@@ -93,7 +93,7 @@ export default {
               url,
               location,
               filename: attr.config?.filename || '<random>',
-              maxResolution: attr.config?.max_resolution,
+              maxResolution: parseFloat(attr.config?.max_resolution) || null,
               disabled
             }
           }

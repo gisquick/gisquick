@@ -351,11 +351,7 @@ export default {
     grid-column: 1 / 3;
     width: 100%;
     &:not(.error) {
-      background-color: var(--color-dark);
-      ::v-deep img {
-        border: solid #ddd;
-        border-width: 0 0.5px;
-      }
+      background-color: #f5f5f5;
       border-radius: 3px;
     }
 

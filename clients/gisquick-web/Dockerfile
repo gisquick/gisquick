@@ -1,9 +1,10 @@
 FROM node:16-alpine AS webapp
-
 WORKDIR /gisquick-web/
 COPY package*.json ./
 RUN npm install
 COPY . .
+ARG MODE
+ENV VUE_APP_MODE=$MODE
 RUN npm run compilemessages
 RUN npm run build -- --modern
 

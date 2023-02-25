@@ -21,6 +21,11 @@ module.exports = defineConfig({
     ]
   },
   chainWebpack: config => {
+    if (process.env.VUE_APP_MODE !== 'pwa') {
+      config.plugins.delete('pwa')
+      config.plugins.delete('workbox')
+    }
+
     // https://github.com/damianstasik/vue-svg-loader/issues/185
     const svgRule = config.module.rule('svg')
 

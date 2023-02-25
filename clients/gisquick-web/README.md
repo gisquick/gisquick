@@ -1,6 +1,12 @@
 ## Docker build
+
+### Standard web version
 ```
 docker build -t gisquick/web-map .
+```
+### Progressive Web App
+```
+docker build --build-arg MODE=pwa -t gisquick/web-map:pwa .
 ```
 
 ## Setup for development

@@ -10,7 +10,7 @@ msgstr ""
 msgid "2nd coordinate"
 msgstr ""
 
-#: ./src/App.vue:20
+#: ./src/App.vue:21
 msgid "A new version of the map application is available"
 msgstr ""
 
@@ -27,6 +27,10 @@ msgstr ""
 #: ./src/components/AttributesTable.vue:115
 #: src/components/MobileAttributesTable.vue:278
 msgid "Add new feature"
+msgstr ""
+
+#: ./src/App.vue:40
+msgid "Add to Home screen?"
 msgstr ""
 
 #: src/components/Identification.vue:141
@@ -214,6 +218,7 @@ msgstr ""
 msgid "Failed to process your request."
 msgstr ""
 
+#: src/components/feature-editor/MediaFileField.vue:188
 #: src/components/feature-editor/MediaImageField.vue:423
 msgid "Failed to upload file"
 msgstr ""
@@ -287,6 +292,10 @@ msgstr ""
 
 #: src/components/AttributeFilter.vue:274
 msgid "Integer,Integer,..."
+msgstr ""
+
+#: ./src/App.vue:42
+msgid "It will give you the experience of a native app, with easy access and a standalone window without the browser's address bar and other controls."
 msgstr ""
 
 #: src/ui/DatePicker.vue:172
@@ -392,6 +401,7 @@ msgid ""
 "own maps!"
 msgstr ""
 
+#: ./src/App.vue:47
 #: ./src/components/feature-editor/FeatureEditor.vue:101
 msgid "No"
 msgstr ""
@@ -416,16 +426,16 @@ msgstr ""
 msgid "not in"
 msgstr ""
 
-#: ./src/App.vue:25
+#: ./src/App.vue:26
 msgid "Not now"
 msgstr ""
 
-#: src/components/feature-editor/GenericEditForm.vue:63
+#: src/components/feature-editor/GenericEditForm.vue:64
 #: src/components/feature-editor/NumberField.vue:48
 msgid "Not valid integer number"
 msgstr ""
 
-#: src/components/feature-editor/GenericEditForm.vue:62
+#: src/components/feature-editor/GenericEditForm.vue:63
 #: src/components/feature-editor/NumberField.vue:47
 msgid "Not valid number"
 msgstr ""
@@ -499,6 +509,7 @@ msgstr ""
 msgid "Print quality"
 msgstr ""
 
+#: src/components/feature-editor/MediaFileField.vue:186
 #: src/components/feature-editor/MediaImageField.vue:421
 msgid "Project size limit reached"
 msgstr ""
@@ -622,6 +633,7 @@ msgstr ""
 msgid "Updating data"
 msgstr ""
 
+#: ./src/components/feature-editor/MediaFileField.vue:31
 #: ./src/components/feature-editor/MediaImageField.vue:103
 msgid "Uploading"
 msgstr ""
@@ -646,6 +658,7 @@ msgstr ""
 msgid "Welcome to the Gisquick"
 msgstr ""
 
+#: ./src/App.vue:50
 #: ./src/components/feature-editor/FeatureEditor.vue:104
 msgid "Yes"
 msgstr ""
@@ -687,7 +700,7 @@ msgctxt "verb"
 msgid "Open"
 msgstr ""
 
-#: ./src/App.vue:28
+#: ./src/App.vue:29
 msgctxt "verb"
 msgid "Update"
 msgstr ""

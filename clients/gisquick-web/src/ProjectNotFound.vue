@@ -12,6 +12,7 @@
 <style lang="scss" scoped>
 .page {
   min-height: 100vh;
+  overflow: auto;
   padding: 16px;
   text-align: center;
   gap: 16px;

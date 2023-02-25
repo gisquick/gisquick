@@ -20,7 +20,7 @@ msgstr "První souřadnice"
 msgid "2nd coordinate"
 msgstr "Druhá souřadnice"
 
-#: src/App.vue:20
+#: src/App.vue:21
 msgid "A new version of the map application is available"
 msgstr "K dispozici je nová verze mapové aplikace"
 
@@ -38,6 +38,10 @@ msgstr "Přidat geometrii"
 #: src/components/MobileAttributesTable.vue:278
 msgid "Add new feature"
 msgstr "Přidat nový objekt"
+
+#: src/App.vue:40
+msgid "Add to Home screen?"
+msgstr "Přidat na plochu?"
 
 #: src/components/Identification.vue:141
 msgid "All visible layers"
@@ -225,6 +229,7 @@ msgstr "Data se nepodařilo načíst"
 msgid "Failed to process your request."
 msgstr "Zpracování vašeho požadavku se nezdařilo."
 
+#: src/components/feature-editor/MediaFileField.vue:188
 #: src/components/feature-editor/MediaImageField.vue:423
 msgid "Failed to upload file"
 msgstr "Nahrání souboru se nezdařilo"
@@ -299,6 +304,14 @@ msgstr "Celé číslo,Celé číslo"
 #: src/components/AttributeFilter.vue:274
 msgid "Integer,Integer,..."
 msgstr "Celé číslo,..."
+
+#: src/App.vue:42
+msgid ""
+"It will give you the experience of a native app, with easy access and a "
+"standalone window without the browser's address bar and other controls."
+msgstr ""
+"Poskytne vám zážitek jako nativní aplikace. Se snadným přístupem a "
+"samostatným oknem, bez adresního řádku a dalších ovládacích prvků prohlížeče."
 
 #: src/ui/DatePicker.vue:172
 msgid "January"
@@ -398,7 +411,7 @@ msgid ""
 "own maps!"
 msgstr ""
 
-#: src/components/feature-editor/FeatureEditor.vue:101
+#: src/App.vue:47 src/components/feature-editor/FeatureEditor.vue:101
 msgid "No"
 msgstr "Ne"
 
@@ -422,16 +435,16 @@ msgstr "nerovná se"
 msgid "not in"
 msgstr "neobsahují"
 
-#: src/App.vue:25
+#: src/App.vue:26
 msgid "Not now"
 msgstr "Teď ne"
 
-#: src/components/feature-editor/GenericEditForm.vue:63
+#: src/components/feature-editor/GenericEditForm.vue:64
 #: src/components/feature-editor/NumberField.vue:48
 msgid "Not valid integer number"
 msgstr "Neplatné celé číslo"
 
-#: src/components/feature-editor/GenericEditForm.vue:62
+#: src/components/feature-editor/GenericEditForm.vue:63
 #: src/components/feature-editor/NumberField.vue:47
 msgid "Not valid number"
 msgstr "Neplatné číslo"
@@ -505,9 +518,10 @@ msgstr "Náhled před tiskem"
 msgid "Print quality"
 msgstr "Kvalita tisku"
 
+#: src/components/feature-editor/MediaFileField.vue:186
 #: src/components/feature-editor/MediaImageField.vue:421
 msgid "Project size limit reached"
-msgstr ""
+msgstr "Dosáhli jste limitu pro velikost projektu"
 
 #: src/UserDashboard.vue:95
 msgid "Publish project"
@@ -627,6 +641,7 @@ msgstr "Aktualizováno"
 msgid "Updating data"
 msgstr "Data se aktualizují"
 
+#: src/components/feature-editor/MediaFileField.vue:31
 #: src/components/feature-editor/MediaImageField.vue:103
 msgid "Uploading"
 msgstr "Nahrávám"
@@ -653,13 +668,13 @@ msgstr "Středa"
 msgid "Welcome to the Gisquick"
 msgstr ""
 
-#: src/components/feature-editor/FeatureEditor.vue:104
+#: src/App.vue:50 src/components/feature-editor/FeatureEditor.vue:104
 msgid "Yes"
 msgstr "Ano"
 
 #: src/UserDashboard.vue:85
 msgid "You didn't publish any project yet!"
-msgstr ""
+msgstr "Dosud jste nepublikovali žádný projekt!"
 
 #: src/components/measure/Measure.vue:187
 #: src/components/measure/Measure.vue:198
@@ -693,10 +708,15 @@ msgctxt "verb"
 msgid "Open"
 msgstr "Otevřít"
 
-#: src/App.vue:28
+#: src/App.vue:29
 msgctxt "verb"
 msgid "Update"
 msgstr "Aktualizovat"
+
+#, fuzzy
+#~| msgid "Select layer"
+#~ msgid "Select File"
+#~ msgstr "Vyberte vrstvu"
 
 #, fuzzy
 #~| msgid "New Feature"

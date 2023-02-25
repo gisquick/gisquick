@@ -4,8 +4,7 @@ const SpritePlugin = require('./svg-sprite.js')
 
 module.exports = defineConfig({
   lintOnSave: 'warning',
-  publicPath: process.env.NODE_ENV === 'production' ? '/map/' : '/',
-  assetsDir: 'static',
+  assetsDir: 'map',
   css: {
     extract: process.env.NODE_ENV === 'production' && process.env.CSS_EXTRACT !== 'False'
   },
@@ -71,81 +70,79 @@ module.exports = defineConfig({
     }
   },
   pwa: {
-    name: "Gisquick",
-    themeColor: "#242424",
+    name: 'Gisquick',
+    themeColor: '#242424',
+    iconPaths: {
+      faviconSVG: 'map/icons/favicon.svg',
+      favicon32: 'map/icons/favicon-32x32.png',
+      favicon16: 'map/icons/favicon-16x16.png',
+      appleTouchIcon: 'map/icons/apple-touch-icon-152x152.png',
+      maskIcon: 'map/icons/safari-pinned-tab.svg',
+      msTileImage: 'map/icons/msapplication-icon-144x144.png'
+    },
     manifestOptions: {
+      start_url: '/',
+      description: 'Gisquick web map application',
+      background_color: '#FFFFFF',
       icons: [
         {
-          src: "./img/icons/android-chrome-192x192.png",
-          sizes: "192x192",
-          type: "image/png",
-        },
-        {
-          src: "./img/icons/android-chrome-512x512.png",
-          sizes: "512x512",
-          type: "image/png",
-        },
-        {
-          src: "./img/icons/android-chrome-maskable-192x192.png",
-          sizes: "192x192",
-          type: "image/png",
-          purpose: "maskable",
-        },
-        {
-          src: "./img/icons/android-chrome-maskable-512x512.png",
-          sizes: "512x512",
-          type: "image/png",
-          purpose: "maskable",
-        },
-        {
-          src: "./img/icons/apple-touch-icon-60x60.png",
-          sizes: "60x60",
-          type: "image/png",
-        },
-        {
-          src: "./img/icons/apple-touch-icon-76x76.png",
-          sizes: "76x76",
-          type: "image/png",
-        },
-        {
-          src: "./img/icons/apple-touch-icon-120x120.png",
-          sizes: "120x120",
-          type: "image/png",
-        },
-        {
-          src: "./img/icons/apple-touch-icon-152x152.png",
-          sizes: "152x152",
-          type: "image/png",
-        },
-        {
-          src: "./img/icons/apple-touch-icon-180x180.png",
-          sizes: "180x180",
-          type: "image/png",
-        },
-        {
-          src: "./img/icons/apple-touch-icon.png",
-          sizes: "180x180",
-          type: "image/png",
-        },
-        {
-          src: "./img/icons/favicon-16x16.png",
-          sizes: "16x16",
-          type: "image/png",
-        },
-        {
-          src: "./img/icons/favicon-32x32.png",
-          sizes: "32x32",
-          type: "image/png",
-        },
-        {
-          src: "./img/icons/msapplication-icon-144x144.png",
-          sizes: "144x144",
-          type: "image/png",
-        },
-        {
-          src: "./img/icons/mstile-150x150.png",
-          sizes: "150x150",
-          type: "image/png",
+          src: './map/icons/android-chrome-192x192.png',
+          sizes: '192x192',
+          type: 'image/png'
+        }, {
+          src: './map/icons/android-chrome-512x512.png',
+          sizes: '512x512',
+          type: 'image/png'
+        }, {
+          src: './map/icons/android-chrome-maskable-192x192.png',
+          sizes: '192x192',
+          type: 'image/png',
+          purpose: 'maskable'
+        }, {
+          src: './map/icons/android-chrome-maskable-512x512.png',
+          sizes: '512x512',
+          type: 'image/png',
+          purpose: 'maskable'
+        }, {
+          src: './map/icons/apple-touch-icon-60x60.png',
+          sizes: '60x60',
+          type: 'image/png'
+        }, {
+          src: './map/icons/apple-touch-icon-76x76.png',
+          sizes: '76x76',
+          type: 'image/png'
+        }, {
+          src: './map/icons/apple-touch-icon-120x120.png',
+          sizes: '120x120',
+          type: 'image/png'
+        }, {
+          src: './map/icons/apple-touch-icon-152x152.png',
+          sizes: '152x152',
+          type: 'image/png'
+        }, {
+          src: './map/icons/apple-touch-icon-180x180.png',
+          sizes: '180x180',
+          type: 'image/png'
+        }, {
+          src: './map/icons/apple-touch-icon.png',
+          sizes: '180x180',
+          type: 'image/png'
+        }, {
+          src: './map/icons/favicon-16x16.png',
+          sizes: '16x16',
+          type: 'image/png'
+        }, {
+          src: './map/icons/favicon-32x32.png',
+          sizes: '32x32',
+          type: 'image/png'
+        }, {
+          src: './map/icons/msapplication-icon-144x144.png',
+          sizes: '144x144',
+          type: 'image/png'
+        }, {
+          src: './map/icons/mstile-150x150.png',
+          sizes: '150x150',
+          type: 'image/png'
         }
       ]
     }

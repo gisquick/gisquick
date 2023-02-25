@@ -40,3 +40,17 @@
 .fade-enter-active, .fade-leave-active {
   transition: all 0.4s ease;
 }
+
+.modal-enter {
+  opacity: 0;
+}
+.modal-leave-to {
+  opacity: 0;
+}
+.modal-enter, .modal-leave-to {
+  transform: scale(1.1);
+}
+.modal-enter-active, .modal-leave-active {
+  transition: 0.25s ease;
+  transition-property: opacity, transform;
+}

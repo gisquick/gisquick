@@ -12,20 +12,41 @@
     />
     <project-not-found v-if="projectStatus === 400 || projectStatus === 404"/>
     <server-error v-if="projectStatus === 500"/>
-    <transition name="fade">
+    <transition name="modal">
       <div v-if="updateExists" class="notification f-col light">
         <div class="content p-2 f-col-ac shadow-2">
           <div class="msg my-2">
-            <v-icon name="circle-i-outline" size="22" color="#777"/>
-            <translate class="px-2">A new version of the map application is available</translate>
+            <img src="@/assets/image_logo.svg">
+            <translate class="text">A new version of the map application is available</translate>
           </div>
           <div class="actions f-row-ac mx-auto">
             <div class="f-grow"/>
-            <v-btn class="small outlined round mx-4" color="#777" @click="updateExists = false">
+            <v-btn class="small outlined round mx-4" color="#aaa" @click="updateExists = false">
               <translate>Not now</translate>
             </v-btn>
             <v-btn class="small round mx-4" color="green" @click="refreshApp">
               <translate translate-context="verb">Update</translate>
+            </v-btn>
+          </div>
+        </div>
+      </div>
+    </transition>
+    <transition name="modal">
+      <div v-if="showInstallPrompt" class="notification f-col light">
+        <div class="content p-2 f-col-ac shadow-2">
+          <div class="msg my-2">
+            <img src="@/assets/image_logo.svg">
+            <translate class="text">Add to Home screen?</translate>
+          </div>
+          <translate class="desc m-2">
+            It will give you the experience of a native app, with easy access and a standalone window without the browser's address bar and other controls.
+          </translate>
+          <div class="actions f-row-ac mx-auto">
+            <v-btn class="small outlined round" color="#ddd" @click="dismissInstallPrompt">
+              <translate>No</translate>
+            </v-btn>
+            <v-btn class="small round" color="green" @click="installApp">
+              <translate>Yes</translate>
             </v-btn>
           </div>
         </div>
@@ -37,6 +58,8 @@
 
 <script>
 import { mapState } from 'vuex'
+import { set, get } from 'idb-keyval'
+
 import IntroPage from '@/IntroPage.vue'
 import ProjectNotFound from '@/ProjectNotFound.vue'
 import DesktopMap from '@/components/Map.vue'
@@ -59,7 +82,8 @@ export default {
   },
   data () {
     return {
-      projectKey: 0
+      projectKey: 0,
+      showInstallPrompt: false
     }
   },
   computed: {
@@ -69,6 +93,9 @@ export default {
     },
     projectStatus () {
       return this.project && this.project.config.status
+    },
+    isStandaloneApp () {
+      return window.matchMedia('(display-mode: standalone)').matches
     }
   },
   created () {
@@ -83,6 +110,27 @@ export default {
       window.addEventListener('resize', setHeightStyle)
       setHeightStyle()
       this.$once('hook:beforeDestroy', () => window.removeEventListener('resize', setHeightStyle))
+      if (!this.isStandaloneApp) {
+        const installHandler = async (e) => {
+          e.preventDefault()
+          let promptTimes = await get('pwa-install-prompts') || []
+          if (promptTimes.length >= 3) {
+            return
+          }
+          const now = parseInt(new Date().getTime() / 1000)
+          const lastPrompt = promptTimes?.[0]
+          const minInterval = 10 * 60 * 60 * 24 // 10 days
+          if (lastPrompt && now - lastPrompt < minInterval) {
+            // not enought time elapsed since last prompt
+            return
+          }
+          this.deferredPrompt = e
+          this.showInstallPrompt = true
+          set('pwa-install-prompts', [now, ...promptTimes])
+        }
+        window.addEventListener('beforeinstallprompt', installHandler)
+        this.$once('hook:beforeDestroy', () => window.removeEventListener('beforeinstallprompt', installHandler))
+      }
     }
   },
   watch: {
@@ -116,6 +164,13 @@ export default {
       this.$store.commit('user', user)
       this.$store.commit('showLogin', false)
       this.loadProject()
+    },
+    installApp () {
+      this.deferredPrompt.prompt()
+      this.showInstallPrompt = false
+    },
+    dismissInstallPrompt () {
+      this.showInstallPrompt = false
     }
   }
 }
@@ -151,25 +206,40 @@ body {
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  font-size: 17px;
-  font-weight: 500;
   padding: 6px;
+  overflow: hidden;
+
   .content {
-    background-color: #fff;
+    background-color: var(--color-dark);
+    color: #fff;
     min-width: 300px;
+    max-width: 100%;
+    overflow: hidden;
     border-radius: 6px;
     .msg {
-      line-height: 1.25;
-      padding-left: 40px;
-      text-indent: -34px;
-      padding-right: 10px;
-      text-align: center;
-      .icon {
-        vertical-align: top;
-        margin-right: 6px;
+      display: grid;
+      grid-template-columns: auto 1fr 20px;
+      line-height: 1.3;
+      align-items: center;
+      font-weight: 500;
+      img {
+        height: 40px;
       }
-      .span {
-        vertical-align: middle;
+      .text {
+        display: flex;
+        text-align: center;
+        padding-inline: 8px;
+      }
+    }
+    .desc {
+      font-size: 14px;
+      max-width: 400px;
+      text-align: center;
+      opacity: 0.8;
+    }
+    .actions {
+      .btn {
+        min-width: 110px;
       }
     }
   }

@@ -37,7 +37,7 @@
           </div>
           <hr/>
           <portal-target name="main-panel-top" class="main-panel-portal"/>
-          <content-panel attribute-table-disabled/>
+          <content-panel/>
         </div>
       </template>
     </swipe-container>

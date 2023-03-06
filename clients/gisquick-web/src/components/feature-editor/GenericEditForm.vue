@@ -22,7 +22,7 @@ import keyBy from 'lodash/keyBy'
 import mapValues from 'lodash/mapValues'
 // import NumberField from './NumberField.vue'
 import TextField from './TextField.vue'
-import MediaImageField from './MediaImageField.vue'
+import MediaFileField from './MediaFileField.vue'
 import { valueMapItems } from '@/adapters/attributes'
 import { mediaUrl } from '@/components/GenericInfopanel.vue'
 
@@ -85,15 +85,15 @@ export default {
               items: valueMapItems(attr)
             }
           }
-        } else if (attr.widget === 'MediaImage') {
+        } else if (attr.widget === 'MediaImage' || attr.widget === 'MediaFile') {
           const { base: url, location } = mediaUrl(this.project.name, this.layer, attr)
           return {
-            component: MediaImageField,
+            component: MediaFileField,
             props: {
               url,
               location,
               filename: attr.config?.filename || '<random>',
-              maxResolution: parseFloat(attr.config?.max_resolution) || null,
+              options: attr.config,
               disabled
             }
           }

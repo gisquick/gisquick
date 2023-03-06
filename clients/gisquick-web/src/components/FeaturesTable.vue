@@ -56,7 +56,10 @@ import { mapState } from 'vuex'
 
 // import TabsHeader from '@/components/TabsHeader1.vue'
 import TabsHeader from '@/components/TabsHeader.vue'
-import { DateWidget, ValueMapWidget, BoolWidget, UrlWidget, createImageWidget, mediaUrlFormat } from '@/components/GenericInfopanel.vue'
+import {
+  DateWidget, ValueMapWidget, BoolWidget, UrlWidget,
+  createImageTableWidget, createMediaFileTableWidget, mediaUrlFormat
+} from '@/components/GenericInfopanel.vue'
 import { eventCoord, DragHandler } from '@/events'
 
 
@@ -150,9 +153,9 @@ export default {
         } else if (attr.widget === 'Hyperlink') {
           widget = UrlWidget
         } else if (attr.widget === 'Image') {
-          widget = createImageWidget()
-        } else if (attr.widget === 'MediaImage') {
-          widget = createImageWidget(mediaUrlFormat(this.project.config.name, this.layer, attr))
+          widget = createImageTableWidget()
+        } else if (attr.widget === 'MediaFile' || attr.widget === 'MediaImage') {
+          widget = createMediaFileTableWidget(mediaUrlFormat(this.project.config.name, this.layer, attr))
         } else if (attr.type === 'date') { // and also attr.widget === 'DateTime' ?
           widget = DateWidget
         } else if (attr.type === 'bool') {

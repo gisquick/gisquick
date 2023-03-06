@@ -10,7 +10,7 @@ msgstr ""
 msgid "2nd coordinate"
 msgstr ""
 
-#: ./src/App.vue:21
+#: ./src/App.vue:20
 msgid "A new version of the map application is available"
 msgstr ""
 
@@ -29,7 +29,7 @@ msgstr ""
 msgid "Add new feature"
 msgstr ""
 
-#: ./src/App.vue:40
+#: ./src/App.vue:39
 msgid "Add to Home screen?"
 msgstr ""
 
@@ -43,7 +43,7 @@ msgid ""
 "your projects"
 msgstr ""
 
-#: ./src/components/feature-editor/MediaImageField.vue:207
+#: ./src/components/feature-editor/ImageInput.vue:150
 msgid "Apply"
 msgstr ""
 
@@ -89,7 +89,7 @@ msgstr ""
 msgid "between"
 msgstr ""
 
-#: ./src/components/feature-editor/MediaImageField.vue:211
+#: ./src/components/feature-editor/ImageInput.vue:154
 #: ./src/components/MobileAttributesTable.vue:164
 msgid "Cancel"
 msgstr ""
@@ -198,8 +198,8 @@ msgstr ""
 msgid "equal to"
 msgstr ""
 
-#: ./src/components/feature-editor/FeatureEditor.vue:89
-#: ./src/components/feature-editor/NewFeatureEditor.vue:44
+#: src/components/feature-editor/FeatureEditor.vue:228
+#: src/components/feature-editor/NewFeatureEditor.vue:117
 #: src/ui/ListTable.vue:105
 #: src/ui/Table.vue:211
 msgid "Error"
@@ -218,13 +218,18 @@ msgstr ""
 msgid "Failed to process your request."
 msgstr ""
 
-#: src/components/feature-editor/MediaFileField.vue:188
-#: src/components/feature-editor/MediaImageField.vue:423
+#: src/components/feature-editor/MediaFileField.vue:223
 msgid "Failed to upload file"
 msgstr ""
 
 #: src/ui/DatePicker.vue:173
 msgid "February"
+msgstr ""
+
+#: src/components/feature-editor/ImageInput.vue:239
+#: src/components/feature-editor/ImageInput.vue:291
+#: src/components/feature-editor/SimpleFileInput.vue:89
+msgid "File exceeds maximum allowed size"
 msgstr ""
 
 #: ./src/components/AttributesTable.vue:152
@@ -244,8 +249,8 @@ msgstr ""
 msgid "Forgot password?"
 msgstr ""
 
-#: ./src/components/feature-editor/MediaImageField.vue:39
-#: ./src/components/feature-editor/MediaImageField.vue:76
+#: ./src/components/feature-editor/ImageInput.vue:15
+#: ./src/components/feature-editor/ImageInput.vue:52
 msgid "Format"
 msgstr ""
 
@@ -273,7 +278,7 @@ msgstr ""
 msgid "Identification"
 msgstr ""
 
-#: ./src/components/feature-editor/MediaImageField.vue:52
+#: ./src/components/feature-editor/ImageInput.vue:28
 msgid "Image will be saved in lower resolution"
 msgstr ""
 
@@ -294,7 +299,7 @@ msgstr ""
 msgid "Integer,Integer,..."
 msgstr ""
 
-#: ./src/App.vue:42
+#: ./src/App.vue:41
 msgid "It will give you the experience of a native app, with easy access and a standalone window without the browser's address bar and other controls."
 msgstr ""
 
@@ -401,7 +406,7 @@ msgid ""
 "own maps!"
 msgstr ""
 
-#: ./src/App.vue:47
+#: ./src/App.vue:46
 #: ./src/components/feature-editor/FeatureEditor.vue:101
 msgid "No"
 msgstr ""
@@ -426,16 +431,16 @@ msgstr ""
 msgid "not in"
 msgstr ""
 
-#: ./src/App.vue:26
+#: ./src/App.vue:25
 msgid "Not now"
 msgstr ""
 
-#: src/components/feature-editor/GenericEditForm.vue:64
+#: src/components/feature-editor/GenericEditForm.vue:63
 #: src/components/feature-editor/NumberField.vue:48
 msgid "Not valid integer number"
 msgstr ""
 
-#: src/components/feature-editor/GenericEditForm.vue:63
+#: src/components/feature-editor/GenericEditForm.vue:62
 #: src/components/feature-editor/NumberField.vue:47
 msgid "Not valid number"
 msgstr ""
@@ -509,8 +514,7 @@ msgstr ""
 msgid "Print quality"
 msgstr ""
 
-#: src/components/feature-editor/MediaFileField.vue:186
-#: src/components/feature-editor/MediaImageField.vue:421
+#: src/components/feature-editor/MediaFileField.vue:221
 msgid "Project size limit reached"
 msgstr ""
 
@@ -526,9 +530,9 @@ msgstr ""
 msgid "Reset Password"
 msgstr ""
 
-#: ./src/components/feature-editor/MediaImageField.vue:200
-#: ./src/components/feature-editor/MediaImageField.vue:47
-#: ./src/components/feature-editor/MediaImageField.vue:82
+#: ./src/components/feature-editor/ImageInput.vue:143
+#: ./src/components/feature-editor/ImageInput.vue:23
+#: ./src/components/feature-editor/ImageInput.vue:58
 msgid "Resolution"
 msgstr ""
 
@@ -545,8 +549,8 @@ msgstr ""
 msgid "Scale"
 msgstr ""
 
-#: ./src/components/feature-editor/MediaImageField.vue:118
-msgid "Select Image"
+#: ./src/components/feature-editor/MediaFileField.vue:59
+msgid "Select"
 msgstr ""
 
 #: src/components/MobileAttributesTable.vue:242
@@ -573,9 +577,10 @@ msgstr ""
 msgid "since"
 msgstr ""
 
-#: ./src/components/feature-editor/MediaImageField.vue:196
-#: ./src/components/feature-editor/MediaImageField.vue:43
-#: ./src/components/feature-editor/MediaImageField.vue:79
+#: ./src/components/feature-editor/ImageInput.vue:139
+#: ./src/components/feature-editor/ImageInput.vue:19
+#: ./src/components/feature-editor/ImageInput.vue:55
+#: ./src/components/feature-editor/SimpleFileInput.vue:12
 msgid "Size"
 msgstr ""
 
@@ -633,8 +638,7 @@ msgstr ""
 msgid "Updating data"
 msgstr ""
 
-#: ./src/components/feature-editor/MediaFileField.vue:31
-#: ./src/components/feature-editor/MediaImageField.vue:103
+#: ./src/components/feature-editor/MediaFileField.vue:42
 msgid "Uploading"
 msgstr ""
 
@@ -658,7 +662,7 @@ msgstr ""
 msgid "Welcome to the Gisquick"
 msgstr ""
 
-#: ./src/App.vue:50
+#: ./src/App.vue:49
 #: ./src/components/feature-editor/FeatureEditor.vue:104
 msgid "Yes"
 msgstr ""
@@ -700,7 +704,7 @@ msgctxt "verb"
 msgid "Open"
 msgstr ""
 
-#: ./src/App.vue:29
+#: ./src/App.vue:28
 msgctxt "verb"
 msgid "Update"
 msgstr ""

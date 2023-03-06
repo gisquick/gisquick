@@ -41,7 +41,7 @@
           <progress-action class="mr-2" :status="status"/>
           <translate v-if="status === 'loading'" key="pending">Updating data</translate>
           <translate v-else-if="status === 'success'" key="success">Data updated</translate>
-          <translate v-else key="error">Error</translate>
+          <span v-else key="error" v-text="errorMsg"/>
         </div>
       </div>
     </transition>
@@ -113,19 +113,18 @@ export default {
       f.setProperties(properties)
       return f
     },
+    showError (msg) {
+      this.errorMsg = msg || this.$gettext('Error')
+      this.statusController.set('error', 3000)
+      this.statusController.set(null, 100)
+    },
     async resolveFields (operation) {
       const resolvedFields = {}
       for (const name in this.fields) {
         let value = this.fields[name]
         if (typeof value === 'function') {
-          try {
-            value = await value()
-            this.fields[name] = value
-          } catch (err) {
-            // this.statusController.set('error', 3000)
-            // this.statusController.set(null, 100)
-            return
-          }
+          value = await value()
+          this.fields[name] = value
         }
         resolvedFields[name] = value
       }
@@ -147,7 +146,12 @@ export default {
       return resolvedFields
     },
     async save () {
-      const resolvedFields = await this.resolveFields('insert')
+      try {
+        var resolvedFields = await this.resolveFields('insert')
+      } catch (err) {
+        this.showError(err.message)
+        return
+      }
       const f = this.createFeature(resolvedFields)
       const geom = this.references.geometryEditor.getGeometry()
       f.setGeometry(geom)
@@ -160,9 +164,7 @@ export default {
           this.$emit('edit')
         })
         .catch(err => {
-          this.errorMsg = err.message || 'Error'
-          this.statusController.set('error', 3000)
-          this.statusController.set(null, 100)
+          this.showError(err.message)
         })
     }
   }

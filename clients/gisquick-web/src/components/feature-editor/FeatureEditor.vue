@@ -86,7 +86,7 @@
           <progress-action class="mr-2" :status="status"/>
           <translate v-if="status === 'loading'" key="pending">Updating data</translate>
           <translate v-else-if="status === 'success'" key="success">Data updated</translate>
-          <translate v-else key="error">Error</translate>
+          <span v-else key="error" v-text="errorMsg"/>
         </div>
       </div>
     </transition>
@@ -224,6 +224,11 @@ export default {
       this.fields = getFeatureFields(this.feature)
       this.editGeometry = false
     },
+    showError (msg) {
+      this.errorMsg = msg || this.$gettext('Error')
+      this.statusController.set('error', 3000)
+      this.statusController.set(null, 100)
+    },
     async wfsTransaction (operations) {
       this.statusController.set('loading', 1000)
       try {
@@ -240,9 +245,7 @@ export default {
         updates.forEach(f => this.$emit('edit', f))
         deletes.forEach(f => this.$emit('delete', f))
       } catch (err) {
-        this.errorMsg = err.message || 'Error'
-        this.statusController.set('error', 3000)
-        this.statusController.set(null, 100)
+        this.showError(err.message)
       }
     },
     createFeature (fields) {
@@ -261,14 +264,8 @@ export default {
       for (const name in this.fields) {
         let value = this.fields[name]
         if (typeof value === 'function') {
-          try {
-            value = await value()
-            this.fields[name] = value // important for MediaImageField for check in afterFeatureUpdated
-          } catch (err) {
-            // this.statusController.set('error', 3000)
-            // this.statusController.set(null, 100)
-            return
-          }
+          value = await value()
+          this.fields[name] = value // important for MediaFileField for check in afterFeatureUpdated
         }
         resolvedFields[name] = value
       }
@@ -290,7 +287,12 @@ export default {
       return resolvedFields
     },
     async save () {
-      const resolvedFields = await this.resolveFields('update')
+      try {
+        var resolvedFields = await this.resolveFields('update')
+      } catch (err) {
+        this.showError(err.message)
+        return
+      }
       const changedFields = difference(resolvedFields, this.initialFields)
       const f = this.createFeature(changedFields)
       if (this.geomModified) {

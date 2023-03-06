@@ -204,7 +204,7 @@ import AttributeFilter from '@/components/AttributeFilter.vue'
 import FeaturesViewer from '@/components/ol/FeaturesViewer.vue'
 import NewFeatureEditor from '@/components/feature-editor/NewFeatureEditor.vue'
 import InfoPanel from '@/components/InfoPanel.vue'
-import { DateWidget, ValueMapWidget, BoolWidget, UrlWidget, createImageWidget, mediaUrlFormat } from '@/components/GenericInfopanel.vue'
+import { DateWidget, ValueMapWidget, BoolWidget, UrlWidget, createImageTableWidget, createMediaFileTableWidget, mediaUrlFormat } from '@/components/GenericInfopanel.vue'
 import { simpleStyle } from '@/map/styles'
 import { layerFeaturesQuery } from '@/map/featureinfo'
 // import { ShallowArray } from '@/utils'
@@ -340,9 +340,9 @@ export default {
         } else if (attr.widget === 'Hyperlink') {
           widget = UrlWidget
         } else if (attr.widget === 'Image') {
-          widget = createImageWidget()
-        } else if (attr.widget === 'MediaImage') {
-          widget = createImageWidget(mediaUrlFormat(this.project.config.name, this.layer, attr))
+          widget = createImageTableWidget()
+        } else if (attr.widget === 'MediaFile' || attr.widget === 'MediaImage') {
+          widget = createMediaFileTableWidget(mediaUrlFormat(this.project.config.name, this.layer, attr))
         } else if (attr.type === 'date') { // and also attr.widget === 'DateTime' ?
           widget = DateWidget
         } else if (attr.type === 'bool') {

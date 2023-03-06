@@ -6,7 +6,7 @@ COPY . .
 ARG MODE
 ENV VUE_APP_MODE=$MODE
 RUN npm run compilemessages
-RUN npm run build -- --modern
+RUN npm run build
 
 
 FROM alpine:latest

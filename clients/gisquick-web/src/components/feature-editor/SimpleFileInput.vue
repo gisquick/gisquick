@@ -33,7 +33,9 @@
         </v-btn>
       </div>
     </div>
-    <div v-else class="f-row-ac mt-2 mr-2 f-grow"><v-icon name="no-file" color="#646464"/></div>
+    <div v-else class="f-row-ac f-grow">
+      <v-icon name="no-file" color="#646464"/>
+    </div>
     <div class="input-container">
       <slot name="input"/>
     </div>
@@ -105,6 +107,7 @@ export default {
   flex-direction: column;
   margin-top: 4px;
   overflow: hidden;
+  gap: 6px;
   &.empty {
     flex-direction: row;
     flex-wrap: wrap;
@@ -141,7 +144,7 @@ export default {
   .input-container {
     align-self: flex-end;
     .btn {
-      margin: 6px 0 0 0;
+      margin: 0;
     }
   }
   .file-info {

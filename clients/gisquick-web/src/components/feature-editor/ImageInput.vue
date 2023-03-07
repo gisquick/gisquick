@@ -1,5 +1,5 @@
 <template>
-  <div class="layout">
+  <div class="image-input" :class="{empty}">
     <template v-if="newImage">
       <v-image class="preview" :src="newImage.src"/>
       <div class="detail new f-col">
@@ -72,10 +72,12 @@
     <template v-else>
       <!-- <v-icon name="photo" height="54" width="54" color="#777"/> -->
       <photo-svg class="preview icon" height="60" fill="#777"/>
-      <span class="info text-right">No image assigned</span>
+      <translate class="info">No image assigned</translate>
     </template>
 
-    <slot name="input"/>
+    <div class="input-container">
+      <slot name="input"/>
+    </div>
 
     <v-dialog ref="editorDialog" content-class="fullscreen f-col">
       <template v-slot:header="">
@@ -199,6 +201,9 @@ export default {
     }
   },
   computed: {
+    empty () {
+      return !this.value && !this.inputFile
+    },
     maxResolution () {
       return parseFloat(this.options?.max_resolution)
     },
@@ -393,14 +398,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.layout {
+.image-input {
   display: contents;
   // v2
   display: grid;
   grid-template-columns: auto minmax(auto, 1fr);
   grid-template-columns: auto minmax(150px, 1fr);
   grid-template-rows: 1fr auto;
-  --gutter: 0;
   margin-top: 4px;
 
   ::v-deep img {
@@ -444,10 +448,24 @@ export default {
       padding-right: 4px;
     }
   }
+  .input-container {
+    display: flex;
+    justify-content: flex-end;
+    .btn {
+      margin: 6px 0 0 6px;
+    }
+  }
+  &.empty {
+    .input-container {
+      justify-content: center;
+      .btn {
+        margin: 6px 6px 0 6px;
+      }
+    }
+  }
 }
 .detail {
   align-self: start;
-  // justify-self: end;
   background-image: linear-gradient(to right, rgba(#ddd, 0.25), #d5d5d5);
   // background-image: linear-gradient(to right, rgba(var(--color-orange-rgb), 0.15), rgba(var(--color-orange-rgb), 0.75));
   // background-color: #ddd;
@@ -457,7 +475,6 @@ export default {
   font-size: 13px;
   line-height: 1.35;
   padding: 4px 0;
-  margin-bottom: 6px;
 
   .toolbox {
     --gutter: 0 4px;

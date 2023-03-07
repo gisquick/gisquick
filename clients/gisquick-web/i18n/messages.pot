@@ -43,7 +43,7 @@ msgid ""
 "your projects"
 msgstr ""
 
-#: ./src/components/feature-editor/ImageInput.vue:150
+#: ./src/components/feature-editor/ImageInput.vue:152
 msgid "Apply"
 msgstr ""
 
@@ -89,7 +89,7 @@ msgstr ""
 msgid "between"
 msgstr ""
 
-#: ./src/components/feature-editor/ImageInput.vue:154
+#: ./src/components/feature-editor/ImageInput.vue:156
 #: ./src/components/MobileAttributesTable.vue:164
 msgid "Cancel"
 msgstr ""
@@ -210,7 +210,7 @@ msgstr ""
 msgid "Export"
 msgstr ""
 
-#: src/components/AttributesTable.vue:445
+#: src/components/AttributesTable.vue:448
 msgid "Failed to load data"
 msgstr ""
 
@@ -226,9 +226,9 @@ msgstr ""
 msgid "February"
 msgstr ""
 
-#: src/components/feature-editor/ImageInput.vue:239
-#: src/components/feature-editor/ImageInput.vue:291
-#: src/components/feature-editor/SimpleFileInput.vue:89
+#: src/components/feature-editor/ImageInput.vue:244
+#: src/components/feature-editor/ImageInput.vue:296
+#: src/components/feature-editor/SimpleFileInput.vue:91
 msgid "File exceeds maximum allowed size"
 msgstr ""
 
@@ -241,7 +241,7 @@ msgstr ""
 msgid "Filter by attribute value"
 msgstr ""
 
-#: src/components/AttributesTable.vue:314
+#: src/components/AttributesTable.vue:317
 msgid "Filter to visible area"
 msgstr ""
 
@@ -344,7 +344,7 @@ msgstr ""
 msgid "less than"
 msgstr ""
 
-#: src/components/AttributesTable.vue:316
+#: src/components/AttributesTable.vue:319
 msgid "link"
 msgstr ""
 
@@ -413,6 +413,10 @@ msgstr ""
 
 #: ./src/components/MobileAttributesTable.vue:137
 msgid "No Data"
+msgstr ""
+
+#: ./src/components/feature-editor/ImageInput.vue:75
+msgid "No image assigned"
 msgstr ""
 
 #: ./src/components/feature-editor/GeometryEditor.vue:22
@@ -485,7 +489,7 @@ msgstr ""
 msgid "Overlay Layers"
 msgstr ""
 
-#: src/components/AttributesTable.vue:315
+#: src/components/AttributesTable.vue:318
 #: src/components/MobileAttributesTable.vue:290
 msgid "Page size"
 msgstr ""
@@ -530,7 +534,7 @@ msgstr ""
 msgid "Reset Password"
 msgstr ""
 
-#: ./src/components/feature-editor/ImageInput.vue:143
+#: ./src/components/feature-editor/ImageInput.vue:145
 #: ./src/components/feature-editor/ImageInput.vue:23
 #: ./src/components/feature-editor/ImageInput.vue:58
 msgid "Resolution"
@@ -577,7 +581,7 @@ msgstr ""
 msgid "since"
 msgstr ""
 
-#: ./src/components/feature-editor/ImageInput.vue:139
+#: ./src/components/feature-editor/ImageInput.vue:141
 #: ./src/components/feature-editor/ImageInput.vue:19
 #: ./src/components/feature-editor/ImageInput.vue:55
 #: ./src/components/feature-editor/SimpleFileInput.vue:12

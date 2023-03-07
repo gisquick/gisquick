@@ -117,7 +117,7 @@ export default {
     },
     mediaComponent () {
       if (!this.widgetError) {
-        const filename = this.newFile?.name || this.initial
+        const filename = this.newFile?.name || this.value?.toString()
         if (filename) {
           const ext = Path.extname(filename).toLowerCase()
           const imgExts = ['.png', '.jpg', '.jpeg', '.gif', '.tif', '.tiff', '.webp']
@@ -271,9 +271,6 @@ export default {
 }
 
 .file-input {
-  grid-area: 2 / 2 / 3 / 3;
-  justify-self: end;
-  // align-self: center;
   &.btn:not(.icon) {
     height: 28px;
     // min-width: unset;

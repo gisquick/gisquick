@@ -18,7 +18,7 @@
     </div>
     <div v-else-if="value" key="actual" class="file-info f-row-ac">
       <div class="symbol f-row">
-        <v-icon name="file" color="primary"/>
+        <v-icon name="file-outline" color="primary"/>
       </div>
       <a :href="valueUrl" target="_blank" class="filename f-row-ac f-grow">
         <span class="name" v-text="link.name"/>

@@ -51,24 +51,13 @@ npm run makemessages
 npm run compilemessages
 ```
 
-### Build selected components as library module
-Single component
+### Update PWA icons
 ```
-CSS_EXTRACT=False npm run build -- --target lib --dest dist/ --name infopanel src/extensions/Districts.vue
-```
-
-Multiple components
-```
-CSS_EXTRACT=False npm run build -- --target lib --dest dist/ --name infopanel src/extensions/index.js
+npm install -g vue-asset-generate
+vue-asset-generate -a pwa-icon.svg -o public/map/icons --no-manifest
 ```
 
-#### index.js
-```javascript
-import component1 from './Component1'
-import component2 from './Component2'
 
-export default {
-  component1,
-  component2
-}
-```
+## Custom Info Panel
+
+[Read more](https://github.com/gisquick/gisquick/blob/master/clients/gisquick-web/InfoPanel.md)

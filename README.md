@@ -11,17 +11,17 @@ Please beware, that current [Gisquick documentation](http://gisquick.readthedocs
 is not up to date. It was written for version 1.x, which is now obsolete and
 no longer maintained!
 
-Latest version of Gisquick is running on our [public instance](https://projects.gisquick.org).
+Latest version of Gisquick is running on our [public instance](https://demo.gisquick.org).
 If you would like to run it locally or your server, easiest way is to use our
-[Gisquick CLI](https://github.com/gislab-npo/gisquick-cli) tool.
+[Gisquick CLI](https://github.com/gisquick/gisquick-cli) tool.
 
 To keep track of substantial changes, planned features or new proposals, please
-use [Gisquick RFCs repository](https://github.com/gislab-npo/gisquick-rfcs).
+use [Gisquick RFCs repository](https://github.com/gisquick/gisquick-rfcs).
 
 ## License
 
 [GNU General Public License version
-2](https://github.com/gislab-npo/gisquick/blob/master/LICENSE) or
+2](https://github.com/gisquick/gisquick/blob/master/LICENSE) or
 later.
 
 ## Contact

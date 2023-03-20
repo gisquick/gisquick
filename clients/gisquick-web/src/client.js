@@ -1,5 +1,6 @@
 import axios from 'axios'
 import https from 'https'
+import { resolveProjectCustomizations } from './customization'
 
 const HTTP = axios.create({
   withCredentials: true,
@@ -44,7 +45,15 @@ HTTP.project = function (project) {
       ? `/api/map/project/?PROJECT=${project}` // old API
       : `/api/map/project/${project}` // new API
     HTTP.get(url)
-      .then(resp => resolve(projectBackwardCompatibility(extendProject ? extendProject(resp.data) : resp.data)))
+      .then(resp => {
+        let data = projectBackwardCompatibility(extendProject ? extendProject(resp.data) : resp.data)
+        try {
+          data = resolveProjectCustomizations(data)
+        } catch (err) {
+          console.error('processing project customization config.', err)
+        }
+        resolve(data)
+      })
       .catch(err => {
         if (err.response?.data.status) {
           reject(err.response.data)

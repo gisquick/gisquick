@@ -3,18 +3,15 @@
     :value="value"
     content-class="fullscreen f-col"
   >
-    <div class="login-dialog f-grow f-col f-justify-center dark">
-      <div class="bg-logo-container">
-        <img src="../assets/image_logo.svg">
-      </div>
-      <div class="content">
+    <div class="login-dialog dark f-grow" :class="{'no-logo': isLogoHidden}">
+      <div class="content f-col-ac">
         <div class="card dark">
           <div class="login-header f-col-ac">
-            <img class="logo my-2" src="../assets/text_logo_dark.svg">
+            <img class="logo my-2" :src="images.textLogo"/>
             <h1><translate>Sign In to Continue</translate></h1>
           </div>
 
-          <div class="title pb-1">
+          <div class="form pb-1">
             <p
               v-if="permissionDenied"
               class="text-center error p-2"
@@ -116,6 +113,7 @@
           </div>
         </div>
       </div>
+      <div class="bg-logo" :style="images.imgLogoStyle"/>
     </div>
   </v-dialog>
 </template>
@@ -131,7 +129,8 @@ export default {
     value: Boolean,
     loginRequired: Boolean,
     permissionDenied: Boolean,
-    passwordResetUrl: String
+    passwordResetUrl: String,
+    project: Object
   },
   data () {
     return {
@@ -147,6 +146,20 @@ export default {
     }
   },
   computed: {
+    images () {
+      const config = this.project?.config?.customizations || {}
+      const logoImg = config.logo || require('../assets/image_logo.svg')
+      return {
+        textLogo: config.text_logo_dark || config.text_logo || require('../assets/text_logo_dark.svg'),
+        imgLogoStyle: {
+          'background-image': `url(${logoImg})`,
+          ...config.login_logo_style
+        }
+      }
+    },
+    isLogoHidden () {
+      return this.project?.config?.customizations?.login_logo_style?.display === 'none'
+    },
     tr () {
       return {
         Login: this.$gettext('Username / Email'),
@@ -191,29 +204,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.login-dialog {
-  background-color: black;
-}
 .login-header {
   .logo {
     width: 80%;
+    max-height: 200px;
   }
   h1 {
     font-size: 24px;
     font-weight: 500;
     margin: 16px 6px;
-  }
-}
-.content {
-  width: 80%;
-  margin: 16px auto;
-  .card {
-    max-width: 400px;
-  }
-  @media (max-width: 800px) {
-    width: unset;
-    margin: 8px;
-    align-self: center;
   }
 }
 .error {
@@ -254,18 +253,46 @@ form {
     text-transform: none;
   }
 }
-.bg-logo-container {
-  position: absolute;
-  overflow: hidden;
-  top: 0;
-  bottom: 0;
-  left: calc(400px + (100% - 400px)/ 2);
-  width: calc((100% - 400px)/ 2);
-  img {
-    position: absolute;
+
+.login-dialog {
+  background-color: black;
+  display: grid;
+  align-items: center; // vertical
+  grid-template-columns: auto 1fr;
+  &.no-logo {
+    grid-template-columns: 1fr 0;
+  }
+  .bg-logo {
+    justify-self: end;
+    max-width: 30vw;
+    overflow: hidden;
     height: 100%;
-    left: 40%;
-    top: 0;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-position-x: left;
+    background-position-y: center;
+    background-size: auto clamp(640px, 90vh, 900px);
+    @media (max-width: 760px) {
+      display: none;
+    }
+  }
+  .content {
+    display: flex;
+    width: clamp(320px, 50vw, 900px);
+    margin: 16px auto;
+    padding-inline: 16px;
+    .card {
+      width: 100%;
+      max-width: 400px;
+    }
+  }
+  @media (max-width: 760px) {
+    grid-template-columns: 1fr;
+    .content {
+      width: 100%;
+      margin: 8px auto;
+      padding-inline: 6px;
+    }
   }
 }
 </style>

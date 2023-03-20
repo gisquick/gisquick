@@ -1,7 +1,7 @@
 <template>
   <div class="bottom-toolbar">
     <div class="logo">
-      <img src="../assets/text_logo.svg">
+      <img :src="logo"/>
     </div>
     <label><translate>Scale</translate> 1: {{ scale }}</label>
     <label>{{ project.config.projection }}</label>
@@ -23,7 +23,10 @@ export default {
     scale: 1
   }),
   computed: {
-    ...mapState(['project'])
+    ...mapState(['project']),
+    logo () {
+      return this.project.config.customizations?.text_logo || require('../assets/text_logo.svg')
+    }
   },
   mounted () {
     this.updateScale()

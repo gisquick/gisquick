@@ -49,7 +49,7 @@ export function cssColor (color) {
   return `${name}(${color})`
 }
 
-function parseColor (c) {
+export function parseColor (c) {
   if (c.startsWith?.('#')) {
     return hexToRgb(c)
   }

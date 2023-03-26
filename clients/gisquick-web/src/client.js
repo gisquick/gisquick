@@ -1,6 +1,6 @@
 import axios from 'axios'
 import https from 'https'
-import { resolveProjectCustomizations } from './customization'
+import { resolveProjectAppSettings } from './customization'
 
 const HTTP = axios.create({
   withCredentials: true,
@@ -48,7 +48,7 @@ HTTP.project = function (project) {
       .then(resp => {
         let data = projectBackwardCompatibility(extendProject ? extendProject(resp.data) : resp.data)
         try {
-          data = resolveProjectCustomizations(data)
+          data = resolveProjectAppSettings(data)
         } catch (err) {
           console.error('processing project customization config.', err)
         }

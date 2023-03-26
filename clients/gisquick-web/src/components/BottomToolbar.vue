@@ -25,7 +25,7 @@ export default {
   computed: {
     ...mapState(['project']),
     logo () {
-      return this.project.config.customizations?.text_logo || require('../assets/text_logo.svg')
+      return this.project.config.app?.text_logo || require('../assets/text_logo.svg')
     }
   },
   mounted () {

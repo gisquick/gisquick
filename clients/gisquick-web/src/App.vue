@@ -156,14 +156,14 @@ export default {
             this.$store.commit('project', data)
             document.title = data.root_title
             projectsHistory.push(this.projectName)
-            const customizations = data.customizations || {}
-            if (customizations.theme_color) {
-              document.documentElement.style.setProperty('--color-primary', customizations.theme_color)
+            const app = data.app || {}
+            if (app.theme_color) {
+              document.documentElement.style.setProperty('--color-primary', app.theme_color)
               try {
-                const rgba = parseColor(customizations.theme_color)
+                const rgba = parseColor(app.theme_color)
                 document.documentElement.style.setProperty('--color-primary-rgb', rgba.slice(0, 3).join(','))
               } catch (err) {
-                console.error(`Invalid theme color: ${customizations.theme_color}`)
+                console.error(`Invalid theme color: ${app.theme_color}`)
               }
             }
           })

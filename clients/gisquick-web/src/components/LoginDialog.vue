@@ -147,7 +147,7 @@ export default {
   },
   computed: {
     images () {
-      const config = this.project?.config?.customizations || {}
+      const config = this.project?.config?.app || {}
       const logoImg = config.logo || require('../assets/image_logo.svg')
       return {
         textLogo: config.text_logo_dark || config.text_logo || require('../assets/text_logo_dark.svg'),
@@ -158,7 +158,7 @@ export default {
       }
     },
     isLogoHidden () {
-      return this.project?.config?.customizations?.login_logo_style?.display === 'none'
+      return this.project?.config?.app?.login_logo_style?.display === 'none'
     },
     tr () {
       return {

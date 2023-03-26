@@ -81,6 +81,7 @@ export default {
           return {
             component: 'v-select',
             props: {
+              disabled,
               class: 'filled',
               items: valueMapItems(attr)
             }

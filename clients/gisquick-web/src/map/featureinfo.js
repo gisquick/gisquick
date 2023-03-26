@@ -162,7 +162,7 @@ function _layerFeaturesQuery (layer, geom, filters, propertyNames = []) {
     propertyNames.map(n => `<ogc:PropertyName>${n}</ogc:PropertyName>`).join('\n'),
     rootFilter,
     '</gml:Query>'
-  ].join('\n')
+  ].filter(v => v).join('\n')
 }
 
 export function getFeatureQuery (...queries) {
@@ -189,11 +189,11 @@ export function layerFeaturesQuery (layer, geom, filters, propertyNames = []) {
 }
 
 export function layersFeaturesQuery (layers, geomFilter) {
-  const { geom, projection } = geomFilter
-  const geomsByProj = {
-    [projection]: geom
-  }
   if (geomFilter) {
+    const { geom, projection } = geomFilter
+    const geomsByProj = {
+      [projection]: geom
+    }
     layers
       .filter(l => l.projection && l.projection !== projection)
       .forEach(l => {
@@ -201,6 +201,7 @@ export function layersFeaturesQuery (layers, geomFilter) {
           geomsByProj[l.projection] = geom.clone().transform(projection, l.projection)
         }
       })
+    return getFeatureQuery(...layers.map(l => _layerFeaturesQuery(l, geomsByProj[l.projection])))
   }
-  return getFeatureQuery(...layers.map(l => _layerFeaturesQuery(l, geomsByProj[l.projection])))
+  return getFeatureQuery(...layers.map(l => _layerFeaturesQuery(l)))
 }

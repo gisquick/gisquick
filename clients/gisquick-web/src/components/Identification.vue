@@ -72,6 +72,7 @@
 <script>
 import { mapState } from 'vuex'
 import partition from 'lodash/partition'
+import isEqual from 'lodash/isEqual'
 import { fromCircle } from 'ol/geom/Polygon'
 import Circle from 'ol/geom/Circle'
 import GeoJSON from 'ol/format/GeoJSON'
@@ -136,6 +137,11 @@ export default {
     queryableLayers () {
       return this.project.overlays.list.filter(l => l.queryable && l.visible && !l.hidden)
     },
+    queryLayers () {
+      return this.identificationLayer
+        ? this.queryableLayers.filter(l => l.name === this.identificationLayer)
+        : this.queryableLayers
+    },
     options () {
       const allVisible = {
         title: this.$gettext('All visible layers'),
@@ -184,6 +190,15 @@ export default {
       if (feature) {
         feature.setStyle(SelectedStyle)
       }
+    },
+    queryLayers (layers, old) {
+      if (this.identificationLayer && !layers.find(l => l.name === this.identificationLayer)) {
+        this.$emit('update:identificationLayer', '')
+        return // watcher will be called again, so do nothing now
+      }
+      if (this.lastClickEvt && !isEqual(layers, old)) {
+        this.onClick(this.lastClickEvt)
+      }
     }
   },
   methods: {
@@ -228,12 +243,8 @@ export default {
     async onClick (evt) {
       const { map, pixel, coordinate } = evt
       this.mapCoords = coordinate
-
-      const layers = this.identificationLayer
-        ? this.queryableLayers.filter(l => l.name === this.identificationLayer)
-        : this.queryableLayers
-
-      const [wfsLayers, fiLayers] = partition(layers, l => l.attributes)
+      this.lastClickEvt = Object.freeze({ map, pixel, coordinate })
+      const [wfsLayers, fiLayers] = partition(this.queryLayers, l => l.attributes)
       const tasks = []
       if (fiLayers.length) {
         tasks.push(this.getFeatureInfo(evt, fiLayers))
@@ -271,6 +282,7 @@ export default {
       this.mapCoords = null
       this.layersFeatures = []
       this.editMode = false
+      this.lastClickEvt = null
     },
     categorize (features) {
       // (WFS layer name cannot contain space character)

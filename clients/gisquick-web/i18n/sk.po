@@ -1,0 +1,733 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: sk_SK\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.3\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
+
+#: src/components/measure/Measure.vue:9
+msgid "1st coordinate"
+msgstr "Prvá súradnica"
+
+#: src/components/measure/Measure.vue:13
+msgid "2nd coordinate"
+msgstr "Druhá súradnica"
+
+#: src/App.vue:22
+msgid "A new version of the map application is available"
+msgstr "K dispozícii je nová verzia mapovej aplikácie"
+
+#: src/components/content-panel/BaseLayersTree.vue:43
+#: src/components/content-panel/LayersTree.vue:91
+#: src/components/content-panel/TopicsList.vue:36
+msgid "Abstract"
+msgstr "Popis"
+
+#: src/components/feature-editor/GeometryEditor.vue:10
+msgid "Add geometry"
+msgstr "Pridať geometriu"
+
+#: src/components/AttributesTable.vue:115
+#: src/components/MobileAttributesTable.vue:278
+msgid "Add new feature"
+msgstr "Pridať nový objekt"
+
+#: src/App.vue:41
+msgid "Add to Home screen?"
+msgstr "Pridať na plochu?"
+
+#: src/components/Identification.vue:147
+msgid "All visible layers"
+msgstr "Všetky viditeľné vrstvy"
+
+#: src/IntroPage.vue:19
+msgid ""
+"Already registered? You can continue with Sign In to see list of\n"
+"your projects"
+msgstr ""
+
+#: src/components/feature-editor/ImageInput.vue:152
+msgid "Apply"
+msgstr "Aplikovať"
+
+#: src/ui/DatePicker.vue:175
+msgid "April"
+msgstr "Apríl"
+
+#: src/components/measure/Measure.vue:71 src/components/measure/Measure.vue:174
+msgid "Area"
+msgstr "Plocha"
+
+#: src/components/MobileAttributesTable.vue:330
+msgid "Attributes"
+msgstr "Atribúty"
+
+#: src/components/MapTools.vue:94
+msgid "Attributes Table"
+msgstr "Tabuľka atribútov"
+
+#: src/ui/DatePicker.vue:179
+msgid "August"
+msgstr "August"
+
+#: src/components/LoginDialog.vue:25
+msgid "Authentication failed"
+msgstr "Overenie zlyhalo"
+
+#: src/ui/MobileDialog.vue:17
+msgid "Back"
+msgstr "Späť"
+
+#: src/components/LoginDialog.vue:110
+msgid "Back to Login"
+msgstr "Späť na Prihlásenie"
+
+#: src/components/content-panel/ContentPanel.vue:107
+msgid "Base Layers"
+msgstr "Základné vrstvy"
+
+#: src/components/AttributeFilter.vue:258
+#: src/components/AttributeFilter.vue:270
+msgid "between"
+msgstr "od - do"
+
+#: src/components/feature-editor/ImageInput.vue:156
+#: src/components/MobileAttributesTable.vue:164
+msgid "Cancel"
+msgstr "Zrušiť"
+
+#: src/components/AttributesTable.vue:142
+#: src/components/MobileAttributesTable.vue:323
+msgid "Clear attributes filters"
+msgstr "Vymazať filtre atribútov"
+
+#: src/AppNotifications.vue:17 src/components/LocationTool.vue:20
+#: src/UserDashboard.vue:109
+msgid "Close"
+msgstr "Zavrieť"
+
+#: src/components/AttributeFilter.vue:267
+msgid "contain"
+msgstr "obsahuje"
+
+#: src/components/content-panel/ContentPanel.vue:4
+msgid "Content"
+msgstr "Obsah"
+
+#: src/components/LoginDialog.vue:103
+msgid "Continue as Guest"
+msgstr "Pokračovať ako hosť"
+
+#: src/components/measure/Measure.vue:192
+msgid "Coordinate systems"
+msgstr "Súradnicové systémy"
+
+#: src/components/BottomToolbar.vue:9
+msgid "Coordinates"
+msgstr "Súradnice"
+
+#: src/UserDashboard.vue:64
+msgid "Created"
+msgstr "Vytvorené"
+
+#: src/components/MobileAttributesTable.vue:95
+msgid "Data"
+msgstr "Data"
+
+#: src/components/MobileAttributesTable.vue:44
+msgid "Data Filters"
+msgstr "Dátové filtre"
+
+#: src/components/feature-editor/FeatureEditor.vue:89
+#: src/components/feature-editor/NewFeatureEditor.vue:43
+msgid "Data updated"
+msgstr "Údaje aktualizované"
+
+#: src/ui/DatePicker.vue:183
+msgid "December"
+msgstr "December"
+
+#: src/components/feature-editor/FeatureEditor.vue:98
+msgid "Delete current object?"
+msgstr "Odstrániť aktuálny objekt?"
+
+#: src/components/feature-editor/FeatureEditor.vue:55
+msgid "Delete object"
+msgstr "Odstrániť objekt"
+
+#: src/components/feature-editor/FeatureEditor.vue:64
+msgid "Discard changes"
+msgstr "Zrušiť zmeny"
+
+#: src/components/MapAttributions.vue:22
+msgid "Display attributions"
+msgstr "Zobraziť autorské práva"
+
+#: src/components/measure/Measure.vue:173
+msgid "Distance"
+msgstr "Vzdialenosť"
+
+#: src/AppNotifications.vue:53
+msgid "Don't show this message again"
+msgstr "Túto správu už nezobrazovať"
+
+#: src/components/MobileAttributesTable.vue:351
+msgid "Edit"
+msgstr "Upraviť"
+
+#: src/components/MobileAttributesTable.vue:142
+msgid "Edit feature"
+msgstr "Upraviť objekt"
+
+#: src/components/feature-editor/FeatureEditor.vue:32
+msgid "Edit geometry"
+msgstr "Upraviť geometriu"
+
+#: src/components/LoginDialog.vue:167
+msgid "Email"
+msgstr "Email"
+
+#: src/components/LoginDialog.vue:172
+msgid "Email was sent to given email address."
+msgstr "Email bol odoslaný na uvedenú emailovú adresu."
+
+#: src/components/AttributeFilter.vue:268
+msgid "empty"
+msgstr "nevyplnené hodnoty"
+
+#: src/components/LoginDialog.vue:168
+msgid ""
+"Enter your email address below and we will email instructions for setting a "
+"new password."
+msgstr ""
+"Zadajte svoju emailovú adresu nižšie a my Vám pošleme pokyny na nastavenie "
+"nového hesla."
+
+#: src/components/AttributeFilter.vue:257
+#: src/components/AttributeFilter.vue:261
+msgid "equal to"
+msgstr "rovná sa"
+
+#: src/components/feature-editor/FeatureEditor.vue:229
+#: src/components/feature-editor/NewFeatureEditor.vue:117
+#: src/ui/ListTable.vue:105 src/ui/Table.vue:211
+msgid "Error"
+msgstr "Chyba"
+
+#: src/components/AttributesTable.vue:126
+#: src/components/MobileAttributesTable.vue:285
+msgid "Export"
+msgstr "Export"
+
+#: src/components/AttributesTable.vue:448
+msgid "Failed to load data"
+msgstr "Údaje sa nepodarilo sa načítať"
+
+#: src/components/LoginDialog.vue:171
+msgid "Failed to process your request."
+msgstr "Spracovanie požiadavky zlyhalo."
+
+#: src/components/feature-editor/MediaFileField.vue:223
+msgid "Failed to upload file"
+msgstr "Nahranie súboru zlyhalo"
+
+#: src/ui/DatePicker.vue:173
+msgid "February"
+msgstr "Február"
+
+#: src/components/feature-editor/ImageInput.vue:244
+#: src/components/feature-editor/ImageInput.vue:296
+#: src/components/feature-editor/SimpleFileInput.vue:91
+msgid "File exceeds maximum allowed size"
+msgstr "Súbor presahuje maximálnu povolenú veľkosť"
+
+#: src/components/AttributesTable.vue:152
+#: src/components/AttributeFilter.vue:255
+msgid "Filter"
+msgstr "Filter"
+
+#: src/components/AttributeFilter.vue:45
+msgid "Filter by attribute value"
+msgstr "Filtrovať podľa hodnoty atribútu"
+
+#: src/components/AttributesTable.vue:317
+msgid "Filter to visible area"
+msgstr "Filter viditeľnej oblasti"
+
+#: src/components/LoginDialog.vue:111
+msgid "Forgot password?"
+msgstr "Zabudnuté heslo?"
+
+#: src/components/feature-editor/ImageInput.vue:15
+#: src/components/feature-editor/ImageInput.vue:52
+msgid "Format"
+msgstr "Formát"
+
+#: src/ui/DatePicker.vue:167
+msgid "Friday"
+msgstr "Piatok"
+
+#: src/components/AppMenu.vue:60
+msgid "Full screen"
+msgstr "Celá obrazovka"
+
+#: src/components/LocationTool.vue:98
+msgid "Geolocation Error"
+msgstr "Chyba geolokácie"
+
+#: src/components/AttributeFilter.vue:263
+msgid "greater than"
+msgstr "je väčší"
+
+#: src/components/AppMenu.vue:70
+msgid "Help"
+msgstr "Dokumentácia"
+
+#: src/components/content-panel/LayersTree.vue:87
+msgid "Identification"
+msgstr "Identifikácia"
+
+#: src/components/feature-editor/ImageInput.vue:28
+msgid "Image will be saved in lower resolution"
+msgstr "Obrázok bude uložený v nižšom rozlíšení"
+
+#: src/components/Identification.vue:155
+#: src/components/MobileAttributesTable.vue:345
+msgid "Info Panel"
+msgstr "Infopanel"
+
+#: src/components/AttributeFilter.vue:273
+msgid "Integer"
+msgstr "Celé číslo"
+
+#: src/components/AttributeFilter.vue:275
+msgid "Integer,Integer"
+msgstr "Celé číslo,Celé číslo"
+
+#: src/components/AttributeFilter.vue:274
+msgid "Integer,Integer,..."
+msgstr "Celé číslo,..."
+
+#: src/App.vue:43
+msgid ""
+"It will give you the experience of a native app, with easy access and a "
+"standalone window without the browser's address bar and other controls."
+msgstr ""
+"Poskytne vám zážitok ako natívna aplikácia. S jednoduchým prístupom a "
+"samostatným oknom, bez panela s adresou stránky a ďalších ovládacích prvkov "
+"prehliadača."
+
+#: src/ui/DatePicker.vue:172
+msgid "January"
+msgstr "Január"
+
+#: src/ui/DatePicker.vue:178
+msgid "July"
+msgstr "Júl"
+
+#: src/ui/DatePicker.vue:177
+msgid "June"
+msgstr "Jún"
+
+#: src/components/content-panel/BaseLayersTree.vue:46
+msgid "Keywords list"
+msgstr "Kľúčové slová"
+
+#: src/components/measure/Measure.vue:34
+msgid "Last segment"
+msgstr "Posledný segment"
+
+#: src/components/Identification.vue:180
+#: src/components/MobileAttributesTable.vue:241
+msgid "Layer"
+msgstr "Vrstva"
+
+#: src/components/content-panel/ContentPanel.vue:115
+msgid "Layers"
+msgstr "Vrstvy"
+
+#: src/components/print/Print.vue:83
+msgid "Layout"
+msgstr "Rozloženie"
+
+#: src/components/content-panel/ContentPanel.vue:109
+msgid "Legend"
+msgstr "Legenda"
+
+#: src/components/AttributeFilter.vue:264
+msgid "less than"
+msgstr "je menší"
+
+#: src/components/AttributesTable.vue:319
+msgid "link"
+msgstr "odkaz"
+
+#: src/components/Map.vue:48
+msgid "Loading"
+msgstr "Načítavam"
+
+#: src/components/measure/Measure.vue:172
+msgid "Location"
+msgstr "Poloha"
+
+#: src/components/LoginDialog.vue:94 src/components/AppMenu.vue:49
+msgid "Login"
+msgstr "Prihlásiť sa"
+
+#: src/components/AppMenu.vue:37 src/UserDashboard.vue:202
+msgid "Logout"
+msgstr "Odhlásiť sa"
+
+#: src/ui/DatePicker.vue:174
+msgid "March"
+msgstr "Marcel"
+
+#: src/ui/DatePicker.vue:176
+msgid "May"
+msgstr "Máj"
+
+#: src/components/Identification.vue:181 src/components/measure/Measure.vue:144
+#: src/components/MobileAttributesTable.vue:243
+#: src/components/print/Print.vue:82 src/UserDashboard.vue:210
+msgid "Menu"
+msgstr "Menu"
+
+#: src/ui/DatePicker.vue:163
+msgid "Monday"
+msgstr "Pondelok"
+
+#: src/components/AppMenu.vue:42 src/UserDashboard.vue:197
+msgid "My profile"
+msgstr "Môj profil"
+
+#: src/UserDashboard.vue:218
+msgid "My Projects"
+msgstr "Moje projekty"
+
+#: src/components/AttributesTable.vue:163
+#: src/components/MobileAttributesTable.vue:34
+msgid "New Feature"
+msgstr "Nový objekt"
+
+#: src/IntroPage.vue:29
+msgid ""
+"New to Gisquick? Create a new account if you want to publish your\n"
+"own maps!"
+msgstr ""
+
+#: src/App.vue:48 src/components/feature-editor/FeatureEditor.vue:102
+msgid "No"
+msgstr "Nie"
+
+#: src/components/MobileAttributesTable.vue:137
+msgid "No Data"
+msgstr "Žiadne dáta"
+
+#: src/components/feature-editor/ImageInput.vue:75
+msgid "No image assigned"
+msgstr "Žiadny obrázok"
+
+#: src/components/feature-editor/GeometryEditor.vue:22
+msgid "Node tool"
+msgstr "Editácia bodov"
+
+#: src/components/AttributeFilter.vue:269
+msgid "not empty"
+msgstr "vyplnené hodnoty"
+
+#: src/components/AttributeFilter.vue:262
+msgid "not equal to"
+msgstr "nerovná sa"
+
+#: src/components/AttributeFilter.vue:266
+msgid "not in"
+msgstr "neobsahuje"
+
+#: src/App.vue:27
+msgid "Not now"
+msgstr "Teraz nie"
+
+#: src/components/feature-editor/GenericEditForm.vue:66
+#: src/components/feature-editor/NumberField.vue:48
+msgid "Not valid integer number"
+msgstr "Neplatné celé číslo"
+
+#: src/components/feature-editor/GenericEditForm.vue:65
+#: src/components/feature-editor/NumberField.vue:47
+msgid "Not valid number"
+msgstr "Neplatné číslo"
+
+#: src/ui/DatePicker.vue:182
+msgid "November"
+msgstr "November"
+
+#: src/components/AttributeFilter.vue:276
+msgid "Number"
+msgstr "Číslo"
+
+#: src/components/AttributeFilter.vue:278
+msgid "Number,Number"
+msgstr "Číslo,Číslo"
+
+#: src/components/AttributeFilter.vue:277
+msgid "Number,Number,..."
+msgstr "Číslo,..."
+
+#: src/ui/DatePicker.vue:181
+msgid "October"
+msgstr "Október"
+
+#: src/components/AttributeFilter.vue:265
+msgid "one of"
+msgstr "jedna z hodnôt"
+
+#: src/components/content-panel/BaseLayerOpacity.vue:5
+msgid "Opacity of base layer"
+msgstr "Viditeľnosť základnej vrstvy"
+
+#: src/components/content-panel/OverlaysOpacity.vue:5
+msgid "Opacity of overlay layers"
+msgstr "Viditeľnosť prekryvných vrstiev"
+
+#: src/components/print/Print.vue:110
+msgid "Output format"
+msgstr "Výstupný formát"
+
+#: src/components/content-panel/ContentPanel.vue:108
+msgid "Overlay Layers"
+msgstr "Prekryvné vrstvy"
+
+#: src/components/AttributesTable.vue:318
+#: src/components/MobileAttributesTable.vue:290
+msgid "Page size"
+msgstr "Počet riadkov"
+
+#: src/components/LoginDialog.vue:166
+msgid "Password"
+msgstr "Heslo"
+
+#: src/components/measure/Measure.vue:67
+msgid "Perimeter"
+msgstr "Obvod"
+
+#: src/components/AppMenu.vue:66
+msgid "Permalink"
+msgstr "Permalink"
+
+#: src/components/LoginDialog.vue:20
+msgid "Permission denied"
+msgstr "Prístup zamietnutý"
+
+#: src/components/print/Preview.vue:12
+msgid "Print Preview"
+msgstr "Náhľad pred tlačou"
+
+#: src/components/print/Print.vue:112
+msgid "Print quality"
+msgstr "Kvalita tlače"
+
+#: src/components/feature-editor/MediaFileField.vue:221
+msgid "Project size limit reached"
+msgstr "Dosiahli ste limit pre veľkosť projektu"
+
+#: src/UserDashboard.vue:95
+msgid "Publish project"
+msgstr "Publikovať projekt"
+
+#: src/UserDashboard.vue:222
+msgid "Recent"
+msgstr "Nedávne"
+
+#: src/components/LoginDialog.vue:58
+msgid "Reset Password"
+msgstr "Obnoviť heslo"
+
+#: src/components/feature-editor/ImageInput.vue:145
+#: src/components/feature-editor/ImageInput.vue:23
+#: src/components/feature-editor/ImageInput.vue:58
+msgid "Resolution"
+msgstr "Rozlíšenie"
+
+#: src/ui/DatePicker.vue:168
+msgid "Saturday"
+msgstr "Sobota"
+
+#: src/components/feature-editor/FeatureEditor.vue:74
+msgid "Save changes"
+msgstr "Uložiť zmeny"
+
+#: src/components/BottomToolbar.vue:6 src/components/print/Preview.vue:11
+msgid "Scale"
+msgstr "Mierka"
+
+#: src/components/feature-editor/MediaFileField.vue:59
+msgid "Select"
+msgstr "Vybrať"
+
+#: src/components/MobileAttributesTable.vue:242
+msgid "Select layer"
+msgstr "Vyberte vrstvu"
+
+#: src/ui/DatePicker.vue:180
+msgid "September"
+msgstr "September"
+
+#: src/IntroPage.vue:24
+msgid "Sign in"
+msgstr "Prihlásiť sa"
+
+#: src/components/LoginDialog.vue:11
+msgid "Sign In to Continue"
+msgstr "Prihlásiť sa"
+
+#: src/IntroPage.vue:34
+msgid "Sign up"
+msgstr "Zaregistrovať sa"
+
+#: src/components/AttributeFilter.vue:259
+msgid "since"
+msgstr "od"
+
+#: src/components/feature-editor/ImageInput.vue:141
+#: src/components/feature-editor/ImageInput.vue:19
+#: src/components/feature-editor/ImageInput.vue:55
+#: src/components/feature-editor/SimpleFileInput.vue:12
+msgid "Size"
+msgstr "Veľkosť"
+
+#: src/ui/DatePicker.vue:169
+msgid "Sunday"
+msgstr "Nedeľa"
+
+#: src/components/Identification.vue:154
+msgid "Table"
+msgstr "Tabuľka"
+
+#: src/components/Identification.vue:156
+msgid "Table & Info Panel"
+msgstr "Tabuľka & Infopanel"
+
+#: src/components/AttributeFilter.vue:279
+msgid "Text,Text,..."
+msgstr "Text,Text,..."
+
+#: src/ui/DatePicker.vue:166
+msgid "Thursday"
+msgstr "Štvrtok"
+
+#: src/components/content-panel/ContentPanel.vue:114
+msgid "Topics"
+msgstr "Témy"
+
+#: src/components/measure/Measure.vue:38
+msgid "Total length"
+msgstr "Celková dĺžka"
+
+#: src/ui/DatePicker.vue:164
+msgid "Tuesday"
+msgstr "Utorok"
+
+#: src/components/content-panel/LayersTree.vue:76
+msgid "Type"
+msgstr "Typ"
+
+#: src/components/measure/Measure.vue:199
+#: src/components/measure/Measure.vue:206
+msgid "Units"
+msgstr "Jednotky"
+
+#: src/components/AttributeFilter.vue:260
+msgid "until"
+msgstr "do"
+
+#: src/UserDashboard.vue:69
+msgid "Updated"
+msgstr "Aktualizované"
+
+#: src/components/feature-editor/FeatureEditor.vue:88
+#: src/components/feature-editor/NewFeatureEditor.vue:42
+msgid "Updating data"
+msgstr "Údaje sa aktualizujú"
+
+#: src/components/feature-editor/MediaFileField.vue:42
+msgid "Uploading"
+msgstr "Nahrávam"
+
+#: src/UserDashboard.vue:86
+msgid ""
+"Use QGIS and Gisquick plugin to create your map, and then publish it from "
+"your profile page."
+msgstr ""
+
+#: src/components/LoginDialog.vue:165
+msgid "Username / Email"
+msgstr "Používateľské meno / Email"
+
+#: src/IntroPage.vue:10
+msgid "Web platform for publishing your maps from QGIS desktop"
+msgstr ""
+
+#: src/ui/DatePicker.vue:165
+msgid "Wednesday"
+msgstr "Streda"
+
+#: src/IntroPage.vue:9
+msgid "Welcome to the Gisquick"
+msgstr ""
+
+#: src/App.vue:51 src/components/feature-editor/FeatureEditor.vue:105
+msgid "Yes"
+msgstr "Áno"
+
+#: src/UserDashboard.vue:85
+msgid "You didn't publish any project yet!"
+msgstr "Zatiaľ ste nevytvorili žiaden projekt!"
+
+#: src/components/measure/Measure.vue:187
+#: src/components/measure/Measure.vue:198
+#: src/components/measure/Measure.vue:205
+#: src/components/MobileAttributesTable.vue:339
+msgid "Zoom to"
+msgstr "Priblížiť"
+
+#: src/AppNotifications.vue:16
+msgctxt "adverb"
+msgid "Next"
+msgstr "Ďalej"
+
+#: src/components/MapTools.vue:60
+msgctxt "noun"
+msgid "Identification"
+msgstr "Identifikácia"
+
+#: src/components/MapTools.vue:76
+msgctxt "noun"
+msgid "Measure"
+msgstr "Meranie"
+
+#: src/components/MapTools.vue:84
+msgctxt "noun"
+msgid "Print"
+msgstr "Tlač"
+
+#: src/UserDashboard.vue:211
+msgctxt "noun"
+msgid "Search"
+msgstr "Vyhľadávanie"
+
+#: src/UserDashboard.vue:112 src/UserDashboard.vue:226
+msgctxt "verb"
+msgid "Open"
+msgstr "Otvoriť"
+
+#: src/App.vue:30
+msgctxt "verb"
+msgid "Update"
+msgstr "Aktualizovať"

@@ -35,6 +35,9 @@ function toInteger (v) {
 function toNumber (v) {
   return !isNaN(v) ? parseFloat(v) : v
 }
+function isTrueValue (v) {
+  return v === true || v == 1 || v?.toLowerCase() === 'true'
+}
 
 export default {
   props: {
@@ -134,7 +137,7 @@ export default {
         }
         return {
           component: TextField,
-          props: { disabled, multiline: attr.config?.IsMultiline, rows: 3 }
+          props: { disabled, multiline: isTrueValue(attr.config?.IsMultiline), rows: 3 }
         }
       })
     },

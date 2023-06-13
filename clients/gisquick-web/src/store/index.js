@@ -63,6 +63,12 @@ export default new Vuex.Store({
       // groups.forEach(l => { l.visible = true })
       groups.forEach(l => Vue.set(l, 'visible', true))
 
+      const overlaysList = layersList({ layers })
+      overlaysList.filter(l => l.relations).forEach(l => {
+        l.relations.forEach(r => {
+          r.referencing_layer = overlaysList.find(l => l.name === r.referencing_layer)
+        })
+      })
       state.project = {
         config: project,
         baseLayers: {
@@ -73,7 +79,7 @@ export default new Vuex.Store({
         overlays: {
           groups,
           tree: overlaysTree,
-          list: layersList({ layers })
+          list: overlaysList
         }
       }
     },

@@ -13,6 +13,32 @@
         </slot>
       </template>
     </div>
+    <template v-if="relations">
+      <div v-for="(relation) in relations" :key="relation.name" class="relations">
+        <div class="header f-row-ac" @click="expanded[relation.name] = !expanded[relation.name]">
+          <span class="label" v-text="relation.name"/>
+          <span v-if="relationsData" class="mx-2">({{ relationsData[relation.name].length }})</span>
+          <div class="f-grow"/>
+          <v-icon
+            class="toggle mx-2"
+            :class="{expanded: expanded[relation.name]}"
+            name="arrow-down"
+            size="12"
+          />
+        </div>
+          <div v-if="relationsData && expanded[relation.name]" class="f-col">
+            <component
+              v-for="(f, fi) in relationsData[relation.name]"
+              :key="`${relation.name}-${fi}`"
+              :is="relation.component"
+              :feature="f"
+              :layer="relation.layer"
+              :project="project"
+              class="nested"
+            />
+          </div>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -22,8 +48,14 @@ import round from 'lodash/round'
 import format from 'date-fns/format'
 import parse from 'date-fns/parse'
 import path from 'path'
+import GeoJSON from 'ol/format/GeoJSON'
 
 import { valueMapItems } from '@/adapters/attributes'
+import { layerFeaturesQuery } from '@/map/featureinfo'
+import { externalComponent } from '@/components-loader'
+import { formatFeatures } from '@/formatters'
+import { ShallowArray } from '@/utils'
+
 
 function isAbsoluteUrl (val) {
   return /(https?:\/\/.*\.)/i.test(val)
@@ -234,11 +266,18 @@ export function createMediaFileTableWidget (createUrl) {
   })
 }
 
-export default {
+const GenericInfoPanel = {
+  name: 'GenericInfoPanel',
   props: {
     feature: Object,
     layer: Object,
     project: Object
+  },
+  data () {
+    return {
+      relationsData: null,
+      expanded: {}
+    }
   },
   computed: {
     fields () {
@@ -295,14 +334,97 @@ export default {
         }
         return RawWidget
       })
+    },
+    relations () {
+      return this.layer.relations?.map(r => {
+        r.referencing_layer
+        this.project.layers
+        // let component = 'generic-infopanel'
+        let component = GenericInfoPanel
+        if (r.referencing_layer.infopanel_component) {
+          try {
+            component = externalComponent(this.project, r.referencing_layer.infopanel_component)
+          } catch (err) {
+            console.error(`Failed to load infopanel component: ${this.layer.infopanel_component}`)
+          }
+        }
+        return {
+          name: r.name,
+          layer: r.referencing_layer,
+          component
+        }
+      })
+    }
+  },
+  watch: {
+    feature: {
+      immediate: true,
+      async handler (f) {
+        this.relationsData = null
+        if (this.layer.relations) {
+          this.relationsData = await this.fetchRelationsData(this.layer, f)
+        }
+      }
+    },
+    layer: {
+      immediate: true,
+      handler () {
+        const expanded = {}
+        this.layer.relations?.forEach(r => {
+          expanded[r.name] = true
+        })
+        this.expanded = expanded
+      }
+    }
+  },
+  methods: {
+    async fetchRelationsData (layer, feature) {
+      if (feature._relationsData) {
+        return feature._relationsData
+      }
+      const mapProjection = this.$map.getView().getProjection().getCode()
+      const tasks = layer.relations.map(async rel => {
+        const filters = rel.referencing_fields.map((field, i) => ({
+          attribute: field,
+          operator: '=',
+          value: feature.get(rel.referenced_fields[i])
+        }))
+        const query = layerFeaturesQuery(rel.referencing_layer, null, filters)
+        const params = {
+          'VERSION': '1.1.0',
+          'SERVICE': 'WFS',
+          'REQUEST': 'GetFeature',
+          'OUTPUTFORMAT': 'GeoJSON',
+          'MAXFEATURES': 100
+        }
+        const headers = { 'Content-Type': 'text/xml' }
+        const { data } = await this.$http.post(this.project.ows_url, query, { params, headers })
+        const parser = new GeoJSON()
+        const features = parser.readFeatures(data, { featureProjection: mapProjection })
+        formatFeatures(this.$store.state.project, rel.referencing_layer, features)
+        return ShallowArray(features)
+        // return features
+      })
+      const results = await Promise.all(tasks)
+      let relationsData = {}
+      layer.relations.map((r, i) => {
+        relationsData[r.name] = results[i]
+      })
+      // relationsData = Object.freeze(relationsData)
+      feature._relationsData = relationsData
+      return relationsData
     }
   }
 }
+export default GenericInfoPanel
 </script>
 
 <style lang="scss" scoped>
 .generic-infopanel {
   padding: 6px;
+  &.nested {
+    padding: 3px 0 6px 0;
+  }
 }
 .fields {
   // display: grid;
@@ -420,6 +542,19 @@ export default {
       height: 64px;
       padding: 6px 0;
       justify-self: center;
+    }
+  }
+}
+.relations {
+  margin-top: 3px;
+  .header {
+    cursor: pointer;
+    padding: 2px 6px;
+    .toggle {
+      transition: .3s cubic-bezier(.25,.8,.5,1);
+      &.expanded {
+        transform: rotate(180deg);
+      }
     }
   }
 }

@@ -16,6 +16,8 @@ import UI from './ui/plugin'
 import ScrollArea from './ui/ScrollArea.vue'
 import BasicScrollArea from './ui/BasicScrollArea.vue'
 import VImage from '@/components/image/Image.vue'
+import GenericInfopanel from '@/components/GenericInfopanel.vue'
+
 import translations from './translations'
 import '@/assets/fonts/fonts.css'
 import '@/ui/base.scss'
@@ -30,6 +32,11 @@ import {
   SwitchTransition,
   SlideTop
 } from './components/transitions'
+
+// import all icons for hot reload functionality in dev mode
+if (process.env.NODE_ENV === 'development') {
+  require.context('../icons', false, /.*\.svg$/)
+}
 
 Vue.config.productionTip = false
 const mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent)
@@ -58,6 +65,7 @@ Vue.component('collapse-transition', CollapseTransition)
 Vue.component('collapse-width-transition', CollapseWidth)
 Vue.component('switch-transition', SwitchTransition)
 Vue.component('slide-top-transition', SlideTop)
+Vue.component('generic-infopanel', GenericInfopanel)
 
 Vue.prototype.$http = http
 

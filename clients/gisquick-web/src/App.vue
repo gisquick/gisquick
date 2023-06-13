@@ -13,8 +13,9 @@
     />
     <project-not-found v-if="projectStatus === 400 || projectStatus === 404"/>
     <server-error v-if="projectStatus === 500"/>
+    <app-notifications v-if="notifications.length" :notifications="notifications"/>
     <transition name="modal">
-      <div v-if="updateExists" class="notification f-col light">
+      <div v-if="updateExists" class="update-notification f-col light">
         <div class="content p-2 f-col-ac shadow-2">
           <div class="msg my-2">
             <img src="@/assets/image_logo.svg">
@@ -68,6 +69,7 @@ import MobileMap from '@/components/MobileMap.vue'
 import LoginDialog from '@/components/LoginDialog.vue'
 import PopupLayer from '@/ui/PopupLayer.vue'
 import ServerError from './ServerError.vue'
+import AppNotifications from './AppNotifications.vue'
 import projectsHistory from '@/projects-history'
 import Update from '@/mixins/update'
 import { parseColor } from '@/ui/utils/colors'
@@ -80,6 +82,7 @@ export default {
     LoginDialog,
     IntroPage,
     ServerError,
+    AppNotifications,
     MapApp: async () => window.env.mobile ? MobileMap : DesktopMap
   },
   data () {
@@ -98,6 +101,9 @@ export default {
     },
     isStandaloneApp () {
       return window.matchMedia('(display-mode: standalone)').matches
+    },
+    notifications () {
+      return this.project?.config?.notifications ?? []
     }
   },
   created () {
@@ -211,7 +217,7 @@ body {
 </style>
 
 <style lang="scss" scoped>
-.notification {
+.update-notification {
   position: fixed;
   inset: 0;
   background-color: rgba(0, 0, 0, 0.3);

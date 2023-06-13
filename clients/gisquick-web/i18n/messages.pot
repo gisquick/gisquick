@@ -10,7 +10,7 @@ msgstr ""
 msgid "2nd coordinate"
 msgstr ""
 
-#: ./src/App.vue:20
+#: ./src/App.vue:22
 msgid "A new version of the map application is available"
 msgstr ""
 
@@ -29,11 +29,11 @@ msgstr ""
 msgid "Add new feature"
 msgstr ""
 
-#: ./src/App.vue:39
+#: ./src/App.vue:41
 msgid "Add to Home screen?"
 msgstr ""
 
-#: src/components/Identification.vue:141
+#: src/components/Identification.vue:147
 msgid "All visible layers"
 msgstr ""
 
@@ -68,7 +68,7 @@ msgstr ""
 msgid "August"
 msgstr ""
 
-#: ./src/components/LoginDialog.vue:28
+#: ./src/components/LoginDialog.vue:25
 msgid "Authentication failed"
 msgstr ""
 
@@ -76,7 +76,7 @@ msgstr ""
 msgid "Back"
 msgstr ""
 
-#: ./src/components/LoginDialog.vue:113
+#: ./src/components/LoginDialog.vue:110
 msgid "Back to Login"
 msgstr ""
 
@@ -99,6 +99,7 @@ msgstr ""
 msgid "Clear attributes filters"
 msgstr ""
 
+#: ./src/AppNotifications.vue:17
 #: ./src/components/LocationTool.vue:20
 #: ./src/UserDashboard.vue:109
 msgid "Close"
@@ -112,7 +113,7 @@ msgstr ""
 msgid "Content"
 msgstr ""
 
-#: ./src/components/LoginDialog.vue:106
+#: ./src/components/LoginDialog.vue:103
 msgid "Continue as Guest"
 msgstr ""
 
@@ -136,7 +137,7 @@ msgstr ""
 msgid "Data Filters"
 msgstr ""
 
-#: ./src/components/feature-editor/FeatureEditor.vue:88
+#: ./src/components/feature-editor/FeatureEditor.vue:89
 #: ./src/components/feature-editor/NewFeatureEditor.vue:43
 msgid "Data updated"
 msgstr ""
@@ -145,15 +146,15 @@ msgstr ""
 msgid "December"
 msgstr ""
 
-#: ./src/components/feature-editor/FeatureEditor.vue:97
+#: ./src/components/feature-editor/FeatureEditor.vue:98
 msgid "Delete current object?"
 msgstr ""
 
-#: ./src/components/feature-editor/FeatureEditor.vue:54
+#: ./src/components/feature-editor/FeatureEditor.vue:55
 msgid "Delete object"
 msgstr ""
 
-#: ./src/components/feature-editor/FeatureEditor.vue:63
+#: ./src/components/feature-editor/FeatureEditor.vue:64
 msgid "Discard changes"
 msgstr ""
 
@@ -165,6 +166,10 @@ msgstr ""
 msgid "Distance"
 msgstr ""
 
+#: src/AppNotifications.vue:53
+msgid "Don't show this message again"
+msgstr ""
+
 #: src/components/MobileAttributesTable.vue:351
 msgid "Edit"
 msgstr ""
@@ -173,15 +178,15 @@ msgstr ""
 msgid "Edit feature"
 msgstr ""
 
-#: ./src/components/feature-editor/FeatureEditor.vue:31
+#: ./src/components/feature-editor/FeatureEditor.vue:32
 msgid "Edit geometry"
 msgstr ""
 
-#: src/components/LoginDialog.vue:154
+#: src/components/LoginDialog.vue:167
 msgid "Email"
 msgstr ""
 
-#: src/components/LoginDialog.vue:159
+#: src/components/LoginDialog.vue:172
 msgid "Email was sent to given email address."
 msgstr ""
 
@@ -189,7 +194,7 @@ msgstr ""
 msgid "empty"
 msgstr ""
 
-#: src/components/LoginDialog.vue:155
+#: src/components/LoginDialog.vue:168
 msgid "Enter your email address below and we will email instructions for setting a new password."
 msgstr ""
 
@@ -198,7 +203,7 @@ msgstr ""
 msgid "equal to"
 msgstr ""
 
-#: src/components/feature-editor/FeatureEditor.vue:228
+#: src/components/feature-editor/FeatureEditor.vue:229
 #: src/components/feature-editor/NewFeatureEditor.vue:117
 #: src/ui/ListTable.vue:105
 #: src/ui/Table.vue:211
@@ -214,7 +219,7 @@ msgstr ""
 msgid "Failed to load data"
 msgstr ""
 
-#: src/components/LoginDialog.vue:158
+#: src/components/LoginDialog.vue:171
 msgid "Failed to process your request."
 msgstr ""
 
@@ -245,7 +250,7 @@ msgstr ""
 msgid "Filter to visible area"
 msgstr ""
 
-#: ./src/components/LoginDialog.vue:114
+#: ./src/components/LoginDialog.vue:111
 msgid "Forgot password?"
 msgstr ""
 
@@ -282,7 +287,7 @@ msgstr ""
 msgid "Image will be saved in lower resolution"
 msgstr ""
 
-#: src/components/Identification.vue:149
+#: src/components/Identification.vue:155
 #: src/components/MobileAttributesTable.vue:345
 msgid "Info Panel"
 msgstr ""
@@ -299,7 +304,7 @@ msgstr ""
 msgid "Integer,Integer,..."
 msgstr ""
 
-#: ./src/App.vue:41
+#: ./src/App.vue:43
 msgid "It will give you the experience of a native app, with easy access and a standalone window without the browser's address bar and other controls."
 msgstr ""
 
@@ -323,7 +328,7 @@ msgstr ""
 msgid "Last segment"
 msgstr ""
 
-#: src/components/Identification.vue:174
+#: src/components/Identification.vue:180
 #: src/components/MobileAttributesTable.vue:241
 msgid "Layer"
 msgstr ""
@@ -356,7 +361,7 @@ msgstr ""
 msgid "Location"
 msgstr ""
 
-#: ./src/components/LoginDialog.vue:97
+#: ./src/components/LoginDialog.vue:94
 #: src/components/AppMenu.vue:49
 msgid "Login"
 msgstr ""
@@ -374,7 +379,7 @@ msgstr ""
 msgid "May"
 msgstr ""
 
-#: src/components/Identification.vue:175
+#: src/components/Identification.vue:181
 #: src/components/measure/Measure.vue:144
 #: src/components/MobileAttributesTable.vue:243
 #: src/components/print/Print.vue:82
@@ -406,8 +411,8 @@ msgid ""
 "own maps!"
 msgstr ""
 
-#: ./src/App.vue:46
-#: ./src/components/feature-editor/FeatureEditor.vue:101
+#: ./src/App.vue:48
+#: ./src/components/feature-editor/FeatureEditor.vue:102
 msgid "No"
 msgstr ""
 
@@ -435,16 +440,16 @@ msgstr ""
 msgid "not in"
 msgstr ""
 
-#: ./src/App.vue:25
+#: ./src/App.vue:27
 msgid "Not now"
 msgstr ""
 
-#: src/components/feature-editor/GenericEditForm.vue:63
+#: src/components/feature-editor/GenericEditForm.vue:66
 #: src/components/feature-editor/NumberField.vue:48
 msgid "Not valid integer number"
 msgstr ""
 
-#: src/components/feature-editor/GenericEditForm.vue:62
+#: src/components/feature-editor/GenericEditForm.vue:65
 #: src/components/feature-editor/NumberField.vue:47
 msgid "Not valid number"
 msgstr ""
@@ -494,7 +499,7 @@ msgstr ""
 msgid "Page size"
 msgstr ""
 
-#: src/components/LoginDialog.vue:153
+#: src/components/LoginDialog.vue:166
 msgid "Password"
 msgstr ""
 
@@ -506,7 +511,7 @@ msgstr ""
 msgid "Permalink"
 msgstr ""
 
-#: ./src/components/LoginDialog.vue:23
+#: ./src/components/LoginDialog.vue:20
 msgid "Permission denied"
 msgstr ""
 
@@ -530,7 +535,7 @@ msgstr ""
 msgid "Recent"
 msgstr ""
 
-#: ./src/components/LoginDialog.vue:61
+#: ./src/components/LoginDialog.vue:58
 msgid "Reset Password"
 msgstr ""
 
@@ -544,7 +549,7 @@ msgstr ""
 msgid "Saturday"
 msgstr ""
 
-#: ./src/components/feature-editor/FeatureEditor.vue:73
+#: ./src/components/feature-editor/FeatureEditor.vue:74
 msgid "Save changes"
 msgstr ""
 
@@ -569,7 +574,7 @@ msgstr ""
 msgid "Sign in"
 msgstr ""
 
-#: ./src/components/LoginDialog.vue:14
+#: ./src/components/LoginDialog.vue:11
 msgid "Sign In to Continue"
 msgstr ""
 
@@ -592,11 +597,11 @@ msgstr ""
 msgid "Sunday"
 msgstr ""
 
-#: src/components/Identification.vue:148
+#: src/components/Identification.vue:154
 msgid "Table"
 msgstr ""
 
-#: src/components/Identification.vue:150
+#: src/components/Identification.vue:156
 msgid "Table & Info Panel"
 msgstr ""
 
@@ -637,7 +642,7 @@ msgstr ""
 msgid "Updated"
 msgstr ""
 
-#: ./src/components/feature-editor/FeatureEditor.vue:87
+#: ./src/components/feature-editor/FeatureEditor.vue:88
 #: ./src/components/feature-editor/NewFeatureEditor.vue:42
 msgid "Updating data"
 msgstr ""
@@ -650,7 +655,7 @@ msgstr ""
 msgid "Use QGIS and Gisquick plugin to create your map, and then publish it from your profile page."
 msgstr ""
 
-#: src/components/LoginDialog.vue:152
+#: src/components/LoginDialog.vue:165
 msgid "Username / Email"
 msgstr ""
 
@@ -666,8 +671,8 @@ msgstr ""
 msgid "Welcome to the Gisquick"
 msgstr ""
 
-#: ./src/App.vue:49
-#: ./src/components/feature-editor/FeatureEditor.vue:104
+#: ./src/App.vue:51
+#: ./src/components/feature-editor/FeatureEditor.vue:105
 msgid "Yes"
 msgstr ""
 
@@ -680,6 +685,11 @@ msgstr ""
 #: src/components/measure/Measure.vue:205
 #: src/components/MobileAttributesTable.vue:339
 msgid "Zoom to"
+msgstr ""
+
+#: ./src/AppNotifications.vue:16
+msgctxt "adverb"
+msgid "Next"
 msgstr ""
 
 #: src/components/MapTools.vue:60
@@ -708,7 +718,7 @@ msgctxt "verb"
 msgid "Open"
 msgstr ""
 
-#: ./src/App.vue:28
+#: ./src/App.vue:30
 msgctxt "verb"
 msgid "Update"
 msgstr ""

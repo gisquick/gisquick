@@ -7,8 +7,8 @@
     :transition="transition"
     :popup-class="popupClass"
     @update:open="close"
-    @click:out="close"
-    @keydown.esc="close"
+    @click:out="closeIfAllowed"
+    @keydown.esc="closeIfAllowed"
     @closed="$emit('closed')"
     @opened="$emit('opened')"
   >
@@ -53,6 +53,7 @@ export default {
       type: [String, Object],
       default: 'slide-y'
     },
+    persistent: Boolean,
     value: Boolean
   },
   data () {
@@ -85,6 +86,9 @@ export default {
       this.open = false
       this.$emit('close')
       this.$emit('input', false)
+    },
+    closeIfAllowed () {
+      !this.persistent && this.close()
     }
   }
 }

@@ -20,7 +20,7 @@ msgstr "První souřadnice"
 msgid "2nd coordinate"
 msgstr "Druhá souřadnice"
 
-#: src/App.vue:20
+#: src/App.vue:22
 msgid "A new version of the map application is available"
 msgstr "K dispozici je nová verze mapové aplikace"
 
@@ -39,11 +39,11 @@ msgstr "Přidat geometrii"
 msgid "Add new feature"
 msgstr "Přidat nový objekt"
 
-#: src/App.vue:39
+#: src/App.vue:41
 msgid "Add to Home screen?"
 msgstr "Přidat na plochu?"
 
-#: src/components/Identification.vue:141
+#: src/components/Identification.vue:147
 msgid "All visible layers"
 msgstr "Všechny viditelné vrstvy"
 
@@ -77,7 +77,7 @@ msgstr "Tabulka atributů"
 msgid "August"
 msgstr "Srpen"
 
-#: src/components/LoginDialog.vue:28
+#: src/components/LoginDialog.vue:25
 msgid "Authentication failed"
 msgstr "Ověření se nezdařilo"
 
@@ -85,7 +85,7 @@ msgstr "Ověření se nezdařilo"
 msgid "Back"
 msgstr "Zpátky"
 
-#: src/components/LoginDialog.vue:113
+#: src/components/LoginDialog.vue:110
 msgid "Back to Login"
 msgstr "Zpět k přihlášení"
 
@@ -108,7 +108,8 @@ msgstr "Zrušit"
 msgid "Clear attributes filters"
 msgstr "Vymazat filtry atributů"
 
-#: src/components/LocationTool.vue:20 src/UserDashboard.vue:109
+#: src/AppNotifications.vue:17 src/components/LocationTool.vue:20
+#: src/UserDashboard.vue:109
 msgid "Close"
 msgstr "Zavřít"
 
@@ -120,7 +121,7 @@ msgstr "obsahuje"
 msgid "Content"
 msgstr "Obsah"
 
-#: src/components/LoginDialog.vue:106
+#: src/components/LoginDialog.vue:103
 msgid "Continue as Guest"
 msgstr "Pokračovat jako host"
 
@@ -144,7 +145,7 @@ msgstr "Data"
 msgid "Data Filters"
 msgstr "Datové filtry"
 
-#: src/components/feature-editor/FeatureEditor.vue:88
+#: src/components/feature-editor/FeatureEditor.vue:89
 #: src/components/feature-editor/NewFeatureEditor.vue:43
 msgid "Data updated"
 msgstr "Údaje aktualizovány"
@@ -153,15 +154,15 @@ msgstr "Údaje aktualizovány"
 msgid "December"
 msgstr "Prosinec"
 
-#: src/components/feature-editor/FeatureEditor.vue:97
+#: src/components/feature-editor/FeatureEditor.vue:98
 msgid "Delete current object?"
 msgstr "Smazat aktuální objekt?"
 
-#: src/components/feature-editor/FeatureEditor.vue:54
+#: src/components/feature-editor/FeatureEditor.vue:55
 msgid "Delete object"
 msgstr "Odstranit objekt"
 
-#: src/components/feature-editor/FeatureEditor.vue:63
+#: src/components/feature-editor/FeatureEditor.vue:64
 msgid "Discard changes"
 msgstr "Zrušit změny"
 
@@ -173,6 +174,10 @@ msgstr "Zobrazit autorská práva"
 msgid "Distance"
 msgstr "Vzdálenost"
 
+#: src/AppNotifications.vue:53
+msgid "Don't show this message again"
+msgstr "Tuto zprávu již nezobrazovat"
+
 #: src/components/MobileAttributesTable.vue:351
 msgid "Edit"
 msgstr "Upravit"
@@ -181,15 +186,15 @@ msgstr "Upravit"
 msgid "Edit feature"
 msgstr "Upravit objekt"
 
-#: src/components/feature-editor/FeatureEditor.vue:31
+#: src/components/feature-editor/FeatureEditor.vue:32
 msgid "Edit geometry"
 msgstr "Upravit geometrii"
 
-#: src/components/LoginDialog.vue:154
+#: src/components/LoginDialog.vue:167
 msgid "Email"
 msgstr "Email"
 
-#: src/components/LoginDialog.vue:159
+#: src/components/LoginDialog.vue:172
 msgid "Email was sent to given email address."
 msgstr "Email byl odeslán na zadanou adresu."
 
@@ -197,7 +202,7 @@ msgstr "Email byl odeslán na zadanou adresu."
 msgid "empty"
 msgstr "nevyplněné hodnoty"
 
-#: src/components/LoginDialog.vue:155
+#: src/components/LoginDialog.vue:168
 msgid ""
 "Enter your email address below and we will email instructions for setting a "
 "new password."
@@ -210,7 +215,7 @@ msgstr ""
 msgid "equal to"
 msgstr "rovná se"
 
-#: src/components/feature-editor/FeatureEditor.vue:228
+#: src/components/feature-editor/FeatureEditor.vue:229
 #: src/components/feature-editor/NewFeatureEditor.vue:117
 #: src/ui/ListTable.vue:105 src/ui/Table.vue:211
 msgid "Error"
@@ -225,7 +230,7 @@ msgstr "Export"
 msgid "Failed to load data"
 msgstr "Data se nepodařilo načíst"
 
-#: src/components/LoginDialog.vue:158
+#: src/components/LoginDialog.vue:171
 msgid "Failed to process your request."
 msgstr "Zpracování vašeho požadavku se nezdařilo."
 
@@ -256,7 +261,7 @@ msgstr "Filtrovat podle hodnoty atributu"
 msgid "Filter to visible area"
 msgstr "Filtrovat viditelnou oblast"
 
-#: src/components/LoginDialog.vue:114
+#: src/components/LoginDialog.vue:111
 msgid "Forgot password?"
 msgstr "Zapomenuté heslo?"
 
@@ -293,7 +298,7 @@ msgstr "Identifikace"
 msgid "Image will be saved in lower resolution"
 msgstr "Obrázek bude uložen v nižším rozlišení"
 
-#: src/components/Identification.vue:149
+#: src/components/Identification.vue:155
 #: src/components/MobileAttributesTable.vue:345
 msgid "Info Panel"
 msgstr "Infopanel"
@@ -310,7 +315,7 @@ msgstr "Celé číslo,Celé číslo"
 msgid "Integer,Integer,..."
 msgstr "Celé číslo,..."
 
-#: src/App.vue:41
+#: src/App.vue:43
 msgid ""
 "It will give you the experience of a native app, with easy access and a "
 "standalone window without the browser's address bar and other controls."
@@ -338,7 +343,7 @@ msgstr "Klíčová slova"
 msgid "Last segment"
 msgstr "Poslední segment"
 
-#: src/components/Identification.vue:174
+#: src/components/Identification.vue:180
 #: src/components/MobileAttributesTable.vue:241
 msgid "Layer"
 msgstr "Vrstva"
@@ -371,7 +376,7 @@ msgstr "Načítám"
 msgid "Location"
 msgstr "Umístění"
 
-#: src/components/LoginDialog.vue:97 src/components/AppMenu.vue:49
+#: src/components/LoginDialog.vue:94 src/components/AppMenu.vue:49
 msgid "Login"
 msgstr "Přihlásit se"
 
@@ -387,7 +392,7 @@ msgstr "Březen"
 msgid "May"
 msgstr "Květen"
 
-#: src/components/Identification.vue:175 src/components/measure/Measure.vue:144
+#: src/components/Identification.vue:181 src/components/measure/Measure.vue:144
 #: src/components/MobileAttributesTable.vue:243
 #: src/components/print/Print.vue:82 src/UserDashboard.vue:210
 msgid "Menu"
@@ -416,7 +421,7 @@ msgid ""
 "own maps!"
 msgstr ""
 
-#: src/App.vue:46 src/components/feature-editor/FeatureEditor.vue:101
+#: src/App.vue:48 src/components/feature-editor/FeatureEditor.vue:102
 msgid "No"
 msgstr "Ne"
 
@@ -444,16 +449,16 @@ msgstr "nerovná se"
 msgid "not in"
 msgstr "neobsahují"
 
-#: src/App.vue:25
+#: src/App.vue:27
 msgid "Not now"
 msgstr "Teď ne"
 
-#: src/components/feature-editor/GenericEditForm.vue:63
+#: src/components/feature-editor/GenericEditForm.vue:66
 #: src/components/feature-editor/NumberField.vue:48
 msgid "Not valid integer number"
 msgstr "Neplatné celé číslo"
 
-#: src/components/feature-editor/GenericEditForm.vue:62
+#: src/components/feature-editor/GenericEditForm.vue:65
 #: src/components/feature-editor/NumberField.vue:47
 msgid "Not valid number"
 msgstr "Neplatné číslo"
@@ -503,7 +508,7 @@ msgstr "Překryvné vrstvy"
 msgid "Page size"
 msgstr "Počet řádků"
 
-#: src/components/LoginDialog.vue:153
+#: src/components/LoginDialog.vue:166
 msgid "Password"
 msgstr "Heslo"
 
@@ -515,7 +520,7 @@ msgstr "Obvod"
 msgid "Permalink"
 msgstr "Permalink"
 
-#: src/components/LoginDialog.vue:23
+#: src/components/LoginDialog.vue:20
 msgid "Permission denied"
 msgstr "Přístup odepřen"
 
@@ -539,7 +544,7 @@ msgstr "Publikovat projekt"
 msgid "Recent"
 msgstr "Nedávné"
 
-#: src/components/LoginDialog.vue:61
+#: src/components/LoginDialog.vue:58
 msgid "Reset Password"
 msgstr "Obnovit heslo"
 
@@ -553,7 +558,7 @@ msgstr "Rozlišení"
 msgid "Saturday"
 msgstr "Sobota"
 
-#: src/components/feature-editor/FeatureEditor.vue:73
+#: src/components/feature-editor/FeatureEditor.vue:74
 msgid "Save changes"
 msgstr "Uložit změny"
 
@@ -577,7 +582,7 @@ msgstr "Září"
 msgid "Sign in"
 msgstr "Přihlásit se"
 
-#: src/components/LoginDialog.vue:14
+#: src/components/LoginDialog.vue:11
 msgid "Sign In to Continue"
 msgstr "Přihlásit se"
 
@@ -600,11 +605,11 @@ msgstr "Velikost"
 msgid "Sunday"
 msgstr "Neděle"
 
-#: src/components/Identification.vue:148
+#: src/components/Identification.vue:154
 msgid "Table"
 msgstr "Tabulka"
 
-#: src/components/Identification.vue:150
+#: src/components/Identification.vue:156
 msgid "Table & Info Panel"
 msgstr "Tabulka & Infopanel"
 
@@ -645,7 +650,7 @@ msgstr "do"
 msgid "Updated"
 msgstr "Aktualizováno"
 
-#: src/components/feature-editor/FeatureEditor.vue:87
+#: src/components/feature-editor/FeatureEditor.vue:88
 #: src/components/feature-editor/NewFeatureEditor.vue:42
 msgid "Updating data"
 msgstr "Data se aktualizují"
@@ -660,7 +665,7 @@ msgid ""
 "your profile page."
 msgstr ""
 
-#: src/components/LoginDialog.vue:152
+#: src/components/LoginDialog.vue:165
 msgid "Username / Email"
 msgstr "Uživatelské jméno / Heslo"
 
@@ -676,7 +681,7 @@ msgstr "Středa"
 msgid "Welcome to the Gisquick"
 msgstr ""
 
-#: src/App.vue:49 src/components/feature-editor/FeatureEditor.vue:104
+#: src/App.vue:51 src/components/feature-editor/FeatureEditor.vue:105
 msgid "Yes"
 msgstr "Ano"
 
@@ -690,6 +695,11 @@ msgstr "Dosud jste nepublikovali žádný projekt!"
 #: src/components/MobileAttributesTable.vue:339
 msgid "Zoom to"
 msgstr "Přiblížit"
+
+#: src/AppNotifications.vue:16
+msgctxt "adverb"
+msgid "Next"
+msgstr "Dále"
 
 #: src/components/MapTools.vue:60
 msgctxt "noun"
@@ -716,7 +726,7 @@ msgctxt "verb"
 msgid "Open"
 msgstr "Otevřít"
 
-#: src/App.vue:28
+#: src/App.vue:30
 msgctxt "verb"
 msgid "Update"
 msgstr "Aktualizovat"

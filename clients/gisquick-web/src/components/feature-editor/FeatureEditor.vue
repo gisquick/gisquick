@@ -24,6 +24,7 @@
       <div class="toolbar f-row-ac">
         <v-btn
           class="icon flat"
+          :disabled="!permissions.edit_geom"
           :color="editGeometry ? 'primary' : ''"
           @click="editGeometry = !editGeometry"
         >

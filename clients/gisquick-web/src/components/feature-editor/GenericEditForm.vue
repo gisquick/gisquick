@@ -36,7 +36,7 @@ function toNumber (v) {
   return !isNaN(v) ? parseFloat(v) : v
 }
 function isTrueValue (v) {
-  return v === true || v == 1 || v?.toLowerCase() === 'true'
+  return v === true || v == 1 || v?.toLowerCase?.() === 'true'
 }
 
 export default {

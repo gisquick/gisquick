@@ -41,7 +41,11 @@ export default {
     activeNotifications () {
       if (this.confirmedNotifications) {
         const notifications = this.notifications ?? []
-        return notifications.filter(n => !this.confirmedNotifications.includes(`${this.user.username}:${n.id}`))
+        const userConfirmedNotifications = this.confirmedNotifications
+          .map(key => key.split(':'))
+          .filter(info => info[0] === this.user.username)
+          .map(info => info[1])
+        return notifications.filter(n => !userConfirmedNotifications.includes(n.id))
       }
       return []
     },
@@ -54,17 +58,31 @@ export default {
       }
     }
   },
-  async created () {
-    const confirmedNotifications = await get('confirmed-notifications') || []
-    // remove notifications older than threshold limit as cleanup routine
-    const day = 24 * 60 * 60
-    const limit = (new Date().getTime() / 1000) - 30 * day // in seconds
-    this.confirmedNotifications = confirmedNotifications.filter(key => parseInt(key.split(':')?.[1]) > limit)
+  watch: {
+    user: {
+      immediate: true,
+      async handler (user) {
+        /*
+        // with expiration of confirmed notifications
+        const confirmedNotifications = await get('confirmed-notifications') || []
+        const day = 24 * 60 * 60 // in seconds
+        const limit = (new Date().getTime() / 1000) - 30 * day
+        this.confirmedNotifications = confirmedNotifications.filter(key => parseInt(key.split(':')?.[2]) > limit)
+        */
+        this.confirmedNotifications = await get('confirmed-notifications') || []
+        this.notificationIndex = 0
+      }
+    }
   },
   methods: {
     async confirmNotification () {
       if (this.dontShowAgain) {
-        set('confirmed-notifications', [`${this.user.username}:${this.notification.id}`, ...this.confirmedNotifications])
+        // with expiration of confirmed notifications
+        // const confirmedAt = parseInt(new Date().getTime() / 1000)
+        // const confirmed = [`${this.user.username}:${this.notification.id}:${confirmedAt}`, ...this.confirmedNotifications]
+
+        const confirmed = [...this.confirmedNotifications, `${this.user.username}:${this.notification.id}`]
+        set('confirmed-notifications', confirmed)
         this.dontShowAgain = false
       }
       this.notificationIndex++

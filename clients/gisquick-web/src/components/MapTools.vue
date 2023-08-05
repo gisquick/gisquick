@@ -49,6 +49,10 @@ export default {
       identificationSettings: {
         identificationLayer: '',
         displayMode: 'both'
+      },
+      measureSettings: {
+        type: 'location',
+        state: null
       }
     }
   },
@@ -75,7 +79,8 @@ export default {
         name: 'measure',
         title: this.$pgettext('noun', 'Measure'),
         icon: 'ruler',
-        component: Measure
+        component: Measure,
+        data: this.measureSettings
       }
     },
     printTool () {

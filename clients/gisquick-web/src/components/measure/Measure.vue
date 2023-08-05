@@ -1,95 +1,140 @@
 <template>
   <portal to="main-panel">
     <div class="measure-form f-col light" key="measure">
-      <v-tabs-header :items="tabsItems" v-model="type"/>
-      <v-tabs class="mt-1" :items="tabsItems" v-model="type">
+      <v-tabs-header :items="tabsItems" :value="type" @input="$emit('update:type', $event)"/>
+      <v-tabs class="mt-1" height-transition :items="tabsItems" :value="type" @input="$emit('update:type', $event)">
         <template v-slot:location>
-          <div class="f-row">
-            <div class="field f-col">
+          <div class="f-col">
+            <div class="header location">
               <translate class="label">1st coordinate</translate>
-              <span class="value">{{ location.coord1 }}</span>
-            </div>
-            <div class="field f-col">
               <translate class="label">2nd coordinate</translate>
-              <span class="value">{{ location.coord2 }}</span>
+              <v-menu
+                class="ml-auto"
+                :aria-label="tr.Menu"
+                transition="slide-y"
+                align="rr;bb,tt"
+                :items="locationMenuItems"
+              >
+                <template v-slot:activator="{ toggle }">
+                  <v-btn :aria-label="tr.Menu" class="icon small" @click="toggle">
+                    <v-icon name="menu-dots"/>
+                  </v-btn>
+                </template>
+              </v-menu>
             </div>
-            <v-menu
-              :aria-label="tr.Menu"
-              transition="slide-y"
-              align="rr;bb,tt"
-              :items="locationMenuItems"
-            >
-              <template v-slot:activator="{ toggle }">
-                <v-btn :aria-label="tr.Menu" class="icon small" @click="toggle">
-                  <v-icon name="menu-dots"/>
+            <scroll-area class="list f-col">
+              <div
+                v-for="(l, i) in location.items"
+                :key="i"
+                class="item f-row-ac"
+                @mouseover="highlight(l.id)"
+                @mouseleave="highlight(null)"
+              >
+                <div class="order-label f-row-ac" v-text="i + 1"/>
+                <div class="field" v-text="l.coord1"/>
+                <div class="field" v-text="l.coord2"/>
+                <v-btn class="icon" @click="zoomTo(location.getFeature(l.id))">
+                  <v-icon name="zoom-to"/>
                 </v-btn>
-              </template>
-            </v-menu>
+                <v-btn class="icon" @click="location.remove(i)">
+                  <v-icon name="delete_forever"/>
+                </v-btn>
+              </div>
+            </scroll-area>
           </div>
         </template>
 
         <template v-slot:distance>
-          <div class="f-row">
-            <div class="field f-col">
-              <translate class="label">Last segment</translate>
-              <span class="value">{{ distance.lastSegment }}</span>
-            </div>
-            <div class="field f-col">
+          <div class="f-col">
+            <div class="header distance">
               <translate class="label">Total length</translate>
-              <span class="value">{{ distance.total }}</span>
+              <v-menu
+                :aria-label="tr.Menu"
+                transition="slide-y"
+                align="rr;bb,tt"
+                :items="distanceMenuItems"
+              >
+                <template v-slot:activator="{ toggle }">
+                  <v-btn :aria-label="tr.Menu" class="icon small" @click="toggle">
+                    <v-icon name="menu-dots"/>
+                  </v-btn>
+                </template>
+                <template v-slot:item-prepend(group-check)="{ item }">
+                  <v-icon :name="item.checked ? 'check' : ''" class="m-2"/>
+                </template>
+                <template v-slot:item(check)="{ item }">
+                  <span style="margin-left: 24px" class="f-grow" v-text="item.text"/>
+                  <v-icon :name="item.checked ? 'dot' : ''" class="p-2"/>
+                  <!-- <v-icon v-if="item.checked" name="dot" class="m-2"/> -->
+                </template>
+              </v-menu>
             </div>
-            <v-menu
-              :aria-label="tr.Menu"
-              transition="slide-y"
-              align="rr;bb,tt"
-              :items="distanceMenuItems"
-            >
-              <template v-slot:activator="{ toggle }">
-                <v-btn :aria-label="tr.Menu" class="icon small" @click="toggle">
-                  <v-icon name="menu-dots"/>
+            <scroll-area class="list f-col">
+              <div
+                v-for="(d, i) in distance.items"
+                :key="i"
+                class="item f-row-ac"
+                @mouseover="highlight(d.id)"
+                @mouseleave="highlight(null)"
+              >
+                <div class="order-label f-row-ac" v-text="i + 1"/>
+                <div class="field" v-text="d.length"/>
+                <v-btn class="icon" @click="zoomTo(distance.getFeature(d.id))">
+                  <v-icon name="zoom-to"/>
                 </v-btn>
-              </template>
-              <template v-slot:item-prepend(group-check)="{ item }">
-                <v-icon :name="item.checked ? 'check' : ''" class="m-2"/>
-              </template>
-              <template v-slot:item(check)="{ item }">
-                <span style="margin-left: 24px" class="f-grow" v-text="item.text"/>
-                <v-icon :name="item.checked ? 'dot' : ''" class="p-2"/>
-                <!-- <v-icon v-if="item.checked" name="dot" class="m-2"/> -->
-              </template>
-            </v-menu>
+                <v-btn class="icon" @click="distance.remove(i)">
+                  <v-icon name="delete_forever"/>
+                </v-btn>
+              </div>
+            </scroll-area>
           </div>
         </template>
 
         <template v-slot:area>
-          <div class="f-row">
-            <div class="field f-col">
+          <div class="f-col">
+            <div class="header area">
               <translate class="label">Perimeter</translate>
-              <span class="value">{{ area.perimeter }}</span>
-            </div>
-            <div class="field f-col">
               <translate class="label">Area</translate>
-              <span class="value">{{ area.area }}</span>
+              <v-menu
+                class="ml-auto"
+                :aria-label="tr.Menu"
+                transition="slide-y"
+                align="rr;bb,tt"
+                :items="areaMenuItems"
+              >
+                <template v-slot:activator="{ toggle }">
+                  <v-btn :aria-label="tr.Menu" class="icon small" @click="toggle">
+                    <v-icon name="menu-dots"/>
+                  </v-btn>
+                </template>
+                <template v-slot:item-prepend(group-check)="{ item }">
+                  <v-icon :name="item.checked ? 'check' : ''" class="m-2"/>
+                </template>
+                <template v-slot:item(check)="{ item }">
+                  <span style="margin-left: 24px" class="f-grow" v-text="item.text"/>
+                  <v-icon :name="item.checked ? 'dot' : ''" class="p-2"/>
+                </template>
+              </v-menu>
             </div>
-            <v-menu
-              :aria-label="tr.Menu"
-              transition="slide-y"
-              align="rr;bb,tt"
-              :items="areaMenuItems"
-            >
-              <template v-slot:activator="{ toggle }">
-                <v-btn :aria-label="tr.Menu" class="icon small" @click="toggle">
-                  <v-icon name="menu-dots"/>
+            <scroll-area class="list f-col">
+              <div
+                v-for="(a, i) in area.items"
+                :key="i"
+                class="item f-row-ac"
+                @mouseover="highlight(a.id)"
+                @mouseleave="highlight(null)"
+              >
+                <div class="order-label f-row-ac" v-text="i + 1"/>
+                <div class="field" v-text="a.perimeter"/>
+                <div class="field" v-text="a.area"/>
+                <v-btn class="icon" @click="zoomTo(area.getFeature(a.id))">
+                  <v-icon name="zoom-to"/>
                 </v-btn>
-              </template>
-              <template v-slot:item-prepend(group-check)="{ item }">
-                <v-icon :name="item.checked ? 'check' : ''" class="m-2"/>
-              </template>
-              <template v-slot:item(check)="{ item }">
-                <span style="margin-left: 24px" class="f-grow" v-text="item.text"/>
-                <v-icon :name="item.checked ? 'dot' : ''" class="p-2"/>
-              </template>
-            </v-menu>
+                <v-btn class="icon" @click="area.remove(i)">
+                  <v-icon name="delete_forever"/>
+                </v-btn>
+              </div>
+            </scroll-area>
           </div>
         </template>
       </v-tabs>
@@ -116,32 +161,32 @@ function observable (obj, ...attrs) {
 
 let activeTool
 
-const data = {
-  type: 'location',
-  formatter: {
-    length: null,
-    area: null
-  },
-  unitSystem: null
-}
-const measureTools = {
-  location: LocationMeasure(),
-  distance: DistanceMeasure(),
-  area: AreaMeasure()
-}
-
 export default {
   name: 'measure',
   components: { VTabs, VTabsHeader },
   // mixins: [DynamicHeight],
+  props: {
+    type: String,
+    state: Object
+  },
   data () {
-    return data
+    return this.state || {
+    // return {
+      tools: null,
+      formatter: {
+        length: null,
+        area: null
+      },
+      unitSystem: null,
+    }
   },
   computed: {
     ...mapState(['project']),
     tr () {
       return {
-        Menu: this.$gettext('Menu')
+        Menu: this.$gettext('Menu'),
+        CoordinateSystem: this.$gettext('Coordinate system'),
+        Units: this.$gettext('Units')
       }
     },
     availableUnits () {
@@ -159,13 +204,13 @@ export default {
       return LocationUnits
     },
     location () {
-      return observable(measureTools.location, 'coord1', 'coord2', 'format')
+      return this.tools.location
     },
     distance () {
-      return observable(measureTools.distance, 'total', 'lastSegment')
+      return this.tools.distance
     },
     area () {
-      return observable(measureTools.area, 'area', 'perimeter')
+      return this.tools.area
     },
     tabsItems () {
       return [
@@ -179,57 +224,69 @@ export default {
         text: cs.name,
         key: cs.name,
         slot: 'check',
-        checked: this.location.format.name === cs.name,
+        checked: this.location?.format?.name === cs.name,
         action: () => this.location.setFormat(cs)
       }))
       return [
-        {
-          text: this.$gettext('Zoom to'),
-          icon: 'zoom-to',
-          // disabled: !this.location.feature,
-          action: () => this.zoomTo(this.location.feature)
-        },
+        { text: this.$gettext('Clear'), icon: 'point', action: () => this.clear() },
+        { text: this.$gettext('Clear all'), action: () => this.clearAll() },
         { separator: true, text: this.$gettext('Coordinate systems') },
         ...csItems
       ]
     },
     distanceMenuItems () {
       return [
-        { text: this.$gettext('Zoom to'), icon: 'zoom-to', action: () => this.zoomTo(this.distance.feature) },
+        { text: this.$gettext('Clear'), icon: 'line', action: () => this.clear() },
+        { text: this.$gettext('Clear all'), action: () => this.clearAll() },
         { separator: true, text: this.$gettext('Units') },
         ...this.createUnitsMenu('length')
       ]
     },
     areaMenuItems () {
       return [
-        { text: this.$gettext('Zoom to'), icon: 'zoom-to', action: () => this.zoomTo(this.distance.feature) },
+        { text: this.$gettext('Clear'), icon: 'polygon', action: () => this.clear() },
+        { text: this.$gettext('Clear all'), action: () => this.clearAll() },
         { separator: true, text: this.$gettext('Units') },
         ...this.createUnitsMenu('area')
       ]
     }
   },
   created () {
-    if (!this.location.format) {
-      this.location.setFormat(this.coordinateSystems[0])
+    if (!this.tools) {
+      const tools = Object.freeze({
+        location: LocationMeasure(),
+        distance: DistanceMeasure(),
+        area: AreaMeasure()
+      })
+      observable(tools.location, 'coord1', 'coord2', 'format', 'items')
+      observable(tools.distance, 'length', 'items')
+      observable(tools.area, 'area', 'perimeter', 'items')
+      this.tools = tools
+      tools.location.setFormat(this.coordinateSystems[0])
       this.setUnits(this.availableUnits[0])
+      this.$emit('update:state', this.$data)
     }
+    activeTool = this.tools[this.type]
   },
   beforeDestroy () {
+    this.$emit('update:state', this.$data)
     this.deactivate()
+    this.$map.getViewport().style.cursor = ''
   },
   mounted () {
     if (activeTool) {
       activeTool.activate(this.$map)
     }
+    // this.location.setVisibility(true)
+    // this.distance.setVisibility(true)
+    // this.area.setVisibility(true)
+    this.$map.getViewport().style.cursor = 'crosshair'
   },
   deactivated () {
     this.deactivate()
   },
   watch: {
-    type: {
-      immediate: true,
-      handler: 'onTabChange'
-    }
+    type: 'onTabChange'
   },
   methods: {
     onTabChange (tab) {
@@ -277,10 +334,24 @@ export default {
         })
       }
     },
+    clear () {
+      activeTool.clear()
+    },
+    clearAll () {
+      this.location.clear()
+      this.distance.clear()
+      this.area.clear()
+    },
+    highlight (index) {
+      activeTool.highlight(index)
+    },
     deactivate () {
       if (activeTool) {
         activeTool.deactivate()
       }
+      // this.location.setVisibility(false)
+      // this.distance.setVisibility(false)
+      // this.area.setVisibility(false)
     }
   }
 }
@@ -290,28 +361,72 @@ export default {
 .measure-form {
   min-width: 0;
   max-width: 100%;
-  .menu {
-    align-self: flex-start;
-    .btn {
-      margin: 4px;
-    }
-  }
   .field {
     flex: 1;
-    margin: 6px;
+    margin-inline: 6px;
+    align-items: flex-end;
+    font-size: 14px;
+    height: 24px;
+    white-space: nowrap;
+    border-bottom: 1px solid #ccc;
+  }
+  .list {
+    max-height: 40vh;
+    min-height: 3px;
+    .order-label {
+      background-color: #333;
+      color: #ffff;
+      border-radius: 50%;
+      width: 16px;
+      height: 16px;
+      margin: 3px;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 500;
+    }
+    .item {
+      padding-block: 4px;
+      margin-block: 2px;
+      &:hover {
+        background-color: #eee;
+      }
+      .btn {
+        --gutter: 1px;
+        padding: 2px;
+      }
+    }
+  }
+  .header {
+    padding-left: 24px;
+    display: grid;
+    align-items: center;
+    background-color: #f5f5f5;
+    border-block: 1px solid #ddd;
+    .menu .btn {
+      margin: 2px;
+    } 
+    &.location, &.area {
+      grid-template-columns: 1fr 1fr 48px;
+    }
+    &.distance {
+      grid-template-columns: 1fr auto;
+    }
     .label {
-      color: #777;
+      color: #646464;
       font-size: 12px;
-      user-select: none;
+      line-height: 1.2;
+      flex-grow: 1;
+      padding: 2px 6px;
     }
-    .value {
-      display: flex;
-      align-items: flex-end;
-      font-size: 14px;
-      height: 30px;
-      white-space: nowrap;
-      border-bottom: 1px solid #ccc;
-    }
+  }
+  .select {
+    background-color: #f5f5f5;
+    // --gutter: 0;
+    margin: 0;
+    padding: 3px 6px;
+    border-block: 1px solid #ddd;
+    font-size: 15px;
+    padding-top: 6px;
   }
 }
 </style>

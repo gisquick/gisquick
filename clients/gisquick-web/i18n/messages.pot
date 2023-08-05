@@ -6,7 +6,7 @@ msgstr ""
 msgid "1st coordinate"
 msgstr ""
 
-#: ./src/components/measure/Measure.vue:13
+#: ./src/components/measure/Measure.vue:10
 msgid "2nd coordinate"
 msgstr ""
 
@@ -33,7 +33,7 @@ msgstr ""
 msgid "Add to Home screen?"
 msgstr ""
 
-#: src/components/Identification.vue:147
+#: src/components/Identification.vue:148
 msgid "All visible layers"
 msgstr ""
 
@@ -51,8 +51,8 @@ msgstr ""
 msgid "April"
 msgstr ""
 
-#: ./src/components/measure/Measure.vue:71
-#: src/components/measure/Measure.vue:174
+#: ./src/components/measure/Measure.vue:97
+#: src/components/measure/Measure.vue:221
 msgid "Area"
 msgstr ""
 
@@ -60,7 +60,7 @@ msgstr ""
 msgid "Attributes"
 msgstr ""
 
-#: src/components/MapTools.vue:94
+#: src/components/MapTools.vue:102
 msgid "Attributes Table"
 msgstr ""
 
@@ -94,6 +94,14 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
+#: src/components/measure/Measure.vue:188
+msgid "Clear"
+msgstr ""
+
+#: src/components/measure/Measure.vue:189
+msgid "Clear all"
+msgstr ""
+
 #: ./src/components/AttributesTable.vue:142
 #: src/components/MobileAttributesTable.vue:323
 msgid "Clear attributes filters"
@@ -117,7 +125,7 @@ msgstr ""
 msgid "Continue as Guest"
 msgstr ""
 
-#: src/components/measure/Measure.vue:192
+#: src/components/measure/Measure.vue:190
 msgid "Coordinate systems"
 msgstr ""
 
@@ -162,11 +170,11 @@ msgstr ""
 msgid "Display attributions"
 msgstr ""
 
-#: src/components/measure/Measure.vue:173
+#: src/components/measure/Measure.vue:220
 msgid "Distance"
 msgstr ""
 
-#: src/AppNotifications.vue:53
+#: src/AppNotifications.vue:57
 msgid "Don't show this message again"
 msgstr ""
 
@@ -215,7 +223,7 @@ msgstr ""
 msgid "Export"
 msgstr ""
 
-#: src/components/AttributesTable.vue:448
+#: src/components/AttributesTable.vue:483
 msgid "Failed to load data"
 msgstr ""
 
@@ -287,7 +295,7 @@ msgstr ""
 msgid "Image will be saved in lower resolution"
 msgstr ""
 
-#: src/components/Identification.vue:155
+#: src/components/Identification.vue:156
 #: src/components/MobileAttributesTable.vue:345
 msgid "Info Panel"
 msgstr ""
@@ -324,11 +332,7 @@ msgstr ""
 msgid "Keywords list"
 msgstr ""
 
-#: ./src/components/measure/Measure.vue:34
-msgid "Last segment"
-msgstr ""
-
-#: src/components/Identification.vue:180
+#: src/components/Identification.vue:181
 #: src/components/MobileAttributesTable.vue:241
 msgid "Layer"
 msgstr ""
@@ -337,7 +341,7 @@ msgstr ""
 msgid "Layers"
 msgstr ""
 
-#: src/components/print/Print.vue:83
+#: src/components/print/Print.vue:87
 msgid "Layout"
 msgstr ""
 
@@ -357,7 +361,7 @@ msgstr ""
 msgid "Loading"
 msgstr ""
 
-#: src/components/measure/Measure.vue:172
+#: src/components/measure/Measure.vue:219
 msgid "Location"
 msgstr ""
 
@@ -379,10 +383,10 @@ msgstr ""
 msgid "May"
 msgstr ""
 
-#: src/components/Identification.vue:181
-#: src/components/measure/Measure.vue:144
+#: src/components/Identification.vue:182
+#: src/components/measure/Measure.vue:187
 #: src/components/MobileAttributesTable.vue:243
-#: src/components/print/Print.vue:82
+#: src/components/print/Print.vue:86
 #: src/UserDashboard.vue:210
 msgid "Menu"
 msgstr ""
@@ -486,7 +490,7 @@ msgstr ""
 msgid "Opacity of overlay layers"
 msgstr ""
 
-#: src/components/print/Print.vue:110
+#: src/components/print/Print.vue:114
 msgid "Output format"
 msgstr ""
 
@@ -503,7 +507,7 @@ msgstr ""
 msgid "Password"
 msgstr ""
 
-#: ./src/components/measure/Measure.vue:67
+#: ./src/components/measure/Measure.vue:96
 msgid "Perimeter"
 msgstr ""
 
@@ -519,7 +523,7 @@ msgstr ""
 msgid "Print Preview"
 msgstr ""
 
-#: src/components/print/Print.vue:112
+#: src/components/print/Print.vue:116
 msgid "Print quality"
 msgstr ""
 
@@ -597,11 +601,11 @@ msgstr ""
 msgid "Sunday"
 msgstr ""
 
-#: src/components/Identification.vue:154
+#: src/components/Identification.vue:155
 msgid "Table"
 msgstr ""
 
-#: src/components/Identification.vue:156
+#: src/components/Identification.vue:157
 msgid "Table & Info Panel"
 msgstr ""
 
@@ -617,7 +621,7 @@ msgstr ""
 msgid "Topics"
 msgstr ""
 
-#: ./src/components/measure/Measure.vue:38
+#: ./src/components/measure/Measure.vue:50
 msgid "Total length"
 msgstr ""
 
@@ -629,8 +633,7 @@ msgstr ""
 msgid "Type"
 msgstr ""
 
-#: src/components/measure/Measure.vue:199
-#: src/components/measure/Measure.vue:206
+#: src/components/measure/Measure.vue:191
 msgid "Units"
 msgstr ""
 
@@ -680,9 +683,6 @@ msgstr ""
 msgid "You didn't publish any project yet!"
 msgstr ""
 
-#: src/components/measure/Measure.vue:187
-#: src/components/measure/Measure.vue:198
-#: src/components/measure/Measure.vue:205
 #: src/components/MobileAttributesTable.vue:339
 msgid "Zoom to"
 msgstr ""
@@ -692,17 +692,17 @@ msgctxt "adverb"
 msgid "Next"
 msgstr ""
 
-#: src/components/MapTools.vue:60
+#: src/components/MapTools.vue:64
 msgctxt "noun"
 msgid "Identification"
 msgstr ""
 
-#: src/components/MapTools.vue:76
+#: src/components/MapTools.vue:80
 msgctxt "noun"
 msgid "Measure"
 msgstr ""
 
-#: src/components/MapTools.vue:84
+#: src/components/MapTools.vue:89
 msgctxt "noun"
 msgid "Print"
 msgstr ""

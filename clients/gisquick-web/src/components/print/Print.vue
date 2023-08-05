@@ -53,6 +53,7 @@
         :format="format"
         :dpi="dpi"
         :labels-data="labelsData"
+        :draw-measurements="hasMeasurements"
         @close="$emit('close')"
       />
     </portal>
@@ -68,6 +69,9 @@ let state = null
 export default {
   name: 'print',
   components: { PrintPreview },
+  props: {
+    measure: Object
+  },
   data: () => state || ({
     layout: null,
     format: 'pdf',
@@ -121,6 +125,12 @@ export default {
         return this.layout.labels.filter(label => !label.startsWith('gislab_'))
       }
       return []
+    },
+    hasMeasurements () {
+      if (this.measure.state?.tools) {
+        return Object.values(this.measure.state.tools).some(tool => tool.items.length > 0)
+      }
+      return false
     }
   },
   created () {

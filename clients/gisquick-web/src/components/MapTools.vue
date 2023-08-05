@@ -89,7 +89,10 @@ export default {
         title: this.$pgettext('noun', 'Print'),
         icon: 'printer',
         component: Print,
-        disabled: !this.project.config.print_composers || this.project.config.print_composers.length < 1
+        disabled: !this.project.config.print_composers || this.project.config.print_composers.length < 1,
+        data: {
+          measure: this.measureSettings
+        }
       }
     },
     attributeTableTool () {

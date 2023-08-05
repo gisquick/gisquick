@@ -185,7 +185,9 @@ export default {
     tr () {
       return {
         Menu: this.$gettext('Menu'),
-        CoordinateSystem: this.$gettext('Coordinate system'),
+        Clear: this.$gettext('Clear'),
+        ClearAll: this.$gettext('Clear all'),
+        CoordinateSystems: this.$gettext('Coordinate systems'),
         Units: this.$gettext('Units')
       }
     },
@@ -228,25 +230,25 @@ export default {
         action: () => this.location.setFormat(cs)
       }))
       return [
-        { text: this.$gettext('Clear'), icon: 'point', action: () => this.clear() },
-        { text: this.$gettext('Clear all'), action: () => this.clearAll() },
-        { separator: true, text: this.$gettext('Coordinate systems') },
+        { text: this.tr.Clear, icon: 'point', action: () => this.clear() },
+        { text: this.tr.ClearAll, action: () => this.clearAll() },
+        { separator: true, text: this.tr.CoordinateSystems },
         ...csItems
       ]
     },
     distanceMenuItems () {
       return [
-        { text: this.$gettext('Clear'), icon: 'line', action: () => this.clear() },
-        { text: this.$gettext('Clear all'), action: () => this.clearAll() },
-        { separator: true, text: this.$gettext('Units') },
+        { text: this.tr.Clear, icon: 'line', action: () => this.clear() },
+        { text: this.tr.ClearAll, action: () => this.clearAll() },
+        { separator: true, text: this.tr.Units },
         ...this.createUnitsMenu('length')
       ]
     },
     areaMenuItems () {
       return [
-        { text: this.$gettext('Clear'), icon: 'polygon', action: () => this.clear() },
-        { text: this.$gettext('Clear all'), action: () => this.clearAll() },
-        { separator: true, text: this.$gettext('Units') },
+        { text: this.tr.Clear, icon: 'polygon', action: () => this.clear() },
+        { text: this.tr.ClearAll, action: () => this.clearAll() },
+        { separator: true, text: this.tr.Units },
         ...this.createUnitsMenu('area')
       ]
     }

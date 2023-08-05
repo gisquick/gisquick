@@ -59,11 +59,12 @@ export function openPrintWindow (layout, url) {
   }
   // popup = window.open(url)
   popup = window.open()
-  const pageOrientation = (layout.width > layout.height) ? 'landscape' : 'portrait'
+  // const pageOrientation = (layout.width > layout.height) ? 'landscape' : 'portrait'
+  // size: ${pageOrientation};
   popup.document.head.innerHTML = `
     <style type="text/css" media="print">
       @page {
-        size: ${pageOrientation};
+        size: ${layout.width}mm ${layout.height}mm;
         margin: 0;
       }
       html, body {

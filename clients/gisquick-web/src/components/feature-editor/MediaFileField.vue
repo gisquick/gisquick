@@ -134,8 +134,6 @@ export default {
       immediate: true,
       handler () {
         this.newFile = null
-        this.error = false
-        this.widgetError = false
       }
     },
     newFile () {
@@ -146,6 +144,11 @@ export default {
       immediate: true,
       handler (err) {
         this.$emit('update:status', err ? 'error' : 'ok')
+      }
+    },
+    value (v) {
+      if (v === this.initial) {
+        this.newFile = null
       }
     }
   },

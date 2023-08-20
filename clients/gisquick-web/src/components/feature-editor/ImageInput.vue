@@ -363,7 +363,7 @@ export default {
     confirmImage () {
       if (this.editorImage) {
         const { width, height, data, src } = this.editorImage
-        const filename = this.newImage?.filename || Path.basename(this.inputFile)
+        const filename = this.newImage?.filename || Path.basename(this.inputFile?.name || this.value)
         const image = {
           data,
           src,

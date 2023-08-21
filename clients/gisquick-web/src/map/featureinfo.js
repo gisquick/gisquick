@@ -18,10 +18,11 @@ function SimpleFilter (name) {
 }
 
 function LikeFilter (attribute, value) {
+  const literal = value.includes('%') ? value : `%${value}%`
   return `
     <ogc:PropertyIsLike wildCard="%" singleChar="_" escapeChar="\\" matchCase="false">
       <ogc:PropertyName>${attribute}</ogc:PropertyName>
-      <ogc:Literal>%${value}%</ogc:Literal>
+      <ogc:Literal>${literal}</ogc:Literal>
     </ogc:PropertyIsLike>`
 }
 
@@ -133,7 +134,7 @@ const AttributeFilters = {
 // </ogc:PropertyIsNull>
 // `
 
-function _layerFeaturesQuery (layer, geom, filters, propertyNames = []) {
+export function formatLayerQuery (layer, geom, filters, propertyNames = []) {
   const ogcFilters = []
   if (geom) {
     const gmlGeom = new GML3({
@@ -185,7 +186,7 @@ export function getFeatureQuery (...queries) {
 }
 
 export function layerFeaturesQuery (layer, geom, filters, propertyNames = []) {
-  return getFeatureQuery(_layerFeaturesQuery(layer, geom, filters, propertyNames))
+  return getFeatureQuery(formatLayerQuery(layer, geom, filters, propertyNames))
 }
 
 export function layersFeaturesQuery (layers, geomFilter) {
@@ -201,7 +202,7 @@ export function layersFeaturesQuery (layers, geomFilter) {
           geomsByProj[l.projection] = geom.clone().transform(projection, l.projection)
         }
       })
-    return getFeatureQuery(...layers.map(l => _layerFeaturesQuery(l, geomsByProj[l.projection])))
+    return getFeatureQuery(...layers.map(l => formatLayerQuery(l, geomsByProj[l.projection])))
   }
-  return getFeatureQuery(...layers.map(l => _layerFeaturesQuery(l)))
+  return getFeatureQuery(...layers.map(l => formatLayerQuery(l)))
 }

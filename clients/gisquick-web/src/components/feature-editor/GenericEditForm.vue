@@ -17,7 +17,7 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 import keyBy from 'lodash/keyBy'
 import mapValues from 'lodash/mapValues'
 // import NumberField from './NumberField.vue'

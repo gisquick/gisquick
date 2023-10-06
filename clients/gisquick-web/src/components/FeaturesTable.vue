@@ -49,7 +49,7 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 import clamp from 'lodash/clamp'
 import keyBy from 'lodash/keyBy'
 import { mapState } from 'vuex'

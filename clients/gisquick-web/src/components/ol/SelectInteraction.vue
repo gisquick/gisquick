@@ -1,4 +1,4 @@
-<script>
+<script lang="js">
 import Select from 'ol/interaction/Select'
 import Collection from 'ol/Collection'
 

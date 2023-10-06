@@ -19,7 +19,7 @@
   </component>
 </template>
 
-<script>
+<script lang="js">
 import { colorVars } from './utils/colors'
 import VSpinner from './Spinner.vue'
 

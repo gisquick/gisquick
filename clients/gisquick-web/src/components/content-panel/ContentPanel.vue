@@ -60,7 +60,7 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 import { mapState, mapGetters } from 'vuex'
 
 import VTabs from '@/ui/Tabs.vue'

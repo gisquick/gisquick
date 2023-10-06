@@ -1,4 +1,4 @@
-<script>
+<script lang="js">
 function colorStyle (color) {
   return color.startsWith('#') ? color : `var(--color-${color})`
 }

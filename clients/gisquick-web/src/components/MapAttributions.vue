@@ -4,7 +4,7 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 import Attribution from 'ol/control/Attribution'
 import MenuItems from '@/components/MenuItems.vue'
 

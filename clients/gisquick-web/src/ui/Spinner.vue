@@ -30,7 +30,7 @@
   </svg>
 </template>
 
-<script>
+<script lang="js">
 export default {
   props: {
     size: {
@@ -94,7 +94,7 @@ export default {
   50% {
     stroke-dasharray: calc(1.6px * var(--diameter)), calc(2px * var(--diameter));
     stroke-dashoffset: calc(-0.8px * var(--diameter));
-    
+
   }
   100% {
     stroke-dasharray: calc(0.9px * var(--diameter)), calc(3.5px * var(--diameter));

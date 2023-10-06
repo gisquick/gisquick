@@ -1,4 +1,4 @@
-<script>
+<script lang="jsx">
 import Vue from 'vue'
 import Overlay from 'ol/Overlay'
 

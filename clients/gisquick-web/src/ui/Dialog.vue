@@ -34,7 +34,7 @@
   </popup-content>
 </template>
 
-<script>
+<script lang="js">
 import PopupContent from './PopupContent.vue'
 
 export default {

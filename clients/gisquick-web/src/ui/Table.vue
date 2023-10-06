@@ -92,7 +92,7 @@
   </scroll-area>
 </template>
 
-<script>
+<script lang="js">
 import difference from 'lodash/difference'
 import SortControl from './SortControl.vue'
 import VCollapsible from './Collapsible.vue'

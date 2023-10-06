@@ -217,7 +217,7 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 import pickBy from 'lodash/pickBy'
 import { mapState } from 'vuex'
 import AttributesTable from './AttributesTable.vue'

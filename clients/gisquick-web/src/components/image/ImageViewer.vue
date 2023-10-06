@@ -17,7 +17,7 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 import ImageViewer from './BaseImageViewer'
 
 export default {

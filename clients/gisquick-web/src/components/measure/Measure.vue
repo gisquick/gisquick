@@ -142,7 +142,7 @@
   </portal>
 </template>
 
-<script>
+<script lang="js">
 import Vue from 'vue'
 import { mapState } from 'vuex'
 import { getCenter } from 'ol/extent'
@@ -406,7 +406,7 @@ export default {
     border-block: 1px solid #ddd;
     .menu .btn {
       margin: 2px;
-    } 
+    }
     &.location, &.area {
       grid-template-columns: 1fr 1fr 48px;
     }

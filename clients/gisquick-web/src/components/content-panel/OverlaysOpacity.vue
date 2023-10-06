@@ -20,7 +20,7 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 import { hexColor } from '@/ui/utils/colors'
 
 export default {

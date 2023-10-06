@@ -48,7 +48,7 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 import { mapState } from 'vuex'
 import Feature from 'ol/Feature'
 import format from 'date-fns/format'

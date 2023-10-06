@@ -46,7 +46,7 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 import { mapState } from 'vuex'
 import UserDashboard from '@/UserDashboard.vue'
 import SvgLogo from '@/assets/text_logo_dark.svg?inline'

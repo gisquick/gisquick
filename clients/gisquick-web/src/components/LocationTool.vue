@@ -24,7 +24,7 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 import Feature from 'ol/Feature'
 import Point from 'ol/geom/Point'
 import Geolocation from 'ol/Geolocation'

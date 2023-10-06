@@ -18,7 +18,7 @@
   </v-text-field>
 </template>
 
-<script>
+<script lang="js">
 function isInteger (strValue) {
   return /^-?\d+$/.test(strValue)
 }

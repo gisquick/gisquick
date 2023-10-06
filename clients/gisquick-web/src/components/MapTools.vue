@@ -29,7 +29,7 @@
   </div>
 </template>
 
-<script>
+<script lang="jsx">
 import { mapState } from 'vuex'
 
 import AttributesTable from '@/components/AttributesTable.vue'

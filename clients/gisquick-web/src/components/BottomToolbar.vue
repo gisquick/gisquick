@@ -11,7 +11,7 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 import { mapState } from 'vuex'
 import { unByKey } from 'ol/Observable'
 import { createStringXY } from 'ol/coordinate'

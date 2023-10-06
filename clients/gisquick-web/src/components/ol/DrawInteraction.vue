@@ -1,4 +1,4 @@
-<script>
+<script lang="js">
 import Draw from 'ol/interaction/Draw'
 import Collection from 'ol/Collection'
 

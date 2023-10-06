@@ -39,7 +39,7 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 import FileSaver from 'file-saver'
 import ImageViewer from './ImageViewer.vue'
 import BrokenPhotoSvg from '@/assets/photo-broken.svg?inline'

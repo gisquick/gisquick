@@ -58,7 +58,7 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 import { mapState } from 'vuex'
 import { set, get } from 'idb-keyval'
 

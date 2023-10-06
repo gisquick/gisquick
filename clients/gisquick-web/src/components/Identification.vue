@@ -69,7 +69,7 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 import { mapState } from 'vuex'
 import partition from 'lodash/partition'
 import isEqual from 'lodash/isEqual'

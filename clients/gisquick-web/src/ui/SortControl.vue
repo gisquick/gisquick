@@ -16,7 +16,7 @@
   </svg>
 </template>
 
-<script>
+<script lang="js">
 export default {
   props: {
     sort: String // 'asc'|'desc'

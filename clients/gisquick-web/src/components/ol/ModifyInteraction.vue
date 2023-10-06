@@ -1,5 +1,5 @@
 
-<script>
+<script lang="js">
 import Modify from 'ol/interaction/Modify'
 import Collection from 'ol/Collection'
 

@@ -118,7 +118,7 @@
   </v-dialog>
 </template>
 
-<script>
+<script lang="js">
 import { TaskState, watchTask } from '@/tasks'
 
 // chrome autofill behaviour can be troublemaker:

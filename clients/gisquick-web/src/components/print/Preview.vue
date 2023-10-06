@@ -48,7 +48,7 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 import { mapState, mapGetters } from 'vuex'
 import { boundingExtent } from 'ol/extent'
 import axios from 'axios'

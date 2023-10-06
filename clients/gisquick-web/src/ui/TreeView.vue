@@ -1,4 +1,4 @@
-<script>
+<script lang="jsx">
 import VCollapsible from './Collapsible.vue'
 
 function addStyle (cmp, style) {

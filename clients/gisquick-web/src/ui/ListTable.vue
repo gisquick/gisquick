@@ -40,7 +40,7 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 import difference from 'lodash/difference'
 const formats = {}
 

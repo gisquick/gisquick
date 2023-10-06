@@ -13,7 +13,7 @@
   </v-menu>
 </template>
 
-<script>
+<script lang="js">
 import Vue from 'vue'
 import { mapState } from 'vuex'
 import FullscreenMixin from '@/mixins/Fullscreen'

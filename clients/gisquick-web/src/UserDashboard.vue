@@ -117,7 +117,7 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 import { mapState } from 'vuex'
 import orderBy from 'lodash/orderBy'
 import MapImg from '@/assets/map.svg?inline'

@@ -164,7 +164,7 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 import Path from 'path'
 
 import ImageEditor, { resizeImage } from '@/components/image/ImageEditor.vue'

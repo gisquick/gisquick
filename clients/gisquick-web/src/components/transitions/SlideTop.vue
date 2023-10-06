@@ -7,7 +7,7 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 export default {
   functional: true
 }

@@ -98,7 +98,7 @@
   </v-tree-view>
 </template>
 
-<script>
+<script lang="js">
 import { mapState } from 'vuex'
 
 const VectorIcons = {

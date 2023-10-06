@@ -60,7 +60,7 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 import { mapState } from 'vuex'
 import PrintPreview from './Preview.vue'
 

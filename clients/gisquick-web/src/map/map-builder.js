@@ -6,6 +6,7 @@ import TileWMS from 'ol/source/TileWMS'
 // import BingMaps from 'ol/source/BingMaps'
 import OSM from 'ol/source/OSM'
 import XYZ from 'ol/source/XYZ'
+import TileArcGISRest from 'ol/source/TileArcGISRest'
 import ImageLayer from 'ol/layer/Image'
 import TileLayer from 'ol/layer/Tile'
 import TileGrid from 'ol/tilegrid/TileGrid'
@@ -239,6 +240,18 @@ export async function createBaseLayer (layerConfig, projectConfig = {}) {
         url: layerConfig.url,
         attributions
       })
+    })
+  }
+  if (provider_type === 'arcgismapserver') {
+    // for cached tiles, check https://stackoverflow.com/questions/71393178/openlayers-tilearcgisrest-vs-xyz
+    const { url, ...params } = layerConfig.source
+    return new TileLayer({
+      source: new TileArcGISRest({
+        url,
+        attributions,
+        params: Object.entries(params).reduce((r, [k, v]) => (r[k.toUpperCase()] = v, r), {})
+      }),
+      extent: layerConfig.extent
     })
   }
   if (type === 'wms' || provider_type === 'wms') {

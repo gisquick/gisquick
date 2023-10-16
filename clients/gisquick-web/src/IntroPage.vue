@@ -49,8 +49,8 @@
 <script lang="js">
 import { mapState } from 'vuex'
 import UserDashboard from '@/UserDashboard.vue'
-import SvgLogo from '@/assets/text_logo_dark.svg?inline'
-import SvgMap from '@/assets/map.svg?inline'
+import SvgLogo from '@/assets/text_logo_dark.svg?component'
+import SvgMap from '@/assets/map.svg?component'
 
 export default {
   components: { UserDashboard, SvgLogo, SvgMap },

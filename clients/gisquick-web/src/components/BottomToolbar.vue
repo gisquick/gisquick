@@ -16,6 +16,7 @@ import { mapState } from 'vuex'
 import { unByKey } from 'ol/Observable'
 import { createStringXY } from 'ol/coordinate'
 import MousePosition from 'ol/control/MousePosition'
+import defaultTextLogo from '../assets/text_logo.svg?url'
 
 export default {
   name: 'bottom-toolbar',
@@ -25,7 +26,7 @@ export default {
   computed: {
     ...mapState(['project']),
     logo () {
-      return this.project.config.app?.text_logo || require('../assets/text_logo.svg')
+      return this.project.config.app?.text_logo || defaultTextLogo
     }
   },
   mounted () {

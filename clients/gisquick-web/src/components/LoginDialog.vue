@@ -120,6 +120,8 @@
 
 <script lang="js">
 import { TaskState, watchTask } from '@/tasks'
+import defaultLogo from '../assets/image_logo.svg?url'
+import defaultTextLogo from '../assets/text_logo_dark.svg?url'
 
 // chrome autofill behaviour can be troublemaker:
 // https://bugs.chromium.org/p/chromium/issues/detail?id=669724
@@ -148,9 +150,9 @@ export default {
   computed: {
     images () {
       const config = this.project?.config?.app || {}
-      const logoImg = config.logo || require('../assets/image_logo.svg')
+      const logoImg = config.logo || defaultLogo
       return {
-        textLogo: config.text_logo_dark || config.text_logo || require('../assets/text_logo_dark.svg'),
+        textLogo: config.text_logo_dark || config.text_logo || defaultTextLogo,
         imgLogoStyle: {
           'background-image': `url(${logoImg})`,
           ...config.login_logo_style

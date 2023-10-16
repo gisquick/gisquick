@@ -6,7 +6,6 @@ import GetTextPlugin from 'vue-gettext'
 import { ReactiveRefs } from 'vue-reactive-refs'
 import Vue2TouchEvents from 'vue2-touch-events'
 
-import './registerServiceWorker'
 import Swiper from './swiper'
 import http from './client'
 import store from './store/index'
@@ -35,7 +34,7 @@ import {
 
 // import all icons for hot reload functionality in dev mode
 if (process.env.NODE_ENV === 'development') {
-  require.context('../icons', false, /.*\.svg$/)
+  import.meta.globEager('../icons/*.svg')
 }
 
 Vue.config.productionTip = false
@@ -85,6 +84,7 @@ function createApp (data) {
 }
 
 function errorPage (err) {
+  console.error(err);
   // const status = err && err.response && err.response.status
   // let msg = 'Failed to initialize application'
   // if (status === 502) {

@@ -120,7 +120,7 @@
 <script lang="js">
 import { mapState } from 'vuex'
 import orderBy from 'lodash/orderBy'
-import MapImg from '@/assets/map.svg?inline'
+import MapImg from '@/assets/map.svg?component'
 import TabsHeader from '@/ui/TabsHeader.vue'
 import { sanitize, escapeRegExp, removeDiacritics } from '@/ui/utils/text'
 import projectsHistory from '@/projects-history'

@@ -3,12 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
+    "preview": "vite preview",
+    "dev": "vite",
+    "build": "npm run build-only",
+    "build-only": "vite build",
     "compilemessages": "node gettext/compilemessages.js",
     "makemessages": "node gettext/makemessages.js",
-    "vetur": "node ./docgen.js"
+    "test:unit": "vitest",
+    "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
     "agent-base": "^6.0.2",
@@ -23,7 +26,6 @@
     "pdf-lib": "^1.17.1",
     "portal-vue": "2",
     "proj4": "^2.8.1",
-    "register-service-worker": "^1.7.2",
     "vue": "^2.6.14",
     "vue-gettext": "^2.1.12",
     "vue-reactive-refs": "^0.0.2",
@@ -32,26 +34,28 @@
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.16",
-    "@babel/eslint-parser": "^7.12.16",
-    "@vue/cli-plugin-babel": "~5.0.0",
-    "@vue/cli-plugin-eslint": "~5.0.0",
-    "@vue/cli-plugin-pwa": "~5.0.0",
-    "@vue/cli-plugin-vuex": "~5.0.0",
-    "@vue/cli-service": "~5.0.0",
-    "compression-webpack-plugin": "^10.0.0",
-    "eslint": "^7.32.0",
-    "eslint-plugin-vue": "^8.0.3",
-    "gettext-extractor": "^3.6.1",
-    "sass": "^1.57.1",
-    "sass-loader": "^13.2.0",
-    "svgo": "^3.0.2",
-    "vue-docgen-api": "^4.56.2",
-    "vue-svg-loader": "^0.16.0",
-    "vue-template-compiler": "^2.6.14"
-  },
-  "vetur": {
-    "tags": "./vetur/tags.json",
-    "attributes": "./vetur/attributes.json"
+    "@rushstack/eslint-patch": "^1.5.1",
+    "@types/jsdom": "^21.1.3",
+    "@types/node": "^18.17.0",
+    "@typescript-eslint/parser": "^6.7.5",
+    "@vitejs/plugin-legacy": "^4.1.1",
+    "@vitejs/plugin-vue2": "^2.2.0",
+    "@vitejs/plugin-vue2-jsx": "^1.1.0",
+    "@vue/eslint-config-typescript": "^12.0.0",
+    "@vue/test-utils": "^1.3.6",
+    "@vue/tsconfig": "^0.4.0",
+    "eslint": "^8.51.0",
+    "eslint-plugin-vue": "^9.17.0",
+    "gettext-extractor": "^3.8.0",
+    "jsdom": "^22.1.0",
+    "sass": "^1.69.3",
+    "typescript": "~4.7.4",
+    "vite": "^4.0.0",
+    "vite-plugin-pwa": "^0.16.5",
+    "vite-plugin-svg-sprite": "^0.5.0",
+    "vite-plugin-vue2-svg": "^0.4.0",
+    "vitest": "^0.33.0",
+    "vue-template-compiler": "^2.7.14",
+    "vue-tsc": "^0.38.8"
   }
 }

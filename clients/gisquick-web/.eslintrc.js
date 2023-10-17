@@ -4,8 +4,9 @@ module.exports = {
     node: true
   },
   extends: [
+    'plugin:@typescript-eslint/recommended',
     'plugin:vue/essential',
-    'eslint:recommended'
+    'eslint:recommended',
   ],
   parserOptions: {
     parser: '@typescript-eslint/parser',

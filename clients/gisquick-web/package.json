@@ -26,6 +26,7 @@
     "pdf-lib": "^1.17.1",
     "portal-vue": "2",
     "proj4": "^2.8.1",
+    "string-ts": "^1.3.2",
     "vue": "^2.6.14",
     "vue-gettext": "^2.1.12",
     "vue-reactive-refs": "^0.0.2",

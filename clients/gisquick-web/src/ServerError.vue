@@ -1,9 +1,9 @@
 <template>
   <div class="error-page light f-col-ac">
     <div class="f-grow"/>
-    <img src="@/assets/text_logo.svg" class="logo"/>
+    <img src="@/assets/text_logo.svg?url" class="logo"/>
     <h1>Server Error!</h1>
-    <img src="@/assets/server_error.svg" class="image"/>
+    <img src="@/assets/server_error.svg?url" class="image"/>
     <div class="f-grow"/>
     <div class="f-grow"/>
   </div>

@@ -18,7 +18,7 @@
       <div v-if="updateExists" class="update-notification f-col light">
         <div class="content p-2 f-col-ac shadow-2">
           <div class="msg my-2">
-            <img src="@/assets/image_logo.svg">
+            <img src="@/assets/image_logo.svg?url">
             <translate class="text">A new version of the map application is available</translate>
           </div>
           <div class="actions f-row-ac mx-auto">
@@ -37,7 +37,7 @@
       <div v-if="showInstallPrompt" class="notification f-col light">
         <div class="content p-2 f-col-ac shadow-2">
           <div class="msg my-2">
-            <img src="@/assets/image_logo.svg">
+            <img src="@/assets/image_logo.svg?url">
             <translate class="text">Add to Home screen?</translate>
           </div>
           <translate class="desc m-2">

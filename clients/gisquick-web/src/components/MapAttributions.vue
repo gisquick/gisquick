@@ -12,7 +12,7 @@ export default {
   components: { MenuItems },
   data () {
     return {
-      attributionsHidden: true
+      collapsed: false
     }
   },
   computed: {
@@ -21,20 +21,21 @@ export default {
         key: 'attributions',
         text: this.$gettext('Display attributions'),
         action: this.toggleAttributions,
-        activated: !this.attributionsHidden
+        activated: !this.collapsed
       }]
     }
   },
   mounted () {
     this.attributions = new Attribution({
-      target: this.$el
+      target: this.$el,
+      collapsed: this.collapsed
     })
     this.$map.addControl(this.attributions)
   },
   methods: {
     toggleAttributions () {
-      this.attributionsHidden = !this.attributionsHidden
-      this.attributions.setCollapsed(this.attributionsHidden)
+      this.collapsed = !this.collapsed
+      this.attributions.setCollapsed(this.collapsed)
     }
   }
 }

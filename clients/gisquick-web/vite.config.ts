@@ -108,6 +108,9 @@ export default defineConfig({
       },
     }),
   ],
+  build: {
+    assetsDir: 'map',
+  },
   server: {
     port: 3000,
     proxy: {

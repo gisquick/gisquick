@@ -16,6 +16,8 @@ import throttle from 'lodash/throttle'
 import { simpleStyle } from '@/map/styles'
 
 
+const font = 'bold 13px Calibri,sans-serif'
+
 // OL styling examples
 // https://openlayers.org/en/latest/examples/street-labels.html
 // https://openlayers.org/en/latest/examples/line-arrows.html
@@ -31,7 +33,7 @@ function labelRenderer (pixel, state) {
   const pixelRatio = window.devicePixelRatio
   ctx.scale(pixelRatio, pixelRatio)
 
-  ctx.font = 'bold 13px Calibri,sans-serif'
+  ctx.font = font
   const tbox = ctx.measureText(text)
   const w = tbox.width + 10
   const h = 25
@@ -205,14 +207,14 @@ export function DistanceMeasure () {
       geometry: s.geom,
       text: new Text({
         text: s.label,
-        font: 'bold 12px "Open Sans", "sans-serif"',
+        font,
         placement: 'line',
         stroke: new Stroke({
-          color: 'black',
+          color: 'white',
           width: 3
         }),
         fill: new Fill({
-          color: 'white'
+          color: 'black',
         })
       })
     }))
@@ -337,14 +339,14 @@ export function AreaMeasure () {
       geometry: s.geom,
       text: new Text({
         text: s.label,
-        font: 'bold 11px "Open Sans", "Arial Unicode MS", "sans-serif"',
+        font,
         placement: 'line',
         stroke: new Stroke({
-          color: 'black',
+          color: 'white',
           width: 3
         }),
         fill: new Fill({
-          color: 'white'
+          color: 'black',
         })
       })
     }))

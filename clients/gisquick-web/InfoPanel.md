@@ -20,7 +20,7 @@ export default {
 ```
 
 Write your info panel as a Vue.js 2 component.
-You can use all globally registred base UI components registred in `src/ui/plugin.js`, or any components and libraries imported in your code.
+You can use all globally registered base UI components registered in `src/ui/plugin.js`, or any components and libraries imported in your code.
 
 ```
 src/extensions/MyComponent.vue
@@ -57,14 +57,9 @@ export default {
 ## Production
 
 ### Build selected components as library module
-Single component
-```
-CSS_EXTRACT=False npm run build -- --target lib --formats umd-min --dest dist/ --name my-infopanel src/extensions/MyComponent.vue
-```
 
-Multiple components
 ```
-CSS_EXTRACT=False npm run build -- --target lib --formats umd-min --dest dist/ --name infopanels src/extensions/index.js
+npm run build-infopanel
 ```
 
 #### index.js
@@ -81,4 +76,4 @@ export default [
 ### Assign component
 
 Open layer settings and click on the `i` icon in **Data Preview** section to display preview of the info panel.
-Upload your builded component file (from **./dist** directory and with umd.min.js file extension) and assign it to the layer.
+Upload your builded component file (from **./dist** directory and with umd.js file extension) and assign it to the layer.

@@ -28,10 +28,10 @@ function projectBackwardCompatibility (config) {
   return config
 }
 
-HTTP.project = function (project) {
+HTTP.project = async function (project) {
   let extendProject
   if (process.env.NODE_ENV === 'development') {
-    const dev = import('@/dev/index.js')
+    const dev = await import('@/dev/index.js')
     extendProject = dev.extendProject
   }
 

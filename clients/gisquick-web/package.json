@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "npm run build-only",
     "build-only": "vite build",
+    "build-infopanel": "VITE_BUILD_EXTENSIONS=true vite build",
     "compilemessages": "node gettext/compilemessages.js",
     "makemessages": "node gettext/makemessages.js",
     "test:unit": "vitest",

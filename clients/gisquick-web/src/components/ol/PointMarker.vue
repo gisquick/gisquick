@@ -1,9 +1,9 @@
-<script>
+<script lang="jsx">
 import Vue from 'vue'
 import Overlay from 'ol/Overlay'
 
 import Spinner from '@/ui/Spinner.vue'
-import Poi from '@/assets/poi.svg?inline'
+import Poi from '@/assets/poi.svg?component'
 
 export function createMarker () {
   const wrapper = document.createElement('div')

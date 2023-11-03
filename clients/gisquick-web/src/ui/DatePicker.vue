@@ -73,7 +73,7 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 import last from 'lodash/last'
 import isAfter from 'date-fns/isAfter'
 import addDays from 'date-fns/addDays'
@@ -308,7 +308,7 @@ export default {
         if (this.view === 'MONTH') {
           this.setCurrent(new Date(this.current.year - 1, this.current.month - 1 , 1))
         }
-      } 
+      }
     },
     nextSegment () {
       if (this.view === 'DAY') {

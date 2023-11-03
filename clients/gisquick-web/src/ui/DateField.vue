@@ -38,7 +38,7 @@
   </v-text-field>
 </template>
 
-<script>
+<script lang="js">
 import format from 'date-fns/format'
 import parse from 'date-fns/parse'
 import isAfter from 'date-fns/isAfter'

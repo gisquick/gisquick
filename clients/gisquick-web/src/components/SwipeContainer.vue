@@ -18,7 +18,7 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 import BackButtonListener from '@/ui/BackButtonListener'
 
 const Events = {

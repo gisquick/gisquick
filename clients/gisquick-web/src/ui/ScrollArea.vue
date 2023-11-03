@@ -41,7 +41,7 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 import debounce from 'lodash/debounce'
 import { DragHandler, eventCoord } from '@/events'
 
@@ -184,7 +184,7 @@ export default {
 .scroll-container {
   position: relative;
   overflow: hidden!important;
-  
+
   // min-height: 0;
   // display: flex;
   // flex-direction: column;

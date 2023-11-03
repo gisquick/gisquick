@@ -20,7 +20,7 @@
   </popup-content>
 </template>
 
-<script>
+<script lang="js">
 import debounce from 'lodash/debounce'
 import PopupContent from './PopupContent.vue'
 import { elementBounds } from './utils/popup'

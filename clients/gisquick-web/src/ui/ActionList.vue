@@ -70,7 +70,7 @@
   </div>
 </template>
 
-<script>
+<script lang="jsx">
 import DocumentListener from './DocumentListener.js'
 import VCollapsible from './Collapsible.vue'
 import VIcon from './Icon.vue'

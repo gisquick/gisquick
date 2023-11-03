@@ -42,7 +42,7 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 import { mapState } from 'vuex'
 import { unByKey } from 'ol/Observable'
 import ZoomControl from 'ol/control/Zoom'

@@ -23,7 +23,7 @@
   </v-text-field>
 </template>
 
-<script>
+<script lang="js">
 
 export default {
   props: {

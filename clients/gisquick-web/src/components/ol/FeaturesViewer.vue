@@ -1,4 +1,4 @@
-<script>
+<script lang="js">
 import VectorSource from 'ol/source/Vector'
 import VectorLayer from 'ol/layer/Vector'
 import { simpleStyle } from '@/map/styles'

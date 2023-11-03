@@ -4,7 +4,7 @@ COPY package*.json ./
 RUN npm install
 COPY . .
 ARG MODE
-ENV VUE_APP_MODE=$MODE
+ENV VITE_VUE_APP_MODE=$MODE
 RUN npm run compilemessages
 RUN npm run build
 

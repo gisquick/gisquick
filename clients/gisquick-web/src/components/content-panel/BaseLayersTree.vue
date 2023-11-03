@@ -55,7 +55,7 @@
   </v-tree-view>
 </template>
 
-<script>
+<script lang="js">
 export default {
   props: {
     expanded: Object,

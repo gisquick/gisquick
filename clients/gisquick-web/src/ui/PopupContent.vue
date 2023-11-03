@@ -59,7 +59,7 @@
   </div>
 </template>
 
-<script>
+<script lang="jsx">
 import { Wormhole } from 'portal-vue'
 import omit from 'lodash/omit'
 // import throttle from 'lodash/throttle'

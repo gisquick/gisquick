@@ -70,7 +70,7 @@
   </input-field>
 </template>
 
-<script>
+<script lang="js">
 import Path from 'path'
 
 import InputField from '@/ui/InputField.vue'

@@ -1,12 +1,8 @@
 import axios from 'axios'
-import https from 'https'
 import { resolveProjectAppSettings } from './customization'
 
 const HTTP = axios.create({
   withCredentials: true,
-  httpsAgent: new https.Agent({
-    rejectUnauthorized: false
-  })
 })
 
 HTTP.login = function (username, password) {
@@ -32,10 +28,10 @@ function projectBackwardCompatibility (config) {
   return config
 }
 
-HTTP.project = function (project) {
+HTTP.project = async function (project) {
   let extendProject
   if (process.env.NODE_ENV === 'development') {
-    const dev = require('@/dev/index.js')
+    const dev = await import('@/dev/index.js')
     extendProject = dev.extendProject
   }
 

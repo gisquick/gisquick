@@ -111,7 +111,7 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 import omit from 'lodash/omit'
 import isEqual from 'lodash/isEqual'
 import Style from 'ol/style/Style'

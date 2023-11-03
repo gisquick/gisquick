@@ -20,7 +20,7 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 import { mapGetters } from 'vuex'
 import { unByKey } from 'ol/Observable'
 import debounce from 'lodash/debounce'

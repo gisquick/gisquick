@@ -65,7 +65,7 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 import pickBy from 'lodash/pickBy'
 import PopupContent from './PopupContent.vue'
 import VActionList from './ActionList.vue'

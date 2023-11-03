@@ -1,9 +1,9 @@
 <template>
   <div class="page f-col-ac light">
     <div class="f-grow"/>
-    <img src="@/assets/text_logo.svg" class="logo my-4"/>
+    <img src="@/assets/text_logo.svg?url" class="logo my-4"/>
     <h1 class="">Map Not Found!</h1>
-    <img src="@/assets/map_not_exist.svg" class="image my-4"/>
+    <img src="@/assets/map_not_exist.svg?url" class="image my-4"/>
     <div class="f-grow"/>
     <div class="f-grow"/>
   </div>

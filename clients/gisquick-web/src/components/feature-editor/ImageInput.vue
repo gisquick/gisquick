@@ -164,11 +164,11 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 import Path from 'path'
 
 import ImageEditor, { resizeImage } from '@/components/image/ImageEditor.vue'
-import PhotoSvg from '@/assets/photo.svg?inline'
+import PhotoSvg from '@/assets/photo.svg?component'
 import formatFileSize from '@/format/filesize'
 
 function formatFromFilename (filename) {

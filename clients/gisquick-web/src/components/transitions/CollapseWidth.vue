@@ -6,7 +6,7 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 import { afterWidthTransition } from './utils'
 
 export default {

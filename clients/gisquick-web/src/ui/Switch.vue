@@ -22,7 +22,7 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 import { colorVars } from './utils/colors'
 
 export default {

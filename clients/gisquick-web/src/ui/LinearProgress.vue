@@ -8,7 +8,7 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 import clamp from 'lodash/clamp'
 import { colorVars } from './utils/colors'
 

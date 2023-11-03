@@ -8,7 +8,7 @@
   </transition>
 </template>
 
-<script>
+<script lang="js">
 import { afterHeightTransition } from './utils'
 
 export default {

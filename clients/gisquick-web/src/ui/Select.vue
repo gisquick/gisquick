@@ -113,7 +113,7 @@
   </input-field>
 </template>
 
-<script>
+<script lang="js">
 import debounce from 'lodash/debounce'
 import InputField from './InputField.vue'
 import PopupContent from './PopupContent.vue'

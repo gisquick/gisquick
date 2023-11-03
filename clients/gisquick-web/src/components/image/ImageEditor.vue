@@ -65,7 +65,7 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 import clamp from 'lodash/clamp'
 import { eventCoord, DragHandler } from '@/events'
 import ImageViewer from './BaseImageViewer'

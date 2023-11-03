@@ -27,7 +27,7 @@ function columnsLengths (header, data) {
 // }
 
 export async function downloadExcel (header, data, sheetname, filename) {
-  const xlsx = await import(/* webpackChunkName: "xlsx" */'xlsx/dist/xlsx.mini.min.js')
+  const xlsx = await import('xlsx/dist/xlsx.mini.min.js')
   const worksheet = xlsx.utils.aoa_to_sheet([header, ...data])
   worksheet['!cols'] = columnsLengths(header, data).map(length => ({ wch: length }))
 

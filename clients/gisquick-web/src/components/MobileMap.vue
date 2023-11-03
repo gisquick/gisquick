@@ -68,7 +68,7 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 import { mapState } from 'vuex'
 import debounce from 'lodash/debounce'
 

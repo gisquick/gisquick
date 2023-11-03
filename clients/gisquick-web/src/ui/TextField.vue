@@ -36,7 +36,7 @@
   </input-field>
 </template>
 
-<script>
+<script lang="js">
 import { colorVars } from './utils/colors'
 import InputField from './InputField.vue'
 import Focusable from '@/ui/mixins/Focusable'

@@ -15,7 +15,7 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 export default {
   props: {
     items: Array,
@@ -84,7 +84,7 @@ export default {
     background-color: var(--color-primary);
     bottom: 0;
     transition: .3s cubic-bezier(.25,.8,.5,1);
-    
+
   }
 }
 </style>

@@ -231,7 +231,7 @@ export async function createBaseLayer (layerConfig, projectConfig = {}) {
     })
   }
   if (provider_type === 'vectortile') {
-    const vc = await import(/* webpackChunkName: "vectortile" */ './vector-tile.js')
+    const vc = await import('./vector-tile.js')
     return await vc.createLayer(layerConfig)
   }
   if (type === 'xyz' || source?.type === 'xyz') {
@@ -257,7 +257,7 @@ export async function createBaseLayer (layerConfig, projectConfig = {}) {
   if (type === 'wms' || provider_type === 'wms') {
     let olSource
     if (source.tileMatrixSet) {
-      // const wmts = await import(/* webpackChunkName: "wmts" */ './wmts.js')
+      // const wmts = await import('./wmts.js')
       // olSource = await wmts.wmtsSource(projectConfig.project, layerConfig, attributions)
       olSource = await wmtsSource(projectConfig.project, layerConfig, attributions)
     } else {

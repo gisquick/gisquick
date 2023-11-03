@@ -41,7 +41,7 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 import { mapState } from 'vuex'
 import difference from 'lodash/difference'
 

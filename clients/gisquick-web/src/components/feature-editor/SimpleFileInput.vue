@@ -42,7 +42,7 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 import Path from 'path'
 import FileSaver from 'file-saver'
 import formatFileSize from '@/format/filesize'

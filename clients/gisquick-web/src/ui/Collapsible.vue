@@ -4,7 +4,7 @@
   </transition>
 </template>
 
-<script>
+<script lang="js">
 import heightTransition from './transitions/height'
 
 export default {

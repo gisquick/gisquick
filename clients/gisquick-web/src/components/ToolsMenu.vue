@@ -29,7 +29,7 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 export default {
   props: {
     color: String,

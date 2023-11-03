@@ -2,7 +2,7 @@
   <div class="scale-line"/>
 </template>
 
-<script>
+<script lang="js">
 import ScaleLine from 'ol/control/ScaleLine'
 
 export default {

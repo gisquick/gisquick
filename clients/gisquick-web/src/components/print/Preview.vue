@@ -48,7 +48,7 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 import { mapState, mapGetters } from 'vuex'
 import { boundingExtent } from 'ol/extent'
 import axios from 'axios'
@@ -277,7 +277,7 @@ export default {
       return data
     },
     async createPdfWithOverlay () {
-      const PDFDocument = (await import(/* webpackChunkName: "pdf-lib" */'./pdf-lib')).PDFDocument
+      const PDFDocument = (await import('./pdf-lib')).PDFDocument
       const { screen, extent } = this.calculatePrintArea()
       const url = this.printRequest(extent)
       const { data } = await this.$http.get(url, { responseType: 'arraybuffer' })

@@ -49,7 +49,7 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 import DateRange from '@/components/DateRange.vue'
 import { valueMapItems } from '@/adapters/attributes'
 

@@ -36,7 +36,7 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 import clamp from 'lodash/clamp'
 import { blend, hexToRgb, cssColor, interpolate } from './utils/colors'
 // import VTooltip from './Tooltip.vue'

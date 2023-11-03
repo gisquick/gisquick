@@ -22,7 +22,7 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 export default {
   props: {
     items: Array,
@@ -121,7 +121,7 @@ export default {
   .swiper {
     display: flex;
     // will-change: transform;
-    
+
     width: 100%;
     // transform: translate(-100%, 0);
     position: relative;

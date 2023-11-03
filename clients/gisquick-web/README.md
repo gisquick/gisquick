@@ -13,8 +13,7 @@ docker build --build-arg MODE=pwa -t gisquick/web-map:pwa .
 
 In order to start development server, it is required to setup and run local Gisquick deployment.
 Default configuration expects Gisquick server to be running on http://localhost (port 80).
-For different setup you will have to update proxy server configuration in ```vue.config.js``` file.
-See [Configuration Reference](https://cli.vuejs.org/config/).
+For different setup you will have to copy `.env.example` file and update environment variable.
 
 ## Project setup
 ```

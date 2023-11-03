@@ -112,7 +112,7 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '^/api': {
-        target: env.DEV_API_PROXY_TARGET ?? 'https://demo.gisquick.org',
+        target: env.DEV_API_PROXY_TARGET ?? 'http://localhost',
         changeOrigin: true,
         secure: false,
       },

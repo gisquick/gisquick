@@ -1,6 +1,6 @@
 import { fileURLToPath, URL } from 'node:url'
 
-import { defineConfig, loadEnv } from 'vite'
+import { defineConfig, loadEnv, splitVendorChunkPlugin } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
 import legacy from '@vitejs/plugin-legacy'
 import vue2 from '@vitejs/plugin-vue2'
@@ -12,6 +12,7 @@ const env = loadEnv('', process.cwd(), '')
 
 export default defineConfig({
   plugins: [
+    splitVendorChunkPlugin(),
     vue2(),
     vue2Jsx(),
     legacy({

@@ -86,7 +86,7 @@
             <p>
               <translate class="label">Identification</translate>
               <v-icon :name="item.queryable ? 'check' : 'dash'"/>
-            <p/>
+            </p>
             <p v-if="item.metadata.abstract">
               <translate class="label">Abstract</translate>
               <span v-text="item.metadata.abstract"/>

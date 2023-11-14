@@ -434,7 +434,11 @@ export default {
         let params = { ...baseParams, resultType: 'hits' }
         let resp = await this.$http.post(this.project.config.ows_url, query, { params, headers })
         // fix invalid geojson from QGIS server (missing ',')
-        featuresCount = JSON.parse(resp.data.replace(/"\n/g, '",\n')).numberOfFeatures
+        try {
+          featuresCount = JSON.parse(resp.data.replace(/"\n/g, '",\n')).numberOfFeatures
+        } catch (err) {
+          featuresCount = resp.data.numberOfFeatures
+        }
 
         params = {
           ...baseParams,

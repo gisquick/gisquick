@@ -51,6 +51,7 @@
 <script>
 import { mapState, mapGetters } from 'vuex'
 import { boundingExtent } from 'ol/extent'
+import Point from 'ol/geom/Point'
 import axios from 'axios'
 import combineURLs from 'axios/lib/helpers/combineURLs'
 import { unByKey } from 'ol/Observable'
@@ -209,9 +210,16 @@ export default {
       const layoutBounds = this.$refs.templateEl.getBoundingClientRect()
       const x = Math.round((layoutBounds.left - mapBounds.left) * this.scaleRatio + mmToPx(layout.map.x))
       const y = Math.round((layoutBounds.top - mapBounds.top) * this.scaleRatio + mmToPx(layout.map.y))
-      const leftTop = map.getCoordinateFromPixel([x, y])
-      const rightBottom = map.getCoordinateFromPixel([x + width, y + height])
-      const extent = boundingExtent([leftTop, rightBottom])
+
+      const leftTop = new Point([x, y])
+      const rightBottom = new Point([x + width, y + height])
+      const rotationAnchor = [x + width / 2, y + height / 2]
+      leftTop.rotate(map.getView().getRotation(), rotationAnchor)
+      rightBottom.rotate(map.getView().getRotation(), rotationAnchor)
+      const extent = boundingExtent([
+        map.getCoordinateFromPixel(leftTop.getCoordinates()),
+        map.getCoordinateFromPixel(rightBottom.getCoordinates())
+      ])
       return {
         screen: { x, y, width, height },
         extent

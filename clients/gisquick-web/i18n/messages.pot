@@ -33,7 +33,7 @@ msgstr ""
 msgid "Add to Home screen?"
 msgstr ""
 
-#: src/components/Identification.vue:148
+#: src/components/Identification.vue:147
 msgid "All visible layers"
 msgstr ""
 
@@ -70,10 +70,6 @@ msgstr ""
 
 #: ./src/components/LoginDialog.vue:25
 msgid "Authentication failed"
-msgstr ""
-
-#: ./src/ui/MobileDialog.vue:17
-msgid "Back"
 msgstr ""
 
 #: ./src/components/LoginDialog.vue:110
@@ -137,6 +133,7 @@ msgstr ""
 msgid "Created"
 msgstr ""
 
+#: ./src/components/content-panel/LayersTree.vue:95
 #: ./src/components/MobileAttributesTable.vue:95
 msgid "Data"
 msgstr ""
@@ -176,6 +173,10 @@ msgstr ""
 
 #: src/AppNotifications.vue:57
 msgid "Don't show this message again"
+msgstr ""
+
+#: ./src/components/content-panel/LayersTree.vue:106
+msgid "Download"
 msgstr ""
 
 #: src/components/MobileAttributesTable.vue:351
@@ -223,7 +224,7 @@ msgstr ""
 msgid "Export"
 msgstr ""
 
-#: src/components/AttributesTable.vue:483
+#: src/components/AttributesTable.vue:452
 msgid "Failed to load data"
 msgstr ""
 
@@ -231,7 +232,7 @@ msgstr ""
 msgid "Failed to process your request."
 msgstr ""
 
-#: src/components/feature-editor/MediaFileField.vue:223
+#: src/components/feature-editor/MediaFileField.vue:226
 msgid "Failed to upload file"
 msgstr ""
 
@@ -295,7 +296,7 @@ msgstr ""
 msgid "Image will be saved in lower resolution"
 msgstr ""
 
-#: src/components/Identification.vue:156
+#: src/components/Identification.vue:155
 #: src/components/MobileAttributesTable.vue:345
 msgid "Info Panel"
 msgstr ""
@@ -332,7 +333,7 @@ msgstr ""
 msgid "Keywords list"
 msgstr ""
 
-#: src/components/Identification.vue:181
+#: src/components/Identification.vue:180
 #: src/components/MobileAttributesTable.vue:241
 msgid "Layer"
 msgstr ""
@@ -383,7 +384,7 @@ msgstr ""
 msgid "May"
 msgstr ""
 
-#: src/components/Identification.vue:182
+#: src/components/Identification.vue:181
 #: src/components/measure/Measure.vue:187
 #: src/components/MobileAttributesTable.vue:243
 #: src/components/print/Print.vue:86
@@ -527,7 +528,7 @@ msgstr ""
 msgid "Print quality"
 msgstr ""
 
-#: src/components/feature-editor/MediaFileField.vue:221
+#: src/components/feature-editor/MediaFileField.vue:224
 msgid "Project size limit reached"
 msgstr ""
 
@@ -601,11 +602,11 @@ msgstr ""
 msgid "Sunday"
 msgstr ""
 
-#: src/components/Identification.vue:155
+#: src/components/Identification.vue:154
 msgid "Table"
 msgstr ""
 
-#: src/components/Identification.vue:157
+#: src/components/Identification.vue:156
 msgid "Table & Info Panel"
 msgstr ""
 
@@ -660,6 +661,10 @@ msgstr ""
 
 #: src/components/LoginDialog.vue:165
 msgid "Username / Email"
+msgstr ""
+
+#: ./src/components/content-panel/LayersTree.vue:102
+msgid "Visit"
 msgstr ""
 
 #: ./src/IntroPage.vue:10

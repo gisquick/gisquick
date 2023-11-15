@@ -43,7 +43,7 @@ msgstr "Pridať nový objekt"
 msgid "Add to Home screen?"
 msgstr "Pridať na plochu?"
 
-#: src/components/Identification.vue:148
+#: src/components/Identification.vue:147
 msgid "All visible layers"
 msgstr "Všetky viditeľné vrstvy"
 
@@ -80,10 +80,6 @@ msgstr "August"
 #: src/components/LoginDialog.vue:25
 msgid "Authentication failed"
 msgstr "Overenie zlyhalo"
-
-#: src/ui/MobileDialog.vue:17
-msgid "Back"
-msgstr "Späť"
 
 #: src/components/LoginDialog.vue:110
 msgid "Back to Login"
@@ -145,6 +141,7 @@ msgstr "Súradnice"
 msgid "Created"
 msgstr "Vytvorené"
 
+#: src/components/content-panel/LayersTree.vue:95
 #: src/components/MobileAttributesTable.vue:95
 msgid "Data"
 msgstr "Data"
@@ -185,6 +182,10 @@ msgstr "Vzdialenosť"
 #: src/AppNotifications.vue:57
 msgid "Don't show this message again"
 msgstr "Túto správu už nezobrazovať"
+
+#: src/components/content-panel/LayersTree.vue:106
+msgid "Download"
+msgstr "Stiahnuť"
 
 #: src/components/MobileAttributesTable.vue:351
 msgid "Edit"
@@ -234,7 +235,7 @@ msgstr "Chyba"
 msgid "Export"
 msgstr "Export"
 
-#: src/components/AttributesTable.vue:483
+#: src/components/AttributesTable.vue:452
 msgid "Failed to load data"
 msgstr "Údaje sa nepodarilo sa načítať"
 
@@ -242,7 +243,7 @@ msgstr "Údaje sa nepodarilo sa načítať"
 msgid "Failed to process your request."
 msgstr "Spracovanie požiadavky zlyhalo."
 
-#: src/components/feature-editor/MediaFileField.vue:223
+#: src/components/feature-editor/MediaFileField.vue:226
 msgid "Failed to upload file"
 msgstr "Nahranie súboru zlyhalo"
 
@@ -306,7 +307,7 @@ msgstr "Identifikácia"
 msgid "Image will be saved in lower resolution"
 msgstr "Obrázok bude uložený v nižšom rozlíšení"
 
-#: src/components/Identification.vue:156
+#: src/components/Identification.vue:155
 #: src/components/MobileAttributesTable.vue:345
 msgid "Info Panel"
 msgstr "Infopanel"
@@ -348,7 +349,7 @@ msgstr "Jún"
 msgid "Keywords list"
 msgstr "Kľúčové slová"
 
-#: src/components/Identification.vue:181
+#: src/components/Identification.vue:180
 #: src/components/MobileAttributesTable.vue:241
 msgid "Layer"
 msgstr "Vrstva"
@@ -397,7 +398,7 @@ msgstr "Marcel"
 msgid "May"
 msgstr "Máj"
 
-#: src/components/Identification.vue:182 src/components/measure/Measure.vue:187
+#: src/components/Identification.vue:181 src/components/measure/Measure.vue:187
 #: src/components/MobileAttributesTable.vue:243
 #: src/components/print/Print.vue:86 src/UserDashboard.vue:210
 msgid "Menu"
@@ -537,7 +538,7 @@ msgstr "Náhľad pred tlačou"
 msgid "Print quality"
 msgstr "Kvalita tlače"
 
-#: src/components/feature-editor/MediaFileField.vue:221
+#: src/components/feature-editor/MediaFileField.vue:224
 msgid "Project size limit reached"
 msgstr "Dosiahli ste limit pre veľkosť projektu"
 
@@ -610,11 +611,11 @@ msgstr "Veľkosť"
 msgid "Sunday"
 msgstr "Nedeľa"
 
-#: src/components/Identification.vue:155
+#: src/components/Identification.vue:154
 msgid "Table"
 msgstr "Tabuľka"
 
-#: src/components/Identification.vue:157
+#: src/components/Identification.vue:156
 msgid "Table & Info Panel"
 msgstr "Tabuľka & Infopanel"
 
@@ -672,6 +673,10 @@ msgstr ""
 #: src/components/LoginDialog.vue:165
 msgid "Username / Email"
 msgstr "Používateľské meno / Email"
+
+#: src/components/content-panel/LayersTree.vue:102
+msgid "Visit"
+msgstr "Navštíviť"
 
 #: src/IntroPage.vue:10
 msgid "Web platform for publishing your maps from QGIS desktop"
@@ -731,6 +736,9 @@ msgstr "Otvoriť"
 msgctxt "verb"
 msgid "Update"
 msgstr "Aktualizovať"
+
+#~ msgid "Back"
+#~ msgstr "Späť"
 
 #~ msgid "Last segment"
 #~ msgstr "Posledný segment"

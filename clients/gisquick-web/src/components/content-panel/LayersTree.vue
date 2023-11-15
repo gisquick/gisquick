@@ -91,6 +91,22 @@
               <translate class="label">Abstract</translate>
               <span v-text="item.metadata.abstract"/>
             </p>
+            <p v-if="item.metadata.data_url">
+              <translate class="label">Data</translate>
+              <a
+                v-if="layersInfo[item.name].hasDataWebLink"
+                :href="item.metadata.data_url"
+                target="_blank"
+                download
+              >
+                <translate>Visit</translate>
+                <v-icon name="globe" class="mx-1" color="primary"/>
+              </a>
+              <a v-else :href="item.metadata.data_url" target="_blank">
+                <translate>Download</translate>
+                <v-icon name="download" class="mx-1" color="primary"/>
+              </a>
+            </p>
           </div>
         </collapse-transition>
       <!-- </div> -->
@@ -125,6 +141,12 @@ function geometryIcon (layer) {
   return ''
 }
 
+const webpageExtensions = ['html', 'htm', 'php', 'aspx', 'jsp']
+function isWebpageLink (url) {
+  const ext = url.split('.').pop().toLowerCase()
+  return webpageExtensions.includes(ext)
+}
+
 export default {
   props: {
     attributeTableDisabled: Boolean,
@@ -142,7 +164,8 @@ export default {
     layersInfo () {
       const layerMetadata = l => ({
         icon: geometryIcon(l),
-        type: l.type.replace('Layer', '')
+        type: l.type.replace('Layer', ''),
+        hasDataWebLink: l.metadata.data_url && isWebpageLink(l.metadata.data_url)
       })
       return this.layers.list.reduce((res, l) => (res[l.name] = layerMetadata(l), res), {})
     }

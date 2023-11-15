@@ -17,6 +17,7 @@
     "date-fns": "^2.29.3",
     "file-saver": "^2.0.5",
     "idb-keyval": "^6.2.0",
+    "lodash": "^4.17.21",
     "ol": "^7.5.2",
     "ol-mapbox-style": "^12.1.0",
     "path-browserify": "^1.0.1",

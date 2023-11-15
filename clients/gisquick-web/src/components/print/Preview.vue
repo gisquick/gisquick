@@ -177,29 +177,7 @@ export default {
       mapEl.style.width = percScale
       mapEl.style.height = percScale
       mapEl.style.transform = `scale(${1 / ratio}, ${1 / ratio})`
-      map.setSize([window.innerWidth * ratio, window.innerHeight * ratio])
-
-      // scaleAnimation(map, { from: this.prevScale || 1, to: ratio })
-      // this.prevScale = ratio
-
-      if (ratio !== 1) {
-        if (!map.transformBrowserEvent) {
-          map.transformBrowserEvent = evt => {
-            const scale = this.scaleRatio
-            // evt.pixel[0] = evt.pixel[0] * scale
-            // evt.pixel[1] = evt.pixel[1] * scale
-            // evt.coordinate = map.getCoordinateFromPixel(evt.pixel)
-            if (!evt.originalEvent._transformed) {
-              const { clientX, clientY } = evt.originalEvent
-              Object.defineProperty(evt.originalEvent, 'clientX', { value: Math.round(clientX * scale ), configurable: true, enumerable: true })
-              Object.defineProperty(evt.originalEvent, 'clientY', { value: Math.round(clientY * scale), configurable: true, enumerable: true })
-              Object.defineProperty(evt.originalEvent, '_transformed', { value: true, configurable: true, enumerable: true })
-            }
-          }
-        }
-      } else {
-        delete map.transformBrowserEvent
-      }
+      setTimeout(() => map.setSize([window.innerWidth * ratio, window.innerHeight * ratio]))
     },
     calculatePrintArea () {
       const map = this.$map

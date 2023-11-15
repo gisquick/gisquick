@@ -190,7 +190,8 @@ export function createQgisLayer (config) {
         }),
         visibleLayers: visibleLayers,
         layersAttributions: attributions,
-        layersOrder: layersOrder
+        layersOrder: layersOrder,
+        interpolate: false
       })
     })
   } else {
@@ -208,6 +209,7 @@ export function createQgisLayer (config) {
         },
         serverType: 'qgis',
         ratio: 1,
+        interpolate: false,
         imageLoadFunction: debounce((image, src) => {
           image.getImage().src = src
         }, 90)
@@ -310,15 +312,6 @@ export async function createBaseLayer (layerConfig, projectConfig = {}) {
       ratio: 1
     })
   })
-}
-
-const handleMapBrowserEvent = Map.prototype.handleMapBrowserEvent
-/* eslint no-extend-native: ["error", { "exceptions": ["Map"] }] */
-Map.prototype.handleMapBrowserEvent = function (evt) {
-  if (this.transformBrowserEvent) {
-    this.transformBrowserEvent(evt)
-  }
-  return handleMapBrowserEvent.call(this, evt)
 }
 
 /**

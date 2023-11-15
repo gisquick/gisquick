@@ -20,10 +20,12 @@ export default {
   height: 30px;
   overflow: visible;
   position: relative;
+  --ol-foreground-color: #eee;
+  --ol-subtle-foreground-color: #eee;
+  --ol-partial-background-color: rgba(90, 90, 90, 0.9);
 }
 .ol-scale-line {
   left: 0.35em;
   bottom: 0.35em;
-  background-color: rgba(90, 90, 90, 0.9);
 }
 </style>

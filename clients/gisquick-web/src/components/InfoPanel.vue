@@ -55,7 +55,7 @@
       </scroll-area>
 
       <div class="toolbar tools dark f-row-ac">
-        <v-btn class="icon flat" @click="zoomToFeature">
+        <v-btn class="icon flat" @click="zoomToFeature" :disabled="!this.feature.getGeometry()">
           <v-icon name="zoom-to"/>
         </v-btn>
         <v-btn

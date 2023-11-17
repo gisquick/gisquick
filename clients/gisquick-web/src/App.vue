@@ -155,28 +155,27 @@ export default {
     }
   },
   methods: {
-    loadProject () {
-      if (this.projectName) {
-        this.$http.project(this.projectName)
-          .then(data => {
-            this.$store.commit('project', data)
-            document.title = data.root_title
-            projectsHistory.push(this.projectName)
-            const app = data.app || {}
-            if (app.theme_color) {
-              document.documentElement.style.setProperty('--color-primary', app.theme_color)
-              try {
-                const rgba = parseColor(app.theme_color)
-                document.documentElement.style.setProperty('--color-primary-rgb', rgba.slice(0, 3).join(','))
-              } catch (err) {
-                console.error(`Invalid theme color: ${app.theme_color}`)
-              }
-            }
-          })
-          .catch(data => {
-            this.$store.commit('project', data)
-          })
+    async loadProject () {
+      const data = await this.$http.project(this.projectName).catch(data => data)
+      this.$store.commit('project', data)
+      if (data.status === 200) {
+        projectsHistory.push(this.projectName)
       }
+      const title = data.title || data.root_title
+      if (title) {
+        document.title = title
+      }
+      const themeColor = data.app?.theme_color
+      if (themeColor) {
+        document.documentElement.style.setProperty('--color-primary', themeColor)
+        try {
+          const rgba = parseColor(themeColor)
+          document.documentElement.style.setProperty('--color-primary-rgb', rgba.slice(0, 3).join(','))
+        } catch (err) {
+          console.error(`Invalid theme color: ${themeColor}`)
+        }
+      }
+
     },
     onLogin (user) {
       this.$store.commit('user', user)

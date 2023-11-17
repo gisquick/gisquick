@@ -56,7 +56,7 @@ HTTP.project = function (project) {
       })
       .catch(err => {
         if (err.response?.data.status) {
-          reject(err.response.data)
+          reject(resolveProjectAppSettings(err.response.data))
         } else {
           // eslint-disable-next-line prefer-promise-reject-errors
           reject({ status: err?.response.status || 500 })

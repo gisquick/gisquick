@@ -57,7 +57,7 @@ import combineURLs from 'axios/lib/helpers/combineURLs'
 import { unByKey } from 'ol/Observable'
 import FileSaver from 'file-saver'
 
-import { mmToPx, createPrintParameters, formatCopyrights, scaleAnimation, openPrintWindow } from './utils'
+import { mmToPx, createPrintParameters, formatCopyrights, openPrintWindow } from './utils'
 
 export default {
   props: {

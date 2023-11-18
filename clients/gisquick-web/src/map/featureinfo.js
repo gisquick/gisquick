@@ -189,7 +189,7 @@ export function layerFeaturesQuery (layer, geom, filters, propertyNames = []) {
   return getFeatureQuery(formatLayerQuery(layer, geom, filters, propertyNames))
 }
 
-export function layersFeaturesQuery (layers, geomFilter) {
+export function layersFeaturesQuery (layers, geomFilter, filters) {
   if (geomFilter) {
     const { geom, projection } = geomFilter
     const geomsByProj = {
@@ -204,5 +204,5 @@ export function layersFeaturesQuery (layers, geomFilter) {
       })
     return getFeatureQuery(...layers.map(l => formatLayerQuery(l, geomsByProj[l.projection])))
   }
-  return getFeatureQuery(...layers.map(l => formatLayerQuery(l)))
+  return getFeatureQuery(...layers.map(l => formatLayerQuery(l, null, filters)))
 }

@@ -146,6 +146,7 @@
 import Vue from 'vue'
 import { mapState } from 'vuex'
 import { getCenter } from 'ol/extent'
+import WKT from 'ol/format/WKT'
 
 import VTabs from '@/ui/Tabs.vue'
 import VTabsHeader from '@/ui/TabsHeader.vue'
@@ -354,6 +355,24 @@ export default {
       // this.location.setVisibility(false)
       // this.distance.setVisibility(false)
       // this.area.setVisibility(false)
+    },
+    getPermalinkParams () {
+      const features = [
+        ...this.location.getFeatures(),
+        ...this.distance.getFeatures(),
+        ...this.area.getFeatures()
+      ]
+      if (features.length) {
+        const precision = this.project.config.units.position_precision
+        const wkt = new WKT().writeFeatures(features, { decimals: precision })
+        return { features: wkt }
+      }
+    },
+    loadPermalink (params) {
+      const { features: wkt } = params
+      const features = new WKT({ splitCollection: true }).readFeatures(wkt)
+      const locations = features.filter(f => f.getGeometry().getType() === 'Point')
+      this.location.setFeatures(locations)
     }
   }
 }

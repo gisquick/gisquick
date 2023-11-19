@@ -29,7 +29,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['project']),
+    ...mapState(['project', 'activeTool']),
     ...mapGetters(['visibleBaseLayer', 'visibleLayers'])
   },
   watch: {
@@ -41,7 +41,7 @@ export default {
     if (config.projections) {
       registerProjections(config.projections)
     }
-    this.queryParams = mapKeys(Object.fromEntries(new URLSearchParams(location.search)), (v, k) => k.toLowerCase())
+    this.queryParams = mapKeys(Object.fromEntries(new URLSearchParams(location.search)), (_, k) => k.toLowerCase())
     if (this.queryParams.overlays) {
       this.$store.commit('visibleLayers', this.queryParams.overlays.split(','))
     }
@@ -120,13 +120,15 @@ export default {
         map.overlay.getSource().refresh()
       },
       createPermalink: () => {
+        const toolParams = this.$refs.tools.getActiveComponent()?.getPermalinkParams?.()
         const extent = map.ext.visibleAreaExtent()
         const overlays = this.visibleLayers.filter(l => !l.hidden).map(l => l.name)
         const params = {
           extent: extent.join(','),
           overlays: overlays.join(','),
           baselayer: this.visibleBaseLayer?.name ?? '',
-          activeTool: this.activeTool
+          tool: toolParams && this.activeTool,
+          ...toolParams
         }
         return axios.getUri({url: location.href, params })
       }
@@ -135,6 +137,10 @@ export default {
     const extent = extentParam || this.project.config.zoom_extent || this.project.config.project_extent
     const padding = map.ext.visibleAreaPadding()
     map.getView().fit(extent, { padding })
+    if (this.queryParams.tool) {
+      this.$store.commit('activeTool', this.queryParams.tool)
+      this.$nextTick(() => this.$refs.tools.getActiveComponent()?.loadPermalink?.(this.queryParams))
+    }
   },
   methods: {
     async setVisibleBaseLayer (layer) {

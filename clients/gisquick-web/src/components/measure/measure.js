@@ -70,6 +70,7 @@ function createDrawTool (type, style, drawStyle) {
   const tool = Object.assign(new Observable(), {
     items: [],
     draw,
+    source,
     getFeature (id) {
       return source.getFeaturesCollection().getArray().find(f => f.get('id') === id)
     },
@@ -135,27 +136,33 @@ export function LocationMeasure () {
   }
   const base = createDrawTool('Point', styleFn, [])
 
-  function measure () {
-    const coords = base.feature.getGeometry().getCoordinates()
+  function createItem (id, feature) {
+    const coords = feature.getGeometry().getCoordinates()
     const proj = base.map.getView().getProjection()
     const [coord1, coord2] = base.format.format(coords, proj)
     const value = {
-      id: new Date().getTime(),
+      id,
       coord1,
       coord2,
       _coords: coords
     }
     base.current = value
     base.items.push(value)
-    base.feature.set('label', `${coord1}, ${coord2}`)
-    base.feature.set('id', value.id)
+    feature.set('label', `${coord1}, ${coord2}`)
+    feature.set('id', value.id)
   }
 
-  base.draw.on('drawend', measure)
+  base.draw.on('drawend', e => createItem(new Date().getTime(), e.feature))
   return Object.assign(base, {
     current: {
       coord1: '',
       coord2: ''
+    },
+    setFeatures (features) {
+      base.source.addFeatures(features)
+      features.forEach((feature, i) => {
+        createItem(i, feature)
+      })
     },
     setFormat (format) {
       this.format = format

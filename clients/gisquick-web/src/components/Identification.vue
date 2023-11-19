@@ -359,6 +359,17 @@ export default {
         }
         this.$map.ext.refreshOverlays()
       }
+    },
+    getPermalinkParams () {
+      if (this.selection) {
+        return {
+          feature: this.displayedFeaures[this.selection.featureIndex].getId()
+        }
+      }
+    },
+    loadPermalink (params) {
+      // const { feature: featureId } = params
+      // fetch feature
     }
   }
 }

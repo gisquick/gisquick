@@ -23,6 +23,7 @@
     <div
       v-if="activeToolObj && activeToolObj.component"
       :is="activeToolObj.component"
+      ref="tool"
       v-bind.sync="activeToolObj.data"
       @close="$store.commit('activeTool', null)"
     />
@@ -69,7 +70,7 @@ export default {
     },
     hiddenIdentificationTool () {
       return {
-        name: 'hidden-identification',
+        name: 'hidden-identification', // idea: try empty string (because of permalink)
         data: this.identificationSettings,
         component: Identification
       }
@@ -152,6 +153,9 @@ export default {
   methods: {
     onClose () {
       this.$store.commit('activeTool', null)
+    },
+    getActiveComponent () {
+      return this.$refs.tool
     }
   }
 }

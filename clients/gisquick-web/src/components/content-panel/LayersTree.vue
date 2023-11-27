@@ -97,12 +97,16 @@
                 v-if="layersInfo[item.name].hasDataWebLink"
                 :href="item.metadata.data_url"
                 target="_blank"
-                download
               >
                 <translate>Visit</translate>
                 <v-icon name="globe" class="mx-1" color="primary"/>
               </a>
-              <a v-else :href="item.metadata.data_url" target="_blank">
+              <a
+                v-else
+                :href="item.metadata.data_url"
+                target="_blank"
+                download
+              >
                 <translate>Download</translate>
                 <v-icon name="download" class="mx-1" color="primary"/>
               </a>

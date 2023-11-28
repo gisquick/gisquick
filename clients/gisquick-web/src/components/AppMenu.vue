@@ -53,7 +53,7 @@ export default {
     },
     items () {
       return [
-        ...this.userMenuItems,
+        // ...this.userMenuItems,
         ...this.extraItems,
         {
           key: 'fullscreen',

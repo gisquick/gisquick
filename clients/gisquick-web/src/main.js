@@ -69,6 +69,39 @@ Vue.component('generic-infopanel', GenericInfopanel)
 
 Vue.prototype.$http = http
 
+let app
+window.addEventListener('message', async (e) => {
+  if (e.data?.type === 'gisquick:firebaseTokenChanged') {
+    const { idToken } = e.data
+    if (idToken) {
+      const hash = Array.from(idToken).reduce((hash, char) => 0 | (31 * hash + char.charCodeAt(0)), 0).toString()
+      if (sessionStorage.getItem('lastAuth') !== hash) {
+        await http.post('/api/auth/firebase/login', { idToken })
+        sessionStorage.setItem('lastAuth', hash)
+        // store.commit('user', data.user)
+      }
+      if (!app) {
+        try {
+          const { data } = await http.get('/api/app/')
+          if (data.user.is_guest) {
+            const resp = await http.post('/api/auth/firebase/login', { idToken })
+            data.user = resp.data
+          }
+          createApp(data)
+        } catch (err) {
+          errorPage(err)
+        }
+      }
+    } else {
+      app.$destroy()
+      const newEl = document.createElement('div')
+      newEl.setAttribute('id', 'app')
+      app.$el.replaceWith(newEl)
+      app = null
+    }
+  }
+})
+
 function createApp (data) {
   store.commit('app', data.app)
   store.commit('user', data.user)
@@ -82,6 +115,7 @@ function createApp (data) {
     document.documentElement.setAttribute('lang', data.app.lang.split('-')[0])
   }
   vm.$mount('#app')
+  app = vm
 }
 
 function errorPage (err) {
@@ -94,8 +128,5 @@ function errorPage (err) {
     render: h => h(ServerError)
   })
   vm.$mount('#app')
+  app = vm
 }
-
-http.get('/api/app/')
-  .then(resp => createApp(resp.data))
-  .catch(err => errorPage(err))

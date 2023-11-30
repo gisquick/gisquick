@@ -257,9 +257,9 @@ export default {
   created () {
     if (!this.tools) {
       const tools = Object.freeze({
-        location: LocationMeasure(),
-        distance: DistanceMeasure(),
-        area: AreaMeasure()
+        location: LocationMeasure(this.$map),
+        distance: DistanceMeasure(this.$map),
+        area: AreaMeasure(this.$map)
       })
       observable(tools.location, 'coord1', 'coord2', 'format', 'items')
       observable(tools.distance, 'length', 'items')
@@ -278,7 +278,7 @@ export default {
   },
   mounted () {
     if (activeTool) {
-      activeTool.activate(this.$map)
+      activeTool.activate()
     }
     // this.location.setVisibility(true)
     // this.distance.setVisibility(true)
@@ -296,7 +296,7 @@ export default {
       if (activeTool !== this[tab]) {
         activeTool?.deactivate()
         activeTool = this[tab]
-        activeTool.activate(this.$map)
+        activeTool.activate()
       }
     },
     createUnitsMenu (type) {
@@ -372,7 +372,11 @@ export default {
       const { features: wkt } = params
       const features = new WKT({ splitCollection: true }).readFeatures(wkt)
       const locations = features.filter(f => f.getGeometry().getType() === 'Point')
+      const distances = features.filter(f => f.getGeometry().getType() === 'LineString')
+      const areas = features.filter(f => f.getGeometry().getType() === 'Polygon')
       this.location.setFeatures(locations)
+      this.distance.setFeatures(distances)
+      this.area.setFeatures(areas)
     }
   }
 }

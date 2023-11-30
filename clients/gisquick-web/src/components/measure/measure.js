@@ -62,7 +62,7 @@ function labelRenderer (pixel, state) {
   ctx.restore()
 }
 
-function createDrawTool (type, style, drawStyle) {
+function createDrawTool (map, type, style, drawStyle) {
   const source = new VectorSource({ features: new Collection([]) })
   const highlightLayer = new VectorLayer({ source, style, className: 'ol-layer measure' })
   const draw = new Draw({ source, type, style: drawStyle })
@@ -88,11 +88,13 @@ function createDrawTool (type, style, drawStyle) {
       this.items.splice(0, this.items.length)
       source.clear()
     },
-    activate (map) {
+    setMap (map) {
       this.map = map
-      map.addInteraction(draw)
-      // user setMap instead of addLayer for required drawing order
+      // used setMap instead of addLayer for required drawing order
       highlightLayer.setMap(map)
+    },
+    activate () {
+      this.map.addInteraction(draw)
     },
     deactivate () {
       if (this.map) {
@@ -103,18 +105,11 @@ function createDrawTool (type, style, drawStyle) {
       highlightLayer.setMap(visible ? this.map : null)
     }
   })
-
-  draw.on('drawstart', evt => {
-    tool.feature = evt.feature
-  })
-  draw.on('drawend', evt => {
-    tool.feature = evt.feature
-  })
-
+  tool.setMap(map)
   return tool
 }
 
-export function LocationMeasure () {
+export function LocationMeasure (map) {
   const normal = simpleStyle({
     radius: 7,
     fill: 'rgb(250, 188, 0)',
@@ -134,7 +129,7 @@ export function LocationMeasure () {
       labelStyle
     ]
   }
-  const base = createDrawTool('Point', styleFn, [])
+  const base = createDrawTool(map, 'Point', styleFn, [])
 
   function createItem (id, feature) {
     const coords = feature.getGeometry().getCoordinates()
@@ -177,7 +172,7 @@ export function LocationMeasure () {
   })
 }
 
-export function DistanceMeasure () {
+export function DistanceMeasure (map) {
   const normal = [
     new Style({
       stroke: new Stroke({
@@ -235,19 +230,20 @@ export function DistanceMeasure () {
       })
     ]
   }
-  const base = createDrawTool('LineString', styleFn, styleFn)
+  const base = createDrawTool(map, 'LineString', styleFn, styleFn)
 
-  function measure () {
+  function measure (feature) {
+    const data = feature.get('data')
     const projection = base.map.getView().getProjection()
-    const geom = base.feature.getGeometry()
+    const geom = feature.getGeometry()
 
     const lastSegmentIndex = geom.getCoordinates().length - 2
     let i = 0
     geom?.forEachSegment?.((start, end) => {
-      if (!base.current.segments[i] || i === lastSegmentIndex) {
+      if (!data.segments[i] || i === lastSegmentIndex) {
         const segment = new LineString([start, end])
         const length = projection.isGlobal() ? getLength(segment, { projection }) : segment.getLength()
-        base.current.segments[i] = {
+        data.segments[i] = {
           length,
           geom: segment,
           label: base.format.length(length)
@@ -257,9 +253,9 @@ export function DistanceMeasure () {
     })
 
     const length = projection.isGlobal() ? getLength(geom, { projection }) : geom.getLength()
-    base.current._length = length
-    base.current.length = base.format.length(length)
-    base.feature.set('label', base.current.length)
+    data._length = length
+    data.length = base.format.length(length)
+    feature.set('label', data.length)
   }
 
   let moveListener, clickListener
@@ -269,22 +265,34 @@ export function DistanceMeasure () {
       length: 0,
       segments: []
     }
-
     base.items.push(base.current)
-    measure()
-    base.feature.set('data', base.current)
-
-    moveListener = base.map.on('pointermove', throttle(() => measure(), 30))
+    evt.feature.set('data', base.current)
+    measure(evt.feature)
+    moveListener = base.map.on('pointermove', throttle(() => measure(evt.feature), 30))
   })
 
-  base.draw.on('drawend', () => {
-    base.feature.set('id', base.current.id)
+  base.draw.on('drawend', evt => {
+    evt.feature.set('id', base.current.id)
     unByKey(moveListener)
     unByKey(clickListener)
   })
 
   return Object.assign(base, {
     current: null,
+    setFeatures (features) {
+      base.items = features.map((feature, i) => {
+        const data = {
+          id: i,
+          length: 0,
+          segments: []
+        }
+        feature.set('data', data)
+        feature.set('id', data.id)
+        measure(feature)
+        return data
+      })
+      base.source.addFeatures(features)
+    },
     setFormat (format) {
       this.format = format
       if (this.items.length) {
@@ -300,7 +308,7 @@ export function DistanceMeasure () {
   })
 }
 
-export function AreaMeasure () {
+export function AreaMeasure (map) {
   const normal = [
     new Style({
       stroke: new Stroke({
@@ -369,19 +377,20 @@ export function AreaMeasure () {
       })
     ]
   }
-  const base = createDrawTool('Polygon', styleFn, styleFn)
+  const base = createDrawTool(map, 'Polygon', styleFn, styleFn)
 
-  function measure () {
+  function measure (feature) {
+    const data = feature.get('data')
     const projection = base.map.getView().getProjection()
-    const geom = base.feature.getGeometry()
+    const geom = feature.getGeometry()
     const pointsCount = geom.getLinearRing(0).getCoordinates().length
     if (pointsCount > 3) {
       if (projection.isGlobal()) {
-        base.current._area = getArea(geom, { projection })
-        base.current._perimeter = getLength(geom, { projection })
+        data._area = getArea(geom, { projection })
+        data._perimeter = getLength(geom, { projection })
       } else {
-        base.current._area = geom.getArea()
-        base.current._perimeter = linearRingLength(geom.getFlatCoordinates(), 0, pointsCount * 2, 2)
+        data._area = geom.getArea()
+        data._perimeter = linearRingLength(geom.getFlatCoordinates(), 0, pointsCount * 2, 2)
       }
     }
 
@@ -389,10 +398,10 @@ export function AreaMeasure () {
     const lastStableIndex = line.getCoordinates().length - 4
     let i = 0
     line.forEachSegment?.((start, end) => {
-      if (!base.current.segments[i] || i > lastStableIndex) {
+      if (!data.segments[i] || i > lastStableIndex) {
         const segment = new LineString([start, end])
         const length = projection.isGlobal() ? getLength(segment, { projection }) : segment.getLength()
-        base.current.segments[i] = {
+        data.segments[i] = {
           length,
           geom: segment,
           label: base.format.length(length)
@@ -401,9 +410,9 @@ export function AreaMeasure () {
       i++
     })
 
-    base.current.area = base.format.area(base.current._area ?? 0)
-    base.current.perimeter = base.format.length(base.current._perimeter ?? 0)
-    base.feature.set('label', base.current.area)
+    data.area = base.format.area(data._area ?? 0)
+    data.perimeter = base.format.length(data._perimeter ?? 0)
+    feature.set('label', data.area)
   }
 
   let moveListener
@@ -415,18 +424,32 @@ export function AreaMeasure () {
       segments: []
     }
     base.items.push(base.current)
-    base.feature.set('data', base.current)
-    moveListener = base.map.on('pointermove', throttle(() => measure(), 30))
+    evt.feature.set('data', base.current)
+    moveListener = base.map.on('pointermove', throttle(() => measure(evt.feature), 30))
   })
 
   base.draw.on('drawend', evt => {
-    base.feature.set('id', base.current.id)
-    base.feature = null
+    evt.feature.set('id', base.current.id)
     unByKey(moveListener)
   })
 
   return Object.assign(base, {
     current: null,
+    setFeatures (features) {
+      base.items = features.map((feature, i) => {
+        const data = {
+          id: i,
+          area: 0,
+          perimeter: 0,
+          segments: []
+        }
+        feature.set('data', data)
+        feature.set('id', data.id)
+        measure(feature)
+        return data
+      })
+      base.source.addFeatures(features)
+    },
     setFormat (format) {
       this.format = format
       if (this.items.length) {

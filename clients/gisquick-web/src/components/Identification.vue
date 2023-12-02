@@ -32,7 +32,7 @@
     </portal>
 
     <identify-pointer v-if="!editMode" @click="onClick"/>
-    <features-viewer :features="displayedFeaures"/>
+    <features-viewer :features="displayedFeatures"/>
     <point-marker
       :coords="mapCoords"
       :error="!!tasks.fetchFeatures.error"
@@ -44,7 +44,7 @@
         <info-panel
           v-if="displayMode === 'info-panel' || displayMode === 'both'"
           class="mx-1 mb-2 shadow-2"
-          :features="displayedFeaures"
+          :features="displayedFeatures"
           :layer="displayedLayer"
           :layers="resultLayers"
           :selected="selection"
@@ -77,6 +77,7 @@ import { fromCircle } from 'ol/geom/Polygon'
 import Circle from 'ol/geom/Circle'
 import GeoJSON from 'ol/format/GeoJSON'
 import Feature from 'ol/Feature'
+import { unByKey } from 'ol/Observable'
 
 import FeaturesTable from '@/components/FeaturesTable.vue'
 import InfoPanel from '@/components/InfoPanel.vue'
@@ -165,11 +166,11 @@ export default {
     displayedLayer () {
       return this.resultItem && this.resultItem.layer
     },
-    displayedFeaures () {
+    displayedFeatures () {
       return this.resultItem && this.resultItem.features
     },
     selectedFeature () {
-      return this.selection && this.displayedFeaures[this.selection.featureIndex]
+      return this.selection && this.displayedFeatures[this.selection.featureIndex]
     },
     mapProjection () {
       return this.$map.getView().getProjection().getCode()
@@ -220,7 +221,7 @@ export default {
       return this.readFeatures(data)
     },
     /**
-     * @param {string[]} fids 
+     * @param {string[]} fids
      */
     async getFeaturesById (fids) {
       const params = {
@@ -398,8 +399,8 @@ export default {
         formatFeatures(this.project, this.displayedLayer, features)
         const newFeature = features[0]
         if (newFeature) {
-          // this.displayedFeaures.splice(index, 1, newFeature)
-          this.$set(this.displayedFeaures, index, newFeature)
+          // this.displayedFeatures.splice(index, 1, newFeature)
+          this.$set(this.displayedFeatures, index, newFeature)
         }
         this.$map.ext.refreshOverlays()
       }
@@ -407,13 +408,23 @@ export default {
     getPermalinkParams () {
       if (this.selection) {
         return {
-          feature: this.displayedFeaures[this.selection.featureIndex].getId()
+          features: this.displayedFeatures[this.selection.featureIndex].getId()
         }
       }
     },
-    loadPermalink (params) {
-      // const { feature: featureId } = params
-      // fetch feature
+    async loadPermalink (params) {
+      const { extent: originalExtent, features: initialFeatureIds } = params
+      if (!initialFeatureIds) return
+      const featuresArray = initialFeatureIds.split(',')
+      const features = await this.queryFeatureIds(featuresArray)
+      if (originalExtent) return
+      if (features.length === 1) {
+        this.$map.ext.zoomToFeature(features[0], { duration: 0 })
+      } else if (features.length > 1) {
+        const extents = features.map(f => f.getGeometry().getExtent())
+        const finalExtent = extents.reduce((prev, current) => extend(prev, current), extents[0])
+        this.$map.ext.fitToExtent(finalExtent, { duration: 0 })
+      }
     }
   }
 }

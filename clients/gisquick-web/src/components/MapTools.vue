@@ -112,13 +112,18 @@ export default {
           render () {
             return (
               <portal to="bottom-panel">
-                <AttributesTable key="attribute-table" onClose={this.close}/>
+                <AttributesTable key="attribute-table" onClose={this.close} ref="table" />
               </portal>
             )
           },
           methods: {
             close () {
               this.$store.commit('activeTool', null)
+            },
+            getPermalinkParams () {
+              if (this.$refs.table) {
+                return this.$refs.table?.getPermalinkParams?.()
+              }
             }
           }
         }

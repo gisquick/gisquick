@@ -77,7 +77,6 @@ import { fromCircle } from 'ol/geom/Polygon'
 import Circle from 'ol/geom/Circle'
 import GeoJSON from 'ol/format/GeoJSON'
 import Feature from 'ol/Feature'
-import { unByKey } from 'ol/Observable'
 
 import FeaturesTable from '@/components/FeaturesTable.vue'
 import InfoPanel from '@/components/InfoPanel.vue'
@@ -220,6 +219,20 @@ export default {
       const { data } = await this.$http.post(this.project.config.ows_url, query, config)
       return this.readFeatures(data)
     },
+    /**
+     * @param {string[]} fids 
+     */
+    async getFeaturesById (fids) {
+      const params = {
+        VERSION: '1.1.0',
+        SERVICE: 'WFS',
+        REQUEST: 'GetFeature',
+        OUTPUTFORMAT: 'GeoJSON',
+        FEATUREID: fids.join(','),
+      }
+      const { data } = await this.$http.get(this.project.config.ows_url, { params })
+      return this.readFeatures(data)
+    },
     async getFeatureInfo (evt, layers) {
       const { map, coordinate } = evt
       const r = map.getView().getResolution()
@@ -257,8 +270,38 @@ export default {
           projection: this.mapProjection
         }
         const query = layersFeaturesQuery(wfsLayers, geom)
-        tasks.push(this.getFeaturesByWFS(query, { 'MAXFEATURES': 10 }))
+        tasks.push(this.getFeaturesByWFS( query, { 'MAXFEATURES': 10 }))
       }
+
+      this.mapCoords = coordinate
+
+      return await this.updateFeatures(tasks);
+    },
+
+    async queryFeatureIds (ids) {
+      const queryableLayers = this.project.overlays.list.filter(l => l.queryable)
+
+      const wfsIds = []
+      const tasks = []
+      ids.forEach((id) => {
+        const [layerId] = id.split('.')
+        const layer = queryableLayers.find(l => l.name === layerId)
+        if (layer) {
+          wfsIds.push(id)
+        }
+      })
+
+      if (wfsIds.length) {
+        tasks.push(this.getFeaturesById(wfsIds))
+      }
+
+      return await this.updateFeatures(tasks);
+    },
+
+    /**
+     * @returns {Promise<Feature[]>}
+     */
+    async updateFeatures(tasks) {
       const task = Promise.allSettled(tasks)
       const res = await watchTask(task, this.tasks.fetchFeatures)
       this.tasks.fetchFeatures.error = res.some(i => i.status === 'rejected')
@@ -273,6 +316,7 @@ export default {
           layer: items[index].layer.name,
           featureIndex: 0
         }
+        return features
       } else {
         this.selection = null
       }

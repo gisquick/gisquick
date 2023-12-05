@@ -12,6 +12,11 @@ function getTileKey (tile) {
   return tile.tileCoord.join('/')
 }
 
+function round (num, precision) {
+  const m = Math.pow(10, precision)
+  return Math.round(num * m) / m
+}
+
 export default {
   data () {
     return {
@@ -122,8 +127,9 @@ export default {
         const toolParams = this.$refs.tools.getActiveComponent()?.getPermalinkParams?.()
         const extent = map.ext.visibleAreaExtent()
         const overlays = this.visibleLayers.filter(l => !l.hidden).map(l => l.name)
+        const precision = this.project.config.units.position_precision
         const params = {
-          extent: extent.join(','),
+          extent: extent.map(v => round(v, precision)).join(','),
           overlays: overlays.join(','),
           baselayer: this.visibleBaseLayer?.name ?? '',
           tool: toolParams && this.activeTool,

@@ -5,7 +5,6 @@ import mapKeys from 'lodash/mapKeys'
 import { boundingExtent, buffer as bufferExtent } from 'ol/extent'
 import { unByKey } from 'ol/Observable'
 import 'ol/ol.css'
-import axios from 'axios'
 
 import { createMap, registerProjections } from '@/map/map-builder'
 
@@ -130,7 +129,10 @@ export default {
           tool: toolParams && this.activeTool,
           ...toolParams
         }
-        return axios.getUri({url: location.href, params })
+        const url = new URL(location.href)
+        Object.keys(params).forEach(name => url.searchParams.set(name, params[name]))
+        return decodeURIComponent(url.toString()) // unescaped url
+        // return url.toString()
       }
     }
     const extentParam = this.queryParams.extent?.split(',').map(parseFloat)

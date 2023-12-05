@@ -21,7 +21,7 @@ import { wmtsSource } from './wmts'
 
 function createUrl (baseUrl, params = {}) {
   const url = new URL(baseUrl, location.origin)
-  Object.keys(params).forEach(k => url.searchParams.append(k, params[k]))
+  Object.keys(params).forEach(k => url.searchParams.set(k, params[k]))
   return url
 }
 

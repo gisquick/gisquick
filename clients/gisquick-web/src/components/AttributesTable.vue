@@ -561,7 +561,15 @@ export default {
       })
       const rows = data.features.map(f => attrsNames.map((n, i) => formatters[i](f.properties[n])))
       downloadExcel(header, rows, this.layer.title, this.layer.title)
-    }
+    },
+    getPermalinkParams () {
+      if (this.selectedFeatureIndex !== null) {
+        return {
+          tool: 'hidden-identification',
+          features: this.features[this.selectedFeatureIndex].getId()
+        }
+      }
+    },
   }
 }
 </script>

@@ -154,7 +154,14 @@ export default {
       }
       const f = this.createFeature(resolvedFields)
       const geom = this.references.geometryEditor.getGeometry()
-      f.setGeometry(geom)
+      // Transform to projection of project
+      let newGeom = geom
+      const mapProjection = this.$map.getView().getProjection().getCode()
+      if (newGeom && mapProjection !== this.layer.projection) {
+        newGeom = newGeom.clone()
+        newGeom.transform(mapProjection, this.layer.projection)
+      }
+      f.setGeometry(newGeom)
 
       this.statusController.set('loading', 1000)
       wfsTransaction(this.project.config.ows_url, this.layer.name, { inserts: [f] })

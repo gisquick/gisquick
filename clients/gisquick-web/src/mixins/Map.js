@@ -132,10 +132,10 @@ export default {
           extent: extent.map(v => round(v, precision)).join(','),
           overlays: overlays.join(','),
           baselayer: this.visibleBaseLayer?.name ?? '',
-          tool: toolParams && this.activeTool,
           ...toolParams
         }
         const url = new URL(location.href)
+        Array.from(url.searchParams.keys()).filter(k => k !== 'PROJECT').forEach(k => url.searchParams.delete(k))
         Object.keys(params).forEach(name => url.searchParams.set(name, params[name]))
         return decodeURIComponent(url.toString()) // unescaped url
         // return url.toString()
@@ -147,8 +147,8 @@ export default {
     map.getView().fit(extent, { padding })
     if (this.queryParams.tool) {
       this.$store.commit('activeTool', this.queryParams.tool)
-      this.$nextTick(() => this.$refs.tools.getActiveComponent()?.loadPermalink?.(this.queryParams))
     }
+    this.$nextTick(() => this.$refs.tools.getActiveComponent()?.loadPermalink?.(this.queryParams))
   },
   methods: {
     async setVisibleBaseLayer (layer) {

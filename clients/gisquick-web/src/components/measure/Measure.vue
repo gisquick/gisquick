@@ -365,12 +365,15 @@ export default {
       if (features.length) {
         const precision = this.project.config.units.position_precision
         const wkt = new WKT().writeFeatures(features, { decimals: precision })
-        return { features: wkt }
+        return {
+          tool: 'measure',
+          geom: wkt
+        }
       }
     },
     loadPermalink (params) {
-      const { features: wkt } = params
-      const features = new WKT({ splitCollection: true }).readFeatures(wkt)
+      const { geom } = params
+      const features = new WKT({ splitCollection: true }).readFeatures(geom)
       const locations = features.filter(f => f.getGeometry().getType() === 'Point')
       const distances = features.filter(f => f.getGeometry().getType() === 'LineString')
       const areas = features.filter(f => f.getGeometry().getType() === 'Polygon')

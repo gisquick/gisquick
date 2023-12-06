@@ -565,11 +565,10 @@ export default {
     getPermalinkParams () {
       if (this.selectedFeatureIndex !== null) {
         return {
-          tool: 'hidden-identification',
           features: this.features[this.selectedFeatureIndex].getId()
         }
       }
-    },
+    }
   }
 }
 </script>

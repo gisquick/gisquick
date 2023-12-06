@@ -44,9 +44,13 @@
       </template>
       <template v-slot:cell(actions)="{ row }">
         <div class="f-row-ac">
-          <v-btn class="icon flat m-0" @click="zoomToFeature(features[row])">
+          <v-btn v-if="features[row].getGeometry()" class="icon flat m-0" @click="zoomToFeature(features[row])">
             <v-icon name="zoom-to"/>
           </v-btn>
+          <v-btn v-else class="icon flat m-0" disabled :title="tr.NoGeometry">
+            <v-icon name="zoom-to"/>
+          </v-btn>
+
           <v-btn class="icon flat my-0 mr-0" @click="showInfoPanel = true">
             <v-icon name="circle-i-outline"/>
           </v-btn>
@@ -316,6 +320,7 @@ export default {
       return {
         FilterVisibleLabel: this.$gettext('Filter to visible area'),
         PageSize: this.$gettext('Page size'),
+        NoGeometry: this.$gettext('No geometry'),
         link: this.$gettext('link')
       }
     },

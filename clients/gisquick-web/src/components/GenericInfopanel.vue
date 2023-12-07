@@ -91,6 +91,18 @@ export const UrlWidget = Widget((h, ctx) => (
     : <span {...ctx.data}/>
 ))
 
+export function createRelationWidget (action) {
+  return Widget((h, ctx) => (
+    <span class="link" {...ctx.data} onClick={() => action(ctx.props.value)}>{ctx.props.value}</span>
+  ))
+}
+
+export const RelationWidget = Widget((h, ctx) => (
+  ctx.props.value
+    ? <translate {...ctx.data} class="hyperlink" tag="a" href={ctx.props.value} target="_blank">link</translate>
+    : <span {...ctx.data}/>
+))
+
 export const ImageWidget = Widget((h, ctx) => {
   const src = ctx.props.value
   if (!src) {
@@ -332,6 +344,15 @@ const GenericInfoPanel = {
             return createMediaImageWidget(this.project.name, this.layer, attr)
           }
         }
+        if (attr.name === 'PKUID') {
+          return createRelationWidget((obj) => {
+            const l = this.project.layers
+              .find(g => g.name === 'General information').layers
+              .find(g => g.name === 'Facilities').layers
+              .find(l => l.name === 'public_wifi')
+            this.$emit('relation', l, attr, obj)
+          })
+        }
         return RawWidget
       })
     },
@@ -407,7 +428,7 @@ const GenericInfoPanel = {
       })
       const results = await Promise.all(tasks)
       let relationsData = {}
-      layer.relations.map((r, i) => {
+      layer.relations.forEach((r, i) => {
         relationsData[r.name] = results[i]
       })
       // relationsData = Object.freeze(relationsData)
@@ -557,6 +578,10 @@ export default GenericInfoPanel
       }
     }
   }
+}
+.link {
+  color: var(--color-primary);
+  cursor: pointer;
 }
 </style>
 

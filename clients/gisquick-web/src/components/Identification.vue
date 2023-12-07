@@ -53,6 +53,7 @@
           @close="clearResults"
           @delete="onFeatureDelete"
           @edit="onFeatureEdit"
+          @relation="showRelation"
         />
       </portal>
       <portal to="bottom-panel">
@@ -84,7 +85,7 @@ import InfoPanel from '@/components/InfoPanel.vue'
 import PointMarker from '@/components/ol/PointMarker.vue'
 import FeaturesViewer from '@/components/ol/FeaturesViewer.vue'
 import { simpleStyle } from '@/map/styles'
-import { layersFeaturesQuery } from '@/map/featureinfo'
+import { layersFeaturesQuery, layerFeaturesQuery } from '@/map/featureinfo'
 import { ShallowArray } from '@/utils'
 import { formatFeatures } from '@/formatters'
 import { TaskState, watchTask } from '@/tasks'
@@ -359,6 +360,42 @@ export default {
         }
         this.$map.ext.refreshOverlays()
       }
+    },
+    async showRelation (layer, attr, value) {
+      console.log('showRelation', layer, attr, value)
+      const rel = {
+        referencing_fields: ['PKUID'],
+      //   referenced_fields: ['PKUID']
+      }
+      const filters = rel.referencing_fields.map((field, i) => ({
+        attribute: field,
+        operator: '=',
+        value: value
+      }))
+      const query = layerFeaturesQuery(layer, null, filters)
+      const params = {
+        'VERSION': '1.1.0',
+        'SERVICE': 'WFS',
+        'REQUEST': 'GetFeature',
+        'OUTPUTFORMAT': 'GeoJSON',
+        'MAXFEATURES': 100
+      }
+      const headers = { 'Content-Type': 'text/xml' }
+      const { data } = await this.$http.post(this.project.config.ows_url, query, { params, headers })
+      const parser = new GeoJSON()
+      const features = parser.readFeatures(data, { featureProjection: this.mapProjection })
+      formatFeatures(this.project, layer, features)
+      this.layersFeatures = [{
+        layer,
+        features
+      }]
+      this.selection = {
+        layer: layer.name,
+        featureIndex: 0
+      }
+      this.$map.ext.zoomToFeature(features[0])
+      // this.$store.commit('attributeTable/layer', layer)
+      // this.$store.commit('activeTool', 'attribute-table')
     }
   }
 }

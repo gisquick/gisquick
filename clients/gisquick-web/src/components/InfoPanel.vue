@@ -1,6 +1,16 @@
 <template>
   <div v-if="feature" class="f-col info-panel light">
-    <div class="toolbar dark top f-row-ac">
+    <div v-if="relationData" class="toolbar dark top f-row-ac">
+      <v-btn class="icon" @click="relationData = null">
+        <v-icon name="arrow-backward"/>
+      </v-btn>
+      <span class="f-grow" v-text="relationData.layer.title"/>
+      <v-btn @click="$emit('close')" class="icon flat">
+        <v-icon name="x"/>
+      </v-btn>
+      <features-viewer :features="[relationData.feature]" :color="[31,203,124]"/>
+    </div>
+    <div v-else class="toolbar dark top f-row-ac">
       <v-select
         class="flat f-grow my-0"
         :disabled="layersOptions.length < 2"
@@ -44,12 +54,19 @@
             @edit="$emit('edit', $event)"
             @delete="$emit('delete', $event)"
           />
-          <component
+          <!-- <component
             v-else
             :is="formComponent"
             :feature="feature"
             :layer="layer"
             :project="$store.state.project.config"
+          /> -->
+          <component
+            v-else
+            :is="formComponent"
+            v-bind="viewerParams"
+            @xrelation="(l, a, v) => $emit('relation', l, a, v)"
+            @relation="showRelation"
           />
         </switch-transition>
       </scroll-area>
@@ -77,19 +94,30 @@
 </template>
 
 <script>
+import GeoJSON from 'ol/format/GeoJSON'
+import { layerFeaturesQuery } from '@/map/featureinfo'
+import { formatFeatures } from '@/formatters'
+
 import GenericInfopanel from '@/components/GenericInfopanel.vue'
 import FeatureEditor from '@/components/feature-editor/FeatureEditor.vue'
+import FeaturesViewer from '@/components/ol/FeaturesViewer.vue'
 import { externalComponent } from '@/components-loader'
+import { ShallowArray, ShallowObj } from '@/utils'
 
 export default {
   name: 'info-panel',
-  components: { GenericInfopanel, FeatureEditor },
+  components: { GenericInfopanel, FeatureEditor, FeaturesViewer },
   props: {
     selected: Object,
     layer: Object,
     features: Array,
     layers: Array,
     editMode: Boolean
+  },
+  data () {
+    return {
+      relationData: null
+    }
   },
   computed: {
     layersOptions () {
@@ -104,6 +132,22 @@ export default {
     },
     feature () {
       return this.selected && this.features[this.index]
+    },
+    project () {
+      return this.$store.state.project
+    },
+    viewerParams () {
+      if (this.relationData) {
+        return {
+          ...this.relationData,
+          project: this.project.config
+        }
+      }
+      return {
+        feature: this.feature,
+        layer: this.layer,
+        project: this.project.config
+      }
     },
     formComponent () {
       if (this.layer.infopanel_component) {
@@ -129,7 +173,46 @@ export default {
       this.$emit('selection-change', { layer: this.selected.layer, featureIndex })
     },
     zoomToFeature () {
-      this.$map.ext.zoomToFeature(this.feature)
+      this.$map.ext.zoomToFeature(this.relationData?.feature || this.feature)
+    },
+    async showRelation (layer, attr, value) {
+      console.log('showRelation', layer, attr, value)
+      const mapProjection = this.$map.getView().getProjection().getCode()
+      const rel = {
+        referencing_fields: ['PKUID'],
+      //   referenced_fields: ['PKUID']
+      }
+      const filters = rel.referencing_fields.map((field, i) => ({
+        attribute: field,
+        operator: '=',
+        value: value
+      }))
+      const query = layerFeaturesQuery(layer, null, filters)
+      const params = {
+        'VERSION': '1.1.0',
+        'SERVICE': 'WFS',
+        'REQUEST': 'GetFeature',
+        'OUTPUTFORMAT': 'GeoJSON',
+        'MAXFEATURES': 100
+      }
+      const headers = { 'Content-Type': 'text/xml' }
+      const { data } = await this.$http.post(this.project.config.ows_url, query, { params, headers })
+      const parser = new GeoJSON()
+      const features = parser.readFeatures(data, { featureProjection: mapProjection })
+      formatFeatures(this.project, layer, features)
+      console.log(features)
+
+      this.relationData = ShallowObj({
+        layer,
+        feature: features[0]
+      })
+      // this.relationData = {
+      //   layer,
+      //   features: ShallowArray(features)
+      // }
+      // this.$map.ext.zoomToFeature(features[0])
+      // this.$store.commit('attributeTable/layer', layer)
+      // this.$store.commit('activeTool', 'attribute-table')
     }
   }
 }

@@ -210,7 +210,7 @@ import {
 } from '@/components/GenericInfopanel.vue'
 import { simpleStyle } from '@/map/styles'
 import { layerFeaturesQuery } from '@/map/featureinfo'
-// import { ShallowArray } from '@/utils'
+import { ShallowArray } from '@/utils'
 import { eventCoord, DragHandler } from '@/events'
 import { formatFeatures } from '@/formatters'
 import { valueMapItems } from '@/adapters/attributes'
@@ -408,6 +408,41 @@ export default {
       }
       return { geom, filters }
     },
+    async fetchRelations (features) {
+      const mapProjection = this.$map.getView().getProjection().getCode()
+      const tasks = this.layer.relations.map(async rel => {
+        const filters = rel.referencing_fields.map((field, i) => ({
+          attribute: field,
+          operator: 'IN',
+          value: features.map(f => f.get(rel.referenced_fields[i]))
+        }))
+        const query = layerFeaturesQuery(rel.referencing_layer, null, filters)
+        const params = {
+          'VERSION': '1.1.0',
+          'SERVICE': 'WFS',
+          'REQUEST': 'GetFeature',
+          'OUTPUTFORMAT': 'GeoJSON',
+          'MAXFEATURES': 100
+        }
+        const headers = { 'Content-Type': 'text/xml' }
+        const { data } = await this.$http.post(this.project.config.ows_url, query, { params, headers })
+        const parser = new GeoJSON()
+        const relFeatures = parser.readFeatures(data, { featureProjection: mapProjection })
+        formatFeatures(this.project, rel.referencing_layer, relFeatures)
+        return ShallowArray(relFeatures)
+        // return features
+      })
+      const results = await Promise.all(tasks)
+      features.forEach(feature => {
+        let relationsData = {}
+        this.layer.relations.forEach((r, i) => {
+          relationsData[r.name] = results[i].filter(rf => r.referencing_fields.every((field, j) => rf.get(field) === feature.get(r.referenced_fields[j])))
+        })
+        // relationsData = Object.freeze(relationsData)
+        feature._relationsData = relationsData
+        // console.log(feature, relationsData)
+      })
+    },
     async fetchFeatures (page = 1, lastQuery = false) {
       const mapProjection = this.$map.getView().getProjection().getCode()
       let query
@@ -460,6 +495,9 @@ export default {
       // const features = ShallowArray(parser.readFeatures(geojson, { featureProjection: mapProjection }))
       let features = parser.readFeatures(geojson, { featureProjection: mapProjection })
       features = Object.freeze(formatFeatures(this.project, this.layer, features))
+      if (this.layer.relations) {
+        this.fetchRelations(features)
+      }
 
       const selectedIndex = this.selectedFeature ? features.findIndex(f => f.getId() === this.selectedFeature.getId()) : -1
       this.selectedFeatureIndex = selectedIndex !== -1 ? selectedIndex : 0

@@ -17,7 +17,11 @@ import proj4 from 'proj4'
 import { defaults as defaultControls } from 'ol/control'
 // import md5 from 'md5'
 import debounce from 'lodash/debounce'
+import omitBy from 'lodash/omitBy'
 import { wmtsSource } from './wmts'
+
+
+const cleanParams = params => omitBy(params, v => v === undefined || v === null || v === '')
 
 function createUrl (baseUrl, params = {}) {
   const url = new URL(baseUrl, location.origin)
@@ -25,61 +29,66 @@ function createUrl (baseUrl, params = {}) {
   return url
 }
 
-export class WebgisImageWMS extends ImageWMS {
-  constructor (opts) {
-    super(opts)
-    this.layersAttributions = opts.layersAttributions || {}
-    this.layersOrder = opts.layersOrder || {}
-    const legendParams = {
-      SERVICE: 'WMS',
-      VERSION: '1.1.1',
-      REQUEST: 'GetLegendGraphic',
-      EXCEPTIONS: 'application/vnd.ogc.se_xml',
-      FORMAT: 'image/png',
-      SYMBOLHEIGHT: '4',
-      SYMBOLWIDTH: '6',
-      LAYERFONTSIZE: '10',
-      LAYERFONTBOLD: 'true',
-      ITEMFONTSIZE: '11',
-      ICONLABELSPACE: '3'
-    }
-    this.legendUrl = createUrl(opts.url, legendParams)
-    this.setVisibleLayers(opts.visibleLayers || [])
-  }
-
-  setVisibleLayers (layers) {
-    const orderedLayers = [].concat(layers)
-    orderedLayers.sort((l2, l1) => this.layersOrder[l1] - this.layersOrder[l2])
-
-    // update attributions
-    if (this.layersAttributions) {
-      const attributions = orderedLayers.map(layername => this.layersAttributions[layername]).filter(v => v)
-      this.setAttributions(attributions)
-    }
-    this.updateParams({ LAYERS: orderedLayers.join(',') })
-    this.visibleLayers = orderedLayers
-  }
-
-  getVisibleLayers () {
-    return this.visibleLayers
-  }
-
-  getLegendUrl (layername, view, opts) {
-    this.legendUrl.searchParams.set('LAYER', layername)
-    this.legendUrl.searchParams.set('SCALE', Math.round(view.getScale()))
-    if (opts) {
-      for (const [k, v] of Object.entries(opts)) {
-        this.legendUrl.searchParams.set(k, v)
+function GisquickWMSType (baseClass) {
+  class GisquickWMS extends baseClass {
+    constructor (opts) {
+      super(opts)
+      this.layersAttributions = opts.layersAttributions || {}
+      this.layersOrder = opts.layersOrder || {}
+      const legendParams = {
+        SERVICE: 'WMS',
+        VERSION: '1.1.1',
+        REQUEST: 'GetLegendGraphic',
+        EXCEPTIONS: 'application/vnd.ogc.se_xml',
+        FORMAT: 'image/png',
+        SYMBOLHEIGHT: '4',
+        SYMBOLWIDTH: '6',
+        LAYERFONTSIZE: '10',
+        LAYERFONTBOLD: 'true',
+        ITEMFONTSIZE: '11',
+        ICONLABELSPACE: '3'
       }
+      this.legendUrl = createUrl(opts.url, legendParams)
+      this.setVisibleLayers(opts.visibleLayers || [])
     }
-    return this.legendUrl.href
-  }
 
-  refresh () {
-    // prevent caching in the browser by additional GET parameter updated on every change
-    this.updateParams({ rev: this.getRevision() })
+    setVisibleLayers (layers) {
+      const orderedLayers = [].concat(layers)
+      orderedLayers.sort((l2, l1) => this.layersOrder[l1] - this.layersOrder[l2])
+      // update attributions
+      if (this.layersAttributions) {
+        const attributions = orderedLayers.map(layername => this.layersAttributions[layername]).filter(v => v)
+        this.setAttributions(attributions)
+      }
+      this.updateParams({ LAYERS: orderedLayers.join(',') })
+      this.visibleLayers = orderedLayers
+    }
+
+    getVisibleLayers () {
+      return this.visibleLayers
+    }
+
+    getLegendUrl (layername, view, opts) {
+      this.legendUrl.searchParams.set('LAYER', layername)
+      this.legendUrl.searchParams.set('SCALE', Math.round(view.getScale()))
+      if (opts) {
+        for (const [k, v] of Object.entries(opts)) {
+          this.legendUrl.searchParams.set(k, v)
+        }
+      }
+      return this.legendUrl.href
+    }
+
+    refresh () {
+      // prevent caching in the browser by additional GET parameter updated on every change
+      this.updateParams({ rev: this.getRevision() })
+    }
   }
+  return GisquickWMS
 }
+
+export const GisquickTileWMS = GisquickWMSType(TileWMS)
+export const GisquickImageWMS = GisquickWMSType(ImageWMS)
 
 export class WebgisTileImage extends TileImage {
   constructor (opts) {
@@ -194,11 +203,34 @@ export function createQgisLayer (config) {
         interpolate: false
       })
     })
+  } else if (config.mapTiling) {
+    return new TileLayer({
+      visible: true,
+      extent: config.extent,
+      source: new GisquickTileWMS({
+        url: config.owsUrl,
+        params: {
+          FORMAT: 'image/png',
+          TRANSPARENT: 'true',
+          TILED: 'true'
+        },
+        tileGrid: new TileGrid({
+          origin: getBottomLeft(config.extent),
+          resolutions: config.resolutions || projectConfig.resolutions,
+          tileSize: 512
+        }),
+        visibleLayers: visibleLayers,
+        layersAttributions: attributions,
+        layersOrder: layersOrder,
+        hidpi: false,
+        interpolate: false
+      })
+    })
   } else {
     return new ImageLayer({
       visible: true,
       extent: config.extent,
-      source: new WebgisImageWMS({
+      source: new GisquickImageWMS({
         resolutions: config.resolutions,
         url: config.owsUrl,
         visibleLayers: visibleLayers,
@@ -251,7 +283,7 @@ export async function createBaseLayer (layerConfig, projectConfig = {}) {
       source: new TileArcGISRest({
         url,
         attributions,
-        params: Object.entries(params).reduce((r, [k, v]) => (r[k.toUpperCase()] = v, r), {})
+        params: Object.entries(cleanParams(params)).reduce((r, [k, v]) => (r[k.toUpperCase()] = v, r), {})
       }),
       extent: layerConfig.extent
     })
@@ -265,11 +297,11 @@ export async function createBaseLayer (layerConfig, projectConfig = {}) {
     } else {
       olSource = new TileWMS({
         url: layerConfig.url,
-        params: {
+        params: cleanParams({
           LAYERS: layerConfig.wms_layers.join(','),
           FORMAT: layerConfig.format,
           TRANSPARENT: 'false'
-        },
+        }),
         attributions,
         tileGrid: new TileGrid({
           origin: getBottomLeft(layerConfig.extent),
@@ -298,16 +330,16 @@ export async function createBaseLayer (layerConfig, projectConfig = {}) {
   // fallback to render layer by qgis server
   return new ImageLayer({
     extent: layerConfig.extent,
-    source: new WebgisImageWMS({
+    source: new GisquickImageWMS({
       resolutions: layerConfig.resolutions || projectConfig.resolutions,
       url: projectConfig.owsUrl,
       visibleLayers: [layerConfig.name],
       layersAttributions: layerConfig.attributions,
-      params: {
+      params: cleanParams({
         LAYERS: layerConfig.name,
         FORMAT: layerConfig.format,
         TRANSPARENT: 'false'
-      },
+      }),
       serverType: 'qgis',
       ratio: 1
     })

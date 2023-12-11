@@ -260,7 +260,7 @@ export default {
         if (data.length < projects.length) {
           // clean from not existing projects
           const lt = new Set(data.map(p => p.name))
-          projectsHistory.setProjectsHistory(projects.filter(n => lt.has(n)))
+          projectsHistory.setProjectsHistory(this.user, projects.filter(n => lt.has(n)))
         }
         this.recentProjects = data
       } finally {
@@ -278,7 +278,7 @@ export default {
         if (tab === 'user') {
           this.fetchProjects()
         } else if (tab === 'recent') {
-          const recent = await projectsHistory.getProjectsHistory()
+          const recent = await projectsHistory.getProjectsHistory(this.user)
           if (recent.length) {
             this.fetchProjectsInfo(recent)
           }

@@ -159,7 +159,7 @@ export default {
       const data = await this.$http.project(this.projectName).catch(data => data)
       this.$store.commit('project', data)
       if (data.status === 200) {
-        projectsHistory.push(this.projectName)
+        projectsHistory.push(this.user, this.projectName)
       }
       const title = data.title || data.root_title
       if (title) {

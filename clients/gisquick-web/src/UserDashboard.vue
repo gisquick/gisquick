@@ -232,6 +232,9 @@ export default {
   created () {
     this.setTab('user')
   },
+  watch: {
+    user: 'fetchProjects'
+  },
   methods: {
     formatDate (d) {
       return {
@@ -244,6 +247,7 @@ export default {
       this.$http.logout().then(() => location.reload())
     },
     async fetchProjects () {
+      if (this.user.is_guest) return
       this.loadingProjects = true
       try {
         const { data } = await this.$http.get('/api/projects/')

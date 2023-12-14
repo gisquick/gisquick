@@ -85,13 +85,9 @@ function createApp (data) {
 }
 
 function errorPage (err) {
-  // const status = err && err.response && err.response.status
-  // let msg = 'Failed to initialize application'
-  // if (status === 502) {
-  //   msg = 'Server is currently not online, please try later.'
-  // }
+  const status = err && err.response && err.response.status
   const vm = new Vue({
-    render: h => h(ServerError)
+    render: h => h(ServerError, { props: { status }})
   })
   vm.$mount('#app')
 }

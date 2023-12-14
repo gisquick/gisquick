@@ -20,16 +20,16 @@ export default {
     },
     indeterminate: Boolean,
     min: {
-      type: Number,
+      type: [Number, String],
       default: 0
     },
     max: {
-      type: Number,
+      type: [Number, String],
       default: 100
     },
     value: Number,
     width: {
-      type: Number,
+      type: [Number, String],
       default: 4
     }
   },

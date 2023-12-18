@@ -58,6 +58,7 @@
       <div class="f-grow"/>
     </div>
 
+    <search-tool/>
     <map-tools ref="tools" hidden-identification mobile/>
     <transition name="fade">
       <div v-if="status.overlays.loading || status.baseLayer.loading" class="status f-row-ac m-2 shadow-2">
@@ -81,11 +82,12 @@ import MapTools from '@/components/MapTools.vue'
 import AppMenu from '@/components/AppMenu.vue'
 import SwipeContainer from '@/components/SwipeContainer.vue'
 import LocationTool from '@/components/LocationTool.vue'
+import SearchTool from '@/components/SearchTool.vue'
 
 export default {
   name: 'Map',
   mixins: [Map],
-  components: { AppMenu, ContentPanel, ScaleLine, MapAttributions, MapControl, MapTools, SwipeContainer, LocationTool },
+  components: { AppMenu, ContentPanel, ScaleLine, MapAttributions, MapControl, MapTools, SwipeContainer, LocationTool, SearchTool },
   refs: ['tools'],
   data () {
     return {
@@ -225,6 +227,13 @@ export default {
     border-radius: 50%;
     color: var(--color-primary);
     padding: 4px;
+  }
+  .search-tool {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+    align-self: start;
+    justify-self: start;
+    margin-left: 4px;
   }
 }
 

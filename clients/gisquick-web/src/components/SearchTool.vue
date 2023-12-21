@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="service"
+    v-if="enabled"
     class="search-tool dark f-row-ac"
     :class="{expanded}"
   >
@@ -10,16 +10,18 @@
     <div v-if="expanded" class="toolbar f-row-ac">
       <v-autocomplete
         ref="autocomplete"
-        :placeholder="tr.SearchAddress"
+        :placeholder="placeholder"
         class="flat inline"
         :loading="loading"
         :error="error"
         :min-chars="1"
         :items="suggestions"
         highlight-fields="text"
-        @input="onInput"
         :value="result"
+        @input="onInput"
         @text:update="onTextChangeDebounced"
+        @keydown.enter="onEnter"
+        @clear="clear"
       >
         <template v-slot:item="{ html }">
           <div class="item f-row f-grow">
@@ -49,9 +51,43 @@ import { toLonLat, fromLonLat, transformExtent } from 'ol/proj'
 import VAutocomplete from '@/ui/Autocomplete.vue'
 import FeaturesViewer from '@/components/ol/FeaturesViewer.vue'
 
+const HDMSRegex = /^(\d{1,2})°\s*(\d{1,2})['′]\s*(\d{1,2}(?:\.\d{1})?)[\"″]\s*([NS])\s*(\d{1,3})°\s*(\d{1,2})['′]\s*(\d{1,2}(?:\.\d{1})?)[\"″]\s*([EW])$/
+const LonLatRegex = /^\s*(-?\d{1,2}(?:\.\d+)?)\s*,\s*(-?\d{1,3}(?:\.\d+)?)\s*$/
+
+function parseHDMS (input) {
+  // Split the input string into latitude and longitude parts
+  const parts = input.split(/[°'"′″\s]+/)
+
+  // Extract the degree, minute, and second parts for latitude and longitude
+  const latDegrees = parseFloat(parts[0])
+  const latMinutes = parseFloat(parts[1])
+  const latSeconds = parseFloat(parts[2])
+
+  const lonDegrees = parseFloat(parts[4])
+  const lonMinutes = parseFloat(parts[5])
+  const lonSeconds = parseFloat(parts[6])
+
+  // Determine the hemisphere (N/S for latitude, E/W for longitude)
+  const latHemisphere = parts[3]
+  const lonHemisphere = parts[7]
+
+  // Calculate the latitude and longitude in decimal degrees
+  const latitude = latDegrees + latMinutes / 60 + latSeconds / 3600
+  const longitude = lonDegrees + lonMinutes / 60 + lonSeconds / 3600
+
+  // Adjust the latitude and longitude based on the hemisphere
+  const finalLatitude = latHemisphere === 'S' ? -latitude : latitude
+  const finalLongitude = lonHemisphere === 'W' ? -longitude : longitude
+
+  return [finalLongitude, finalLatitude]
+}
+
 export default {
   name: 'search',
   components: { VAutocomplete, FeaturesViewer },
+  props: {
+    label: String
+  },
   data () {
     return {
       suggestions: [],
@@ -64,8 +100,14 @@ export default {
   },
   computed: {
     ...mapState(['project']),
+    config () {
+      return this.project.config.search ?? {}
+    },
+    enabled () {
+      return this.config.geocoding_api || this.config.search_by_coords
+    },
     service () {
-      const name = this.project.config.search?.geocoding?.service
+      const name = this.config.geocoding_api
       switch (name) {
         case 'arcgis': return this.arcgisService()
         case 'geoapify': return this.geoapifyService()
@@ -75,9 +117,13 @@ export default {
     features () {
       return this.feature ? [this.feature] : []
     },
+    placeholder () {
+      return this.label || this.service ? this.tr.SearchAddress : this.tr.SearchLocation
+    },
     tr () {
       return {
         SearchAddress: this.$gettext('Search address'),
+        SearchLocation: this.$gettext('Search location'),
       }
     }
   },
@@ -86,7 +132,6 @@ export default {
       this.feature = null
       this.result = null
       this.suggestions = []
-      this.$refs.autocomplete?.clear()
     },
     toggle () {
       this.expanded = !this.expanded
@@ -96,6 +141,7 @@ export default {
         })
       } else {
         this.clear()
+        // this.$refs.autocomplete?.clear()
       }
     },
     arcgisService () {
@@ -112,7 +158,7 @@ export default {
         return JSON.stringify({
           x: this.$map.ext.formatCoordinate(x),
           y: this.$map.ext.formatCoordinate(y),
-          spatialReference: { wkid: 102067 }
+          spatialReference: { wkid }
         })
       }
       const projectExtent = formatExtent(this.project.config.project_extent)
@@ -189,24 +235,20 @@ export default {
       return await this.service.autocomplete(text)
     },
     async onInput (item) {
-      if (this.result === item) {
-        if (this.feature) {
-          this.$map.ext.zoomToFeature(this.feature)
-        }
-        return
+      if (this.result !== item) {
+        this.feature = item ? Object.freeze(await this.service.getFeature(item)) : null
+        this.result = item
       }
-      const feature = item ? await this.service.getFeature(item) : null
-      if (feature) {
-        this.$map.ext.zoomToFeature(feature)
+      if (this.feature) {
+        this.$map.ext.zoomToFeature(this.feature)
       }
-      this.result = item
-      this.feature = feature ? Object.freeze(feature) : null
     },
     onTextChangeDebounced: debounce(async function (text) {
       this.onTextChange(text)
     }, 400),
     async onTextChange (text) {
       if (text.length > 0) {
+        if (!this.service) return
         this.loading = true
         this.error = ''
         try {
@@ -218,6 +260,27 @@ export default {
         }
       } else {
         this.suggestions = []
+      }
+    },
+    searchByCoords (text) {
+      let coords
+      if (HDMSRegex.test(text)) {
+        try {
+          coords = parseHDMS(text)
+        } catch (err) {}
+      } else if (LonLatRegex.test(text)) {
+        coords = text.split(',').map(parseFloat).reverse()
+      }
+      if (coords) {
+        const p = new Point(fromLonLat(coords, this.$map.getView().getProjection()))
+        const f = new Feature({ geometry: p })
+        this.feature = Object.freeze(f)
+        this.$map.ext.zoomToFeature(this.feature)
+      }
+    },
+    onEnter (e) {
+      if (this.config.search_by_coords) {
+        this.searchByCoords(e.target.value)
       }
     }
   }

@@ -341,7 +341,7 @@ export default {
     },
     clear () {
       this.text = ''
-      if (!this.multi) {
+      if (!this.multi && this.value) {
         this.$emit('input', null)
       }
       this.$emit('clear')

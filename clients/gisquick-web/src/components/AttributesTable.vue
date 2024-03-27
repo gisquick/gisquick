@@ -42,15 +42,18 @@
           @clear="clearFilter(column.key)"
         />
       </template>
-      <template v-slot:cell(actions)="{ row }">
+      <template v-slot:cell(actions)="{ row, item }">
         <div class="f-row-ac">
-          <v-btn v-if="features[row].getGeometry()" class="icon flat m-0" @click="zoomToFeature(features[row])">
+          <v-btn
+            class="icon flat m-0"
+            :disabled="!item.geometry"
+            @click="zoomToFeature(features[row])"
+          >
             <v-icon name="zoom-to"/>
+            <v-tooltip v-if="!item.geometry" slot="tooltip">
+              <translate>No geometry</translate>
+            </v-tooltip>
           </v-btn>
-          <v-btn v-else class="icon flat m-0" disabled :title="tr.NoGeometry">
-            <v-icon name="zoom-to"/>
-          </v-btn>
-
           <v-btn class="icon flat my-0 mr-0" @click="showInfoPanel = true">
             <v-icon name="circle-i-outline"/>
           </v-btn>

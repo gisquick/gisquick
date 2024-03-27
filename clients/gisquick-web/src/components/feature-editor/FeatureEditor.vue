@@ -33,22 +33,23 @@
           </v-tooltip>
           <v-icon name="edit-geometry"/>
         </v-btn>
-        <geometry-editor
-          v-if="editGeometry"
-          ref="geometryEditor"
-          :feature="editGeometryFeature"
-          :geometry-type="geomType"
-        />
+        <collapse-width-transition class="f-row">
+          <geometry-editor
+            v-if="editGeometry"
+            ref="geometryEditor"
+            class="geom-tools f-row-ac"
+            :feature="editGeometryFeature"
+            :geometry-type="geomType"
+            :geom-toolbar="geomToolbar"
+            delete-confirmation
+          />
+        </collapse-width-transition>
         <div class="v-separator"/>
-        <!-- <v-btn @click="deleteFeature" icon>
-          <v-icon color="red darken-3">delete_forever</v-icon>
-        </v-btn> -->
-
         <v-btn
           aria-label="Delete object"
           class="icon"
           :disabled="!permissions.delete || status === 'loading'"
-          @click="showConfirmDelete = true"
+          @click="deleteObject"
         >
           <v-icon color="red" name="delete_forever"/>
           <v-tooltip slot="tooltip">
@@ -79,7 +80,7 @@
     </portal>
 
     <transition name="fade">
-      <div v-if="status" class="overlay notification f-row">
+      <div v-if="status" class="overlay status-notification f-row">
         <div
           class="content shadow-2 f-row-ac p-2"
           :class="status"
@@ -91,23 +92,38 @@
         </div>
       </div>
     </transition>
+
     <transition name="fade">
-      <div v-if="showConfirmDelete" class="overlay delete-dialog f-col">
-        <!-- <div class="content shadow-2"> -->
-          <div class="header px-4">
-            <translate class="title">Delete current object?</translate>
-          </div>
-          <div class="f-row-ac">
-            <v-btn class="small round f-grow" color="#777" @click="showConfirmDelete = false">
-              <translate>No</translate>
-            </v-btn>
-            <v-btn class="small round f-grow" color="red" @click="deleteFeature">
-              <translate>Yes</translate>
-            </v-btn>
-          </div>
-        <!-- </div> -->
+      <div v-if="showConfirmOverlay" class="overlay confirm-dialog f-col">
+        <div class="header px-4">
+          <translate class="title">Delete current object?</translate>
+        </div>
+        <div class="f-row-ac">
+          <v-btn class="small round f-grow" color="#777" @click="showConfirmOverlay = false">
+            <translate>No</translate>
+          </v-btn>
+          <v-btn class="small round f-grow" color="red" @click="deleteFeature">
+            <translate>Yes</translate>
+          </v-btn>
+        </div>
       </div>
     </transition>
+
+    <v-dialog :value="showConfirmDialog" :modal="false" persistent>
+      <div class="confirm-dialog p-2 f-col">
+        <div class="header px-4">
+          <translate>Delete current object?</translate>
+        </div>
+        <div class="f-row-ac">
+          <v-btn class="small round f-grow" color="#777" @click="showConfirmDialog = false">
+            <translate>No</translate>
+          </v-btn>
+          <v-btn class="small round f-grow" color="red" @click="deleteFeature">
+            <translate>Yes</translate>
+          </v-btn>
+        </div>
+      </div>
+    </v-dialog>
   </div>
 </template>
 
@@ -148,7 +164,12 @@ export default {
     layer: Object,
     feature: Object,
     project: Object,
-    toolbarTarget: String
+    toolbarTarget: String,
+    geomToolbar: String,
+    confirmType: {
+      type: String,
+      default: 'dialog' // ['dialog', 'overlay']
+    }
   },
   data () {
     return {
@@ -157,7 +178,8 @@ export default {
       fields: null,
       initialFields: null,
       editGeometry: false,
-      showConfirmDelete: false,
+      showConfirmOverlay: false,
+      showConfirmDialog: false,
       formStatus: null
     }
   },
@@ -312,7 +334,20 @@ export default {
     async deleteFeature () {
       await this.$refs.editForm.beforeFeatureDeleted?.(this.feature)
       this.wfsTransaction({ deletes: [this.feature] })
-      this.showConfirmDelete = false
+      this.showConfirmOverlay = false
+      this.showConfirmDialog = false
+    },
+    async deleteObject () {
+      if (this.confirmType === 'dialog') {
+        this.showConfirmDialog = true
+      } else if (this.confirmType === 'overlay') {
+        this.showConfirmOverlay = true
+      } else {
+        this.deleteFeature()
+      }
+    },
+    getGeometry () {
+      return this.$refs.geometryEditor?.getGeometry()
     }
   }
 }
@@ -321,12 +356,13 @@ export default {
 <style lang="scss" scoped>
 .toolbar {
   ::v-deep .btn.icon {
-    margin: 3px 2px;
     width: 26px;
     height: 26px;
   }
+  .v-separator {
+    margin: 4px 1px;
+  }
 }
-
 .overlay {
   position: absolute;
   inset: 0;
@@ -334,7 +370,7 @@ export default {
   justify-content: center;
   z-index: 10;
 }
-.notification {
+.status-notification {
   background-color: rgba(0, 0, 0, 0.2);
 
   // pointer-events: none;
@@ -367,6 +403,15 @@ export default {
   //   border-radius: 2px;
   // }
   .title {
+    font-weight: 500;
+  }
+  .btn.small {
+    min-width: 70px;
+  }
+}
+.confirm-dialog {
+  background-color: #f3f3f3;
+  .header {
     font-weight: 500;
   }
   .btn.small {

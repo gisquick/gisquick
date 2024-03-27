@@ -43,7 +43,7 @@
       <portal to="right-panel">
         <info-panel
           v-if="displayMode === 'info-panel' || displayMode === 'both'"
-          class="mx-1 mb-2 shadow-2"
+          class="mx-1 mb-2"
           :features="displayedFeatures"
           :layer="displayedLayer"
           :layers="resultLayers"

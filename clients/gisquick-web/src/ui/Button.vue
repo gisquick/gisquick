@@ -27,6 +27,7 @@ export default {
   components: { VSpinner },
   props: {
     active: Boolean,
+    autofocus: Boolean,
     disabled: Boolean,
     color: String,
     icon: Boolean,
@@ -73,6 +74,11 @@ export default {
         }
       }
       return null
+    }
+  },
+  mounted () {
+    if (this.autofocus && !this.disabled) {
+      this.$el.focus()
     }
   },
   methods: {

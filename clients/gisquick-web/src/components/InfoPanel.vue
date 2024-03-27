@@ -1,77 +1,94 @@
 <template>
   <div v-if="feature" class="f-col info-panel light">
-    <div class="toolbar dark top f-row-ac">
-      <v-select
-        class="flat f-grow my-0"
-        :disabled="layersOptions.length < 2"
-        :items="layersOptions"
-        :value="selected ? selected.layer : layersOptions[0].value"
-        @input="setActiveLayer"
-      />
-      <v-btn
-        class="icon flat"
-        :disabled="index === 0"
-        @click="setSelected(index - 1)"
-      >
-        <v-icon name="arrow-left" size="16"/>
-      </v-btn>
-      <span v-if="selected" style="font-size: 14px">
-        {{ index + 1 }}/{{ features.length }}
-      </span>
-      <v-spinner v-else size="16" width="2"/>
-      <v-btn
-        class="icon flat"
-        :disabled="index === features.length - 1"
-        @click="setSelected(index + 1)"
-      >
-        <v-icon name="arrow-right" size="16"/>
-      </v-btn>
-      <v-btn @click="$emit('close')" class="icon flat">
-        <v-icon name="x"/>
-      </v-btn>
-    </div>
-
-    <div class="content-layout">
-      <scroll-area>
-        <switch-transition>
-          <feature-editor
-            v-if="editMode"
-            class="edit-form"
-            toolbar-target="infopanel-tool"
-            :feature="feature"
-            :layer="layer"
-            :project="$store.state.project.config"
-            @edit="$emit('edit', $event)"
-            @delete="$emit('delete', $event)"
-          />
-          <component
-            v-else
-            :is="formComponent"
-            :feature="feature"
-            :layer="layer"
-            :project="$store.state.project.config"
-          />
-        </switch-transition>
-      </scroll-area>
-
-      <div class="toolbar tools dark f-row-ac">
-        <v-btn class="icon flat" @click="zoomToFeature" :disabled="!this.feature.getGeometry()">
-          <v-icon name="zoom-to"/>
+    <div class="f-col main-content shadow-2">
+      <div class="toolbar dark top f-row-ac">
+        <v-select
+          class="flat f-grow my-0"
+          :disabled="layersOptions.length < 2"
+          :items="layersOptions"
+          :value="selected ? selected.layer : layersOptions[0].value"
+          @input="setActiveLayer"
+        />
+        <v-btn
+          class="icon flat"
+          :disabled="index === 0"
+          @click="setSelected(index - 1)"
+        >
+          <v-icon name="arrow-left" size="16"/>
         </v-btn>
+        <span v-if="selected" style="font-size: 14px">
+          {{ index + 1 }}/{{ features.length }}
+        </span>
+        <v-spinner v-else size="16" width="2"/>
+        <v-btn
+          class="icon flat"
+          :disabled="index === features.length - 1"
+          @click="setSelected(index + 1)"
+        >
+          <v-icon name="arrow-right" size="16"/>
+        </v-btn>
+        <v-btn @click="$emit('close')" class="icon flat">
+          <v-icon name="x"/>
+        </v-btn>
+      </div>
+
+      <collapse-transition class="collapse-container">
+        <div v-show="!collapsed" class="wrapper">
+          <scroll-area>
+            <switch-transition>
+              <feature-editor
+                v-if="editMode"
+                ref="editor"
+                class="edit-form"
+                toolbar-target="infopanel-tool"
+                :confirm-type="collapsed ? 'dialog' : 'overlay'"
+                :feature="feature"
+                :layer="layer"
+                :project="$store.state.project.config"
+                @edit="$emit('edit', $event)"
+                @delete="$emit('delete', $event)"
+              />
+              <component
+                v-else
+                :is="formComponent"
+                :feature="feature"
+                :layer="layer"
+                :project="$store.state.project.config"
+              />
+            </switch-transition>
+          </scroll-area>
+        </div>
+      </collapse-transition>
+    </div>
+    <div class="bottom-panel f-row-ac">
+      <div class="edit-toolbar f-row-ac" :class="{active: editMode}">
         <v-btn
           v-if="layerEditable"
-          class="icon flat"
+          class="icon flat toggle"
           :color="editMode ? 'primary' : null"
           @click="$emit('update:editMode', !editMode)"
         >
           <v-icon name="edit"/>
         </v-btn>
+        <portal-target
+          name="infopanel-tool"
+          class="toolbar-portal left f-row-ac"
+          transition="collapse-width-transition"
+        />
       </div>
-      <portal-target
-        name="infopanel-tool"
-        class="toolbar-portal toolbar left"
-        transition="collapse-transition"
-      />
+      <v-btn
+        class="icon flat"
+        :disabled="!feature.getGeometry()"
+        @click="zoomToFeature"
+      >
+        <v-icon name="zoom-to"/>
+      </v-btn>
+      <v-btn
+        class="icon flat minimize"
+        @click="collapsed = !collapsed"
+      >
+        <v-icon name="arrow-down" :class="{collapsed}"/>
+      </v-btn>
     </div>
   </div>
 </template>
@@ -90,6 +107,11 @@ export default {
     features: Array,
     layers: Array,
     editMode: Boolean
+  },
+  data () {
+    return {
+      collapsed: false
+    }
   },
   computed: {
     layersOptions () {
@@ -129,18 +151,26 @@ export default {
       this.$emit('selection-change', { layer: this.selected.layer, featureIndex })
     },
     zoomToFeature () {
-      this.$map.ext.zoomToFeature(this.feature)
+      const geom = this.$refs.editor?.getGeometry()
+      geom ? this.$map.ext.zoomToGeometry(geom) : this.$map.ext.zoomToFeature(this.feature)
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+// required for scrolling and collapse animation
+.collapse-container:not(.collapse-enter-active) {
+  overflow: hidden;
+  display: grid;
+  > .wrapper {
+    overflow: hidden;
+    display: grid;
+  }
+}
+
 .info-panel {
   position: relative;
-  border-radius: 3px;
-  border: 1px solid #aaa;
-  background-color: #fff;
   overflow: hidden;
   @media (max-width: 500px) {
     width: calc(100vw - 26px);
@@ -151,7 +181,16 @@ export default {
       width: 400px;
     }
   }
-
+  .main-content {
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+    border-radius: 3px;
+    border: 1px solid #aaa;
+    background-color: #fff;
+    overflow: hidden;
+    position: relative;
+  }
   .toolbar {
     flex-shrink: 0;
     &.top {
@@ -187,25 +226,50 @@ export default {
       }
     }
   }
-  .content-layout {
-    overflow: hidden;
+  .bottom-panel {
+    padding-inline: 1px;
+    margin-top: -1px;
+    align-self: end;
+    background-color: #eee;
+    --gutter: 3px 4px;
+    border-top: 1px solid #ccc;
+    border-inline: 1px solid #777;
+    border-bottom: 1px solid #777;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
     position: relative;
-    display: grid;
-    grid-template-rows: 1fr minmax(8px, auto);
-    .scroll-container {
-      grid-row: 1 / 2;
-      grid-column: 1 / 2;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2), 0 3px 3px rgba(0,0,0,0.15);
+    overflow: auto;
+    flex-shrink: 0;
+    max-width: calc(100% - 6px);
+    max-width: 100%;
+  }
+  .minimize.btn {
+    .icon {
+      transition: transform .4s cubic-bezier(.25,.8,.25,1);
+      &:not(.collapsed) {
+        transform: rotate(180deg);
+      }
     }
-    .tools {
-      grid-row: 1 / 3;
-      grid-column: 1 / 2;
+  }
+}
+.edit-toolbar {
+  --gutter: 0 4px;
+  border-radius: 4px;
+  &.active {
+    margin: 2px;
+    .toggle {
+      background-color: #ddd;
+      --gutter: 0;
+      padding: 3px;
+      border: 1px dashed #aaa;
+      border-width: 1px 0 1px 1px;
     }
     .toolbar-portal {
-      grid-row: 2 / 3;
-      grid-column: 1 / 2;
-      background-color: #e0e0e0;
-      border-top: 1px solid #bbb;
-      align-self: end;
+      border: 1px dashed #bbb;
+      border-width: 1px 1px 1px 0;
+      border-top-right-radius: 3px;
+      border-bottom-right-radius: 3px;
     }
   }
 }

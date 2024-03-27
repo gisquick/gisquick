@@ -65,6 +65,11 @@
         <v-spinner color="primary" width="3" size="20"/>
       </div>
     </transition>
+    <portal-target
+      name="top-panel"
+      class="top-panel"
+      transition="slide-top-transition"
+    />
     <location-tool v-if="geolocationEnabled"/>
   </div>
 </template>
@@ -216,17 +221,11 @@ export default {
     max-height: 100%;
     z-index: 1;
   }
-  .status {
+  .status, .top-panel {
     grid-column: 1 / 2;
     grid-row: 1 / 2;
     align-self: start;
     justify-self: end;
-    z-index: 10;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 50%;
-    color: var(--color-primary);
-    padding: 4px;
   }
   .search-tool {
     grid-column: 1 / 2;
@@ -234,6 +233,7 @@ export default {
     align-self: start;
     justify-self: start;
     margin-left: 4px;
+    z-index: 1;
   }
 }
 
@@ -242,7 +242,14 @@ export default {
   height: 100%;
   background-color: #fff;
 }
-
+.status {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 50%;
+  color: var(--color-primary);
+  padding: 4px;
+  z-index: 10;
+}
 .main-panel {
   .panel-content {
     width: 288px;

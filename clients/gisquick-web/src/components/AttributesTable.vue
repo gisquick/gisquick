@@ -181,7 +181,7 @@
 
       <info-panel
         v-else-if="showInfoPanel"
-        class="mx-1 mb-2 shadow-2"
+        class="mx-1 mb-2"
         :features="features"
         :layer="layer"
         :selected="infoPanelSelection"

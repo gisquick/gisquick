@@ -100,8 +100,7 @@ export default {
         const p2 = map.getCoordinateFromPixel([right, bottom])
         return boundingExtent([p1, p2])
       },
-      zoomToFeature: (feature, options = {}) => {
-        const geom = feature.getGeometry()
+      zoomToGeometry: (geom, options = {}) => {
         if (!geom) {
           return
         }
@@ -121,6 +120,9 @@ export default {
           const buffer = (map.getSize()[0] - padding[1] - padding[3]) * 0.05 * resolution
           map.getView().fit(bufferExtent(extent, buffer), { duration: 450, padding })
         }
+      },
+      zoomToFeature: (feature, options = {}) => {
+        map.ext.zoomToGeometry(feature.getGeometry(), options)
       },
       refreshOverlays () {
         map.overlay.getSource().refresh()

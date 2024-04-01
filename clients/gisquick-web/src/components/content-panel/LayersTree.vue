@@ -9,7 +9,15 @@
     :group-content-attrs="groupContentAttributes"
   >
     <template v-slot:group="{ group, depth }">
-      <div class="item group f-row-ac" :depth="depth">
+      <div v-if="group.virtual_layer" class="item group f-row-ac">
+        <v-checkbox
+          class="f-grow"
+          :label="group.name"
+          :value="group.visible"
+          @input="setGroupVisibility(group, $event)"
+        />
+      </div>
+      <div v-else class="item group f-row-ac" :depth="depth">
         <svg
           width="16"
           viewBox="0 0 16 16"

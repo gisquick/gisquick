@@ -60,8 +60,14 @@ export default new Vuex.Store({
 
       const overlaysTree = filterLayers(layers, l => !l.hidden)
       const groups = [].concat(...overlaysTree.map(filterGroups))
-      // groups.forEach(l => { l.visible = true })
-      groups.forEach(l => Vue.set(l, 'visible', true))
+      groups.filter(g => !g.virtual_layer).forEach(g => Vue.set(g, 'visible', true))
+      groups.filter(g => g.virtual_layer).forEach(g => {
+        const layers = layersList(g)
+        const visible = layers.some(l => l.visible)
+        g.visible = visible // Vue.set(g, 'visible', visible)
+        // updates layers visibility for initial map rendering
+        layers.forEach(l => l.visible = visible)
+      })
 
       const overlaysList = layersList({ layers })
       overlaysList.filter(l => l.relations).forEach(l => {
@@ -91,6 +97,9 @@ export default new Vuex.Store({
     },
     groupVisibility (state, { group, visible }) {
       group.visible = visible
+      if (group.virtual_layer) {
+        layersList(group).forEach(l => l.visible = visible)
+      }
     },
     layerVisibility (state, { layer, visible }) {
       layer.visible = visible
@@ -119,7 +128,9 @@ export default new Vuex.Store({
       }
       const { groups, list: layers } = state.project.overlays
       const excluded = [].concat(...groups.filter(g => !g.visible).map(layersList))
-      return layers.filter(l => l.drawing_order > -1 && l.visible && !excluded.includes(l))
+      // layers group
+      const included = [].concat(...groups.filter(g => g.virtual_layer && g.visible).map(layersList))
+      return layers.filter(l => l.drawing_order > -1 && (included.includes(l) || (l.visible && !excluded.includes(l))))
     }
   }
 })

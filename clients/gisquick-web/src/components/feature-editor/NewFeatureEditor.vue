@@ -167,10 +167,13 @@ export default {
 
       this.statusController.set('loading', 1000)
       wfsTransaction(this.project.config.ows_url, this.layer.name, { inserts: [f] })
-        .then(async () => {
+        .then(async ( { data }) => {
+          const parser = new DOMParser()
+          const doc = parser.parseFromString(data, 'application/xml')
+          const fid = doc.querySelector('InsertResults > Feature FeatureId')?.getAttribute('fid')
           await this.statusController.set('success', 1500)
           this.statusController.set(null, 100)
-          this.$emit('edit')
+          this.$emit('edit', fid)
         })
         .catch(err => {
           this.showError(err.message)

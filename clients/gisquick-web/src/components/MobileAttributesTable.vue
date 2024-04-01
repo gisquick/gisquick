@@ -374,8 +374,8 @@ export default {
       const layer = this.project.overlays.list.find(l => l.name === layername)
       this.$store.commit('attributeTable/layer', layer)
     },
-    mNewFeatureAdded (f) {
-      this.newFeatureAdded(f)
+    mNewFeatureAdded (fid) {
+      this.newFeatureAdded(fid)
       this.mode = 'view'
     }
   }

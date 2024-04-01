@@ -15,6 +15,9 @@ import { get as getProj } from 'ol/proj'
 import { register } from 'ol/proj/proj4'
 import proj4 from 'proj4'
 import { defaults as defaultControls } from 'ol/control'
+import { DragRotate, defaults as defaultInteractions } from 'ol/interaction.js'
+import { altKeyOnly } from 'ol/events/condition'
+
 // import md5 from 'md5'
 import debounce from 'lodash/debounce'
 import omitBy from 'lodash/omitBy'
@@ -383,6 +386,7 @@ export function createMap (config, controlOpts = {}) {
       smoothExtentConstraint: false
     }),
     controls: defaultControls(controlOpts),
+    interactions: defaultInteractions().extend([new DragRotate({ condition: altKeyOnly })]),
     moveTolerance: 10
   })
   map.overlay = overlay

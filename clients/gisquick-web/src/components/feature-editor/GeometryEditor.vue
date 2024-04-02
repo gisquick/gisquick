@@ -476,13 +476,13 @@ export default {
     },
     async deleteSelectedFeatures () {
       if (this.deleteConfirmation) {
-        const confirmed = await this.confirmCallback('Delete selected geometry object?')
+        const confirmed = await this.confirmCallback(this.tr.DeleteGeometry + '?')
         if (confirmed) {
           this._deleteSelectedFeatures()
         }
       } else {
         this._deleteSelectedFeatures()
-        this.showNotification?.('Selected geometry was deleted', { color: 'primary' })
+        this.showNotification?.(this.$gettext('Selected geometry was deleted'), { color: 'primary' })
       }
     },
     _deleteSelectedFeatures () {

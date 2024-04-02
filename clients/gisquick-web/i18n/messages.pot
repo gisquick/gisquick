@@ -240,7 +240,7 @@ msgstr ""
 msgid "Export"
 msgstr ""
 
-#: src/components/AttributesTable.vue:460
+#: src/components/AttributesTable.vue:465
 msgid "Failed to load data"
 msgstr ""
 
@@ -596,6 +596,10 @@ msgstr ""
 
 #: src/components/MobileAttributesTable.vue:244
 msgid "Select layer"
+msgstr ""
+
+#: src/components/feature-editor/GeometryEditor.vue:485
+msgid "Selected geometry was deleted"
 msgstr ""
 
 #: src/ui/DatePicker.vue:180

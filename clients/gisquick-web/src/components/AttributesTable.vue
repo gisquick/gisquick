@@ -503,6 +503,7 @@ export default {
       }, 1500)
       const added = await this.getFeatureById(fid)
       const features = Object.freeze([...this.features, ...added])
+      this.pagination.totalItems += added.length
       this.$store.commit('attributeTable/features', features)
       this.selectedFeatureIndex = features.length - 1
       this.showInfoPanel = true
@@ -666,11 +667,17 @@ export default {
 }
 .window {
   overflow: hidden;
-  width: 20em;
   border-radius: 3px;
   border: 1px solid #aaa;
   background-color: #fff;
   position: relative;
+  @media (max-width: 500px) {
+    width: calc(100vw - 26px);
+    max-width: calc(100vw - 26px);
+  }
+  @media (min-width: 501px) {
+    width: 400px;
+  }
   .toolbar {
     background-color: #e0e0e0;
     border-top: 1px solid #bbb;

@@ -205,7 +205,8 @@ export default {
     // color: var(--icon-color);
   }
   .content {
-    width: 150px;
+    min-width: 150px;
+    max-width: 250px;
     font-size: 14px;
     border-radius: 3px;
     margin: 6px;

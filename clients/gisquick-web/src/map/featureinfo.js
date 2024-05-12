@@ -159,10 +159,10 @@ export function formatLayerQuery (layer, geom, filters, propertyNames = []) {
   }
   // rootFilter = `<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">${testQuery}</ogc:Filter>`
   return [
-    `<gml:Query gml:typeName="${layer.name.replace(/ /g, '_')}">`,
+    `<wfs:Query typeName="${layer.name.replace(/ /g, '_')}" xmlns:feature="http://www.qgis.org/gml">`,
     propertyNames.map(n => `<ogc:PropertyName>${n}</ogc:PropertyName>`).join('\n'),
     rootFilter,
-    '</gml:Query>'
+    '</wfs:Query>'
   ].filter(v => v).join('\n')
 }
 

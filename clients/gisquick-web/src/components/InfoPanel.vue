@@ -1,32 +1,38 @@
 <template>
-  <div v-if="feature" class="f-col info-panel light">
+  <div v-if="feature || mode === 'add'" class="f-col info-panel light">
     <div class="f-col main-content shadow-2">
       <div class="toolbar dark top f-row-ac">
-        <v-select
-          class="flat f-grow my-0"
-          :disabled="layersOptions.length < 2"
-          :items="layersOptions"
-          :value="selected ? selected.layer : layersOptions[0].value"
-          @input="setActiveLayer"
-        />
-        <v-btn
-          class="icon flat"
-          :disabled="index === 0"
-          @click="setSelected(index - 1)"
-        >
-          <v-icon name="arrow-left" size="16"/>
-        </v-btn>
-        <span v-if="selected" style="font-size: 14px">
-          {{ index + 1 }}/{{ features.length }}
-        </span>
-        <v-spinner v-else size="16" width="2"/>
-        <v-btn
-          class="icon flat"
-          :disabled="index === features.length - 1"
-          @click="setSelected(index + 1)"
-        >
-          <v-icon name="arrow-right" size="16"/>
-        </v-btn>
+        <template v-if="mode !== 'add'">
+          <v-select
+            class="flat f-grow my-0"
+            :disabled="layersOptions.length < 2"
+            :items="layersOptions"
+            :value="selected ? selected.layer : layersOptions[0].value"
+            @input="setActiveLayer"
+          />
+          <v-btn
+            class="icon flat"
+            :disabled="index === 0"
+            @click="setSelected(index - 1)"
+          >
+            <v-icon name="arrow-left" size="16"/>
+          </v-btn>
+          <span v-if="selected" style="font-size: 14px">
+            {{ index + 1 }}/{{ features.length }}
+          </span>
+          <v-spinner v-else size="16" width="2"/>
+          <v-btn
+            class="icon flat"
+            :disabled="index === features.length - 1"
+            @click="setSelected(index + 1)"
+          >
+            <v-icon name="arrow-right" size="16"/>
+          </v-btn>
+        </template>
+        <template v-else>
+          <span class="ml-2">{{ layer.title || layer.name }} -</span>
+          <translate class="title mx-2 f-grow">New Feature</translate>
+        </template>
         <v-btn @click="$emit('close')" class="icon flat">
           <v-icon name="x"/>
         </v-btn>
@@ -37,7 +43,7 @@
           <scroll-area>
             <switch-transition>
               <feature-editor
-                v-if="editMode"
+                v-if="mode === 'edit'"
                 ref="editor"
                 class="edit-form"
                 toolbar-target="infopanel-tool"
@@ -47,6 +53,15 @@
                 :project="$store.state.project.config"
                 @edit="$emit('edit', $event)"
                 @delete="$emit('delete', $event)"
+              />
+              <new-feature-editor
+                v-else-if="mode === 'add'"
+                ref="editor"
+                class="edit-form"
+                toolbar-target="infopanel-tool"
+                :confirm-type="collapsed ? 'dialog' : 'overlay'"
+                :layer="layer"
+                @edit="$emit('insert', $event)"
               />
               <component
                 v-else
@@ -61,12 +76,12 @@
       </collapse-transition>
     </div>
     <div class="bottom-panel f-row-ac">
-      <div class="edit-toolbar f-row-ac" :class="{active: editMode}">
+      <div class="edit-toolbar f-row-ac" :class="{active: !!mode}">
         <v-btn
           v-if="layerEditable"
           class="icon flat toggle"
-          :color="editMode ? 'primary' : null"
-          @click="$emit('update:editMode', !editMode)"
+          :color="mode === 'edit' ? 'primary' : null"
+          @click="$emit('update:mode', mode === '' ? 'edit' : '')"
         >
           <v-icon name="edit"/>
         </v-btn>
@@ -78,7 +93,7 @@
       </div>
       <v-btn
         class="icon flat"
-        :disabled="!feature.getGeometry()"
+        :disabled="!feature || !feature.getGeometry()"
         @click="zoomToFeature"
       >
         <v-icon name="zoom-to"/>
@@ -96,17 +111,18 @@
 <script>
 import GenericInfopanel from '@/components/GenericInfopanel.vue'
 import FeatureEditor from '@/components/feature-editor/FeatureEditor.vue'
+import NewFeatureEditor from '@/components/feature-editor/NewFeatureEditor.vue'
 import { externalComponent } from '@/components-loader'
 
 export default {
   name: 'info-panel',
-  components: { GenericInfopanel, FeatureEditor },
+  components: { GenericInfopanel, FeatureEditor, NewFeatureEditor },
   props: {
     selected: Object,
     layer: Object,
     features: Array,
     layers: Array,
-    editMode: Boolean
+    mode: String // 'edit', 'add', empty string - view mode
   },
   data () {
     return {
@@ -122,7 +138,7 @@ export default {
       }))
     },
     index () {
-      return this.selected && this.selected.featureIndex
+      return this.selected?.featureIndex
     },
     feature () {
       return this.selected && this.features[this.index]

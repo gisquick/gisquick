@@ -37,7 +37,7 @@
         />
       </div>
     </template>
-    <template v-slot:leaf="{ item, group, data }">
+    <template v-slot:leaf="{ item, data }">
       <!-- <div class="f-col"> -->
         <div class="item layer f-row-ac" :class="{expanded: expandedLayer === item}">
           <v-checkbox
@@ -45,7 +45,7 @@
             class="f-grow"
             :label="item.title || item.name"
             :value="item.visible"
-            @input="setLayerVisibility(item, group, $event)"
+            @input="setLayerVisibility(item, $event)"
           />
           <div v-else class="f-row-ac m-2 f-grow">
             <v-icon class="mr-2" name="map_off"/>
@@ -194,11 +194,7 @@ export default {
     setGroupVisibility (group, visible) {
       this.$store.commit('groupVisibility', { group, visible })
     },
-    setLayerVisibility (layer, group, visible) {
-      if (group?.mutually_exclusive) {
-        const offLayers = group.layers.filter(l => l.visible && l !== layer)
-        offLayers.forEach(l => this.$store.commit('layerVisibility', { layer: l, visible: false }))
-      }
+    setLayerVisibility (layer, visible) {
       this.$store.commit('layerVisibility', { layer, visible })
     },
     groupContentAttributes (item) {

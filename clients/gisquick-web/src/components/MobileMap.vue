@@ -276,16 +276,12 @@ export default {
       border-color: rgba(#fff, 0.5);
 
       .btn {
+        --gutter: 0 4px;
         padding: 4px;
         .icon {
           width: 24px;
           height: 24px;
         }
-      }
-    }
-    .app-menu {
-      .btn {
-        margin: 3px;
       }
     }
     ::v-deep .panel-header {

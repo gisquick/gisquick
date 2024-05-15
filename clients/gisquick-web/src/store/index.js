@@ -102,6 +102,11 @@ export default new Vuex.Store({
       }
     },
     layerVisibility (state, { layer, visible }) {
+      const group = state.project.overlays.groups.find(g => g.layers.includes(layer))
+      if (group?.mutually_exclusive) {
+        const offLayers = group.layers.filter(l => l.visible && l !== layer)
+        offLayers.forEach(l => l.visible = false)
+      }
       layer.visible = visible
     },
     visibleLayers (state, layersNames) {

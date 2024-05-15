@@ -38,6 +38,7 @@ import Identification from '@/components/Identification.vue'
 import Measure from '@/components/measure/Measure.vue'
 import Print from '@/components/print/Print.vue'
 import MobileAttributesTable from '@/components/MobileAttributesTable.vue'
+import EditTool from '@/components/EditTool.vue'
 
 export default {
   props: {
@@ -129,13 +130,25 @@ export default {
         }
       }
     },
+    editTool () {
+      return {
+        name: 'edit',
+        title: this.$pgettext('noun', 'Edit layer'),
+        icon: 'edit',
+        component: EditTool,
+        disabled: false,
+        data: {
+        }
+      }
+    },
     items () {
       return [
         this.hiddenIdentificationTool,
         this.identificationTool,
         this.measureTool,
         this.printTool,
-        this.attributeTableTool
+        this.attributeTableTool,
+        this.editTool
       ]
     },
     activeToolObj () {

@@ -17,6 +17,10 @@ function round (num, precision) {
   return Math.round(num * m) / m
 }
 
+function layersList (node) {
+  return node.layers ? [].concat(...node.layers.map(layersList)) : [node]
+}
+
 export default {
   data () {
     return {
@@ -47,7 +51,13 @@ export default {
     }
     this.queryParams = mapKeys(Object.fromEntries(new URLSearchParams(location.search)), (_, k) => k.toLowerCase())
     if (this.queryParams.overlays) {
-      this.$store.commit('visibleLayers', this.queryParams.overlays.split(','))
+      let overlays = this.queryParams.overlays.split(',')
+      const virtualLayersGroups = this.project.overlays.groups.filter(g => g.virtual_layer && overlays.includes(g.name))
+      const virtualLayers = virtualLayersGroups.reduce((list, g) => list.concat(layersList(g).map(l => l.name)), [])
+      const exclude = virtualLayers.concat(virtualLayersGroups.map(g => g.name))
+      const visibleLayers = overlays.filter(name => !exclude.includes(name))
+      this.$store.commit('visibleLayers', visibleLayers)
+      virtualLayersGroups.forEach(group => this.$store.commit('groupVisibility', { group, visible: true }))
     }
 
     const mapConfig = {
@@ -129,8 +139,15 @@ export default {
       },
       createPermalink: () => {
         const toolParams = this.$refs.tools.getActiveComponent()?.getPermalinkParams?.()
+
+        const virtualLayersGroups = this.project.overlays.groups.filter(g => g.virtual_layer && g.visible)
+        const virtualLayers = virtualLayersGroups.reduce((list, g) => list.concat(layersList(g).map(l => l.name)), [])
+        const overlays = this.visibleLayers
+          .filter(l => !l.hidden && !virtualLayers.includes(l.name))
+          .map(l => l.name)
+        overlays.push(...virtualLayersGroups.map(g => g.name))
+
         const extent = map.ext.visibleAreaExtent()
-        const overlays = this.visibleLayers.filter(l => !l.hidden).map(l => l.name)
         const params = {
           extent: extent.map(v => round(v, precision)).join(','),
           overlays: overlays.join(','),

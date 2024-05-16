@@ -70,7 +70,7 @@ msgstr "Plocha"
 msgid "Attributes"
 msgstr "Atribúty"
 
-#: src/components/MapTools.vue:103
+#: src/components/MapTools.vue:104
 msgid "Attributes Table"
 msgstr "Tabuľka atribútov"
 
@@ -81,10 +81,6 @@ msgstr "August"
 #: src/components/LoginDialog.vue:25
 msgid "Authentication failed"
 msgstr "Overenie zlyhalo"
-
-#: src/ui/MobileDialog.vue:17
-msgid "Back"
-msgstr "Späť"
 
 #: src/components/LoginDialog.vue:110
 msgid "Back to Login"
@@ -251,7 +247,7 @@ msgstr "Chyba"
 msgid "Export"
 msgstr "Export"
 
-#: src/components/AttributesTable.vue:465
+#: src/components/AttributesTable.vue:445
 msgid "Failed to load data"
 msgstr "Údaje sa nepodarilo sa načítať"
 
@@ -282,7 +278,7 @@ msgstr "Filter"
 msgid "Filter by attribute value"
 msgstr "Filtrovať podľa hodnoty atribútu"
 
-#: src/components/AttributesTable.vue:324
+#: src/components/AttributesTable.vue:304
 msgid "Filter to visible area"
 msgstr "Filter viditeľnej oblasti"
 
@@ -365,7 +361,7 @@ msgstr "Jún"
 msgid "Keywords list"
 msgstr "Kľúčové slová"
 
-#: src/components/Identification.vue:180
+#: src/components/EditTool.vue:155 src/components/Identification.vue:180
 #: src/components/MobileAttributesTable.vue:243
 msgid "Layer"
 msgstr "Vrstva"
@@ -386,7 +382,7 @@ msgstr "Legenda"
 msgid "less than"
 msgstr "je menší"
 
-#: src/components/AttributesTable.vue:327
+#: src/components/AttributesTable.vue:307
 msgid "link"
 msgstr "odkaz"
 
@@ -414,7 +410,8 @@ msgstr "Marcel"
 msgid "May"
 msgstr "Máj"
 
-#: src/components/Identification.vue:181 src/components/measure/Measure.vue:188
+#: src/components/EditTool.vue:157 src/components/Identification.vue:181
+#: src/components/measure/Measure.vue:188
 #: src/components/MobileAttributesTable.vue:245
 #: src/components/print/Print.vue:86 src/UserDashboard.vue:210
 msgid "Menu"
@@ -432,8 +429,7 @@ msgstr "Môj profil"
 msgid "My Projects"
 msgstr "Moje projekty"
 
-#: src/components/AttributesTable.vue:170
-#: src/components/MobileAttributesTable.vue:34
+#: src/components/InfoPanel.vue:34 src/components/MobileAttributesTable.vue:34
 msgid "New Feature"
 msgstr "Nový objekt"
 
@@ -453,7 +449,7 @@ msgstr "Nie"
 msgid "No Data"
 msgstr "Žiadne dáta"
 
-#: src/components/AttributesTable.vue:54 src/components/AttributesTable.vue:326
+#: src/components/AttributesTable.vue:54 src/components/AttributesTable.vue:306
 msgid "No geometry"
 msgstr "Nemá geometriu"
 
@@ -527,7 +523,7 @@ msgstr "Výstupný formát"
 msgid "Overlay Layers"
 msgstr "Prekryvné vrstvy"
 
-#: src/components/AttributesTable.vue:325
+#: src/components/AttributesTable.vue:305
 #: src/components/MobileAttributesTable.vue:292
 msgid "Page size"
 msgstr "Počet riadkov"
@@ -602,7 +598,7 @@ msgstr "Vyhľadajte miesto"
 msgid "Select"
 msgstr "Vybrať"
 
-#: src/components/MobileAttributesTable.vue:244
+#: src/components/EditTool.vue:156 src/components/MobileAttributesTable.vue:244
 msgid "Select layer"
 msgstr "Vyberte vrstvu"
 
@@ -744,17 +740,22 @@ msgctxt "adverb"
 msgid "Next"
 msgstr "Ďalej"
 
-#: src/components/MapTools.vue:65
+#: src/components/MapTools.vue:136
+msgctxt "noun"
+msgid "Edit layer"
+msgstr "Editácia"
+
+#: src/components/MapTools.vue:66
 msgctxt "noun"
 msgid "Identification"
 msgstr "Identifikácia"
 
-#: src/components/MapTools.vue:81
+#: src/components/MapTools.vue:82
 msgctxt "noun"
 msgid "Measure"
 msgstr "Meranie"
 
-#: src/components/MapTools.vue:90
+#: src/components/MapTools.vue:91
 msgctxt "noun"
 msgid "Print"
 msgstr "Tlač"
@@ -773,6 +774,9 @@ msgstr "Otvoriť"
 msgctxt "verb"
 msgid "Update"
 msgstr "Aktualizovať"
+
+#~ msgid "Back"
+#~ msgstr "Späť"
 
 #~ msgid "Node tool"
 #~ msgstr "Editácia bodov"

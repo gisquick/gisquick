@@ -61,7 +61,7 @@ msgstr ""
 msgid "Attributes"
 msgstr ""
 
-#: src/components/MapTools.vue:103
+#: src/components/MapTools.vue:104
 msgid "Attributes Table"
 msgstr ""
 
@@ -71,10 +71,6 @@ msgstr ""
 
 #: ./src/components/LoginDialog.vue:25
 msgid "Authentication failed"
-msgstr ""
-
-#: ./src/ui/MobileDialog.vue:17
-msgid "Back"
 msgstr ""
 
 #: ./src/components/LoginDialog.vue:110
@@ -240,7 +236,7 @@ msgstr ""
 msgid "Export"
 msgstr ""
 
-#: src/components/AttributesTable.vue:465
+#: src/components/AttributesTable.vue:445
 msgid "Failed to load data"
 msgstr ""
 
@@ -271,7 +267,7 @@ msgstr ""
 msgid "Filter by attribute value"
 msgstr ""
 
-#: src/components/AttributesTable.vue:324
+#: src/components/AttributesTable.vue:304
 msgid "Filter to visible area"
 msgstr ""
 
@@ -349,6 +345,7 @@ msgstr ""
 msgid "Keywords list"
 msgstr ""
 
+#: src/components/EditTool.vue:155
 #: src/components/Identification.vue:180
 #: src/components/MobileAttributesTable.vue:243
 msgid "Layer"
@@ -370,7 +367,7 @@ msgstr ""
 msgid "less than"
 msgstr ""
 
-#: src/components/AttributesTable.vue:327
+#: src/components/AttributesTable.vue:307
 msgid "link"
 msgstr ""
 
@@ -400,6 +397,7 @@ msgstr ""
 msgid "May"
 msgstr ""
 
+#: src/components/EditTool.vue:157
 #: src/components/Identification.vue:181
 #: src/components/measure/Measure.vue:188
 #: src/components/MobileAttributesTable.vue:245
@@ -421,7 +419,7 @@ msgstr ""
 msgid "My Projects"
 msgstr ""
 
-#: ./src/components/AttributesTable.vue:170
+#: ./src/components/InfoPanel.vue:34
 #: ./src/components/MobileAttributesTable.vue:34
 msgid "New Feature"
 msgstr ""
@@ -444,7 +442,7 @@ msgid "No Data"
 msgstr ""
 
 #: ./src/components/AttributesTable.vue:54
-#: src/components/AttributesTable.vue:326
+#: src/components/AttributesTable.vue:306
 msgid "No geometry"
 msgstr ""
 
@@ -518,7 +516,7 @@ msgstr ""
 msgid "Overlay Layers"
 msgstr ""
 
-#: src/components/AttributesTable.vue:325
+#: src/components/AttributesTable.vue:305
 #: src/components/MobileAttributesTable.vue:292
 msgid "Page size"
 msgstr ""
@@ -594,6 +592,7 @@ msgstr ""
 msgid "Select"
 msgstr ""
 
+#: src/components/EditTool.vue:156
 #: src/components/MobileAttributesTable.vue:244
 msgid "Select layer"
 msgstr ""
@@ -735,17 +734,22 @@ msgctxt "adverb"
 msgid "Next"
 msgstr ""
 
-#: src/components/MapTools.vue:65
+#: src/components/MapTools.vue:136
+msgctxt "noun"
+msgid "Edit layer"
+msgstr ""
+
+#: src/components/MapTools.vue:66
 msgctxt "noun"
 msgid "Identification"
 msgstr ""
 
-#: src/components/MapTools.vue:81
+#: src/components/MapTools.vue:82
 msgctxt "noun"
 msgid "Measure"
 msgstr ""
 
-#: src/components/MapTools.vue:90
+#: src/components/MapTools.vue:91
 msgctxt "noun"
 msgid "Print"
 msgstr ""

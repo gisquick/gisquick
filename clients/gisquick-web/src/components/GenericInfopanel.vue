@@ -389,7 +389,7 @@ const GenericInfoPanel = {
           operator: '=',
           value: feature.get(rel.referenced_fields[i])
         }))
-        const query = layerFeaturesQuery(rel.referencing_layer, null, filters)
+        const query = layerFeaturesQuery(rel.referencing_layer, { filters })
         const params = {
           'VERSION': '1.1.0',
           'SERVICE': 'WFS',

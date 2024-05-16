@@ -297,7 +297,7 @@ export default {
           operator: ids.length === 1 ? '=' : 'IN',
           value: ids.join(',')
         }]
-        return formatLayerQuery(l, null, filters)
+        return formatLayerQuery(l, { filters })
       })
       return getFeatureQuery(queries)
     },

@@ -20,6 +20,8 @@
       :error="loadingError"
       :loading="loading"
       :selected="selectedFeatureId"
+      :sort="{ sortBy: sortBy.property, sort: sortBy.order }"
+      sortable
       @row-click="selectFeature"
     >
       <template v-slot:header(actions)>
@@ -38,8 +40,10 @@
           :label="column.label"
           :type="column.type"
           :filter="layerFilters[column.key]"
+          :sort="sortBy.property === column.key ? sortBy.order : ''"
           @change="onFilterChange(column.key, $event)"
           @clear="clearFilter(column.key)"
+          @click:label="toggleSort(column.key)"
         />
       </template>
       <template v-slot:cell(actions)="{ row, item }">
@@ -234,7 +238,8 @@ export default {
       mode: '',
       height: 242,
       minimized: false,
-      resizing: false
+      resizing: false,
+      sortBy: null
     }
   },
   computed: {
@@ -358,6 +363,7 @@ export default {
       immediate: true,
       handler (layer) {
         if (layer) {
+          this.sortBy = { property: this.attributes[0]?.name, order: 'asc'}
           this.fetchFeatures()
         }
       }
@@ -409,7 +415,7 @@ export default {
       } else {
         this.lastQueryParams = this.getFeaturesQueryParams()
         const { geom, filters } = this.lastQueryParams
-        query = layerFeaturesQuery(this.layer, geom, filters)
+        query = layerFeaturesQuery(this.layer, { geom, filters, sortBy: this.sortBy })
       }
 
       const baseParams = {
@@ -555,7 +561,7 @@ export default {
       const headers = { 'Content-Type': 'text/xml' }
       const attrsNames = this.attributesToExport.map(a => a.name)
       const { geom, filters } = this.lastQueryParams
-      const query = layerFeaturesQuery(this.layer, geom, filters, attrsNames)
+      const query = layerFeaturesQuery(this.layer, { geom, filters, propertyNames: attrsNames, sortBy: this.sortBy })
       const { data } = await this.$http.post(this.project.config.ows_url, query, { params, headers })
       const header = this.attributesToExport.map(a => a.alias || a.name)
 
@@ -579,6 +585,17 @@ export default {
           features: this.features[this.selectedFeatureIndex].getId()
         }
       }
+    },
+    toggleSort (column) {
+      if (this.sortBy.property === column) {
+        this.sortBy.order = this.sortBy.order === 'asc' ? 'desc' : 'asc'
+      } else {
+        this.sortBy = {
+          property: column,
+          order: 'asc'
+        }
+      }
+      this.fetchFeatures(this.pagination.page)
     }
   }
 }

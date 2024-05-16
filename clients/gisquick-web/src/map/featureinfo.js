@@ -134,7 +134,9 @@ const AttributeFilters = {
 // </ogc:PropertyIsNull>
 // `
 
-export function formatLayerQuery (layer, geom, filters, propertyNames = []) {
+export function formatLayerQuery (layer, params) {
+  const { geom, filters, propertyNames = [], sortBy } = params
+
   const ogcFilters = []
   if (geom) {
     const gmlGeom = new GML3({
@@ -157,11 +159,15 @@ export function formatLayerQuery (layer, geom, filters, propertyNames = []) {
     rootFilter = ogcFilters.length > 1 ? AndOperator(ogcFilters) : ogcFilters[0]
     rootFilter = `<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">${rootFilter}</ogc:Filter>`
   }
-  // rootFilter = `<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">${testQuery}</ogc:Filter>`
+  let sort = ''
+  if (sortBy) {
+    sort = `<ogc:SortBy><ogc:SortProperty><ogc:PropertyName>${sortBy.property}</ogc:PropertyName><ogc:SortOrder>${sortBy.order}</ogc:SortOrder></ogc:SortProperty></ogc:SortBy>`
+  }
   return [
     `<wfs:Query typeName="${layer.name.replace(/ /g, '_')}" xmlns:feature="http://www.qgis.org/gml">`,
     propertyNames.map(n => `<ogc:PropertyName>${n}</ogc:PropertyName>`).join('\n'),
     rootFilter,
+    sort,
     '</wfs:Query>'
   ].filter(v => v).join('\n')
 }
@@ -185,8 +191,8 @@ export function getFeatureQuery (...queries) {
   ].join('\n')
 }
 
-export function layerFeaturesQuery (layer, geom, filters, propertyNames = []) {
-  return getFeatureQuery(formatLayerQuery(layer, geom, filters, propertyNames))
+export function layerFeaturesQuery (layer, opts) {
+  return getFeatureQuery(formatLayerQuery(layer, opts))
 }
 
 export function layersFeaturesQuery (layers, geomFilter, filters) {
@@ -202,7 +208,7 @@ export function layersFeaturesQuery (layers, geomFilter, filters) {
           geomsByProj[l.projection] = geom.clone().transform(projection, l.projection)
         }
       })
-    return getFeatureQuery(...layers.map(l => formatLayerQuery(l, geomsByProj[l.projection])))
+    return getFeatureQuery(...layers.map(l => formatLayerQuery(l, { geom: geomsByProj[l.projection] })))
   }
-  return getFeatureQuery(...layers.map(l => formatLayerQuery(l, null, filters)))
+  return getFeatureQuery(...layers.map(l => formatLayerQuery(l, { filters })))
 }

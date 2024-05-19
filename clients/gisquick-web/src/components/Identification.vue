@@ -31,7 +31,7 @@
       </div>
     </portal>
 
-    <identify-pointer v-if="!editMode" @click="onClick"/>
+    <identify-pointer v-if="!mode" @click="onClick"/>
     <features-viewer :features="displayedFeatures"/>
     <point-marker
       :coords="mapCoords"
@@ -48,7 +48,7 @@
           :layer="displayedLayer"
           :layers="resultLayers"
           :selected="selection"
-          :editMode.sync="editMode"
+          :mode.sync="mode"
           @selection-change="selection = $event"
           @close="clearResults"
           @delete="onFeatureDelete"
@@ -126,7 +126,7 @@ export default {
       mapCoords: null,
       layersFeatures: [],
       selection: null,
-      editMode: false,
+      mode: '',
       tasks: {
         fetchFeatures: TaskState()
       }
@@ -249,7 +249,6 @@ export default {
       // this.$http.get(this.project.config.ows_url, { params: qParams })
       const { data } = await this.$http.get(url)
       return this.readFeatures(data)
-
     },
     async onClick (evt) {
       const { map, pixel, coordinate } = evt
@@ -332,7 +331,7 @@ export default {
       this.selection = null
       this.mapCoords = null
       this.layersFeatures = []
-      this.editMode = false
+      this.mode = ''
       this.lastClickEvt = null
     },
     categorize (features) {
@@ -369,7 +368,7 @@ export default {
         }))
     },
     onFeatureDelete (feature) {
-      this.editMode = false
+      this.mode = ''
       // update list of features and selection
       const currentLayerFeatures = this.resultItem.features.filter(f => f !== feature)
       if (currentLayerFeatures.length) {

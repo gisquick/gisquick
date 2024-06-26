@@ -199,7 +199,13 @@ export default {
         map.getCoordinateFromPixel(rightBottom.getCoordinates())
       ])
       return {
-        screen: { x, y, width, height },
+        // coordinates of print area relative to the map
+        relative: {
+          x: ((layoutBounds.x - mapBounds.x) + (layout.map.x / layout.width) * layoutBounds.width) / mapBounds.width,
+          y: ((layoutBounds.y - mapBounds.y) + (layout.map.y / layout.height) * layoutBounds.height) / mapBounds.height,
+          width: ((layout.map.width / layout.width) * layoutBounds.width) / mapBounds.width,
+          height: ((layout.map.height / layout.height) * layoutBounds.height) / mapBounds.height
+        },
         extent
       }
     },
@@ -264,41 +270,30 @@ export default {
     },
     async createPdfWithOverlay () {
       const PDFDocument = (await import(/* webpackChunkName: "pdf-lib" */'./pdf-lib')).PDFDocument
-      const { screen, extent } = this.calculatePrintArea()
+      const { extent, relative } = this.calculatePrintArea()
       const url = this.printRequest(extent)
       const { data } = await this.$http.get(url, { responseType: 'arraybuffer' })
       const map = this.$map
       const layout = this.layout
-      const mapCanvas = document.createElement('canvas')
-      mapCanvas.width = screen.width
-      mapCanvas.height = screen.height
-      const ctx = mapCanvas.getContext('2d')
       return new Promise(resolve => {
         map.once('rendercomplete', async function () {
           const canvas = map.getViewport().querySelector('.ol-layer.measure canvas')
+          const srcBounds = {
+            x: Math.round(relative.x * canvas.width),
+            y: Math.round(relative.y * canvas.height),
+            width: Math.round(relative.width * canvas.width),
+            height: Math.round(relative.height * canvas.height)
+          }
+          const mapCanvas = document.createElement('canvas')
+          mapCanvas.width = srcBounds.width
+          mapCanvas.height = srcBounds.height
+          const ctx = mapCanvas.getContext('2d')
           if (canvas.width > 0) {
             const opacity = canvas.parentNode.style.opacity || canvas.style.opacity
             ctx.globalAlpha = opacity === '' ? 1 : Number(opacity)
-            let matrix
-            const transform = canvas.style.transform
-            if (transform) {
-              // Get the transform parameters from the style's transform matrix
-              matrix = transform
-                .match(/^matrix\(([^\(]*)\)$/)[1]
-                .split(',')
-                .map(Number)
-            } else {
-              matrix = [
-                parseFloat(canvas.style.width) / canvas.width, 0, 0,
-                parseFloat(canvas.style.height) / canvas.height, 0, 0
-              ]
-            }
-            // Apply the transform to the export map context
-            CanvasRenderingContext2D.prototype.setTransform.apply(ctx, matrix)
-            ctx.drawImage(canvas, screen.x, screen.y, screen.width, screen.height, 0, 0, screen.width, screen.height)
+            ctx.drawImage(canvas, srcBounds.x, srcBounds.y, srcBounds.width, srcBounds.height, 0, 0, srcBounds.width, srcBounds.height)
           }
           ctx.globalAlpha = 1
-          ctx.setTransform(1, 0, 0, 1, 0, 0)
           mapCanvas.toBlob(blob => {
             const reader = new FileReader()
             reader.addEventListener('loadend', async () => {
@@ -328,7 +323,7 @@ export default {
       })
     },
     async createPngWithOverlay () {
-      const { screen, extent } = this.calculatePrintArea()
+      const { extent, relative } = this.calculatePrintArea()
       const url = this.printRequest(extent, { format: 'png' })
       const img = new Image()
       img.src = url
@@ -353,26 +348,15 @@ export default {
           if (canvas.width > 0) {
             const opacity = canvas.parentNode.style.opacity || canvas.style.opacity
             ctx.globalAlpha = opacity === '' ? 1 : Number(opacity)
-            let matrix
-            const transform = canvas.style.transform
-            if (transform) {
-              // Get the transform parameters from the style's transform matrix
-              matrix = transform
-                .match(/^matrix\(([^\(]*)\)$/)[1]
-                .split(',')
-                .map(Number)
-            } else {
-              matrix = [
-                parseFloat(canvas.style.width) / canvas.width, 0, 0,
-                parseFloat(canvas.style.height) / canvas.height, 0, 0
-              ]
+            const srcBounds = {
+              x: Math.round(relative.x * canvas.width),
+              y: Math.round(relative.y * canvas.height),
+              width: Math.round(relative.width * canvas.width),
+              height: Math.round(relative.height * canvas.height)
             }
-            // Apply the transform to the export map context
-            CanvasRenderingContext2D.prototype.setTransform.apply(ctx, matrix)
-            ctx.drawImage(canvas, screen.x, screen.y, screen.width, screen.height, dx, dy, dWidth, dHeight)
+            ctx.drawImage(canvas, srcBounds.x, srcBounds.y, srcBounds.width, srcBounds.height, dx, dy, dWidth, dHeight)
           }
           ctx.globalAlpha = 1
-          ctx.setTransform(1, 0, 0, 1, 0, 0)
           printCanvas.toBlob(resolve)
         })
         map.renderSync()

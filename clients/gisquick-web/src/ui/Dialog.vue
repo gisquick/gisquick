@@ -51,7 +51,7 @@ export default {
     title: String,
     transition: {
       type: [String, Object],
-      default: 'slide-y'
+      default: 'modal'
     },
     persistent: Boolean,
     value: Boolean

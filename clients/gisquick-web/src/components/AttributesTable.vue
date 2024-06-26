@@ -20,6 +20,8 @@
       :error="loadingError"
       :loading="loading"
       :selected="selectedFeatureId"
+      :sort="{ sortBy: sortBy.property, sort: sortBy.order }"
+      sortable
       @row-click="selectFeature"
     >
       <template v-slot:header(actions)>
@@ -38,14 +40,23 @@
           :label="column.label"
           :type="column.type"
           :filter="layerFilters[column.key]"
+          :sort="sortBy.property === column.key ? sortBy.order : ''"
           @change="onFilterChange(column.key, $event)"
           @clear="clearFilter(column.key)"
+          @click:label="toggleSort(column.key)"
         />
       </template>
-      <template v-slot:cell(actions)="{ row }">
+      <template v-slot:cell(actions)="{ row, item }">
         <div class="f-row-ac">
-          <v-btn class="icon flat m-0" @click="zoomToFeature(features[row])">
+          <v-btn
+            class="icon flat m-0"
+            :disabled="!item.geometry"
+            @click="zoomToFeature(features[row])"
+          >
             <v-icon name="zoom-to"/>
+            <v-tooltip v-if="!item.geometry" slot="tooltip">
+              <translate>No geometry</translate>
+            </v-tooltip>
           </v-btn>
           <v-btn class="icon flat my-0 mr-0" @click="showInfoPanel = true">
             <v-icon name="circle-i-outline"/>
@@ -109,7 +120,7 @@
         <v-btn
           v-if="permissions.insert"
           class="icon"
-          @click="newFeatureMode = true"
+          @click="[mode = 'add', showInfoPanel = true]"
         >
           <v-tooltip slot="tooltip">
             <translate>Add new feature</translate>
@@ -155,37 +166,18 @@
 
     <features-viewer :features="features"/>
     <portal to="right-panel">
-      <div
-        v-if="newFeatureMode"
-        class="window f-col mx-1 mb-2 shadow-2"
-      >
-        <div class="panel-header f-row-ac">
-          <translate class="title mx-2 f-grow">New Feature</translate>
-          <v-btn class="icon small" @click="newFeatureMode = false">
-            <v-icon name="x"/>
-          </v-btn>
-        </div>
-        <scroll-area>
-          <new-feature-editor
-            :layer="layer"
-            toolbar-target="toolbar"
-            @edit="newFeatureAdded"
-          />
-        </scroll-area>
-        <portal-target name="toolbar" class="toolbar"/>
-      </div>
-
       <info-panel
-        v-else-if="showInfoPanel"
-        class="mx-1 mb-2 shadow-2"
+        v-if="showInfoPanel"
+        class="mx-1 mb-2"
         :features="features"
         :layer="layer"
         :selected="infoPanelSelection"
-        :editMode.sync="editMode"
+        :mode.sync="mode"
         @selection-change="selectedFeatureIndex = $event.featureIndex"
         @close="showInfoPanel = false"
+        @insert="onFeatureInsert"
         @edit="onFeatureEdit"
-        @delete="onFeatureEdit"
+        @delete="onFeatureDelete"
       />
     </portal>
   </div>
@@ -202,8 +194,8 @@ import GeoJSON from 'ol/format/GeoJSON'
 import TabsHeader from '@/components/TabsHeader.vue'
 import AttributeFilter from '@/components/AttributeFilter.vue'
 import FeaturesViewer from '@/components/ol/FeaturesViewer.vue'
-import NewFeatureEditor from '@/components/feature-editor/NewFeatureEditor.vue'
 import InfoPanel from '@/components/InfoPanel.vue'
+
 import {
   DateWidget, ValueMapWidget, BoolWidget, UrlWidget,
   createImageTableWidget, createMediaFileTableWidget, mediaUrlFormat
@@ -234,7 +226,7 @@ const SelectedStyle = simpleStyle({
 
 export default {
   name: 'attribute-table',
-  components: { TabsHeader, AttributeFilter, FeaturesViewer, InfoPanel, NewFeatureEditor },
+  components: { TabsHeader, AttributeFilter, FeaturesViewer, InfoPanel },
   data () {
     return {
       loading: false,
@@ -243,11 +235,11 @@ export default {
       lastQueryParams: null,
       selectedFeatureIndex: null,
       showInfoPanel: false,
-      newFeatureMode: false,
-      editMode: false,
+      mode: '',
       height: 242,
       minimized: false,
-      resizing: false
+      resizing: false,
+      sortBy: null
     }
   },
   computed: {
@@ -309,13 +301,14 @@ export default {
         return '-'
       }
       const sIndex = (page - 1) * rowsPerPage + 1
-      const eIndex = Math.min(sIndex + rowsPerPage - 1, totalItems)
+      const eIndex = sIndex + this.features.length - 1
       return `${sIndex} - ${eIndex} of ${totalItems}`
     },
     tr () {
       return {
         FilterVisibleLabel: this.$gettext('Filter to visible area'),
         PageSize: this.$gettext('Page size'),
+        NoGeometry: this.$gettext('No geometry'),
         link: this.$gettext('link')
       }
     },
@@ -370,6 +363,7 @@ export default {
       immediate: true,
       handler (layer) {
         if (layer) {
+          this.sortBy = { property: this.attributes[0]?.name, order: 'asc'}
           this.fetchFeatures()
         }
       }
@@ -416,7 +410,7 @@ export default {
           operator: 'IN',
           value: features.map(f => f.get(rel.referenced_fields[i]))
         }))
-        const query = layerFeaturesQuery(rel.referencing_layer, null, filters)
+        const query = layerFeaturesQuery(rel.referencing_layer, { filters })
         const params = {
           'VERSION': '1.1.0',
           'SERVICE': 'WFS',
@@ -443,15 +437,20 @@ export default {
         // console.log(feature, relationsData)
       })
     },
-    async fetchFeatures (page = 1, lastQuery = false) {
+    readFeatures (data) {
       const mapProjection = this.$map.getView().getProjection().getCode()
+      const parser = new GeoJSON()
+      const features = parser.readFeatures(data, { featureProjection: mapProjection })
+      return formatFeatures(this.project, this.layer, features)
+    },
+    async fetchFeatures (page = 1, lastQuery = false) {
       let query
       if (lastQuery) {
         query = this.pagination.query
       } else {
         this.lastQueryParams = this.getFeaturesQueryParams()
         const { geom, filters } = this.lastQueryParams
-        query = layerFeaturesQuery(this.layer, geom, filters)
+        query = layerFeaturesQuery(this.layer, { geom, filters, sortBy: this.sortBy })
       }
 
       const baseParams = {
@@ -490,15 +489,11 @@ export default {
         this.loading = false
       }
 
-      const parser = new GeoJSON()
-
       // const features = ShallowArray(parser.readFeatures(geojson, { featureProjection: mapProjection }))
-      let features = parser.readFeatures(geojson, { featureProjection: mapProjection })
-      features = Object.freeze(formatFeatures(this.project, this.layer, features))
+      const features = Object.freeze(this.readFeatures(geojson))
       if (this.layer.relations) {
         this.fetchRelations(features)
       }
-
       const selectedIndex = this.selectedFeature ? features.findIndex(f => f.getId() === this.selectedFeature.getId()) : -1
       this.selectedFeatureIndex = selectedIndex !== -1 ? selectedIndex : 0
       this.$store.commit('attributeTable/features', features)
@@ -516,11 +511,27 @@ export default {
     zoomToFeature (feature) {
       this.$map.ext.zoomToFeature(feature)
     },
-    newFeatureAdded () {
+    async getFeatureById (fid) {
+      const params = {
+        VERSION: '1.1.0',
+        SERVICE: 'WFS',
+        REQUEST: 'GetFeature',
+        OUTPUTFORMAT: 'GeoJSON',
+        FEATUREID: fid,
+      }
+      const { data } = await this.$http.get(this.project.config.ows_url, { params })
+      return this.readFeatures(data)[0]
+    },
+    async onFeatureInsert (fid) {
       setTimeout(() => {
-        this.newFeatureMode = false
+        this.mode = 'edit'
       }, 1500)
-      this.fetchFeatures(this.pagination.page, true)
+      const addedFeature = await this.getFeatureById(fid)
+      const features = Object.freeze([addedFeature, ...this.features])
+      this.pagination.totalItems += 1
+      this.$store.commit('attributeTable/features', features)
+      this.selectedFeatureIndex = 0
+      this.showInfoPanel = true
       this.$map.ext.refreshOverlays()
     },
     clearAllFilters () {
@@ -567,7 +578,14 @@ export default {
         }
       })
     },
-    onFeatureEdit () {
+    async onFeatureEdit (ef) {
+      this.$map.ext.refreshOverlays()
+      const fid = ef.getId()
+      const edited = await this.getFeatureById(fid)
+      const features = Object.freeze(this.features.map(f => f.getId() === fid ? edited : f))
+      this.$store.commit('attributeTable/features', features)
+    },
+    onFeatureDelete (f) {
       this.$map.ext.refreshOverlays()
       this.fetchFeatures(this.pagination.page, true)
     },
@@ -582,7 +600,7 @@ export default {
       const headers = { 'Content-Type': 'text/xml' }
       const attrsNames = this.attributesToExport.map(a => a.name)
       const { geom, filters } = this.lastQueryParams
-      const query = layerFeaturesQuery(this.layer, geom, filters, attrsNames)
+      const query = layerFeaturesQuery(this.layer, { geom, filters, propertyNames: attrsNames, sortBy: this.sortBy })
       const { data } = await this.$http.post(this.project.config.ows_url, query, { params, headers })
       const header = this.attributesToExport.map(a => a.alias || a.name)
 
@@ -599,6 +617,24 @@ export default {
       })
       const rows = data.features.map(f => attrsNames.map((n, i) => formatters[i](f.properties[n])))
       downloadExcel(header, rows, this.layer.title, this.layer.title)
+    },
+    getPermalinkParams () {
+      if (this.selectedFeatureIndex !== null) {
+        return {
+          features: this.features[this.selectedFeatureIndex].getId()
+        }
+      }
+    },
+    toggleSort (column) {
+      if (this.sortBy.property === column) {
+        this.sortBy.order = this.sortBy.order === 'asc' ? 'desc' : 'asc'
+      } else {
+        this.sortBy = {
+          property: column,
+          order: 'asc'
+        }
+      }
+      this.fetchFeatures(this.pagination.page)
     }
   }
 }
@@ -674,11 +710,17 @@ export default {
 }
 .window {
   overflow: hidden;
-  width: 20em;
   border-radius: 3px;
   border: 1px solid #aaa;
   background-color: #fff;
   position: relative;
+  @media (max-width: 500px) {
+    width: calc(100vw - 26px);
+    max-width: calc(100vw - 26px);
+  }
+  @media (min-width: 501px) {
+    width: 400px;
+  }
   .toolbar {
     background-color: #e0e0e0;
     border-top: 1px solid #bbb;

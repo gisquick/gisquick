@@ -1,6 +1,9 @@
 <template>
   <div class="attr-filter" :class="classes">
-    <span class="label" v-text="attribute.alias || attribute.name"/>
+    <div class="label f-row-ac" @click="$emit('click:label')">
+      <sort-control :sort="sort" class="mr-2"/>
+      <span v-text="attribute.alias || attribute.name"/>
+    </div>
     <div
       v-if="filters"
       class="filter"
@@ -51,6 +54,7 @@
 
 <script>
 import DateRange from '@/components/DateRange.vue'
+import SortControl from '@/ui/SortControl.vue'
 import { valueMapItems } from '@/adapters/attributes'
 
 const Operators = {
@@ -209,10 +213,12 @@ function dateFilters (attribute) {
 
 export default {
   name: 'attribute-filter',
+  components: { SortControl },
   props: {
     attribute: Object,
     filter: Object,
-    mobile: Boolean
+    mobile: Boolean,
+    sort: String
   },
   computed: {
     classes () {
@@ -380,6 +386,9 @@ export default {
         display: none;
       }
     }
+  }
+  .label {
+    cursor: pointer;
   }
 }
 .attr-filter, .filter {

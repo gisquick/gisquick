@@ -1,6 +1,6 @@
 <template>
   <div class="page f-grow">
-    <template v-if="!userSignedIn">
+    <template v-if="!userSignedIn && !dashboardOnly">
       <div class="header f-col-ac f-justify-center px-2 shadow-2">
         <!-- <img src="./assets/text_logo_dark.svg" class="logo my-4"/> -->
         <svg-logo class="logo my-4"/>
@@ -37,7 +37,7 @@
         </div>
       </div>
     </template>
-    <template v-else-if="showUserProjects">
+    <template v-else>
       <div class="header-small f-col-ac f-justify-center p-2 shadow-2">
         <svg-logo class="my-2" height="32"/>
       </div>
@@ -54,14 +54,13 @@ import SvgMap from '@/assets/map.svg?inline'
 
 export default {
   components: { UserDashboard, SvgLogo, SvgMap },
+  props: {
+    dashboardOnly: Boolean
+  },
   computed: {
     ...mapState(['app', 'user']),
     userSignedIn () {
       return this.user && !this.user.is_guest
-    },
-    showUserProjects () {
-      return true
-      // return this.userSignedIn && (process.env.NODE_ENV === 'development' || window.env.mobile)
     }
   },
   watch: {
@@ -73,6 +72,11 @@ export default {
     //     }
     //   }
     // }
+  },
+  created () {
+    if (!this.userSignedIn && this.dashboardOnly) {
+      this.$store.commit('showLogin', true)
+    }
   },
   methods: {
     // redirectToUserProfile () {

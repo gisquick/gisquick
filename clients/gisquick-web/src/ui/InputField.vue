@@ -6,7 +6,10 @@
       v-text=label
     />
     <slot/>
-    <span v-if="error" class="error" v-text="error"/>
+    <slot v-if="error" name="error" :error="error">
+      <span class="error" v-text="error"/>
+    </slot>
+    <!-- <span v-if="error" class="error" v-text="error"/> -->
   </div>
 </template>
 

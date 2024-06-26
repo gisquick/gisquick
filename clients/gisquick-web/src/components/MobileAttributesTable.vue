@@ -34,8 +34,9 @@
             <translate class="data-label" key="new-feature">New Feature</translate>
             <new-feature-editor
               class="f-grow"
-              :layer="layer"
+              geom-toolbar="top-panel"
               toolbar-target="mat-toolbar"
+              :layer="layer"
               @edit="mNewFeatureAdded"
             />
           </template>
@@ -143,6 +144,7 @@
             <feature-editor
               class="edit-form f-grow"
               toolbar-target="mat-toolbar"
+              geom-toolbar="top-panel"
               :feature="selectedFeature"
               :layer="layer"
               :project="$store.state.project.config"
@@ -203,7 +205,7 @@
     <portal to="right-panel">
       <info-panel
         v-if="showInfoPanel"
-        class="mx-1 mb-2 shadow-2"
+        class="mx-1 mb-2"
         :features="features"
         :layer="layer"
         :selected="infoPanelSelection"
@@ -338,6 +340,7 @@ export default {
         {
           text: this.$gettext('Zoom to'),
           icon: 'zoom-to',
+          disabled: !this.selectedFeature.getGeometry(),
           action: () => {
             this.zoomToFeature(this.selectedFeature)
           }
@@ -371,8 +374,8 @@ export default {
       const layer = this.project.overlays.list.find(l => l.name === layername)
       this.$store.commit('attributeTable/layer', layer)
     },
-    mNewFeatureAdded (f) {
-      this.newFeatureAdded(f)
+    mNewFeatureAdded (fid) {
+      this.newFeatureAdded(fid)
       this.mode = 'view'
     }
   }

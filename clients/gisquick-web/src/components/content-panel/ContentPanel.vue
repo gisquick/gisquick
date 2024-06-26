@@ -124,8 +124,8 @@ export default {
       immediate: true,
       handler (project) {
         // this.expandedOverlays = project.overlays.groups.map(g => g.name)
-        this.expandedOverlays = project.overlays.groups.reduce((obj, g) => (obj[g.name] = true, obj), {})
-        this.expandedBaseLayers = project.baseLayers.groups.reduce((obj, g) => (obj[g.name] = true, obj), {})
+        this.expandedOverlays = project.overlays.groups.reduce((obj, g) => (obj[g.name] = !g.collapsed && !g.virtual_layer, obj), {})
+        this.expandedBaseLayers = project.baseLayers.groups.reduce((obj, g) => (obj[g.name] = !g.collapsed, obj), {})
       }
     }
   },

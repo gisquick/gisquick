@@ -146,6 +146,7 @@
 import Vue from 'vue'
 import { mapState } from 'vuex'
 import { getCenter } from 'ol/extent'
+import WKT from 'ol/format/WKT'
 
 import VTabs from '@/ui/Tabs.vue'
 import VTabsHeader from '@/ui/TabsHeader.vue'
@@ -256,9 +257,9 @@ export default {
   created () {
     if (!this.tools) {
       const tools = Object.freeze({
-        location: LocationMeasure(),
-        distance: DistanceMeasure(),
-        area: AreaMeasure()
+        location: LocationMeasure(this.$map),
+        distance: DistanceMeasure(this.$map),
+        area: AreaMeasure(this.$map)
       })
       observable(tools.location, 'coord1', 'coord2', 'format', 'items')
       observable(tools.distance, 'length', 'items')
@@ -277,7 +278,7 @@ export default {
   },
   mounted () {
     if (activeTool) {
-      activeTool.activate(this.$map)
+      activeTool.activate()
     }
     // this.location.setVisibility(true)
     // this.distance.setVisibility(true)
@@ -295,7 +296,7 @@ export default {
       if (activeTool !== this[tab]) {
         activeTool?.deactivate()
         activeTool = this[tab]
-        activeTool.activate(this.$map)
+        activeTool.activate()
       }
     },
     createUnitsMenu (type) {
@@ -354,6 +355,31 @@ export default {
       // this.location.setVisibility(false)
       // this.distance.setVisibility(false)
       // this.area.setVisibility(false)
+    },
+    getPermalinkParams () {
+      const features = [
+        ...this.location.getFeatures(),
+        ...this.distance.getFeatures(),
+        ...this.area.getFeatures()
+      ]
+      if (features.length) {
+        const precision = this.project.config.units.position_precision
+        const wkt = new WKT().writeFeatures(features, { decimals: precision })
+        return {
+          tool: 'measure',
+          geom: wkt
+        }
+      }
+    },
+    loadPermalink (params) {
+      const { geom } = params
+      const features = new WKT({ splitCollection: true }).readFeatures(geom)
+      const locations = features.filter(f => f.getGeometry().getType() === 'Point')
+      const distances = features.filter(f => f.getGeometry().getType() === 'LineString')
+      const areas = features.filter(f => f.getGeometry().getType() === 'Polygon')
+      this.location.setFeatures(locations)
+      this.distance.setFeatures(distances)
+      this.area.setFeatures(areas)
     }
   }
 }

@@ -3,6 +3,16 @@
 
 ## Development
 
+Start Gisquick web map application in development mode.
+
+By default, development server is configured for local Gisquick installation,
+but you can use any accessible Gisquick server by changing `target` in `devServer`
+proxy settings in `vue.config.js` file.
+
+```
+npm run serve
+```
+
 Register info panel component for development in `src/dev/components.js`.
 You can find out layer's name in **General Information** section on layer settings page.
 

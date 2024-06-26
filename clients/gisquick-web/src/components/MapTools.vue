@@ -23,6 +23,7 @@
     <div
       v-if="activeToolObj && activeToolObj.component"
       :is="activeToolObj.component"
+      ref="tool"
       v-bind.sync="activeToolObj.data"
       @close="$store.commit('activeTool', null)"
     />
@@ -37,6 +38,7 @@ import Identification from '@/components/Identification.vue'
 import Measure from '@/components/measure/Measure.vue'
 import Print from '@/components/print/Print.vue'
 import MobileAttributesTable from '@/components/MobileAttributesTable.vue'
+import EditTool from '@/components/EditTool.vue'
 
 export default {
   props: {
@@ -69,7 +71,7 @@ export default {
     },
     hiddenIdentificationTool () {
       return {
-        name: 'hidden-identification',
+        name: 'hidden-identification', // idea: try empty string (because of permalink)
         data: this.identificationSettings,
         component: Identification
       }
@@ -111,15 +113,31 @@ export default {
           render () {
             return (
               <portal to="bottom-panel">
-                <AttributesTable key="attribute-table" onClose={this.close}/>
+                <AttributesTable key="attribute-table" onClose={this.close} ref="table" />
               </portal>
             )
           },
           methods: {
             close () {
               this.$store.commit('activeTool', null)
+            },
+            getPermalinkParams () {
+              if (this.$refs.table) {
+                return this.$refs.table?.getPermalinkParams?.()
+              }
             }
           }
+        }
+      }
+    },
+    editTool () {
+      return {
+        name: 'edit',
+        title: this.$pgettext('noun', 'Edit layer'),
+        icon: 'edit',
+        component: EditTool,
+        disabled: false,
+        data: {
         }
       }
     },
@@ -129,7 +147,8 @@ export default {
         this.identificationTool,
         this.measureTool,
         this.printTool,
-        this.attributeTableTool
+        this.attributeTableTool,
+        this.editTool
       ]
     },
     activeToolObj () {
@@ -152,6 +171,9 @@ export default {
   methods: {
     onClose () {
       this.$store.commit('activeTool', null)
+    },
+    getActiveComponent () {
+      return this.$refs.tool
     }
   }
 }

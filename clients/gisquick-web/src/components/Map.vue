@@ -41,7 +41,10 @@
       <map-attributions class="map-attributions"/>
     </div>
     <portal-target name="map-overlay" class="map-overlay"/>
-    <tools-menu :tools="toolsMenuItems" color="dark"/>
+    <div class="top-toolbar f-row">
+      <tools-menu :tools="toolsMenuItems" color="dark"/>
+      <search-tool/>
+    </div>
     <transition name="fade">
       <div v-if="status.overlays.loading || status.baseLayer.loading" class="status f-row-ac m-2">
         <v-spinner width="2" size="18"/>
@@ -104,12 +107,13 @@ import MapControl from '@/components/MapControl.vue'
 import ScaleLine from '@/components/ol/ScaleLine.vue'
 import MapTools from '@/components/MapTools.vue'
 import AppMenu from '@/components/AppMenu.vue'
+import SearchTool from '@/components/SearchTool.vue'
 
 export default {
   name: 'Map',
   mixins: [Map],
   components: {
-    ContentPanel, BottomToolbar, ScaleLine, MapAttributions, ToolsMenu, MapControl, MapTools, AppMenu
+    ContentPanel, BottomToolbar, ScaleLine, MapAttributions, ToolsMenu, MapControl, MapTools, AppMenu, SearchTool
   },
   refs: ['tools'],
   data () {
@@ -233,12 +237,16 @@ export default {
     grid-row: 1 / 5;
     z-index: 2;
   }
-  .tools-menu {
+  .top-toolbar {
     grid-column: 2 / 3;
     grid-row: 1 / 2;
     align-self: start;
     justify-self: start;
+    align-items: start;
     z-index: 2;
+    .search-tool {
+      min-height: 35px;
+    }
   }
   .panel-toggle {
     grid-column: 2 / 3;

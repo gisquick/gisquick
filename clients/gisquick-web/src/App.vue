@@ -15,7 +15,7 @@
     <server-error v-if="projectStatus === 500"/>
     <app-notifications v-if="notifications.length" :notifications="notifications"/>
     <transition name="modal">
-      <div v-if="updateExists" class="update-notification f-col light">
+      <div v-if="updateExists" class="notification f-col light">
         <div class="content p-2 f-col-ac shadow-2">
           <div class="msg my-2">
             <img src="@/assets/image_logo.svg">
@@ -159,7 +159,7 @@ export default {
       const data = await this.$http.project(this.projectName).catch(data => data)
       this.$store.commit('project', data)
       if (data.status === 200) {
-        projectsHistory.push(this.projectName)
+        projectsHistory.push(this.user, this.projectName)
       }
       const title = data.title || data.root_title
       if (title) {
@@ -216,7 +216,7 @@ body {
 </style>
 
 <style lang="scss" scoped>
-.update-notification {
+.notification {
   position: fixed;
   inset: 0;
   background-color: rgba(0, 0, 0, 0.3);

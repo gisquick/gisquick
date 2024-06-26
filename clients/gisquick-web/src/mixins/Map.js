@@ -5,12 +5,20 @@ import mapKeys from 'lodash/mapKeys'
 import { boundingExtent, buffer as bufferExtent } from 'ol/extent'
 import { unByKey } from 'ol/Observable'
 import 'ol/ol.css'
-import axios from 'axios'
 
 import { createMap, registerProjections } from '@/map/map-builder'
 
 function getTileKey (tile) {
   return tile.tileCoord.join('/')
+}
+
+function round (num, precision) {
+  const m = Math.pow(10, precision)
+  return Math.round(num * m) / m
+}
+
+function layersList (node) {
+  return node.layers ? [].concat(...node.layers.map(layersList)) : [node]
 }
 
 export default {
@@ -29,7 +37,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['project']),
+    ...mapState(['project', 'activeTool']),
     ...mapGetters(['visibleBaseLayer', 'visibleLayers'])
   },
   watch: {
@@ -41,9 +49,15 @@ export default {
     if (config.projections) {
       registerProjections(config.projections)
     }
-    this.queryParams = mapKeys(Object.fromEntries(new URLSearchParams(location.search)), (v, k) => k.toLowerCase())
+    this.queryParams = mapKeys(Object.fromEntries(new URLSearchParams(location.search)), (_, k) => k.toLowerCase())
     if (this.queryParams.overlays) {
-      this.$store.commit('visibleLayers', this.queryParams.overlays.split(','))
+      let overlays = this.queryParams.overlays.split(',')
+      const virtualLayersGroups = this.project.overlays.groups.filter(g => g.virtual_layer && overlays.includes(g.name))
+      const virtualLayers = virtualLayersGroups.reduce((list, g) => list.concat(layersList(g).map(l => l.name)), [])
+      const exclude = virtualLayers.concat(virtualLayersGroups.map(g => g.name))
+      const visibleLayers = overlays.filter(name => !exclude.includes(name))
+      this.$store.commit('visibleLayers', visibleLayers)
+      virtualLayersGroups.forEach(group => this.$store.commit('groupVisibility', { group, visible: true }))
     }
 
     const mapConfig = {
@@ -56,7 +70,8 @@ export default {
       scales: config.scales,
       owsUrl: config.ows_url,
       legendUrl: config.legend_url,
-      mapcacheUrl: config.mapcache_url
+      mapcacheUrl: config.mapcache_url,
+      mapTiling: config.map_tiling
     }
     const map = createMap(mapConfig, { zoom: false, attribution: false, rotate: false })
     Vue.prototype.$map = map
@@ -82,6 +97,7 @@ export default {
     const map = this.$map
     map.setTarget(this.$refs.mapEl)
 
+    const precision = this.project.config.units.position_precision
     // extra map functions
     map.ext = {
       visibleAreaPadding: () => {
@@ -94,8 +110,7 @@ export default {
         const p2 = map.getCoordinateFromPixel([right, bottom])
         return boundingExtent([p1, p2])
       },
-      zoomToFeature: (feature, options = {}) => {
-        const geom = feature.getGeometry()
+      zoomToGeometry: (geom, options = {}) => {
         if (!geom) {
           return
         }
@@ -116,25 +131,45 @@ export default {
           map.getView().fit(bufferExtent(extent, buffer), { duration: 450, padding })
         }
       },
+      zoomToFeature: (feature, options = {}) => {
+        map.ext.zoomToGeometry(feature.getGeometry(), options)
+      },
       refreshOverlays () {
         map.overlay.getSource().refresh()
       },
       createPermalink: () => {
+        const toolParams = this.$refs.tools.getActiveComponent()?.getPermalinkParams?.()
+
+        const virtualLayersGroups = this.project.overlays.groups.filter(g => g.virtual_layer && g.visible)
+        const virtualLayers = virtualLayersGroups.reduce((list, g) => list.concat(layersList(g).map(l => l.name)), [])
+        const overlays = this.visibleLayers
+          .filter(l => !l.hidden && !virtualLayers.includes(l.name))
+          .map(l => l.name)
+        overlays.push(...virtualLayersGroups.map(g => g.name))
+
         const extent = map.ext.visibleAreaExtent()
-        const overlays = this.visibleLayers.filter(l => !l.hidden).map(l => l.name)
         const params = {
-          extent: extent.join(','),
+          extent: extent.map(v => round(v, precision)).join(','),
           overlays: overlays.join(','),
           baselayer: this.visibleBaseLayer?.name ?? '',
-          activeTool: this.activeTool
+          ...toolParams
         }
-        return axios.getUri({url: location.href, params })
-      }
+        const url = new URL(location.href)
+        Array.from(url.searchParams.keys()).filter(k => k !== 'PROJECT').forEach(k => url.searchParams.delete(k))
+        Object.keys(params).forEach(name => url.searchParams.set(name, params[name]))
+        return decodeURIComponent(url.toString()) // unescaped url
+        // return url.toString()
+      },
+      formatCoordinate: v => round(v, precision)
     }
     const extentParam = this.queryParams.extent?.split(',').map(parseFloat)
     const extent = extentParam || this.project.config.zoom_extent || this.project.config.project_extent
     const padding = map.ext.visibleAreaPadding()
     map.getView().fit(extent, { padding })
+    if (this.queryParams.tool) {
+      this.$store.commit('activeTool', this.queryParams.tool)
+    }
+    this.$nextTick(() => this.$refs.tools.getActiveComponent()?.loadPermalink?.(this.queryParams))
   },
   methods: {
     async setVisibleBaseLayer (layer) {

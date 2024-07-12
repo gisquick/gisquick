@@ -31,8 +31,12 @@
         :selected="selectedFeatureId"
         @row-click="selectFeature"
       >
-        <template v-slot:cell(actions)="{ row }">
-          <v-btn class="icon flat m-0" @click="zoomToFeature(features[row])">
+        <template v-slot:cell(actions)="{ row, item }">
+          <v-btn
+            class="icon flat m-0"
+            :disabled="!item.geometry"
+            @click="zoomToFeature(features[row])"
+          >
             <v-icon name="zoom-to"/>
           </v-btn>
         </template>

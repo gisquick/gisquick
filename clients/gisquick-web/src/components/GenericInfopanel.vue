@@ -176,8 +176,8 @@ export function createImageTableWidget (createUrl) {
 }
 
 export const DateWidget = Widget((h, ctx) => {
-  let { value } = ctx.props
-  const cfg = ctx.data.attrs?.attribute?.config
+  let { value, attribute } = ctx.props
+  const cfg = attribute?.config
   if (value && cfg && cfg.display_format && cfg.field_format) {
     const date = parse(value, cfg.field_format, new Date())
     try {
@@ -191,9 +191,9 @@ export const DateWidget = Widget((h, ctx) => {
 
 // or define as factory function with attribute as argument?
 export const DateTimeWidget = Widget((h, ctx) => {
-  let { value } = ctx.props
+  let { value, attribute } = ctx.props
   if (value) {
-    const cfg = ctx.data.attrs?.attribute?.config
+    const cfg = attribute?.config
     const displayFormat = cfg?.display_format || 'yyyy-MM-dd HH:mm:ss'
     const date = cfg?.field_format ? parse(value, cfg.field_format, new Date()) : new Date(value)
     try {

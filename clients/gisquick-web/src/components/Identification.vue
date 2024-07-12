@@ -237,10 +237,10 @@ export default {
       const s = map.overlay.getSource()
       const layersParam = layers.map(l => l.name).join(',')
       const params = {
-        INFO_FORMAT: 'application/json', // 'application/vnd.ogc.gml'
+        INFO_FORMAT: 'application/json',
         LAYERS: layersParam,
         QUERY_LAYERS: layersParam,
-        FEATURE_COUNT: layers.length
+        FEATURE_COUNT: 10
       }
       const projCode = map.getView().getProjection().getCode()
       const url = s.getFeatureInfoUrl(coordinate, r, projCode, params)
@@ -248,6 +248,7 @@ export default {
       // this.$http.get(url)
       // this.$http.get(this.project.config.ows_url, { params: qParams })
       const { data } = await this.$http.get(url)
+      data.features = data.features.filter(f => Object.keys(f.properties).length > 0)
       return this.readFeatures(data)
     },
     async onClick (evt) {

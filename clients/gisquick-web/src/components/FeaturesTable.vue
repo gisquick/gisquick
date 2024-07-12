@@ -132,6 +132,9 @@ export default {
     columns () {
       if (this.attributes) {
         return [ActionsHeader, ...this.attributes.map(createColumn)]
+      } else if (this.layer.type === 'RasterLayer' && this.features?.length > 0) {
+        const attrs = this.features[0].getKeys().filter(n => n !== 'geometry').map(name => ({ name }))
+        return [ActionsHeader, ...attrs.map(createColumn)]
       } else if (this.layer?.bands) {
         const fields = this.layer.bands.map(name => ({ name }))
         return fields.map(createColumn)

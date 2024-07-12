@@ -324,8 +324,11 @@ const GenericInfoPanel = {
           return fields.map(name => attrsMap[name])
         }
         return attributes
-      } else if (bands) {
-        return bands.map(name => ({ name, type: 'text' }))
+      // } else if (bands) {
+      //   return bands.map(name => ({ name, type: 'text' }))
+      // }
+      } else if (this.layer.type === 'RasterLayer' && this.feature) {
+        return this.feature.getKeys().filter(n => n !== 'geometry').map(name => ({ name, type: 'text' }))
       }
       return []
     },
@@ -335,7 +338,6 @@ const GenericInfoPanel = {
     widgets () {
       return this.fields.map(attr => {
         const type = attr.type.split('(')[0]?.toLowerCase()
-
         if (attr.widget === 'ValueMap') {
           return ValueMapWidget
         } else if (attr.widget === 'Hyperlink') {

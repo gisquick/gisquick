@@ -62,6 +62,7 @@
           >
             <v-icon name="attribute-table" size="12"/>
           </v-btn>
+          <v-icon v-else-if="item.queryable" name="circle-i-outline" size="16"/>
           <v-btn class="icon flat small" @click="toggleLayerInfo(item)">
             <v-icon
               class="toggle"

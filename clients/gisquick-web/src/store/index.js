@@ -70,11 +70,6 @@ export default new Vuex.Store({
       })
 
       const overlaysList = layersList({ layers })
-      overlaysList.filter(l => l.relations).forEach(l => {
-        l.relations.forEach(r => {
-          r.referencing_layer = overlaysList.find(l => l.name === r.referencing_layer)
-        })
-      })
       state.project = {
         config: project,
         baseLayers: {
@@ -85,7 +80,8 @@ export default new Vuex.Store({
         overlays: {
           groups,
           tree: overlaysTree,
-          list: overlaysList
+          list: overlaysList,
+          byName:overlaysList.reduce((t, l) => (t[l.name] = l, t), {})
         }
       }
     },

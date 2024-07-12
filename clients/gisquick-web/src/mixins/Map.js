@@ -2,7 +2,7 @@ import Vue from 'vue'
 import { mapState, mapGetters } from 'vuex'
 import has from 'lodash/has'
 import mapKeys from 'lodash/mapKeys'
-import { boundingExtent, buffer as bufferExtent } from 'ol/extent'
+import { boundingExtent, getCenter, buffer as bufferExtent } from 'ol/extent'
 import { unByKey } from 'ol/Observable'
 import 'ol/ol.css'
 
@@ -133,6 +133,10 @@ export default {
       },
       zoomToFeature: (feature, options = {}) => {
         map.ext.zoomToGeometry(feature.getGeometry(), options)
+      },
+      centerToGeometry (geom) {
+        const center = getCenter(geom.getExtent())
+        map.getView().animate({ center, duration: 450 })
       },
       refreshOverlays () {
         map.overlay.getSource().refresh()

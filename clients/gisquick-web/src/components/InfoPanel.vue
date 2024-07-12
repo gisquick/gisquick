@@ -84,8 +84,7 @@
                 v-else
                 :is="formComponent"
                 v-bind="viewerParams"
-                @xrelation="(l, a, v) => $emit('relation', l, a, v)"
-                @relation="showRelation"
+                @relation="showRelationFeature"
               />
             </switch-transition>
           </scroll-area>
@@ -149,8 +148,8 @@ export default {
   },
   data () {
     return {
-      relationData: null,
-      collapsed: false
+      collapsed: false,
+      relationsData: []
     }
   },
   computed: {
@@ -174,13 +173,13 @@ export default {
       if (this.relationData) {
         return {
           ...this.relationData,
-          project: this.project.config
+          project: this.project
         }
       }
       return {
         feature: this.feature,
         layer: this.layer,
-        project: this.project.config
+        project: this.project
       }
     },
     formComponent () {
@@ -197,6 +196,9 @@ export default {
     layerEditable () {
       const { permissions = {} } = this.layer
       return permissions.update || permissions.delete
+    },
+    relationData () {
+      return this.relationsData[this.relationsData.length - 1]
     }
   },
   methods: {
@@ -214,40 +216,19 @@ export default {
         this.$map.ext.zoomToFeature(this.relationData?.feature || this.feature)
       }
     },
-    async showRelation (relation, value) {
-      const layer = this.project.overlays.byName[relation.referencing_layer]
-      const mapProjection = this.$map.getView().getProjection().getCode()
-      const filters = relation.referencing_fields.map((field, i) => ({
-        attribute: field,
-        operator: '=',
-        value: value
-      }))
-      const query = layerFeaturesQuery(layer, { filters })
-      const params = {
-        'VERSION': '1.1.0',
-        'SERVICE': 'WFS',
-        'REQUEST': 'GetFeature',
-        'OUTPUTFORMAT': 'GeoJSON',
-        'MAXFEATURES': 100
-      }
-      const headers = { 'Content-Type': 'text/xml' }
-      const { data } = await this.$http.post(this.project.config.ows_url, query, { params, headers })
-      const parser = new GeoJSON()
-      const features = parser.readFeatures(data, { featureProjection: mapProjection })
-      formatFeatures(this.project, layer, features)
-      this.relationData = ShallowObj({
-        layer,
-        feature: features[0]
+    async showRelationFeature (relation, feature) {
+      const relationData = ShallowObj({
+        layer: relation.layer,
+        feature
       })
-      // this.relationData = {
-      //   layer,
-      //   features: ShallowArray(features)
-      // }
-      // this.$map.ext.zoomToFeature(features[0])
-      // this.$store.commit('attributeTable/layer', layer)
-      // this.$store.commit('activeTool', 'attribute-table')
-      const geom = this.$refs.editor?.getGeometry()
-      geom ? this.$map.ext.zoomToGeometry(geom) : this.$map.ext.zoomToFeature(this.feature)
+      this.relationsData.push(relationData)
+      // this.$map.ext.zoomToFeature(feature)
+      this.$map.ext.centerToGeometry(feature.getGeometry())
+    },
+    popRelation () {
+      this.relationsData.pop()
+      const currentFeature = this.relationData?.feature || this.feature
+      this.$map.ext.centerToGeometry(currentFeature.getGeometry())
     }
   }
 }

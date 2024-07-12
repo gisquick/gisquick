@@ -404,37 +404,38 @@ export default {
     },
     async fetchRelations (features) {
       const mapProjection = this.$map.getView().getProjection().getCode()
-      const tasks = this.layer.relations.map(async rel => {
+      const relationsToFetch = this.layer.relations.filter(r => r.infopanel_view !== 'hidden')
+
+      const tasks = relationsToFetch.map(async rel => {
         const filters = rel.referencing_fields.map((field, i) => ({
           attribute: field,
           operator: 'IN',
           value: features.map(f => f.get(rel.referenced_fields[i]))
         }))
-        const query = layerFeaturesQuery(rel.referencing_layer, { filters })
+        const layer = this.project.overlays.byName[rel.referencing_layer]
+        const query = layerFeaturesQuery(layer, { filters })
         const params = {
           'VERSION': '1.1.0',
           'SERVICE': 'WFS',
           'REQUEST': 'GetFeature',
-          'OUTPUTFORMAT': 'GeoJSON',
-          'MAXFEATURES': 100
+          'OUTPUTFORMAT': 'GeoJSON'
         }
         const headers = { 'Content-Type': 'text/xml' }
         const { data } = await this.$http.post(this.project.config.ows_url, query, { params, headers })
         const parser = new GeoJSON()
         const relFeatures = parser.readFeatures(data, { featureProjection: mapProjection })
-        formatFeatures(this.project, rel.referencing_layer, relFeatures)
+        formatFeatures(this.project, layer, relFeatures)
         return ShallowArray(relFeatures)
         // return features
       })
       const results = await Promise.all(tasks)
       features.forEach(feature => {
-        let relationsData = {}
-        this.layer.relations.forEach((r, i) => {
-          relationsData[r.name] = results[i].filter(rf => r.referencing_fields.every((field, j) => rf.get(field) === feature.get(r.referenced_fields[j])))
+        if (!feature._relationsData) {
+          feature._relationsData = {}
+        }
+        relationsToFetch.forEach((r, i) => {
+          feature._relationsData[r.name] = results[i].filter(rf => r.referencing_fields.every((field, j) => rf.get(field) == feature.get(r.referenced_fields[j])))
         })
-        // relationsData = Object.freeze(relationsData)
-        feature._relationsData = relationsData
-        // console.log(feature, relationsData)
       })
     },
     readFeatures (data) {

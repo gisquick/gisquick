@@ -150,9 +150,6 @@ export default {
     }
   },
   watch: {
-    focused (v) {
-      this.$emit(v ? 'focus' : 'blur')
-    },
     inputValue (v) {
       this.$refs.inputEl.value = v
     }

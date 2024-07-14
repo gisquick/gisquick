@@ -11,6 +11,7 @@
         :layer="layer"
         :fields="fields"
         :project="project.config"
+        :status.sync="formStatus"
       />
     </slot>
     <portal
@@ -26,7 +27,7 @@
         <div v-if="!geomToolbar" class="f-grow"/>
         <v-btn
           class="icon"
-          :disabled=" status === 'loading'"
+          :disabled=" status === 'loading' || formStatus === 'error'"
           @click="save"
         >
           <v-icon color="green" name="save"/>
@@ -73,6 +74,7 @@ export default {
       status: '',
       errorMsg: '',
       fields: null,
+      formStatus: null,
       references: ShallowObj({
         geometryEditor: null
       })

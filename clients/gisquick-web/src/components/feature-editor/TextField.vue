@@ -28,6 +28,7 @@
 export default {
   props: {
     disabled: Boolean,
+    error: String,
     initial: [String, Number],
     transform: Function,
     value: [String, Number],
@@ -38,12 +39,15 @@ export default {
       const { input, ...listeners } = this.$listeners
       return listeners
     },
-    error () {
+    validationError () {
       return this.validator ? this.validator(this.value) : ''
+    },
+    finalError () {
+      return this.error || this.validationError
     }
   },
   watch: {
-    error (err) {
+    finalError (err) {
       this.$emit('update:status', err ? 'error' : 'ok')
     }
   },

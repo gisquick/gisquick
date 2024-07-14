@@ -20,7 +20,7 @@ export default {
   },
   watch: {
     focused (v) {
-      // this.$emit(v ? 'focus' : 'blur')
+      this.$emit(v ? 'focus' : 'blur')
     }
   },
   methods: {

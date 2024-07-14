@@ -11,6 +11,7 @@
           :status.sync="statuses[attr.name]"
           v-model="fields[attr.name]"
           v-bind="widgets[index].props"
+          :error="validationErrors[index]"
         />
       </slot>
     </template>
@@ -30,13 +31,24 @@ function isIntegerString (strValue) {
   return /^-?\d+$/.test(strValue)
 }
 function toInteger (v) {
-  return isIntegerString(v) ? parseInt(v) : v
+  return isIntegerString(v) ? parseInt(v) : null
 }
 function toNumber (v) {
-  return !isNaN(v) ? parseFloat(v) : v
+  return !isNaN(v) ? parseFloat(v) : null
 }
 function isTrueValue (v) {
   return v === true || v == 1 || v?.toLowerCase?.() === 'true'
+}
+
+function multiValidator (...validators) {
+  return v => {
+    for (const vv of validators) {
+      const err = vv(v)
+      if (err) {
+        return err
+      }
+    }
+  }
 }
 
 export default {
@@ -63,8 +75,12 @@ export default {
     tr () {
       return {
         NotValidNumber: this.$gettext('Not valid number'),
-        NotValidInteger: this.$gettext('Not valid integer number')
+        NotValidInteger: this.$gettext('Not valid integer number'),
+        RequiredField: this.$gettext('Field is required')
       }
+    },
+    requiredValidator () {
+      return v => !v ? this.tr.RequiredField : ''
     },
     integerValidator () {
       return v => v && !isIntegerString(v) ? this.tr.NotValidInteger : ''
@@ -75,14 +91,19 @@ export default {
     widgets () {
       return this.attributes.map(attr => {
         const disabled = attr.constrains?.includes('readonly')
+        const required = attr.constrains?.includes('not_null')
         const type = attr.type.split('(')[0]?.toLowerCase()
-
+        let validators = []
+        if (required) {
+          validators.push(this.requiredValidator)
+        }
         if (attr.widget === 'Autofill') {
           return {}
         }
         if (attr.widget === 'ValueMap') {
           return {
             component: 'v-select',
+            validator: multiValidator(...validators),
             props: {
               disabled,
               class: 'filled',
@@ -108,6 +129,7 @@ export default {
         if (type === 'date') {
           return {
             component: 'v-date-field',
+            validator: multiValidator(...validators),
             props: {
               disabled,
               placeholder: attr.config?.display_format,
@@ -118,11 +140,13 @@ export default {
         }
         if (type === 'integer' || type === 'double' || type === 'int' || type === 'float') {
           const integerType = type === 'integer' || type === 'int'
+          validators.push(integerType ? this.integerValidator : this.numberValidator)
           return {
             component: TextField,
+            validator: multiValidator(...validators),
             props: {
               type: 'number',
-              validator: integerType ? this.integerValidator : this.numberValidator,
+              // validator: multiValidator(...validators),
               transform: integerType ? toInteger : toNumber,
               disabled
             }
@@ -137,12 +161,27 @@ export default {
         }
         return {
           component: TextField,
-          props: { disabled, multiline: isTrueValue(attr.config?.IsMultiline), rows: 3 }
+          validator: multiValidator(...validators),
+          props: {
+            disabled,
+            multiline: isTrueValue(attr.config?.IsMultiline),
+            rows: 3,
+            // validator: multiValidator(...validators)
+          }
         }
       })
     },
+    validationErrors () {
+      return this.attributes.map((attr, i) => {
+        const validator = this.widgets[i].validator
+        if (validator) {
+          return validator(this.fields[attr.name])
+        }
+        return ''
+      })
+    },
     status () {
-      return Object.values(this.statuses).some(s => s === 'error') ? 'error' : 'ok'
+      return this.validationErrors.some(err => err) || Object.values(this.statuses).some(s => s === 'error') ? 'error' : 'ok'
     }
   },
   watch: {
@@ -152,8 +191,11 @@ export default {
         this.statuses = mapValues(fields, () => null)
       }
     },
-    status (val) {
-      this.$emit('update:status', val)
+    status: {
+      immediate: true,
+      handler (val) {
+        this.$emit('update:status', val)
+      }
     }
   },
   methods: {

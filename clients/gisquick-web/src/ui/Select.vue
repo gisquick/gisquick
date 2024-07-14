@@ -5,6 +5,7 @@
     :focus="focusComponent"
     :label="label"
     :color="color"
+    :error="error"
   >
     <div
       ref="select"
@@ -17,8 +18,6 @@
       :aria-expanded="open ? 'true' : 'false'"
       :aria-owns="listId"
       :tabindex="disabled ? -1 : 0"
-      @focus="onFocus"
-      @blur="onBlur"
       @click="toggle"
     >
       <slot
@@ -30,6 +29,7 @@
         <span class="value f-grow" v-text="selection.text"/>
       </slot>
       <span v-else class="placeholder f-grow" v-text="placeholder"/>
+      <slot name="append"/>
       <svg
         class="toggle"
         width="11"
@@ -121,10 +121,12 @@ import DocumentListener from './DocumentListener.js'
 import { escapeRegExp, removeDiacritics } from './utils/text'
 import { elementBounds } from './utils/popup'
 import { colorVars } from './utils/colors'
+import Focusable from './mixins/Focusable'
 
 
 let counter = 1
 export default {
+  mixins: [ Focusable ],
   components: { InputField, PopupContent, DocumentListener },
   props: {
     align: {
@@ -140,6 +142,7 @@ export default {
       default: 'popup-select'
     },
     disabled: Boolean,
+    error: String,
     items: Array,
     itemText: {
       type: String,
@@ -159,7 +162,6 @@ export default {
       open: false,
       bounds: null,
       highlightIndex: -1,
-      focused: false,
       search: '',
       listId: null,
       keyboardLock: false
@@ -192,11 +194,6 @@ export default {
       return { items: new Set() }
     }
   },
-  watch: {
-    focused (v) {
-      this.$emit(v ? 'focus' : 'blur')
-    }
-  },
   created () {
     this.listId = `select-list-${counter++}`
   },
@@ -208,16 +205,6 @@ export default {
       if (!this.disabled) {
         // this.$el.focus()
         this.$refs.select.focus()
-      }
-    },
-    onFocus () {
-      if (!this.disabled) {
-        this.focused = true
-      }
-    },
-    onBlur () {
-      if (!this.open) {
-        this.focused = false
       }
     },
     openPopup () {

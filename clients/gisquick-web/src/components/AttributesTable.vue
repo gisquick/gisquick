@@ -58,7 +58,7 @@
               <translate>No geometry</translate>
             </v-tooltip>
           </v-btn>
-          <v-btn class="icon flat my-0 mr-0" @click="showInfoPanel = true">
+          <v-btn class="icon flat my-0 mr-0" @click="[mode = '', showInfoPanel = true]">
             <v-icon name="circle-i-outline"/>
           </v-btn>
         </div>

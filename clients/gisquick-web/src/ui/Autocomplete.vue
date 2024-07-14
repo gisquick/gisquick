@@ -227,7 +227,7 @@ export default {
       return this.displayedItems.map(item => {
         return fields.reduce((obj, field) => {
           const text = item[field]
-          obj[field] = this.text.length > 1 ? highlight(text, this.text) : text
+          obj[field] = text && this.text.length > 1 ? highlight(text, this.text) : text
           return obj
         }, {})
       })

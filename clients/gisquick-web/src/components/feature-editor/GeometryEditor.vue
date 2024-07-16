@@ -84,6 +84,7 @@
     <draw-interaction
       v-if="drawingActive"
       :type="drawGeomType"
+      :layout="geometryLayout"
       :ol-style="editStyle"
       @drawend="onDrawEnd"
     />
@@ -186,9 +187,9 @@ import { ShallowObj, ShallowArray } from '@/utils'
 import MoveIcon from '@/assets/gis-move.svg?raw'
 
 const MultiGeomClasses = {
-  MultiPoint,
-  MultiPolygon,
-  MultiLineString
+  Point: MultiPoint,
+  Polygon: MultiPolygon,
+  LineString: MultiLineString
 }
 
 function LineStringNodesHandler (geom) {
@@ -304,7 +305,11 @@ export default {
       return this.geomType.startsWith('Multi')
     },
     drawGeomType () {
-      return this.geomType.replace('Multi', '')
+      const t = this.geomType.replace('Multi', '')
+      return t.endsWith('Z') ? t.slice(0, -1) : t
+    },
+    geometryLayout () {
+      return this.geomType.endsWith('Z') ? 'XYZ' : 'XY'
     },
     drawingActive () {
       return this.drawingEnabled || (!this.isMultiPart && this.geomFeatures.length === 0)
@@ -360,7 +365,7 @@ export default {
       return this.nodeToolEnabled && !this.nodeToolDisabled
     },
     nodeFeature () {
-      return this.nodeToolActive && this.selected[0]
+      return (this.nodeToolActive && this.selected[0]) || null
     },
     nodesModifyFeatures () {
       return this.selected.concat(this.nodesFeatures)
@@ -411,10 +416,16 @@ export default {
           this.nodesHandler = NodesHandler(feature)
           this.nodesFeatures = ShallowArray(this.nodesHandler.nodes)
         } else {
+          this.nodesHandler = null
           this.nodesFeatures = null
         }
         this.selectedNodes = ShallowArray()
       }
+    },
+    geometryType () {
+      this.geomFeatures = ShallowArray()
+      this.selected = ShallowArray()
+      this.geomModified = false
     }
   },
   methods: {
@@ -463,8 +474,9 @@ export default {
         if (this.geomFeatures.length === 0) {
           return null
         }
-        const GeomClass = MultiGeomClasses[this.geomType]
-        const geom = new GeomClass([])
+        const GeomClass = MultiGeomClasses[this.drawGeomType]
+        const geom = new GeomClass([], this.geometryLayout) // note: layout seems to be ignored without coordinates
+        geom.setLayout(this.geometryLayout)
         const composeFn = 'append' + this.drawGeomType
         this.geomFeatures.forEach(f => {
           geom[composeFn](f.getGeometry())

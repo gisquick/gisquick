@@ -5,6 +5,7 @@ import Collection from 'ol/Collection'
 export default {
   props: {
     type: String,
+    layout: String,
     olStyle: [Array, Object]
   },
   created () {
@@ -22,7 +23,8 @@ export default {
       return {
         features: new Collection(),
         style: this.olStyle,
-        type: this.type
+        type: this.type,
+        geometryLayout: this.layout
       }
     }
   },

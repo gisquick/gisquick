@@ -227,7 +227,6 @@ export default {
     clickOut (e) {
       if (!this.$el.contains(e.target)) {
         this.closePopup()
-        this.focused = false
       }
     },
     toggle () {
@@ -342,14 +341,20 @@ export default {
 
   transition: all .4s cubic-bezier(.25,.8,.25,1);
   outline: none;
+  gap: 6px;
+  overflow: hidden;
   cursor: default;
 
+  .value {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
   .placeholder {
     opacity: 0.6;
   }
   .toggle {
     padding: 4px;
-    margin-left: 8px;
     transition: 0.25s transform ease;
     box-sizing: content-box;
     path {

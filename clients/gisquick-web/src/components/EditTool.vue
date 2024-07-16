@@ -118,8 +118,6 @@ import { unByKey } from 'ol/Observable'
 
 import { mapState } from 'vuex'
 import FeaturesViewer from '@/components/ol/FeaturesViewer.vue'
-import FeatureEditor from '@/components/feature-editor/FeatureEditor.vue'
-import NewFeatureEditor from '@/components/feature-editor/NewFeatureEditor.vue'
 import InfoPanel from '@/components/InfoPanel.vue'
 import { formatFeatures } from '@/formatters'
 import { layerFeaturesQuery } from '@/map/featureinfo'
@@ -140,7 +138,7 @@ const IdentifyPointer = {
 
 export default {
   name: 'edit-tool',
-  components: { InfoPanel, NewFeatureEditor, FeatureEditor, IdentifyPointer, FeaturesViewer },
+  components: { InfoPanel, IdentifyPointer, FeaturesViewer },
   data () {
     return {
       mode: '',
@@ -220,7 +218,6 @@ export default {
       try {
         const features = await this.getFeaturesByWFS( query, { 'MAXFEATURES': 1 })
         this.features = Object.freeze(features)
-        console.log(this.features)
       } finally {
         map.getViewport().style.cursor = 'crosshair'
       }
@@ -230,7 +227,7 @@ export default {
       this.features = null
     },
     editLayer (layername) {
-      const layer = this.project.overlays.list.find(l => l.name === layername)
+      const layer = this.project.overlays.byName[layername]
       this.layer = layer
       this.$store.commit('layerVisibility', { layer, visible: true })
     },

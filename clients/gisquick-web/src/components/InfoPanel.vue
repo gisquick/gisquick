@@ -109,7 +109,7 @@
       </div>
       <v-btn
         class="icon flat"
-        :disabled="!feature || !feature.getGeometry()"
+        :disabled="mode !== 'add' && (!feature || !feature.getGeometry())"
         @click="zoomToFeature"
       >
         <v-icon name="zoom-to"/>
@@ -209,9 +209,11 @@ export default {
       this.$emit('selection-change', { layer: this.selected.layer, featureIndex })
     },
     zoomToFeature () {
-      const geom = this.$refs.editor?.getGeometry()
-      if (geom) {
-        this.$map.ext.zoomToGeometry(geom)
+      if (this.mode === 'add') {
+        const geom = this.$refs.editor?.getGeometry()
+        if (geom) {
+          this.$map.ext.zoomToGeometry(geom)
+        }
       } else {
         this.$map.ext.zoomToFeature(this.relationData?.feature || this.feature)
       }

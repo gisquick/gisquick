@@ -180,6 +180,9 @@ export default {
         .catch(err => {
           this.showError(err.message)
         })
+    },
+    getGeometry () {
+      return this.references.geometryEditor?.getGeometry()
     }
   }
 }

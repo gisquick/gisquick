@@ -76,11 +76,11 @@ export default {
       return {
         NotValidNumber: this.$gettext('Not valid number'),
         NotValidInteger: this.$gettext('Not valid integer number'),
-        RequiredField: this.$gettext('Field is required')
+        RequiredFieldErr: this.$gettext('Field is required')
       }
     },
     requiredValidator () {
-      return v => !v ? this.tr.RequiredField : ''
+      return v => (v === null || v === '') ? this.tr.RequiredFieldErr : ''
     },
     integerValidator () {
       return v => v && !isIntegerString(v) ? this.tr.NotValidInteger : ''

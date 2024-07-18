@@ -342,14 +342,11 @@ export default {
   transition: all .4s cubic-bezier(.25,.8,.25,1);
   outline: none;
   gap: 6px;
-  overflow: hidden;
   cursor: default;
+  min-width: 44px;
+  max-width: 100%;
+  line-height: 1.2;
 
-  .value {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
   .placeholder {
     opacity: 0.6;
   }
@@ -357,6 +354,7 @@ export default {
     padding: 4px;
     transition: 0.25s transform ease;
     box-sizing: content-box;
+    flex-shrink: 0;
     path {
       stroke: none;
       fill: currentColor;
@@ -368,6 +366,17 @@ export default {
     }
   }
 }
+.select.trim-text {
+  .input {
+    overflow: hidden;
+    .value {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+}
+
 .focused {
   border-color: var(--status-color, var(--color));
   .toggle {

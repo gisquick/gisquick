@@ -106,7 +106,7 @@ export default {
             validator: multiValidator(...validators),
             props: {
               disabled,
-              class: 'filled',
+              class: 'filled trim-text',
               items: valueMapItems(attr)
             }
           }

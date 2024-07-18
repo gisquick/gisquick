@@ -20,6 +20,7 @@
     >
       <div class="toolbar f-row-ac">
         <geometry-editor
+          v-if="geometryEditable"
           :editor.sync="references.geometryEditor"
           :geometry-type="geomType"
           :geom-toolbar="geomToolbar"
@@ -88,6 +89,9 @@ export default {
         LINE: 'MultiLineString',
         POLYGON: 'MultiPolygon'
       }[this.layer.geom_type]
+    },
+    geometryEditable () {
+      return this.layer.permissions.edit_geom === true
     }
   },
   watch: {

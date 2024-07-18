@@ -103,7 +103,7 @@ export default {
         if (attr.widget === 'ValueMap') {
           return {
             component: 'v-select',
-            validator: multiValidator(...validators),
+            validator: !disabled && multiValidator(...validators),
             props: {
               disabled,
               class: 'filled trim-text',
@@ -129,7 +129,7 @@ export default {
         if (type === 'date') {
           return {
             component: 'v-date-field',
-            validator: multiValidator(...validators),
+            validator: !disabled && multiValidator(...validators),
             props: {
               disabled,
               placeholder: attr.config?.display_format,
@@ -143,7 +143,7 @@ export default {
           validators.push(integerType ? this.integerValidator : this.numberValidator)
           return {
             component: TextField,
-            validator: multiValidator(...validators),
+            validator: !disabled && multiValidator(...validators),
             props: {
               type: 'number',
               // validator: multiValidator(...validators),
@@ -161,7 +161,7 @@ export default {
         }
         return {
           component: TextField,
-          validator: multiValidator(...validators),
+          validator: !disabled && multiValidator(...validators),
           props: {
             disabled,
             multiline: isTrueValue(attr.config?.IsMultiline),

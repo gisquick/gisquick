@@ -319,7 +319,7 @@ export default {
       const changedFields = difference(resolvedFields, this.initialFields)
       const f = this.createFeature(changedFields)
       if (this.geomModified) {
-        let newGeom = this.$refs.geometryEditor.getGeometry()
+        let newGeom = this.getGeometry()
         const mapProjection = this.$map.getView().getProjection().getCode()
         if (newGeom && mapProjection !== this.layer.projection) {
           newGeom = newGeom.clone()

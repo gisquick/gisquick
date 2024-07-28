@@ -161,9 +161,8 @@ export default {
         return
       }
       const f = this.createFeature(resolvedFields)
-      const geom = this.references.geometryEditor.getGeometry()
+      let newGeom = this.getGeometry()
       // Transform to projection of project
-      let newGeom = geom
       const mapProjection = this.$map.getView().getProjection().getCode()
       if (newGeom && mapProjection !== this.layer.projection) {
         newGeom = newGeom.clone()

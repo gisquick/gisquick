@@ -384,10 +384,15 @@ const GenericInfoPanel = {
             console.error(`Failed to load infopanel component: ${this.layer.infopanel_component}`)
           }
         }
+        let properties = null
+        if (r.infopanel_view === 'selected') {
+          const orderedFields = rLayer.info_panel_fields || rLayer.attributes.map(a => a.name)
+          properties = orderedFields.filter(n => r.fields.includes(n))
+        }
         return {
           name: r.name,
           layer: rLayer,
-          properties: r.infopanel_view === 'selected' ? r.fields : null,
+          properties,
           component,
           config: r
         }

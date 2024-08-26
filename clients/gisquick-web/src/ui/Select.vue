@@ -343,8 +343,6 @@ export default {
   outline: none;
   gap: 6px;
   cursor: default;
-  min-width: 44px;
-  max-width: 100%;
   line-height: 1.2;
 
   .placeholder {

@@ -15,7 +15,7 @@ export default {
 
     const onMove  = e => {
       isSwipe = true
-      activeListener.move(e)
+      activeListener?.move(e)
     }
     const onStart = e => {
       e.stopPropagation()

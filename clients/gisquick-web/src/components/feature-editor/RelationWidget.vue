@@ -51,7 +51,7 @@
                   <v-icon name="minimize"/>
                 </v-btn> -->
                 <v-btn class="icon" @click.prevent="minimized = true">
-                  <v-icon name="minimize2"/>
+                  <v-icon name="minimize"/>
                 </v-btn>
                 <v-btn class="icon" @click="close">
                   <v-icon name="x"/>

@@ -33,11 +33,11 @@
 <script>
 import { mapState } from 'vuex'
 
-import AttributesTable from '@/components/AttributesTable.vue'
 import Identification from '@/components/Identification.vue'
 import Measure from '@/components/measure/Measure.vue'
 import Print from '@/components/print/Print.vue'
-import MobileAttributesTable from '@/components/MobileAttributesTable.vue'
+import AttributesTable from '@/components/attributes-table/AttributesTable.vue'
+import MobileAttributesTable from '@/components/attributes-table/MobileAttributesTable.vue'
 import EditTool from '@/components/EditTool.vue'
 
 export default {

@@ -256,7 +256,7 @@ export default {
       this.statusController.set('loading', 1000)
       try {
         const { updates = [], deletes = [] } = operations
-        await wfsTransaction(this.project.ows_url, this.layer.name, operations)
+        await wfsTransaction(this.project.config.ows_url, this.layer.name, operations)
         for (const f of updates) {
           await this.$refs.editForm.afterFeatureUpdated?.(f)
         }
@@ -268,6 +268,7 @@ export default {
         updates.forEach(f => this.$emit('edit', f))
         deletes.forEach(f => this.$emit('delete', f))
       } catch (err) {
+        console.error(err)
         this.showError(err.message)
       }
     },
@@ -313,6 +314,7 @@ export default {
       try {
         var resolvedFields = await this.resolveFields('update')
       } catch (err) {
+        console.error(err)
         this.showError(err.message)
         return
       }

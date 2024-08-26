@@ -35,13 +35,19 @@
     overflow: auto;
     --gutter-x: 36px;
     --gutter-y: 20px;
+    max-width: 100%;
+    max-height: 100%;
     &:not(.fullscreen) {
-      margin: 8px;
-      max-height: calc(100% - 16px);
       align-self: center;
       justify-self: center;
       box-shadow: 0 2px 8px rgba(0,0,0,0.2), 0 3px 3px rgba(0,0,0,0.15);
+      @media (min-width: 601px) {
+        margin: 8px;
+        max-height: calc(100% - 16px);
+        max-width: calc(100% - 16px);
+      }
     }
+
     &.fullscreen {
       width: 100%;
       height: 100%;

@@ -60,7 +60,7 @@
                 :confirm-type="collapsed ? 'dialog' : 'overlay'"
                 :feature="feature"
                 :layer="layer"
-                :project="$store.state.project.config"
+                :project="$store.state.project"
                 @edit="$emit('edit', $event)"
                 @delete="$emit('delete', $event)"
               />
@@ -92,12 +92,12 @@
       </collapse-transition>
     </div>
     <div class="bottom-panel f-row-ac">
-      <div class="edit-toolbar f-row-ac" :class="{active: !!mode}">
+      <div class="edit-toolbar f-row-ac" :class="{active: mode !== 'view'}">
         <v-btn
           v-if="layerEditable"
           class="icon flat toggle"
           :color="mode === 'edit' ? 'primary' : null"
-          @click="$emit('update:mode', mode === '' ? 'edit' : '')"
+          @click="$emit('update:mode', mode === 'view' ? 'edit' : 'view')"
         >
           <v-icon name="edit"/>
         </v-btn>
@@ -125,10 +125,6 @@
 </template>
 
 <script>
-import GeoJSON from 'ol/format/GeoJSON'
-import { layerFeaturesQuery } from '@/map/featureinfo'
-import { formatFeatures } from '@/formatters'
-
 import GenericInfopanel from '@/components/GenericInfopanel.vue'
 import FeaturesViewer from '@/components/ol/FeaturesViewer.vue'
 import FeatureEditor from '@/components/feature-editor/FeatureEditor.vue'
@@ -144,7 +140,10 @@ export default {
     layer: Object,
     features: Array,
     layers: Array,
-    mode: String // 'edit', 'add', empty string - view mode
+    mode: { // 'edit', 'add', 'view'
+      type: String,
+      default: 'view'
+    }
   },
   data () {
     return {

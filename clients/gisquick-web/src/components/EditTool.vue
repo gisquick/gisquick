@@ -1,7 +1,7 @@
 <template>
   <div>
     <identify-pointer v-if="layer && mode !== 'add'" @click="identify"/>
-    <features-viewer :features="features"/>
+    <features-viewer :features="features" :selected-index="selection ? selection.featureIndex : null"/>
     <portal to="main-panel">
       <div class="edit-panel light f-col" key="edit">
         <div class="scroll-area f-col">
@@ -101,7 +101,7 @@
         :layer="layer"
         :mode.sync="mode"
         :selected="selection"
-        @close="[mode = '', features = null]"
+        @close="[mode = 'view', features = null]"
         @insert="onFeatureInsert"
         @edit="onFeatureUpdate"
         @delete="onFeatureDeleted"
@@ -141,7 +141,7 @@ export default {
   components: { InfoPanel, IdentifyPointer, FeaturesViewer },
   data () {
     return {
-      mode: '',
+      mode: 'view',
       layer: null,
       features: null
     }

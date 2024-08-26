@@ -31,7 +31,7 @@
       </div>
     </portal>
 
-    <identify-pointer v-if="!mode" @click="onClick"/>
+    <identify-pointer v-if="mode === 'view'" @click="onClick"/>
     <features-viewer :features="displayedFeatures"/>
     <point-marker
       :coords="mapCoords"
@@ -126,7 +126,7 @@ export default {
       mapCoords: null,
       layersFeatures: [],
       selection: null,
-      mode: '',
+      mode: 'view',
       tasks: {
         fetchFeatures: TaskState()
       }
@@ -332,7 +332,7 @@ export default {
       this.selection = null
       this.mapCoords = null
       this.layersFeatures = []
-      this.mode = ''
+      this.mode = 'view'
       this.lastClickEvt = null
     },
     categorize (features) {
@@ -368,7 +368,7 @@ export default {
         }))
     },
     onFeatureDelete (feature) {
-      this.mode = ''
+      this.mode = 'view'
       // update list of features and selection
       const currentLayerFeatures = this.resultItem.features.filter(f => f !== feature)
       if (currentLayerFeatures.length) {

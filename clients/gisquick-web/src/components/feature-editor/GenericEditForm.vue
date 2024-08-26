@@ -1,19 +1,27 @@
 <template>
   <div class="generic-edit-form f-col light">
     <template v-for="(attr, index) in attributes">
-      <slot :name="attr.name" :attr="attr">
-        <component
-          :key="attr.name"
-          ref="widget"
-          :is="widgets[index].component"
-          :initial="initial && initial[attr.name]"
-          :label="attr.alias || attr.name"
-          :status.sync="statuses[attr.name]"
-          v-model="fields[attr.name]"
-          v-bind="widgets[index].props"
-          :error="validationErrors[index]"
+      <field-wrapper :key="attr.name">
+        <slot :name="attr.name" :attr="attr">
+          <component
+            ref="widget"
+            :is="widgets[index].component"
+            :initial="initial && initial[attr.name]"
+            :label="attr.alias || attr.name"
+            :status.sync="statuses[attr.name]"
+            v-model="fields[attr.name]"
+            v-bind="widgets[index].props"
+            :error="validationErrors[index]"
+          />
+        </slot>
+        <relation-widget
+          v-if="fieldsRelations[attr.name]"
+          :project="project"
+          :layer="layer"
+          :relation="fieldsRelations[attr.name]"
+          @change="updateRelationValue"
         />
-      </slot>
+      </field-wrapper>
     </template>
   </div>
 </template>
@@ -26,6 +34,7 @@ import TextField from './TextField.vue'
 import MediaFileField from './MediaFileField.vue'
 import { valueMapItems } from '@/adapters/attributes'
 import { mediaUrl } from '@/components/GenericInfopanel.vue'
+import RelationWidget from './RelationWidget.vue'
 
 function isIntegerString (strValue) {
   return /^-?\d+$/.test(strValue)
@@ -51,7 +60,22 @@ function multiValidator (...validators) {
   }
 }
 
+const FieldWrapper = {
+  functional: true,
+  props: {
+    multi: Boolean
+  },
+  render (h, ctx) {
+    const { multi } = ctx.props
+    if (ctx.children[1].isComment) {
+      return ctx.children
+    }
+    return <div class="field-wrapper">{ ctx.children }</div>
+  }
+}
+
 export default {
+  components: { FieldWrapper, RelationWidget },
   props: {
     layer: Object,
     fields: Object,
@@ -111,7 +135,7 @@ export default {
             }
           }
         } else if (attr.widget === 'MediaImage' || attr.widget === 'MediaFile') {
-          const { base: url, location } = mediaUrl(this.project.name, this.layer, attr)
+          const { base: url, location } = mediaUrl(this.project.config.name, this.layer, attr)
           return {
             component: MediaFileField,
             props: {
@@ -182,6 +206,22 @@ export default {
     },
     status () {
       return this.validationErrors.some(err => err) || Object.values(this.statuses).some(s => s === 'error') ? 'error' : 'ok'
+    },
+    relations () {
+      return this.layer.relations?.filter(r => r.infopanel_view !== 'hidden').map(r => {
+        const rLayer = this.project.overlays.byName[r.referencing_layer]
+        return {
+          ...r,
+          referencing_layer: rLayer
+        }
+      })
+    },
+    fieldsRelations () {
+      const map = {}
+      this.relations?.forEach(rel => rel.referenced_fields.forEach(f => {
+        map[f] = rel
+      }))
+      return map
     }
   },
   watch: {
@@ -210,6 +250,12 @@ export default {
     },
     async afterFeatureDeleted (f) {
       await Promise.all(this.$refs.widget.map(w => w.afterFeatureDeleted?.(f)))
+    },
+    updateRelationValue (relation, feature) {
+      relation.referenced_fields.forEach((f, i) => {
+        const field = relation.referencing_fields[i]
+        this.fields[f] = feature.get(field)
+      })
     }
   }
 }
@@ -218,5 +264,17 @@ export default {
 <style lang="scss" scoped>
 .generic-edit-form {
   background-color: #f3f3f3;
+}
+.field-wrapper {
+  display: flex;
+  align-items: flex-end;
+  > :first-child {
+    flex-grow: 1;
+  }
+  > :nth-child(2) {
+    flex-shrink: 0;
+    padding-bottom: 6px;
+    --gutter: 6px 4px 6px 0;
+  }
 }
 </style>

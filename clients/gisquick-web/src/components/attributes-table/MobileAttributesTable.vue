@@ -6,8 +6,8 @@
           <div class="f-row f-align-end">
             <v-select
               class="filled f-grow mr-0"
-              :placeholder="mtr.SelectLayer"
-              :label="mtr.Layer"
+              :placeholder="tr.SelectLayer"
+              :label="tr.Layer"
               item-text="title"
               item-value="name"
               :disabled="mode !== 'view'"
@@ -21,7 +21,7 @@
             >
               <template v-slot:activator="{ toggle }">
                 <v-btn
-                  :aria-label="mtr.Menu"
+                  :aria-label="tr.Menu"
                   class="icon p-2"
                   @click="toggle"
                 >
@@ -37,7 +37,7 @@
               geom-toolbar="top-panel"
               toolbar-target="mat-toolbar"
               :layer="layer"
-              @edit="mNewFeatureAdded"
+              @edit="onFeatureInsert"
             />
           </template>
           <template v-if="mode === 'view'">
@@ -50,7 +50,7 @@
               >
                 <template v-slot:activator="{ toggle }">
                   <v-btn
-                    :aria-label="mtr.Menu"
+                    :aria-label="tr.Menu"
                     :disabled="!layer"
                     class="icon p-1"
                     @click="toggle"
@@ -114,7 +114,7 @@
                 >
                   <template v-slot:activator="{ toggle }">
                     <v-btn
-                      :aria-label="mtr.Menu"
+                      :aria-label="tr.Menu"
                       class="icon round shadow-2"
                       @click="toggle"
                     >
@@ -147,7 +147,7 @@
               geom-toolbar="top-panel"
               :feature="selectedFeature"
               :layer="layer"
-              :project="$store.state.project.config"
+              :project="$store.state.project"
               @edit="onFeatureEdit"
               @delete="onFeatureEdit"
             />
@@ -201,7 +201,7 @@
         </div>
       </div>
     </portal>
-    <features-viewer :features="features"/>
+    <features-viewer :features="features" :selectedIndex="selectedFeatureIndex"/>
     <portal to="right-panel">
       <info-panel
         v-if="showInfoPanel"
@@ -209,7 +209,7 @@
         :features="features"
         :layer="layer"
         :selected="infoPanelSelection"
-        :editMode.sync="editMode"
+        :mode.sync="mode"
         @selection-change="selectedFeatureIndex = $event.featureIndex"
         @close="showInfoPanel = false"
         @edit="onFeatureEdit"
@@ -222,14 +222,20 @@
 <script>
 import pickBy from 'lodash/pickBy'
 import { mapState } from 'vuex'
-import AttributesTable from './AttributesTable.vue'
 import ListTable from '@/ui/ListTable.vue'
+import InfoPanel from '@/components/InfoPanel.vue'
 import FeatureEditor from '@/components/feature-editor/FeatureEditor.vue'
+import NewFeatureEditor from '@/components/feature-editor/NewFeatureEditor.vue'
+import FeaturesViewer from '@/components/ol/FeaturesViewer.vue'
+import AttributeFilter from './AttributeFilter.vue'
+import FetchMixin from './fetch.js'
+import TableMixin from './table.js'
+import ToolMixin from './tool.js'
 
 export default {
   name: 'mobile-attribute-table',
-  extends: AttributesTable,
-  components: { ListTable, FeatureEditor },
+  mixins: [ToolMixin, FetchMixin, TableMixin],
+  components: { AttributeFilter, ListTable, FeatureEditor, NewFeatureEditor, FeaturesViewer, InfoPanel },
   data () {
     return {
       layersFilterSelections: {},
@@ -237,13 +243,9 @@ export default {
     }
   },
   computed: {
-    ...mapState('attributeTable', ['filters']),
-    mtr () {
-      return {
-        Layer: this.$gettext('Layer'),
-        SelectLayer: this.$gettext('Select layer'),
-        Menu: this.$gettext('Menu')
-      }
+    ...mapState('attributeTable', { allFilters: 'filters'}),
+    selectedIndex () {
+      return this.selectedFeatureIndex
     },
     layerEditable () {
       const { permissions = {} } = this.layer
@@ -359,13 +361,34 @@ export default {
           }
         }
       ]
+    },
+    lastPage () {
+      const { rowsPerPage, totalItems } = this.pagination
+      return Math.ceil(totalItems / rowsPerPage)
+    },
+    paginationRangeText () {
+      const { page, rowsPerPage, totalItems } = this.pagination
+      if (totalItems === 0) {
+        return '-'
+      }
+      const sIndex = (page - 1) * rowsPerPage + 1
+      const eIndex = sIndex + this.features.length - 1
+      return `${sIndex} - ${eIndex} / ${totalItems}`
+    },
+    tr () {
+      return {
+        Layer: this.$gettext('Layer'),
+        SelectLayer: this.$gettext('Select layer'),
+        Menu: this.$gettext('Menu'),
+        FilterVisibleLabel: this.$gettext('Filter to visible area')
+      }
     }
   },
   created () {
     const data = {}
     const layers = this.project.overlays.list.filter(l => l.queryable)
     layers.forEach(l => {
-      data[l.name] = Object.keys(pickBy(this.filters[l.name], f => f.active || f.valid))
+      data[l.name] = Object.keys(pickBy(this.allFilters[l.name], f => f.active || f.valid))
     })
     this.layersFilterSelections = data
   },
@@ -374,9 +397,38 @@ export default {
       const layer = this.project.overlays.list.find(l => l.name === layername)
       this.$store.commit('attributeTable/layer', layer)
     },
-    mNewFeatureAdded (fid) {
-      this.newFeatureAdded(fid)
-      this.mode = 'view'
+    selectFeature (item, row) {
+      this.selectedFeatureIndex = row
+    },
+    _setFeatures (data) {
+      this.$store.commit('attributeTable/features', data.features)
+      this.selectedFeatureIndex = data.selectedIndex
+      this.pagination = data.pagination
+    },
+    onFilterChange (attr, filter) {
+      const filters = { ...this.layerFilters, [attr]: filter }
+      this.$store.commit('attributeTable/filters', { layer: this.layer.name, filters })
+    },
+    clearAllFilters () {
+      const filters = { ...this.layerFilters }
+      Object.entries(filters).forEach(([name, filter]) => {
+        if (filter.comparator !== null || filter.value !== null) {
+          filters[name] = {
+            active: false,
+            comparator: null,
+            value: null,
+            valid: false
+          }
+        }
+      })
+      this.$store.commit('attributeTable/filters', { layer: this.layer.name, filters })
+      this.selectedFilterFields = []
+    },
+    setPage (page) {
+      this.fetchFeatures(page, true)
+    },
+    zoomToFeature (feature) {
+      this.$map.ext.zoomToFeature(feature)
     }
   }
 }

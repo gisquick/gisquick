@@ -14,6 +14,20 @@
   transition: all 0s;
 }
 
+.move-enter-active, .move-leave-active:not(.move-leave) {
+  will-change: transform;
+  transition: all 0.45s ease;
+}
+
+.move-enter, .move-leave-to {
+  opacity: 0.05;
+}
+.move-leave, .move-enter-to {
+  opacity: 1;
+}
+
+
+
 /* Slide from the left */
 .slide-enter-active, .slide-leave-active {
   transition: transform .4s cubic-bezier(.25,.8,.5,1);

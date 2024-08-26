@@ -10,7 +10,7 @@
         class="f-grow"
         :layer="layer"
         :fields="fields"
-        :project="project.config"
+        :project="project"
         :status.sync="formStatus"
       />
     </slot>

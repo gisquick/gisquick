@@ -40,7 +40,7 @@
       <scale-line/>
       <map-attributions class="map-attributions"/>
     </div>
-    <portal-target name="map-overlay" class="map-overlay"/>
+    <portal-target name="map-overlay" class="map-overlay" multiple/>
     <div class="top-toolbar f-row">
       <tools-menu :tools="toolsMenuItems" color="dark"/>
       <search-tool/>
@@ -317,6 +317,7 @@ export default {
     color: #fff;
     border-radius: 4px;
     padding: 2px 4px;
+    pointer-events: none;
   }
   .auth-status {
     grid-column: 3 / 4;

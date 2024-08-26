@@ -37,6 +37,9 @@ export default {
     features (state, features) {
       state.features = features
     },
+    filters (state, { layer, filters }) {
+      state.filters[layer] = filters
+    },
     visibleAreaFilter (state, visible) {
       state.visibleAreaFilter = visible
     },

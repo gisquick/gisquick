@@ -47,7 +47,7 @@
       <map-attributions class="map-attributions"/>
       <map-control/>
     </div>
-    <portal-target name="map-overlay" class="map-overlay"/>
+    <portal-target name="map-overlay" class="map-overlay" multiple/>
 
     <div class="right-container f-col">
       <portal-target
@@ -249,6 +249,7 @@ export default {
   color: var(--color-primary);
   padding: 4px;
   z-index: 10;
+  pointer-events: none;
 }
 .main-panel {
   .panel-content {

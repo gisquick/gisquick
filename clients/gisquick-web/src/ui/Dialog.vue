@@ -54,7 +54,7 @@ export default {
       default: 'modal'
     },
     persistent: Boolean,
-    value: Boolean
+    value: {}
   },
   data () {
     return {
@@ -71,8 +71,8 @@ export default {
     value: {
       immediate: true,
       handler (val) {
-        if (val !== this.open) {
-          val ? this.show() : this.close()
+        if (!!val !== this.open) {
+          val ? this.show(val !== true ? val : null) : this.close()
         }
       }
     }
@@ -102,7 +102,6 @@ export default {
     display: grid;
     grid-template-columns: 1fr auto;
     align-items: center;
-    padding: 12px;
     text-align: center;
     .title {
       grid-area: 1 / 1 / 2 / 3;
@@ -119,12 +118,6 @@ export default {
       width: 26px;
       height: 26px;
       align-self: start;
-    }
-    @media (max-width: 600px) {
-      padding: 6px;
-      .title {
-        font-size: 24px;
-      }
     }
   }
 }

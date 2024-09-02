@@ -47,9 +47,8 @@
           :features="displayedFeatures"
           :layer="displayedLayer"
           :layers="resultLayers"
-          :selected="selection"
+          :selected.sync="selection"
           :mode.sync="mode"
-          @selection-change="selection = $event"
           @close="clearResults"
           @delete="onFeatureDelete"
           @edit="onFeatureEdit"
@@ -60,8 +59,8 @@
           v-if="displayMode === 'table' || displayMode === 'both'"
           class="light"
           :data="layersFeatures"
-          :selected="selection"
-          @selection-change="selection = $event"
+          :selected="tableSelection"
+          @update:selected="selection = $event"
           @close="clearResults"
         />
       </portal>
@@ -126,6 +125,7 @@ export default {
       mapCoords: null,
       layersFeatures: [],
       selection: null,
+      tableLastActiveLayer: null,
       mode: 'view',
       tasks: {
         fetchFeatures: TaskState()
@@ -170,10 +170,16 @@ export default {
       return this.resultItem?.features
     },
     selectedFeature () {
-      return this.selection && this.displayedFeatures[this.selection.featureIndex]
+      if (this.selection && this.resultItem) {
+        return this.resultItem.features.find(f => f.getId() === this.selection.id)
+      }
+      return null
     },
     mapProjection () {
       return this.$map.getView().getProjection().getCode()
+    },
+    tableSelection () {
+      return { layer: this.tableLastActiveLayer, id: this.selection?.id }
     },
     tr () {
       return {
@@ -198,6 +204,11 @@ export default {
       }
       if (this.lastClickEvt && !isEqual(layers, old)) {
         this.onClick(this.lastClickEvt)
+      }
+    },
+    selection (selection) {
+      if (selection?.layer && this.layersFeatures.some(i => i.layer.name === selection.layer)) {
+        this.tableLastActiveLayer = selection.layer
       }
     }
   },
@@ -321,7 +332,7 @@ export default {
         const index = selectedLayer ? Math.max(0, items.findIndex(i => i.layer.name === selectedLayer)) : 0
         this.selection = {
           layer: items[index].layer.name,
-          featureIndex: 0
+          id: items[index].features[0].getId()
         }
         return features
       } else {
@@ -373,13 +384,14 @@ export default {
       const currentLayerFeatures = this.resultItem.features.filter(f => f !== feature)
       if (currentLayerFeatures.length) {
         this.resultItem.features = currentLayerFeatures
-        this.selection.featureIndex = 0
+        this.selection.id = currentLayerFeatures[0].getId()
       } else {
         this.layersFeatures = this.layersFeatures.filter(i => i.layer !== this.resultItem.layer)
         if (this.layersFeatures.length) {
+          const dataSet = this.layersFeatures[0]
           this.selection = {
-            layer: this.layersFeatures[0].layer.name,
-            featureIndex: 0
+            layer: dataSet.layer.name,
+            id: dataSet.features[0]?.getId()
           }
         } else {
           // this.clearResults()
@@ -406,7 +418,7 @@ export default {
     getPermalinkParams () {
       if (this.selection) {
         return {
-          features: this.displayedFeatures[this.selection.featureIndex].getId()
+          features: this.selection.id
         }
       }
     },

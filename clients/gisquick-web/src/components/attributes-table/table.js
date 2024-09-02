@@ -44,12 +44,6 @@ export default {
         ...f.getFormattedProperties()
       }))
     },
-    selectedFeature () {
-      return this.features[this.selectedIndex]
-    },
-    selectedFeatureId () {
-      return this.selectedFeature?.getId()
-    },
     slots () {
       const slots = {}
       this.attributes.forEach(attr => {

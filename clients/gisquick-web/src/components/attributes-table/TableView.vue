@@ -10,7 +10,7 @@
       :items="tableData"
       :error="loadingError"
       :loading="loading"
-      :selected="selectedFeatureId"
+      :selected="selectedId"
       :sort="{ sortBy: sortBy.property, sort: sortBy.order }"
       sortable
       @row-click="selectFeature"
@@ -137,7 +137,7 @@
       :features="features"
       :color="color"
       :selectedColor="highlightColor"
-      :selectedIndex="selectedIndex"
+      :selected="selectedFeature"
     />
   </div>
 </template>
@@ -162,7 +162,7 @@ export default {
     visibleAreaFilter: Boolean,
     sortBy: Object,
     pagination: Object,
-    selectedIndex: Number,
+    selectedId: String,
     fetchRelations: Boolean,
     color: Array,
     highlightColor: {
@@ -172,10 +172,7 @@ export default {
   },
   computed: {
     selectedFeature () {
-      return this.features[this.selectedIndex]
-    },
-    selectedFeatureId () {
-      return this.selectedFeature?.getId()
+      return this.features.find(f => f.getId() === this.selectedId)
     },
     lastPage () {
       const { rowsPerPage, totalItems } = this.pagination
@@ -200,8 +197,10 @@ export default {
   methods: {
     _setFeatures (data) {
       this.$emit('update:features', data.features)
-      this.$emit('update:selectedIndex', data.selectedIndex)
       this.$emit('update:pagination', data.pagination)
+      if (!this.selectedId || !data.features.some(f => f.getId() === this.selectedId)) {
+        this.$emit('update:selectedId', data.features[0]?.getId() ?? -1)
+      }
     },
     clearAllFilters () {
       const filters = { ...this.filters }
@@ -227,7 +226,7 @@ export default {
       this.$emit('update:filters', { ...this.filters, [attr]: filter })
     },
     selectFeature (item) {
-      this.$emit('update:selectedIndex', this.tableData.indexOf(item))
+      this.$emit('update:selectedId', item._id)
     },
     updateLimit (value) {
       this.$emit('update:limit', value)

@@ -22,13 +22,14 @@
       :features="features"
       :limit="limit"
       :visible-area-filter="visibleAreaFilter"
-      :selected-index.sync="selectedFeatureIndex"
+      :selected-id="selected && selected.id"
       :pagination.sync="pagination"
       :sort-by.sync="sortBy"
       @update:features="updateFeatures"
       @update:limit="updateLimit"
       @update:visibleAreaFilter="updateVisibleAreaFilter"
       @update:filters="updateFilters"
+      @update:selectedId="updateSelection"
     >
       <template v-slot:header(actions)>
         <!-- <v-menu>
@@ -75,9 +76,8 @@
         class="mx-1 mb-2"
         :features="features"
         :layer="layer"
-        :selected="infoPanelSelection"
         :mode.sync="mode"
-        @selection-change="selectedFeatureIndex = $event.featureIndex"
+        :selected.sync="selected"
         @close="showInfoPanel = false"
         @insert="onFeatureInsert"
         @edit="onFeatureEdit"
@@ -123,6 +123,9 @@ export default {
     }
   },
   methods: {
+    updateSelection (id) {
+      this.selected = { layer: this.layer.name, id }
+    },
     fetchFeatures (page = 1, lastQuery = false) {
       this.$refs.table.fetchFeatures(page, lastQuery)
     },

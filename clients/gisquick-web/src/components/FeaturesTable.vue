@@ -149,7 +149,7 @@ export default {
       }))
     },
     selectedFeatureId () {
-      return this.tableData?.[this.selected.featureIndex]._id
+      return this.selected?.id
     },
     slots () {
       const slots = {}
@@ -177,11 +177,11 @@ export default {
   },
   methods: {
     setActiveLayer (layer) {
-      this.$emit('selection-change', { layer: layer.name, featureIndex: 0 }) // todo: use feature ID
+      const dataSet = this.data.find(s => s.layer.name === layer.name)
+      this.$emit('update:selected', { layer: layer.name, id: dataSet.features[0].getId() })
     },
     selectFeature (item) {
-      const featureIndex = this.tableData.indexOf(item)
-      this.$emit('selection-change', { layer: this.selected.layer, featureIndex })
+      this.$emit('update:selected', { layer: this.selected.layer, id: item._id })
     },
     zoomToFeature (feature) {
       this.$map.ext.zoomToFeature(feature)

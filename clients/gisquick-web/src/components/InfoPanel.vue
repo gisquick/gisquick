@@ -1,7 +1,7 @@
 <template>
-  <div v-if="feature || mode === 'add'" class="f-col info-panel light">
+  <div v-if="feature || relationData || mode === 'add'" class="f-col info-panel light">
     <div class="f-col main-content shadow-2">
-      <div v-if="relationData" class="toolbar dark top f-row-ac">
+      <div v-if="relationData && mode !== 'add'" class="toolbar dark top f-row-ac">
         <v-btn class="icon" @click="popRelation">
           <v-icon name="arrow-backward"/>
         </v-btn>
@@ -58,10 +58,9 @@
                 class="edit-form"
                 toolbar-target="infopanel-tool"
                 :confirm-type="collapsed ? 'dialog' : 'overlay'"
-                :feature="feature"
-                :layer="layer"
-                :project="$store.state.project"
-                @edit="$emit('edit', $event)"
+                :project="project"
+                v-bind="displayedData"
+                @edit="onFeatureEdit"
                 @delete="$emit('delete', $event)"
               />
               <new-feature-editor
@@ -83,7 +82,8 @@
               <component
                 v-else
                 :is="formComponent"
-                v-bind="viewerParams"
+                :project="project"
+                v-bind="displayedData"
                 @relation="showRelationFeature"
               />
             </switch-transition>
@@ -109,7 +109,7 @@
       </div>
       <v-btn
         class="icon flat"
-        :disabled="mode !== 'add' && (!feature || !feature.getGeometry())"
+        :disabled="zoomDisabled"
         @click="zoomToFeature"
       >
         <v-icon name="zoom-to"/>
@@ -129,12 +129,14 @@ import GenericInfopanel from '@/components/GenericInfopanel.vue'
 import FeaturesViewer from '@/components/ol/FeaturesViewer.vue'
 import FeatureEditor from '@/components/feature-editor/FeatureEditor.vue'
 import NewFeatureEditor from '@/components/feature-editor/NewFeatureEditor.vue'
+import FeaturesReader from '@/components/attributes-table/features.js'
 import { externalComponent } from '@/components-loader'
 import { ShallowArray, ShallowObj } from '@/utils'
 
 export default {
   name: 'info-panel',
   components: { GenericInfopanel, FeaturesViewer, FeatureEditor, NewFeatureEditor },
+  mixins: [FeaturesReader],
   props: {
     selected: Object,
     layer: Object,
@@ -160,52 +162,57 @@ export default {
       }))
     },
     index () {
-      return this.selected?.featureIndex
+      return this.selected && this.features.findIndex(f => f.getId() === this.selected.id)
     },
     feature () {
-      return this.selected && this.features[this.index]
+      return this.features?.[this.index]
     },
     project () {
       return this.$store.state.project
     },
-    viewerParams () {
-      if (this.relationData) {
-        return {
-          ...this.relationData,
-          project: this.project
-        }
-      }
-      return {
+    displayedData () {
+      return this.relationData || {
         feature: this.feature,
-        layer: this.layer,
-        project: this.project
+        layer: this.layer
       }
     },
     formComponent () {
-      if (this.layer.infopanel_component) {
+      const { layer } = this.displayedData
+      if (layer.infopanel_component) {
         try {
           const project = this.project.config
-          return externalComponent(project, this.layer.infopanel_component)
+          return externalComponent(project, layer.infopanel_component)
         } catch (err) {
-          console.error(`Failed to load infopanel component: ${this.layer.infopanel_component}`)
+          console.error(`Failed to load infopanel component: ${layer.infopanel_component}`)
         }
       }
       return GenericInfopanel
     },
+    zoomDisabled () {
+      const { feature } = this.displayedData
+      return this.mode !== 'add' && (!feature || !feature.getGeometry())
+    },
     layerEditable () {
-      const { permissions = {} } = this.layer
+      const { permissions = {} } = this.displayedData.layer
       return permissions.update || permissions.delete
     },
     relationData () {
       return this.relationsData[this.relationsData.length - 1]
     }
   },
+  watch: {
+    selected (selection) {
+      if (selection?.layer && this.features?.some(f => f.getId() === selection.id)) {
+        this.relationsData = []
+      }
+    }
+  },
   methods: {
     setActiveLayer (layer) {
-      this.$emit('selection-change', { layer, featureIndex: 0 })
+      this.$emit('update:layer', layer)
     },
     setSelected (featureIndex) {
-      this.$emit('selection-change', { layer: this.selected.layer, featureIndex })
+      this.$emit('update:selected', { layer: this.selected.layer, id: this.features[featureIndex].getId() })
     },
     zoomToFeature () {
       if (this.mode === 'add') {
@@ -217,19 +224,43 @@ export default {
         this.$map.ext.zoomToFeature(this.relationData?.feature || this.feature)
       }
     },
+    async onFeatureEdit (f) {
+      if (this.relationData) {
+        const { layer, prev } = this.relationData
+        const feature = await this.getFeatureById(f.getId(), layer)
+        if (prev.feature._relationsData) {
+          Object.values(prev.feature._relationsData).forEach(features => {
+            const index = features.findIndex(rf => rf.getId() === f.getId())
+            if (index !== -1) {
+              features[index] = feature
+            }
+          })
+        }
+        this.relationData.feature = feature
+      } else {
+        this.$emit('edit', f)
+      }
+    },
     async showRelationFeature (relation, feature) {
       const relationData = ShallowObj({
         layer: relation.layer,
-        feature
+        feature,
+        prev: {
+          ...this.selected,
+          feature: this.displayedData.feature
+        }
       })
       this.relationsData.push(relationData)
-      // this.$map.ext.zoomToFeature(feature)
       this.$map.ext.centerToGeometry(feature.getGeometry())
+      this.$emit('update:selected', { layer: relation.layer.name, id: feature.getId() })
     },
     popRelation () {
-      this.relationsData.pop()
-      const currentFeature = this.relationData?.feature || this.feature
-      this.$map.ext.centerToGeometry(currentFeature.getGeometry())
+      const { prev } = this.relationData
+      this.$emit('update:selected', { layer: prev.layer, id: prev.feature.getId() })
+      this.$map.ext.centerToGeometry(prev.feature.getGeometry())
+      this.$nextTick(() => {
+        this.relationsData.pop()
+      })
     }
   }
 }

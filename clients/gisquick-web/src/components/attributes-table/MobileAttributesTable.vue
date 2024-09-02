@@ -201,16 +201,15 @@
         </div>
       </div>
     </portal>
-    <features-viewer :features="features" :selectedIndex="selectedFeatureIndex"/>
+    <features-viewer :features="features" :selected="selectedFeature"/>
     <portal to="right-panel">
       <info-panel
         v-if="showInfoPanel"
         class="mx-1 mb-2"
         :features="features"
         :layer="layer"
-        :selected="infoPanelSelection"
         :mode.sync="mode"
-        @selection-change="selectedFeatureIndex = $event.featureIndex"
+        :selected.sync="selected"
         @close="showInfoPanel = false"
         @edit="onFeatureEdit"
         @delete="onFeatureEdit"
@@ -244,8 +243,8 @@ export default {
   },
   computed: {
     ...mapState('attributeTable', { allFilters: 'filters'}),
-    selectedIndex () {
-      return this.selectedFeatureIndex
+    selectedFeatureId () {
+      return this.selected?.id
     },
     layerEditable () {
       const { permissions = {} } = this.layer
@@ -342,7 +341,7 @@ export default {
         {
           text: this.$gettext('Zoom to'),
           icon: 'zoom-to',
-          disabled: !this.selectedFeature.getGeometry(),
+          disabled: !this.selectedFeature?.getGeometry(),
           action: () => {
             this.zoomToFeature(this.selectedFeature)
           }
@@ -397,13 +396,15 @@ export default {
       const layer = this.project.overlays.list.find(l => l.name === layername)
       this.$store.commit('attributeTable/layer', layer)
     },
-    selectFeature (item, row) {
-      this.selectedFeatureIndex = row
+    selectFeature (item) {
+      this.selected = { layer: this.layer.name, id: item._id }
     },
     _setFeatures (data) {
       this.$store.commit('attributeTable/features', data.features)
-      this.selectedFeatureIndex = data.selectedIndex
       this.pagination = data.pagination
+      if (!this.selected || !data.features.some(f => f.getId() === this.selected.id)) {
+        this.selected = { layer: this.layer.name, id: data.features[0]?.getId() ?? -1 }
+      }
     },
     onFilterChange (attr, filter) {
       const filters = { ...this.layerFilters, [attr]: filter }

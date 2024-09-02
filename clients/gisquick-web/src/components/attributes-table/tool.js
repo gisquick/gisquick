@@ -13,7 +13,7 @@ export default {
   data () {
     return {
       pagination: null,
-      selectedFeatureIndex: null,
+      selected: null,
       showInfoPanel: false,
       mode: 'view',
       sortBy: null
@@ -24,13 +24,7 @@ export default {
     ...mapState('attributeTable', ['page', 'limit', 'visibleAreaFilter', 'layer', 'features']),
     ...mapGetters('attributeTable', ['layerFilters']),
     selectedFeature () {
-      return this.features[this.selectedFeatureIndex]
-    },
-    infoPanelSelection () {
-      return this.selectedFeature && {
-        layer: this.layer.name,
-        featureIndex: this.selectedFeatureIndex
-      }
+      return this.selected && this.features.find(f => f.getId() === this.selected.id)
     },
     permissions () {
       return this.layer.permissions || {}
@@ -58,26 +52,15 @@ export default {
     }
   },
   methods: {
-    async getFeatureById (fid) {
-      const params = {
-        VERSION: '1.1.0',
-        SERVICE: 'WFS',
-        REQUEST: 'GetFeature',
-        OUTPUTFORMAT: 'GeoJSON',
-        FEATUREID: fid,
-      }
-      const { data } = await this.$http.get(this.project.config.ows_url, { params })
-      return this.readFeatures(data, this.layer)[0]
-    },
     async onFeatureInsert (fid) {
       setTimeout(() => {
         this.mode = 'edit'
       }, 1500)
-      const addedFeature = await this.getFeatureById(fid)
+      const addedFeature = await this.getFeatureById(fid, this.layer)
       const features = Object.freeze([addedFeature, ...this.features])
       this.pagination.totalItems += 1
       this.$store.commit('attributeTable/features', features)
-      this.selectedFeatureIndex = 0
+      this.selected = { layer: this.layer.name, id: fid}
       this.$map.ext.refreshOverlays()
     },
     updateFeatures (features) {
@@ -95,7 +78,7 @@ export default {
     async onFeatureEdit (ef) {
       this.$map.ext.refreshOverlays()
       const fid = ef.getId()
-      const edited = await this.getFeatureById(fid)
+      const edited = await this.getFeatureById(fid, this.layer)
       const features = Object.freeze(this.features.map(f => f.getId() === fid ? edited : f))
       this.$store.commit('attributeTable/features', features)
     },
@@ -135,9 +118,9 @@ export default {
       downloadExcel(header, rows, this.layer.title, this.layer.title)
     },
     getPermalinkParams () {
-      if (this.selectedFeatureIndex !== null) {
+      if (this.selected) {
         return {
-          features: this.features[this.selectedFeatureIndex].getId()
+          features: this.selected.id
         }
       }
     }

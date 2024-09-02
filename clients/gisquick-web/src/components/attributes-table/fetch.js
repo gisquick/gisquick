@@ -148,8 +148,6 @@ export default {
       if (this.fetchRelations && this.layer.relations) {
         this.fetchRelationsFeatures(features)
       }
-      let selectedIndex = this.selectedFeature ? features.findIndex(f => f.getId() === this.selectedFeature.getId()) : -1
-      selectedIndex = selectedIndex !== -1 ? selectedIndex : 0
       const pagination = {
         query,
         page,
@@ -161,9 +159,8 @@ export default {
       this._setFeatures({
         features,
         pagination,
-        selectedIndex,
-        sortBy: { ...this.sortBy },
-        queryParams
+        queryParams,
+        sortBy: { ...this.sortBy }
       })
     }, 20)
   }

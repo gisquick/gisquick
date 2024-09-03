@@ -24,7 +24,7 @@
             <span v-if="relationLabels[relation.name]" class="mx-2">- {{ relationLabels[relation.name][0] }}</span>
             <div class="f-grow"/>
             <v-btn
-              class="icon"
+              class="icon m-0 p-1"
               @click="showRelation(relation, 0)"
             >
               <v-icon name="exit_to_app"/>

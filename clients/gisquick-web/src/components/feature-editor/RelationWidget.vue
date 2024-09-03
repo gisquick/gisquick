@@ -1,97 +1,96 @@
 <template>
-  <v-btn
-    class="icon p-1"
+  <v-text-field
+    class="filled"
+    :label="label"
+    :value="value"
+    readonly
     @click="showDialog"
   >
-    <v-tooltip slot="tooltip">
-      <translate>Select relation object</translate>
-    </v-tooltip>
-    <v-icon name="attribute-table"/>
-    <portal to="map-overlay">
-      <transition name="fade">
-        <div v-show="minimized" class="floating-bar">
-          <v-btn
-            :id="minimizedTargetId"
-            color="dark"
-            class="icon p-1"
-            @click="minimized = false"
-          >
-            <v-icon name="maximize"/>
-          </v-btn>
-        </div>
-      </transition>
-    </portal>
-    <v-dialog
-      content-class="m-0"
-      v-model="open"
-      :title="relation.name"
-      :modal="false"
-      persistent
-    >
-      <template v-slot="{ close }">
-        <minimize-transition :target="`#${minimizedTargetId}`">
-          <!-- <template v-slot:trigger>
-            <transition name="fade">
-              <div v-show="minimized" class="floating-bar">
-                <v-btn
-                  color="dark"
-                  class="icon p-1"
-                  @click="minimized = false"
-                >
-                  <v-icon name="maximize"/>
-                </v-btn>
+    <template v-slot:append>
+      <v-icon name="attribute-table"/>
+      <portal to="map-overlay">
+        <transition name="fade">
+          <div v-show="minimized" class="floating-bar">
+            <v-btn
+              :id="minimizedTargetId"
+              color="dark"
+              class="icon p-1"
+              @click="minimized = false"
+            >
+              <v-icon name="maximize"/>
+            </v-btn>
+          </div>
+        </transition>
+      </portal>
+      <v-dialog
+        content-class="m-0"
+        v-model="open"
+        :title="relation.name"
+        :modal="false"
+        persistent
+      >
+        <template v-slot="{ close }">
+          <minimize-transition :target="`#${minimizedTargetId}`">
+            <!-- <template v-slot:trigger>
+              <transition name="fade">
+                <div v-show="minimized" class="floating-bar">
+                  <v-btn
+                    color="dark"
+                    class="icon p-1"
+                    @click="minimized = false"
+                  >
+                    <v-icon name="maximize"/>
+                  </v-btn>
+                </div>
+              </transition>
+            </template> -->
+            <resize-container v-show="!minimized" depth="2" class="relation-dialog f-col">
+              <div class="header dark" @mousedown.stop="onDragStart">
+                <span v-text="relationData.relation.name"/>
+                <div class="f-row-ac">
+                  <v-btn class="icon" @click.prevent="minimized = true">
+                    <v-icon name="minimize"/>
+                  </v-btn>
+                  <v-btn class="icon" @click="close">
+                    <v-icon name="x"/>
+                  </v-btn>
+                </div>
               </div>
-            </transition>
-          </template> -->
-          <resize-container v-show="!minimized" depth="2" class="relation-dialog f-col">
-            <div class="header dark" @mousedown.stop="onDragStart">
-              <span v-text="relationData.relation.name"/>
-              <div class="f-row-ac">
-                <!-- <v-btn class="icon" @click="minimized = true">
-                  <v-icon name="minimize"/>
-                </v-btn> -->
-                <v-btn class="icon" @click.prevent="minimized = true">
-                  <v-icon name="minimize"/>
-                </v-btn>
-                <v-btn class="icon" @click="close">
-                  <v-icon name="x"/>
-                </v-btn>
+              <div class="dialog-content f-col">
+                <attributes-table
+                  ref="attrTable"
+                  class="m-2"
+                  :project="project"
+                  :layer="relationData.relation.referencing_layer"
+                  :features.sync="relationData.features"
+                  :selected-id.sync="relationData.selected"
+                  :filters.sync="relationData.filters"
+                  :sort-by.sync="relationData.sortBy"
+                  :pagination.sync="relationData.pagination"
+                  :limit.sync="attrTableSettings.limit"
+                  :visible-area-filter.sync="attrTableSettings.visibleAreaFilter"
+                  :color="[31,203,124]"
+                  :highlight-color="[255,157,59]"
+                />
+                <div class="toolbar f-row-ac f-justify-end m-1">
+                  <v-btn class="small outlined" @click="close">
+                    <translate>Close</translate>
+                  </v-btn>
+                  <v-btn
+                    class="small"
+                    color="dark"
+                    @click="[selectRelationObject(), close()]"
+                  >
+                    <translate>Select</translate>
+                  </v-btn>
+                </div>
               </div>
-            </div>
-            <div class="dialog-content f-col">
-              <attributes-table
-                ref="attrTable"
-                class="m-2"
-                :project="project"
-                :layer="relationData.relation.referencing_layer"
-                :features.sync="relationData.features"
-                :selected-index.sync="relationData.selected"
-                :filters.sync="relationData.filters"
-                :sort-by.sync="relationData.sortBy"
-                :pagination.sync="relationData.pagination"
-                :limit.sync="attrTableSettings.limit"
-                :visible-area-filter.sync="attrTableSettings.visibleAreaFilter"
-                :color="[31,203,124]"
-                :highlight-color="[255,157,59]"
-              />
-              <div class="toolbar f-row-ac f-justify-end m-1">
-                <v-btn class="small outlined" @click="close">
-                  <translate>Close</translate>
-                </v-btn>
-                <v-btn
-                  class="small"
-                  color="dark"
-                  @click="[selectRelationObject(), close()]"
-                >
-                  <translate>Select</translate>
-                </v-btn>
-              </div>
-            </div>
-          </resize-container>
-        </minimize-transition>
-      </template>
-    </v-dialog>
-  </v-btn>
+            </resize-container>
+          </minimize-transition>
+        </template>
+      </v-dialog>
+    </template>
+  </v-text-field>
 </template>
 
 <script>
@@ -99,13 +98,16 @@ import AttributesTable from '@/components/attributes-table/TableView.vue'
 import ResizeContainer from '@/ui/ResizeContainer.vue'
 import MinimizeTransition from '@/components/transitions/MinimizeTransition.vue'
 import Draggable from '@/ui/utils/draggable'
+import TextField from './TextField.vue'
 
 export default {
-  components: { AttributesTable, ResizeContainer, MinimizeTransition, Draggable },
+  components: { TextField, AttributesTable, ResizeContainer, MinimizeTransition, Draggable },
   props: {
     project: Object,
     layer: Object,
-    relation: Object
+    relation: Object,
+    label: String,
+    value: {}
   },
   data () {
     return {
@@ -155,7 +157,7 @@ export default {
     },
     selectRelationObject () {
       const { relation, features, selected } = this.relationData
-      const feature = features[selected]
+      const feature = features.find(f => f.getId() === selected)
       this.$emit('change', relation, feature)
     },
     onDragStart (e) {

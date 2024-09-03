@@ -2,7 +2,16 @@
   <div class="generic-edit-form f-col light">
     <template v-for="(attr, index) in attributes">
       <field-wrapper :key="attr.name">
-        <slot :name="attr.name" :attr="attr">
+        <relation-widget
+          v-if="fieldsRelations[attr.name] && !relationManualEditFields[attr.name]"
+          :project="project"
+          :layer="layer"
+          :label="attr.alias || attr.name"
+          :value="fields[attr.name]"
+          :relation="fieldsRelations[attr.name]"
+          @change="updateRelationValue"
+        />
+        <slot v-else :name="attr.name" :attr="attr">
           <component
             ref="widget"
             :is="widgets[index].component"
@@ -14,13 +23,17 @@
             :error="validationErrors[index]"
           />
         </slot>
-        <relation-widget
+        <v-btn
           v-if="fieldsRelations[attr.name]"
-          :project="project"
-          :layer="layer"
-          :relation="fieldsRelations[attr.name]"
-          @change="updateRelationValue"
-        />
+          :color="relationManualEditFields[attr.name] ? 'primary' : ''"
+          class="icon flat p-1"
+          @click="toggleRelationFieldMode(attr.name)"
+        >
+          <v-tooltip slot="tooltip">
+            <translate>Edit value manually</translate>
+          </v-tooltip>
+          <v-icon name="text-edit"/>
+        </v-btn>
       </field-wrapper>
     </template>
   </div>
@@ -84,6 +97,7 @@ export default {
   },
   data () {
     return {
+      relationManualEditFields: {},
       statuses: {}
     }
   },
@@ -219,7 +233,10 @@ export default {
     fieldsRelations () {
       const map = {}
       this.relations?.forEach(rel => rel.referenced_fields.forEach(f => {
-        map[f] = rel
+        const attrIndex = this.attributes.findIndex(a => a.name === f)
+        if (!this.widgets[attrIndex].props.disabled) {
+          map[f] = rel
+        }
       }))
       return map
     }
@@ -250,6 +267,10 @@ export default {
     },
     async afterFeatureDeleted (f) {
       await Promise.all(this.$refs.widget.map(w => w.afterFeatureDeleted?.(f)))
+    },
+    toggleRelationFieldMode (field) {
+      const value = Boolean(this.relationManualEditFields[field])
+      this.$set(this.relationManualEditFields, field, !value)
     },
     updateRelationValue (relation, feature) {
       relation.referenced_fields.forEach((f, i) => {

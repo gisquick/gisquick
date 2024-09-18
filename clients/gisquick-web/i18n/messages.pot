@@ -34,7 +34,19 @@ msgstr ""
 msgid "Add to Home screen?"
 msgstr ""
 
-#: src/components/Identification.vue:147
+#: src/ui/TextEditor.vue:357
+msgid "Align center"
+msgstr ""
+
+#: src/ui/TextEditor.vue:356
+msgid "Align left"
+msgstr ""
+
+#: src/ui/TextEditor.vue:358
+msgid "Align right"
+msgstr ""
+
+#: src/components/Identification.vue:148
 msgid "All visible layers"
 msgstr ""
 
@@ -77,6 +89,10 @@ msgstr ""
 msgid "Back to Login"
 msgstr ""
 
+#: src/ui/TextEditor.vue:354
+msgid "Background color"
+msgstr ""
+
 #: src/components/content-panel/ContentPanel.vue:107
 msgid "Base Layers"
 msgstr ""
@@ -84,6 +100,10 @@ msgstr ""
 #: src/components/attributes-table/AttributeFilter.vue:264
 #: src/components/attributes-table/AttributeFilter.vue:276
 msgid "between"
+msgstr ""
+
+#: src/ui/TextEditor.vue:346
+msgid "Bold"
 msgstr ""
 
 #: ./src/components/attributes-table/MobileAttributesTable.vue:166
@@ -129,6 +149,10 @@ msgstr ""
 
 #: ./src/components/BottomToolbar.vue:9
 msgid "Coordinates"
+msgstr ""
+
+#: src/ui/TextEditor.vue:327
+msgid "Copy HTML"
 msgstr ""
 
 #: ./src/UserDashboard.vue:64
@@ -310,6 +334,10 @@ msgstr ""
 msgid "Help"
 msgstr ""
 
+#: src/ui/TextEditor.vue:350
+msgid "Hyperlink"
+msgstr ""
+
 #: ./src/components/content-panel/LayersTree.vue:96
 msgid "Identification"
 msgstr ""
@@ -319,7 +347,7 @@ msgid "Image will be saved in lower resolution"
 msgstr ""
 
 #: src/components/attributes-table/MobileAttributesTable.vue:349
-#: src/components/Identification.vue:155
+#: src/components/Identification.vue:156
 msgid "Info Panel"
 msgstr ""
 
@@ -337,6 +365,10 @@ msgstr ""
 
 #: ./src/App.vue:43
 msgid "It will give you the experience of a native app, with easy access and a standalone window without the browser's address bar and other controls."
+msgstr ""
+
+#: src/ui/TextEditor.vue:347
+msgid "Italic"
 msgstr ""
 
 #: src/ui/DatePicker.vue:172
@@ -357,7 +389,7 @@ msgstr ""
 
 #: src/components/attributes-table/MobileAttributesTable.vue:379
 #: src/components/EditTool.vue:153
-#: src/components/Identification.vue:186
+#: src/components/Identification.vue:187
 msgid "Layer"
 msgstr ""
 
@@ -409,9 +441,10 @@ msgstr ""
 
 #: src/components/attributes-table/MobileAttributesTable.vue:381
 #: src/components/EditTool.vue:155
-#: src/components/Identification.vue:187
+#: src/components/Identification.vue:188
 #: src/components/measure/Measure.vue:188
 #: src/components/print/Print.vue:86
+#: src/ui/TextEditor.vue:359
 #: src/UserDashboard.vue:210
 msgid "Menu"
 msgstr ""
@@ -517,6 +550,10 @@ msgstr ""
 msgid "Opacity of overlay layers"
 msgstr ""
 
+#: src/ui/TextEditor.vue:352
+msgid "Ordered list"
+msgstr ""
+
 #: src/components/print/Print.vue:114
 msgid "Output format"
 msgstr ""
@@ -528,6 +565,10 @@ msgstr ""
 #: src/components/attributes-table/MobileAttributesTable.vue:293
 #: src/components/attributes-table/TableView.vue:193
 msgid "Page size"
+msgstr ""
+
+#: src/ui/TextEditor.vue:330
+msgid "Pase HTML"
 msgstr ""
 
 #: src/components/LoginDialog.vue:166
@@ -564,6 +605,14 @@ msgstr ""
 
 #: src/UserDashboard.vue:222
 msgid "Recent"
+msgstr ""
+
+#: src/ui/TextEditor.vue:345
+msgid "Redo"
+msgstr ""
+
+#: src/ui/TextEditor.vue:333
+msgid "Reset formatting"
 msgstr ""
 
 #: ./src/components/LoginDialog.vue:58
@@ -638,16 +687,28 @@ msgstr ""
 msgid "Size"
 msgstr ""
 
+#: src/ui/TextEditor.vue:349
+msgid "Strike"
+msgstr ""
+
 #: src/ui/DatePicker.vue:169
 msgid "Sunday"
 msgstr ""
 
-#: src/components/Identification.vue:154
+#: src/components/Identification.vue:155
 msgid "Table"
 msgstr ""
 
-#: src/components/Identification.vue:156
+#: src/components/Identification.vue:157
 msgid "Table & Info Panel"
+msgstr ""
+
+#: src/ui/TextEditor.vue:355
+msgid "Text color"
+msgstr ""
+
+#: src/ui/TextEditor.vue:353
+msgid "Text size"
 msgstr ""
 
 #: src/components/attributes-table/AttributeFilter.vue:285
@@ -674,13 +735,22 @@ msgstr ""
 msgid "Type"
 msgstr ""
 
+#: src/ui/TextEditor.vue:348
+msgid "Underline"
+msgstr ""
+
 #: ./src/components/feature-editor/GeometryEditor.vue:37
 #: ./src/components/feature-editor/GeometryEditor.vue:72
+#: src/ui/TextEditor.vue:344
 msgid "Undo"
 msgstr ""
 
 #: src/components/measure/Measure.vue:192
 msgid "Units"
+msgstr ""
+
+#: src/ui/TextEditor.vue:351
+msgid "Unordered list"
 msgstr ""
 
 #: src/components/attributes-table/AttributeFilter.vue:266

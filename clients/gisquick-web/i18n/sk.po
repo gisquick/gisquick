@@ -44,7 +44,19 @@ msgstr "Pridať nový objekt"
 msgid "Add to Home screen?"
 msgstr "Pridať na plochu?"
 
-#: src/components/Identification.vue:147
+#: src/ui/TextEditor.vue:357
+msgid "Align center"
+msgstr "Zarovnať na stred"
+
+#: src/ui/TextEditor.vue:356
+msgid "Align left"
+msgstr "Zarovnať doľava"
+
+#: src/ui/TextEditor.vue:358
+msgid "Align right"
+msgstr "Zarovnať doprava"
+
+#: src/components/Identification.vue:148
 msgid "All visible layers"
 msgstr "Všetky viditeľné vrstvy"
 
@@ -86,6 +98,10 @@ msgstr "Overenie zlyhalo"
 msgid "Back to Login"
 msgstr "Späť na Prihlásenie"
 
+#: src/ui/TextEditor.vue:354
+msgid "Background color"
+msgstr "Farba pozadia"
+
 #: src/components/content-panel/ContentPanel.vue:107
 msgid "Base Layers"
 msgstr "Základné vrstvy"
@@ -94,6 +110,10 @@ msgstr "Základné vrstvy"
 #: src/components/attributes-table/AttributeFilter.vue:276
 msgid "between"
 msgstr "od - do"
+
+#: src/ui/TextEditor.vue:346
+msgid "Bold"
+msgstr "Tučné"
 
 #: src/components/attributes-table/MobileAttributesTable.vue:166
 #: src/components/feature-editor/ImageInput.vue:156
@@ -138,6 +158,10 @@ msgstr "Súradnicové systémy"
 #: src/components/BottomToolbar.vue:9
 msgid "Coordinates"
 msgstr "Súradnice"
+
+#: src/ui/TextEditor.vue:327
+msgid "Copy HTML"
+msgstr "Kopírovať HTML"
 
 #: src/UserDashboard.vue:64
 msgid "Created"
@@ -321,6 +345,10 @@ msgstr "je väčší"
 msgid "Help"
 msgstr "Dokumentácia"
 
+#: src/ui/TextEditor.vue:350
+msgid "Hyperlink"
+msgstr "Hypertextový odkaz"
+
 #: src/components/content-panel/LayersTree.vue:96
 msgid "Identification"
 msgstr "Identifikácia"
@@ -330,7 +358,7 @@ msgid "Image will be saved in lower resolution"
 msgstr "Obrázok bude uložený v nižšom rozlíšení"
 
 #: src/components/attributes-table/MobileAttributesTable.vue:349
-#: src/components/Identification.vue:155
+#: src/components/Identification.vue:156
 msgid "Info Panel"
 msgstr "Infopanel"
 
@@ -355,6 +383,10 @@ msgstr ""
 "samostatným oknom, bez panela s adresou stránky a ďalších ovládacích prvkov "
 "prehliadača."
 
+#: src/ui/TextEditor.vue:347
+msgid "Italic"
+msgstr "Kurzíva"
+
 #: src/ui/DatePicker.vue:172
 msgid "January"
 msgstr "Január"
@@ -372,7 +404,7 @@ msgid "Keywords list"
 msgstr "Kľúčové slová"
 
 #: src/components/attributes-table/MobileAttributesTable.vue:379
-#: src/components/EditTool.vue:153 src/components/Identification.vue:186
+#: src/components/EditTool.vue:153 src/components/Identification.vue:187
 msgid "Layer"
 msgstr "Vrstva"
 
@@ -421,9 +453,9 @@ msgid "May"
 msgstr "Máj"
 
 #: src/components/attributes-table/MobileAttributesTable.vue:381
-#: src/components/EditTool.vue:155 src/components/Identification.vue:187
+#: src/components/EditTool.vue:155 src/components/Identification.vue:188
 #: src/components/measure/Measure.vue:188 src/components/print/Print.vue:86
-#: src/UserDashboard.vue:210
+#: src/ui/TextEditor.vue:359 src/UserDashboard.vue:210
 msgid "Menu"
 msgstr "Menu"
 
@@ -526,6 +558,10 @@ msgstr "Viditeľnosť základnej vrstvy"
 msgid "Opacity of overlay layers"
 msgstr "Viditeľnosť prekryvných vrstiev"
 
+#: src/ui/TextEditor.vue:352
+msgid "Ordered list"
+msgstr "Číslovaný zoznam"
+
 #: src/components/print/Print.vue:114
 msgid "Output format"
 msgstr "Výstupný formát"
@@ -538,6 +574,10 @@ msgstr "Prekryvné vrstvy"
 #: src/components/attributes-table/TableView.vue:193
 msgid "Page size"
 msgstr "Počet riadkov"
+
+#: src/ui/TextEditor.vue:330
+msgid "Pase HTML"
+msgstr "Vložiť HTML"
 
 #: src/components/LoginDialog.vue:166
 msgid "Password"
@@ -574,6 +614,14 @@ msgstr "Publikovať projekt"
 #: src/UserDashboard.vue:222
 msgid "Recent"
 msgstr "Nedávne"
+
+#: src/ui/TextEditor.vue:345
+msgid "Redo"
+msgstr "Znova"
+
+#: src/ui/TextEditor.vue:333
+msgid "Reset formatting"
+msgstr "Odstrániť formátovanie"
 
 #: src/components/LoginDialog.vue:58
 msgid "Reset Password"
@@ -646,17 +694,29 @@ msgstr "od"
 msgid "Size"
 msgstr "Veľkosť"
 
+#: src/ui/TextEditor.vue:349
+msgid "Strike"
+msgstr "Prečiarknuté"
+
 #: src/ui/DatePicker.vue:169
 msgid "Sunday"
 msgstr "Nedeľa"
 
-#: src/components/Identification.vue:154
+#: src/components/Identification.vue:155
 msgid "Table"
 msgstr "Tabuľka"
 
-#: src/components/Identification.vue:156
+#: src/components/Identification.vue:157
 msgid "Table & Info Panel"
 msgstr "Tabuľka & Infopanel"
+
+#: src/ui/TextEditor.vue:355
+msgid "Text color"
+msgstr "Farba textu"
+
+#: src/ui/TextEditor.vue:353
+msgid "Text size"
+msgstr "Veľkosť textu"
 
 #: src/components/attributes-table/AttributeFilter.vue:285
 msgid "Text,Text,..."
@@ -682,14 +742,23 @@ msgstr "Utorok"
 msgid "Type"
 msgstr "Typ"
 
+#: src/ui/TextEditor.vue:348
+msgid "Underline"
+msgstr "Podčiarknuté"
+
 #: src/components/feature-editor/GeometryEditor.vue:37
 #: src/components/feature-editor/GeometryEditor.vue:72
+#: src/ui/TextEditor.vue:344
 msgid "Undo"
 msgstr "Vrátiť späť"
 
 #: src/components/measure/Measure.vue:192
 msgid "Units"
 msgstr "Jednotky"
+
+#: src/ui/TextEditor.vue:351
+msgid "Unordered list"
+msgstr "Nečíslovaný zoznam"
 
 #: src/components/attributes-table/AttributeFilter.vue:266
 msgid "until"

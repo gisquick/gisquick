@@ -49,6 +49,7 @@
           :layers="resultLayers"
           :selected.sync="selection"
           :mode.sync="mode"
+          @update:layer="selectLayer"
           @close="clearResults"
           @delete="onFeatureDelete"
           @edit="onFeatureEdit"
@@ -213,6 +214,12 @@ export default {
     }
   },
   methods: {
+    selectLayer (layername) {
+      const dataset = this.layersFeatures.find(d => d.layer.name === layername)
+      if (dataset) {
+        this.selection = { layer: layername, id: dataset.features[0]?.getId() ?? -1}
+      }
+    },
     readFeatures (data) {
       const parser = new GeoJSON()
       return parser.readFeatures(data, { featureProjection: this.mapProjection })

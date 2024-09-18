@@ -85,4 +85,20 @@ class SpritePlugin {
   }
 }
 
+// node svg-sprite.js [icons-paths] output-file
+async function main () {
+  const args = process.argv.slice(2)
+  if (args.length < 2) {
+    console.error('Not enough argmunets')
+  } else {
+    const [ srcDir, dest ] = args
+    const sprite = await buildSprite(srcDir)
+    fs.writeFileSync(dest, sprite)
+  }
+}
+
+if (require.main === module) {
+  main()
+}
+
 module.exports = SpritePlugin

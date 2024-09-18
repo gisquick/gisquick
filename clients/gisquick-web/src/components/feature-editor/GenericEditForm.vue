@@ -197,6 +197,16 @@ export default {
           //   }
           // }
         }
+        if (attr.config?.UseHtml) {
+          return {
+            component: () => import(/* webpackChunkName: "text-editor" */ '@/ui/TextEditor.vue'),
+            validator: !disabled && multiValidator(...validators),
+            props: {
+              disabled,
+              class: 'filled'
+            }
+          }
+        }
         return {
           component: TextField,
           validator: !disabled && multiValidator(...validators),

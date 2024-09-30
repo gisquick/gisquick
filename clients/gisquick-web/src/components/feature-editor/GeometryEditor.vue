@@ -85,7 +85,7 @@
       v-if="drawingActive"
       :type="drawGeomType"
       :layout="geometryLayout"
-      :ol-style="editStyle"
+      :ol-style="drawStyle"
       @drawstart="$emit('drawstart')"
       @drawend="onDrawEnd"
     />
@@ -172,9 +172,10 @@ import Feature from 'ol/Feature'
 import Point from 'ol/geom/Point'
 import MultiPoint from 'ol/geom/MultiPoint'
 import MultiPolygon from 'ol/geom/MultiPolygon'
+import LineString from 'ol/geom/LineString'
 import MultiLineString from 'ol/geom/MultiLineString'
 import Icon from 'ol/style/Icon'
-import { Style } from 'ol/style'
+import { Style, Fill, Circle, Stroke } from 'ol/style'
 import last from 'lodash/last'
 
 import VNotification from '@/ui/Notification.vue'
@@ -350,6 +351,44 @@ export default {
     },
     editMoveStyle () {
       return this.isMobileDevice ? [...this.editStyle, this.translateStyle] : this.editStyle
+    },
+    drawStyle () {
+      const firstPointStyle = new Style({
+        image: new Circle({
+          fill: new Fill({
+            // color: '#55aaaaff'
+            color: '#E64A19ff'
+          }),
+          radius: 4
+        }),
+        geometry (feature) {
+          const geom = feature.getGeometry()
+          if (geom.getType() === 'Polygon') {
+            return new Point(geom.getFirstCoordinate())
+          }
+          return null
+        }
+      })
+      const createLineStyle = strokeOpts => new Style({
+        stroke: new Stroke(strokeOpts),
+        geometry (feature) {
+          const geom = feature.getGeometry()
+          if (geom.getType() === 'Polygon') {
+            const coords = geom.getCoordinates()[0]
+            if (coords.length > 3) {
+              // return new LineString([...coords[0], ...coords[coords.length - 2]], geom.getLayout())
+              return new LineString([coords[0], coords[coords.length - 2]])
+            }
+          }
+          return null
+        }
+      })
+      return [
+        ...this.editStyle,
+        firstPointStyle,
+        createLineStyle({ color: '#ffffff', width: 4 }),
+        createLineStyle({ color: '#55aaaaff', width: 1 })
+      ]
     },
     nodesStyle () {
       return simpleStyle({

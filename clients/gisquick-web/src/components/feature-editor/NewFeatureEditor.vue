@@ -24,11 +24,13 @@
           :editor.sync="references.geometryEditor"
           :geometry-type="geomType"
           :geom-toolbar="geomToolbar"
+          @drawstart="drawingGeometry = true"
+          @drawend="drawingGeometry = false"
         />
         <div v-if="!geomToolbar" class="f-grow"/>
         <v-btn
           class="icon"
-          :disabled=" status === 'loading' || formStatus === 'error'"
+          :disabled="status === 'loading' || formStatus === 'error' || drawingGeometry"
           @click="save"
         >
           <v-icon color="green" name="save"/>
@@ -76,6 +78,7 @@ export default {
       errorMsg: '',
       fields: null,
       formStatus: null,
+      drawingGeometry: false,
       references: ShallowObj({
         geometryEditor: null
       })

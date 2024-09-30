@@ -42,6 +42,8 @@
             :geometry-type="geomType"
             :geom-toolbar="geomToolbar"
             delete-confirmation
+            @drawstart="drawingGeometry = true"
+            @drawend="drawingGeometry = false"
           />
         </collapse-width-transition>
         <div class="v-separator"/>
@@ -68,7 +70,7 @@
         </v-btn>
         <v-btn
           class="icon"
-          :disabled="!isModified || !!status || formStatus === 'error'"
+          :disabled="!isModified || !!status || formStatus === 'error' || drawingGeometry"
           @click="save"
         >
           <v-tooltip slot="tooltip">
@@ -180,7 +182,8 @@ export default {
       editGeometry: false,
       showConfirmOverlay: false,
       showConfirmDialog: false,
-      formStatus: null
+      formStatus: null,
+      drawingGeometry: false
     }
   },
   computed: {

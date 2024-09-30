@@ -86,6 +86,7 @@
       :type="drawGeomType"
       :layout="geometryLayout"
       :ol-style="editStyle"
+      @drawstart="$emit('drawstart')"
       @drawend="onDrawEnd"
     />
     <translate-interaction
@@ -468,6 +469,7 @@ export default {
         this.selected = this.geomFeatures
       }
       this.geomModified = true
+      this.$emit('drawend')
     },
     getGeometry () {
       if (this.isMultiPart) {

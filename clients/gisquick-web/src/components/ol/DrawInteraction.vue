@@ -14,6 +14,7 @@ export default {
       this.$map.removeInteraction(draw)
       draw = new Draw(config)
       this.$map.addInteraction(draw)
+      draw.on('drawstart', e => this.$emit('drawstart', e))
       draw.on('drawend', e => this.$emit('drawend', e))
     }, { immediate: true })
     this.$once('hook:beforeDestroy', () => this.$map.removeInteraction(draw))

@@ -38,6 +38,7 @@
             v-if="editGeometry"
             ref="geometryEditor"
             class="geom-tools f-row-ac"
+            :project="project"
             :feature="editGeometryFeature"
             :geometry-type="geomType"
             :geom-toolbar="geomToolbar"

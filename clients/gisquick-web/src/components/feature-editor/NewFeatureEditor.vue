@@ -21,6 +21,7 @@
       <div class="toolbar f-row-ac">
         <geometry-editor
           v-if="geometryEditable"
+          :project="project"
           :editor.sync="references.geometryEditor"
           :geometry-type="geomType"
           :geom-toolbar="geomToolbar"

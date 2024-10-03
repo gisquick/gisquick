@@ -147,7 +147,9 @@ export default {
     },
     onConfirm (item) {
       this.$emit('confirm', item)
-      this.closeMenu()
+      if (!item.keepOpen) {
+        this.closeMenu()
+      }
     },
     keyHandler (e) {
       if ((e.key === 'Tab' && this.items) || e.key === 'Escape') {

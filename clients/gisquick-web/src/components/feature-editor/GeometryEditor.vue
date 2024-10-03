@@ -27,6 +27,14 @@
             <span v-text="selectedNodes.length ? tr.DeleteNodes : tr.DeleteGeometry"/>
           </v-tooltip>
         </v-btn>
+        <div class="v-separator"/>
+        <snap-tool
+          :project="project"
+          :layers="snapping.layers"
+          :offset="snapping.offset"
+          :active.sync="snapping.active"
+        />
+        <div class="v-separator"/>
         <v-btn
           class="icon"
           :disabled="!history.length"
@@ -62,6 +70,14 @@
           <span v-text="selectedNodes.length ? tr.DeleteNodes : tr.DeleteGeometry"/>
         </v-tooltip>
       </v-btn>
+      <div class="v-separator"/>
+      <snap-tool
+        :project="project"
+        :layers="snapping.layers"
+        :offset="snapping.offset"
+        :active.sync="snapping.active"
+      />
+      <div class="v-separator"/>
       <v-btn
         class="icon"
         :disabled="!history.length"
@@ -93,8 +109,8 @@
       v-if="!nodeFeature"
       key="translate-handler1"
       :features="selected"
-      @translatestart="saveState"
-      @translateend="geomModified = true"
+      @translatestart="onTranslateStart"
+      @translateend="[geomModified = true, snapping.offset = null]"
     />
     <!-- Selection of geometry parts -->
     <select-interaction
@@ -142,8 +158,9 @@
         v-if="selectedNodes.length"
         key="translate-handler"
         :features="selectedNodes"
-        @translatestart="saveState"
+        @translatestart="onTranslateStart"
         @translating="handleNodesTranslate"
+        @translateend="snapping.offset = null"
       />
     </template>
 
@@ -184,6 +201,7 @@ import SelectInteraction from '@/components/ol/SelectInteraction.vue'
 import DrawInteraction from '@/components/ol/DrawInteraction.vue'
 import ModifyInteraction from '@/components/ol/ModifyInteraction.vue'
 import TranslateInteraction from '@/components/ol/TranslateInteraction.vue'
+import SnapTool from './SnapTool.vue'
 import { simpleStyle, highlightedStyle } from '@/map/styles'
 import { ShallowObj, ShallowArray } from '@/utils'
 import MoveIcon from '@/assets/gis-move.svg?raw'
@@ -268,8 +286,9 @@ const icon = new Icon({
 })
 
 export default {
-  components: { VNotification, VectorLayer, SelectInteraction, DrawInteraction, ModifyInteraction, TranslateInteraction },
+  components: { VNotification, VectorLayer, SelectInteraction, DrawInteraction, ModifyInteraction, SnapTool, TranslateInteraction },
   props: {
+    project: Object,
     feature: Object,
     geometryType: String,
     geomToolbar: String,
@@ -291,6 +310,11 @@ export default {
         geometry: null,
         nodes: null
       }),
+      snapping: {
+        active: false,
+        offset: null,
+        layers: []
+      },
       history: [],
       showConfirm: false,
       confirmMessage: ''
@@ -602,6 +626,19 @@ export default {
         selected: this.geomFeatures.indexOf(this.selected[0])
       })
     },
+    onTranslateStart (e) {
+      if (this.snapping.active) {
+        const { pixel } = e.mapBrowserEvent
+        const refFeature = this.selectedNodes.length ? last(this.selectedNodes) : this.selected[0]
+        const coord = refFeature.getGeometry().getCoordinates()
+        const p = this.$map.getPixelFromCoordinate(coord)
+        this.snapping.offset = {
+          offset: [coord[0] - e.coordinate[0], coord[1] - e.coordinate[1]],
+          pixelOffset: [p[0] - pixel[0], p[1] - pixel[1]]
+        }
+      }
+      this.saveState()
+    },
     undo () {
       if (this.history.length > 0) {
         const { geoms, selected } = this.history.pop()
@@ -632,11 +669,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.map-toolbar {
-  margin: 6px;
-  border-radius: 4px;
-  background-color: #333;
-}
 .geom-toolbar {
   background-color: #eee;
   margin: 4px;

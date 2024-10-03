@@ -2,11 +2,11 @@ msgid ""
 msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 
-#: ./src/components/measure/Measure.vue:9
+#: ./src/components/measure/Measure.vue:37
 msgid "1st coordinate"
 msgstr ""
 
-#: ./src/components/measure/Measure.vue:10
+#: ./src/components/measure/Measure.vue:38
 msgid "2nd coordinate"
 msgstr ""
 
@@ -21,7 +21,7 @@ msgid "Abstract"
 msgstr ""
 
 #: ./src/components/feature-editor/GeometryEditor.vue:16
-#: ./src/components/feature-editor/GeometryEditor.vue:51
+#: ./src/components/feature-editor/GeometryEditor.vue:59
 msgid "Add geometry"
 msgstr ""
 
@@ -46,6 +46,7 @@ msgstr ""
 msgid "Align right"
 msgstr ""
 
+#: src/components/feature-editor/SnapTool.vue:85
 #: src/components/Identification.vue:148
 msgid "All visible layers"
 msgstr ""
@@ -64,8 +65,8 @@ msgstr ""
 msgid "April"
 msgstr ""
 
-#: ./src/components/measure/Measure.vue:97
-#: src/components/measure/Measure.vue:222
+#: ./src/components/measure/Measure.vue:125
+#: src/components/measure/Measure.vue:259
 msgid "Area"
 msgstr ""
 
@@ -111,11 +112,11 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: src/components/measure/Measure.vue:189
+#: src/components/measure/Measure.vue:226
 msgid "Clear"
 msgstr ""
 
-#: src/components/measure/Measure.vue:190
+#: src/components/measure/Measure.vue:227
 msgid "Clear all"
 msgstr ""
 
@@ -143,7 +144,7 @@ msgstr ""
 msgid "Continue as Guest"
 msgstr ""
 
-#: src/components/measure/Measure.vue:191
+#: src/components/measure/Measure.vue:228
 msgid "Coordinate systems"
 msgstr ""
 
@@ -168,8 +169,8 @@ msgstr ""
 msgid "Data Filters"
 msgstr ""
 
-#: ./src/components/feature-editor/FeatureEditor.vue:90
-#: ./src/components/feature-editor/NewFeatureEditor.vue:46
+#: ./src/components/feature-editor/FeatureEditor.vue:93
+#: ./src/components/feature-editor/NewFeatureEditor.vue:49
 msgid "Data updated"
 msgstr ""
 
@@ -177,24 +178,24 @@ msgstr ""
 msgid "December"
 msgstr ""
 
-#: ./src/components/feature-editor/FeatureEditor.vue:115
-#: ./src/components/feature-editor/FeatureEditor.vue:99
+#: ./src/components/feature-editor/FeatureEditor.vue:102
+#: ./src/components/feature-editor/FeatureEditor.vue:118
 msgid "Delete current object?"
 msgstr ""
 
-#: ./src/components/feature-editor/FeatureEditor.vue:56
+#: ./src/components/feature-editor/FeatureEditor.vue:59
 msgid "Delete object"
 msgstr ""
 
-#: src/components/feature-editor/GeometryEditor.vue:376
+#: src/components/feature-editor/GeometryEditor.vue:440
 msgid "Delete selected geometry"
 msgstr ""
 
-#: src/components/feature-editor/GeometryEditor.vue:375
+#: src/components/feature-editor/GeometryEditor.vue:439
 msgid "Delete selected nodes"
 msgstr ""
 
-#: ./src/components/feature-editor/FeatureEditor.vue:65
+#: ./src/components/feature-editor/FeatureEditor.vue:68
 msgid "Discard changes"
 msgstr ""
 
@@ -202,7 +203,7 @@ msgstr ""
 msgid "Display attributions"
 msgstr ""
 
-#: src/components/measure/Measure.vue:221
+#: src/components/measure/Measure.vue:258
 msgid "Distance"
 msgstr ""
 
@@ -223,6 +224,7 @@ msgid "Edit feature"
 msgstr ""
 
 #: ./src/components/feature-editor/FeatureEditor.vue:32
+#: ./src/components/measure/Measure.vue:13
 msgid "Edit geometry"
 msgstr ""
 
@@ -252,8 +254,8 @@ msgid "equal to"
 msgstr ""
 
 #: ./src/components/content-panel/JsonLegend.vue:12
-#: src/components/feature-editor/FeatureEditor.vue:251
-#: src/components/feature-editor/NewFeatureEditor.vue:125
+#: src/components/feature-editor/FeatureEditor.vue:255
+#: src/components/feature-editor/NewFeatureEditor.vue:129
 #: src/components/SearchTool.vue:257
 #: src/ui/ListTable.vue:105
 #: src/ui/Table.vue:211
@@ -413,11 +415,11 @@ msgstr ""
 msgid "link"
 msgstr ""
 
-#: ./src/components/Map.vue:51
+#: ./src/components/Map.vue:56
 msgid "Loading"
 msgstr ""
 
-#: src/components/measure/Measure.vue:220
+#: src/components/measure/Measure.vue:257
 msgid "Location"
 msgstr ""
 
@@ -442,7 +444,7 @@ msgstr ""
 #: src/components/attributes-table/MobileAttributesTable.vue:381
 #: src/components/EditTool.vue:155
 #: src/components/Identification.vue:188
-#: src/components/measure/Measure.vue:188
+#: src/components/measure/Measure.vue:225
 #: src/components/print/Print.vue:86
 #: src/ui/TextEditor.vue:359
 #: src/UserDashboard.vue:210
@@ -463,7 +465,7 @@ msgid "My Projects"
 msgstr ""
 
 #: ./src/components/attributes-table/MobileAttributesTable.vue:34
-#: ./src/components/InfoPanel.vue:44
+#: src/components/InfoPanel.vue:203
 msgid "New Feature"
 msgstr ""
 
@@ -474,9 +476,9 @@ msgid ""
 msgstr ""
 
 #: ./src/App.vue:48
-#: ./src/components/feature-editor/FeatureEditor.vue:103
-#: ./src/components/feature-editor/FeatureEditor.vue:119
-#: ./src/components/feature-editor/GeometryEditor.vue:157
+#: ./src/components/feature-editor/FeatureEditor.vue:106
+#: ./src/components/feature-editor/FeatureEditor.vue:122
+#: ./src/components/feature-editor/GeometryEditor.vue:175
 msgid "No"
 msgstr ""
 
@@ -575,7 +577,7 @@ msgstr ""
 msgid "Password"
 msgstr ""
 
-#: ./src/components/measure/Measure.vue:96
+#: ./src/components/measure/Measure.vue:124
 msgid "Perimeter"
 msgstr ""
 
@@ -629,7 +631,7 @@ msgstr ""
 msgid "Saturday"
 msgstr ""
 
-#: ./src/components/feature-editor/FeatureEditor.vue:75
+#: ./src/components/feature-editor/FeatureEditor.vue:78
 msgid "Save changes"
 msgstr ""
 
@@ -656,7 +658,7 @@ msgstr ""
 msgid "Select layer"
 msgstr ""
 
-#: src/components/feature-editor/GeometryEditor.vue:497
+#: src/components/feature-editor/GeometryEditor.vue:562
 msgid "Selected geometry was deleted"
 msgstr ""
 
@@ -685,6 +687,14 @@ msgstr ""
 #: ./src/components/feature-editor/ImageInput.vue:55
 #: ./src/components/feature-editor/SimpleFileInput.vue:12
 msgid "Size"
+msgstr ""
+
+#: ./src/components/feature-editor/SnapTool.vue:10
+msgid "Snapping"
+msgstr ""
+
+#: ./src/components/feature-editor/SnapTool.vue:22
+msgid "Snapping layers"
 msgstr ""
 
 #: src/ui/TextEditor.vue:349
@@ -723,7 +733,7 @@ msgstr ""
 msgid "Topics"
 msgstr ""
 
-#: ./src/components/measure/Measure.vue:50
+#: ./src/components/measure/Measure.vue:78
 msgid "Total length"
 msgstr ""
 
@@ -735,17 +745,21 @@ msgstr ""
 msgid "Type"
 msgstr ""
 
+#: src/components/feature-editor/SnapTool.vue:110
+msgid "Unable to retrieve snapping geometry."
+msgstr ""
+
 #: src/ui/TextEditor.vue:348
 msgid "Underline"
 msgstr ""
 
-#: ./src/components/feature-editor/GeometryEditor.vue:37
-#: ./src/components/feature-editor/GeometryEditor.vue:72
+#: ./src/components/feature-editor/GeometryEditor.vue:45
+#: ./src/components/feature-editor/GeometryEditor.vue:88
 #: src/ui/TextEditor.vue:344
 msgid "Undo"
 msgstr ""
 
-#: src/components/measure/Measure.vue:192
+#: src/components/measure/Measure.vue:229
 msgid "Units"
 msgstr ""
 
@@ -761,8 +775,8 @@ msgstr ""
 msgid "Updated"
 msgstr ""
 
-#: ./src/components/feature-editor/FeatureEditor.vue:89
-#: ./src/components/feature-editor/NewFeatureEditor.vue:45
+#: ./src/components/feature-editor/FeatureEditor.vue:92
+#: ./src/components/feature-editor/NewFeatureEditor.vue:48
 msgid "Updating data"
 msgstr ""
 
@@ -795,14 +809,18 @@ msgid "Welcome to the Gisquick"
 msgstr ""
 
 #: ./src/App.vue:51
-#: ./src/components/feature-editor/FeatureEditor.vue:106
-#: ./src/components/feature-editor/FeatureEditor.vue:122
-#: ./src/components/feature-editor/GeometryEditor.vue:160
+#: ./src/components/feature-editor/FeatureEditor.vue:109
+#: ./src/components/feature-editor/FeatureEditor.vue:125
+#: ./src/components/feature-editor/GeometryEditor.vue:178
 msgid "Yes"
 msgstr ""
 
 #: ./src/UserDashboard.vue:85
 msgid "You didn't publish any project yet!"
+msgstr ""
+
+#: src/components/feature-editor/SnapTool.vue:109
+msgid "You have reached the geometry snapping limit. Please zoom in to a smaller map area."
 msgstr ""
 
 #: src/components/attributes-table/MobileAttributesTable.vue:342

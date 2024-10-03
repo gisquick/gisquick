@@ -12,11 +12,11 @@ msgstr ""
 "X-Generator: Poedit 2.3\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
 
-#: src/components/measure/Measure.vue:9
+#: src/components/measure/Measure.vue:37
 msgid "1st coordinate"
 msgstr "Prvá súradnica"
 
-#: src/components/measure/Measure.vue:10
+#: src/components/measure/Measure.vue:38
 msgid "2nd coordinate"
 msgstr "Druhá súradnica"
 
@@ -31,7 +31,7 @@ msgid "Abstract"
 msgstr "Popis"
 
 #: src/components/feature-editor/GeometryEditor.vue:16
-#: src/components/feature-editor/GeometryEditor.vue:51
+#: src/components/feature-editor/GeometryEditor.vue:59
 msgid "Add geometry"
 msgstr "Pridať geometriu"
 
@@ -56,6 +56,7 @@ msgstr "Zarovnať doľava"
 msgid "Align right"
 msgstr "Zarovnať doprava"
 
+#: src/components/feature-editor/SnapTool.vue:85
 #: src/components/Identification.vue:148
 msgid "All visible layers"
 msgstr "Všetky viditeľné vrstvy"
@@ -74,7 +75,8 @@ msgstr "Aplikovať"
 msgid "April"
 msgstr "Apríl"
 
-#: src/components/measure/Measure.vue:97 src/components/measure/Measure.vue:222
+#: src/components/measure/Measure.vue:125
+#: src/components/measure/Measure.vue:259
 msgid "Area"
 msgstr "Plocha"
 
@@ -120,11 +122,11 @@ msgstr "Tučné"
 msgid "Cancel"
 msgstr "Zrušiť"
 
-#: src/components/measure/Measure.vue:189
+#: src/components/measure/Measure.vue:226
 msgid "Clear"
 msgstr "Zmazať"
 
-#: src/components/measure/Measure.vue:190
+#: src/components/measure/Measure.vue:227
 msgid "Clear all"
 msgstr "Zmazať všetko"
 
@@ -151,7 +153,7 @@ msgstr "Obsah"
 msgid "Continue as Guest"
 msgstr "Pokračovať ako hosť"
 
-#: src/components/measure/Measure.vue:191
+#: src/components/measure/Measure.vue:228
 msgid "Coordinate systems"
 msgstr "Súradnicové systémy"
 
@@ -176,8 +178,8 @@ msgstr "Data"
 msgid "Data Filters"
 msgstr "Dátové filtre"
 
-#: src/components/feature-editor/FeatureEditor.vue:90
-#: src/components/feature-editor/NewFeatureEditor.vue:46
+#: src/components/feature-editor/FeatureEditor.vue:93
+#: src/components/feature-editor/NewFeatureEditor.vue:49
 msgid "Data updated"
 msgstr "Údaje aktualizované"
 
@@ -185,24 +187,24 @@ msgstr "Údaje aktualizované"
 msgid "December"
 msgstr "December"
 
-#: src/components/feature-editor/FeatureEditor.vue:115
-#: src/components/feature-editor/FeatureEditor.vue:99
+#: src/components/feature-editor/FeatureEditor.vue:102
+#: src/components/feature-editor/FeatureEditor.vue:118
 msgid "Delete current object?"
 msgstr "Odstrániť aktuálny objekt?"
 
-#: src/components/feature-editor/FeatureEditor.vue:56
+#: src/components/feature-editor/FeatureEditor.vue:59
 msgid "Delete object"
 msgstr "Odstrániť objekt"
 
-#: src/components/feature-editor/GeometryEditor.vue:376
+#: src/components/feature-editor/GeometryEditor.vue:440
 msgid "Delete selected geometry"
 msgstr "Odstrániť vybratú geometriu"
 
-#: src/components/feature-editor/GeometryEditor.vue:375
+#: src/components/feature-editor/GeometryEditor.vue:439
 msgid "Delete selected nodes"
 msgstr "Odstrániť vybrané uzly"
 
-#: src/components/feature-editor/FeatureEditor.vue:65
+#: src/components/feature-editor/FeatureEditor.vue:68
 msgid "Discard changes"
 msgstr "Zrušiť zmeny"
 
@@ -210,7 +212,7 @@ msgstr "Zrušiť zmeny"
 msgid "Display attributions"
 msgstr "Zobraziť autorské práva"
 
-#: src/components/measure/Measure.vue:221
+#: src/components/measure/Measure.vue:258
 msgid "Distance"
 msgstr "Vzdialenosť"
 
@@ -231,6 +233,7 @@ msgid "Edit feature"
 msgstr "Upraviť objekt"
 
 #: src/components/feature-editor/FeatureEditor.vue:32
+#: src/components/measure/Measure.vue:13
 msgid "Edit geometry"
 msgstr "Upraviť geometriu"
 
@@ -264,8 +267,8 @@ msgid "equal to"
 msgstr "rovná sa"
 
 #: src/components/content-panel/JsonLegend.vue:12
-#: src/components/feature-editor/FeatureEditor.vue:251
-#: src/components/feature-editor/NewFeatureEditor.vue:125
+#: src/components/feature-editor/FeatureEditor.vue:255
+#: src/components/feature-editor/NewFeatureEditor.vue:129
 #: src/components/SearchTool.vue:257 src/ui/ListTable.vue:105
 #: src/ui/Table.vue:211
 msgid "Error"
@@ -428,11 +431,11 @@ msgstr "je menší"
 msgid "link"
 msgstr "odkaz"
 
-#: src/components/Map.vue:51
+#: src/components/Map.vue:56
 msgid "Loading"
 msgstr "Načítavam"
 
-#: src/components/measure/Measure.vue:220
+#: src/components/measure/Measure.vue:257
 msgid "Location"
 msgstr "Poloha"
 
@@ -454,7 +457,7 @@ msgstr "Máj"
 
 #: src/components/attributes-table/MobileAttributesTable.vue:381
 #: src/components/EditTool.vue:155 src/components/Identification.vue:188
-#: src/components/measure/Measure.vue:188 src/components/print/Print.vue:86
+#: src/components/measure/Measure.vue:225 src/components/print/Print.vue:86
 #: src/ui/TextEditor.vue:359 src/UserDashboard.vue:210
 msgid "Menu"
 msgstr "Menu"
@@ -472,7 +475,7 @@ msgid "My Projects"
 msgstr "Moje projekty"
 
 #: src/components/attributes-table/MobileAttributesTable.vue:34
-#: src/components/InfoPanel.vue:44
+#: src/components/InfoPanel.vue:203
 msgid "New Feature"
 msgstr "Nový objekt"
 
@@ -482,9 +485,9 @@ msgid ""
 "own maps!"
 msgstr ""
 
-#: src/App.vue:48 src/components/feature-editor/FeatureEditor.vue:103
-#: src/components/feature-editor/FeatureEditor.vue:119
-#: src/components/feature-editor/GeometryEditor.vue:157
+#: src/App.vue:48 src/components/feature-editor/FeatureEditor.vue:106
+#: src/components/feature-editor/FeatureEditor.vue:122
+#: src/components/feature-editor/GeometryEditor.vue:175
 msgid "No"
 msgstr "Nie"
 
@@ -583,7 +586,7 @@ msgstr "Vložiť HTML"
 msgid "Password"
 msgstr "Heslo"
 
-#: src/components/measure/Measure.vue:96
+#: src/components/measure/Measure.vue:124
 msgid "Perimeter"
 msgstr "Obvod"
 
@@ -637,7 +640,7 @@ msgstr "Rozlíšenie"
 msgid "Saturday"
 msgstr "Sobota"
 
-#: src/components/feature-editor/FeatureEditor.vue:75
+#: src/components/feature-editor/FeatureEditor.vue:78
 msgid "Save changes"
 msgstr "Uložiť zmeny"
 
@@ -663,7 +666,7 @@ msgstr "Vybrať"
 msgid "Select layer"
 msgstr "Vyberte vrstvu"
 
-#: src/components/feature-editor/GeometryEditor.vue:497
+#: src/components/feature-editor/GeometryEditor.vue:562
 msgid "Selected geometry was deleted"
 msgstr "Vybraná geometria bola odstránená"
 
@@ -693,6 +696,14 @@ msgstr "od"
 #: src/components/feature-editor/SimpleFileInput.vue:12
 msgid "Size"
 msgstr "Veľkosť"
+
+#: src/components/feature-editor/SnapTool.vue:10
+msgid "Snapping"
+msgstr "Prichytávanie"
+
+#: src/components/feature-editor/SnapTool.vue:22
+msgid "Snapping layers"
+msgstr "Vrstvy pre prichytávanie"
 
 #: src/ui/TextEditor.vue:349
 msgid "Strike"
@@ -730,7 +741,7 @@ msgstr "Štvrtok"
 msgid "Topics"
 msgstr "Témy"
 
-#: src/components/measure/Measure.vue:50
+#: src/components/measure/Measure.vue:78
 msgid "Total length"
 msgstr "Celková dĺžka"
 
@@ -742,17 +753,21 @@ msgstr "Utorok"
 msgid "Type"
 msgstr "Typ"
 
+#: src/components/feature-editor/SnapTool.vue:110
+msgid "Unable to retrieve snapping geometry."
+msgstr "Nie je možné načítať geometriu pre prichytávanie."
+
 #: src/ui/TextEditor.vue:348
 msgid "Underline"
 msgstr "Podčiarknuté"
 
-#: src/components/feature-editor/GeometryEditor.vue:37
-#: src/components/feature-editor/GeometryEditor.vue:72
+#: src/components/feature-editor/GeometryEditor.vue:45
+#: src/components/feature-editor/GeometryEditor.vue:88
 #: src/ui/TextEditor.vue:344
 msgid "Undo"
 msgstr "Vrátiť späť"
 
-#: src/components/measure/Measure.vue:192
+#: src/components/measure/Measure.vue:229
 msgid "Units"
 msgstr "Jednotky"
 
@@ -768,8 +783,8 @@ msgstr "do"
 msgid "Updated"
 msgstr "Aktualizované"
 
-#: src/components/feature-editor/FeatureEditor.vue:89
-#: src/components/feature-editor/NewFeatureEditor.vue:45
+#: src/components/feature-editor/FeatureEditor.vue:92
+#: src/components/feature-editor/NewFeatureEditor.vue:48
 msgid "Updating data"
 msgstr "Údaje sa aktualizujú"
 
@@ -803,15 +818,21 @@ msgstr "Streda"
 msgid "Welcome to the Gisquick"
 msgstr ""
 
-#: src/App.vue:51 src/components/feature-editor/FeatureEditor.vue:106
-#: src/components/feature-editor/FeatureEditor.vue:122
-#: src/components/feature-editor/GeometryEditor.vue:160
+#: src/App.vue:51 src/components/feature-editor/FeatureEditor.vue:109
+#: src/components/feature-editor/FeatureEditor.vue:125
+#: src/components/feature-editor/GeometryEditor.vue:178
 msgid "Yes"
 msgstr "Áno"
 
 #: src/UserDashboard.vue:85
 msgid "You didn't publish any project yet!"
 msgstr "Zatiaľ ste nevytvorili žiaden projekt!"
+
+#: src/components/feature-editor/SnapTool.vue:109
+msgid ""
+"You have reached the geometry snapping limit. Please zoom in to a smaller "
+"map area."
+msgstr ""
 
 #: src/components/attributes-table/MobileAttributesTable.vue:342
 msgid "Zoom to"

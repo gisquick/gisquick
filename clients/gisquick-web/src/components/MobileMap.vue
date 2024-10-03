@@ -61,7 +61,7 @@
     <search-tool/>
     <map-tools ref="tools" hidden-identification mobile/>
     <transition name="fade">
-      <div v-if="status.overlays.loading || status.baseLayer.loading" class="status f-row-ac m-2 shadow-2">
+      <div v-if="mapLoading" class="status f-row-ac m-2 shadow-2">
         <v-spinner color="primary" width="3" size="20"/>
       </div>
     </transition>

@@ -32,13 +32,18 @@ export default {
         overlays: {
           loading: false,
           error: false
-        }
+        },
+        other: []
       }
     }
   },
   computed: {
     ...mapState(['project', 'activeTool']),
-    ...mapGetters(['visibleBaseLayer', 'visibleLayers'])
+    ...mapGetters(['visibleBaseLayer', 'visibleLayers']),
+    mapLoading () {
+      const { baseLayer, overlays, other } = this.status
+      return baseLayer.loading || overlays.loading || other.some(i => i.loading)
+    }
   },
   watch: {
     visibleLayers: 'setVisibleLayers',
@@ -164,7 +169,16 @@ export default {
         return decodeURIComponent(url.toString()) // unescaped url
         // return url.toString()
       },
-      formatCoordinate: v => round(v, precision)
+      formatCoordinate: v => round(v, precision),
+      registerLayerStatusListener: layer => {
+        const status = { error: false, loading: false }
+        this.status.other.push(status)
+        const unregister = this.registerStatusListener(layer, status)
+        return () => {
+          this.status.other.splice(this.status.other.indexOf(status, 1))
+          unregister()
+        }
+      }
     }
     const extentParam = this.queryParams.extent?.split(',').map(parseFloat)
     const extent = extentParam || this.project.config.zoom_extent || this.project.config.project_extent
@@ -192,10 +206,12 @@ export default {
     },
     registerStatusListener (olLayer, status) {
       const source = olLayer.getSource()
-      if (source.getTileLoadFunction) {
-        this.registerTilesStatusListener(source, status)
+      if (source.constructor.name === 'VectorSource') {
+        return this.registerVectorStatusListener(source, status)
+      } else if (source.getTileLoadFunction) {
+        return this.registerTilesStatusListener(source, status)
       } else {
-        this.registerImageStatusListener(source, status)
+        return this.registerImageStatusListener(source, status)
       }
     },
     registerImageStatusListener (source, status) {
@@ -234,6 +250,24 @@ export default {
         // status.loading = !isEmpty(e.target.tileLoadingKeys_)
       })
       // unregister function
+      return () => {
+        status.error = false
+        status.loading = false
+        unByKey([l1, l2, l3])
+      }
+    },
+    registerVectorStatusListener (source, status) {
+      const l1 = source.on('featuresloadstart', e => {
+        status.loading = true
+      })
+      const l2 = source.on('featuresloadend', e => {
+        status.error = false
+        status.loading = false
+      })
+      const l3 = source.on('featuresloaderror', e => {
+        status.error = true
+        status.loading = false
+      })
       return () => {
         status.error = false
         status.loading = false

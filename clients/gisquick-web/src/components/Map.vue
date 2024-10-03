@@ -46,7 +46,7 @@
       <search-tool/>
     </div>
     <transition name="fade">
-      <div v-if="status.overlays.loading || status.baseLayer.loading" class="status f-row-ac m-2">
+      <div v-if="mapLoading" class="status f-row-ac m-2">
         <v-spinner width="2" size="18"/>
         <translate class="mx-2">Loading</translate>
       </div>

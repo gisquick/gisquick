@@ -1,9 +1,6 @@
 import VectorSource from 'ol/source/Vector'
 import VectorLayer from 'ol/layer/Vector'
-import Style from 'ol/style/Style'
-import Fill from 'ol/style/Fill'
-import Stroke from 'ol/style/Stroke'
-import Text from 'ol/style/Text'
+import { Style, Fill, Circle, Stroke, Text } from 'ol/style'
 import Draw from 'ol/interaction/Draw'
 import { unByKey } from 'ol/Observable'
 import Observable from 'ol/Observable'
@@ -112,17 +109,26 @@ function createDrawTool (map, type, style, drawStyle) {
 }
 
 export function LocationMeasure (map) {
+  const drawStyle = new Style({
+    image: new Circle({
+      fill: new Fill({
+        color: 'rgb(250, 188, 0)'
+      }),
+      radius: 5
+    })
+  })
   const normal = simpleStyle({
     radius: 7,
     fill: 'rgb(250, 188, 0)',
     stroke: '#ffffff',
-    strokeWidth: 1.5
+    strokeWidth: 1.5,
+    radius: 6
   })
   const highlighted = simpleStyle({
     radius: 7,
     fill: 'rgb(255, 157, 59)',
     stroke: '#ffffff',
-    strokeWidth: 1.5
+    strokeWidth: 1.5,
   })
   const labelStyle = new Style({ renderer: labelRenderer })
   const styleFn = (feature, _) => {
@@ -131,7 +137,7 @@ export function LocationMeasure (map) {
       labelStyle
     ]
   }
-  const base = createDrawTool(map, 'Point', styleFn, [])
+  const base = createDrawTool(map, 'Point', styleFn, drawStyle)
 
   function createItem (id, feature) {
     const coords = feature.getGeometry().getCoordinates()
@@ -186,6 +192,12 @@ export function DistanceMeasure (map) {
       stroke: new Stroke({
         color: 'rgb(250, 188, 0)',
         width: 4
+      }),
+      image: new Circle({
+        fill: new Fill({
+          color: 'rgb(250, 188, 0)'
+        }),
+        radius: 5
       })
     })
   ]
@@ -306,6 +318,10 @@ export function DistanceMeasure (map) {
           })
         })
       }
+    },
+    updateFeature (feature) {
+      feature.get('data').segments = []
+      measure(feature)
     }
   })
 }
@@ -319,6 +335,12 @@ export function AreaMeasure (map) {
       }),
       fill: new Fill({
         color: 'rgba(255, 255, 255, 0.4)'
+      }),
+      image: new Circle({
+        fill: new Fill({
+          color: 'rgb(250, 188, 0)'
+        }),
+        radius: 5
       })
     }),
     new Style({
@@ -464,6 +486,10 @@ export function AreaMeasure (map) {
           })
         })
       }
+    },
+    updateFeature (feature) {
+      feature.get('data').segments = []
+      measure(feature)
     }
   })
 }

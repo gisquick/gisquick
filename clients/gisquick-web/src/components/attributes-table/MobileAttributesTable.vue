@@ -34,7 +34,7 @@
             <translate class="data-label" key="new-feature">New Feature</translate>
             <new-feature-editor
               class="f-grow"
-              geom-toolbar="top-panel"
+              geom-toolbar="map-toolbar"
               toolbar-target="mat-toolbar"
               :layer="layer"
               @edit="onFeatureInsert"
@@ -144,7 +144,7 @@
             <feature-editor
               class="edit-form f-grow"
               toolbar-target="mat-toolbar"
-              geom-toolbar="top-panel"
+              geom-toolbar="map-toolbar"
               :feature="selectedFeature"
               :layer="layer"
               :project="$store.state.project"

@@ -1,6 +1,34 @@
 <template>
   <portal to="main-panel">
     <div class="measure-form f-col light" key="measure">
+      <portal to="map-toolbar">
+        <div class="map-toolbar f-row">
+          <v-btn
+            class="icon flat"
+            :disabled="type === 'location'"
+            :color="editActive ? 'primary' : ''"
+            @click="editActive = !editActive"
+          >
+            <v-tooltip slot="tooltip">
+              <translate>Edit geometry</translate>
+            </v-tooltip>
+            <v-icon name="edit-geometry"/>
+          </v-btn>
+          <div class="v-separator"/>
+          <snap-tool
+            :project="project"
+            :layers="snapping.layers"
+            :active.sync="snapping.active"
+          />
+          <modify-interaction
+            v-if="editSource && editActive"
+            :key="type"
+            :source="editSource"
+            :ol-style="editStyle"
+            @modifyend="updateFeature"
+          />
+        </div>
+      </portal>
       <v-tabs-header :items="tabsItems" :value="type" @input="$emit('update:type', $event)"/>
       <v-tabs class="mt-1" height-transition :items="tabsItems" :value="type" @input="$emit('update:type', $event)">
         <template v-slot:location>
@@ -150,10 +178,14 @@ import WKT from 'ol/format/WKT'
 
 import VTabs from '@/ui/Tabs.vue'
 import VTabsHeader from '@/ui/TabsHeader.vue'
+import SnapTool from '@/components/feature-editor/SnapTool.vue'
 
 // import DynamicHeight from '../../tabs-dynamic-height'
 import { projectionCoordinatesFormatter, LocationUnits, Units } from './units'
 import { LocationMeasure, DistanceMeasure, AreaMeasure } from './measure'
+
+import ModifyInteraction from '@/components/ol/ModifyInteraction.vue'
+import { highlightedStyle } from '@/map/styles'
 
 function observable (obj, ...attrs) {
   attrs.forEach(attr => Vue.util.defineReactive(obj, attr))
@@ -164,7 +196,7 @@ let activeTool
 
 export default {
   name: 'measure',
-  components: { VTabs, VTabsHeader },
+  components: { VTabs, VTabsHeader, SnapTool, ModifyInteraction },
   // mixins: [DynamicHeight],
   props: {
     type: String,
@@ -178,6 +210,11 @@ export default {
         length: null,
         area: null
       },
+      snapping: {
+        active: false,
+        layers: []
+      },
+      editActive: false,
       unitSystem: null,
     }
   },
@@ -252,6 +289,24 @@ export default {
         { separator: true, text: this.tr.Units },
         ...this.createUnitsMenu('area')
       ]
+    },
+    isMobileDevice () {
+      return window.env.mobile
+    },
+    editStyle () {
+      return highlightedStyle('#E64A19ff')
+    },
+    editFeatures () {
+      if (this.editActive) {
+        return activeTool.getFeatures()
+      }
+      return []
+    },
+    editSource () {
+      if (this.editActive && this.type) { // type is for activeTool reactivity
+        return activeTool.source
+      }
+      return null
     }
   },
   created () {
@@ -380,6 +435,9 @@ export default {
       this.location.setFeatures(locations)
       this.distance.setFeatures(distances)
       this.area.setFeatures(areas)
+    },
+    updateFeature (e) {
+      e.features.forEach(f => activeTool.updateFeature?.(f))
     }
   }
 }
@@ -456,5 +514,11 @@ export default {
     font-size: 15px;
     padding-top: 6px;
   }
+}
+.map-toolbar {
+  background-color: #eee;
+  border: 1px solid #bbb;
+  border-radius: 3px;
+  --gutter: 3px 6px;
 }
 </style>

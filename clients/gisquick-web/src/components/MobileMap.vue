@@ -66,8 +66,8 @@
       </div>
     </transition>
     <portal-target
-      name="top-panel"
-      class="top-panel"
+      name="map-toolbar"
+      class="map-toolbar"
       transition="slide-top-transition"
     />
     <location-tool v-if="geolocationEnabled"/>
@@ -221,7 +221,7 @@ export default {
     max-height: 100%;
     z-index: 1;
   }
-  .status, .top-panel {
+  .status, .map-toolbar {
     grid-column: 1 / 2;
     grid-row: 1 / 2;
     align-self: start;
@@ -250,6 +250,9 @@ export default {
   padding: 4px;
   z-index: 10;
   pointer-events: none;
+}
+.map-toolbar {
+  margin: 4px;
 }
 .main-panel {
   .panel-content {

@@ -40,8 +40,7 @@
           </v-btn>
         </template>
         <template v-else>
-          <span class="ml-2">{{ layer.title || layer.name }} -</span>
-          <translate class="title mx-2 f-grow">New Feature</translate>
+          <span class="mx-2 f-grow">{{ layer.title || layer.name }} - {{ tr.NewFeature }}</span>
         </template>
         <v-btn @click="$emit('close')" class="icon flat">
           <v-icon name="x"/>
@@ -198,6 +197,11 @@ export default {
     },
     relationData () {
       return this.relationsData[this.relationsData.length - 1]
+    },
+    tr () {
+      return {
+        NewFeature: this.$gettext('New Feature')
+      }
     }
   },
   watch: {

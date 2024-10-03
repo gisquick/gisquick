@@ -162,7 +162,7 @@ export default {
     visibleAreaFilter: Boolean,
     sortBy: Object,
     pagination: Object,
-    selectedId: String,
+    selectedId: {},
     fetchRelations: Boolean,
     color: Array,
     highlightColor: {
@@ -199,7 +199,7 @@ export default {
       this.$emit('update:features', data.features)
       this.$emit('update:pagination', data.pagination)
       if (!this.selectedId || !data.features.some(f => f.getId() === this.selectedId)) {
-        this.$emit('update:selectedId', data.features[0]?.getId() ?? -1)
+        this.$emit('update:selectedId', data.features[0]?.getId())
       }
     },
     clearAllFilters () {

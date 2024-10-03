@@ -195,20 +195,27 @@ export function layerFeaturesQuery (layer, opts) {
   return getFeatureQuery(formatLayerQuery(layer, opts))
 }
 
-export function layersFeaturesQuery (layers, geomFilter, filters) {
-  if (geomFilter) {
-    const { geom, projection } = geomFilter
-    const geomsByProj = {
-      [projection]: geom
-    }
-    layers
+export function layersFeaturesQuery (layers, opts) {
+  const geomsByProj = {}
+  if (opts.geomFilter) {
+    const { geom, projection } = opts.geomFilter
+    if (projection) {
+      geomsByProj[projection] = geom
+      layers
       .filter(l => l.projection && l.projection !== projection)
       .forEach(l => {
         if (!geomsByProj[l.projection]) {
           geomsByProj[l.projection] = geom.clone().transform(projection, l.projection)
         }
       })
-    return getFeatureQuery(...layers.map(l => formatLayerQuery(l, { geom: geomsByProj[l.projection] })))
+    }
   }
-  return getFeatureQuery(...layers.map(l => formatLayerQuery(l, { filters })))
+  const hasSharedFilters = Array.isArray(opts.filters)
+  const hasSharedProperties = Array.isArray(opts.propertyNames)
+  const queries = layers.map(l => formatLayerQuery(l, {
+    geom: geomsByProj[l.projection],
+    filters: hasSharedFilters ? opts.filters : opts.filters?.[l.name],
+    propertyNames: hasSharedProperties ? opts.propertyNames : opts.propertyNames?.[l.name]
+  }))
+  return getFeatureQuery(...queries)
 }

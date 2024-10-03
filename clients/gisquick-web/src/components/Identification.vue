@@ -281,11 +281,11 @@ export default {
       if (wfsLayers.length) {
         const pixelRadius = 8
         const radius = Math.abs(map.getCoordinateFromPixel([pixel[0] + pixelRadius, pixel[1]])[0] - coordinate[0])
-        const geom = {
+        const geomFilter = {
           geom: fromCircle(new Circle(coordinate, radius), 6),
           projection: this.mapProjection
         }
-        const query = layersFeaturesQuery(wfsLayers, geom)
+        const query = layersFeaturesQuery(wfsLayers, { geomFilter })
         tasks.push(this.getFeaturesByWFS( query, { 'MAXFEATURES': 10 }))
       }
       this.mapCoords = coordinate

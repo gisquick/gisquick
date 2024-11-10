@@ -209,7 +209,7 @@ export default {
     .scrollbar {
       min-height: 10px;
       right: 0;
-      width: 6px;
+      width: var(--scrollbar-width, 6px);
     }
   }
   &.horizontal {
@@ -220,7 +220,7 @@ export default {
     .scrollbar {
       min-width: 10px;
       bottom: 0;
-      height: 6px;
+      height: var(--scrollbar-width, 6px);
     }
   }
 }
@@ -238,7 +238,7 @@ export default {
 
 .scrollbar {
   position: absolute;
-  opacity: 0;
+  opacity: 0.3;
   border-radius: 3px;
   background-color: #222;
   transition: opacity 0.2s linear;

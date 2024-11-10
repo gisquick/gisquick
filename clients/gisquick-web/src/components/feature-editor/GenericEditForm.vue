@@ -172,7 +172,8 @@ export default {
               disabled,
               placeholder: attr.config?.display_format,
               displayFormat: attr.config?.display_format,
-              valueFormat: attr.config?.field_format || 'yyyy-MM-dd'
+              // valueFormat: attr.config?.field_format || 'yyyy-MM-dd'
+              valueFormat: 'yyyy-MM-dd'
             }
           }
         }

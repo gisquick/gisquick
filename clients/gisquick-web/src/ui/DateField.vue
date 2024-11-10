@@ -3,7 +3,7 @@
     ref="textField"
     class="filled date-field"
     :focused="focused"
-    valid-chars="[0-9.]"
+    :valid-chars="validChars"
     :value="textValue"
     v-bind="$attrs"
     :input-disabled="menuOpened"
@@ -114,6 +114,10 @@ export default {
         return date
       }
       return this.value
+    },
+    validChars () {
+      const specialChars = this.displayFormat.replace(/[dmy]/ig, '')
+      return `[0-9${specialChars}]`
     }
   },
   watch: {

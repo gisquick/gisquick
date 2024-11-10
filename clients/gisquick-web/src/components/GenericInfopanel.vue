@@ -181,12 +181,23 @@ export function createImageTableWidget (createUrl) {
 export const DateWidget = Widget((h, ctx) => {
   let { value, attribute } = ctx.props
   const cfg = attribute?.config
-  if (value && cfg && cfg.display_format && cfg.field_format) {
-    const date = parse(value, cfg.field_format, new Date())
-    try {
-      value = format(date, cfg.display_format)
-    } catch (err) {
-      console.error(`DateWidget: failed to format value: ${value} (${err})`)
+  if (value && cfg.display_format) {
+    let date
+    if (cfg.field_format) {
+      date = parse(value, cfg.field_format, new Date())
+    }
+    if (Number.isNaN(date.getTime())) {
+      // try standard format (YYYY-MM-DD)
+      date = new Date(value)
+    }
+    if (Number.isNaN(date.getTime())) {
+      console.error(`DateWidget: failed to parse value: ${value}`)
+    } else {
+      try {
+        value = format(date, cfg.display_format)
+      } catch (err) {
+        console.error(`DateWidget: failed to format value: ${value} (${err})`)
+      }
     }
   }
   return <span {...ctx.data}>{value}</span>
@@ -197,8 +208,14 @@ export const DateTimeWidget = Widget((h, ctx) => {
   let { value, attribute } = ctx.props
   if (value) {
     const cfg = attribute?.config
+    let date
+    if (cfg?.field_format) {
+      date = parse(value, cfg.field_format, new Date())
+    }
+    if (Number.isNaN(date.getTime())) {
+      date = new Date(value)
+    }
     const displayFormat = cfg?.display_format || 'yyyy-MM-dd HH:mm:ss'
-    const date = cfg?.field_format ? parse(value, cfg.field_format, new Date()) : new Date(value)
     try {
       value = format(date, displayFormat)
     } catch (err) {

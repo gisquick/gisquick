@@ -19,7 +19,6 @@ import { DragRotate, defaults as defaultInteractions } from 'ol/interaction.js'
 import { altKeyOnly } from 'ol/events/condition'
 
 // import md5 from 'md5'
-import debounce from 'lodash/debounce'
 import omitBy from 'lodash/omitBy'
 import { wmtsSource } from './wmts'
 
@@ -230,6 +229,7 @@ export function createQgisLayer (config) {
       })
     })
   } else {
+    const throttle_key = `${new Date().getTime()}-${Math.random().toString(36).substring(2,7)}`
     return new ImageLayer({
       visible: true,
       extent: config.extent,
@@ -240,14 +240,12 @@ export function createQgisLayer (config) {
         layersAttributions: attributions,
         layersOrder: layersOrder,
         params: {
-          FORMAT: 'image/png'
+          FORMAT: 'image/png',
+          throttle_key
         },
         serverType: 'qgis',
         ratio: 1,
-        interpolate: false,
-        imageLoadFunction: debounce((image, src) => {
-          image.getImage().src = src
-        }, 90)
+        interpolate: false
       })
     })
   }
@@ -331,6 +329,7 @@ export async function createBaseLayer (layerConfig, projectConfig = {}) {
     })
   } */
   // fallback to render layer by qgis server
+  const throttle_key = `${new Date().getTime()}-${Math.random().toString(36).substring(2,6)}`
   return new ImageLayer({
     extent: layerConfig.extent,
     source: new GisquickImageWMS({
@@ -341,7 +340,8 @@ export async function createBaseLayer (layerConfig, projectConfig = {}) {
       params: cleanParams({
         LAYERS: layerConfig.name,
         FORMAT: layerConfig.format,
-        TRANSPARENT: 'false'
+        TRANSPARENT: 'false',
+        throttle_key
       }),
       serverType: 'qgis',
       ratio: 1

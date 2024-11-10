@@ -70,7 +70,7 @@ export default new Vuex.Store({
       })
 
       const overlaysList = layersList({ layers })
-      state.project = {
+      const projectData = {
         config: project,
         baseLayers: {
           groups: [].concat(...baseLayers.map(filterGroups)),
@@ -84,6 +84,15 @@ export default new Vuex.Store({
           byName:overlaysList.reduce((t, l) => (t[l.name] = l, t), {})
         }
       }
+      projectData.overlays.list.filter(l => l.relations?.length).forEach(l => {
+        l.relations = l.relations.filter(r => {
+          const rlayer = projectData.overlays.byName[r.referencing_layer]
+          return rlayer
+            && r.referenced_fields.every(field => l.attributes.find(a => a.name === field))
+            && r.referencing_fields.every(field => rlayer.attributes.find(a => a.name === field))
+        })
+      })
+      state.project = projectData
     },
     activeTool (state, name) {
       state.activeTool = name

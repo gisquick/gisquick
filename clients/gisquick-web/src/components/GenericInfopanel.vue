@@ -396,8 +396,11 @@ const GenericInfoPanel = {
         return RawWidget
       })
     },
+    layerRelations () {
+      return this.layer.relations?.filter(r => r.infopanel_view !== 'hidden')
+    },
     relations () {
-      return this.layer.relations?.filter(r => r.infopanel_view !== 'hidden').map(r => {
+      return this.layerRelations.map(r => {
         const rLayer = this.project.overlays.byName[r.referencing_layer]
         let component = GenericInfoPanel
         if (rLayer.infopanel_component) {
@@ -445,7 +448,7 @@ const GenericInfoPanel = {
       immediate: true,
       handler () {
         const expanded = {}
-        this.layer.relations?.forEach(r => {
+        this.layerRelations?.forEach(r => {
           expanded[r.name] = true
         })
         this.expanded = expanded

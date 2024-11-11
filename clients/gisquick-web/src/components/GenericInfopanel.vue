@@ -186,11 +186,11 @@ export const DateWidget = Widget((h, ctx) => {
     if (cfg.field_format) {
       date = parse(value, cfg.field_format, new Date())
     }
-    if (Number.isNaN(date.getTime())) {
+    if (!date || Number.isNaN(date.getTime())) {
       // try standard format (YYYY-MM-DD)
       date = new Date(value)
     }
-    if (Number.isNaN(date.getTime())) {
+    if (!date || Number.isNaN(date.getTime())) {
       console.error(`DateWidget: failed to parse value: ${value}`)
     } else {
       try {
@@ -212,7 +212,7 @@ export const DateTimeWidget = Widget((h, ctx) => {
     if (cfg?.field_format) {
       date = parse(value, cfg.field_format, new Date())
     }
-    if (Number.isNaN(date.getTime())) {
+    if (!date || Number.isNaN(date.getTime())) {
       date = new Date(value)
     }
     const displayFormat = cfg?.display_format || 'yyyy-MM-dd HH:mm:ss'
@@ -400,7 +400,7 @@ const GenericInfoPanel = {
       return this.layer.relations?.filter(r => r.infopanel_view !== 'hidden')
     },
     relations () {
-      return this.layerRelations.map(r => {
+      return this.layerRelations?.map(r => {
         const rLayer = this.project.overlays.byName[r.referencing_layer]
         let component = GenericInfoPanel
         if (rLayer.infopanel_component) {

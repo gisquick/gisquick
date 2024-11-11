@@ -88,8 +88,8 @@ export default new Vuex.Store({
         l.relations = l.relations.filter(r => {
           const rlayer = projectData.overlays.byName[r.referencing_layer]
           return rlayer
-            && r.referenced_fields.every(field => l.attributes.find(a => a.name === field))
-            && r.referencing_fields.every(field => rlayer.attributes.find(a => a.name === field))
+            && r.referenced_fields.every(field => l.attributes?.some(a => a.name === field))
+            && r.referencing_fields.every(field => rlayer.attributes?.some(a => a.name === field))
         })
       })
       state.project = projectData

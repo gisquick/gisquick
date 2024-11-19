@@ -180,7 +180,7 @@ export function createImageTableWidget (createUrl) {
 
 export const DateWidget = Widget((h, ctx) => {
   let { value, attribute } = ctx.props
-  const cfg = attribute?.config
+  const cfg = attribute?.config ?? { display_format: 'dd.MM.yyyy' }
   if (value && cfg.display_format) {
     let date
     if (cfg.field_format) {

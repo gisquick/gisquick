@@ -180,6 +180,8 @@ export default {
     onLogin (user) {
       this.$store.commit('user', user)
       this.$store.commit('showLogin', false)
+      this.$store.commit('activeTool', null)
+      this.$store.commit('attributeTable/features', [])
       this.loadProject()
     },
     installApp () {

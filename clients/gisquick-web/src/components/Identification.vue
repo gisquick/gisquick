@@ -57,7 +57,7 @@
       </portal>
       <portal to="bottom-panel">
         <features-table
-          v-if="displayMode === 'table' || displayMode === 'both'"
+          v-if="showAttributesTable"
           class="light"
           :data="layersFeatures"
           :selected="tableSelection"
@@ -181,6 +181,9 @@ export default {
     },
     tableSelection () {
       return { layer: this.tableLastActiveLayer, id: this.selection?.id }
+    },
+    showAttributesTable () {
+      return (this.displayMode === 'table' || this.displayMode === 'both') && this.displayedLayer?.attr_table_fields?.length > 0
     },
     tr () {
       return {

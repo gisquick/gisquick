@@ -24,9 +24,9 @@ export default {
     this.transition = {
       leave: (el) => {
         // console.log('leave', el.clientHeight, el.offsetHeight)
-        if (leaveTransition) {
-          console.log('overlapping transitions!')
-        }
+        // if (leaveTransition) {
+        //   console.log('overlapping transitions!')
+        // }
         const leaveHeight = el.offsetHeight
         // this.$el.style.height = el.offsetHeight + 'px'
         leaveTransition = {

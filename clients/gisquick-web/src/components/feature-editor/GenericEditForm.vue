@@ -155,7 +155,7 @@ export default {
             props: {
               url,
               location,
-              filename: attr.config?.filename || '<random>',
+              filename: attr.config?.filename || '<timestamp>',
               options: attr.config,
               disabled
             }

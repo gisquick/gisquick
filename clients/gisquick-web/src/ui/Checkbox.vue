@@ -97,7 +97,7 @@ export default {
     }
   },
   mounted () {
-    this.checkLength = this.$refs.checkPath.getTotalLength()
+    this.checkLength = this.$refs.checkPath?.getTotalLength()
   },
   methods: {
     toggleValue () {

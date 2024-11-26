@@ -17,6 +17,10 @@ export function extendProject (project) {
 
   config.infoPanelComponents?.forEach(i => {
     const name = i.component.name
+    if (!name) {
+      console.error('Invalid Infopanel component - missing name property. Layer:', i.layer)
+      return
+    }
     Vue.component(name, i.component)
     const layer = layersMap[i.layer]
     if (layer) {

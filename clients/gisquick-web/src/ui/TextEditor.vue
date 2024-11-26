@@ -327,7 +327,7 @@ export default {
         text: this.$gettext('Copy HTML'),
         action: this.copyHTML
       }, {
-        text: this.$gettext('Pase HTML'),
+        text: this.$gettext('Paste HTML'),
         action: this.pasteHTML
       }, {
         text: this.$gettext('Reset formatting'),

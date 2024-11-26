@@ -10,6 +10,19 @@
     >
       <slot :name="name" v-bind="slotData"/>
     </template>
+    <template v-slot:item(lang)>
+      <div class="f-row-ac f-grow mx-2">
+        <translate class="f-grow">Language</translate>
+        <v-select
+          :items="languages"
+          align="rr;bb"
+          :value="$language.current"
+          item-text="name"
+          item-value="code"
+          @input="setLanguage"
+        />
+      </div>
+    </template>
   </v-menu>
 </template>
 
@@ -29,6 +42,9 @@ export default {
   },
   computed: {
     ...mapState(['app', 'user']),
+    languages () {
+      return this.app.languages
+    },
     userMenuItems () {
       if (this.user && !this.user.is_guest) {
         return [
@@ -52,9 +68,20 @@ export default {
       }]
     },
     items () {
-      return [
+      const items = [
         ...this.userMenuItems,
         ...this.extraItems,
+      ]
+      if (this.languages?.length > 1) {
+        items.push({
+          key: 'language',
+          text: this.$gettext('Language'),
+          slot: 'lang',
+          keepOpen: true
+        })
+      }
+      return [
+        ...items,
         {
           key: 'fullscreen',
           text: this.$gettext('Full screen'),
@@ -102,6 +129,11 @@ export default {
     createPermalink () {
       const permalink = this.$map.ext.createPermalink()
       navigator.clipboard.writeText(permalink)
+    },
+    setLanguage (lang) {
+      this.$language.current = lang
+      document.documentElement.setAttribute('lang', lang.split('-')[0])
+      localStorage.setItem('gisquick:language', lang)
     }
   }
 }

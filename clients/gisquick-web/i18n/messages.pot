@@ -320,7 +320,7 @@ msgstr ""
 msgid "Friday"
 msgstr ""
 
-#: src/components/AppMenu.vue:60
+#: src/components/AppMenu.vue:87
 msgid "Full screen"
 msgstr ""
 
@@ -332,7 +332,7 @@ msgstr ""
 msgid "greater than"
 msgstr ""
 
-#: src/components/AppMenu.vue:70
+#: src/components/AppMenu.vue:97
 msgid "Help"
 msgstr ""
 
@@ -389,9 +389,14 @@ msgstr ""
 msgid "Keywords list"
 msgstr ""
 
+#: ./src/components/AppMenu.vue:15
+#: src/components/AppMenu.vue:78
+msgid "Language"
+msgstr ""
+
 #: src/components/attributes-table/MobileAttributesTable.vue:379
 #: src/components/EditTool.vue:153
-#: src/components/Identification.vue:187
+#: src/components/Identification.vue:190
 msgid "Layer"
 msgstr ""
 
@@ -424,11 +429,11 @@ msgid "Location"
 msgstr ""
 
 #: ./src/components/LoginDialog.vue:94
-#: src/components/AppMenu.vue:49
+#: src/components/AppMenu.vue:65
 msgid "Login"
 msgstr ""
 
-#: src/components/AppMenu.vue:37
+#: src/components/AppMenu.vue:53
 #: src/UserDashboard.vue:202
 msgid "Logout"
 msgstr ""
@@ -443,7 +448,7 @@ msgstr ""
 
 #: src/components/attributes-table/MobileAttributesTable.vue:381
 #: src/components/EditTool.vue:155
-#: src/components/Identification.vue:188
+#: src/components/Identification.vue:191
 #: src/components/measure/Measure.vue:225
 #: src/components/print/Print.vue:86
 #: src/ui/TextEditor.vue:359
@@ -455,7 +460,7 @@ msgstr ""
 msgid "Monday"
 msgstr ""
 
-#: src/components/AppMenu.vue:42
+#: src/components/AppMenu.vue:58
 #: src/UserDashboard.vue:197
 msgid "My profile"
 msgstr ""
@@ -569,19 +574,19 @@ msgstr ""
 msgid "Page size"
 msgstr ""
 
-#: src/ui/TextEditor.vue:330
-msgid "Pase HTML"
-msgstr ""
-
 #: src/components/LoginDialog.vue:166
 msgid "Password"
+msgstr ""
+
+#: src/ui/TextEditor.vue:330
+msgid "Paste HTML"
 msgstr ""
 
 #: ./src/components/measure/Measure.vue:124
 msgid "Perimeter"
 msgstr ""
 
-#: src/components/AppMenu.vue:66
+#: src/components/AppMenu.vue:93
 msgid "Permalink"
 msgstr ""
 

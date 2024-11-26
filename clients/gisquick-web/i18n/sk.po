@@ -332,7 +332,7 @@ msgstr "Formát"
 msgid "Friday"
 msgstr "Piatok"
 
-#: src/components/AppMenu.vue:60
+#: src/components/AppMenu.vue:87
 msgid "Full screen"
 msgstr "Celá obrazovka"
 
@@ -344,7 +344,7 @@ msgstr "Chyba geolokácie"
 msgid "greater than"
 msgstr "je väčší"
 
-#: src/components/AppMenu.vue:70
+#: src/components/AppMenu.vue:97
 msgid "Help"
 msgstr "Dokumentácia"
 
@@ -406,8 +406,12 @@ msgstr "Jún"
 msgid "Keywords list"
 msgstr "Kľúčové slová"
 
+#: src/components/AppMenu.vue:15 src/components/AppMenu.vue:78
+msgid "Language"
+msgstr "Jazyk"
+
 #: src/components/attributes-table/MobileAttributesTable.vue:379
-#: src/components/EditTool.vue:153 src/components/Identification.vue:187
+#: src/components/EditTool.vue:153 src/components/Identification.vue:190
 msgid "Layer"
 msgstr "Vrstva"
 
@@ -439,11 +443,11 @@ msgstr "Načítavam"
 msgid "Location"
 msgstr "Poloha"
 
-#: src/components/LoginDialog.vue:94 src/components/AppMenu.vue:49
+#: src/components/LoginDialog.vue:94 src/components/AppMenu.vue:65
 msgid "Login"
 msgstr "Prihlásiť sa"
 
-#: src/components/AppMenu.vue:37 src/UserDashboard.vue:202
+#: src/components/AppMenu.vue:53 src/UserDashboard.vue:202
 msgid "Logout"
 msgstr "Odhlásiť sa"
 
@@ -456,7 +460,7 @@ msgid "May"
 msgstr "Máj"
 
 #: src/components/attributes-table/MobileAttributesTable.vue:381
-#: src/components/EditTool.vue:155 src/components/Identification.vue:188
+#: src/components/EditTool.vue:155 src/components/Identification.vue:191
 #: src/components/measure/Measure.vue:225 src/components/print/Print.vue:86
 #: src/ui/TextEditor.vue:359 src/UserDashboard.vue:210
 msgid "Menu"
@@ -466,7 +470,7 @@ msgstr "Menu"
 msgid "Monday"
 msgstr "Pondelok"
 
-#: src/components/AppMenu.vue:42 src/UserDashboard.vue:197
+#: src/components/AppMenu.vue:58 src/UserDashboard.vue:197
 msgid "My profile"
 msgstr "Môj profil"
 
@@ -578,19 +582,19 @@ msgstr "Prekryvné vrstvy"
 msgid "Page size"
 msgstr "Počet riadkov"
 
-#: src/ui/TextEditor.vue:330
-msgid "Pase HTML"
-msgstr "Vložiť HTML"
-
 #: src/components/LoginDialog.vue:166
 msgid "Password"
 msgstr "Heslo"
+
+#: src/ui/TextEditor.vue:330
+msgid "Paste HTML"
+msgstr "Vložiť HTML"
 
 #: src/components/measure/Measure.vue:124
 msgid "Perimeter"
 msgstr "Obvod"
 
-#: src/components/AppMenu.vue:66
+#: src/components/AppMenu.vue:93
 msgid "Permalink"
 msgstr "Permalink"
 
@@ -833,6 +837,8 @@ msgid ""
 "You have reached the geometry snapping limit. Please zoom in to a smaller "
 "map area."
 msgstr ""
+"Dosiahli ste limit pre prichytávanie geometrie. Priblížte mapu na menšiu "
+"oblasť."
 
 #: src/components/attributes-table/MobileAttributesTable.vue:342
 msgid "Zoom to"

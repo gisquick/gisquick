@@ -5,241 +5,243 @@ msgstr ""
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
-"Language: cs\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 2.3\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
 
 #: src/components/measure/Measure.vue:37
 msgid "1st coordinate"
-msgstr "První souřadnice"
+msgstr "1. Koordinate"
 
 #: src/components/measure/Measure.vue:38
 msgid "2nd coordinate"
-msgstr "Druhá souřadnice"
+msgstr "2. Koordinate"
 
 #: src/App.vue:22
 msgid "A new version of the map application is available"
-msgstr "K dispozici je nová verze mapové aplikace"
+msgstr "Eine neue Version der Kartenanwendung ist verfügbar"
 
 #: src/components/content-panel/BaseLayersTree.vue:43
 #: src/components/content-panel/LayersTree.vue:100
 #: src/components/content-panel/TopicsList.vue:36
 msgid "Abstract"
-msgstr "Popis"
+msgstr "Beschreibung"
 
 #: src/components/feature-editor/GeometryEditor.vue:16
 #: src/components/feature-editor/GeometryEditor.vue:59
 msgid "Add geometry"
-msgstr "Přidat geometrii"
+msgstr "Geometrie hinzufügen"
 
 #: src/components/attributes-table/AttributesTable.vue:57
 #: src/components/attributes-table/MobileAttributesTable.vue:281
 msgid "Add new feature"
-msgstr "Přidat nový objekt"
+msgstr "Neue Funktion hinzufügen"
 
 #: src/App.vue:41
 msgid "Add to Home screen?"
-msgstr "Přidat na plochu?"
+msgstr "Zum Startbildschirm hinzufügen?"
 
 #: src/ui/TextEditor.vue:357
 msgid "Align center"
-msgstr "Zarovnat na střed"
+msgstr "Mitte ausrichten"
 
 #: src/ui/TextEditor.vue:356
 msgid "Align left"
-msgstr "Zarovnat doleva"
+msgstr "Links ausrichten"
 
 #: src/ui/TextEditor.vue:358
 msgid "Align right"
-msgstr "Zarovnat doprava"
+msgstr "Rechts ausrichten"
 
 #: src/components/feature-editor/SnapTool.vue:85
 #: src/components/Identification.vue:148
 msgid "All visible layers"
-msgstr "Všechny viditelné vrstvy"
+msgstr "Alle sichtbaren Ebenen"
 
 #: src/IntroPage.vue:19
 msgid ""
 "Already registered? You can continue with Sign In to see list of\n"
 "your projects"
 msgstr ""
+"Sind Sie bereits registriert? Sie können mit Sign In fortfahren, um die "
+"Liste Ihrer Projekte"
 
 #: src/components/feature-editor/ImageInput.vue:152
 msgid "Apply"
-msgstr "Aplikovat"
+msgstr "Anwenden"
 
 #: src/ui/DatePicker.vue:175
 msgid "April"
-msgstr "Duben"
+msgstr "April"
 
 #: src/components/measure/Measure.vue:125
 #: src/components/measure/Measure.vue:259
 msgid "Area"
-msgstr "Plocha"
+msgstr "Bereich"
 
 #: src/components/attributes-table/MobileAttributesTable.vue:333
 msgid "Attributes"
-msgstr "Atributy"
+msgstr "Attribute"
 
 #: src/components/MapTools.vue:104
 msgid "Attributes Table"
-msgstr "Tabulka atributů"
+msgstr "Attribute-Tabelle"
 
 #: src/ui/DatePicker.vue:179
 msgid "August"
-msgstr "Srpen"
+msgstr "August"
 
 #: src/components/LoginDialog.vue:25
 msgid "Authentication failed"
-msgstr "Ověření se nezdařilo"
+msgstr "Authentifizierung fehlgeschlagen"
 
 #: src/components/LoginDialog.vue:110
 msgid "Back to Login"
-msgstr "Zpět k přihlášení"
+msgstr "Zurück zur Anmeldung"
 
 #: src/ui/TextEditor.vue:354
 msgid "Background color"
-msgstr "Barva pozadí"
+msgstr "Hintergrundfarbe"
 
 #: src/components/content-panel/ContentPanel.vue:107
 msgid "Base Layers"
-msgstr "Základní vrstvy"
+msgstr "Basisschichten"
 
 #: src/components/attributes-table/AttributeFilter.vue:264
 #: src/components/attributes-table/AttributeFilter.vue:276
 msgid "between"
-msgstr "od - do"
+msgstr "zwischen"
 
 #: src/ui/TextEditor.vue:346
 msgid "Bold"
-msgstr "Tučné"
+msgstr "Kühnschrift"
 
 #: src/components/attributes-table/MobileAttributesTable.vue:166
 #: src/components/feature-editor/ImageInput.vue:156
 msgid "Cancel"
-msgstr "Zrušit"
+msgstr "Abbrechen"
 
 #: src/components/measure/Measure.vue:226
 msgid "Clear"
-msgstr "Vymazat"
+msgstr "Löschen"
 
 #: src/components/measure/Measure.vue:227
 msgid "Clear all"
-msgstr "Vymazat vše"
+msgstr "Alles löschen"
 
 #: src/components/attributes-table/TableView.vue:123
 #: src/components/attributes-table/MobileAttributesTable.vue:326
 msgid "Clear attributes filters"
-msgstr "Vymazat filtry atributů"
+msgstr "Attributfilter löschen"
 
 #: src/AppNotifications.vue:17
 #: src/components/feature-editor/RelationWidget.vue:77
 #: src/components/LocationTool.vue:20 src/UserDashboard.vue:109
 msgid "Close"
-msgstr "Zavřít"
+msgstr "Schließen"
 
 #: src/components/attributes-table/AttributeFilter.vue:273
 msgid "contain"
-msgstr "obsahuje"
+msgstr "enthält"
 
 #: src/components/content-panel/ContentPanel.vue:4
 msgid "Content"
-msgstr "Obsah"
+msgstr "Inhalt"
 
 #: src/components/LoginDialog.vue:103
 msgid "Continue as Guest"
-msgstr "Pokračovat jako host"
+msgstr "Weiter als Gast"
 
 #: src/components/measure/Measure.vue:228
 msgid "Coordinate systems"
-msgstr "Souřadnicové systémy"
+msgstr "Koordinatensysteme"
 
 #: src/components/BottomToolbar.vue:9
 msgid "Coordinates"
-msgstr "Souřadnice"
+msgstr "Koordinaten"
 
 #: src/ui/TextEditor.vue:327
 msgid "Copy HTML"
-msgstr "Kopírovat HTML"
+msgstr "HTML kopieren"
 
 #: src/UserDashboard.vue:64
 msgid "Created"
-msgstr "Vytvořeno"
+msgstr "Erstellt"
 
 #: src/components/attributes-table/MobileAttributesTable.vue:96
 #: src/components/content-panel/LayersTree.vue:104
 msgid "Data"
-msgstr "Data"
+msgstr "Daten"
 
 #: src/components/attributes-table/MobileAttributesTable.vue:45
 msgid "Data Filters"
-msgstr "Datové filtry"
+msgstr "Datenfilter"
 
 #: src/components/feature-editor/FeatureEditor.vue:93
 #: src/components/feature-editor/NewFeatureEditor.vue:49
 msgid "Data updated"
-msgstr "Údaje aktualizovány"
+msgstr "Daten aktualisiert"
 
 #: src/ui/DatePicker.vue:183
 msgid "December"
-msgstr "Prosinec"
+msgstr "Dezember"
 
 #: src/components/feature-editor/FeatureEditor.vue:102
 #: src/components/feature-editor/FeatureEditor.vue:118
 msgid "Delete current object?"
-msgstr "Smazat aktuální objekt?"
+msgstr "Aktuelles Objekt löschen?"
 
 #: src/components/feature-editor/FeatureEditor.vue:59
 msgid "Delete object"
-msgstr "Odstranit objekt"
+msgstr "Objekt löschen"
 
 #: src/components/feature-editor/GeometryEditor.vue:440
 msgid "Delete selected geometry"
-msgstr "Smazat vybranou geometrii"
+msgstr "Ausgewählte Geometrie löschen"
 
 #: src/components/feature-editor/GeometryEditor.vue:439
 msgid "Delete selected nodes"
-msgstr "Smazat vybrané uzly"
+msgstr "Ausgewählte Knoten löschen"
 
 #: src/components/feature-editor/FeatureEditor.vue:68
 msgid "Discard changes"
-msgstr "Zrušit změny"
+msgstr "Änderungen abbrechen"
 
 #: src/components/MapAttributions.vue:22
 msgid "Display attributions"
-msgstr "Zobrazit autorská práva"
+msgstr "Copyright anzeigen"
 
 #: src/components/measure/Measure.vue:258
 msgid "Distance"
-msgstr "Vzdálenost"
+msgstr "Entfernung"
 
 #: src/AppNotifications.vue:57
 msgid "Don't show this message again"
-msgstr "Tuto zprávu již nezobrazovat"
+msgstr "Diese Meldung nicht mehr anzeigen"
 
 #: src/components/content-panel/LayersTree.vue:119
 msgid "Download"
-msgstr "Stáhnout"
+msgstr "Herunterladen"
 
 #: src/components/attributes-table/MobileAttributesTable.vue:355
 msgid "Edit"
-msgstr "Upravit"
+msgstr "Editieren"
 
 #: src/components/attributes-table/MobileAttributesTable.vue:143
 msgid "Edit feature"
-msgstr "Upravit objekt"
+msgstr "Objekt editieren"
 
 #: src/components/feature-editor/FeatureEditor.vue:32
 #: src/components/measure/Measure.vue:13
 msgid "Edit geometry"
-msgstr "Upravit geometrii"
+msgstr "Geometrie editieren"
 
 #: src/components/feature-editor/GenericEditForm.vue:33
 msgid "Edit value manually"
-msgstr "Upravit hodnotu ručně"
+msgstr "Wert manuell editieren"
 
 #: src/components/LoginDialog.vue:167
 msgid "Email"
@@ -247,24 +249,24 @@ msgstr "Email"
 
 #: src/components/LoginDialog.vue:172
 msgid "Email was sent to given email address."
-msgstr "Email byl odeslán na zadanou adresu."
+msgstr "Email wurde an die angegebene Email-Adresse gesendet."
 
 #: src/components/attributes-table/AttributeFilter.vue:274
 msgid "empty"
-msgstr "nevyplněné hodnoty"
+msgstr "leer"
 
 #: src/components/LoginDialog.vue:168
 msgid ""
 "Enter your email address below and we will email instructions for setting a "
 "new password."
 msgstr ""
-"Zadejte svou emailovou adresu a my Vám zašleme pokyny pro nastavení nového "
-"hesla."
+"Geben Sie Ihre E-Mail-Adresse ein und wir senden Ihnen eine Anleitung zum "
+"Einrichten eines neuen Passworts zu."
 
 #: src/components/attributes-table/AttributeFilter.vue:263
 #: src/components/attributes-table/AttributeFilter.vue:267
 msgid "equal to"
-msgstr "rovná se"
+msgstr "gleich"
 
 #: src/components/content-panel/JsonLegend.vue:12
 #: src/components/feature-editor/FeatureEditor.vue:255
@@ -272,93 +274,93 @@ msgstr "rovná se"
 #: src/components/SearchTool.vue:257 src/ui/ListTable.vue:105
 #: src/ui/Table.vue:211
 msgid "Error"
-msgstr "Chyba"
+msgstr "Fehler"
 
 #: src/components/attributes-table/AttributesTable.vue:68
 #: src/components/attributes-table/MobileAttributesTable.vue:288
 msgid "Export"
-msgstr "Export"
+msgstr "Exportieren"
 
 #: src/components/attributes-table/fetch.js:140
 msgid "Failed to load data"
-msgstr "Data se nepodařilo načíst"
+msgstr "Daten konnten nicht geladen werden"
 
 #: src/components/LoginDialog.vue:171
 msgid "Failed to process your request."
-msgstr "Zpracování vašeho požadavku se nezdařilo."
+msgstr "Bearbeitung Ihrer Anfrage ist fehlgeschlagen."
 
 #: src/components/feature-editor/MediaFileField.vue:226
 msgid "Failed to upload file"
-msgstr "Nahrání souboru se nezdařilo"
+msgstr "Dateiupload fehlgeschlagen"
 
 #: src/ui/DatePicker.vue:173
 msgid "February"
-msgstr "Únor"
+msgstr "Februar"
 
 #: src/components/feature-editor/GenericEditForm.vue:117
 msgid "Field is required"
-msgstr "Pole je povinné"
+msgstr "Feld ist erforderlich"
 
 #: src/components/feature-editor/ImageInput.vue:244
 #: src/components/feature-editor/ImageInput.vue:296
 #: src/components/feature-editor/SimpleFileInput.vue:91
 msgid "File exceeds maximum allowed size"
-msgstr "Soubor překračuje maximální povolenou velikost"
+msgstr "Datei überschreitet die maximal zulässige Größe"
 
 #: src/components/attributes-table/TableView.vue:133
 #: src/components/attributes-table/AttributeFilter.vue:261
 msgid "Filter"
-msgstr "Filtr"
+msgstr "Filter"
 
 #: src/components/attributes-table/AttributeFilter.vue:48
 msgid "Filter by attribute value"
-msgstr "Filtrovat podle hodnoty atributu"
+msgstr "Nach Attributwert filtern"
 
 #: src/components/attributes-table/MobileAttributesTable.vue:382
 #: src/components/attributes-table/TableView.vue:192
 msgid "Filter to visible area"
-msgstr "Filtrovat viditelnou oblast"
+msgstr "Sichtbaren Bereich filtern"
 
 #: src/components/LoginDialog.vue:111
 msgid "Forgot password?"
-msgstr "Zapomenuté heslo?"
+msgstr "Passwort vergessen?"
 
 #: src/components/feature-editor/ImageInput.vue:15
 #: src/components/feature-editor/ImageInput.vue:52
 msgid "Format"
-msgstr "Formát"
+msgstr "Format"
 
 #: src/ui/DatePicker.vue:167
 msgid "Friday"
-msgstr "Pátek"
+msgstr "Freitag"
 
 #: src/components/AppMenu.vue:87
 msgid "Full screen"
-msgstr "Celá obrazovka"
+msgstr "Vollbild"
 
 #: src/components/LocationTool.vue:98
 msgid "Geolocation Error"
-msgstr "Geolokační chyba"
+msgstr "Geopositionsfehler"
 
 #: src/components/attributes-table/AttributeFilter.vue:269
 msgid "greater than"
-msgstr "je větší"
+msgstr "größer als"
 
 #: src/components/AppMenu.vue:97
 msgid "Help"
-msgstr "Nápověda (en)"
+msgstr "Hilfe"
 
 #: src/ui/TextEditor.vue:350
 msgid "Hyperlink"
-msgstr "Hypertextový odkaz"
+msgstr "Hyperlink"
 
 #: src/components/content-panel/LayersTree.vue:96
 msgid "Identification"
-msgstr "Identifikace"
+msgstr "Identifizierung"
 
 #: src/components/feature-editor/ImageInput.vue:28
 msgid "Image will be saved in lower resolution"
-msgstr "Obrázek bude uložen v nižším rozlišení"
+msgstr "Bild wird in geringerer Auflösung gespeichert"
 
 #: src/components/attributes-table/MobileAttributesTable.vue:349
 #: src/components/Identification.vue:156
@@ -367,231 +369,234 @@ msgstr "Infopanel"
 
 #: src/components/attributes-table/AttributeFilter.vue:279
 msgid "Integer"
-msgstr "Celé číslo"
+msgstr "Ganzzahl"
 
 #: src/components/attributes-table/AttributeFilter.vue:281
 msgid "Integer,Integer"
-msgstr "Celé číslo,Celé číslo"
+msgstr "Ganzzahl,Ganzzahl"
 
 #: src/components/attributes-table/AttributeFilter.vue:280
 msgid "Integer,Integer,..."
-msgstr "Celé číslo,..."
+msgstr "Ganzzahl,..."
 
 #: src/App.vue:43
 msgid ""
 "It will give you the experience of a native app, with easy access and a "
 "standalone window without the browser's address bar and other controls."
 msgstr ""
-"Poskytne vám zážitek jako nativní aplikace. Se snadným přístupem a "
-"samostatným oknem, bez adresního řádku a dalších ovládacích prvků prohlížeče."
+"Bietet Ihnen die Erfahrung einer nativen App, mit einfachem Zugriff und "
+"eigenständigem Fenster ohne die Adressleiste des Browsers und andere "
+"Steuerelemente."
 
 #: src/ui/TextEditor.vue:347
 msgid "Italic"
-msgstr "Kurzíva"
+msgstr "Kursivschrift"
 
 #: src/ui/DatePicker.vue:172
 msgid "January"
-msgstr "Leden"
+msgstr "Januar"
 
 #: src/ui/DatePicker.vue:178
 msgid "July"
-msgstr "Červenec"
+msgstr "Juli"
 
 #: src/ui/DatePicker.vue:177
 msgid "June"
-msgstr "Červen"
+msgstr "Juni"
 
 #: src/components/content-panel/BaseLayersTree.vue:46
 msgid "Keywords list"
-msgstr "Klíčová slova"
+msgstr "Stichwortliste"
 
 #: src/components/AppMenu.vue:15 src/components/AppMenu.vue:78
 msgid "Language"
-msgstr "Jazyk"
+msgstr "Sprache"
 
 #: src/components/attributes-table/MobileAttributesTable.vue:379
 #: src/components/EditTool.vue:153 src/components/Identification.vue:190
 msgid "Layer"
-msgstr "Vrstva"
+msgstr "Ebene"
 
 #: src/components/content-panel/ContentPanel.vue:115
 msgid "Layers"
-msgstr "Vrstvy"
+msgstr "Ebenen"
 
 #: src/components/print/Print.vue:87
 msgid "Layout"
-msgstr "Rozložení"
+msgstr "Layout"
 
 #: src/components/content-panel/ContentPanel.vue:109
 msgid "Legend"
-msgstr "Legenda"
+msgstr "Legende"
 
 #: src/components/attributes-table/AttributeFilter.vue:270
 msgid "less than"
-msgstr "je menší"
+msgstr "kleiner als"
 
 #: src/components/attributes-table/tool.js:105
 msgid "link"
-msgstr "odkaz"
+msgstr "Link"
 
 #: src/components/Map.vue:56
 msgid "Loading"
-msgstr "Načítám"
+msgstr "Laden"
 
 #: src/components/measure/Measure.vue:257
 msgid "Location"
-msgstr "Umístění"
+msgstr "Standort"
 
 #: src/components/LoginDialog.vue:94 src/components/AppMenu.vue:65
 msgid "Login"
-msgstr "Přihlásit se"
+msgstr "Einloggen"
 
 #: src/components/AppMenu.vue:53 src/UserDashboard.vue:202
 msgid "Logout"
-msgstr "Odhlásit se"
+msgstr "Ausloggen"
 
 #: src/ui/DatePicker.vue:174
 msgid "March"
-msgstr "Březen"
+msgstr "März"
 
 #: src/ui/DatePicker.vue:176
 msgid "May"
-msgstr "Květen"
+msgstr "Mai"
 
 #: src/components/attributes-table/MobileAttributesTable.vue:381
 #: src/components/EditTool.vue:155 src/components/Identification.vue:191
 #: src/components/measure/Measure.vue:225 src/components/print/Print.vue:86
 #: src/ui/TextEditor.vue:359 src/UserDashboard.vue:210
 msgid "Menu"
-msgstr "Menu"
+msgstr "Menü"
 
 #: src/ui/DatePicker.vue:163
 msgid "Monday"
-msgstr "Pondělí"
+msgstr "Montag"
 
 #: src/components/AppMenu.vue:58 src/UserDashboard.vue:197
 msgid "My profile"
-msgstr "Můj profil"
+msgstr "Mein Profil"
 
 #: src/UserDashboard.vue:218
 msgid "My Projects"
-msgstr "Moje projekty"
+msgstr "Meine Projekte"
 
 #: src/components/attributes-table/MobileAttributesTable.vue:34
 #: src/components/InfoPanel.vue:203
 msgid "New Feature"
-msgstr "Nový objekt"
+msgstr "Neues Objekt"
 
 #: src/IntroPage.vue:29
 msgid ""
 "New to Gisquick? Create a new account if you want to publish your\n"
 "own maps!"
 msgstr ""
+"Neu bei Gisquick? Erstellen Sie ein neues Konto, wenn Sie Ihre eigenen "
+"Karten veröffentlichen möchten!"
 
 #: src/App.vue:48 src/components/feature-editor/FeatureEditor.vue:106
 #: src/components/feature-editor/FeatureEditor.vue:122
 #: src/components/feature-editor/GeometryEditor.vue:175
 msgid "No"
-msgstr "Ne"
+msgstr "Nein"
 
 #: src/components/attributes-table/MobileAttributesTable.vue:138
 msgid "No Data"
-msgstr "Žádná data"
+msgstr "Keine Daten"
 
 #: src/components/attributes-table/TableView.vue:49
 msgid "No geometry"
-msgstr "Nemá geometrii"
+msgstr "Keine Geometrie"
 
 #: src/components/feature-editor/ImageInput.vue:75
 msgid "No image assigned"
-msgstr "Žádný obrázek"
+msgstr "Keine Bildzuordnung"
 
 #: src/components/attributes-table/AttributeFilter.vue:275
 msgid "not empty"
-msgstr "vyplněné hodnoty"
+msgstr "nicht leer"
 
 #: src/components/attributes-table/AttributeFilter.vue:268
 msgid "not equal to"
-msgstr "nerovná se"
+msgstr "nicht gleich"
 
 #: src/components/attributes-table/AttributeFilter.vue:272
 msgid "not in"
-msgstr "neobsahují"
+msgstr "nicht in"
 
 #: src/App.vue:27
 msgid "Not now"
-msgstr "Teď ne"
+msgstr "Nicht jetzt"
 
 #: src/components/feature-editor/GenericEditForm.vue:116
 #: src/components/feature-editor/NumberField.vue:48
 msgid "Not valid integer number"
-msgstr "Neplatné celé číslo"
+msgstr "Ungültige Ganzzahl"
 
 #: src/components/feature-editor/GenericEditForm.vue:115
 #: src/components/feature-editor/NumberField.vue:47
 msgid "Not valid number"
-msgstr "Neplatné číslo"
+msgstr "Ungültige Nummer"
 
 #: src/ui/DatePicker.vue:182
 msgid "November"
-msgstr "Listopad"
+msgstr "November"
 
 #: src/components/attributes-table/AttributeFilter.vue:282
 msgid "Number"
-msgstr "Číslo"
+msgstr "Nummer"
 
 #: src/components/attributes-table/AttributeFilter.vue:284
 msgid "Number,Number"
-msgstr "Číslo,Číslo"
+msgstr "Nummer,Nummer"
 
 #: src/components/attributes-table/AttributeFilter.vue:283
 msgid "Number,Number,..."
-msgstr "Číslo,..."
+msgstr "Nummer,..."
 
 #: src/ui/DatePicker.vue:181
 msgid "October"
-msgstr "Říjen"
+msgstr "Oktober"
 
 #: src/components/attributes-table/AttributeFilter.vue:271
 msgid "one of"
-msgstr "jednu z hodnot"
+msgstr "einer von"
 
 #: src/components/content-panel/BaseLayerOpacity.vue:5
 msgid "Opacity of base layer"
-msgstr "Viditelnost základních vrstev"
+msgstr "Sichtbarkeit von Basisschichten"
 
 #: src/components/content-panel/OverlaysOpacity.vue:5
 msgid "Opacity of overlay layers"
-msgstr "Viditelnost překryvných vrstev"
+msgstr "Sichtbarkeit von Überlagerungsebenen"
 
 #: src/ui/TextEditor.vue:352
 msgid "Ordered list"
-msgstr "Číslovaný seznam"
+msgstr "Nummerierte Liste"
 
 #: src/components/print/Print.vue:114
 msgid "Output format"
-msgstr "Výstupní formát"
+msgstr "Ausgabeformat"
 
 #: src/components/content-panel/ContentPanel.vue:108
 msgid "Overlay Layers"
-msgstr "Překryvné vrstvy"
+msgstr "Überlagerungsebenen"
 
 #: src/components/attributes-table/MobileAttributesTable.vue:293
 #: src/components/attributes-table/TableView.vue:193
 msgid "Page size"
-msgstr "Počet řádků"
+msgstr "Anzahl der Zeilen"
 
 #: src/components/LoginDialog.vue:166
 msgid "Password"
-msgstr "Heslo"
+msgstr "Passwort"
 
 #: src/ui/TextEditor.vue:330
 msgid "Paste HTML"
-msgstr "Vložit HTML"
+msgstr "HTML einfügen"
 
 #: src/components/measure/Measure.vue:124
 msgid "Perimeter"
-msgstr "Obvod"
+msgstr "Perimeter"
 
 #: src/components/AppMenu.vue:93
 msgid "Permalink"
@@ -599,138 +604,138 @@ msgstr "Permalink"
 
 #: src/components/LoginDialog.vue:20
 msgid "Permission denied"
-msgstr "Přístup odepřen"
+msgstr "Zugang verweigert"
 
 #: src/components/print/Preview.vue:12
 msgid "Print Preview"
-msgstr "Náhled před tiskem"
+msgstr "Druckvorschau"
 
 #: src/components/print/Print.vue:116
 msgid "Print quality"
-msgstr "Kvalita tisku"
+msgstr "Druckqualität"
 
 #: src/components/feature-editor/MediaFileField.vue:224
 msgid "Project size limit reached"
-msgstr "Dosáhli jste limitu pro velikost projektu"
+msgstr "Projektumfangsgrenze erreicht"
 
 #: src/UserDashboard.vue:95
 msgid "Publish project"
-msgstr "Publikovat projekt"
+msgstr "Projekt veröffentlichen"
 
 #: src/UserDashboard.vue:222
 msgid "Recent"
-msgstr "Nedávné"
+msgstr "Zuletzt"
 
 #: src/ui/TextEditor.vue:345
 msgid "Redo"
-msgstr "Znovu"
+msgstr "Wiederholen"
 
 #: src/ui/TextEditor.vue:333
 msgid "Reset formatting"
-msgstr "Odstranit formátování"
+msgstr "Formatierung zurücksetzen"
 
 #: src/components/LoginDialog.vue:58
 msgid "Reset Password"
-msgstr "Obnovit heslo"
+msgstr "Passwort zurücksetzen"
 
 #: src/components/feature-editor/ImageInput.vue:145
 #: src/components/feature-editor/ImageInput.vue:23
 #: src/components/feature-editor/ImageInput.vue:58
 msgid "Resolution"
-msgstr "Rozlišení"
+msgstr "Auflösung"
 
 #: src/ui/DatePicker.vue:168
 msgid "Saturday"
-msgstr "Sobota"
+msgstr "Samstag"
 
 #: src/components/feature-editor/FeatureEditor.vue:78
 msgid "Save changes"
-msgstr "Uložit změny"
+msgstr "Änderungen speichern"
 
 #: src/components/BottomToolbar.vue:6 src/components/print/Preview.vue:11
 msgid "Scale"
-msgstr "Měřítko"
+msgstr "Skala"
 
 #: src/components/SearchTool.vue:125
 msgid "Search address"
-msgstr "Vyhledat adresu"
+msgstr "Adresse suchen"
 
 #: src/components/SearchTool.vue:126
 msgid "Search location"
-msgstr "Vyhledat místo"
+msgstr "Standort suchen"
 
 #: src/components/feature-editor/MediaFileField.vue:59
 #: src/components/feature-editor/RelationWidget.vue:84
 msgid "Select"
-msgstr "Vybrat"
+msgstr "Wählen"
 
 #: src/components/attributes-table/MobileAttributesTable.vue:380
 #: src/components/EditTool.vue:154
 msgid "Select layer"
-msgstr "Vyberte vrstvu"
+msgstr "Ebene wählen"
 
 #: src/components/feature-editor/GeometryEditor.vue:562
 msgid "Selected geometry was deleted"
-msgstr "Vybraná geometrie byla smazána"
+msgstr "Ausgewählte Geometrie wurde gelöscht"
 
 #: src/ui/DatePicker.vue:180
 msgid "September"
-msgstr "Září"
+msgstr "September"
 
 #: src/IntroPage.vue:24
 msgid "Sign in"
-msgstr "Přihlásit se"
+msgstr "Anmelden"
 
 #: src/components/LoginDialog.vue:11
 msgid "Sign In to Continue"
-msgstr "Přihlásit se"
+msgstr "Anmelden zum Fortfahren"
 
 #: src/IntroPage.vue:34
 msgid "Sign up"
-msgstr "Zaregistrovat se"
+msgstr "Registrieren"
 
 #: src/components/attributes-table/AttributeFilter.vue:265
 msgid "since"
-msgstr "od"
+msgstr "seit"
 
 #: src/components/feature-editor/ImageInput.vue:141
 #: src/components/feature-editor/ImageInput.vue:19
 #: src/components/feature-editor/ImageInput.vue:55
 #: src/components/feature-editor/SimpleFileInput.vue:12
 msgid "Size"
-msgstr "Velikost"
+msgstr "Größe"
 
 #: src/components/feature-editor/SnapTool.vue:10
 msgid "Snapping"
-msgstr "Přichytávání"
+msgstr "Schnappen"
 
 #: src/components/feature-editor/SnapTool.vue:22
 msgid "Snapping layers"
-msgstr "Vrstvy pro přichytávání"
+msgstr "Ebenen zum Schnappen"
 
 #: src/ui/TextEditor.vue:349
 msgid "Strike"
-msgstr "Přeškrtnuto"
+msgstr "Durchstreichen"
 
 #: src/ui/DatePicker.vue:169
 msgid "Sunday"
-msgstr "Neděle"
+msgstr "Sonntag"
 
 #: src/components/Identification.vue:155
 msgid "Table"
-msgstr "Tabulka"
+msgstr "Tabelle"
 
 #: src/components/Identification.vue:157
 msgid "Table & Info Panel"
-msgstr "Tabulka & Infopanel"
+msgstr "Tabelle & Infopanel"
 
 #: src/ui/TextEditor.vue:355
 msgid "Text color"
-msgstr "Barva textu"
+msgstr "Textfarbe"
 
 #: src/ui/TextEditor.vue:353
 msgid "Text size"
-msgstr "Velikost textu"
+msgstr "Textgröße"
 
 #: src/components/attributes-table/AttributeFilter.vue:285
 msgid "Text,Text,..."
@@ -738,19 +743,19 @@ msgstr "Text,Text,..."
 
 #: src/ui/DatePicker.vue:166
 msgid "Thursday"
-msgstr "Čtvrtek"
+msgstr "Donnerstag"
 
 #: src/components/content-panel/ContentPanel.vue:114
 msgid "Topics"
-msgstr "Témata"
+msgstr "Themen"
 
 #: src/components/measure/Measure.vue:78
 msgid "Total length"
-msgstr "Celková délka"
+msgstr "Gesamtlänge"
 
 #: src/ui/DatePicker.vue:164
 msgid "Tuesday"
-msgstr "Úterý"
+msgstr "Dienstag"
 
 #: src/components/content-panel/LayersTree.vue:85
 msgid "Type"
@@ -758,171 +763,130 @@ msgstr "Typ"
 
 #: src/components/feature-editor/SnapTool.vue:110
 msgid "Unable to retrieve snapping geometry."
-msgstr "Nelze načíst přichytávací geometrie."
+msgstr "Fanggeometrie kann nicht abgerufen werden."
 
 #: src/ui/TextEditor.vue:348
 msgid "Underline"
-msgstr "Podtrženo"
+msgstr "Unterstreichen"
 
 #: src/components/feature-editor/GeometryEditor.vue:45
 #: src/components/feature-editor/GeometryEditor.vue:88
 #: src/ui/TextEditor.vue:344
 msgid "Undo"
-msgstr "Vrátit zpět"
+msgstr "Rückgängig"
 
 #: src/components/measure/Measure.vue:229
 msgid "Units"
-msgstr "Jednotky"
+msgstr "Einheiten"
 
 #: src/ui/TextEditor.vue:351
 msgid "Unordered list"
-msgstr "Nečíslovaný seznam"
+msgstr "Unnumerierte Liste"
 
 #: src/components/attributes-table/AttributeFilter.vue:266
 msgid "until"
-msgstr "do"
+msgstr "bis"
 
 #: src/UserDashboard.vue:69
 msgid "Updated"
-msgstr "Aktualizováno"
+msgstr "Aktualisiert"
 
 #: src/components/feature-editor/FeatureEditor.vue:92
 #: src/components/feature-editor/NewFeatureEditor.vue:48
 msgid "Updating data"
-msgstr "Data se aktualizují"
+msgstr "Daten werden aktualisiert"
 
 #: src/components/feature-editor/MediaFileField.vue:42
 msgid "Uploading"
-msgstr "Nahrávám"
+msgstr "Hochladen"
 
 #: src/UserDashboard.vue:86
 msgid ""
 "Use QGIS and Gisquick plugin to create your map, and then publish it from "
 "your profile page."
 msgstr ""
+"Verwenden Sie QGIS und das Gisquick-Plugin, um Ihre Karte zu erstellen, und "
+"veröffentlichen Sie sie dann auf Ihrer Profilseite."
 
 #: src/components/LoginDialog.vue:165
 msgid "Username / Email"
-msgstr "Uživatelské jméno / Heslo"
+msgstr "Benutzername / Email"
 
 #: src/components/content-panel/LayersTree.vue:110
 msgid "Visit"
-msgstr "Navštívit"
+msgstr "Besuch"
 
 #: src/IntroPage.vue:10
 msgid "Web platform for publishing your maps from QGIS desktop"
 msgstr ""
+"Web-Plattform für die Veröffentlichung Ihrer Karten vom QGIS-Desktop aus"
 
 #: src/ui/DatePicker.vue:165
 msgid "Wednesday"
-msgstr "Středa"
+msgstr "Mittwoch"
 
 #: src/IntroPage.vue:9
 msgid "Welcome to the Gisquick"
-msgstr ""
+msgstr "Willkommen bei Gisquick"
 
 #: src/App.vue:51 src/components/feature-editor/FeatureEditor.vue:109
 #: src/components/feature-editor/FeatureEditor.vue:125
 #: src/components/feature-editor/GeometryEditor.vue:178
 msgid "Yes"
-msgstr "Ano"
+msgstr "Ja"
 
 #: src/UserDashboard.vue:85
 msgid "You didn't publish any project yet!"
-msgstr "Dosud jste nepublikovali žádný projekt!"
+msgstr "Sie haben noch kein Projekt veröffentlicht!"
 
 #: src/components/feature-editor/SnapTool.vue:109
 msgid ""
 "You have reached the geometry snapping limit. Please zoom in to a smaller "
 "map area."
-msgstr "Dosáhli jste limitu pro přichytávání. Přibližte mapu na menší oblast."
+msgstr ""
+"Sie haben das Limit für die Geometrieerfassung erreicht. Bitte zoomen Sie "
+"auf einen kleineren Kartenbereich."
 
 #: src/components/attributes-table/MobileAttributesTable.vue:342
 msgid "Zoom to"
-msgstr "Přiblížit"
+msgstr "Zoom bis"
 
 #: src/AppNotifications.vue:16
 msgctxt "adverb"
 msgid "Next"
-msgstr "Dále"
+msgstr "Weiter"
 
 #: src/components/MapTools.vue:136
 msgctxt "noun"
 msgid "Edit layer"
-msgstr "Editace"
+msgstr "Ebene editieren"
 
 #: src/components/MapTools.vue:66
 msgctxt "noun"
 msgid "Identification"
-msgstr "Identifikace"
+msgstr "Identifikation"
 
 #: src/components/MapTools.vue:82
 msgctxt "noun"
 msgid "Measure"
-msgstr "Měření"
+msgstr "Messung"
 
 #: src/components/MapTools.vue:91
 msgctxt "noun"
 msgid "Print"
-msgstr "Tisk"
+msgstr "Drucken"
 
 #: src/UserDashboard.vue:211
 msgctxt "noun"
 msgid "Search"
-msgstr "Vyhledávání"
+msgstr "Suche"
 
 #: src/UserDashboard.vue:112 src/UserDashboard.vue:226
 msgctxt "verb"
 msgid "Open"
-msgstr "Otevřít"
+msgstr "Öffnen"
 
 #: src/App.vue:30
 msgctxt "verb"
 msgid "Update"
-msgstr "Aktualizovat"
-
-#~ msgid "Back"
-#~ msgstr "Zpátky"
-
-#~ msgid "Node tool"
-#~ msgstr "Editace bodů"
-
-#, fuzzy
-#~| msgid "Coordinate systems"
-#~ msgid "Coordinate system"
-#~ msgstr "Souřadnicové systémy"
-
-#~ msgid "Last segment"
-#~ msgstr "Poslední segment"
-
-#~ msgid "Select Image"
-#~ msgstr "Vyberte Obrázek"
-
-#, fuzzy
-#~| msgid "New Feature"
-#~ msgid "New feature"
-#~ msgstr "Nový objekt"
-
-#~ msgid "Geometry"
-#~ msgstr "Geometrie"
-
-#~ msgid "Sign out"
-#~ msgstr "Odhlásit se"
-
-#~ msgid "Mon"
-#~ msgstr "Pon"
-
-#~ msgid "Sat"
-#~ msgstr "Sob"
-
-#~ msgid "Display"
-#~ msgstr "Zobrazení"
-
-#~ msgid "Refresh"
-#~ msgstr "Obnovit"
-
-#~ msgid "Limit"
-#~ msgstr "Limit"
-
-#~ msgid "Operator"
-#~ msgstr "Operátor"
+msgstr "Aktualisierung"

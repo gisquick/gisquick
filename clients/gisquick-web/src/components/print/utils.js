@@ -6,6 +6,7 @@ export function mmToPx (value) {
 }
 
 export function createPrintParameters (map, layout, extent, config) {
+  const layers = config.layers || map.overlay.getSource().getVisibleLayers()
   const params = {
     'SERVICE': 'WMS',
     'REQUEST': 'GetPrint',
@@ -13,7 +14,7 @@ export function createPrintParameters (map, layout, extent, config) {
     'DPI': config.dpi,
     'FORMAT': config.format,
     'SRS': map.getView().getProjection().getCode(),
-    'LAYERS': (config.layers || map.overlay.getSource().getVisibleLayers()).join(','),
+    'LAYERS': layers.join(','),
     'map0:EXTENT': extent.join(','),
     'map0:SCALE': map.getView().getScale(),
     'map0:ROTATION': map.getView().getRotation() * 180 / Math.PI
@@ -21,6 +22,9 @@ export function createPrintParameters (map, layout, extent, config) {
   if (layout.map.grid) {
     params['map0:GRID_INTERVAL_X'] = layout.map.grid.intervalX
     params['map0:GRID_INTERVAL_Y'] = layout.map.grid.intervalY
+  }
+  if (config.opacities) {
+    params['OPACITIES'] = config.opacities.join(',')
   }
   // layout.labels.forEach(label => {
   //   if (label.value) {

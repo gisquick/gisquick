@@ -212,15 +212,23 @@ export default {
     printRequest (extent, opts) {
       const map = this.$map
       const layers = []
+      const opacities = []
       if (this.visibleBaseLayer?.name) {
-        layers.push(this.visibleBaseLayer.name)
+        const opacity = map.getLayers().getArray().find(l => l.get('name') === this.visibleBaseLayer.name)?.getOpacity() ?? 1
+        if (opacity > 0) {
+          layers.push(this.visibleBaseLayer.name)
+          opacities.push(Math.round(opacity * 255))
+        }
       }
-      layers.push(...map.overlay.getSource().getVisibleLayers())
+      const overlayLayers = map.overlay.getSource().getVisibleLayers()
+      layers.push(...overlayLayers)
+      opacities.push(...new Array(overlayLayers.length).fill(Math.round(map.overlay.getOpacity() * 255)))
 
       const config = {
         dpi: this.dpi,
         format: this.format,
         layers,
+        opacities,
         ...opts
       }
       const attributions = map.overlay.getSource().getAttributions()()

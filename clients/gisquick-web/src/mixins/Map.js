@@ -191,11 +191,12 @@ export default {
   },
   methods: {
     async setVisibleBaseLayer (layer) {
-      this.$map?.getLayers().getArray()
-        .filter(l => l.get('type') === 'baselayer' && l.get('name') !== layer?.name)
-        .forEach(l => l.setVisible(false))
+      const baseLayers = this.$map?.getLayers().getArray().filter(l => l.get('type') === 'baselayer')
+      const opacity = baseLayers?.find(l => l.getVisible())?.getOpacity() ?? 1
+      baseLayers?.forEach(l => l.setVisible(false))
       if (layer) {
         const baseLayer = await this.$map.getBaseLayer(layer.name)
+        baseLayer.setOpacity(opacity)
         baseLayer.setVisible(true)
         this.unregisterBaseLayerListener?.()
         this.unregisterBaseLayerListener = this.registerStatusListener(baseLayer, this.status.baseLayer)

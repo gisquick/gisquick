@@ -21,13 +21,9 @@
 </template>
 
 <script>
-import VIcon from '@/ui/Icon.vue'
-import VSlider from '@/ui/Slider.vue'
-import VTooltip from '@/ui/Tooltip.vue'
 import { hexColor } from '@/ui/utils/colors'
 
 export default {
-  components: { VIcon, VSlider, VTooltip },
   data () {
     const color = getComputedStyle(document.body).getPropertyValue('--color-primary-rgb').split(',').map(Number)
     const colors = [hexColor(color) + '20', hexColor(color) + 'ff']

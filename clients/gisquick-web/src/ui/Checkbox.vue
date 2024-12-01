@@ -128,7 +128,7 @@ export default {
   outline: none;
   user-select: none;
   cursor: pointer;
-  margin: 6px;
+  margin: var(--gutter, 6px);
   &[disabled] {
     opacity: 0.75;
     cursor: not-allowed;

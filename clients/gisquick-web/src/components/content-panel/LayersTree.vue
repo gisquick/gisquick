@@ -9,7 +9,7 @@
     :group-content-attrs="groupContentAttributes"
   >
     <template v-slot:group="{ group, depth }">
-      <div v-if="group.virtual_layer" class="item group f-row-ac">
+      <div v-if="group.virtual_layer" class="item layer f-row-ac">
         <v-checkbox
           class="f-grow"
           :label="group.name"
@@ -81,6 +81,20 @@
             v-if="expandedLayer === item"
             class="metadata f-col px-2 py-1"
           >
+            <div class="f-row-ac">
+              <translate class="label">Opacity</translate>
+              <v-slider
+                min="0"
+                max="255"
+                step="1"
+                class="f-grow mx-2 my-0"
+                marker-blend-color="#bbbbbbff"
+                hide-range-labels
+                :colors="opacityColors"
+                :value="item.opacity"
+                @input="setLayerOpacity(item, $event)"
+              />
+            </div>
             <p>
               <translate class="label">Type</translate>
               <template v-if="item.type === 'VectorLayer'">
@@ -129,6 +143,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import { hexColor } from '@/ui/utils/colors'
 
 const VectorIcons = {
   NoGeometry: 'attribute-table',
@@ -181,6 +196,11 @@ export default {
         hasDataWebLink: l.metadata.data_url && isWebpageLink(l.metadata.data_url)
       })
       return this.layers.list.reduce((res, l) => (res[l.name] = layerMetadata(l), res), {})
+    },
+    opacityColors () {
+      const color = getComputedStyle(document.body).getPropertyValue('--color-primary-rgb').split(',').map(Number)
+      const colors = [hexColor(color) + '20', hexColor(color) + 'ff']
+      return colors
     }
   },
   methods: {
@@ -204,6 +224,10 @@ export default {
     showAttributesTable (layer) {
       this.$store.commit('attributeTable/layer', layer)
       this.$store.commit('activeTool', 'attribute-table')
+    },
+    setLayerOpacity (layer, opacity) {
+      this.$store.commit('layerOpacity', { layer, opacity })
+      this.$map.overlay.getSource().setLayerOpacity(layer.name, opacity)
     }
   }
 }

@@ -222,7 +222,9 @@ export default {
       }
       const overlayLayers = map.overlay.getSource().getVisibleLayers()
       layers.push(...overlayLayers)
-      opacities.push(...new Array(overlayLayers.length).fill(Math.round(map.overlay.getOpacity() * 255)))
+      const globalOpacity = map.overlay.getOpacity()
+      const overlaysOpacities = map.overlay.getSource().opacities
+      opacities.push(...overlayLayers.map(name => Math.round(globalOpacity * (overlaysOpacities[name] ?? 255))))
 
       const config = {
         dpi: this.dpi,

@@ -69,6 +69,7 @@ export default {
     disabled: Boolean,
     min: [String, Number],
     max: [String, Number],
+    step: [String, Number],
     value: Number,
     hideRangeLabels: Boolean,
     colors: {
@@ -102,6 +103,9 @@ export default {
     },
     validValue () {
       return Number.isFinite(this.value)
+    },
+    stepValue () {
+      return this.step ? parseFloat(this.step) : null
     },
     valuePos () {
       const { min, max } = this.range
@@ -171,6 +175,12 @@ export default {
       // console.log('onBlur')
       this.focused = false
     },
+    roundValue (v) {
+      if (this.stepValue) {
+        return Math.round(v / this.stepValue) * this.stepValue
+      }
+      return v
+    },
     dragStart (e) {
       if (!this.focused) {
         this.focus()
@@ -195,7 +205,7 @@ export default {
           k = (this.range.max - this.range.min) / trackBounds.width
           // console.log('k', k)
         }
-        const value = clamp(startValue + offset * k, this.range.min, this.range.max)
+        const value = this.roundValue(clamp(startValue + offset * k, this.range.min, this.range.max))
         this.dragValue = value
         if (!this.lazy) {
           this.$emit('input', value)
@@ -231,7 +241,7 @@ export default {
       }
       const trackBounds = this.$refs.track.getBoundingClientRect()
       const offset = e.clientX - trackBounds.x
-      const value = this.range.min + (offset / trackBounds.width) * (this.range.max - this.range.min)
+      const value = this.roundValue(this.range.min + (offset / trackBounds.width) * (this.range.max - this.range.min))
       this.$emit('input', value)
       this.$emit('change', value)
     }
@@ -244,10 +254,8 @@ export default {
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
-  margin: 6px;
+  margin: var(--gutter, 6px);
   font-size: 12px;
-  min-height: 36px;
-
   // outline-color: var(--color-primary);
   outline: 0;
   // border: 1px solid transparent;

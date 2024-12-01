@@ -21,6 +21,7 @@ import { altKeyOnly } from 'ol/events/condition'
 // import md5 from 'md5'
 import omitBy from 'lodash/omitBy'
 import { wmtsSource } from './wmts'
+import { debounce } from 'lodash'
 
 
 const cleanParams = params => omitBy(params, v => v === undefined || v === null || v === '')
@@ -37,6 +38,7 @@ function GisquickWMSType (baseClass) {
       super(opts)
       this.layersAttributions = opts.layersAttributions || {}
       this.layersOrder = opts.layersOrder || {}
+      this.opacities = opts.opacities ?? {}
       const legendParams = {
         SERVICE: 'WMS',
         VERSION: '1.1.1',
@@ -52,6 +54,15 @@ function GisquickWMSType (baseClass) {
       }
       this.legendUrl = createUrl(opts.url, legendParams)
       this.setVisibleLayers(opts.visibleLayers || [])
+      this.updateOpacitiesParam = debounce(() => {
+        this.updateParams({ OPACITIES: this.getLayersOpacitiesParam(this.visibleLayers) })
+      }, 200)
+    }
+
+    getLayersOpacitiesParam (layers) {
+      const opacities = layers.map(lname => this.opacities[lname] ?? 255)
+      const setOpacities = opacities.some(o => o !== 255)
+      return setOpacities ? opacities.join(',') : ''
     }
 
     setVisibleLayers (layers) {
@@ -62,8 +73,11 @@ function GisquickWMSType (baseClass) {
         const attributions = orderedLayers.map(layername => this.layersAttributions[layername]).filter(v => v)
         this.setAttributions(attributions)
       }
-      this.updateParams({ LAYERS: orderedLayers.join(',') })
       this.visibleLayers = orderedLayers
+      this.updateParams({
+        LAYERS: orderedLayers.join(','),
+        OPACITIES: this.getLayersOpacitiesParam(orderedLayers)
+      })
     }
 
     getVisibleLayers () {
@@ -79,6 +93,11 @@ function GisquickWMSType (baseClass) {
         }
       }
       return this.legendUrl.href
+    }
+
+    setLayerOpacity (layername, opacity) {
+      this.opacities[layername] = opacity
+      this.updateOpacitiesParam()
     }
 
     refresh () {

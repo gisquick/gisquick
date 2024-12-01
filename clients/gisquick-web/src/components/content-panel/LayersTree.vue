@@ -53,7 +53,7 @@
           </div>
           <!-- <span v-else class="p-2" v-text="item.title || item.name"/> -->
           <v-btn
-            v-if="!attributeTableDisabled && item.queryable && item.attributes && item.attributes.length"
+            v-if="!attributeTableDisabled && item.queryable && item.attributes && item.attributes.length && (item.attr_table_fields && item.attr_table_fields.length > 0)"
             :active="activeTool === 'attribute-table' && attributeTable.layer === item"
             class="icon flat small"
             :color="activeTool === 'attribute-table' && attributeTable.layer === item ? 'primary' : ''"

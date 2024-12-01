@@ -50,6 +50,8 @@
       }
     }
     .checkbox {
+      --gutter: 0;
+      padding: 6px;
       ::v-deep .check {
         margin-right: 6px;
       }

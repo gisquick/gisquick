@@ -1,7 +1,7 @@
 <template>
   <div>
     <identify-pointer v-if="layer && mode !== 'add'" @click="identify"/>
-    <features-viewer :features="features" :selected-index="selection ? selection.featureIndex : null"/>
+    <features-viewer :features="features" :selected-index="0"/>
     <portal to="main-panel">
       <div class="edit-panel light f-col" key="edit">
         <div class="scroll-area f-col">
@@ -168,7 +168,7 @@ export default {
       }))
     },
     selection () {
-      return this.features ? { layer: this.layer.name, featureIndex: 0 } : null
+      return this.features ? { layer: this.layer.name, id: this.features[0].getId() } : null
     }
   },
   methods: {
@@ -218,6 +218,7 @@ export default {
       try {
         const features = await this.getFeaturesByWFS( query, { 'MAXFEATURES': 1 })
         this.features = Object.freeze(features)
+        this.mode = 'edit'
       } finally {
         map.getViewport().style.cursor = 'crosshair'
       }

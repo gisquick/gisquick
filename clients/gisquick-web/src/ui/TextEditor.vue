@@ -7,11 +7,10 @@
     :label="label"
   >
     <svg-sprite/>
-    <div
-      v-show="!disabled && !readonly"
-      ref="editor"
-      class="input"
-    />
+    <div v-show="!disabled && !readonly" class="input">
+      <!-- wrapped in another container for proper scrolling and highlight line position -->
+      <div class="content" ref="editor"/>
+    </div>
     <div
       v-show="disabled || readonly"
       class="input"
@@ -267,6 +266,18 @@ const Formats = {
     unset: 'removeList'
   }
 }
+function sanitizeToDOMFragment (html) {
+  const frag = DOMPurify.sanitize(html, {
+    ALLOW_UNKNOWN_PROTOCOLS: true,
+    WHOLE_DOCUMENT: false,
+    RETURN_DOM: true,
+    RETURN_DOM_FRAGMENT: true,
+    FORCE_BODY: false
+  })
+  // return frag
+  return frag ? document.importNode(frag, true) : document.createDocumentFragment()
+}
+
 
 export default {
   components: { ColorPicker, InputField, SvgSprite },
@@ -283,11 +294,11 @@ export default {
     },
     disabled: Boolean,
     label: String,
-    lazy: Boolean,
     readonly: {
       type: Boolean,
       default: undefined
-    }
+    },
+    overrideFont: Boolean
   },
   data () {
     return {
@@ -381,23 +392,42 @@ export default {
     const squire = new Squire(this.$refs.editor, {
       blockTag: 'p',
       blockAttributes: { 'class': '' },
-      sanitizeToDOMFragment: html => {
-        const frag = DOMPurify.sanitize(html, {
-          ALLOW_UNKNOWN_PROTOCOLS: true,
-          WHOLE_DOCUMENT: false,
-          RETURN_DOM: true,
-          RETURN_DOM_FRAGMENT: true,
-          FORCE_BODY: false
-        })
-        return frag ? document.importNode(frag, true) : document.createDocumentFragment()
-      }
+      sanitizeToDOMFragment
     })
     // squire.addEventListener('select', this.checkFormat)
     // squire.addEventListener('cursor', this.checkFormat)
+    squire.addEventListener('willPaste', (e) => {
+      const frag = DOMPurify.sanitize(e.detail.html, {
+        ALLOW_UNKNOWN_PROTOCOLS: true,
+        WHOLE_DOCUMENT: false,
+        RETURN_DOM: true,
+        RETURN_DOM_FRAGMENT: true,
+        FORCE_BODY: false
+      })
+      // replace selected unsupported fonts
+      frag.querySelectorAll('[face*="Tahoma"], [face*="Calibri"]')
+        .forEach(el => el.setAttribute('face', 'Roboto'))
+      frag.querySelectorAll('[style*="Tahoma"], [style*="Calibri"]')
+        .forEach(el => el.setAttribute('style', el.getAttribute('style').replaceAll('Calibri', 'Roboto')))
+
+      e.detail.fragment = frag
+
+      if (this.overrideFont) {
+        setTimeout(() => {
+          const range = new Range()
+          const content = squire.getRoot()
+          range.setStartBefore(content.firstChild)
+          range.setEndAfter(content.lastChild)
+          squire.setSelection(range)
+          squire.setFontFace('Roboto')
+          squire.setSelection(new Range)
+        })
+      }
+    })
     squire.addEventListener('pathChange', this.checkFormat)
     this.$once('hook:beforeDestroy', () => squire.destroy())
     this.squire = squire
-    this.squire.setHTML(this.value)
+    this.squire.insertHTML(this.value, true)
   },
   methods: {
     toggleFormat (format) {
@@ -468,7 +498,6 @@ export default {
     position: relative;
     height: auto;
     user-select: none;
-    margin-bottom: 4px;
     .separator {
       width: 1px;
       background-color: #ddd;
@@ -487,7 +516,7 @@ export default {
     }
   }
   .input {
-    // display: flex;
+    display: grid;
     min-width: 0;
     min-height: 100px;
     line-height: normal; // (nice center alignment of span and input elements)
@@ -495,9 +524,15 @@ export default {
     outline: none;
     // make it resizable
     resize: vertical;
-    height: auto;
-    overflow: auto;
+    overflow: hidden;
+    // height: auto;
     // white-space: pre-line;
+    transition: none;
+    position: relative;
+    .content {
+      outline: none;
+      overflow: auto;
+    }
   }
 }
 .hyperlink-menu {

@@ -12,20 +12,19 @@
     @closed="$emit('closed')"
     @opened="$emit('opened')"
   >
-    <!-- <slot name="header">
-      <div class="header">
+    <slot v-if="title" name="header">
+      <div class="header dark">
         <slot name="title">
           <span class="title">{{ title }}</span>
         </slot>
         <v-btn
-          color="primary"
           class="icon"
           @click="close"
         >
-          <v-icon size="16" name="close"/>
+          <v-icon name="x"/>
         </v-btn>
       </div>
-    </slot> -->
+    </slot>
     <slot
       v-if="open"
       :close="close"
@@ -97,26 +96,20 @@ export default {
 <style lang="scss">
 .dialog {
   text-align: left;
-  font-size: 14px;
   .header {
     display: grid;
     grid-template-columns: 1fr auto;
     align-items: center;
     text-align: center;
+    background-color: var(--color-dark);
     .title {
       grid-area: 1 / 1 / 2 / 3;
-      margin: 24px 6px 6px 6px;
-      font-size: 34px;
       font-weight: bold;
-      color: var(--color-primary);
       justify-self: center;
       max-width: calc(100% - 100px);
     }
     .btn {
       grid-area: 1 / 2 / 2 / 3;
-      min-width: 26px;
-      width: 26px;
-      height: 26px;
       align-self: start;
     }
   }

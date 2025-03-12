@@ -15,7 +15,7 @@
     <span class="btn__content">
       <slot/>
     </span>
-    <v-spinner v-if="loading" class="loading-spinner"/>
+    <v-spinner v-if="loading" class="loading-spinner" size="18" width="2"/>
   </component>
 </template>
 

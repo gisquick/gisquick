@@ -1,5 +1,5 @@
 <template>
-  <div class="map-container">
+  <div class="map-container" :class="{authenticated: !user.is_guest}">
     <div ref="mapEl" class="map"/>
     <app-menu class="app-menu" align="rr;tb,bt">
       <template v-slot:activator="{ toggle }">
@@ -192,7 +192,15 @@ export default {
   > * {
     position: relative;
   }
-
+  ::v-deep #ol-street-view--map-container {
+    grid-column: 1 / 4;
+    grid-row: 1 / 5;
+    position: relative;
+    z-index: 0;
+    &.ol-street-view--activated {
+      grid-column: 2 / 4;
+    }
+  }
   .map {
     grid-column: 1 / 4;
     grid-row: 1 / 5;
@@ -341,6 +349,17 @@ export default {
         border-radius: 50%;
       }
     }
+  }
+  ::v-deep .gm-control-exit.gm-control-active {
+    right: 44px!important;
+    margin: 6px;
+    border-radius: 3px;
+    width: auto;
+    height: 32px;
+    padding: 0 6px;
+  }
+  &.authenticated ::v-deep .gm-control-exit.gm-control-active {
+    right: 82px!important;
   }
 }
 

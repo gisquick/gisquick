@@ -123,6 +123,11 @@ export default {
           features: this.selected.id
         }
       }
+    },
+    getPrintData () {
+      if (this.selectedFeature) {
+        return { infoPanel: this.$refs.infoPanel?.getPrintData() }
+      }
     }
   }
 }

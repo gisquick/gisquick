@@ -14,8 +14,17 @@
           <v-btn class="icon" @click="print">
             <v-icon name="printer"/>
           </v-btn>
-          <v-btn class="icon" @click="download">
+          <v-btn class="icon" @click="download('pdf')">
             <v-icon name="download"/>
+            <v-tooltip slot="tooltip" align="c;tt,bb">
+              <translate>Download PDF file</translate>
+            </v-tooltip>
+          </v-btn>
+          <v-btn class="icon" @click="download('png')">
+            <v-icon name="photo"/>
+            <v-tooltip slot="tooltip" align="c;tt,bb">
+              <translate>Download PNG image</translate>
+            </v-tooltip>
           </v-btn>
           <v-btn class="icon" @click="$emit('close')">
             <v-icon name="x"/>
@@ -49,36 +58,30 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'
+import { mapState } from 'vuex'
 import { boundingExtent } from 'ol/extent'
 import Point from 'ol/geom/Point'
-import axios from 'axios'
-import combineURLs from 'axios/lib/helpers/combineURLs'
 import { unByKey } from 'ol/Observable'
-import FileSaver from 'file-saver'
+import axios from 'axios'
 
-import { mmToPx, createPrintParameters, formatCopyrights, openPrintWindow } from './utils'
+import { mmToPx, createPrintParameters } from './utils'
 
 export default {
   props: {
     layout: Object,
-    format: String,
     dpi: Number,
-    labelsData: Object,
-    drawMeasurements: Boolean
+    showProgressbar: Boolean
   },
   data () {
     return {
       scale: 0,
       width: 0,
       height: 0,
-      visible: false,
-      showProgressbar: false
+      visible: false
     }
   },
   computed: {
     ...mapState(['user', 'project']),
-    ...mapGetters(['visibleBaseLayer']),
     size () {
       return {
         width: Math.round(mmToPx(this.layout.width) / this.scaleRatio) + 'px',
@@ -209,168 +212,11 @@ export default {
         extent
       }
     },
-    printRequest (extent, opts) {
-      const map = this.$map
-      const layers = []
-      const opacities = []
-      if (this.visibleBaseLayer?.name) {
-        const opacity = map.getLayers().getArray().find(l => l.get('name') === this.visibleBaseLayer.name)?.getOpacity() ?? 1
-        if (opacity > 0) {
-          layers.push(this.visibleBaseLayer.name)
-          opacities.push(Math.round(opacity * 255))
-        }
-      }
-      const overlayLayers = map.overlay.getSource().getVisibleLayers()
-      layers.push(...overlayLayers)
-      const globalOpacity = map.overlay.getOpacity()
-      const overlaysOpacities = map.overlay.getSource().opacities
-      opacities.push(...overlayLayers.map(name => Math.round(globalOpacity * (overlaysOpacities[name] ?? 255))))
-
-      const config = {
-        dpi: this.dpi,
-        format: this.format,
-        layers,
-        opacities,
-        ...opts
-      }
-      const attributions = map.overlay.getSource().getAttributions()()
-      const copyrights = formatCopyrights(attributions)
-      const params = {
-        ...createPrintParameters(map, this.layout, extent, config),
-        // TODO: other hidden labels
-        gislab_copyrights: copyrights,
-        ...this.labelsData[this.layout.name]
-      }
-      return combineURLs(location.origin, axios.getUri({ url: this.project.config.ows_url, params }))
-    },
     async print () {
-      const { extent } = this.calculatePrintArea()
-      let url = this.printRequest(extent, { format: 'png' })
-      if (this.drawMeasurements) {
-        const blob = await this.createPngWithOverlay()
-        url = URL.createObjectURL(blob)
-        setTimeout(() => URL.revokeObjectURL(url), 30000)
-      }
-      openPrintWindow(this.layout, url)
+      this.$emit('print', this.calculatePrintArea())
     },
-    async download () {
-      let fnName = 'directDownload'
-      if (this.drawMeasurements) {
-        fnName = this.format === 'pdf'? 'createPdfWithOverlay' : 'createPngWithOverlay'
-      }
-      this.showProgressbar = true
-      try {
-        const blob = await this[fnName]()
-        const timeString = new Date().toISOString()
-        const timeStamp = timeString.substring(11, 19).split(':').join('-')
-        const filename = `${this.layout.name}_${timeStamp}.${this.format}`
-        FileSaver.saveAs(blob, filename)
-      } catch (err) {
-        console.error(err)
-        // TODO: show error notification
-      } finally {
-        this.showProgressbar = false
-      }
-    },
-    async directDownload () {
-      const { extent } = this.calculatePrintArea()
-      const url = this.printRequest(extent)
-      const { data } = await this.$http.get(url, { responseType: 'blob' })
-      return data
-    },
-    async createPdfWithOverlay () {
-      const PDFDocument = (await import(/* webpackChunkName: "pdf-lib" */'./pdf-lib')).PDFDocument
-      const { extent, relative } = this.calculatePrintArea()
-      const url = this.printRequest(extent)
-      const { data } = await this.$http.get(url, { responseType: 'arraybuffer' })
-      const map = this.$map
-      const layout = this.layout
-      return new Promise(resolve => {
-        map.once('rendercomplete', async function () {
-          const canvas = map.getViewport().querySelector('.ol-layer.measure canvas')
-          const srcBounds = {
-            x: Math.round(relative.x * canvas.width),
-            y: Math.round(relative.y * canvas.height),
-            width: Math.round(relative.width * canvas.width),
-            height: Math.round(relative.height * canvas.height)
-          }
-          const mapCanvas = document.createElement('canvas')
-          mapCanvas.width = srcBounds.width
-          mapCanvas.height = srcBounds.height
-          const ctx = mapCanvas.getContext('2d')
-          if (canvas.width > 0) {
-            const opacity = canvas.parentNode.style.opacity || canvas.style.opacity
-            ctx.globalAlpha = opacity === '' ? 1 : Number(opacity)
-            ctx.drawImage(canvas, srcBounds.x, srcBounds.y, srcBounds.width, srcBounds.height, 0, 0, srcBounds.width, srcBounds.height)
-          }
-          ctx.globalAlpha = 1
-          mapCanvas.toBlob(blob => {
-            const reader = new FileReader()
-            reader.addEventListener('loadend', async () => {
-              const arrayBuffer = reader.result
-              const pdfDoc = await PDFDocument.load(data)
-              const page = pdfDoc.getPage(0)
-              const pageWidth = page.getWidth()
-              const pageHeight = page.getHeight()
-              const pngImage = await pdfDoc.embedPng(arrayBuffer)
-              const dx = Math.round((layout.map.x / layout.width) * pageWidth)
-              const dy = Math.round((layout.map.y / layout.height) * pageHeight)
-              const dWidth = Math.round((layout.map.width / layout.width) * pageWidth)
-              const dHeight = Math.round((layout.map.height / layout.height) * pageHeight)
-              page.drawImage(pngImage, {
-                x: dx,
-                y: pageHeight - (dy + dHeight),
-                width: dWidth,
-                height: dHeight,
-              })
-              const pdfBytes = await pdfDoc.save()
-              resolve(new Blob([pdfBytes]))
-            })
-            reader.readAsArrayBuffer(blob)
-          })
-        })
-        map.renderSync()
-      })
-    },
-    async createPngWithOverlay () {
-      const { extent, relative } = this.calculatePrintArea()
-      const url = this.printRequest(extent, { format: 'png' })
-      const img = new Image()
-      img.src = url
-      await img.decode()
-      const printCanvas = document.createElement('canvas')
-      printCanvas.width = img.naturalWidth
-      printCanvas.height = img.naturalHeight
-
-      const map = this.$map
-      const layout = this.layout
-
-      const dx = Math.round((layout.map.x / layout.width) * img.naturalWidth)
-      const dy = Math.round((layout.map.y / layout.height) * img.naturalHeight)
-      const dWidth = Math.round((layout.map.width / layout.width) * img.naturalWidth)
-      const dHeight = Math.round((layout.map.height / layout.height) * img.naturalHeight)
-
-      const ctx = printCanvas.getContext('2d')
-      ctx.drawImage(img, 0, 0)
-      return new Promise((resolve) => {
-        map.once('rendercomplete', function () {
-          const canvas = map.getViewport().querySelector('.ol-layer.measure canvas')
-          if (canvas.width > 0) {
-            const opacity = canvas.parentNode.style.opacity || canvas.style.opacity
-            ctx.globalAlpha = opacity === '' ? 1 : Number(opacity)
-            const srcBounds = {
-              x: Math.round(relative.x * canvas.width),
-              y: Math.round(relative.y * canvas.height),
-              width: Math.round(relative.width * canvas.width),
-              height: Math.round(relative.height * canvas.height)
-            }
-            ctx.drawImage(canvas, srcBounds.x, srcBounds.y, srcBounds.width, srcBounds.height, dx, dy, dWidth, dHeight)
-          }
-          ctx.globalAlpha = 1
-          printCanvas.toBlob(resolve)
-        })
-        map.renderSync()
-      })
+    download (format) {
+      this.$emit('download', format, this.calculatePrintArea())
     }
   }
 }

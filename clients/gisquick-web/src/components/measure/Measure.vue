@@ -438,6 +438,10 @@ export default {
     },
     updateFeature (e) {
       e.features.forEach(f => activeTool.updateFeature?.(f))
+    },
+    getPrintData () {
+      const hasMeasurements = Object.values(this.tools).some(tool => tool.items.length > 0)
+      return { measurements: hasMeasurements }
     }
   }
 }

@@ -12,9 +12,7 @@
       <img
         v-else
         :key="item.layer.name"
-        :src="item.url"
-        :srcset="item.srcset"
-        :alt="item.layer.title"
+        v-bind="item.params"
       />
     </template>
   </div>
@@ -24,6 +22,8 @@
 import { mapGetters } from 'vuex'
 import { unByKey } from 'ol/Observable'
 import debounce from 'lodash/debounce'
+
+import { getWmsLegendUrl } from '@/map/wms'
 
 export default {
   props: {
@@ -84,13 +84,26 @@ export default {
             url: l.legend_url
           }
         }
+        if (l.provider_type === 'wms') {
+          return {
+            layer: l,
+            type: 'image',
+            params: {
+              src: getWmsLegendUrl(l),
+              crossorigin: 'anonymous'
+            }
+          }
+        }
         const opts = this.dpi ? { DPI: this.dpi } : null
         const url = source.getLegendUrl(l.name, view, opts)
         return {
           layer: l,
           type: 'image',
-          url,
-          srcset: window.devicePixelRatio > 1 ? `${url} ${window.devicePixelRatio}x` : null
+          params: {
+            alt: l.title,
+            src: url,
+            srcset: window.devicePixelRatio > 1 ? `${url} ${window.devicePixelRatio}x` : null
+          }
         }
       })
     }

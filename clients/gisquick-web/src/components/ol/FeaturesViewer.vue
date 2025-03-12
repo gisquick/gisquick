@@ -15,7 +15,8 @@ export default {
     selectedColor: {
       type: Array,
       default: () => [3, 169, 244]
-    }
+    },
+    className: String
   },
   computed: {
     style () {
@@ -39,7 +40,8 @@ export default {
     const source = new VectorSource()
     const layer = new VectorLayer({
       source,
-      style: this.style
+      style: this.style,
+      className: this.className
     })
     this.$map.addLayer(layer)
     this.$watch('features', features => {

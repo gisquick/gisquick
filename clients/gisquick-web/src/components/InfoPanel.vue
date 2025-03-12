@@ -265,6 +265,16 @@ export default {
       this.$nextTick(() => {
         this.relationsData.pop()
       })
+    },
+    getPrintData () {
+      return {
+        component: this.formComponent,
+        props: Object.freeze({
+          project: this.project,
+          ...this.displayedData,
+          properties: this.layer.export_fields
+        })
+      }
     }
   }
 }
@@ -382,6 +392,31 @@ export default {
       border-width: 1px 1px 1px 0;
       border-top-right-radius: 3px;
       border-bottom-right-radius: 3px;
+    }
+  }
+}
+</style>
+
+<style lang="scss">
+.generic-infopanel.print {
+  width: 100%;
+  .fields {
+    border: 1px solid #999;
+  }
+  .tabs ::v-deep {
+    .swiper {
+      flex-direction: column;
+      transform: none!important;
+      .tab-content {
+        &:not(.visible) {
+          display: flex;
+        }
+        &[title]::before {
+          content: attr(title);
+          margin: 8px 4px 0 4px;
+          font-weight: 500;
+        }
+      }
     }
   }
 }

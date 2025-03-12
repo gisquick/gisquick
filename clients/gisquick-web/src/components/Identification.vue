@@ -43,6 +43,7 @@
       <portal to="right-panel">
         <info-panel
           v-if="displayMode === 'info-panel' || displayMode === 'both'"
+          ref="infoPanel"
           class="mx-1 mb-2"
           :features="displayedFeatures"
           :layer="displayedLayer"
@@ -446,6 +447,11 @@ export default {
         const extents = features.map(f => f.getGeometry().getExtent())
         const finalExtent = extents.reduce((prev, current) => extend(prev, current), extents[0])
         this.$map.ext.fitToExtent(finalExtent, { duration: 0 })
+      }
+    },
+    getPrintData () {
+      if (this.selectedFeature) {
+        return { infoPanel: this.$refs.infoPanel?.getPrintData() }
       }
     }
   }

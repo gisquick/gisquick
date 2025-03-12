@@ -73,6 +73,7 @@
     <portal to="right-panel">
       <info-panel
         v-if="showInfoPanel"
+        ref="infoPanel"
         class="mx-1 mb-2"
         :features="features"
         :layer="layer"

@@ -50,11 +50,16 @@ export default {
     return {
       identificationSettings: {
         identificationLayer: '',
-        displayMode: 'both'
+        displayMode: 'both',
+        printData: null
       },
       measureSettings: {
         type: 'location',
         state: null
+      },
+      printData: {
+        measure: null,
+        infoPanel: null
       }
     }
   },
@@ -92,9 +97,7 @@ export default {
         icon: 'printer',
         component: Print,
         disabled: !this.project.config.print_composers || this.project.config.print_composers.length < 1,
-        data: {
-          measure: this.measureSettings
-        }
+        data: this.printData
       }
     },
     attributeTableTool () {
@@ -125,6 +128,9 @@ export default {
               if (this.$refs.table) {
                 return this.$refs.table?.getPermalinkParams?.()
               }
+            },
+            getPrintData () {
+              return this.$refs.table?.getPrintData?.()
             }
           }
         }
@@ -161,7 +167,13 @@ export default {
   watch: {
     activeTool: {
       immediate: true,
-      handler (activeTool) {
+      handler (activeTool, old) {
+        if (old) {
+          const printData = this.$refs.tool?.getPrintData?.()
+          if (printData) {
+            Object.assign(this.printData, printData)
+          }
+        }
         if (this.hiddenIdentification && !activeTool) {
           this.$store.commit('activeTool', 'hidden-identification')
         }

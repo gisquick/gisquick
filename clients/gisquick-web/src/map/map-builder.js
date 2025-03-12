@@ -85,14 +85,12 @@ function GisquickWMSType (baseClass) {
     }
 
     getLegendUrl (layername, view, opts) {
-      this.legendUrl.searchParams.set('LAYER', layername)
-      this.legendUrl.searchParams.set('SCALE', Math.round(view.getScale()))
-      if (opts) {
-        for (const [k, v] of Object.entries(opts)) {
-          this.legendUrl.searchParams.set(k, v)
-        }
+      const params = {
+        LAYER: layername,
+        SCALE: Math.round(view.getScale()),
+        ...opts
       }
-      return this.legendUrl.href
+      return createUrl(this.legendUrl, params).href
     }
 
     setLayerOpacity (layername, opacity) {

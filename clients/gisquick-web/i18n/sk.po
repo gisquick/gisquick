@@ -25,7 +25,7 @@ msgid "A new version of the map application is available"
 msgstr "K dispozícii je nová verzia mapovej aplikácie"
 
 #: src/components/content-panel/BaseLayersTree.vue:43
-#: src/components/content-panel/LayersTree.vue:100
+#: src/components/content-panel/LayersTree.vue:114
 #: src/components/content-panel/TopicsList.vue:36
 msgid "Abstract"
 msgstr "Popis"
@@ -44,20 +44,24 @@ msgstr "Pridať nový objekt"
 msgid "Add to Home screen?"
 msgstr "Pridať na plochu?"
 
-#: src/ui/TextEditor.vue:357
+#: src/components/print/Print.vue:36
+msgid "Additional content"
+msgstr "Ďalší obsah"
+
+#: src/ui/TextEditor.vue:368
 msgid "Align center"
 msgstr "Zarovnať na stred"
 
-#: src/ui/TextEditor.vue:356
+#: src/ui/TextEditor.vue:367
 msgid "Align left"
 msgstr "Zarovnať doľava"
 
-#: src/ui/TextEditor.vue:358
+#: src/ui/TextEditor.vue:369
 msgid "Align right"
 msgstr "Zarovnať doprava"
 
 #: src/components/feature-editor/SnapTool.vue:85
-#: src/components/Identification.vue:148
+#: src/components/Identification.vue:149
 msgid "All visible layers"
 msgstr "Všetky viditeľné vrstvy"
 
@@ -84,7 +88,7 @@ msgstr "Plocha"
 msgid "Attributes"
 msgstr "Atribúty"
 
-#: src/components/MapTools.vue:104
+#: src/components/MapTools.vue:107
 msgid "Attributes Table"
 msgstr "Tabuľka atribútov"
 
@@ -100,7 +104,7 @@ msgstr "Overenie zlyhalo"
 msgid "Back to Login"
 msgstr "Späť na Prihlásenie"
 
-#: src/ui/TextEditor.vue:354
+#: src/ui/TextEditor.vue:365
 msgid "Background color"
 msgstr "Farba pozadia"
 
@@ -113,12 +117,13 @@ msgstr "Základné vrstvy"
 msgid "between"
 msgstr "od - do"
 
-#: src/ui/TextEditor.vue:346
+#: src/ui/TextEditor.vue:357
 msgid "Bold"
 msgstr "Tučné"
 
 #: src/components/attributes-table/MobileAttributesTable.vue:166
 #: src/components/feature-editor/ImageInput.vue:156
+#: src/components/print/Print.vue:164
 msgid "Cancel"
 msgstr "Zrušiť"
 
@@ -161,7 +166,7 @@ msgstr "Súradnicové systémy"
 msgid "Coordinates"
 msgstr "Súradnice"
 
-#: src/ui/TextEditor.vue:327
+#: src/ui/TextEditor.vue:338
 msgid "Copy HTML"
 msgstr "Kopírovať HTML"
 
@@ -170,7 +175,7 @@ msgid "Created"
 msgstr "Vytvorené"
 
 #: src/components/attributes-table/MobileAttributesTable.vue:96
-#: src/components/content-panel/LayersTree.vue:104
+#: src/components/content-panel/LayersTree.vue:118
 msgid "Data"
 msgstr "Data"
 
@@ -220,9 +225,22 @@ msgstr "Vzdialenosť"
 msgid "Don't show this message again"
 msgstr "Túto správu už nezobrazovať"
 
-#: src/components/content-panel/LayersTree.vue:119
+#: src/components/content-panel/LayersTree.vue:133
 msgid "Download"
 msgstr "Stiahnuť"
+
+#: src/components/InfoPanel.vue:111 src/components/print/Preview.vue:20
+#: src/components/print/Print.vue:104
+msgid "Download PDF file"
+msgstr "Stiahnuť PDF súbor"
+
+#: src/components/print/Preview.vue:26 src/components/print/Print.vue:114
+msgid "Download PNG image"
+msgstr "Stiahnuť PNG obrázok"
+
+#: src/components/GoogleStreetView.vue:60
+msgid "Drag and drop to initialize Google Street View"
+msgstr "Presunutím inicializujte Google Street View"
 
 #: src/components/attributes-table/MobileAttributesTable.vue:355
 msgid "Edit"
@@ -273,6 +291,18 @@ msgstr "rovná sa"
 #: src/ui/Table.vue:211
 msgid "Error"
 msgstr "Chyba"
+
+#: src/components/GoogleStreetView.vue:58
+msgid "Exit"
+msgstr "Ukončiť"
+
+#: src/components/GoogleStreetView.vue:59
+msgid "Exit Street View mode"
+msgstr "Ukončiť režim Street View"
+
+#: src/components/GoogleStreetView.vue:64
+msgid "Expand"
+msgstr "Rozšíriť"
 
 #: src/components/attributes-table/AttributesTable.vue:68
 #: src/components/attributes-table/MobileAttributesTable.vue:288
@@ -340,6 +370,10 @@ msgstr "Celá obrazovka"
 msgid "Geolocation Error"
 msgstr "Chyba geolokácie"
 
+#: src/components/GoogleStreetView.vue:61
+msgid "Google Maps Library is not loaded"
+msgstr "Knižnica Google Maps nie je načítaná"
+
 #: src/components/attributes-table/AttributeFilter.vue:269
 msgid "greater than"
 msgstr "je väčší"
@@ -348,11 +382,11 @@ msgstr "je väčší"
 msgid "Help"
 msgstr "Dokumentácia"
 
-#: src/ui/TextEditor.vue:350
+#: src/ui/TextEditor.vue:361
 msgid "Hyperlink"
 msgstr "Hypertextový odkaz"
 
-#: src/components/content-panel/LayersTree.vue:96
+#: src/components/content-panel/LayersTree.vue:110
 msgid "Identification"
 msgstr "Identifikácia"
 
@@ -361,7 +395,7 @@ msgid "Image will be saved in lower resolution"
 msgstr "Obrázok bude uložený v nižšom rozlíšení"
 
 #: src/components/attributes-table/MobileAttributesTable.vue:349
-#: src/components/Identification.vue:156
+#: src/components/Identification.vue:157 src/components/print/Print.vue:249
 msgid "Info Panel"
 msgstr "Infopanel"
 
@@ -386,7 +420,7 @@ msgstr ""
 "samostatným oknom, bez panela s adresou stránky a ďalších ovládacích prvkov "
 "prehliadača."
 
-#: src/ui/TextEditor.vue:347
+#: src/ui/TextEditor.vue:358
 msgid "Italic"
 msgstr "Kurzíva"
 
@@ -411,7 +445,7 @@ msgid "Language"
 msgstr "Jazyk"
 
 #: src/components/attributes-table/MobileAttributesTable.vue:379
-#: src/components/EditTool.vue:153 src/components/Identification.vue:190
+#: src/components/EditTool.vue:153 src/components/Identification.vue:191
 msgid "Layer"
 msgstr "Vrstva"
 
@@ -419,11 +453,12 @@ msgstr "Vrstva"
 msgid "Layers"
 msgstr "Vrstvy"
 
-#: src/components/print/Print.vue:87
+#: src/components/print/Print.vue:246
 msgid "Layout"
 msgstr "Rozloženie"
 
 #: src/components/content-panel/ContentPanel.vue:109
+#: src/components/print/Print.vue:247
 msgid "Legend"
 msgstr "Legenda"
 
@@ -459,12 +494,20 @@ msgstr "Marcel"
 msgid "May"
 msgstr "Máj"
 
+#: src/components/print/Print.vue:248
+msgid "Measurements"
+msgstr "Merania"
+
 #: src/components/attributes-table/MobileAttributesTable.vue:381
-#: src/components/EditTool.vue:155 src/components/Identification.vue:191
-#: src/components/measure/Measure.vue:225 src/components/print/Print.vue:86
-#: src/ui/TextEditor.vue:359 src/UserDashboard.vue:210
+#: src/components/EditTool.vue:155 src/components/Identification.vue:192
+#: src/components/measure/Measure.vue:225 src/components/print/Print.vue:245
+#: src/ui/TextEditor.vue:370 src/UserDashboard.vue:210
 msgid "Menu"
 msgstr "Menu"
+
+#: src/components/GoogleStreetView.vue:65
+msgid "Minimize"
+msgstr "Minimalizovať"
 
 #: src/ui/DatePicker.vue:163
 msgid "Monday"
@@ -479,7 +522,7 @@ msgid "My Projects"
 msgstr "Moje projekty"
 
 #: src/components/attributes-table/MobileAttributesTable.vue:34
-#: src/components/InfoPanel.vue:203
+#: src/components/InfoPanel.vue:222
 msgid "New Feature"
 msgstr "Nový objekt"
 
@@ -506,6 +549,10 @@ msgstr "Nemá geometriu"
 #: src/components/feature-editor/ImageInput.vue:75
 msgid "No image assigned"
 msgstr "Žiadny obrázok"
+
+#: src/components/GoogleStreetView.vue:62
+msgid "No images found. Click on the map to move"
+msgstr "Neboli nájdené žiadne obrázky. Kliknutím na mapu sa presuniete"
 
 #: src/components/attributes-table/AttributeFilter.vue:275
 msgid "not empty"
@@ -553,9 +600,17 @@ msgstr "Číslo,..."
 msgid "October"
 msgstr "Október"
 
+#: src/components/print/Print.vue:167
+msgid "Ok"
+msgstr "Ok"
+
 #: src/components/attributes-table/AttributeFilter.vue:271
 msgid "one of"
 msgstr "jedna z hodnôt"
+
+#: src/components/content-panel/LayersTree.vue:85
+msgid "Opacity"
+msgstr "Viditeľnosť"
 
 #: src/components/content-panel/BaseLayerOpacity.vue:5
 msgid "Opacity of base layer"
@@ -565,11 +620,11 @@ msgstr "Viditeľnosť základnej vrstvy"
 msgid "Opacity of overlay layers"
 msgstr "Viditeľnosť prekryvných vrstiev"
 
-#: src/ui/TextEditor.vue:352
+#: src/ui/TextEditor.vue:363
 msgid "Ordered list"
 msgstr "Číslovaný zoznam"
 
-#: src/components/print/Print.vue:114
+#: src/components/print/Print.vue:286
 msgid "Output format"
 msgstr "Výstupný formát"
 
@@ -586,7 +641,7 @@ msgstr "Počet riadkov"
 msgid "Password"
 msgstr "Heslo"
 
-#: src/ui/TextEditor.vue:330
+#: src/ui/TextEditor.vue:341
 msgid "Paste HTML"
 msgstr "Vložiť HTML"
 
@@ -606,7 +661,7 @@ msgstr "Prístup zamietnutý"
 msgid "Print Preview"
 msgstr "Náhľad pred tlačou"
 
-#: src/components/print/Print.vue:116
+#: src/components/print/Print.vue:288
 msgid "Print quality"
 msgstr "Kvalita tlače"
 
@@ -622,11 +677,11 @@ msgstr "Publikovať projekt"
 msgid "Recent"
 msgstr "Nedávne"
 
-#: src/ui/TextEditor.vue:345
+#: src/ui/TextEditor.vue:356
 msgid "Redo"
 msgstr "Znova"
 
-#: src/ui/TextEditor.vue:333
+#: src/ui/TextEditor.vue:344
 msgid "Reset formatting"
 msgstr "Odstrániť formátovanie"
 
@@ -709,7 +764,7 @@ msgstr "Prichytávanie"
 msgid "Snapping layers"
 msgstr "Vrstvy pre prichytávanie"
 
-#: src/ui/TextEditor.vue:349
+#: src/ui/TextEditor.vue:360
 msgid "Strike"
 msgstr "Prečiarknuté"
 
@@ -717,19 +772,27 @@ msgstr "Prečiarknuté"
 msgid "Sunday"
 msgstr "Nedeľa"
 
-#: src/components/Identification.vue:155
+#: src/components/Identification.vue:156
 msgid "Table"
 msgstr "Tabuľka"
 
-#: src/components/Identification.vue:157
+#: src/components/Identification.vue:158
 msgid "Table & Info Panel"
 msgstr "Tabuľka & Infopanel"
 
-#: src/ui/TextEditor.vue:355
+#: src/components/GoogleStreetView.vue:63
+msgid "Terms of Service"
+msgstr "Zmluvné podmienky"
+
+#: src/components/print/Print.vue:250
+msgid "Text"
+msgstr "Text"
+
+#: src/ui/TextEditor.vue:366
 msgid "Text color"
 msgstr "Farba textu"
 
-#: src/ui/TextEditor.vue:353
+#: src/ui/TextEditor.vue:364
 msgid "Text size"
 msgstr "Veľkosť textu"
 
@@ -753,7 +816,7 @@ msgstr "Celková dĺžka"
 msgid "Tuesday"
 msgstr "Utorok"
 
-#: src/components/content-panel/LayersTree.vue:85
+#: src/components/content-panel/LayersTree.vue:99
 msgid "Type"
 msgstr "Typ"
 
@@ -761,13 +824,13 @@ msgstr "Typ"
 msgid "Unable to retrieve snapping geometry."
 msgstr "Nie je možné načítať geometriu pre prichytávanie."
 
-#: src/ui/TextEditor.vue:348
+#: src/ui/TextEditor.vue:359
 msgid "Underline"
 msgstr "Podčiarknuté"
 
 #: src/components/feature-editor/GeometryEditor.vue:45
 #: src/components/feature-editor/GeometryEditor.vue:88
-#: src/ui/TextEditor.vue:344
+#: src/ui/TextEditor.vue:355
 msgid "Undo"
 msgstr "Vrátiť späť"
 
@@ -775,7 +838,7 @@ msgstr "Vrátiť späť"
 msgid "Units"
 msgstr "Jednotky"
 
-#: src/ui/TextEditor.vue:351
+#: src/ui/TextEditor.vue:362
 msgid "Unordered list"
 msgstr "Nečíslovaný zoznam"
 
@@ -806,7 +869,7 @@ msgstr ""
 msgid "Username / Email"
 msgstr "Používateľské meno / Email"
 
-#: src/components/content-panel/LayersTree.vue:110
+#: src/components/content-panel/LayersTree.vue:124
 msgid "Visit"
 msgstr "Navštíviť"
 
@@ -849,22 +912,22 @@ msgctxt "adverb"
 msgid "Next"
 msgstr "Ďalej"
 
-#: src/components/MapTools.vue:136
+#: src/components/MapTools.vue:142
 msgctxt "noun"
 msgid "Edit layer"
 msgstr "Editácia"
 
-#: src/components/MapTools.vue:66
+#: src/components/MapTools.vue:71
 msgctxt "noun"
 msgid "Identification"
 msgstr "Identifikácia"
 
-#: src/components/MapTools.vue:82
+#: src/components/MapTools.vue:87
 msgctxt "noun"
 msgid "Measure"
 msgstr "Meranie"
 
-#: src/components/MapTools.vue:91
+#: src/components/MapTools.vue:96
 msgctxt "noun"
 msgid "Print"
 msgstr "Tlač"

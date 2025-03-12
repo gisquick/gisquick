@@ -10,11 +10,20 @@ function AndOperator (filters) {
 }
 
 function SimpleFilter (name) {
-  return (attribute, value) => `
+  return (attribute, value) => {
+    if (value === null) {
+      if (name === 'PropertyIsEqualTo') {
+        return IsNullFilter(attribute)
+      } else if (name === 'PropertyIsNotEqualTo') {
+        return IsNotNullFilter(attribute)
+      }
+    }
+    return `
     <ogc:${name}>
       <ogc:PropertyName>${attribute}</ogc:PropertyName>
       <ogc:Literal>${value}</ogc:Literal>
     </ogc:${name}>`
+  }
 }
 
 function LikeFilter (attribute, value) {

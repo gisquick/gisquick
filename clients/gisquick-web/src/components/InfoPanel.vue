@@ -100,6 +100,17 @@
         >
           <v-icon name="edit"/>
         </v-btn>
+        <v-btn
+          v-if="hasExport"
+          :loading="exportPending"
+          @click="pdfExport()"
+          class="icon flat"
+        >
+          <v-icon name="download"/>
+          <v-tooltip slot="tooltip" align="c;tt,bb">
+            <translate>Download PDF file</translate>
+          </v-tooltip>
+        </v-btn>
         <portal-target
           name="infopanel-tool"
           class="toolbar-portal left f-row-ac"
@@ -124,13 +135,17 @@
 </template>
 
 <script>
+import FileSaver from 'file-saver'
+
 import GenericInfopanel from '@/components/GenericInfopanel.vue'
 import FeaturesViewer from '@/components/ol/FeaturesViewer.vue'
 import FeatureEditor from '@/components/feature-editor/FeatureEditor.vue'
 import NewFeatureEditor from '@/components/feature-editor/NewFeatureEditor.vue'
 import FeaturesReader from '@/components/attributes-table/features.js'
 import { externalComponent } from '@/components-loader'
-import { ShallowArray, ShallowObj } from '@/utils'
+import { domToSvg, findSplitPositions } from '@/export/pdf'
+import { ShallowObj } from '@/utils'
+
 
 export default {
   name: 'info-panel',
@@ -149,7 +164,8 @@ export default {
   data () {
     return {
       collapsed: false,
-      relationsData: []
+      relationsData: [],
+      exportPending: false
     }
   },
   computed: {
@@ -197,6 +213,9 @@ export default {
     },
     relationData () {
       return this.relationsData[this.relationsData.length - 1]
+    },
+    hasExport () {
+      return !!this.layer?.export_fields?.length
     },
     tr () {
       return {
@@ -274,6 +293,93 @@ export default {
           ...this.displayedData,
           properties: this.layer.export_fields
         })
+      }
+    },
+    async pdfExport (pageSize = { width: 596, height: 842 }) { // page size https://github.com/bpampuch/pdfmake/issues/359
+      const component = this.formComponent
+      const props = {
+        project: this.project,
+        ...this.displayedData,
+        properties: this.layer.export_fields,
+        export: true
+      }
+      const margin = { top: 15, left: 15, bottom: 15, right: 15 }
+      const splitContent = (domEl) => {
+        const nextSplit = findSplitPositions(domEl)
+        const contentHeight = domEl.offsetHeight
+        const pageHeight = 1.33 * (pageSize.height - margin.top - margin.bottom)
+        if (contentHeight < pageHeight) {
+          return [{ start: 0, height: contentHeight }]
+        }
+        const segments = []
+        let lastSplit = 0
+        let splitY = nextSplit(pageHeight, lastSplit)
+        while (splitY !== null && contentHeight - splitY > pageHeight) {
+          segments.push({
+            start: lastSplit,
+            end: splitY,
+            height: splitY - lastSplit
+          })
+          lastSplit = splitY
+          splitY = nextSplit(pageHeight, lastSplit)
+        }
+        segments.push({ start: lastSplit, height: splitY - lastSplit })
+        if (contentHeight - splitY > 0) {
+          segments.push({ start: splitY, height: contentHeight - splitY })
+        }
+        return segments
+      }
+      // split by specific rows layout structure
+      /*
+      const maxHeight = 1.33 * (pageSize.height - margin.top - margin.bottom)
+      const splitContent2 = (domEl) => {
+        const segments = []
+        let prevHeight = 0
+        let lastSplit = 0
+        let containerEl = domEl
+        while (containerEl.childElementCount === 1) {
+          containerEl = containerEl.firstChild
+        }
+        for (const e of containerEl.children) {
+          const top = e.offsetTop
+          if (top - lastSplit > maxHeight) {
+            segments.push({ start: lastSplit, end: prevHeight, height: prevHeight - lastSplit })
+            lastSplit = prevHeight
+          }
+          prevHeight = top
+        }
+        if (lastSplit < domEl.offsetHeight) {
+          segments.push({ start: lastSplit, end: domEl.offsetHeight, height: domEl.offsetHeight - lastSplit })
+        }
+        return segments
+      }
+      */
+      this.exportPending = true
+      try {
+        const [svgs] = await domToSvg(component, props, 1.33 * (pageSize.width - 30), 1.33 * (pageSize.height - 30), splitContent)
+        const PDFDocument = (await import(/* webpackChunkName: "pdf-lib" */'@/export/pdf-lib')).PDFDocument
+        const pdfDoc = await PDFDocument.create()
+        for (let i = 0; i < svgs.length; i++) {
+          const svg = svgs[i]
+          // download svg for debugging
+          // FileSaver.saveAs(new Blob([svg], { type: 'text/plain' }), 'export.svg')
+          const f = new FormData()
+          f.append('svg', new Blob([svg], { type: 'image/svg+xml' }))
+          const { data } = await this.$http.post('/api/services/pdf/convert', f, { responseType: 'arraybuffer' })
+          const pdfDoc2 = await PDFDocument.load(data)
+          const pages = await pdfDoc.copyPages(pdfDoc2, pdfDoc2.getPageIndices())
+          pages.forEach(page => {
+            page.translateContent(margin.left, (pageSize.height - page.getHeight() - margin.top))
+            page.setSize(pageSize.width, pageSize.height)
+            pdfDoc.addPage(page)
+          })
+        }
+        const bytes = await pdfDoc.save()
+        FileSaver.saveAs(new Blob([bytes], { type: 'application/pdf' }), 'export.pdf')
+      } catch (err) {
+        console.error(err)
+      } finally {
+        this.exportPending = false
       }
     }
   }

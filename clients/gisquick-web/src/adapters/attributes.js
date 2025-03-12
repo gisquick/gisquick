@@ -12,8 +12,11 @@ const ConversionFunctions = {
 
 export function valueMapItems (attr) {
   const transformValue = ConversionFunctions[attr.type] || (v => v)
-  return attr.config.map.map(obj => ({
-    text: Object.keys(obj)[0],
-    value: transformValue(Object.values(obj)[0])
-  }))
+  return attr.config.map.map(obj => {
+    const val = Object.values(obj)[0]
+    return {
+      text: Object.keys(obj)[0],
+      value: val === '{2839923C-8B7D-419E-B84B-CA2FE9B80EC7}' ? null : transformValue(val)
+    }
+  })
 }

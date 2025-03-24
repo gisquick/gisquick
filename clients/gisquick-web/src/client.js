@@ -41,10 +41,11 @@ HTTP.project = function (project) {
 
   return new Promise((resolve, reject) => {
     const parts = project.split('/').length
-    const url = parts === 3
-      ? `/api/map/project/?PROJECT=${project}` // old API
-      : `/api/map/project/${project}` // new API
-    HTTP.get(url)
+    const url = parts === 1
+      ? `/api/map/alias/${project}`
+      : `/api/map/project/${project}`
+    const params = parts === 1 ? { domain: location.hostname } : null
+    HTTP.get(url, { params })
       .then(resp => {
         let data = projectBackwardCompatibility(extendProject ? extendProject(resp.data) : resp.data)
         try {

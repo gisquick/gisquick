@@ -94,7 +94,12 @@ export default {
   computed: {
     ...mapState(['app', 'user', 'project', 'showLogin']),
     projectName () {
-      return new URLSearchParams(location.search).get('PROJECT') || this.app.landing_project
+      const queryParam = new URLSearchParams(location.search).get('PROJECT')
+      const alias = location.pathname.split('/').filter(v => v !== '').pop()
+      if (!queryParam && alias) {
+        return alias
+      }
+      return queryParam || this.app.landing_project
     },
     projectStatus () {
       return this.project && this.project.config.status
@@ -159,7 +164,7 @@ export default {
       const data = await this.$http.project(this.projectName).catch(data => data)
       this.$store.commit('project', data)
       if (data.status === 200) {
-        projectsHistory.push(this.user, this.projectName)
+        projectsHistory.push(this.user, data.name)
       }
       const title = data.title || data.root_title
       if (title) {

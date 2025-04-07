@@ -25,7 +25,6 @@
       <v-dialog
         content-class="m-0"
         v-model="open"
-        :title="relation.name"
         :modal="false"
         persistent
       >
@@ -128,7 +127,7 @@ export default {
   methods: {
     showDialog () {
       if (!this.relationData) {
-        const filters = this.layer.attributes.reduce((res, attr) => {
+        const filters = this.relation.referencing_layer.attributes.reduce((res, attr) => {
           res[attr.name] = {
             active: false,
             comparator: null,

@@ -356,7 +356,7 @@ export default {
       */
       this.exportPending = true
       try {
-        const [svgs] = await domToSvg(component, props, 1.33 * (pageSize.width - 30), 1.33 * (pageSize.height - 30), splitContent)
+        const [svgs] = await domToSvg(component, props, 1.33 * (pageSize.width - 30), 1.33 * (pageSize.height - 30), splitContent, 'pdf-export')
         const PDFDocument = (await import(/* webpackChunkName: "pdf-lib" */'@/export/pdf-lib')).PDFDocument
         const pdfDoc = await PDFDocument.create()
         for (let i = 0; i < svgs.length; i++) {
@@ -504,12 +504,12 @@ export default {
 </style>
 
 <style lang="scss">
-.generic-infopanel.print {
+.pdf-export {
   width: 100%;
   .fields {
     border: 1px solid #999;
   }
-  .tabs ::v-deep {
+  .tabs {
     .swiper {
       flex-direction: column;
       transform: none!important;
@@ -517,8 +517,8 @@ export default {
         &:not(.visible) {
           display: flex;
         }
-        &[title]::before {
-          content: attr(title);
+        &[export-title]::before {
+          content: attr(export-title);
           margin: 8px 4px 0 4px;
           font-weight: 500;
         }

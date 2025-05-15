@@ -13,6 +13,7 @@
       <div
         v-for="(tab, index) in items"
         :key="tab.key"
+        :export-title="tab.label"
         class="tab-content f-col"
         :class="{visible: visible[index]}"
       >

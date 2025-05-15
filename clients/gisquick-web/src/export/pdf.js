@@ -188,7 +188,7 @@ export function findSplitPositions (root) {
   }
 }
 
-export async function domToSvg (component, props, maxWidth, maxHeight, splitFn) {
+export async function domToSvg (component, props, maxWidth, maxHeight, splitFn, className) {
   const container = document.createElement('div')
   container.style.display = 'grid'
   container.style.position = 'absolute'
@@ -215,7 +215,9 @@ export async function domToSvg (component, props, maxWidth, maxHeight, splitFn) 
   })
   const domEl = comp.$el
   comp.$destroy()
-  domEl.classList.add('print')
+  if (className) {
+    domEl.classList.add(className)
+  }
 
   await preprocessImagesInHtml(domEl, http, maxHeight - 50)
 

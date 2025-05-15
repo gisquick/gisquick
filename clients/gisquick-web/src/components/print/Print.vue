@@ -635,7 +635,7 @@ export default {
               }
 
               const pageSize = { width: page.getWidth(), height: page.getHeight() }
-              const [svgs, segments] = await domToSvg(component, props, 1.33 * (page.getWidth() - 30), 1.33 * (page.getHeight() - 30), splitContent)
+              const [svgs, segments] = await domToSvg(component, props, 1.33 * (page.getWidth() - 30), 1.33 * (page.getHeight() - 30), splitContent, 'pdf-export')
               for (let i = 0; i < svgs.length; i++) {
                 const svg = svgs[i]
                 const segment = segments[i]

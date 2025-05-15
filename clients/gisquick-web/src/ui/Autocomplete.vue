@@ -58,7 +58,6 @@
       @keydown.end.prevent="highlight(displayedItems.length)"
       @keydown.enter="onEnter"
       @closed="onClosed"
-      @opened="popupOpened"
       tabindex="-1"
     >
       <div
@@ -104,32 +103,11 @@ import clamp from 'lodash/clamp'
 import pick from 'lodash/pick'
 import PopupContent from './PopupContent.vue'
 import InputField from './InputField.vue'
+import Focusable from './mixins/Focusable'
 import { elementBounds } from './utils/popup'
 import { colorVars } from './utils/colors'
-import Focusable from './mixins/Focusable'
+import { textMatcher } from './utils/text'
 
-
-import { sanitize, escapeRegExp, removeDiacritics } from './utils/text'
-
-function _highlight (orig, search, re) {
-  const m = re.exec(search)
-  if (m) {
-    const s = m.index
-    const e = s + m[0].length
-    return orig.substring(0, s) + `<strong>${orig.substring(s, e)}</strong>` + _highlight(orig.substring(e), search.substring(e), re)
-  }
-  return orig
-}
-
-export function highlight (text, query) {
-  text = sanitize(text)
-  if (query.length === 0) {
-    return text
-  }
-  const searchText = sanitize(removeDiacritics(text))
-  const re = new RegExp(escapeRegExp(removeDiacritics(query)), 'i')
-  return _highlight(text, searchText, re)
-}
 
 export default {
   components: { PopupContent, InputField },
@@ -204,20 +182,11 @@ export default {
       }
       return style
     },
-    regex () {
-      // return this.text && new RegExp(escapeRegExp(this.text), 'i')
-      return this.text && new RegExp(escapeRegExp(sanitize(removeDiacritics(this.text))), 'i')
+    matcher () {
+      return this.text && textMatcher(this.text)
     },
     displayedItems () {
       return this.items
-      /*
-      if (!this.text) {
-        return this.items
-      }
-      // filter only matched items (with highlight)
-      // return this.items.filter(i => i[this.itemText].match(this.regex))
-      return this.items.filter(i => this.regex.test(removeDiacritics(i[this.itemText])))
-      */
     },
     renderItems () {
       return this.appendItem ? this.displayedItems.concat(this.appendItem) : this.displayedItems
@@ -227,7 +196,7 @@ export default {
       return this.displayedItems.map(item => {
         return fields.reduce((obj, field) => {
           const text = item[field]
-          obj[field] = text && this.text.length > 1 ? highlight(text, this.text) : text
+          obj[field] = text && this.text.length > 0 ? this.matcher.highlight(text) : text
           return obj
         }, {})
       })
@@ -351,16 +320,7 @@ export default {
       this.$emit('input', value)
     },
     onClosed () {
-      return
-      this.highlightIndex = -1
-      if (!this.$refs.textField?.focused) {
-        this.cleanup()
-        this.$emit('blur')
-      }
-      this.$emit('closed')
-    },
-    popupOpened (e) {
-      // console.log('popupOpened', e.target)
+      // this.highlightIndex = -1
     }
   }
 }

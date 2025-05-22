@@ -3,16 +3,20 @@
     padding-right: 6px;
     word-break: break-word;
     line-height: 1.25;
+    height: auto;
+    overflow: hidden;
+    --icon-color: #777;
+    :deep strong {
+      background-color: var(--color-yellow);
+    }
     &.group {
+      z-index: 1;
+      background-color: #eee;
       &[depth="0"] {
         background-color: #bbb;
-        border: solid #999;
-        border-width: 1px 0;
       }
       &[depth="1"] {
         background-color: #ddd;
-        border: solid #bbb;
-        border-width: 1px 0;
       }
       .label {
         font-weight: 500;
@@ -57,15 +61,49 @@
       }
     }
   }
-  ::v-deep .group-items {
-    &.disabled {
+  :deep {
+    .hagl-wrapper.group {
+      border-width: 1px 0;
+      border-color: #777;
+      border-style: solid;
+      box-sizing: border-box;
+      &.list-leave-to {
+        border: none;
+      }
+    }
+    .hagl-wrapper.group + .hagl-wrapper.group {
+      border-width: 0 0 1px 0;
+    }
+    // remove border of virtual layer group
+    .hagl-wrapper.group:has(.item.layer) {
+      border-width: 0;
+    }
+    .hagl-wrapper.group[depth="1"] {
+      border-color: #999;
+    }
+    .hagl-wrapper.group[depth="2"] {
+      border-color: #aaa;
+    }
+    .hagl-wrapper.group[depth="3"] {
+      border-color: #bbb;
+    }
+  }
+  &.colored {
+    .group[style] {
+      background-color: hsl(var(--gl-color));
+    }
+    .item.layer:not(:hover) {
+      background-color: hsla(var(--gl-color), 0.35);
+    }
+    .item.layer:hover {
+      background-color: hsla(var(--gl-color, 0, 0%, 70%), 0.2);
+    }
+  }
+  &.group-visibility-mode-0 {
+    :deep .hagl-wrapper[disabled] {
       opacity: 0.5;
       pointer-events: none;
     }
-    // &:not(.visible) {
-    //   opacity: 0.5;
-    //   pointer-events: none;
-    // }
   }
 }
 

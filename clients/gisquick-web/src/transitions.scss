@@ -68,3 +68,22 @@
   transition: 0.25s ease;
   transition-property: opacity, transform;
 }
+
+
+.list-enter-active, .list-leave-active {
+  transition: all 0.4s;
+}
+.list-enter, .list-leave-to {
+  opacity: 0;
+  transform: translate3d(-8px, 0, 0);
+  grid-template-rows: 0fr!important;
+}
+
+// Height Animation Grid Layout (hagl)
+.hagl-wrapper {
+  display: grid;
+  grid-template-rows: 1fr;
+  > * {
+    overflow: hidden;
+  }
+}

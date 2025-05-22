@@ -1,25 +1,28 @@
 <template>
-  <v-tree-view
+  <tree-list
     class="layers-tree"
-    :items="layers"
-    :expanded="expanded"
     item-key="name"
-    item-children="layers"
+    group-key="id"
+    children-key="layers"
+    :items="layers"
+    :collapsed="collapsed"
+    wrapper-class="hagl-wrapper"
+    @update:collapsed="$emit('update:collapsed', $event)"
   >
-    <template v-slot:group="{ group, depth }">
+    <template v-slot:group="{ item, open, depth, toggle }">
       <div class="item group f-row-ac" :depth="depth">
         <svg
           width="16"
           viewBox="0 0 16 16"
           role="button"
           class="toggle icon"
-          :class="{expanded: expanded[group.name]}"
-          @click="toggleGroup(group)"
+          :class="{expanded: open}"
+          @click="toggle(item)"
         >
           <path d="M 8,1 L 8,15"/>
-          <path class="tr" :d="expanded[group.name] ? 'M 8,8 L 8,8' : 'M 1,8 L 15,8'"/>
+          <path class="tr" :d="open ? 'M 8,8 L 8,8' : 'M 1,8 L 15,8'"/>
         </svg>
-        <span class="label f-grow" v-text="group.name"/>
+        <span class="label f-grow" v-text="item.name"/>
       </div>
     </template>
     <template v-slot:leaf="{ item }">
@@ -52,28 +55,25 @@
         </div>
       </collapse-transition>
     </template>
-  </v-tree-view>
+  </tree-list>
 </template>
 
 <script>
+import TreeList from './TreeList.vue'
+
 export default {
+  components: { TreeList },
   props: {
-    expanded: Object,
+    collapsed: Array,
     layers: Array,
     value: String
   },
   data () {
     return {
-      expandedGroups: {},
       expandedLayer: null
     }
   },
   methods: {
-    toggleGroup (group) {
-      // this.$set(this.expandedGroups, group.name, !this.expandedGroups[group.name])
-      // this.$emit('expanded', group.name)
-      this.$emit('update:expanded', { ...this.expanded, [group.name]: !this.expanded[group.name] })
-    },
     toggleLayerInfo (layer) {
       this.expandedLayer = this.expandedLayer !== layer ? layer : null
     }

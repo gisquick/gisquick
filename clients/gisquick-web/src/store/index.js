@@ -8,6 +8,10 @@ function layersList (node) {
   return node.layers ? [].concat(...node.layers.map(layersList)) : [node]
 }
 
+function groupsList (node) {
+  return node.layers ? [node].concat(...node.layers.map(groupsList)) : []
+}
+
 function filterGroups (node) {
   return node.layers ? [node].concat(...node.layers.map(filterGroups)) : []
 }
@@ -37,6 +41,9 @@ export default new Vuex.Store({
   },
   state: {
     app: null,
+    options: {
+      groupVisibilityMode: 1 // 0 - exclude layers when visibility is off, 1 - set visibility of the layers
+    },
     user: null,
     project: null,
     activeTool: null,
@@ -60,6 +67,7 @@ export default new Vuex.Store({
       layersList({ layers }).forEach(l => Vue.set(l, 'opacity', 255))
       const overlaysTree = filterLayers(layers, l => !l.hidden)
       const groups = [].concat(...overlaysTree.map(filterGroups))
+      groups.filter(g => !g.id).forEach((g, i) => Vue.set(g, 'id', `__o_group-${i}`))
       groups.filter(g => !g.virtual_layer).forEach(g => Vue.set(g, 'visible', true))
       groups.filter(g => g.virtual_layer).forEach(g => {
         const layers = layersList(g)
@@ -68,6 +76,14 @@ export default new Vuex.Store({
         // updates layers visibility for initial map rendering
         layers.forEach(l => l.visible = visible)
       })
+
+      if (state.options.groupVisibilityMode === 1) {
+        groups.filter(g => !g.virtual_layer).forEach(g => {
+          const layers = layersList(g)
+          const visible = layers.some(l => l.visible)
+          g.visible = visible // Vue.set(g, 'visible', visible)
+        })
+      }
 
       const overlaysList = layersList({ layers })
       const projectData = {
@@ -102,17 +118,33 @@ export default new Vuex.Store({
     },
     groupVisibility (state, { group, visible }) {
       group.visible = visible
-      if (group.virtual_layer) {
+      const { groupVisibilityMode } = state.options
+      if (groupVisibilityMode === 0) {
+        if (group.virtual_layer) {
+          layersList(group).forEach(l => l.visible = visible)
+        }
+      } else if (groupVisibilityMode === 1) {
         layersList(group).forEach(l => l.visible = visible)
+        groupsList(group).forEach(g => g.visible = visible)
+        do {
+          group.visible = group.layers.some(l => l.visible)
+          group = state.project.overlays.groups.find(g => g.layers.includes(group))
+        } while (group)
       }
     },
     layerVisibility (state, { layer, visible }) {
-      const group = state.project.overlays.groups.find(g => g.layers.includes(layer))
+      let group = state.project.overlays.groups.find(g => g.layers.includes(layer))
       if (group?.mutually_exclusive) {
         const offLayers = group.layers.filter(l => l.visible && l !== layer)
         offLayers.forEach(l => l.visible = false)
       }
       layer.visible = visible
+      if (group && state.options.groupVisibilityMode === 1) {
+        do {
+          group.visible = group.layers.some(l => l.visible)
+          group = state.project.overlays.groups.find(g => g.layers.includes(group))
+        } while (group)
+      }
     },
     visibleLayers (state, layersNames) {
       state.project.overlays.list
@@ -140,8 +172,10 @@ export default new Vuex.Store({
         return []
       }
       const { groups, list: layers } = state.project.overlays
-      const excluded = [].concat(...groups.filter(g => !g.visible).map(layersList))
-      // layers group
+      let excluded = []
+      if (state.options.groupVisibilityMode === 0) {
+        excluded = [].concat(...groups.filter(g => !g.visible).map(layersList))
+      }
       const included = [].concat(...groups.filter(g => g.virtual_layer && g.visible).map(layersList))
       return layers.filter(l => l.drawing_order > -1 && (included.includes(l) || (l.visible && !excluded.includes(l))))
     }

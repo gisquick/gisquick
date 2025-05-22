@@ -39,7 +39,7 @@ export default {
   },
   methods: {
     isGroup (item) {
-      return item[this.itemChildren]?.length > 0
+      return item[this.itemChildren] !== undefined
     },
     isExpanded (group) {
       return this.expandedKey
@@ -59,6 +59,7 @@ export default {
         const children = group[this.itemChildren].map(item => this.isGroup(item) ? this.renderGroup(h, item, depth + 1) : this.renderLeaf(h, item, group, depth + 1))
         // groupContent = <div class="group-items f-col" key={`gi-${groupKey}`} {...contentData}>{children}</div>
         groupContent = h('div', { staticClass: 'group-items f-col', ...contentData }, children)
+        // groupContent = h('transition-group', { props: { name: 'list', tag: 'div' }, staticClass: 'group-items f-col', ...contentData }, children)
       }
 
       // const contentData = this.groupContentAttrs?.(item)

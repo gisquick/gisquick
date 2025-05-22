@@ -8,14 +8,14 @@
       <template v-slot:base>
         <scroll-area>
           <base-layer-opacity
-            class="opacity-tool mt-2"
+            class="opacity-tool toolbar"
             @touchstart.native.stop=""
             @touchend.native.stop=""
           />
           <base-layers-tree
             class="mt-2"
             :layers="project.baseLayers.tree"
-            :expanded.sync="expandedBaseLayers"
+            :collapsed.sync="collapsedBaseLayers"
             :value="visibleBaseLayerName"
             @input="setBaseLayer"
           />
@@ -23,12 +23,11 @@
       </template>
       <template v-slot:overlays>
         <overlays-opacity
-          class="opacity-tool mt-2"
+          class="opacity-tool toolbar"
           @touchstart.native.stop=""
           @touchend.native.stop=""
         />
         <text-tabs-header v-if="overlaysTabs.length > 1" :items="overlaysTabs" v-model="activeSecondaryTab"/>
-        <div v-else class="mt-2"/>
         <v-tabs
           class="secondary-tabs f-grow"
           :items="overlaysTabs"
@@ -41,11 +40,35 @@
           </template>
           <template v-slot:layers>
             <scroll-area>
+              <div class="searchbar f-row f-align-end">
+                <v-btn
+                  class="icon flat p-1"
+                  :color="filterMode ? 'primary' : ''"
+                  @click="toggleFilterMode">
+                  <v-icon name="filter"/>
+                </v-btn>
+                <v-text-field
+                  class="filled"
+                  :placeholder="filterMode ? tr.FilterPlaceholder : tr.SearchPlaceholder"
+                  v-model="filterText"
+                  @input="findLayersTree"
+                  @keydown.enter="findLayersTree(filterText)"
+                >
+                  <template v-slot:append>
+                    <v-btn v-if="filterText" class="icon flat" @click="[filterText = '', highlight = null]">
+                      <v-icon name="x"/>
+                    </v-btn>
+                    <v-icon v-else name="magnifier" class="mx-2"/>
+                  </template>
+                </v-text-field>
+              </div>
               <layers-tree
                 class="light"
+                :highlight="highlight"
                 :attribute-table-disabled="attributeTableDisabled"
                 :layers="project.overlays"
-                :expanded.sync="expandedOverlays"
+                :filter="filterMode ? filterText : ''"
+                :collapsed.sync="collapsedOverlays"
               />
             </scroll-area>
           </template>
@@ -72,6 +95,8 @@ import BaseLayersTree from './BaseLayersTree.vue'
 import LayersTree from './LayersTree.vue'
 import TopicsList from './TopicsList.vue'
 import MapLegend from './Legend.vue'
+import { textMatcher } from '@/ui/utils/text'
+
 
 export default {
   name: 'content-panel',
@@ -83,8 +108,16 @@ export default {
     return {
       activeMainTab: 'overlays',
       activeSecondaryTab: '',
-      expandedOverlays: {},
-      expandedBaseLayers: {}
+      collapsedBaseLayers: [],
+      collapsedOverlays: [],
+      filterText: '',
+      filterMode: true,
+      searchContext: {
+        text: '',
+        index: -1,
+        matches: []
+      },
+      highlight: null
     }
   },
   computed: {
@@ -114,6 +147,29 @@ export default {
         this.hasTopics && { key: 'topics', label: this.$gettext('Topics') },
         { key: 'layers', label: this.$gettext('Layers') }
       ].filter(i => i)
+    },
+    layersSearchItems () {
+      const list = []
+      const collect = (items, parents=[]) => {
+        items.forEach((n, i) => {
+          if (n.layers) {
+            list.push({ text: n.name, index: i, group: n, parents })
+            if (!n.virtual_layer) {
+              collect(n.layers, [...parents, n])
+            }
+          } else {
+            list.push({ text: n.title, layer: n, index: i, parents })
+          }
+        })
+      }
+      collect(this.project.overlays.tree)
+      return list
+    },
+    tr () {
+      return {
+        FilterPlaceholder: this.$gettext('Filter layers'),
+        SearchPlaceholder: this.$gettext('Find a layer')
+      }
     }
   },
   created () {
@@ -123,15 +179,61 @@ export default {
     project: {
       immediate: true,
       handler (project) {
-        // this.expandedOverlays = project.overlays.groups.map(g => g.name)
-        this.expandedOverlays = project.overlays.groups.reduce((obj, g) => (obj[g.name] = !g.collapsed && !g.virtual_layer, obj), {})
-        this.expandedBaseLayers = project.baseLayers.groups.reduce((obj, g) => (obj[g.name] = !g.collapsed, obj), {})
+        this.collapsedOverlays = project.overlays.groups.filter(g => g.collapsed || g.virtual_layer).map(g => g.id)
+        this.collapsedBaseLayers = project.baseLayers.groups.filter(g => g.collapsed || g.virtual_layer).map(g => g.id)
       }
     }
   },
   methods: {
     setBaseLayer (name) {
       this.$store.commit('visibleBaseLayer', name)
+    },
+    async highlightResult () {
+      const match = this.searchContext.matches[this.searchContext.index]
+      if (match) {
+        const collapsed = match.parents.filter(g => this.collapsedOverlays.includes(g.id)).map(g => g.id)
+        if (collapsed.length) {
+          this.collapsedOverlays = this.collapsedOverlays.filter(n => !collapsed.includes(n))
+          // await new Promise(resolve => this.$nextTick(resolve))
+          await new Promise(resolve => setTimeout(resolve, 450)) // wait for expand animation
+        }
+        if (match.layer) {
+          this.highlight = {
+            layer: match.layer,
+            html: match.html
+          }
+        } else {
+          this.highlight = {
+            group: match.group,
+            html: match.html
+          }
+        }
+      } else {
+        this.highlight = null
+      }
+    },
+    findLayersTree (text) {
+      if (!this.filterMode && text.length > 1) {
+        if (this.searchContext.text !== text) {
+          const m = textMatcher(text)
+          const res = this.layersSearchItems.filter(i => m.test(i.text))
+          const htmls = res.map(match => m.highlight(match.text))
+          this.searchContext = { text, index: 0, matches: res.map((r, i) => ({ ...r, html: htmls[i] })) }
+          this.highlightResult()
+        } else {
+          const index = this.searchContext.index + 1
+          this.searchContext.index = index >= this.searchContext.matches.length ? 0 : index
+          this.highlightResult()
+        }
+      } else {
+        this.highlight = null
+      }
+    },
+    toggleFilterMode () {
+      this.filterMode = !this.filterMode
+      if (!this.filterMode && this.filterText) {
+        this.findLayersTree(this.filterText)
+      }
     }
   }
 }
@@ -147,15 +249,28 @@ export default {
   .tabs {
     font-size: 15px;
   }
-  .layers-tree ::v-deep {
-    .item {
-      --icon-color: #777;
+  .opacity-tool {
+    background-color: #eee;
+    padding: 4px 6px 2px 6px;
+  }
+  .searchbar {
+    --gutter: 0 2px;
+    padding: 0 3px 3px 0;
+    .text-field ::v-deep .input {
+      font-size: 14px;
+      height: 26px;
     }
   }
-  .opacity-tool {
-    background-color: #e7e7e7;
-    background-color: #eee;
-    padding: 0 5px;
+  @media (min-height: 601px) {
+    .searchbar {
+      position: sticky;
+      top: 0;
+      background-color: #fff;
+      z-index: 2;
+    }
+    :deep .scrollbar-track.vertical {
+      margin-top: 31px;
+    }
   }
 }
 </style>

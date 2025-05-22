@@ -51,9 +51,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.slider {
-  height: 32px;
-}
 .value {
   width: 40px;
   text-align: right;

@@ -30,15 +30,15 @@
       </slot>
       <span v-else class="placeholder f-grow" v-text="placeholder"/>
       <slot name="append"/>
-      <svg
-        class="toggle"
-        width="11"
-        height="11"
-        viewBox="0 0 10 10"
-        @click.stop="toggle"
-      >
-        <path d="M 1,3 L 5,7 L 9,3"/>
-      </svg>
+      <slot name="toggle">
+        <svg
+          class="toggle"
+          :width="toggleIcon.width"
+          :height="toggleIcon.height"
+        >
+          <path :d="toggleIcon.path"/>
+        </svg>
+      </slot>
       <document-listener
         v-if="focused && !open && !disabled"
         @keydown.space.prevent="openPopup"
@@ -155,6 +155,10 @@ export default {
     label: String,
     placeholder: String,
     value: {},
+    toggleSize: {
+      type: String,
+      default: '10,6'
+    },
     multiple: Boolean
   },
   data () {
@@ -173,6 +177,14 @@ export default {
     },
     colorVars () {
       return colorVars(this.color)
+    },
+    toggleIcon () {
+      const [w, h] = this.toggleSize.split(',').map(v => parseInt(v))
+      return {
+        width: w,
+        height: h,
+        path: `M 0,0 L ${w/2},${h} L ${w},0`
+      }
     },
     simpleItems () {
       return this.items.some(i => !Object.prototype.hasOwnProperty.call(i, this.itemText)) // ?? getItemValue

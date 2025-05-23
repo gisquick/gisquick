@@ -14,12 +14,17 @@
       <div v-else class="toolbar dark top f-row-ac">
         <template v-if="mode !== 'add'">
           <v-select
-            class="flat f-grow my-0"
+            class="flat f-grow trim-text my-0"
+            toggle-size="12,6"
             :disabled="layersOptions.length < 2"
             :items="layersOptions"
             :value="selected ? selected.layer : layersOptions[0].value"
             @input="setActiveLayer"
-          />
+          >
+            <template v-slot:append>
+              <div class="f-row-ac"><v-icon name="layers"/><small>{{ layersOptions.length }}</small></div>
+            </template>
+          </v-select>
           <v-btn
             class="icon flat"
             :disabled="index === 0"

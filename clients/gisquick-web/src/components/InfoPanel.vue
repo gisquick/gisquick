@@ -434,6 +434,9 @@ export default {
       .i-field ::v-deep .input {
         height: 28px;
       }
+      .i-field.select ::v-deep .value {
+        max-width: 210px;
+      }
     }
     &.tools {
       flex: 0 0 auto;

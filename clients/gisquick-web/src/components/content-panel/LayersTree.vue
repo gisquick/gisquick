@@ -52,7 +52,6 @@
         <span v-if="highlight && highlight.group === item" class="label f-grow" v-html="highlight.html"/>
         <span v-else class="label f-grow" v-text="item.name"/>
         <v-switch
-          v-if="open"
           class="round"
           :value="item.visible"
           @input="setGroupVisibility(item, $event)"

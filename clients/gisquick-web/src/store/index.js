@@ -42,7 +42,7 @@ export default new Vuex.Store({
   state: {
     app: null,
     options: {
-      groupVisibilityMode: 1 // 0 - exclude layers when visibility is off, 1 - set visibility of the layers
+      groupVisibilityMode: 0 // 0 - exclude layers when visibility is off, 1 - set visibility of the layers
     },
     user: null,
     project: null,

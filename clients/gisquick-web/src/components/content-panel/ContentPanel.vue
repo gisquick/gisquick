@@ -63,7 +63,7 @@
                 </v-text-field>
               </div>
               <layers-tree
-                class="light"
+                class="light group-visibility-mode-0"
                 :highlight="highlight"
                 :attribute-table-disabled="attributeTableDisabled"
                 :layers="project.overlays"

@@ -14,8 +14,8 @@ msgstr ""
 msgid "A new version of the map application is available"
 msgstr ""
 
-#: ./src/components/content-panel/BaseLayersTree.vue:43
-#: ./src/components/content-panel/LayersTree.vue:114
+#: ./src/components/content-panel/BaseLayersTree.vue:46
+#: ./src/components/content-panel/LayersTree.vue:136
 #: ./src/components/content-panel/TopicsList.vue:36
 msgid "Abstract"
 msgstr ""
@@ -98,7 +98,7 @@ msgstr ""
 msgid "Background color"
 msgstr ""
 
-#: src/components/content-panel/ContentPanel.vue:107
+#: src/components/content-panel/ContentPanel.vue:140
 msgid "Base Layers"
 msgstr ""
 
@@ -131,7 +131,7 @@ msgid "Clear attributes filters"
 msgstr ""
 
 #: ./src/AppNotifications.vue:17
-#: ./src/components/feature-editor/RelationWidget.vue:77
+#: ./src/components/feature-editor/RelationWidget.vue:76
 #: ./src/components/LocationTool.vue:20
 #: ./src/UserDashboard.vue:109
 msgid "Close"
@@ -166,7 +166,7 @@ msgid "Created"
 msgstr ""
 
 #: ./src/components/attributes-table/MobileAttributesTable.vue:96
-#: ./src/components/content-panel/LayersTree.vue:118
+#: ./src/components/content-panel/LayersTree.vue:140
 msgid "Data"
 msgstr ""
 
@@ -216,7 +216,7 @@ msgstr ""
 msgid "Don't show this message again"
 msgstr ""
 
-#: ./src/components/content-panel/LayersTree.vue:133
+#: ./src/components/content-panel/LayersTree.vue:155
 msgid "Download"
 msgstr ""
 
@@ -334,9 +334,17 @@ msgstr ""
 msgid "Filter by attribute value"
 msgstr ""
 
+#: src/components/content-panel/ContentPanel.vue:170
+msgid "Filter layers"
+msgstr ""
+
 #: src/components/attributes-table/MobileAttributesTable.vue:382
 #: src/components/attributes-table/TableView.vue:192
 msgid "Filter to visible area"
+msgstr ""
+
+#: src/components/content-panel/ContentPanel.vue:171
+msgid "Find a layer"
 msgstr ""
 
 #: ./src/components/LoginDialog.vue:111
@@ -376,7 +384,7 @@ msgstr ""
 msgid "Hyperlink"
 msgstr ""
 
-#: ./src/components/content-panel/LayersTree.vue:110
+#: ./src/components/content-panel/LayersTree.vue:132
 msgid "Identification"
 msgstr ""
 
@@ -422,7 +430,7 @@ msgstr ""
 msgid "June"
 msgstr ""
 
-#: ./src/components/content-panel/BaseLayersTree.vue:46
+#: ./src/components/content-panel/BaseLayersTree.vue:49
 msgid "Keywords list"
 msgstr ""
 
@@ -437,7 +445,7 @@ msgstr ""
 msgid "Layer"
 msgstr ""
 
-#: src/components/content-panel/ContentPanel.vue:115
+#: src/components/content-panel/ContentPanel.vue:148
 msgid "Layers"
 msgstr ""
 
@@ -445,7 +453,7 @@ msgstr ""
 msgid "Layout"
 msgstr ""
 
-#: src/components/content-panel/ContentPanel.vue:109
+#: src/components/content-panel/ContentPanel.vue:142
 #: src/components/print/Print.vue:247
 msgid "Legend"
 msgstr ""
@@ -603,7 +611,7 @@ msgstr ""
 msgid "one of"
 msgstr ""
 
-#: ./src/components/content-panel/LayersTree.vue:85
+#: ./src/components/content-panel/LayersTree.vue:107
 msgid "Opacity"
 msgstr ""
 
@@ -623,7 +631,7 @@ msgstr ""
 msgid "Output format"
 msgstr ""
 
-#: src/components/content-panel/ContentPanel.vue:108
+#: src/components/content-panel/ContentPanel.vue:141
 msgid "Overlay Layers"
 msgstr ""
 
@@ -712,7 +720,7 @@ msgid "Search location"
 msgstr ""
 
 #: ./src/components/feature-editor/MediaFileField.vue:59
-#: ./src/components/feature-editor/RelationWidget.vue:84
+#: ./src/components/feature-editor/RelationWidget.vue:83
 msgid "Select"
 msgstr ""
 
@@ -800,7 +808,7 @@ msgstr ""
 msgid "Thursday"
 msgstr ""
 
-#: src/components/content-panel/ContentPanel.vue:114
+#: src/components/content-panel/ContentPanel.vue:147
 msgid "Topics"
 msgstr ""
 
@@ -812,7 +820,7 @@ msgstr ""
 msgid "Tuesday"
 msgstr ""
 
-#: ./src/components/content-panel/LayersTree.vue:99
+#: ./src/components/content-panel/LayersTree.vue:121
 msgid "Type"
 msgstr ""
 
@@ -863,7 +871,7 @@ msgstr ""
 msgid "Username / Email"
 msgstr ""
 
-#: ./src/components/content-panel/LayersTree.vue:124
+#: ./src/components/content-panel/LayersTree.vue:146
 msgid "Visit"
 msgstr ""
 

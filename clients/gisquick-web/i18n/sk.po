@@ -24,8 +24,8 @@ msgstr "Druhá súradnica"
 msgid "A new version of the map application is available"
 msgstr "K dispozícii je nová verzia mapovej aplikácie"
 
-#: src/components/content-panel/BaseLayersTree.vue:43
-#: src/components/content-panel/LayersTree.vue:114
+#: src/components/content-panel/BaseLayersTree.vue:46
+#: src/components/content-panel/LayersTree.vue:136
 #: src/components/content-panel/TopicsList.vue:36
 msgid "Abstract"
 msgstr "Popis"
@@ -108,7 +108,7 @@ msgstr "Späť na Prihlásenie"
 msgid "Background color"
 msgstr "Farba pozadia"
 
-#: src/components/content-panel/ContentPanel.vue:107
+#: src/components/content-panel/ContentPanel.vue:140
 msgid "Base Layers"
 msgstr "Základné vrstvy"
 
@@ -141,7 +141,7 @@ msgid "Clear attributes filters"
 msgstr "Vymazať filtre atribútov"
 
 #: src/AppNotifications.vue:17
-#: src/components/feature-editor/RelationWidget.vue:77
+#: src/components/feature-editor/RelationWidget.vue:76
 #: src/components/LocationTool.vue:20 src/UserDashboard.vue:109
 msgid "Close"
 msgstr "Zavrieť"
@@ -175,7 +175,7 @@ msgid "Created"
 msgstr "Vytvorené"
 
 #: src/components/attributes-table/MobileAttributesTable.vue:96
-#: src/components/content-panel/LayersTree.vue:118
+#: src/components/content-panel/LayersTree.vue:140
 msgid "Data"
 msgstr "Data"
 
@@ -225,7 +225,7 @@ msgstr "Vzdialenosť"
 msgid "Don't show this message again"
 msgstr "Túto správu už nezobrazovať"
 
-#: src/components/content-panel/LayersTree.vue:133
+#: src/components/content-panel/LayersTree.vue:155
 msgid "Download"
 msgstr "Stiahnuť"
 
@@ -344,10 +344,18 @@ msgstr "Filter"
 msgid "Filter by attribute value"
 msgstr "Filtrovať podľa hodnoty atribútu"
 
+#: src/components/content-panel/ContentPanel.vue:170
+msgid "Filter layers"
+msgstr "Filtrovať vrstvy"
+
 #: src/components/attributes-table/MobileAttributesTable.vue:382
 #: src/components/attributes-table/TableView.vue:192
 msgid "Filter to visible area"
 msgstr "Filter viditeľnej oblasti"
+
+#: src/components/content-panel/ContentPanel.vue:171
+msgid "Find a layer"
+msgstr "Vyhľadať vrstvu"
 
 #: src/components/LoginDialog.vue:111
 msgid "Forgot password?"
@@ -386,7 +394,7 @@ msgstr "Dokumentácia"
 msgid "Hyperlink"
 msgstr "Hypertextový odkaz"
 
-#: src/components/content-panel/LayersTree.vue:110
+#: src/components/content-panel/LayersTree.vue:132
 msgid "Identification"
 msgstr "Identifikácia"
 
@@ -436,7 +444,7 @@ msgstr "Júl"
 msgid "June"
 msgstr "Jún"
 
-#: src/components/content-panel/BaseLayersTree.vue:46
+#: src/components/content-panel/BaseLayersTree.vue:49
 msgid "Keywords list"
 msgstr "Kľúčové slová"
 
@@ -449,7 +457,7 @@ msgstr "Jazyk"
 msgid "Layer"
 msgstr "Vrstva"
 
-#: src/components/content-panel/ContentPanel.vue:115
+#: src/components/content-panel/ContentPanel.vue:148
 msgid "Layers"
 msgstr "Vrstvy"
 
@@ -457,7 +465,7 @@ msgstr "Vrstvy"
 msgid "Layout"
 msgstr "Rozloženie"
 
-#: src/components/content-panel/ContentPanel.vue:109
+#: src/components/content-panel/ContentPanel.vue:142
 #: src/components/print/Print.vue:247
 msgid "Legend"
 msgstr "Legenda"
@@ -608,7 +616,7 @@ msgstr "Ok"
 msgid "one of"
 msgstr "jedna z hodnôt"
 
-#: src/components/content-panel/LayersTree.vue:85
+#: src/components/content-panel/LayersTree.vue:107
 msgid "Opacity"
 msgstr "Viditeľnosť"
 
@@ -628,7 +636,7 @@ msgstr "Číslovaný zoznam"
 msgid "Output format"
 msgstr "Výstupný formát"
 
-#: src/components/content-panel/ContentPanel.vue:108
+#: src/components/content-panel/ContentPanel.vue:141
 msgid "Overlay Layers"
 msgstr "Prekryvné vrstvy"
 
@@ -716,7 +724,7 @@ msgid "Search location"
 msgstr "Vyhľadajte miesto"
 
 #: src/components/feature-editor/MediaFileField.vue:59
-#: src/components/feature-editor/RelationWidget.vue:84
+#: src/components/feature-editor/RelationWidget.vue:83
 msgid "Select"
 msgstr "Vybrať"
 
@@ -804,7 +812,7 @@ msgstr "Text,Text,..."
 msgid "Thursday"
 msgstr "Štvrtok"
 
-#: src/components/content-panel/ContentPanel.vue:114
+#: src/components/content-panel/ContentPanel.vue:147
 msgid "Topics"
 msgstr "Témy"
 
@@ -816,7 +824,7 @@ msgstr "Celková dĺžka"
 msgid "Tuesday"
 msgstr "Utorok"
 
-#: src/components/content-panel/LayersTree.vue:99
+#: src/components/content-panel/LayersTree.vue:121
 msgid "Type"
 msgstr "Typ"
 
@@ -869,7 +877,7 @@ msgstr ""
 msgid "Username / Email"
 msgstr "Používateľské meno / Email"
 
-#: src/components/content-panel/LayersTree.vue:124
+#: src/components/content-panel/LayersTree.vue:146
 msgid "Visit"
 msgstr "Navštíviť"
 

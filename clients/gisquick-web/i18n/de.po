@@ -24,8 +24,8 @@ msgstr "2. Koordinate"
 msgid "A new version of the map application is available"
 msgstr "Eine neue Version der Kartenanwendung ist verfügbar"
 
-#: src/components/content-panel/BaseLayersTree.vue:43
-#: src/components/content-panel/LayersTree.vue:100
+#: src/components/content-panel/BaseLayersTree.vue:46
+#: src/components/content-panel/LayersTree.vue:136
 #: src/components/content-panel/TopicsList.vue:36
 msgid "Abstract"
 msgstr "Beschreibung"
@@ -44,20 +44,24 @@ msgstr "Neue Funktion hinzufügen"
 msgid "Add to Home screen?"
 msgstr "Zum Startbildschirm hinzufügen?"
 
-#: src/ui/TextEditor.vue:357
+#: src/components/print/Print.vue:36
+msgid "Additional content"
+msgstr ""
+
+#: src/ui/TextEditor.vue:368
 msgid "Align center"
 msgstr "Mitte ausrichten"
 
-#: src/ui/TextEditor.vue:356
+#: src/ui/TextEditor.vue:367
 msgid "Align left"
 msgstr "Links ausrichten"
 
-#: src/ui/TextEditor.vue:358
+#: src/ui/TextEditor.vue:369
 msgid "Align right"
 msgstr "Rechts ausrichten"
 
 #: src/components/feature-editor/SnapTool.vue:85
-#: src/components/Identification.vue:148
+#: src/components/Identification.vue:149
 msgid "All visible layers"
 msgstr "Alle sichtbaren Ebenen"
 
@@ -86,7 +90,7 @@ msgstr "Bereich"
 msgid "Attributes"
 msgstr "Attribute"
 
-#: src/components/MapTools.vue:104
+#: src/components/MapTools.vue:107
 msgid "Attributes Table"
 msgstr "Attribute-Tabelle"
 
@@ -102,11 +106,11 @@ msgstr "Authentifizierung fehlgeschlagen"
 msgid "Back to Login"
 msgstr "Zurück zur Anmeldung"
 
-#: src/ui/TextEditor.vue:354
+#: src/ui/TextEditor.vue:365
 msgid "Background color"
 msgstr "Hintergrundfarbe"
 
-#: src/components/content-panel/ContentPanel.vue:107
+#: src/components/content-panel/ContentPanel.vue:140
 msgid "Base Layers"
 msgstr "Basisschichten"
 
@@ -115,12 +119,13 @@ msgstr "Basisschichten"
 msgid "between"
 msgstr "zwischen"
 
-#: src/ui/TextEditor.vue:346
+#: src/ui/TextEditor.vue:357
 msgid "Bold"
 msgstr "Kühnschrift"
 
 #: src/components/attributes-table/MobileAttributesTable.vue:166
 #: src/components/feature-editor/ImageInput.vue:156
+#: src/components/print/Print.vue:164
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -138,7 +143,7 @@ msgid "Clear attributes filters"
 msgstr "Attributfilter löschen"
 
 #: src/AppNotifications.vue:17
-#: src/components/feature-editor/RelationWidget.vue:77
+#: src/components/feature-editor/RelationWidget.vue:76
 #: src/components/LocationTool.vue:20 src/UserDashboard.vue:109
 msgid "Close"
 msgstr "Schließen"
@@ -163,7 +168,7 @@ msgstr "Koordinatensysteme"
 msgid "Coordinates"
 msgstr "Koordinaten"
 
-#: src/ui/TextEditor.vue:327
+#: src/ui/TextEditor.vue:338
 msgid "Copy HTML"
 msgstr "HTML kopieren"
 
@@ -172,7 +177,7 @@ msgid "Created"
 msgstr "Erstellt"
 
 #: src/components/attributes-table/MobileAttributesTable.vue:96
-#: src/components/content-panel/LayersTree.vue:104
+#: src/components/content-panel/LayersTree.vue:140
 msgid "Data"
 msgstr "Daten"
 
@@ -222,9 +227,26 @@ msgstr "Entfernung"
 msgid "Don't show this message again"
 msgstr "Diese Meldung nicht mehr anzeigen"
 
-#: src/components/content-panel/LayersTree.vue:119
+#: src/components/content-panel/LayersTree.vue:155
 msgid "Download"
 msgstr "Herunterladen"
+
+#: src/components/InfoPanel.vue:111 src/components/print/Preview.vue:20
+#: src/components/print/Print.vue:104
+#, fuzzy
+#| msgid "Download"
+msgid "Download PDF file"
+msgstr "Herunterladen"
+
+#: src/components/print/Preview.vue:26 src/components/print/Print.vue:114
+#, fuzzy
+#| msgid "Download"
+msgid "Download PNG image"
+msgstr "Herunterladen"
+
+#: src/components/GoogleStreetView.vue:60
+msgid "Drag and drop to initialize Google Street View"
+msgstr ""
 
 #: src/components/attributes-table/MobileAttributesTable.vue:355
 msgid "Edit"
@@ -276,6 +298,18 @@ msgstr "gleich"
 msgid "Error"
 msgstr "Fehler"
 
+#: src/components/GoogleStreetView.vue:58
+msgid "Exit"
+msgstr ""
+
+#: src/components/GoogleStreetView.vue:59
+msgid "Exit Street View mode"
+msgstr ""
+
+#: src/components/GoogleStreetView.vue:64
+msgid "Expand"
+msgstr ""
+
 #: src/components/attributes-table/AttributesTable.vue:68
 #: src/components/attributes-table/MobileAttributesTable.vue:288
 msgid "Export"
@@ -316,10 +350,24 @@ msgstr "Filter"
 msgid "Filter by attribute value"
 msgstr "Nach Attributwert filtern"
 
+#: src/components/content-panel/ContentPanel.vue:170
+#, fuzzy
+#| msgctxt "noun"
+#| msgid "Edit layer"
+msgid "Filter layers"
+msgstr "Ebene editieren"
+
 #: src/components/attributes-table/MobileAttributesTable.vue:382
 #: src/components/attributes-table/TableView.vue:192
 msgid "Filter to visible area"
 msgstr "Sichtbaren Bereich filtern"
+
+#: src/components/content-panel/ContentPanel.vue:171
+#, fuzzy
+#| msgctxt "noun"
+#| msgid "Edit layer"
+msgid "Find a layer"
+msgstr "Ebene editieren"
 
 #: src/components/LoginDialog.vue:111
 msgid "Forgot password?"
@@ -342,6 +390,10 @@ msgstr "Vollbild"
 msgid "Geolocation Error"
 msgstr "Geopositionsfehler"
 
+#: src/components/GoogleStreetView.vue:61
+msgid "Google Maps Library is not loaded"
+msgstr ""
+
 #: src/components/attributes-table/AttributeFilter.vue:269
 msgid "greater than"
 msgstr "größer als"
@@ -350,11 +402,11 @@ msgstr "größer als"
 msgid "Help"
 msgstr "Hilfe"
 
-#: src/ui/TextEditor.vue:350
+#: src/ui/TextEditor.vue:361
 msgid "Hyperlink"
 msgstr "Hyperlink"
 
-#: src/components/content-panel/LayersTree.vue:96
+#: src/components/content-panel/LayersTree.vue:132
 msgid "Identification"
 msgstr "Identifizierung"
 
@@ -363,7 +415,7 @@ msgid "Image will be saved in lower resolution"
 msgstr "Bild wird in geringerer Auflösung gespeichert"
 
 #: src/components/attributes-table/MobileAttributesTable.vue:349
-#: src/components/Identification.vue:156
+#: src/components/Identification.vue:157 src/components/print/Print.vue:249
 msgid "Info Panel"
 msgstr "Infopanel"
 
@@ -388,7 +440,7 @@ msgstr ""
 "eigenständigem Fenster ohne die Adressleiste des Browsers und andere "
 "Steuerelemente."
 
-#: src/ui/TextEditor.vue:347
+#: src/ui/TextEditor.vue:358
 msgid "Italic"
 msgstr "Kursivschrift"
 
@@ -404,7 +456,7 @@ msgstr "Juli"
 msgid "June"
 msgstr "Juni"
 
-#: src/components/content-panel/BaseLayersTree.vue:46
+#: src/components/content-panel/BaseLayersTree.vue:49
 msgid "Keywords list"
 msgstr "Stichwortliste"
 
@@ -413,19 +465,20 @@ msgid "Language"
 msgstr "Sprache"
 
 #: src/components/attributes-table/MobileAttributesTable.vue:379
-#: src/components/EditTool.vue:153 src/components/Identification.vue:190
+#: src/components/EditTool.vue:153 src/components/Identification.vue:191
 msgid "Layer"
 msgstr "Ebene"
 
-#: src/components/content-panel/ContentPanel.vue:115
+#: src/components/content-panel/ContentPanel.vue:148
 msgid "Layers"
 msgstr "Ebenen"
 
-#: src/components/print/Print.vue:87
+#: src/components/print/Print.vue:246
 msgid "Layout"
 msgstr "Layout"
 
-#: src/components/content-panel/ContentPanel.vue:109
+#: src/components/content-panel/ContentPanel.vue:142
+#: src/components/print/Print.vue:247
 msgid "Legend"
 msgstr "Legende"
 
@@ -461,12 +514,23 @@ msgstr "März"
 msgid "May"
 msgstr "Mai"
 
+#: src/components/print/Print.vue:248
+#, fuzzy
+#| msgctxt "noun"
+#| msgid "Measure"
+msgid "Measurements"
+msgstr "Messung"
+
 #: src/components/attributes-table/MobileAttributesTable.vue:381
-#: src/components/EditTool.vue:155 src/components/Identification.vue:191
-#: src/components/measure/Measure.vue:225 src/components/print/Print.vue:86
-#: src/ui/TextEditor.vue:359 src/UserDashboard.vue:210
+#: src/components/EditTool.vue:155 src/components/Identification.vue:192
+#: src/components/measure/Measure.vue:225 src/components/print/Print.vue:245
+#: src/ui/TextEditor.vue:370 src/UserDashboard.vue:210
 msgid "Menu"
 msgstr "Menü"
+
+#: src/components/GoogleStreetView.vue:65
+msgid "Minimize"
+msgstr ""
 
 #: src/ui/DatePicker.vue:163
 msgid "Monday"
@@ -481,7 +545,7 @@ msgid "My Projects"
 msgstr "Meine Projekte"
 
 #: src/components/attributes-table/MobileAttributesTable.vue:34
-#: src/components/InfoPanel.vue:203
+#: src/components/InfoPanel.vue:222
 msgid "New Feature"
 msgstr "Neues Objekt"
 
@@ -510,6 +574,10 @@ msgstr "Keine Geometrie"
 #: src/components/feature-editor/ImageInput.vue:75
 msgid "No image assigned"
 msgstr "Keine Bildzuordnung"
+
+#: src/components/GoogleStreetView.vue:62
+msgid "No images found. Click on the map to move"
+msgstr ""
 
 #: src/components/attributes-table/AttributeFilter.vue:275
 msgid "not empty"
@@ -557,9 +625,17 @@ msgstr "Nummer,..."
 msgid "October"
 msgstr "Oktober"
 
+#: src/components/print/Print.vue:167
+msgid "Ok"
+msgstr ""
+
 #: src/components/attributes-table/AttributeFilter.vue:271
 msgid "one of"
 msgstr "einer von"
+
+#: src/components/content-panel/LayersTree.vue:107
+msgid "Opacity"
+msgstr ""
 
 #: src/components/content-panel/BaseLayerOpacity.vue:5
 msgid "Opacity of base layer"
@@ -569,15 +645,15 @@ msgstr "Sichtbarkeit von Basisschichten"
 msgid "Opacity of overlay layers"
 msgstr "Sichtbarkeit von Überlagerungsebenen"
 
-#: src/ui/TextEditor.vue:352
+#: src/ui/TextEditor.vue:363
 msgid "Ordered list"
 msgstr "Nummerierte Liste"
 
-#: src/components/print/Print.vue:114
+#: src/components/print/Print.vue:286
 msgid "Output format"
 msgstr "Ausgabeformat"
 
-#: src/components/content-panel/ContentPanel.vue:108
+#: src/components/content-panel/ContentPanel.vue:141
 msgid "Overlay Layers"
 msgstr "Überlagerungsebenen"
 
@@ -590,7 +666,7 @@ msgstr "Anzahl der Zeilen"
 msgid "Password"
 msgstr "Passwort"
 
-#: src/ui/TextEditor.vue:330
+#: src/ui/TextEditor.vue:341
 msgid "Paste HTML"
 msgstr "HTML einfügen"
 
@@ -610,7 +686,7 @@ msgstr "Zugang verweigert"
 msgid "Print Preview"
 msgstr "Druckvorschau"
 
-#: src/components/print/Print.vue:116
+#: src/components/print/Print.vue:288
 msgid "Print quality"
 msgstr "Druckqualität"
 
@@ -626,11 +702,11 @@ msgstr "Projekt veröffentlichen"
 msgid "Recent"
 msgstr "Zuletzt"
 
-#: src/ui/TextEditor.vue:345
+#: src/ui/TextEditor.vue:356
 msgid "Redo"
 msgstr "Wiederholen"
 
-#: src/ui/TextEditor.vue:333
+#: src/ui/TextEditor.vue:344
 msgid "Reset formatting"
 msgstr "Formatierung zurücksetzen"
 
@@ -665,7 +741,7 @@ msgid "Search location"
 msgstr "Standort suchen"
 
 #: src/components/feature-editor/MediaFileField.vue:59
-#: src/components/feature-editor/RelationWidget.vue:84
+#: src/components/feature-editor/RelationWidget.vue:83
 msgid "Select"
 msgstr "Wählen"
 
@@ -713,7 +789,7 @@ msgstr "Schnappen"
 msgid "Snapping layers"
 msgstr "Ebenen zum Schnappen"
 
-#: src/ui/TextEditor.vue:349
+#: src/ui/TextEditor.vue:360
 msgid "Strike"
 msgstr "Durchstreichen"
 
@@ -721,19 +797,29 @@ msgstr "Durchstreichen"
 msgid "Sunday"
 msgstr "Sonntag"
 
-#: src/components/Identification.vue:155
+#: src/components/Identification.vue:156
 msgid "Table"
 msgstr "Tabelle"
 
-#: src/components/Identification.vue:157
+#: src/components/Identification.vue:158
 msgid "Table & Info Panel"
 msgstr "Tabelle & Infopanel"
 
-#: src/ui/TextEditor.vue:355
+#: src/components/GoogleStreetView.vue:63
+msgid "Terms of Service"
+msgstr ""
+
+#: src/components/print/Print.vue:250
+#, fuzzy
+#| msgid "Text size"
+msgid "Text"
+msgstr "Textgröße"
+
+#: src/ui/TextEditor.vue:366
 msgid "Text color"
 msgstr "Textfarbe"
 
-#: src/ui/TextEditor.vue:353
+#: src/ui/TextEditor.vue:364
 msgid "Text size"
 msgstr "Textgröße"
 
@@ -745,7 +831,7 @@ msgstr "Text,Text,..."
 msgid "Thursday"
 msgstr "Donnerstag"
 
-#: src/components/content-panel/ContentPanel.vue:114
+#: src/components/content-panel/ContentPanel.vue:147
 msgid "Topics"
 msgstr "Themen"
 
@@ -757,7 +843,7 @@ msgstr "Gesamtlänge"
 msgid "Tuesday"
 msgstr "Dienstag"
 
-#: src/components/content-panel/LayersTree.vue:85
+#: src/components/content-panel/LayersTree.vue:121
 msgid "Type"
 msgstr "Typ"
 
@@ -765,13 +851,13 @@ msgstr "Typ"
 msgid "Unable to retrieve snapping geometry."
 msgstr "Fanggeometrie kann nicht abgerufen werden."
 
-#: src/ui/TextEditor.vue:348
+#: src/ui/TextEditor.vue:359
 msgid "Underline"
 msgstr "Unterstreichen"
 
 #: src/components/feature-editor/GeometryEditor.vue:45
 #: src/components/feature-editor/GeometryEditor.vue:88
-#: src/ui/TextEditor.vue:344
+#: src/ui/TextEditor.vue:355
 msgid "Undo"
 msgstr "Rückgängig"
 
@@ -779,7 +865,7 @@ msgstr "Rückgängig"
 msgid "Units"
 msgstr "Einheiten"
 
-#: src/ui/TextEditor.vue:351
+#: src/ui/TextEditor.vue:362
 msgid "Unordered list"
 msgstr "Unnumerierte Liste"
 
@@ -812,7 +898,7 @@ msgstr ""
 msgid "Username / Email"
 msgstr "Benutzername / Email"
 
-#: src/components/content-panel/LayersTree.vue:110
+#: src/components/content-panel/LayersTree.vue:146
 msgid "Visit"
 msgstr "Besuch"
 
@@ -856,22 +942,22 @@ msgctxt "adverb"
 msgid "Next"
 msgstr "Weiter"
 
-#: src/components/MapTools.vue:136
+#: src/components/MapTools.vue:142
 msgctxt "noun"
 msgid "Edit layer"
 msgstr "Ebene editieren"
 
-#: src/components/MapTools.vue:66
+#: src/components/MapTools.vue:71
 msgctxt "noun"
 msgid "Identification"
 msgstr "Identifikation"
 
-#: src/components/MapTools.vue:82
+#: src/components/MapTools.vue:87
 msgctxt "noun"
 msgid "Measure"
 msgstr "Messung"
 
-#: src/components/MapTools.vue:91
+#: src/components/MapTools.vue:96
 msgctxt "noun"
 msgid "Print"
 msgstr "Drucken"

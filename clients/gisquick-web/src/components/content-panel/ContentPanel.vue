@@ -48,7 +48,7 @@
                   <v-icon name="filter"/>
                 </v-btn>
                 <v-text-field
-                  class="filled"
+                  class="filled f-grow"
                   :placeholder="filterMode ? tr.FilterPlaceholder : tr.SearchPlaceholder"
                   v-model="filterText"
                   @input="findLayersTree"

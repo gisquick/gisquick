@@ -65,13 +65,17 @@ export default {
   },
   computed: {
     ...mapState(['project', 'activeTool']),
+    queryable () {
+      return this.project.overlays.list.some(l => l.queryable && !l.hidden)
+    },
     identificationTool () {
       return {
         name: 'identification',
         title: this.$pgettext('noun', 'Identification'),
         icon: 'identification',
         data: this.identificationSettings,
-        component: Identification
+        component: Identification,
+        disabled: !this.queryable
       }
     },
     hiddenIdentificationTool () {
@@ -142,7 +146,7 @@ export default {
         title: this.$pgettext('noun', 'Edit layer'),
         icon: 'edit',
         component: EditTool,
-        disabled: false,
+        disabled: !this.queryable,
         data: {
         }
       }
@@ -174,7 +178,7 @@ export default {
             Object.assign(this.printData, printData)
           }
         }
-        if (this.hiddenIdentification && !activeTool) {
+        if (this.hiddenIdentification && !activeTool && this.queryable) {
           this.$store.commit('activeTool', 'hidden-identification')
         }
       }

@@ -119,13 +119,17 @@ export default new Vuex.Store({
     groupVisibility (state, { group, visible }) {
       group.visible = visible
       const { groupVisibilityMode } = state.options
-      if (groupVisibilityMode === 0) {
-        if (group.virtual_layer) {
-          layersList(group).forEach(l => l.visible = visible)
-        }
-      } else if (groupVisibilityMode === 1) {
+      if (group.virtual_layer) {
         layersList(group).forEach(l => l.visible = visible)
-        groupsList(group).forEach(g => g.visible = visible)
+      } else if (groupVisibilityMode === 1) {
+        group.layers.forEach(l => {
+          if (l.virtual_layer) {
+            l.visible = visible
+            layersList(l).forEach(l => l.visible = visible)
+          } else if (!l.layers) {
+            l.visible = visible
+          }
+        })
         do {
           group.visible = group.layers.some(l => l.visible)
           group = state.project.overlays.groups.find(g => g.layers.includes(group))

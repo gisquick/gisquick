@@ -262,7 +262,10 @@ export function createQgisLayer (config) {
         },
         serverType: 'qgis',
         ratio: 1,
-        interpolate: false
+        interpolate: false,
+        imageLoadFunction: (image, src) => {
+          image.getImage().src = src + '&throttle_ts=' + new Date().getTime()
+        }
       })
     })
   }

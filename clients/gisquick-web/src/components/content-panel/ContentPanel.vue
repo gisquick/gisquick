@@ -40,7 +40,7 @@
           </template>
           <template v-slot:layers>
             <scroll-area>
-              <div class="searchbar f-row f-align-end">
+              <div v-if="showSearchbar" class="searchbar f-row f-align-end">
                 <v-btn
                   class="icon flat p-1"
                   :color="filterMode ? 'primary' : ''"
@@ -164,6 +164,9 @@ export default {
       }
       collect(this.project.overlays.tree)
       return list
+    },
+    showSearchbar () {
+      return this.project.overlays.list.length > 9
     },
     tr () {
       return {

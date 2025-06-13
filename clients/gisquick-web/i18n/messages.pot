@@ -15,7 +15,7 @@ msgid "A new version of the map application is available"
 msgstr ""
 
 #: ./src/components/content-panel/BaseLayersTree.vue:46
-#: ./src/components/content-panel/LayersTree.vue:136
+#: ./src/components/content-panel/LayersTree.vue:135
 #: ./src/components/content-panel/TopicsList.vue:36
 msgid "Abstract"
 msgstr ""
@@ -78,7 +78,7 @@ msgstr ""
 msgid "Attributes"
 msgstr ""
 
-#: src/components/MapTools.vue:107
+#: src/components/MapTools.vue:111
 msgid "Attributes Table"
 msgstr ""
 
@@ -166,7 +166,7 @@ msgid "Created"
 msgstr ""
 
 #: ./src/components/attributes-table/MobileAttributesTable.vue:96
-#: ./src/components/content-panel/LayersTree.vue:140
+#: ./src/components/content-panel/LayersTree.vue:139
 msgid "Data"
 msgstr ""
 
@@ -216,11 +216,11 @@ msgstr ""
 msgid "Don't show this message again"
 msgstr ""
 
-#: ./src/components/content-panel/LayersTree.vue:155
+#: ./src/components/content-panel/LayersTree.vue:154
 msgid "Download"
 msgstr ""
 
-#: ./src/components/InfoPanel.vue:111
+#: ./src/components/InfoPanel.vue:116
 #: ./src/components/print/Preview.vue:20
 #: ./src/components/print/Print.vue:104
 msgid "Download PDF file"
@@ -334,7 +334,7 @@ msgstr ""
 msgid "Filter by attribute value"
 msgstr ""
 
-#: src/components/content-panel/ContentPanel.vue:170
+#: src/components/content-panel/ContentPanel.vue:173
 msgid "Filter layers"
 msgstr ""
 
@@ -343,7 +343,7 @@ msgstr ""
 msgid "Filter to visible area"
 msgstr ""
 
-#: src/components/content-panel/ContentPanel.vue:171
+#: src/components/content-panel/ContentPanel.vue:174
 msgid "Find a layer"
 msgstr ""
 
@@ -384,7 +384,7 @@ msgstr ""
 msgid "Hyperlink"
 msgstr ""
 
-#: ./src/components/content-panel/LayersTree.vue:132
+#: ./src/components/content-panel/LayersTree.vue:131
 msgid "Identification"
 msgstr ""
 
@@ -524,7 +524,7 @@ msgid "My Projects"
 msgstr ""
 
 #: ./src/components/attributes-table/MobileAttributesTable.vue:34
-#: src/components/InfoPanel.vue:222
+#: src/components/InfoPanel.vue:227
 msgid "New Feature"
 msgstr ""
 
@@ -611,7 +611,7 @@ msgstr ""
 msgid "one of"
 msgstr ""
 
-#: ./src/components/content-panel/LayersTree.vue:107
+#: ./src/components/content-panel/LayersTree.vue:106
 msgid "Opacity"
 msgstr ""
 
@@ -820,7 +820,7 @@ msgstr ""
 msgid "Tuesday"
 msgstr ""
 
-#: ./src/components/content-panel/LayersTree.vue:121
+#: ./src/components/content-panel/LayersTree.vue:120
 msgid "Type"
 msgstr ""
 
@@ -871,7 +871,7 @@ msgstr ""
 msgid "Username / Email"
 msgstr ""
 
-#: ./src/components/content-panel/LayersTree.vue:146
+#: ./src/components/content-panel/LayersTree.vue:145
 msgid "Visit"
 msgstr ""
 
@@ -911,22 +911,22 @@ msgctxt "adverb"
 msgid "Next"
 msgstr ""
 
-#: src/components/MapTools.vue:142
+#: src/components/MapTools.vue:146
 msgctxt "noun"
 msgid "Edit layer"
 msgstr ""
 
-#: src/components/MapTools.vue:71
+#: src/components/MapTools.vue:74
 msgctxt "noun"
 msgid "Identification"
 msgstr ""
 
-#: src/components/MapTools.vue:87
+#: src/components/MapTools.vue:91
 msgctxt "noun"
 msgid "Measure"
 msgstr ""
 
-#: src/components/MapTools.vue:96
+#: src/components/MapTools.vue:100
 msgctxt "noun"
 msgid "Print"
 msgstr ""

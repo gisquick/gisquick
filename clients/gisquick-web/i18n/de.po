@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.3\n"
+"X-Generator: Poedit 3.6\n"
 
 #: src/components/measure/Measure.vue:37
 msgid "1st coordinate"
@@ -25,7 +25,7 @@ msgid "A new version of the map application is available"
 msgstr "Eine neue Version der Kartenanwendung ist verfügbar"
 
 #: src/components/content-panel/BaseLayersTree.vue:46
-#: src/components/content-panel/LayersTree.vue:136
+#: src/components/content-panel/LayersTree.vue:135
 #: src/components/content-panel/TopicsList.vue:36
 msgid "Abstract"
 msgstr "Beschreibung"
@@ -46,7 +46,7 @@ msgstr "Zum Startbildschirm hinzufügen?"
 
 #: src/components/print/Print.vue:36
 msgid "Additional content"
-msgstr ""
+msgstr "Weitere Inhalte"
 
 #: src/ui/TextEditor.vue:368
 msgid "Align center"
@@ -90,7 +90,7 @@ msgstr "Bereich"
 msgid "Attributes"
 msgstr "Attribute"
 
-#: src/components/MapTools.vue:107
+#: src/components/MapTools.vue:111
 msgid "Attributes Table"
 msgstr "Attribute-Tabelle"
 
@@ -177,7 +177,7 @@ msgid "Created"
 msgstr "Erstellt"
 
 #: src/components/attributes-table/MobileAttributesTable.vue:96
-#: src/components/content-panel/LayersTree.vue:140
+#: src/components/content-panel/LayersTree.vue:139
 msgid "Data"
 msgstr "Daten"
 
@@ -227,26 +227,22 @@ msgstr "Entfernung"
 msgid "Don't show this message again"
 msgstr "Diese Meldung nicht mehr anzeigen"
 
-#: src/components/content-panel/LayersTree.vue:155
+#: src/components/content-panel/LayersTree.vue:154
 msgid "Download"
 msgstr "Herunterladen"
 
-#: src/components/InfoPanel.vue:111 src/components/print/Preview.vue:20
+#: src/components/InfoPanel.vue:116 src/components/print/Preview.vue:20
 #: src/components/print/Print.vue:104
-#, fuzzy
-#| msgid "Download"
 msgid "Download PDF file"
-msgstr "Herunterladen"
+msgstr "PDF herunterladen"
 
 #: src/components/print/Preview.vue:26 src/components/print/Print.vue:114
-#, fuzzy
-#| msgid "Download"
 msgid "Download PNG image"
-msgstr "Herunterladen"
+msgstr "PNG herunterladen"
 
 #: src/components/GoogleStreetView.vue:60
 msgid "Drag and drop to initialize Google Street View"
-msgstr ""
+msgstr "Ziehen und ablegen, um Google Street View zu starten"
 
 #: src/components/attributes-table/MobileAttributesTable.vue:355
 msgid "Edit"
@@ -300,15 +296,15 @@ msgstr "Fehler"
 
 #: src/components/GoogleStreetView.vue:58
 msgid "Exit"
-msgstr ""
+msgstr "Verlassen"
 
 #: src/components/GoogleStreetView.vue:59
 msgid "Exit Street View mode"
-msgstr ""
+msgstr "Street View verlassen"
 
 #: src/components/GoogleStreetView.vue:64
 msgid "Expand"
-msgstr ""
+msgstr "Ausklappen"
 
 #: src/components/attributes-table/AttributesTable.vue:68
 #: src/components/attributes-table/MobileAttributesTable.vue:288
@@ -350,24 +346,18 @@ msgstr "Filter"
 msgid "Filter by attribute value"
 msgstr "Nach Attributwert filtern"
 
-#: src/components/content-panel/ContentPanel.vue:170
-#, fuzzy
-#| msgctxt "noun"
-#| msgid "Edit layer"
+#: src/components/content-panel/ContentPanel.vue:173
 msgid "Filter layers"
-msgstr "Ebene editieren"
+msgstr "Ebenen filtern"
 
 #: src/components/attributes-table/MobileAttributesTable.vue:382
 #: src/components/attributes-table/TableView.vue:192
 msgid "Filter to visible area"
 msgstr "Sichtbaren Bereich filtern"
 
-#: src/components/content-panel/ContentPanel.vue:171
-#, fuzzy
-#| msgctxt "noun"
-#| msgid "Edit layer"
+#: src/components/content-panel/ContentPanel.vue:174
 msgid "Find a layer"
-msgstr "Ebene editieren"
+msgstr "Ebene finden"
 
 #: src/components/LoginDialog.vue:111
 msgid "Forgot password?"
@@ -392,7 +382,7 @@ msgstr "Geopositionsfehler"
 
 #: src/components/GoogleStreetView.vue:61
 msgid "Google Maps Library is not loaded"
-msgstr ""
+msgstr "Google Maps-Bibliothek wurde nicht geladen"
 
 #: src/components/attributes-table/AttributeFilter.vue:269
 msgid "greater than"
@@ -406,7 +396,7 @@ msgstr "Hilfe"
 msgid "Hyperlink"
 msgstr "Hyperlink"
 
-#: src/components/content-panel/LayersTree.vue:132
+#: src/components/content-panel/LayersTree.vue:131
 msgid "Identification"
 msgstr "Identifizierung"
 
@@ -515,11 +505,8 @@ msgid "May"
 msgstr "Mai"
 
 #: src/components/print/Print.vue:248
-#, fuzzy
-#| msgctxt "noun"
-#| msgid "Measure"
 msgid "Measurements"
-msgstr "Messung"
+msgstr "Messungen"
 
 #: src/components/attributes-table/MobileAttributesTable.vue:381
 #: src/components/EditTool.vue:155 src/components/Identification.vue:192
@@ -530,7 +517,7 @@ msgstr "Menü"
 
 #: src/components/GoogleStreetView.vue:65
 msgid "Minimize"
-msgstr ""
+msgstr "Minimieren"
 
 #: src/ui/DatePicker.vue:163
 msgid "Monday"
@@ -545,7 +532,7 @@ msgid "My Projects"
 msgstr "Meine Projekte"
 
 #: src/components/attributes-table/MobileAttributesTable.vue:34
-#: src/components/InfoPanel.vue:222
+#: src/components/InfoPanel.vue:227
 msgid "New Feature"
 msgstr "Neues Objekt"
 
@@ -577,7 +564,7 @@ msgstr "Keine Bildzuordnung"
 
 #: src/components/GoogleStreetView.vue:62
 msgid "No images found. Click on the map to move"
-msgstr ""
+msgstr "Keine Bilder gefunden. Klicken Sie auf die Karte, um sich zu bewegen"
 
 #: src/components/attributes-table/AttributeFilter.vue:275
 msgid "not empty"
@@ -627,15 +614,15 @@ msgstr "Oktober"
 
 #: src/components/print/Print.vue:167
 msgid "Ok"
-msgstr ""
+msgstr "Ok"
 
 #: src/components/attributes-table/AttributeFilter.vue:271
 msgid "one of"
 msgstr "einer von"
 
-#: src/components/content-panel/LayersTree.vue:107
+#: src/components/content-panel/LayersTree.vue:106
 msgid "Opacity"
-msgstr ""
+msgstr "Transparenz"
 
 #: src/components/content-panel/BaseLayerOpacity.vue:5
 msgid "Opacity of base layer"
@@ -807,13 +794,11 @@ msgstr "Tabelle & Infopanel"
 
 #: src/components/GoogleStreetView.vue:63
 msgid "Terms of Service"
-msgstr ""
+msgstr "Nutzungsbedingungen"
 
 #: src/components/print/Print.vue:250
-#, fuzzy
-#| msgid "Text size"
 msgid "Text"
-msgstr "Textgröße"
+msgstr "Text"
 
 #: src/ui/TextEditor.vue:366
 msgid "Text color"
@@ -843,7 +828,7 @@ msgstr "Gesamtlänge"
 msgid "Tuesday"
 msgstr "Dienstag"
 
-#: src/components/content-panel/LayersTree.vue:121
+#: src/components/content-panel/LayersTree.vue:120
 msgid "Type"
 msgstr "Typ"
 
@@ -898,7 +883,7 @@ msgstr ""
 msgid "Username / Email"
 msgstr "Benutzername / Email"
 
-#: src/components/content-panel/LayersTree.vue:146
+#: src/components/content-panel/LayersTree.vue:145
 msgid "Visit"
 msgstr "Besuch"
 
@@ -942,22 +927,22 @@ msgctxt "adverb"
 msgid "Next"
 msgstr "Weiter"
 
-#: src/components/MapTools.vue:142
+#: src/components/MapTools.vue:146
 msgctxt "noun"
 msgid "Edit layer"
 msgstr "Ebene editieren"
 
-#: src/components/MapTools.vue:71
+#: src/components/MapTools.vue:74
 msgctxt "noun"
 msgid "Identification"
 msgstr "Identifikation"
 
-#: src/components/MapTools.vue:87
+#: src/components/MapTools.vue:91
 msgctxt "noun"
 msgid "Measure"
 msgstr "Messung"
 
-#: src/components/MapTools.vue:96
+#: src/components/MapTools.vue:100
 msgctxt "noun"
 msgid "Print"
 msgstr "Drucken"

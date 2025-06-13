@@ -25,7 +25,7 @@ msgid "A new version of the map application is available"
 msgstr "K dispozici je nová verze mapové aplikace"
 
 #: src/components/content-panel/BaseLayersTree.vue:46
-#: src/components/content-panel/LayersTree.vue:136
+#: src/components/content-panel/LayersTree.vue:135
 #: src/components/content-panel/TopicsList.vue:36
 msgid "Abstract"
 msgstr "Popis"
@@ -88,7 +88,7 @@ msgstr "Plocha"
 msgid "Attributes"
 msgstr "Atributy"
 
-#: src/components/MapTools.vue:107
+#: src/components/MapTools.vue:111
 msgid "Attributes Table"
 msgstr "Tabulka atributů"
 
@@ -175,7 +175,7 @@ msgid "Created"
 msgstr "Vytvořeno"
 
 #: src/components/attributes-table/MobileAttributesTable.vue:96
-#: src/components/content-panel/LayersTree.vue:140
+#: src/components/content-panel/LayersTree.vue:139
 msgid "Data"
 msgstr "Data"
 
@@ -225,11 +225,11 @@ msgstr "Vzdálenost"
 msgid "Don't show this message again"
 msgstr "Tuto zprávu již nezobrazovat"
 
-#: src/components/content-panel/LayersTree.vue:155
+#: src/components/content-panel/LayersTree.vue:154
 msgid "Download"
 msgstr "Stáhnout"
 
-#: src/components/InfoPanel.vue:111 src/components/print/Preview.vue:20
+#: src/components/InfoPanel.vue:116 src/components/print/Preview.vue:20
 #: src/components/print/Print.vue:104
 msgid "Download PDF file"
 msgstr "Stáhnout PDF soubor"
@@ -344,7 +344,7 @@ msgstr "Filtr"
 msgid "Filter by attribute value"
 msgstr "Filtrovat podle hodnoty atributu"
 
-#: src/components/content-panel/ContentPanel.vue:170
+#: src/components/content-panel/ContentPanel.vue:173
 msgid "Filter layers"
 msgstr "Filtrovat vrstvy"
 
@@ -353,7 +353,7 @@ msgstr "Filtrovat vrstvy"
 msgid "Filter to visible area"
 msgstr "Filtrovat viditelnou oblast"
 
-#: src/components/content-panel/ContentPanel.vue:171
+#: src/components/content-panel/ContentPanel.vue:174
 msgid "Find a layer"
 msgstr "Vyhledat vrstvu"
 
@@ -394,7 +394,7 @@ msgstr "Nápověda (en)"
 msgid "Hyperlink"
 msgstr "Hypertextový odkaz"
 
-#: src/components/content-panel/LayersTree.vue:132
+#: src/components/content-panel/LayersTree.vue:131
 msgid "Identification"
 msgstr "Identifikace"
 
@@ -529,7 +529,7 @@ msgid "My Projects"
 msgstr "Moje projekty"
 
 #: src/components/attributes-table/MobileAttributesTable.vue:34
-#: src/components/InfoPanel.vue:222
+#: src/components/InfoPanel.vue:227
 msgid "New Feature"
 msgstr "Nový objekt"
 
@@ -615,7 +615,7 @@ msgstr "Ok"
 msgid "one of"
 msgstr "jednu z hodnot"
 
-#: src/components/content-panel/LayersTree.vue:107
+#: src/components/content-panel/LayersTree.vue:106
 msgid "Opacity"
 msgstr "Viditelnost"
 
@@ -823,7 +823,7 @@ msgstr "Celková délka"
 msgid "Tuesday"
 msgstr "Úterý"
 
-#: src/components/content-panel/LayersTree.vue:121
+#: src/components/content-panel/LayersTree.vue:120
 msgid "Type"
 msgstr "Typ"
 
@@ -876,7 +876,7 @@ msgstr ""
 msgid "Username / Email"
 msgstr "Uživatelské jméno / Heslo"
 
-#: src/components/content-panel/LayersTree.vue:146
+#: src/components/content-panel/LayersTree.vue:145
 msgid "Visit"
 msgstr "Navštívit"
 
@@ -917,22 +917,22 @@ msgctxt "adverb"
 msgid "Next"
 msgstr "Dále"
 
-#: src/components/MapTools.vue:142
+#: src/components/MapTools.vue:146
 msgctxt "noun"
 msgid "Edit layer"
 msgstr "Editace"
 
-#: src/components/MapTools.vue:71
+#: src/components/MapTools.vue:74
 msgctxt "noun"
 msgid "Identification"
 msgstr "Identifikace"
 
-#: src/components/MapTools.vue:87
+#: src/components/MapTools.vue:91
 msgctxt "noun"
 msgid "Measure"
 msgstr "Měření"
 
-#: src/components/MapTools.vue:96
+#: src/components/MapTools.vue:100
 msgctxt "noun"
 msgid "Print"
 msgstr "Tisk"

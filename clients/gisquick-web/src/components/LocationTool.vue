@@ -30,9 +30,9 @@ import Point from 'ol/geom/Point'
 import Geolocation from 'ol/Geolocation'
 import VectorLayer from '@/components/ol/VectorLayer.vue'
 import { unByKey } from 'ol/Observable'
+import { Style, Fill, Stroke, Circle } from 'ol/style'
 
 import { ShallowObj, ShallowArray } from '@/utils'
-import { simpleStyle, highlightedStyle } from '@/map/styles'
 import { elementBounds } from '@/ui/utils/popup'
 import PopupContent from '@/ui/PopupContent.vue'
 
@@ -50,11 +50,22 @@ export default {
       return this.features[0]
     },
     locationStyle () {
-      return simpleStyle({
-        fill: [3, 169, 244, 0.8],
-        stroke: '#ffffffc9',
-        strokeWidth: 2,
-        radius: 8
+      return new Style({
+        fill: new Fill({
+          color: [3, 169, 244, 0.25]
+        }),
+        stroke: new Stroke({
+          color: '#ffffffc9',
+          width: 1
+        }),
+        image: new Circle({
+          fill: new Fill({ color: [3, 169, 244, 0.7] }),
+          stroke: new Stroke({
+            color: '#ffffffc9',
+            width: 1.5
+          }),
+          radius: 8
+        })
       })
     }
   },

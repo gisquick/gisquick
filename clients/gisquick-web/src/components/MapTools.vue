@@ -141,15 +141,14 @@ export default {
       }
     },
     editTool () {
-    const editable = this.project.overlays.list.some(l => l.queryable && !l.hidden && (l.permissions?.insert || l.permissions?.update || l.permissions?.delete))
+      const editable = this.project.overlays.list.some(l => l.queryable && !l.hidden && (l.permissions?.insert || l.permissions?.update || l.permissions?.delete))
       return {
         name: 'edit',
         title: this.$pgettext('noun', 'Edit layer'),
         icon: 'edit',
         component: EditTool,
         disabled: !editable,
-        data: {
-        }
+        data: {}
       }
     },
     items () {

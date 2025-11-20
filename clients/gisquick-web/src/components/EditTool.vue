@@ -235,18 +235,18 @@ export default {
     async onFeatureInsert (fid) {
       const added = await this.getFeatureById(fid)
       this.features = Object.freeze([added])
-      this.$map.ext.refreshOverlays()
       this.mode = 'edit'
+      this.$map.ext.refreshLayer(this.layer.name)
     },
     async onFeatureUpdate (f) {
       this.$emit('edit', f) // or return 'added' feature?
       const added = await this.getFeatureById(f.getId())
       this.features = Object.freeze([added])
-      this.$map.ext.refreshOverlays()
+      this.$map.ext.refreshLayer(this.layer.name)
     },
     onFeatureDeleted () {
       this.features = null
-      this.$map.ext.refreshOverlays()
+      this.$map.ext.refreshLayer(this.layer.name)
     }
   }
 }

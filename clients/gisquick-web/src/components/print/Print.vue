@@ -183,7 +183,6 @@ import PrintPreview from './Preview.vue'
 import FeaturesViewer from '@/components/ol/FeaturesViewer.vue'
 import { createPrintParameters, formatCopyrights } from './utils'
 import { getLegendImage, domToSvg, findSplitPositions } from '@/export/pdf'
-import { getWmsLegendUrl } from '@/map/wms'
 
 let state = null
 
@@ -201,11 +200,7 @@ function getLayerLegendUrl (layer, source, view, dpi) {
   if (layer.legend_url) {
     return layer.legend_url
   }
-  if (layer.provider_type === 'wms') {
-    return getWmsLegendUrl(layer)
-  }
-  const opts = dpi ? { DPI: dpi } : null
-  return source.getLegendUrl(layer.name, view, opts)
+  return source.getLegendUrl(layer, view, dpi)
 }
 
 export default {
@@ -370,7 +365,7 @@ export default {
         opacities,
         ...opts
       }
-      const attributions = map.overlay.getSource().getAttributions()()
+      const attributions = map.getAttributions()
       const copyrights = formatCopyrights(attributions)
       const params = {
         ...createPrintParameters(map, this.layout, extent, config),

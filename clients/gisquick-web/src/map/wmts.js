@@ -27,7 +27,7 @@ async function wmtsConfig (url, layerConfig) {
 //   }
 // }
 
-export async function wmtsSource (projectName, layerConfig, attributions) {
+export async function wmtsSource (projectName, layerConfig, sourceOpts) {
   const opts = await wmtsConfig(`/api/map/capabilities/${projectName}`, layerConfig)
   const { source } = layerConfig
   const overridingParams = pickBy({
@@ -37,5 +37,8 @@ export async function wmtsSource (projectName, layerConfig, attributions) {
     style: source.styles
     // projection: layerConfig.projection
   })
-  return new WMTS({ ...opts, ...overridingParams, attributions })
+  const params = { ...opts, ...overridingParams, ...sourceOpts }
+  const s = new WMTS(params)
+  s.clone = () => new WMTS(params)
+  return s
 }

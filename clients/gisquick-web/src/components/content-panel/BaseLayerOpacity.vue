@@ -40,6 +40,7 @@ export default {
   },
   methods: {
     updateOpacity () {
+      this.$map._baseLayerOpacity = this.opacity
       this.$map.getLayers().getArray()
         .filter(l => l.get('type') === 'baselayer')
         .forEach(l => {

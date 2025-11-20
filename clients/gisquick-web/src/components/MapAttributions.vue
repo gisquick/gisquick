@@ -5,8 +5,17 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 import Attribution from 'ol/control/Attribution'
 import MenuItems from '@/components/MenuItems.vue'
+
+function createAttribution (config) {
+  const html = config.url
+    ? `<a href="${config.url}" target="_blank">${config.title}</a>`
+    : config.title
+  return html
+}
 
 export default {
   components: { MenuItems },
@@ -16,6 +25,18 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['visibleBaseLayer', 'visibleLayers']),
+    attributions () {
+      const list = []
+      const layers = this.visibleBaseLayer ? [this.visibleBaseLayer].concat(this.visibleLayers) : this.visibleLayers
+      layers.filter(l => l.attribution).forEach(l => {
+        const item = createAttribution(l.attribution)
+        if (!list.includes(item)) {
+          list.push(item)
+        }
+      })
+      return list
+    },
     menuItems () {
       return [{
         key: 'attributions',
@@ -26,16 +47,20 @@ export default {
     }
   },
   mounted () {
-    this.attributions = new Attribution({
+    this.control = new Attribution({
       target: this.$el,
       collapsed: this.collapsed
     })
-    this.$map.addControl(this.attributions)
+    this.control.collectSourceAttributions_ = () => {
+      return this.attributions
+    }
+    this.$map.addControl(this.control)
+    this.$map.getAttributions = () => this.attributions
   },
   methods: {
     toggleAttributions () {
       this.collapsed = !this.collapsed
-      this.attributions.setCollapsed(this.collapsed)
+      this.control.setCollapsed(this.collapsed)
     }
   }
 }

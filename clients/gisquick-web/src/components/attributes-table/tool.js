@@ -61,7 +61,7 @@ export default {
       this.pagination.totalItems += 1
       this.$store.commit('attributeTable/features', features)
       this.selected = { layer: this.layer.name, id: fid}
-      this.$map.ext.refreshOverlays()
+      this.$map.ext.refreshLayer(this.layer.name)
     },
     updateFeatures (features) {
       this.$store.commit('attributeTable/features', features)
@@ -76,14 +76,14 @@ export default {
       this.$store.commit('attributeTable/filters', { layer: this.layer.name, filters })
     },
     async onFeatureEdit (ef) {
-      this.$map.ext.refreshOverlays()
+      this.$map.ext.refreshLayer(this.layer.name)
       const fid = ef.getId()
       const edited = await this.getFeatureById(fid, this.layer)
       const features = Object.freeze(this.features.map(f => f.getId() === fid ? edited : f))
       this.$store.commit('attributeTable/features', features)
     },
     onFeatureDelete (f) {
-      this.$map.ext.refreshOverlays()
+      this.$map.ext.refreshLayer(this.layer.name)
       this.fetchFeatures(this.pagination.page, true)
     },
     async exportFeatures () {

@@ -96,9 +96,8 @@ export default {
       strategy: bbox
     })
     const layer = new VectorLayer({ source, style: this.olStyle })
-    const unregister = this.$map.ext.registerLayerStatusListener(layer)
     const snap = new GisquickSnap({ source }, this)
-    layer.setMap(this.$map)
+    this.$map.addLayer(layer)
     this.$map.addInteraction(snap)
     const onInteractionsChange = e => {
       if (e.element !== snap) {
@@ -110,9 +109,8 @@ export default {
     interactions.on('add', onInteractionsChange)
     this.$once('hook:beforeDestroy', () => {
       this.$map.removeInteraction(snap)
-      layer.setMap(null)
+      this.$map.removeLayer(layer)
       interactions.un('add', onInteractionsChange)
-      unregister()
     })
     this._ol = Object.freeze({ layer, source, snap })
   },

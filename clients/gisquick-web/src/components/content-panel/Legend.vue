@@ -23,8 +23,6 @@ import { mapGetters } from 'vuex'
 import { unByKey } from 'ol/Observable'
 import debounce from 'lodash/debounce'
 
-import { getWmsLegendUrl } from '@/map/wms'
-
 export default {
   props: {
     visible: Boolean
@@ -84,18 +82,17 @@ export default {
             url: l.legend_url
           }
         }
+        const url = source.getLegendUrl(l, view, this.dpi)
         if (l.provider_type === 'wms') {
           return {
             layer: l,
             type: 'image',
             params: {
-              src: getWmsLegendUrl(l),
+              src: url,
               crossorigin: 'anonymous'
             }
           }
         }
-        const opts = this.dpi ? { DPI: this.dpi } : null
-        const url = source.getLegendUrl(l.name, view, opts)
         return {
           layer: l,
           type: 'image',

@@ -409,7 +409,7 @@ export default {
           this.selection = null
         }
       }
-      this.$map.ext.refreshOverlays()
+      this.$map.ext.refreshLayer(this.displayedLayer.name)
     },
     async onFeatureEdit (feature) {
       const fid = feature.getId()
@@ -423,7 +423,7 @@ export default {
           // this.displayedFeatures.splice(index, 1, updatedFeature)
           this.$set(this.displayedFeatures, index, updatedFeature)
         }
-        this.$map.ext.refreshOverlays()
+        this.$map.ext.refreshLayer(this.displayedLayer.name)
       }
     },
     getPermalinkParams () {

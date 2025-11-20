@@ -24,25 +24,14 @@ function layersList (node) {
 export default {
   data () {
     return {
-      status: {
-        baseLayer: {
-          loading: false,
-          error: false
-        },
-        overlays: {
-          loading: false,
-          error: false
-        },
-        other: []
-      }
+      statuses: []
     }
   },
   computed: {
-    ...mapState(['project', 'activeTool']),
+    ...mapState(['app', 'project', 'activeTool']),
     ...mapGetters(['visibleBaseLayer', 'visibleLayers']),
     mapLoading () {
-      const { baseLayer, overlays, other } = this.status
-      return baseLayer.loading || overlays.loading || other.some(i => i.loading)
+      return this.statuses.some(s => s.visible && s.loading)
     }
   },
   watch: {
@@ -84,6 +73,47 @@ export default {
       window.olmap = map
     }
 
+    this._olKeys = []
+    const removeLayerListener = id => {
+      this.statuses.filter(s => s.id === id).forEach( s => {
+        unByKey(s.olKeys)
+        this.statuses.splice(this.statuses.indexOf(s), 1)
+      })
+    }
+    const registerStatusListener = l => {
+      if (l.getLayers) {
+        registerLayersGroup(l)
+        return
+      }
+      if (this.statuses.some(s => s.id === l.ol_uid)) {
+        log.error('duplicit layer status', l.ol_uid)
+        removeLayerListener(l.ol_uid)
+      }
+      const status = {
+        id: l.ol_uid,
+        loading: false,
+        error: false,
+        visible: l.getVisible(),
+        olKeys: []
+      }
+      if (this.registerStatusListener(l, status)) {
+        this.statuses.push(status)
+        status.olKeys.push(l.on('change:visible', e2 => {
+          status.visible = e2.target.getVisible()
+        }))
+      }
+    }
+    const registerLayersGroup = (g) => {
+      const addKey = g.getLayers().on('add', e => registerStatusListener(e.element))
+      const removeKey = g.getLayers().on('remove', (e) => {
+        const layer = e.element
+        removeLayerListener(layer.ol_uid)
+      })
+      this._olKeys.push(addKey, removeKey)
+    }
+    map.getLayers().forEach(registerStatusListener)
+    registerLayersGroup(map)
+
     // base layer need to be initialized after ol map is created
     let visibleBaseLayer
     if (has(this.queryParams, 'baselayer')) { // baselayer can be empty string
@@ -96,7 +126,6 @@ export default {
     } else {
       this.setVisibleBaseLayer(visibleBaseLayer)
     }
-    this.registerStatusListener(map.overlay, this.status.overlays)
   },
   mounted () {
     const map = this.$map
@@ -140,11 +169,23 @@ export default {
         map.ext.zoomToGeometry(feature.getGeometry(), options)
       },
       centerToGeometry (geom) {
-        const center = getCenter(geom.getExtent())
-        map.getView().animate({ center, duration: 450 })
+        const extent = geom?.getExtent()
+        if (extent) {
+          const center = getCenter(extent)
+          map.getView().animate({ center, duration: 450 })
+        }
+      },
+      refreshLayer (layername) {
+        const layer = map.getAllLayers().find(l => l.getVisible() && l.get('gq-layers')?.includes(layername))
+        layer?.getSource()?.refresh()
+      },
+      refreshLayers (layernames) {
+        const layers = map.getAllLayers().filter(l => l.getVisible() && l.get('gq-layers')?.some(n => layernames.includes(n)))
+        layers.forEach(l => l?.getSource()?.refresh())
       },
       refreshOverlays () {
-        map.overlay.getSource().refresh()
+        const layers = map.getAllLayers().filter(l => l.getVisible() && l.get('type') === 'overlay' && l.get('gq-layers')?.length)
+        layers.forEach(l => l?.getSource()?.refresh())
       },
       createPermalink: () => {
         const toolParams = this.$refs.tools.getActiveComponent()?.getPermalinkParams?.()
@@ -163,51 +204,57 @@ export default {
           baselayer: this.visibleBaseLayer?.name ?? '',
           ...toolParams
         }
+        if (location.pathname === '/') {
+          params['PROJECT'] = this.project.config.name
+        }
         const url = new URL(location.href)
-        Array.from(url.searchParams.keys()).filter(k => k !== 'PROJECT').forEach(k => url.searchParams.delete(k))
+        Array.from(url.searchParams.keys()).forEach(k => url.searchParams.delete(k))
         Object.keys(params).forEach(name => url.searchParams.set(name, params[name]))
         return decodeURIComponent(url.toString()) // unescaped url
         // return url.toString()
       },
-      formatCoordinate: v => round(v, precision),
-      registerLayerStatusListener: layer => {
-        const status = { error: false, loading: false }
-        this.status.other.push(status)
-        const unregister = this.registerStatusListener(layer, status)
-        return () => {
-          this.status.other.splice(this.status.other.indexOf(status, 1))
-          unregister()
-        }
-      }
+      formatCoordinate: v => round(v, precision)
     }
     const extentParam = this.queryParams.extent?.split(',').map(parseFloat)
     const extent = extentParam || this.project.config.zoom_extent || this.project.config.project_extent
     const padding = map.ext.visibleAreaPadding()
     map.getView().fit(extent, { padding })
+
     if (this.queryParams.tool) {
       this.$store.commit('activeTool', this.queryParams.tool)
     }
     this.$nextTick(() => this.$refs.tools.getActiveComponent()?.loadPermalink?.(this.queryParams))
   },
+  beforeDestroy () {
+    unByKey(this._olKeys)
+  },
   methods: {
     async setVisibleBaseLayer (layer) {
       const baseLayers = this.$map?.getLayers().getArray().filter(l => l.get('type') === 'baselayer')
-      const opacity = baseLayers?.find(l => l.getVisible())?.getOpacity() ?? 1
+      const opacity = this.$map?._baseLayerOpacity ?? 1
       baseLayers?.forEach(l => l.setVisible(false))
       if (layer) {
         const baseLayer = await this.$map.getBaseLayer(layer.name)
         baseLayer.setOpacity(opacity)
         baseLayer.setVisible(true)
-        this.unregisterBaseLayerListener?.()
-        this.unregisterBaseLayerListener = this.registerStatusListener(baseLayer, this.status.baseLayer)
       }
     },
     setVisibleLayers (layers) {
       this.$map.overlay.getSource().setVisibleLayers(layers.map(l => l.name))
     },
+    registerLayerStatusListener (layer) {
+      const status = { error: false, loading: false }
+      this.status.other.push(status)
+      const unregister = this.registerStatusListener(layer, status)
+      return () => {
+        this.status.other.splice(this.status.other.indexOf(status, 1))
+        unregister()
+      }
+    },
     registerStatusListener (olLayer, status) {
       const source = olLayer.getSource()
-      if (source.constructor.name === 'VectorSource') {
+      // if (source.constructor.name === 'VectorSource') {
+      if (source.getFeatures) { // VectorSource
         return this.registerVectorStatusListener(source, status)
       } else if (source.getTileLoadFunction) {
         return this.registerTilesStatusListener(source, status)
@@ -258,6 +305,9 @@ export default {
       }
     },
     registerVectorStatusListener (source, status) {
+      if (!source.getUrl() && !source.getFormat()) {
+        return
+      }
       const l1 = source.on('featuresloadstart', e => {
         status.loading = true
       })

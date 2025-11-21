@@ -322,7 +322,8 @@ export default {
         this.showError(err.message)
         return
       }
-      const changedFields = difference(resolvedFields, this.initialFields)
+      const readOnly = this.layer.attributes.filter(attr => attr.constraints?.includes('readonly')).map(attr => attr.name)
+      const changedFields = omit(difference(resolvedFields, this.initialFields), readOnly)
       const f = this.createFeature(changedFields)
       if (this.geomModified) {
         let newGeom = this.getGeometry()

@@ -45,6 +45,14 @@
   transform: translate3d(0, 100%, 0);
 }
 
+/* Slide from the top */
+.tslide-enter-active, .tslide-leave-active {
+  transition: transform .4s cubic-bezier(.25,.8,.5,1)!important;
+}
+.tslide-enter, .tslide-leave-to {
+  transform: translate3d(0, -100%, 0);
+}
+
 .fade-enter, .fade-leave-to {
   opacity: 0;
 }

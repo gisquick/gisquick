@@ -3,6 +3,7 @@
   <!-- <div class="table-container"> -->
     <table>
       <thead>
+        <slot name="pre-header"/>
         <tr>
           <th
             v-for="(column, index) in columns"
@@ -381,7 +382,7 @@ export default {
     }
   }
   tbody {
-    display: relative;
+    position: relative;
     tr {
       &.selected {
         box-shadow: 0 3px 4px rgba(0,0,0,0.1);

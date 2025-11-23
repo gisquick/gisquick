@@ -187,8 +187,7 @@ export default {
     updateCaretPosition (e) {
       this.lastCaretPosition = e.target.selectionStart
     },
-    onInput (e) {
-      let value = e.target.value
+    _processValue (value) {
       if (this.cleanFn) {
         const cleaned = this.cleanFn(value)
         if (cleaned !== value) {
@@ -211,12 +210,17 @@ export default {
       if (this.trim) {
         value = value.trim()
       }
+      return value
+    },
+    onInput (e) {
+      let value = this._processValue(e.target.value)
       if (value !== this.value && !this.lazy) {
         this.$emit('input', value)
       }
     },
     onChange (e) {
-      this.$emit(this.lazy ? 'input' : 'change', e.target.value)
+      const value = this._processValue(e.target.value)
+      this.$emit(this.lazy ? 'input' : 'change', value)
     }
   }
 }

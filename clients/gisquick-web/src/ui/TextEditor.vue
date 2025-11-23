@@ -380,7 +380,7 @@ export default {
     },
     focused (focused) {
       if (!focused) {
-        const value = this.$refs.editor.textContent ? this.getText() : ''
+        const value = this.$refs.editor.textContent ? this.getText() : this.value
         if (value !== this._lastValue) {
           this.$emit('input', value)
           this._lastValue = value

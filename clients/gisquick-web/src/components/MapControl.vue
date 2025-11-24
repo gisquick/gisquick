@@ -14,6 +14,7 @@
         </v-btn>
       </div>
     </transition>
+    <street-view v-if="app.google_street_api_key" :api-key="app.google_street_api_key"/>
     <v-btn
       v-if="location"
       class="icon"
@@ -46,16 +47,18 @@
 import { mapState } from 'vuex'
 import { unByKey } from 'ol/Observable'
 import ZoomControl from 'ol/control/Zoom'
+import StreetView from '@/components/GoogleStreetView.vue'
 
 export default {
   name: 'map-control',
+  components: { StreetView },
   data () {
     return {
       rotation: 0
     }
   },
   computed: {
-    ...mapState(['project', 'location']),
+    ...mapState(['app', 'project', 'location']),
     compassVisible () {
       return this.rotation !== 0
     },
